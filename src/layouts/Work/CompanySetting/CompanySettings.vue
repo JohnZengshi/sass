@@ -553,7 +553,7 @@ export default {
             float: left;
             background:#fff;
             border-radius: 10px;
-            box-shadow: 0px 0 15px #e2e2e2;
+            box-shadow: 0px 0 15px #ddd;
             // box-shadow: 0 0 20px 2px rgba(0,0,0,0.1);
             position: relative;
             .main-left-title {
@@ -624,7 +624,7 @@ export default {
                 width: 300px;
                 height: 370px;
                 margin-bottom: 20px;
-                box-shadow: 0px 0 15px #e2e2e2;
+                box-shadow: 0px 0 15px #ddd;
                 .supplier-setting-title {
                     height: 50px;
                     width: 100%;
@@ -683,7 +683,7 @@ export default {
             .storage-setting {
                 width: 300px;
                 height: 350px;
-                box-shadow: 0px 0 15px #e2e2e2;
+                box-shadow: 0px 0 15px #ddd;
                 .storage-setting-title {
                     height: 50px;
                     width: 100%;

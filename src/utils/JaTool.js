@@ -70,9 +70,6 @@ export const JaTools = {
 				"transform": "rotate(" + page.rotateDeg + "deg)",
 		});
 		for(let data of list) {
-			if(!data.isNullPrint && !data.sample){
-				continue;
-			}
 			let box = $("<div>").css({
 				"-webkit-font-smoothing": "antialiased",
 				"font-smoothing": "antialiased",

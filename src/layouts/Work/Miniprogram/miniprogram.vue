@@ -265,7 +265,7 @@ export default{
    .main-container{
      background-color: #fff;
      height: 100%;
-     box-shadow: 0px 0 15px #e2e2e2;
+     box-shadow: 0px 0 15px #ddd;
      border-radius: 10px;
      
      >.title{

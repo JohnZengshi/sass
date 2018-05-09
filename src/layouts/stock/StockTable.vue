@@ -299,15 +299,17 @@
 		},
 		watch: {
 			'changeRepository.repositoryId' (val) {
+				console.log('909090909090',val)
 				this.dataGridOptions.storageId = val
 				if(this.changeRepository.repositoryId) {
 					this.dataGridOptions.storageId = val
 					this.dataGridOptions.page = 1
 					this.dataGridOptions.pageSize = 15
-					this.send()
 				}
+				this.send()
 			},
 			'changeShop.shopId' (val) {
+				console.log('90909090909090',val)
 				if(this.changeShop.shopId) {
 					this.dataGridOptions.shopId = val
 				} else {
@@ -323,7 +325,7 @@
 				this.dataGridOptions.page = 1
 				this.dataGridOptions.pageSize = 15
 				if(this.changeCounter.counterId) {
-				this.send()
+					this.send()
 				}
 			},
 			'positionSwitch' (val) {
@@ -342,7 +344,6 @@
 		},
 		created() {
 			this.settingUserRole()
-			console.log('初始化数据')
 		},
 		methods: {
 			choseMenu(type) {
@@ -708,6 +709,13 @@
 			this.$nextTick(() => {
 				this.send()
 			})
+		},
+		updated(){
+			console.log('******************1')
+			console.log(this.changeRepository)
+			console.log(this.changeShop)
+			console.log(this.changeCounter)
+			console.log('******************2')
 		}
 	}
 </script>

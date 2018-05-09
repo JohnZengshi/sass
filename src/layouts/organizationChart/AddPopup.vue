@@ -23,12 +23,13 @@
 </template>
 <script>
 import {mapActions} from 'vuex'
-import {operateAddUserByPhone} from 'Api/commonality/operate'
+import {operateAddUserByPhone, addOrdelInspect} from 'Api/commonality/operate'
 export default {
   props: [
     'isQueryOption',
     'operateType',
-    'shopId'
+    'shopId',
+    'isInspector',
   ],
   data () {
     return {
@@ -71,27 +72,49 @@ export default {
         this.$store.dispatch('workPopupError', '请输入姓名');
         return
       }
-      let options = {
-        operateType: this.operateType,
+
+      if(this.isInspector) {
+        let options = {
+        operateType: '1',
         phoneNo: this.phoneNo,
         name: this.userName,
-        shopId: this.shopId
-      }
-      operateAddUserByPhone(options)
-        .then(res=> {
-          if (res.data.state === 200) {
-            this.getSeekCompanyInfo()
-            this.getSeekGetUserInfo() // 职位信息
+        userId: ''
+        }
+        addOrdelInspect(options).then(res => {
+          if(res.data.state === 200){
+            console.log(res.data);
             this.$store.dispatch('workPopupError', '成功');
             this.$emit('queryOptionFun', true)
-            if (this.shopId) {
-              eventBus.$emit('queryOptionFun', {shopId: this.shopId})
-            }
-          } else {
-            this.$store.dispatch('workPopupError', res.data.msg);
+          }else {
+            this.$store.dispatch('workPopupError', res.data.msg);            
           }
+        }) 
+      } else {
+        let options = {
+          operateType: this.operateType,
+          phoneNo: this.phoneNo,
+          name: this.userName,
+          shopId: this.shopId
+        }
+  
+        operateAddUserByPhone(options)
+          .then(res=> {
+            if (res.data.state === 200) {
+              this.getSeekCompanyInfo()
+              this.getSeekGetUserInfo() // 职位信息
+              this.$store.dispatch('workPopupError', '成功');
+              this.$emit('queryOptionFun', true)
+              if (this.shopId) {
+                eventBus.$emit('queryOptionFun', {shopId: this.shopId})
+              }
+            } else {
+              this.$store.dispatch('workPopupError', res.data.msg);
+            }
         })
-    }
+      }
+
+    },
+
   }
 }
 </script>

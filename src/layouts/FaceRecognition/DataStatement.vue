@@ -221,7 +221,7 @@ export default {
     margin-top: 20px;
     height: 300px;
     .chart-wrap{
-      box-shadow: 0 0 15px #dedede;
+      box-shadow: 0 0 15px #ddd;
       border-radius: 10px;
       background-color: #fff;
       height: 300px;

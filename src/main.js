@@ -10,7 +10,7 @@ import axios from 'axios'
 Vue.use(elementUI)
 Vue.use(resource)
 Vue.use(store)
-Vue.use(axios)
+// Vue.use(axios)
 /* eslint-disable no-new */
 let vue = new Vue({
     el: '#app',

@@ -17,6 +17,7 @@
           :isShopMan="isShopMan"
           :headquarterTotal="headquarterTotal"
           :administratorList="administratorList"
+          :inspectorList="inspectorList"
           :clerkList="clerkList"
           :shopDataList="shopDataList"
           :isWarden='isWarden'
@@ -28,6 +29,9 @@
           @_seekGetUserInfo="_seekGetUserInfo"
           @_seekShopInfo="_seekShopInfo"
           @_seekGetDepUserList="updataList"
+          @getStoreList="getStoreList"
+          @getRoleShowList="getRoleShowList"
+          @getStoreAllList="getStoreAllList"
         ></DepUserList>
 
         <CompanyDetail
@@ -69,6 +73,10 @@
             :positionData="positionData"
             :isUserShopManager="isUserShopManager"
             :roleDataList="roleDataList"
+            :storeData="storeData"
+            :storeAllData="storeAllData"
+            :showList="showList"
+            :checkAll="checkAll"
             class="member-details-wrap"
             @delUserRoleDataList="delUserRoleDataList"
             @addBtn="addBtn"
@@ -115,6 +123,7 @@
 import Vue from 'vue'
 import {mapGetters} from 'vuex'
 import {seekGetDepUserList, seekGetShopListByCo, seekMemberList, seekGetUserApply, seekDynamic} from 'Api/commonality/seek'
+import { lookStore } from 'Api/commonality/operate'
 // import {seekGetUserInfo} from '../../src/Api/commonality/seek'
 import {seekGetUserInfo} from '../../../src/Api/commonality/seek'
 import {GetDateStr} from 'assets/js/getTime'
@@ -152,6 +161,7 @@ import CompanyDetail from './CompanyDetail'
         isQueryOption: false, // 弹窗
         openAdministrator: false, // 管理员开关
         administratorList: [], // 管理员列表
+        inspectorList:[], // 检查员列表
         clerkList: [], // 职员列表
         shopDataList: [], // 店铺列表
         roleDataList: [], // 权限列表
@@ -167,7 +177,13 @@ import CompanyDetail from './CompanyDetail'
         // 被操作的用户信息
         initShopInfo: '', // 原店铺数据
         userDataInfo: '', // 被操作的用户基本信息
-        positionData: {} // 被操作职位信息-->权限列表
+        positionData: {}, // 被操作职位信息-->权限列表
+
+        storeData:[],
+        storeAllData:[],
+        // headquartersShow:false
+        showList: false,
+        checkAll: false
       }
     },
     computed: {
@@ -180,11 +196,20 @@ import CompanyDetail from './CompanyDetail'
         // }
         let userPositionInfo = this.userPositionInfo.roleList // 操作者
         let positionData = this.positionData.roleList // 被操作者
+
+        console.log('权限1',userPositionInfo)
+        console.log('权限2',positionData)
+
         if (userPositionInfo && positionData) { // 操作者和被操作者都拿到
           if (this.userDataInfo) {
             if (this.userDataInfo.isCompany) { // 双重身份的情况下的---公司人员
+
               let A = this.filterCompanyRole(userPositionInfo)
               let B = this.filterCompanyRole(positionData)
+
+              console.log('A',A)
+              console.log('B',B)
+
               switch (B) {
                 case '1': // 超管
                   return false;
@@ -195,6 +220,11 @@ import CompanyDetail from './CompanyDetail'
                   return false
                 case '3': // 职员
                   if (A === '1' || A === '2') {
+                    return true
+                  }
+                  return false
+                case '6': // 监察员
+                  if(A === '1' || A === '2'){
                     return true
                   }
                   return false
@@ -404,6 +434,24 @@ import CompanyDetail from './CompanyDetail'
           }   
         }
         return false
+      },
+      getRoleUsr(){
+        let userPositionInfo = this.userPositionInfo.roleList // 操作者
+        console.log('重新操作')
+        // 遍历操作者权限
+        for (let index = 0; index < userPositionInfo.length; index++) {
+          if(userPositionInfo[index].role === '1' || userPositionInfo[index].role === '2'){
+            sessionStorage.setItem('guanliyuan',true)
+          }else {
+            sessionStorage.setItem('guanliyuan','')            
+          }
+          if(userPositionInfo[index].role === '1' || userPositionInfo[index].role === '2' || userPositionInfo[index].role === '3' || userPositionInfo[index].role === '6'){
+            // this.headquartersShow = true
+            sessionStorage.setItem('headquartersShow',true)
+            return;
+          }
+        }
+        sessionStorage.setItem('headquartersShow',false)        
       }
     },
     created () {
@@ -414,7 +462,11 @@ import CompanyDetail from './CompanyDetail'
       console.log(this.$route)
       if (this.$route.query.isRefresh == true) {
         location.reload()
-      } 
+      }
+      this.getRoleUsr()
+
+      // 初始话店铺列表
+      // this.seekStoreList()
     },
     methods: {
       updataCompanyInfo () { // 更新公司列表信息
@@ -437,6 +489,8 @@ import CompanyDetail from './CompanyDetail'
               return '2'
             case '3':
               return '3'
+            case '6':
+              return '6'
           }
         }
       },
@@ -622,9 +676,12 @@ import CompanyDetail from './CompanyDetail'
               this.clerkList = []
               this.headquarterTotal = res.data.data.total
               this.administratorList = []
+              this.inspectorList = []
               for (let j of res.data.data.userList) {
                 if (j.role === "3") {
                   this.clerkList.push(j)
+                } else if(j.role === "4"){
+                  this.inspectorList.push(j)
                 } else {
                   this.administratorList.push(j)
                 }
@@ -643,13 +700,12 @@ import CompanyDetail from './CompanyDetail'
           .then(res => {
             if (res.data.state === 200) {
               this.shopDataList = res.data.data.shopList
-              console.log(this.shopDataList)
               let _self = this
               res.data.data.shopList.forEach(function (element, index) {
                 _self._seekMemberList(element.shopId, index)
               })
             } else {
-              this.$store.dispatch('workPopupError', res.data.msg);
+              this.$store.dispatch('workPopupError', res.data.msg)
             }
           })
       },
@@ -696,7 +752,84 @@ import CompanyDetail from './CompanyDetail'
               this.$store.dispatch('workPopupError', res.data.msg);
             }
           })
+      },
+      getStoreList(parm){
+        let options = {
+          userId: parm,
+          type: '1'
+        }
+
+        lookStore(options).then(res => {
+          if(res.data.state === 200){
+            console.log(res.data.data.dataList)
+            this.storeData = res.data.data.dataList
+          } else {
+            this.$store.dispatch('workPopupError', res.data.msg);
+          }
+        })
+      },
+      getStoreAllList(parm){
+        let options = {
+          userId: parm,
+          type: '3'
+        }
+
+        lookStore(options).then(res => {
+          if(res.data.state === 200){
+            console.log('66666666666666',res.data.data.dataList)
+            this.storeAllData = res.data.data.dataList
+            this.checkAll = this.checekAllRole(res.data.data.dataList)
+          } else {
+            this.$store.dispatch('workPopupError', res.data.msg);
+          }
+        })
+
+      },
+      seekStoreList(){
+        let options = {
+          userId: sessionStorage.getItem('id'),
+          type: '1'
+        }
+        console.log(options)
+        lookStore(options).then(res => {
+          if(res.data.state === 200){
+            console.log(res.data.data.dataList)
+            this.storeData = res.data.data.dataList
+          } else {
+            this.$store.dispatch('workPopupError', res.data.msg);
+          }
+        })
+      },
+      getRoleShowList(parm){
+        console.log('101010101',parm)
+        if(sessionStorage.getItem('guanliyuan') === 'true'){
+          if(parm == '1' || parm == '2'){
+            this.showList = true
+          } else {
+            this.showList = false
+          }
+        } else {
+            this.showList = true          
+        }
+        console.log('0000000000000009292',this.showList)
+      },
+      checekAllRole(data){
+        let count = 0
+        for(let i = 0;i<data.length;i++){
+          if(data[i].status === 'N'){
+            count++
+          }
+        }
+        if(count === data.length){
+          return true
+        } else {
+          return false
+        }
       }
+    },
+    mounted(){
+    },
+    updated(){
     }
   }
 </script>

@@ -315,6 +315,7 @@ export default {
         clearTitleInfo () {
             this.optionData.titleInfo = '';
             //console.log('查看取消类型：'+this.dataType);
+            console.log(this.dataType)
             this.$emit("clearInfo", {type: this.dataType})
             this.actIndex = null
         },

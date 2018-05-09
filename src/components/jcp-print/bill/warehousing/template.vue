@@ -1,5 +1,5 @@
 <template>
-	<div class="print-box breakable" id="page1" break-window='#break-table'>
+	<div class="print-box breakable" id="page1">
 		<div class="print-header">
 			<h1 class="title center">{{title}}单据</h1>
 			<div class="head-option">
@@ -24,7 +24,7 @@
 			</div>
 		</div>
 		<div>
-			<table class="table-box" id="break-table" headerRows='1'>
+			<table class="table-box">
 				<tr>
 					<td>序号</td>
 					<td>条码号</td>

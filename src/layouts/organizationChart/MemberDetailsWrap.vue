@@ -79,25 +79,29 @@
     </section>
 
     <!-- 店铺查看权限 -->
-    <!-- <section class="store-list-wrap">
+    <section v-if="showList && ListShow" class="store-list-wrap">
       <h4 class="title-icon-wrap store-title">
         <i></i>
         <span>查看店铺权限</span>
-        <span class="check-store-all">
-          <el-checkbox v-model="checked">
-            <span>全选</span>
-          </el-checkbox>
-        </span>
       </h4>
       <ul class="check-store-list">
-        <li>
-          <el-checkbox v-model="qqq">
-            <span class="qq">全选</span>
-          </el-checkbox>
-        </li>
+        <li v-for="(item,index) in storeData" :key="index"><span>{{item.shopNamem}}</span></li>
       </ul>
-      
-    </section> -->
+    </section>
+
+    <section v-else class="store-list-wrap">
+      <h4 class="title-icon-wrap store-title">
+        <i></i>
+        <span>查看店铺权限</span>
+        <el-checkbox v-model="checked" @change="storeCheckAll"><span>全选</span></el-checkbox>
+      </h4>
+      <el-checkbox-group v-model="checkitemLits" @change="itemCheckend">
+        <el-checkbox v-for="(item,index) in checkList" :key="index" :label="item.shopId"><span>{{item.shopNamem}}</span></el-checkbox>
+      </el-checkbox-group>
+      <!-- <ul class="check-store-list">
+        <li class="nodedian" v-for="(item,index) in checkList" :key="index"><el-checkbox v-model="item.status" @change="itemCheckend()" :checked="item.status === 'Y' ? true : false"><span>{{item.shopNamem}}</span></el-checkbox></li>
+      </ul> -->
+    </section>
     
     <a class="del-staff el-icon-delete" v-if="deleteRole" href="javascript: void(0)" @click.stop="delDialog = true"></a>
     <!-- <a class="del-staff" v-if="isDelRole && delDualRole" href="javascript: void(0)" @click="_operatePrivilege">删除员工</a> -->
@@ -117,7 +121,7 @@
 </template>
 <script>
   import {mapActions} from 'vuex'
-  import {operateOperateApplyByUserId, operateUserSetting, operatePrivilege} from 'Api/commonality/operate'
+  import {operateOperateApplyByUserId, operateUserSetting, operatePrivilege,addOrdelInspect,lookStore,setShopSee} from 'Api/commonality/operate'
   import {seekUserInfo, seekSettingUserRole, seekGetUserInfo, seekShopInfo} from 'Api/commonality/seek'
   import {statusPosition} from 'Api/commonality/status'
   import Switchs from 'base/switch/Switchs'
@@ -127,7 +131,7 @@
       Switchs,
       FormatImg
     },
-    props: ['deleteRole', 'editOrAddRole', 'roleDataList', 'userRoleDataList', 'userInfo', 'settingUserRole', 'positionData', 'isCompile', 'isWarden', 'isDelRole', 'isAddRole', 'delStaffRole', 'isUserShopManager', 'isSuperTube'], // 删除权限, 编辑权限, 添加的权限
+    props: ['deleteRole', 'editOrAddRole', 'roleDataList', 'userRoleDataList', 'userInfo', 'settingUserRole', 'positionData', 'isCompile', 'isWarden', 'isDelRole', 'isAddRole', 'delStaffRole', 'isUserShopManager', 'isSuperTube','storeData','showList','storeAllData','checkAll'], // 删除权限, 编辑权限, 添加的权限
     data () {
       return {
         //timeRange :'1' 45天  '2' 不限   costFlag:'Y' 开启成本 'N'关闭成本
@@ -152,7 +156,13 @@
             name: '职员',
             id: '6'
           }
-        ]
+        ],
+        ListShow: true,
+        // checkShow: false,
+        checked: '',
+        checkList: [],
+        checkitemLits: [],
+        valLength:0
       }
     },
     watch: {
@@ -198,6 +208,10 @@
     },
     created () {
       this.getRoleName()
+      console.log(this.deleteRole)
+      this.checked = this.checkAll
+      this.checkList = this.storeAllData
+      this.checkitemLits = this.getItemArray(this.checkList)
     },
     mounted () {
       let _self = this
@@ -211,6 +225,48 @@
           },
       });
       $('.el-checkbox__input').css('vertical-align','baseline')
+      $('.el-checkbox').css({
+        "width":"auto",
+        "height":"auto",
+        "lineHeight":"0",
+        "marginLeft":"10px"
+      })
+      $('.el-checkbox__label').css({
+        "fontSize":"12px",
+      })
+      $('.member-details-main .store-list-wrap .check-store-list li,.nonedian').css('listStyle','none')
+      $('.nonedian span').css({
+        "verticalAlign":"top",
+        "lineHeight":"20px"
+      })
+      $('.el-checkbox__label span').css({
+        "verticalAlign":"top",
+        "fontSize":"12px",
+        "lineHeight":"18px"
+      })
+    },
+    updated(){
+      $('.el-checkbox__input').css('vertical-align','baseline')
+      $('.el-checkbox').css({
+        "width":"auto",
+        "height":"auto",
+        "lineHeight":"0",
+        "marginLeft":"10px"
+      })
+      $('.el-checkbox__label').css({
+        "fontSize":"12px",
+      })
+      // // $('.member-details-main .store-list-wrap .check-store-list li,.nonedian').css('listStyle','none')
+      $('.nonedian span').css({
+        "verticalAlign":"top",
+        "lineHeight":"20px"
+      })
+      $('.el-checkbox__label span').css({
+        "verticalAlign":"top",
+        "fontSize":"12px",
+        "lineHeight":"18px"
+      })
+      $('.el-checkbox-group label:nth-of-type(2)').css("display","none")
     },
     computed: {
       allAddRole () {
@@ -259,6 +315,7 @@
         for (let i of roleList) {
           names = `${names}、${statusPosition(i)}`
         }
+        console.log(roleList)
         //return names.slice(1, names.length)
         this.roleName = names.slice(1, names.length)
         console.log(this.roleName)
@@ -267,7 +324,6 @@
         console.log(parm)
       },
       changeRoleName (parm) {
-        console.log(parm)
         if (parm === '5' || parm === '6') {
           let options = {
             dataList: [
@@ -406,32 +462,28 @@
         //console.log('职员删除', this.positionData.roleList)
         let operateType = '';
         // if (this.userInfo.isCompany) { // 是公司的操作
-        // }//operateType字段： 副管理员：1 ， 职员：2，店长：3，店员：4
+        // }//operateType字段： 副管理员：1 ， 职员：2，店长：3，店员：4，监察员：6
+        console.log(this.positionData.roleList[0].role)        
+        console.log(this.userInfo.userId)
+
         switch (this.positionData.roleList[0].role) {
           case '2':
             operateType = '1'
             break;
-          case '3':
+            case '3':
             operateType = '2'
             break;
             case '4':
             operateType = '3';
             break;
         }
-        let options = {
-          dataList: [
-            {
-              operateType: operateType,
-              shopId: this.positionData.roleList[0].shopId,
-              userId: this.userInfo.userId
-            }
-          ]
-        }
-        if (this.positionData.roleList[0].shopId) {
-          options.dataList[0].operateType = '4'
-        }
-        operatePrivilege(options)
-          .then(res => {
+
+        if(this.positionData.roleList[0].role === '6'){
+          let options = {
+            operateType: '2',
+            userId: this.userInfo.userId
+          }
+          addOrdelInspect(options).then(res => {
             if (res.data.state === 200) {
               this.$store.dispatch('workPopupError', '删除成功');
               this.$emit('_seekGetDepUserList')
@@ -440,9 +492,36 @@
             } else {
               this.$store.dispatch('workPopupError', res.data.msg);
             }
-          }, res => {
-            alert(res.data.msg)
           })
+        } else {
+          
+          let options = {
+            dataList: [
+              {
+                operateType: operateType,
+                shopId: this.positionData.roleList[0].shopId,
+                userId: this.userInfo.userId
+              }
+            ]
+          }
+          if (this.positionData.roleList[0].shopId) {
+            options.dataList[0].operateType = '4'
+          }
+          operatePrivilege(options)
+            .then(res => {
+              if (res.data.state === 200) {
+                this.$store.dispatch('workPopupError', '删除成功');
+                this.$emit('_seekGetDepUserList')
+                this.getSeekCompanyInfo();
+                setTimeout(window.location.reload(),500);
+              } else {
+                this.$store.dispatch('workPopupError', res.data.msg);
+              }
+            }, res => {
+              alert(res.data.msg)
+            })
+
+        }
       },
       addBtn () {
         this.$emit('addBtn')
@@ -455,6 +534,143 @@
         let checkedCount = value.length;
         this.checkAll = checkedCount === this.cities.length;
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+      },
+      storeCheckAll(val){
+        // console.log(this.checked)
+        // console.log(this.checkList)
+        let oldData = this.checkList
+        let newListData = []
+        if(this.checked){
+          for(let i=0;i<oldData.length;i++){
+            oldData[i].status = 'N'
+            newListData[i] = oldData[i]
+          }
+          this.checkitemLits = this.getItemArray(newListData)
+        }else {
+          for(let i=0;i<oldData.length;i++){
+            oldData[i].status = 'D'
+            newListData[i] = oldData[i]
+          }
+          this.checkitemLits = this.getItemArray(newListData)
+        }
+        console.log(newListData)
+
+        this.checkList = newListData
+
+        this.getAllChcek(newListData)
+        
+        // console.log(this.userInfo)
+      },
+      itemCheckend(val){
+        // 判断是不是全选
+        if(this.checkList.length === (val.length)){
+          this.checked = true
+          this.storeCheckAll()
+        }else {
+          this.checked = false
+          // 获取选中的店铺
+        }
+        if(val.length == 0){
+          this.getAllnoCheck()          
+        }else {
+          let addnewListData = []
+          let delnewListData = []
+  
+          let allListData = this.checkList
+
+          for(let i = 0;i<val.length;i++){
+            console.log(val[i])
+            allListData.forEach(item => {
+               if(item.shopId == val[i]){
+                addnewListData.push(item)
+              }else {
+                delnewListData.push(item)
+              }
+            })
+          }
+
+          this.getOneCheck(addnewListData,'1')
+          this.getOneCheck(delnewListData,'2')
+
+        }
+
+      },
+      getItemArray(data){
+        let newData =[]
+        newData = data.map(item => {
+          console.log(item)
+          if(item.status === 'N'){
+            return item.shopId
+          }
+        })
+        return newData
+      },
+      getAllChcek(newListData){ // 全选点击后设置查看店铺
+        let options = []
+        let optionsObj ={}
+        for(let j = 0;j<newListData.length;j++){
+          if(newListData[j].status === 'N') {
+            optionsObj['operateType'] = '1'
+          }else {
+            optionsObj['operateType'] = '2'
+          }
+          optionsObj.shopId = newListData[j].shopId
+          optionsObj.userId = this.userInfo.userId
+
+          options.push(optionsObj)
+        }
+        // console.log(options)
+        let dataObj = {
+          "dataList" : options
+        }
+        setShopSee(dataObj).then(res => {
+          if(res.data.state !== 200){
+            this.$store.dispatch('workPopupError', res.data.msg);
+          }
+        })
+      },
+      getAllnoCheck(){
+        let data = this.checkList
+        let options = []
+        let optionsObj ={}
+
+        for(let j = 0;j<data.length;j++){
+          optionsObj.operateType = '2'
+          optionsObj.shopId = data[j].shopId
+          optionsObj.userId = this.userInfo.userId
+          options.push(optionsObj)
+        }
+
+        let dataObj = {
+          "dataList" : options
+        }
+        setShopSee(dataObj).then(res => {
+          if(res.data.state !== 200){
+            this.$store.dispatch('workPopupError', res.data.msg);
+          }
+        })
+        
+      },
+      getOneCheck(data,type){
+        let options = []
+        let optionsObj ={}
+
+        for(let j = 0;j<data.length;j++){
+          optionsObj.operateType = type
+          optionsObj.shopId = data[j].shopId
+          optionsObj.userId = this.userInfo.userId
+          options.push(optionsObj)
+        }
+
+        let dataObj = {
+          "dataList" : options
+        }
+
+        setShopSee(dataObj).then(res => {
+          if(res.data.state !== 200){
+            this.$store.dispatch('workPopupError', res.data.msg);
+          }
+        })
       }
     }
   }
@@ -778,7 +994,7 @@
 
   // 店铺查看权限
   .store-list-wrap{
-    // height: 200px;
+    height: 200px;
     width: 100%;
     overflow: hidden;
     padding-top: 30px;
@@ -796,9 +1012,23 @@
 
     }
     .check-store-list{
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
       margin: 20px 0 0 94px;
-      .el-checkbox__label{
+      li{
+        width: 40%;
+        height: 16px;
+        margin-bottom: 16px;
+        margin-left: 20px;
         font-size: 12px;
+        line-height: 16px;
+        color: #2993f8;
+        list-style: disc;
+        span{
+          display: inline-block;
+          color: #666666;
+        }
       }
     }
 
@@ -807,5 +1037,11 @@
 }
 .el-checkbox__input{
     vertical-align: baseline;
+}
+li,.nonedian {
+  list-style:none; 
+}
+.el-checkbox-group{
+  margin: 20px 0 0 94px
 }
 </style>

@@ -12,9 +12,9 @@
       </div>
       <div class="header-wrap">
         <div class="headquarters-wrap">
-          <div class="member-list">
+          <div v-if="headquartersShow" class="member-list">
             <h5>总部（{{headquarterTotal}}人）</h5>
-
+            <!-- 总部 -->
             <h6 class="little-title-wrap" :class="{'open-class': isOpen[0]}"  @click="open('administratorWrap', administratorList.length, 0)">
               <i class="triangle-icon" :title="isOpen[0] ?'点击收起':'点击展开'" :class="{'close-triangle-icon': isOpen[0], 'open-triangle-icon': !isOpen[0]}"></i>
               <span class="little-title-left">管理员（{{administratorList.length}}人）</span>
@@ -35,14 +35,31 @@
               </template>
             </ul>
 
-            <!-- 监察者 -->
-            
+            <!-- 监察员 -->
+            <h6 class="little-title-wrap" :class="{'open-class': isOpen[2]}" @click="open('InspectorWrap', inspectorList.length, 2)">
+              <i class="triangle-icon" :title="isOpen[2] ?'点击收起':'点击展开'" :class="{'close-triangle-icon': isOpen[2], 'open-triangle-icon': !isOpen[2]}"></i>
+              <span class="little-title-left">监察员（{{inspectorList.length}}人）</span>
+              <a @click.stop="addInspector" v-if="isOperate" href="javascript: void(0)" class="add-btn">+添加</a>
+            </h6>
 
+            <ul ref="InspectorWrap" style="height:0">
+              <template v-for="(item, index) in inspectorList">
+                <li class="isHas" :key="index" @click="lookDetail(item, 'InspectorWrap', index)" :class="{actions: item.userId == organizatonChangeId && userIndex == index}">
+                  <img src="./../../assets/img/superManage.png" alt="">
+                  <div class="title-wrap">
+                    <p>{{item.userName}}</p>
+                    <p>{{item.phone}}</p>
+                  </div>
+                </li>
+              </template>
+            </ul>
+
+            <!-- 职员 -->
             <h6 class="little-title-wrap" :class="{'open-class': isOpen[1]}" @click="open('clerkListWrap', clerkList.length, 1)">
               <i class="triangle-icon" :title="isOpen[1] ?'点击收起':'点击展开'" :class="{'close-triangle-icon': isOpen[1], 'open-triangle-icon': !isOpen[1]}"></i>
               <span class="little-title-left">职员（{{clerkList.length}}人）</span>
               <!-- <span class="add-tit" @click="addClerk" v-if="isOperate"><i>+</i>职员</span> -->
-              <a @click="addClerk" v-if="isOperate" href="javascript: void(0)" class="add-btn">+添加</a>
+              <a @click.stop="addClerk" v-if="isOperate" href="javascript: void(0)" class="add-btn">+添加</a>
             </h6>
             
             <ul ref="clerkListWrap" style="height: 0">
@@ -82,6 +99,7 @@
             :isQueryOption="isQueryOption"
             :operateType="operateType"
             :shopId="shopId"
+            :isInspector="isInspector"
             @queryOptionFun="queryOptionFun"
           ></AddPopup>
         </div>
@@ -101,7 +119,7 @@
   import AddPopup from './AddPopup'
   import {seekUserInfo, seekSettingUserRole, seekGetUserInfo, seekShopInfo} from 'Api/commonality/seek'
   export default {
-    props: ['administratorList', 'clerkList', 'shopDataList', 'positionData', 'headquarterTotal', 'isShopMan', 'isWarden', 'isCompile', 'isSuperTube', 'isShopManager', 'updatas'],
+    props: ['inspectorList','administratorList', 'clerkList', 'shopDataList', 'positionData', 'headquarterTotal', 'isShopMan', 'isWarden', 'isCompile', 'isSuperTube', 'isShopManager', 'updatas'],
     components: {
       ShopList,
       AddPopup,
@@ -120,9 +138,14 @@
         userIndex: null,
         newPopup: false,
         isCloseAccordion: false, // 关闭手风琴
+        isInspector:false,
+        headquartersShow: false,
       }
     },
     created () {
+      if(sessionStorage.getItem('headquartersShow') === 'true'){
+        this.headquartersShow = true
+      }
     },
     mounted () {
       let self = this
@@ -139,6 +162,10 @@
       eventBus.$on('queryOptionFun', function (val) {
         self._seekShopInfo(val);
       })
+
+      // sessionStorage.setItem('headquartersShow',this.headquartersShow)
+      // this.headquartersShow = sessionStorage.getItem('headquartersShow')
+
      // this.initOpen('administratorWrap', this.administratorList.length, 0)
     },
     watch: {
@@ -212,12 +239,14 @@
         //console.log(this.companyInfo)
       },
       optens (Index) {
-        // console.log('选中的值', Index)
+        console.log('选中的值', Index)
         if (Index == 1) {
           this.$refs.clerkListWrap.style.height = this.clerkList.length * 46 + 'px';
-        } else {
+        } else if(Index == 0){
           this.$refs.administratorWrap.style.height = this.administratorList.length * 46 + 'px';
           //console.log(2222222222)
+        } else if(Index == 2){
+          this.$refs.InspectorWrap.style.height = this.inspectorList.length * 46 + 'px';
         }
       },
       initOpen (parm, Num, Index) {
@@ -260,6 +289,10 @@
         this.operateType = '1'
         this.isQueryOption = true
       },
+      addInspector(){ // 添加监察员
+        this.isInspector = true
+        this.isQueryOption = true        
+      },
       addClerk () { // 添加职员
         this.shopId = ''
         this.isQueryOption = true
@@ -268,11 +301,16 @@
       lookDetail (item, parm, index) {
         // this.$store.dispatch('workOrganizationChange', item.userId)
         //console.log(this.offHeight)
-        console.log(item)
         this.userIndex = index
         // if (this.$refs[parm].offsetHeight != this.offHeight) {
         //   this.$refs[parm].style.height = this.offHeight + 'px'
         // }
+        console.log(item)
+        sessionStorage.setItem('storeUserID',item.userId)
+        this.$emit('getStoreList', item.userId)
+        this.$emit('getStoreAllList', item.userId)
+        this.$emit('getRoleShowList', item.role)
+
         let options = {
           userId: item.userId 
         }                                                                                  
@@ -334,8 +372,10 @@
               this.$store.dispatch('workPopupError', res.data.msg);
             }
           })
-      }
-    }
+      },
+
+    },
+
   }
 </script>
 <style lang="scss" scoped>

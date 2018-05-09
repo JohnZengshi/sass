@@ -97,7 +97,7 @@
 							<td>{{productSellTypeList.totalBuy|RMBUNIT}}</td>
 							<td>{{Number(productSellTypeList.totalRealPrice)+Number(productSellTypeList.totalExchange)-productSellTypeList.totalBuy|RMBUNIT}}</td>
 							<td>{{productSellTypeList.totalCost|RMBUNIT}}</td>
-							<td>{{Number(productSellTypeList.totalRealPrice)-Number(productSellTypeList.totalCost)|RMBUNIT}}</td>
+							<td>{{(Number(productSellTypeList.totalRealPrice)-Number(productSellTypeList.totalCost)).toFixed(2)|RMBUNIT}}</td>
 						</tr>
 					</template>
 				</template>
@@ -194,7 +194,7 @@
 			GRAMUNIT:(num)=>{
 				if(num){
 					if(Number(num)){
-						return Number(num).toFixed(2)+"g";
+						return num+"g";
 					}
 					return "0g";
 				}else{
@@ -204,7 +204,7 @@
 			RMBUNIT:(num)=>{
 				if(num){
 					if(Number(num)){
-						return Number(num).toFixed(3) +"元";
+						return num+"元";
 					}
 					return "0元";
 				}else{
@@ -214,7 +214,7 @@
 			NOUNIT:(num)=>{
 				if(num){
 					if(Number(num)){
-						return Number(num).toFixed(3);
+						return num;
 					}
 					return 0;
 				}else{

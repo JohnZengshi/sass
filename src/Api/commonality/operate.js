@@ -521,8 +521,18 @@ export const operateProductTypeDragSord = function (parm) { // 产品类别拖�
   let URL = "/v1/headquarter/productTypeDragSord";
   return apiCall(parm, URL);
 }
-// 导出报表
-export const exportTab = function (parm) { // 产品类别拖动
-  let URL = "/v1/export/exportExcelByBusinss";
+// 监察员的添加与删除
+export const addOrdelInspect = function (parm) { // 产品类别拖动
+  let URL = "/v1/auth/inspectoRoleOperation";
+  return apiCall(parm, URL);
+}
+// 查看店铺
+export const lookStore = function (parm) {
+  let URL = "/v1/auth/getShopRoleList";
+  return apiCall(parm, URL);
+}
+// 设置可以查看的店铺
+export const setShopSee = function (parm){
+  let URL = '/v1/auth/settingShopSeeById';
   return apiCall(parm, URL);
 }

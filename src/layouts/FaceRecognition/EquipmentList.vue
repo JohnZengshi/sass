@@ -212,7 +212,7 @@ export default{
     height: 30px;
   }
   .content{
-    box-shadow: 0px 0px 18px #e0dfdf;
+    box-shadow: 0px 0px 18px #ddd;
     padding-left: 0;
     margin-top: 20px;
     height: 740px;

@@ -176,8 +176,8 @@
           
         } else if (val.type == "库位") {
           this.changeRepository.repositoryId = ''
-          this.changeRepository.repositoryName = '';
-           
+          this.changeRepository.repositoryName = ''
+          console.log('清除后',this.changeRepository)
         }
         this._statisticalIndex();
       },
@@ -283,7 +283,6 @@
       _seekRepositoryList () {
         seekRepositoryList()
           .then(res => {
-            console.log('这个请求又是做什么的',res)
             if (res.data.state === 200) {
               this.repositoryList = res.data.data.repositoryList
             }

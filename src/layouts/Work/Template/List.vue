@@ -365,7 +365,7 @@ export default {
         @import "~assets/css/template/breadcrumb.scss";
         .template-list-content{
             background-color: $C2;
-            box-shadow: 0 0 10px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 0 10px 5px #ddd;
             border-radius: 10px;
             .operation-dropdown-container{
                 .operation-dropdown-menu-list{
