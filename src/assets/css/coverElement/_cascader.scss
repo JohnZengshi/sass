@@ -1,0 +1,26 @@
+.cascader-w100-h28{
+  width: 100px;
+  .el-cascader{
+    width: 100px;
+  }
+  .el-input__inner{
+    padding-top: 3px;
+    font-size: 12px;
+    text-align: right;
+    height: 25px;
+    padding-right: 19px;
+    background-color: #fff;
+  }
+  .el-input__icon{
+    width: 18px;
+    font-size: 12px;
+    line-height: 30px;
+  }
+  .el-cascader__label{
+    color: #999;
+    text-align: right;
+    font-size: 12px;
+    padding-right: 19px;
+    line-height: 28px;
+  }
+}

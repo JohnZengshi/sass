@@ -1,0 +1,25 @@
+@mixin triangle($fl: left, $colorOne: #fff, $colorTwo: #0abfab) {
+    float: $fl;
+    display: block;
+    width: 0px;
+    height: 0px;
+    border-top: 20px solid $colorOne;
+    border-right: 0px solid transparent;
+    border-bottom: 20px solid $colorOne;
+    border-left: 20px solid $colorTwo;
+}
+@mixin init_block{ // 初始化块级元素
+    vertical-align: top;
+    display: inline-block;
+    font-size: 0;
+}
+@mixin box-sizing($box:border-box){
+  box-sizing: $box;
+  -moz-box-sizing:$box; /* Firefox */
+  -webkit-box-sizing:$box; /* Safari */
+}
+@mixin box-shadow {
+  -moz-box-shadow: 0 0 15px #dedede;/*firefox*/ 
+  -webkit-box-shadow: 0 0 15px #dedede;/*webkit*/ 
+  box-shadow: 0 0 15px #dedede;/*opera或ie9*/
+}  

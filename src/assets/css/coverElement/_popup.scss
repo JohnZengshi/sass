@@ -1,0 +1,387 @@
+// 对话框
+@import "~assets/css/template/fonts.scss";
+@mixin dialog ($w: 601px,$h:500px,$t:15%,$bt:20px,$mt:20px,$bdc:#ccc,$hn:block,$closeT:0px) {
+    .el-dialog--small{
+        //top: $t!important;
+        // padding: 0 30px;
+        width: $w;
+        height: $h;
+        // background-color: #f1f4f8;
+        background-color: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 0 15px 4px rgba(51,51,51,0.1);
+        .el-dialog__header{
+            // background-color: #fff;
+            position: relative;
+            display: $hn;
+            padding: 0;
+            height: 44px;
+            border-bottom: solid 1px $bdc;
+            span{ // 标题文字
+                position: absolute;
+                left: 0;
+                right: 0;
+                margin: auto;
+                color: $c3;
+                height: 44px;
+                line-height: 44px;
+                text-align: center;
+            }
+            .el-dialog__headerbtn{ // 关闭小图标
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 44px;
+                width: 44px;
+                .el-dialog__close{
+                    margin-top: closeT;
+                }
+            }
+        }
+        .el-dialog__title{
+            font-weight: normal;
+        }
+        .el-dialog__body{
+            // background-color: #fff;
+            padding: 0;
+            // padding: 0 30px;
+            height: auto;
+            // padding: 30px 0 0 0;
+        }
+        .el-dialog__footer{
+            // background-color: #fff;
+            bottom: $bt;
+            // padding-bottom: $bt;
+            left: 0;
+            right: 0;
+            margin: auto;
+            position: absolute;
+            padding: 0;
+            vertical-align: top;
+            // height: 30px;
+            text-align: center;
+            margin-top: $mt;
+            @include F(0);
+        }
+    }
+}
+@mixin all-no-dialog ($w: 601px,$h:500px,$t:15%,$bt:20px,$mt:20px,$bdc:#ccc,$hn:block,$closeT:0px) {
+    .el-dialog{
+      background-color: transparent;
+      box-shadow: none;
+    }
+    .el-dialog--small{
+        top: $t!important;
+        // padding: 0 30px;
+        width: $w;
+        height: $h;
+        // background-color: #f1f4f8;
+        // background-color: #fff;  transparent
+        background-color: transparent;
+        border-radius: 4px;
+        // box-shadow: 0 0 7px 3px rgba(51,51,51,0.3);
+        .el-dialog__header{
+            // background-color: #fff;
+            position: relative;
+            display: $hn;
+            padding: 0;
+            height: 44px;
+            border-bottom: solid 1px $bdc;
+            span{ // 标题文字
+                position: absolute;
+                left: 0;
+                right: 0;
+                margin: auto;
+                color: $c3;
+                height: 44px;
+                line-height: 44px;
+                text-align: center;
+            }
+            .el-dialog__headerbtn{ // 关闭小图标
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 44px;
+                width: 44px;
+                .el-dialog__close{
+                    margin-top: closeT;
+                }
+            }
+        }
+        .el-dialog__title{
+            font-weight: normal;
+        }
+        .el-dialog__body{
+            background-color: transparent;
+            padding: 0;
+            // padding: 0 30px;
+            height: auto;
+            // padding: 30px 0 0 0;
+        }
+        .el-dialog__footer{
+            // background-color: #fff;
+            bottom: $bt;
+            // padding-bottom: $bt;
+            left: 0;
+            right: 0;
+            margin: auto;
+            position: absolute;
+            padding: 0;
+            vertical-align: top;
+            // height: 30px;
+            text-align: center;
+            margin-top: $mt;
+            @include F(0);
+        }
+    }
+}
+.dialog-w601{
+    @include dialog;
+}
+.dialog-w380{
+    @include dialog($w:380px,$h:260px,$t:32%);
+}
+.dialog-w380-h260{
+    @include dialog($w:380px,$h:260px);
+}
+.dialog-w380-h420{
+    @include dialog($w:380px,$h:420px,$t:32%);
+}
+.dialog-w420{
+    @include dialog($w:420px,$h:520px);
+}
+.dialog-w420-h600{
+    @include dialog($w:420px,$h:600px);
+}
+.dialog-w320-success{
+    @include dialog($w:320px,$h:380px,$bdc:#fff);
+}
+.dialog-w320-h220{
+    @include dialog($w:320px,$h:220px);
+}
+.dialog-w420-h520{
+    @include dialog($w:420px,$h:520px);
+}
+.dialog-w380-h520{
+    @include dialog($w:380px,$h:520px);
+}
+.dialog-w380-h520{
+    @include dialog($w:380px,$h:520px);
+}
+ // 隐藏头部
+.dialog-w320-h220-hn{
+    @include dialog($w:320px,$h:220px,$hn:none);
+}
+.dialog-w320-h400-hn{
+    @include dialog($w:320px,$h:400px,$hn:none,$bt:30px);
+}
+.dialog-w214-h214-hn{
+    @include dialog($w:214px,$h:214px,$t:40%, $hn:none,$bt:14px);
+}
+.dialog-w700-h740-hn{
+    @include dialog($w:700px,$h:740px,$hn:none);
+}
+.dialog-w540-h740-hn{
+    @include dialog($w:540px,$h:740px,$hn:none);
+}
+.dialog-w300-h300-hn{
+    @include dialog($w:300px,$h:300px,$hn:none);
+}
+.dialog-w450-h250-hn{
+    @include dialog($w:450px,$h:250px,$t:25%,$hn:none);
+}
+.dialog-w565-h430-hn{
+    @include dialog($w:565px,$h:430px,$t:25%,$hn:none);
+}
+.dialog-w455-h255-hn{
+    @include dialog($w:455px,$h:255px,$t:25%,$hn:none);
+}
+.dialog-w540-h320-hn{
+    @include dialog($w:540px,$h:320px,$t:25%,$hn:none);
+}
+// .dialog-w540-h320-hn{
+//     @include dialog($w:320px,$h:450px,$t:25%,$hn:none);
+// }
+.dialog-w640-h640-hn{
+    @include all-no-dialog($w:640px,$h:640px,$t:20%,$hn:none);
+}
+.dialog-w500-h650-hn{
+    
+    @include dialog($w:500px,$h:650px,$t:18%);
+    .el-dialog--small{
+        .el-dialog__header{
+            width: 100%;
+            height: 20px;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    }
+     
+}
+.dialog-w600-hAuto-hn{
+    @include dialog($w:580px,$h:'auto',$t:20%,$hn:none);
+    .el-dialog--small{
+        background: rgba($color: #fff, $alpha: 0);
+        box-shadow: 0 0 10px 5px rgba(0,0,0,0.2);
+    }
+}
+.dialog-w320-hAuto-hn{
+    @include dialog($w:320px,$h:'auto' ,$t:18% ,$hn:none);
+    .el-dialog--small{
+        position: relative;
+        .el-dialog__header{
+            width: 100%;
+            height: 20px;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    }
+}
+.dialog-w500-hAuto-hn{
+    @include dialog($w:500px,$h:'auto',$t:18%,$hn:none);
+}
+
+.dialog-w440-h550-hn{
+    @include all-no-dialog($w:440px,$h:550px,$t:20%,$hn:none);
+}
+.dialog-w1300-h740-hn{
+    @include dialog($w:1300px,$h:740px,$hn:none);
+}
+.dialog-w1300-h700-hn{
+    @include dialog($w:1300px,$h:700px,$hn:none);
+}
+// .dialog-w930-h480-hn{
+//     @include dialog($w:930px,$h:480px,$hn:none);
+// }
+.dialog-w900-h550-hn{
+    @include dialog($w:900px,$h:550px,$hn:none);
+}
+// 保存成功弹窗
+.success-body{
+    margin-top: -4px;
+    text-align: center;
+    @include F(0);
+    img{
+        width: 90px;
+        height: 90px;
+        overflow: hidden;
+    }
+    p{
+        margin: 30px 0 30px 0;
+        @include F(18);
+        color: $c3;
+    }
+    ul{
+        padding: 0 30px;
+        li:nth-child(odd){
+            color: $c6;
+            width: 60px;
+            margin-right: 20px;
+        }
+        li:nth-child(even){
+            color: $c9;
+            text-align: left;
+            width: 130px;
+        }
+        li{
+            @include F(12);
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+    }
+}
+// 新建弹窗
+.new-header{
+    @include F(0);
+    height: 310px;
+    overflow: auto;
+    background-color: #fff;
+    .new-body{
+        padding: 0 30px;
+        ul{
+            margin-top: 10px;
+            vertical-align: top;
+            @include F(0);
+            overflow: auto;
+            li{
+                height: 50px;
+                line-height: 50px;
+                @include F(12);
+                border-bottom: 1px solid $d6;
+                span{
+                    padding-left: 0;
+                }
+            }
+        }
+    }
+}
+// 弹框
+.el-message-box__wrapper{
+    .el-message-box{
+        width: 380px;
+        height: 260px;
+        .el-message-box__header{
+            height: 44px;
+            border-bottom: 1px solid #d6d6d6;
+            padding: 0;
+            text-align: center;
+            .el-message-box__title{
+                @include F(16);
+                color: red;
+                line-height: 44px;
+                font-weight: normal;
+            }
+            .el-message-box__close{
+                top: 14px;
+                right: 30px;
+            }
+        }
+        .el-message-box__content{
+            padding: 0;
+            height: 152px;
+            text-align: center;
+            p{
+                line-height: 152px;
+                @include F(14);
+            }
+        }
+        .el-message-box__btns{
+            padding: 0 0 30px 0; 
+            text-align: center;
+            .el-button--default{
+                outline: none;
+                width: 120px;
+                height: 34px;
+            }
+            .el-button+.el-button{
+                margin-left: 0;
+            }
+            button:nth-child(1){
+                color: #999;
+            }
+            button:nth-child(2){
+                background-color: #2993f8;
+                margin-left: 40px!important;
+            }
+        }
+    }
+}
+
+// @mixin MessageBox($w: 601px,$h:500px) {
+//     .el-message-box{
+//         width: $w;
+//         height: $h;
+//         .el-message-box__header{
+//             padding: 0;
+//             text-align: center;
+//         }
+//     }
+// }
+// .message-w380-h260{
+//     @include MessageBox($w:380px,$h:260px);
+// }

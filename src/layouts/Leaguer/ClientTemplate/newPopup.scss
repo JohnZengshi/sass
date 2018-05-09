@@ -1,0 +1,124 @@
+.newPopupDig {
+    width: 320px;
+    height: 450px;
+    border-radius: 10px;
+    .el-dialog__header {
+        height: 41px;
+    }
+    .title {
+        width: 200px;
+        position: absolute;
+        left: 50%;
+        top: 20px;
+        margin-left: -100px;
+        img {
+            width: 46px;
+            height: 46px;
+            margin: 0 auto;
+            display: block;
+        }
+        &>div {
+            width: 200px;
+            height: 20px;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+    }
+    .body {
+        width:100%;
+        height: 320px;
+        margin-top: 40px;
+        .classes-block { // 大小类样式
+            width: 100%;
+            height: 100%;
+            //border-bottom: 1px solid #d6d6d6;
+            position: relative;
+            .title {
+                position: absolute;
+                top: -30px;
+                left: 50%;
+                margin-left: -100px;
+                width: 200px;
+                height: 20px;
+                text-align:center;
+                font-size: 14px;
+            }
+            .list-left {
+                width:100px;
+                border-right: 1px solid #d6d6d6;
+                float: left;
+                height: 280px;
+                li {
+                    height: 48px;
+                    border-bottom: 1px solid #d6d6d6;
+                    text-align: center;
+                    line-height: 48px;
+                    cursor: pointer;
+                }
+                li:hover {
+                    background:#f6f7f8;
+                }
+                li.actions {
+                    color: #2993f8;
+                }
+            }
+            .list-right {
+                float: left;
+                height: 280px;
+                width: 180px;
+                overflow-y:scroll;
+                li {
+                    height: 48px;
+                    text-align: center;
+                    line-height: 48px;
+                    cursor: pointer;
+                }
+                li:hover {
+                    background:#f6f7f8;
+                }
+                li.actions {
+                    color: #2993f8;
+                }
+            }
+            .list {
+                width: 100%;
+                height: 280px;
+                overflow-y: auto;
+                li {
+                    width: 100%;
+                    height: 48px;
+                    box-sizing: border-box;
+                    padding-left: 20px;
+                    line-height: 48px;
+                    cursor: pointer;
+                }
+                li:hover {
+                    background:#f6f7f8;
+                }
+                li.actions {
+                    color: #2993f8;
+                }
+            }
+            .footer {
+                border-top: 1px solid #d6d6d6;
+                background:#fff;
+                height: 40px;
+                width: 100%;
+                cursor: pointer;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                line-height: 40px;
+                .pre {
+                    float: left;
+                }
+                .next {
+                    float: right;
+                }
+            }
+        }
+    }
+    
+    
+}

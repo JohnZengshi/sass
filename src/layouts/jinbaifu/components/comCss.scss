@@ -1,0 +1,201 @@
+.main-wrap {
+    .data-list {
+        width: 216px;
+        float: left;
+        .item {
+            width: 100%;
+            min-height: 153px;
+            background:#f4f4f4;
+            margin-bottom: 16px;
+            padding: 16px 9px;
+            transition: all .3s ease;
+            .item-title {
+                height: 16px;
+                color:#2993f8;
+                line-height: 16px;
+                font-weight: bold;
+                margin-bottom: 8px;
+                i {
+                    display: block;
+                    height: 100%;
+                    width: 4px;
+                    border-radius: 2px;
+                    float: left;
+                    background:#2993f8;
+                    margin-right: 7px;
+                }
+            }
+            .Recognizable-title {
+                height: 16px;
+                color:#333;
+                font-size: 14px;
+                margin-bottom: 16px;
+                margin-top: 16px;
+                i {
+                    color:#a5d4fe;
+                    font-size: 14px;
+                    cursor: pointer;
+                }
+            }
+            .Recognizable-list {
+                border-bottom: 1px solid #e5e5e5;
+                dl {
+                    dd {
+                        height: 28px;
+                        display: inline-block;
+                        background:#ebeff2;
+                        border-radius: 4px;
+                        margin-right: 10px;
+                        font-size: 12px;
+                        color:#999;
+                        line-height: 28px;
+                        text-align: center;
+                        padding: 0 6px;
+                        margin-bottom: 5px;
+                    }
+                    span {
+                        clear: both;
+                    }
+                }
+                li {
+                    height: 28px;
+                    margin-bottom: 13px;
+                    input {
+                        width: 84px;
+                        height: 28px;
+                        border: 1px solid #d6d6d6;
+                        border-radius: 4px;
+                        padding-left: 6px;
+                    }
+                    input:hover {
+                        border: 1px solid #2993f8;
+                    }
+                    i {
+                        color:#d6d6d6;
+                        cursor: pointer;
+                    }
+                }
+            }
+            .numerical-title {
+                height: 16px;
+                color:#333;
+                font-size: 14px;
+                margin-bottom: 16px;
+                margin-top: 16px;
+                i {
+                    color:#a5d4fe;
+                    font-size: 14px;
+                    cursor: ponter;
+                }
+            }
+            .numerical-list {
+                border-bottom: 1px solid #e5e5e5;
+                &>li {
+                    height: 28px;
+                    margin-bottom: 13px;
+                    position: relative;
+                    &>i {
+                        color:#d6d6d6;
+                        cursor: pointer;
+                        line-height: 28px;
+                        margin-left: 5px;
+                    }
+                    
+                    .input-wrap {
+                        width: 170px;
+                        height: 28px;
+                        border: 1px solid #d6d6d6;
+                        background:#fff;
+                        border-radius: 4px;
+                        float: left;
+                        position: relative;
+                        &.disabled {
+                            background:#e5e5e5;
+                        }
+                        .disabled {
+                            background:#e5e5e5;
+                        }
+                        .inp1 {
+                            width: 62px;
+                            border: none;
+                            height: 26px;
+                            float:left;
+                            padding-left: 12px;
+                        }
+                        i {
+                            display: block;
+                            float:left;
+                            width:26px;
+                            height: 26px;
+                            text-align: center;
+                            line-height: 26px;
+                            color:#2993f8;  
+                        }
+                        .inp2 {
+                            padding-left: 12px;
+                            float:left;
+                            width: 80px;
+                            border: none;
+                            height: 26px;
+                            padding-right: 15px;
+                        }
+                        em {
+                            position: absolute;
+                            top: 6px;
+                            right: 3px;
+                            font-size: 12px;
+                        }
+                    }
+                    .drop-list {
+                        width: 100px;
+                        height: 200px;
+                        overflow-y: auto;
+                        opacity: 0;
+                        background:#fff;
+                        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                        position: absolute;
+                        top: 40px;
+                        z-index: -10;
+                        right: 0;
+                        transition: all .2s ease;
+                        li {
+                            height: 40px;
+                            line-height: 40px;
+                            padding-left: 6px;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            white-space: nowrap;
+                        }
+                    }
+                    .drop-list.active {
+                        opacity: 1;
+                        z-index: 10;
+                        top: 30px;
+                    }
+                }
+            }
+            .item-footer {
+                // border-top: 1px solid #e5e5e5;
+                .footer-title {
+                    height: 16px;
+                    margin-top: 14px;
+                    margin-bottom: 10px;
+                    i {
+                        font-size: 12px;
+                        color:#ff5a51;
+                    }
+                }
+                &>p {
+                    color:#999;
+                    font-size: 12px;
+                }
+            }
+        }
+        .item:hover {
+            box-shadow: 5px 5px 10px 2px rgba(0,0,0,0.1);
+        }
+    }
+    .data-list-1,.data-list-2,.data-list-3,.data-list-4 {
+        margin-right:20px;
+    }
+}

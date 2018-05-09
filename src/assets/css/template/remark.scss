@@ -1,0 +1,62 @@
+.remarkDig {
+    width: 320px;
+    height: 400px;
+    border-radius: 10px;
+    .el-dialog__header {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        z-index: 2;
+    }
+    .remark-body {
+        position: absolute;
+        left: 0;
+        top: 24px;
+        width: 100%;
+
+        .title {
+            width: 46px;
+            margin: 0 auto 30px;
+            img {
+                display: block;
+                margin-bottom: 10px;
+            }
+            &>div {
+                text-align: center;
+                color:#333;
+                font-weight: bold;
+            }
+        }
+        .body {
+            margin-bottom: 30px;
+            textarea {
+                padding: 10px;
+                background:#f6f7f8;
+                width: 260px;
+                height: 180px;
+                border-radius: 4px;
+                margin: 0 auto;
+                display: block;
+                box-shadow: 0 0 3px 1px rgba(0,0,0,0.1) inset;
+                font-size: 14px;
+                // text-indent: 28px;
+                // line-height: 20px;
+            }
+        }
+        .footer {
+            .btn {
+                width: 150px;
+                height: 28px;
+                border-radius: 4px;
+                background:#2993f8;
+                color:#fff;
+                font-size: 14px;
+                text-align: center;
+                font-weight: bold;
+                line-height: 28px;
+                margin: 0 auto;
+            }
+        }
+    }
+}

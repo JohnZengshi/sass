@@ -1,0 +1,6 @@
+$base_font_size: 16;
+
+@mixin F($i, $c: #333) {
+    font-size: ($i/$base_font_size) * 1rem;
+    color: $c;
+}

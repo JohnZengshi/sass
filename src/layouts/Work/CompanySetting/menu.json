@@ -1,0 +1,48 @@
+{
+    "catalog": [
+        {
+             "name": "产品类别",
+             "catalogList": ""
+        },
+        {
+            "name": "成色名称",
+            "catalogList": ""
+        },
+        {
+            "name": "金含量",
+            "catalogList": ""
+        },
+        {
+            "name": "宝石名称",
+            "catalogList": ""
+        },
+        {
+            "name": "首饰类别",
+            "catalogList": ""
+        },
+        {
+            "name": "品牌",
+            "catalogList": ""
+        },
+        {
+            "name": "金属颜色",
+            "catalogList": ""
+        },
+        {
+            "name": "证书",
+            "catalogList": ""
+        },
+        {
+            "name": "宝石属性",
+            "catalogList": ""
+        },
+        {
+            "name": "配件名称",
+            "catalogList": ""
+        },
+        {
+            "name": "条码管理",
+            "catalogList": ""
+        }
+    ]
+}

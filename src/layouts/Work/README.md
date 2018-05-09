@@ -1,0 +1,13 @@
+<!-- 模块 -->
+//  入库           Storage
+//  发货           Sipping
+//  修改           Amend
+//  退货           SalesReturn
+//  调柜           TransferCabinet
+//  调库           TransferStorage
+//  退库           StorageReturn
+//  收货           Receiving
+//  销售           Sell
+//  公司设置       CompanySetting
+//  店铺设置       ShopSetting
+//  公共模板模块   CommonalityComponent

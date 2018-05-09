@@ -1,0 +1,286 @@
+@mixin inputFocus($w:200px,$h:30px){ // 输入框样式
+    li{
+        display: inline-block;
+        vertical-align: top;
+        height: 28px;
+        line-height: 28px;
+        font-size: 16px;
+        color: #333;
+        background-color: #ebedef;
+        margin-left: 5px;
+        padding: 0 8px;
+        border-radius: 4px;
+        span{
+            display: inline-block;
+            height: 20px;
+        }
+        input{
+            display: inline-block;
+            width: 60px;
+            height: 20px;
+            font-size: 16px;
+            background-color: #ebedef;
+            &:focus{
+                border-bottom: 2px solid #4fdccb;
+            }
+        }
+    }
+}
+.active{
+    position: relative;
+    z-index: 1000;
+    box-shadow: 0 0 16px #ccc;
+}
+.receipts-list{ // 单据列表
+    height: 100%;
+    // width: 1230px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: #fff;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    .receipts-list-body-top{
+        font-size: 0;
+        height: 60px;
+        padding-left: 20px;
+        background-color: #f6f7f8;
+        border-radius: 4px 4px 0 0;
+        .options-left{
+            display: inline-block;
+            font-size: 0;
+            p{
+                display: inline-block;
+                height: 60px;
+                font-size: 18px;
+                width: 300px;
+                line-height: 60px;
+                font-size: 18px;
+                color: #999;
+                font-weight: 600;
+            }
+        }
+        .options-btn{
+            display: inline-block;
+            height: 40px;
+            float: right;
+            margin-right: 40px;
+            .sell-delect-btn{
+                display: inline-block;
+                height: 40px;
+                line-height: 40px;
+                width: 90px;
+                text-align: center;
+                font-size: 16px;
+                border-radius: 4px;
+                font-weight: 600;
+                background-color: #83bbf7;
+                color: #fff;
+                margin-top: 10px;
+            }
+        }
+    }
+    .receipts-list-body-bottom{
+        position: relative;
+        font-size: 0;
+        padding-bottom: 32px;
+        border-radius: 0 0 4px 4px;
+        .switch-cutOptions{
+            position: absolute;
+            width: 150px;
+            right: 30px;
+            bottom: 30px;
+            div{
+                margin-left: 10px;
+                display: inline-block;
+                width: 60px;
+            }
+        }
+        .condition-one{
+            display: inline-block;
+            vertical-align: top;
+            width: 300px;
+            font-size: 0;
+            margin-left: 60px;
+            margin-top: 25px;
+            li{
+                display: inline-block;
+                width: 300px;
+                font-size: 16px;
+                line-height: 16px;
+                color: #333;
+                height: 20px;
+                overflow: hidden;
+                margin-bottom: 25px;
+                input{
+                    vertical-align: top;
+                    display: inline-block;
+                    width: 60px;
+                    height: 20px;
+                    border: 1px solid #999;
+                }
+                span{
+                    vertical-align: top;
+                    display: inline-block;
+                    height: 20px;
+                    line-height: 20px;
+                }
+            }
+            li:last-child{
+                margin-bottom: 0;
+            }
+        }
+        .condition-two{
+            display: inline-block;
+            vertical-align: top;
+            width: 300px;
+            font-size: 0;
+            margin-left: 60px;
+            margin-top: 25px;
+            li{
+                width: 300px;
+                font-size: 16px;
+                line-height: 16px;
+                color: #333;
+                height: 20px;
+                overflow: hidden;
+                margin-bottom: 25px;
+                input{
+                    vertical-align: top;
+                    display: inline-block;
+                    width: 60px;
+                    height: 20px;
+                    font-size: 16px;
+                    // border: 1px solid #999;
+                }
+                span{
+                    vertical-align: top;
+                    display: inline-block;
+                    height: 20px;
+                    line-height: 20px;
+                }
+            }
+            li:last-child{
+                margin-bottom: 0;
+            }
+            .input-focus-Wrap{
+                display: inline-block;
+                vertical-align: top;
+                height: 28px;
+                // line-height: 28px;
+                font-size: 16px;
+                color: #333;
+                background-color: #ebedef;
+                margin-left: 5px;
+                padding: 0 8px;
+                border-radius: 4px;
+                span{
+                    display: inline-block;
+                    height: 20px;
+                    line-height: 28px;
+                }
+                input{
+                    display: inline-block;
+                    width: 60px;
+                    height: 20px;
+                    margin-top: 4px;
+                    background-color: #ebedef;
+                    &:focus{
+                        border-bottom: 2px solid #4fdccb;
+                    }
+                }
+            }
+        }
+        .audit-state{
+            position: absolute;
+            top: 16px;
+            right: 40px;
+            margin: auto;
+            width: 81px;
+            height: 24px;
+            color: #83bbf7;
+            img{
+                width: 81px;
+                height: 24px;
+            }
+        }
+    }
+    .receipts-list-body-bottom-options{
+        height: 60px;
+        background-color: #f6f7f8;
+        ul{             
+            width: 100%;
+            padding-left: 60px;
+            font-size: 0;
+            padding-top: 16px;
+            height: 60px;
+            @include inputFocus;
+            .monny-tooltip-top{
+                position: relative;
+                float: right;
+                margin-right: 20px;
+                font-size: 0;
+                span{
+                    vertical-align: top;
+                    font-size: 16px;
+                }
+                input{
+                    margin-top: 3px;
+                }
+                .query-img{
+                    width: 16px;
+                    height: 16px;
+                    margin-top: 5px;
+                    margin-left: 10px;
+                    vertical-align: top;
+                    cursor: pointer;
+                }
+                .tooltip-top{
+                    position: absolute;
+                    padding: 5px 10px;
+                    background-color: #4fdcca;
+                    border-radius: 4px;
+                    top: -55px;
+                    right: 0px;
+                    height: 50px;
+                    font-size: 14px;
+                    line-height: 20px;
+                    width: 200px;
+                    color: #fff;
+                    .triangle{
+                        position: absolute;
+                        bottom: -8px;
+                        left: 0;
+                        right: 0;
+                        margin: auto;
+                        display: inline-block;
+                        width: 0;
+                        height: 0;
+                        border-left: 4px solid transparent;
+                        border-right: 4px solid transparent;
+                        border-top: 8px solid #4fdcca;;
+                    }
+                }
+                .tooltip-top-number{
+                    margin-top: 0;
+                    font-weight: 600;
+                }
+            }
+            .cutOptions{
+                background-color: #f6f7f8;
+                padding-top: 2px;
+            }
+        }
+    }
+}
+// @media screen and (min-width: 1440px) {
+@media screen and (max-width: 1440px) {
+    .receipts-list{ // 单据列表
+        .receipts-list-body-top{
+            .options-left{
+                p{
+                    width: 230px;
+                }
+            }
+        }
+    }
+}

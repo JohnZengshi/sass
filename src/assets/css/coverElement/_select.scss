@@ -1,0 +1,227 @@
+@import "~assets/css/template/fonts.scss";
+@mixin selects($w:200px,$h:30px){
+    .el-select{
+        width: $w;
+        .el-input{
+            .el-input__inner{
+                height: $h;
+            }
+            .el-input__icon{
+                color: #333;
+            }
+        }
+    }
+}
+@mixin selects_border($w:200px,$h:30px){ // 没有边框
+    .el-select{
+        width: $w;
+        .el-input{
+            .el-input__inner{
+                height: $h;
+                border: 0;
+                padding: 0 0 0 10px;
+            }
+            .el-input__icon{
+                width: 18px;
+                color: #333;
+                background-color: yellow;
+            }
+        }
+    }
+}
+@mixin selects_background($w:80px,$h:30px,$bg:transparent){ // 可选背景色
+    .el-select{
+        width: $w;
+        .el-input{
+            .el-input__inner{
+                @include F(12);
+                padding-right: 11px;
+                text-align: center;
+                height: $h;
+                border: none;
+                background-color: $bg;
+            }
+            .el-input__icon{
+                width: 18px;
+                right: 4px;
+            }
+        }
+    }
+}
+.select-w90-h30-no-bg{
+    @include selects_background($w:90px,$h:30px,$bg:transparent)
+}
+.select-w140-h30-no-bg{
+    @include selects_background($w:140px,$h:30px,$bg:transparent)
+}
+// 无边框的
+.select-w80-h34-no{
+    @include init_block;
+    @include selects_border($w:80px,$h:34px);
+}
+.select-w80-h30-no{
+    @include init_block;
+    @include selects_border($w:80px,$h:30px);
+}
+// 有边框的
+.select-w120-h36{
+    @include init_block;
+    @include selects($w:120px,$h:36px);
+}
+.select-w190-h36{
+    @include init_block;
+    @include selects($w:190px,$h:36px);
+}
+.select-w120{ // 130
+    @include init_block;
+    @include selects($w:120px);
+}
+.select-w130{ // 130
+    @include init_block;
+    @include selects($w:130px);
+}
+.select-w130{ // 80
+    @include init_block;
+    @include selects($w:80px);
+}
+.select-w190{ // 130
+    @include init_block;
+    @include selects($w:190px);
+}
+.select-w200{
+    @include init_block;
+    @include selects;
+}
+.select-w280{
+    @include init_block;
+    @include selects($w:280px);
+}
+.select-w290{
+    @include init_block;
+    @include selects($w:290px);
+}
+.select-w300{
+    @include init_block;
+    @include selects($w:300px);
+}
+.select-w90-h20{
+    @include init_block;
+    @include selects($w:90px,$h:20px);
+}
+.select-w100{
+    @include init_block;
+    .el-select{
+        width: 98px;
+        border: 1px solid #d6d6d6;
+        border-radius: 4px;
+        .el-input{
+            .el-input__inner{
+                height: 26px;
+                background:#fff;
+            }
+        }
+    }
+}
+.select-w80{
+    .el-select{
+        width: 80px;
+        .el-input{
+            .el-input__inner{
+                @include F(12);
+                padding-right: 17px;
+                text-align: center;
+                height: 30px;
+                border: none;
+                background-color: transparent;
+            }
+            .el-input__icon{
+                width: 18px;
+                right: 4px;
+            }
+        }
+    }
+}
+.select-w120{
+    .el-select{
+        width: 120px;
+        .el-input{
+            .el-input__inner{
+                @include F(12);
+                padding-right: 17px;
+                text-align: center;
+                height: 30px;
+                border: none;
+                background-color: transparent;
+            }
+            .el-input__icon{
+                width: 18px;
+                right: 4px;
+            }
+        }
+    }
+}
+.select-w80-h28{
+    .el-select{
+        width: 80px;
+        height: 28px;
+        .el-input{
+            .el-input__inner{
+                @include F(12);
+                color: #999;
+                padding-right: 19px;
+                text-align: center;
+                height: 28px;
+                border: none;
+                background-color: transparent;
+            }
+            .el-input__icon{
+                width: 18px;
+                right: 4px;
+            }
+        }
+    }
+}
+.select-w70-h28{
+    .el-select{
+        width: 70px;
+        height: 28px;
+        .el-input{
+            .el-input__inner{
+                @include F(12);
+                text-align: right;
+                color: #999;
+                padding-right: 24px;
+                height: 28px;
+                border: none;
+                color: #333;
+                // color: red!important;
+                background-color: transparent;
+            }
+            .el-input__icon{
+                width: 18px;
+                right: 4px;
+            }
+        }
+        // .el-input__inner{
+        //     color: red!important;
+        // }
+    }
+}
+.el-scrollbar{
+    .el-select-dropdown__wrap{
+        .el-select-dropdown__item{
+            span{ // 自定义下拉的样式
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                line-height: 36px!important;
+                left: 8px;
+                top: 0;
+                @include F(12);
+            }
+        }
+    }
+}
+.el-loading-mask{
+    z-index: 1000!important;
+}

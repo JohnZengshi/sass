@@ -1,0 +1,10 @@
+OrganizationChart     组织架构
+CompanyEdit           公司详情->头部
+DepUserList           员工列表
+MemberDetailsWrap     员工详情
+ShopDetails           店铺详情           
+ShopList              店铺列表
+AddRolePopup          添加权限弹窗
+AddPopup              添加员工或店铺弹窗
+DynamicsList          动态
+buyShop               购买店铺

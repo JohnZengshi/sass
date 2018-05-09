@@ -1,0 +1,34 @@
+// 日期
+@mixin date($w:0,$f12:10px) {
+    @include init_block;
+    .el-input{
+        width: $w;
+        .el-input__inner{
+            color: #666;
+            height: 26px;
+            line-height: 26px;
+            background:transparent;
+            padding-right: 0;
+            font-size: $f12;
+            color:#2993f8;
+            font-weight: bold;
+            //height: 30px;
+            //line-height: 30px;
+        }
+        .el-input__icon {
+            display: none;
+        }
+    }
+}
+.date-w125{
+    @include date($w:125px);
+}
+.date-w81{
+    @include date($w:81px);
+}
+.date-w130{
+    @include date($w:130px);
+}
+.date-w81-14{
+    @include date($w:81px,$f12:12px);
+}

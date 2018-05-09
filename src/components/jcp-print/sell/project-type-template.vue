@@ -1,0 +1,280 @@
+<template>
+	<div class="print-box breakable" id="page1">
+		<div class="print-header">
+			<h1 class="title center">销售统计</h1>
+			<div class="head-option">
+				<div class="left">{{headerData.companyName}}</div>
+				<div class="right">时间 {{headerData.startTime}} 至 {{headerData.endTime}}</div>
+			</div>
+			<div class="explain-box">
+				店铺名称：{{headerData.shop}}
+			</div>
+			<div>
+				<div class="explain-box" v-show="headerData.preparedBy">
+					制单人：{{headerData.preparedBy}}
+				</div>
+				<div class="explain-box" v-show="headerData.salesperson">
+					销售员：{{headerData.salesperson}}
+				</div>
+				<div class="explain-box" v-show="headerData.payee">
+					收银人：{{headerData.payee}}
+				</div>
+			</div>
+		</div>
+		<div v-show="types.indexOf('销售')>=0">
+			<table class="table-box">
+				<tr>
+					<td colspan="19" class="center font-bold" style="border-top: 0px;">销售报表</td>
+				</tr>
+				<tr>
+					<td>序号</td>
+					<td>产品类别</td>
+					<td>件数(件)</td>
+					<td>件重(g)</td>
+					<td>金重(g)</td>
+					<td>金价(元/g)</td>
+					<td>工费总额(元)</td>
+					<td>折扣(%)</td>
+					<td>售价(元)</td>
+					<td>实售价(元)</td>
+					<td>退换(元)</td>
+					<td>购买(元)</td>
+					<td>回收(元)</td>
+					<td>实收(元)</td>
+					<td>成本(元)</td>
+					<td>毛利(元)</td>
+				</tr>
+				<template v-for="productTypeList in sellList.productTypeList">
+					<template v-for="productSellTypeList in productTypeList.productSellTypeList">
+						<tr v-for="(item,index) in productSellTypeList.productTypeList" :key="index">
+							<td>{{index+1}}</td>
+							<td>{{item.className}}</td>
+							<td>{{item.totalNum|NOUNIT}}</td>
+							<td>{{item.totalWeight|NOUNIT}}</td>
+							<td>{{item.totalGoldWeight|NOUNIT}}</td>
+							<td>{{item.totalGoldPrice|NOUNIT}}</td>
+							<td>{{item.totalWage|NOUNIT}}</td>
+							<td>{{item.discount|NOUNIT}}</td>
+							<td>{{item.totalSoldPrice|NOUNIT}}</td>
+							<td>{{item.totalRealPrice|NOUNIT}}</td>
+							<td>{{item.totalExchange|NOUNIT}}</td>
+							<td>{{(Number(item.totalSoldPrice)+Number(item.totalExchange)).toFixed(2)|NOUNIT}}</td>
+							<td>{{item.totalBuy|NOUNIT}}</td>
+							<td>{{(Number(item.totalSoldPrice)+Number(item.totalExchange)-item.totalBuy).toFixed(2)|NOUNIT}}</td>
+							<td>{{item.totalCost|NOUNIT}}</td>
+							<td>{{(Number(item.totalSoldPrice)-Number(item.totalCost)).toFixed(2)|NOUNIT}}</td>
+						</tr>
+					<tr>
+						<td colspan="2">合计</td>
+						<td>{{productSellTypeList.totalNum}}</td>
+						<td>{{productSellTypeList.totalWeight|GRAMUNIT}}</td>
+						<td>{{productSellTypeList.totalGoldWeight|GRAMUNIT}}</td>
+						<td>{{productSellTypeList.totalGoldPrice}}元/g</td>
+						<td>{{productSellTypeList.totalWage|RMBUNIT}}</td>
+						<td>{{productSellTypeList.discount}}</td>
+						<td>{{productSellTypeList.totalSoldPrice|RMBUNIT}}</td>
+						<td>{{productSellTypeList.totalRealPrice|RMBUNIT}}</td>
+						<td>{{productSellTypeList.totalExchange|RMBUNIT}}</td>
+						<td>{{(Number(productSellTypeList.totalSoldPrice)+Number(productSellTypeList.totalExchange)).toFixed(2)|RMBUNIT}}</td>
+						<td>{{productSellTypeList.totalBuy|RMBUNIT}}</td>
+						<td>{{(Number(productSellTypeList.totalSoldPrice)+Number(productSellTypeList.totalExchange)-productSellTypeList.totalBuy).toFixed(2)|RMBUNIT}}</td>
+						<td>{{productSellTypeList.totalCost|RMBUNIT}}</td>
+						<td>{{(Number(productSellTypeList.totalSoldPrice)-Number(productSellTypeList.totalCost)).toFixed(2)|RMBUNIT}}</td>
+					</tr>
+					</template>
+				</template>
+			</table>
+		</div>
+		<div v-show="types.indexOf('回购')>=0">
+			<table class="table-box">
+				<tr>
+					<td colspan="19" class="center font-bold" style="border-top: 0px;">回购报表</td>
+				</tr>
+				<tr>
+					<td>序号</td>
+					<td>回购类型</td>
+					<td>产品类别</td>
+					<td>件数(件)</td>
+					<td>件重(g)</td>
+					<td>回购金价(元/g)</td>
+					<td>旧料价(元)</td>
+					<td>折旧(%)</td>
+					<td>工费总额(元)</td>
+					<td>回购价(元)</td>
+				</tr>
+				<template v-for="productTypeList in buyBackList.productTypeList">
+					<template v-for="productSellTypeList in productTypeList.productSellTypeList">
+						<tr v-for="(item,index) in productSellTypeList.productTypeList" :key="index">
+							<td>{{index+1}}</td>
+							<td v-if="index==0" :rowspan="productSellTypeList.productTypeList.length">
+								{{productSellTypeList.sellType|SELL_TYPE}}
+							</td>
+							<td>{{item.className}}</td>
+							<td>{{item.totalNum|NOUNIT}}</td>
+							<td>{{item.totalWeight|NOUNIT}}</td>
+							<td>{{item.totalGoldPrice|NOUNIT}}</td>
+							<td>{{item.totalSoldPrice|NOUNIT}}</td>
+							<td>{{item.discount|NOUNIT}}</td>
+							<td>{{item.totalWage|NOUNIT}}</td>
+							<td>{{item.totalBuy|NOUNIT}}</td>
+						</tr>
+					<tr>
+						<td colspan="2">小计</td>
+						<td>{{productSellTypeList.totalNum}}</td>
+						<td>{{productSellTypeList.totalWeight|GRAMUNIT}}</td>
+						<td>{{productSellTypeList.totalGoldWeight|GRAMUNIT}}</td>
+						<td>{{productSellTypeList.totalGoldPrice}}元/g</td>
+						<td>{{productSellTypeList.totalSoldPrice|RMBUNIT}}</td>
+						<td>{{productSellTypeList.discount}}</td>
+						<td>{{productSellTypeList.totalWage|RMBUNIT}}</td>
+						<td>{{productSellTypeList.totalBuy|RMBUNIT}}</td>
+					</tr>
+					</template>
+					<tr>
+						<td colspan="2">合计</td>
+						<td>{{productTypeList.totalNum}}</td>
+						<td>{{productTypeList.totalWeight|GRAMUNIT}}</td>
+						<td>{{productTypeList.totalGoldWeight|GRAMUNIT}}</td>
+						<td>{{productTypeList.totalGoldPrice}}元/g</td>
+						<td>{{productTypeList.totalSoldPrice|RMBUNIT}}</td>
+						<td>{{productTypeList.discount}}</td>
+						<td>{{productTypeList.totalWage|RMBUNIT}}</td>
+						<td>{{productTypeList.totalBuy|RMBUNIT}}</td>
+					</tr>
+				</template>
+			</table>
+		</div>
+		<div class="printDate">
+			打印时间：{{printDate}}
+		</div>
+	</div>
+</template>
+<script>
+	import {jcpPrint} from "@/tools/jcp-print";
+	import moment from "moment";
+	export default {
+		components: {},
+		props: {
+			sellList: {
+				type: Object
+			},
+			buyBackList: {
+				type: Object
+			},
+			headerData: {
+				type: Object
+			},
+			types:{
+				type:Array
+			}
+		},
+		filters:{
+			GRAMUNIT:(num)=>{
+				if(num){
+					if(Number(num)){
+						return num+"g";
+					}
+					return "0g";
+				}else{
+					return "-";
+				}
+			},
+			RMBUNIT:(num)=>{
+				if(num){
+					if(Number(num)){
+						return num+"元";
+					}
+					return "0元";
+				}else{
+					return "-";
+				}
+			},
+			NOUNIT:(num)=>{
+				if(num){
+					if(Number(num)){
+						return num;
+					}
+					return 0;
+				}else{
+					return "-";
+				}
+			},
+			SELL_TYPE:(key)=>{
+				let obj = new Map();
+				obj.set("1","退货");
+				obj.set("2","换货");
+				obj.set("3","回收");
+				return obj.get(key);
+			}
+		},
+		data() {
+			return {
+				printDate:""
+			}
+		},
+		mounted() {
+			this.printDate = moment().format("YYYY-MM-DD HH-mm");
+		},
+		methods: {
+			print(){
+				let doc = {
+					documents: document,
+				};
+				jcpPrint.printPreview(doc);
+			},
+		}
+	}
+</script>
+
+<style scoped lang="scss">
+	.center {
+		text-align: center;
+	}
+	.print-header{
+		border-bottom: 1px solid;
+	}
+	.font-bold {
+		font-weight: bold;
+	}
+	
+	.print-box{
+		font-size: 12px;
+		width: 208mm;
+		margin: 0 auto;
+	}
+	
+	.explain-box {
+		display: inline-block;
+		padding: 5px 35px 5px 0;
+	}
+	
+	.head-option div {
+		display: table-cell;
+	}
+	
+	.right {
+		text-align: right;
+	}
+	
+	.head-option {
+		display: table;
+		width: 100%;
+		margin-bottom: 5px;
+	}
+	
+	.table-box {
+		width: 100%;
+		border-collapse: collapse;
+	}
+	
+	td{
+		font-size: 12px;
+		border: 1px solid;
+		line-height: 25px;
+		text-align: center;
+	}
+	.printDate{
+		text-align: right;
+    padding: 15px 0;
+	}
+</style>

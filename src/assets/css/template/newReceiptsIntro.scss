@@ -1,0 +1,94 @@
+.plain-detail-main{
+    .body{
+        ul{
+            height: 28px;
+            li{
+                min-width: 110px;
+                max-width: 120px;
+                position: relative;
+                height: 10px;
+                border-right: 1px solid #d6d6d6;
+                float: left;
+                padding-right: 16px;
+                padding-left: 4px;
+                //margin: 0 16px;
+                position: relative;
+                .color-red{
+                     color: red;
+                }
+                span{
+                    display:inline-block;
+                    margin-top: -6px;
+                    height: 28px;
+                    font-size: 14px;
+                    cursor: pointer;
+                    text-align: center;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    width: 100px;   
+                }
+                span.active {
+                    cursor: default;
+                }
+                i {
+                    // margin-left: 8px;
+                    font-size: 8px;
+                    position: absolute;
+                    right: 5px;
+                    top: 0;
+                    color: #999;
+                }
+                .option-input{
+                    margin-top: 4px;
+                }
+                .option-icon{ // 修改按钮
+                    display: inline-block;
+                    position: absolute;
+                    margin-top: 10px;
+                    right: 20px;
+                    width: 14px;
+                    height: 14px;
+                    cursor: pointer;
+                }
+                .menu-list {
+                    display: none;
+                    position: absolute;
+                    left: 0;
+                    top: 20px;
+                    width: 100px;
+                    height: auto;
+                    max-height: 200px;
+                    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+                    border-radius: 4px;
+                    background:#fff;
+                    overflow: hidden;
+                    overflow-y: scroll;
+                    cursor: pointer;
+                    z-index: 100;
+                    div {
+                        height: 30px;
+                        text-align: center;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                    }
+                }
+                .menu-list div:hover{
+                    background:#f6f7f8;
+                }
+            }
+            li:nth-child(1) {
+                // span{
+                //     text-align: left;
+                // }
+            }
+            li:hover .menu-list {
+                display: block;
+            }
+            .all-count{
+                color: #e58585;
+            }
+        }
+    }
+}

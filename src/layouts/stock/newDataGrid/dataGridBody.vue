@@ -1,0 +1,345 @@
+<template>
+<!--表格内容区-->
+<!--明细-->
+<div class="ui-table-container default-line" ref="tableContainer" v-if="reportType == 1">
+	<div>
+		<div class="tb-tr" v-for="(tb,index) in tempArray" :key="index">
+			<div class="tb-td"
+				v-for="(tab,coindex) in detailDataGridColumn" 
+				:style="tableCell(tab.width)" :key="coindex"
+				v-text = "tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"
+			></div>
+		</div>
+		<div v-if="isDate" class="no-data"></div>
+	</div>
+</div>
+	
+<div class="ui-table-container con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
+	<div>
+		<div class="tb-category" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind">
+			<div v-for="(tb, index) in caty.productTypeList" :key="index">
+				<div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()" :key="index1">
+					<template v-for="(tab,tabindex) in detailDataGridColumn">
+						<div class="tb-td category-td"
+							v-if="tab.text == '产品类别' && index1 == 0"  :key="tabindex"
+							:style="tableCell(tab.width)" >
+							<i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7; line-height: 20px;'">{{tb[tab.childType]}}</i>
+						</div>
+						<div class="tb-td category-td"  :key="tabindex"
+							v-else-if="tab.text == '位置名称' && index == 0 && index1 == 0"
+							:style="tableCell(tab.width)"
+						>	
+							<i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;'">{{caty[tab.childType]}}</i>
+						</div>
+						<div class="tb-td"  :key="tabindex"
+							v-else
+							style="overflow: hidden;"
+							:class="{backLine:tab.childType != ''}"
+							:style="tableCell(tab.width)" 
+							v-text = "tab.childType == ''? getIndex() : tb1[tab.childType]">
+						</div>
+					</template>
+				</div>
+				<div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
+				<div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch"><!-- 类型小计 -->
+					<div class="tb-td"
+						v-for="(tab,f) in detailDataGridColumn"  :key="f"
+						:style="tableCell(tab.width)" 
+						v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
+					></div>
+				</div>
+			</div>
+			<div class="tb-total" style="background:#e9f4fe;" v-if="positionSwitch"> <!-- 位置小计 -->
+				<div class="tb-td"
+					v-for="(tab,f) in detailDataGridColumn"  :key="f"
+					:style="tableCell(tab.width)" 
+					v-html = "f == 1 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"
+				></div>
+			</div>
+		</div>
+		<div v-if="isDate" class="no-data"></div>
+	</div>
+</div>
+
+<!--产品分类-->
+<div class="ui-table-container produc-line" ref="tableContainer" v-else-if="reportType == 3">
+	<div>
+		<div class="tb-category" v-for="(caty,catyindex) in dataGridStorage.dataList" :key="catyindex">
+			<div class="tb-tr" v-for="(tb, index) in caty.productTypeList" :key="index">
+				<template v-for="(tab,tabindex) in detailDataGridColumn">
+					{{index}}
+					<div class="tb-td category-td" :key="tabindex"
+						v-if="tab.text == '产品类别' && index == 0" 
+						:style="tableCell(tab.width)"
+						v-text="tb[tab.childType]"
+						>
+						<!-- <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i> -->
+					</div>
+					<div class="tb-td category-td"   :key="tabindex"
+						v-else-if="tab.text == '位置名称' && index == 0"
+						:style="tableCell(tab.width)"
+					>	
+						<i v-bind:class="catyindex%2 !=0 ? 'mytabstyle1':'mytabstyle2' " :style="'height:'+ caty.productTypeList.length * 50 +'px;  color: #2993f8;'">{{caty[tab.childType]}}</i>
+					</div>
+					<div class="tb-td"
+						v-else  :key="tabindex"
+						:style="tableCell(tab.width)" 
+						v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
+					</div>
+				</template>
+			</div>
+			
+		</div>
+		<div v-if="isDate" class="no-data"></div>
+	</div>
+</div>
+</template>
+
+<script>
+let applyIndex = 0
+export default {
+	data(){
+		return{
+			isDate : false,
+			tempArray : [],
+			heightArr: [],
+			addNum: 0,
+		}
+	},
+	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch'],
+	
+	watch:{
+		'dataGridStorage':function(){
+			this.tempArray = []
+			this.cheackData()
+			this.storageFormatDate()
+			//console.log(1111)
+			this.tabCellHeight()
+		},
+		// 'reportType': function (val) {
+		// 	//console.log(this.positionSwitch)
+		// 	this.tabCellHeight()
+		// },
+		// 'positionSwitch': function (val) {
+		// 	//console.log(val)
+		// 	this.tabCellHeight()
+		// }
+	},
+	mounted () {
+    let _this = this
+		this.$nextTick(()=>{
+			
+			if( this.dataGridStorage.detailList ){
+				this.tempArray = []
+				this.cheackData()
+				this.storageFormatDate()
+			}
+			_this.$emit('lazyloadSend',123 )
+		})
+		
+		$(".ui-table-container").mCustomScrollbar({
+            theme: "minimal-dark",
+            axis: 'y',
+            mouseWheel: {
+                scrollAmount: 200,
+                preventDefault: false,
+                normalizeDelta: false,
+                scrollInertia : 0
+            },
+            callbacks: {
+                onTotalScroll: function () {
+					if (_this.reportType == 1) {
+						_this.$emit('lazyloadSend', {refresh: true})
+					} else {
+						//console.log('略略略')
+					}
+                }
+            }
+        });
+		this.tabCellHeight()
+	},
+	methods:{
+		addNumAct () {
+			this.addNum++
+		},
+		//重置index
+	    resetIndex( index ){
+         if( index == 0 ) applyIndex = 0
+        },
+        //
+        addIndex(){
+         applyIndex++
+        },
+        
+        getIndex(){
+          this.$emit('getIndex',applyIndex)
+          return applyIndex
+        },
+		tabCellHeight () {
+			this.heightArr = []
+			//console.log(this.dataGridStorage)
+			if (this.dataGridStorage.dataList) {
+				for (let i = 0; i < this.dataGridStorage.dataList.length; i++) {
+					let data = 50
+					for (let j = 0; j < this.dataGridStorage.dataList[i].productTypeList.length; j++) {
+						data += this.dataGridStorage.dataList[i].productTypeList[j].detailList.length * 50
+						if (i == 0) {
+							//console.log(this.dataGridStorage.dataList[i].productTypeList[j].detailList.length)
+						}
+					}
+					this.heightArr.push(data)
+				}
+				console.log('查看高度数据:',this.heightArr)
+			}
+		},
+		tableCell( width ){
+			let _size = ''
+			
+			this.$emit('tabCell',{
+				width : width,
+				res :( res ) =>{
+					_size = res
+				}
+			})
+			return _size
+       },
+    
+     	//格式化
+     	storageFormatDate(){
+     		if( this.reportType == 1  && this.dataGridStorage ){
+				if(  this.dataGridStorage.detailList.length > 0 ){
+				     this.tempArray = this.dataGridStorage.detailList
+				}	
+			}
+     	},
+     	
+     	cheackData(){
+     		if( this.dataGridStorage.productTypeList ){
+				  this.isDate = this.dataGridStorage.productTypeList.length == 0
+  			}else if( this.dataGridStorage.buyBackList ){
+                this.isDate = this.dataGridStorage.buyBackList.length == 0
+            }else if( this.dataGridStorage.detailList ){
+                this.isDate = this.dataGridStorage.detailList.length == 0
+            }else{
+  				this.isDate = true;
+  			}
+     	}
+     	
+	},
+	update(){
+		console.log('updata')
+	}
+}
+</script>
+<style lang="scss">
+.tb-total {
+	.tb-td {
+		b {
+			color:#333;
+		}
+	}
+}
+</style>
+<style scoped lang="scss">
+.ui-table-container{
+    height: 570px;
+    overflow-y: auto;
+    &.produc-line {
+		.tb-tr:nth-child(even){
+			background-color: #f9f9f9;
+		}
+	}
+    &.default-line{
+      .tb-tr:nth-child(even){
+          background-color: #f9f9f9;
+      }
+	}
+	&.con-line {
+		.tb-tr:nth-child(even) {
+			.backLine{
+				 background-color: #f9f9f9;
+				 overflow: hidden; 
+			}
+		}
+	}
+	
+    
+    .tb-tr{
+      height: 50px;
+      display: flex;
+      .tb-td{
+        float: left;
+        display: inline-block;
+        height: 50px;
+        line-height: 50px;    
+        text-align: center;
+        font-size: 14px; 
+        font-weight: 500;
+        transition: all .1s;
+        white-space: nowrap;
+        color: #333;
+        -webkit-font-smoothing:subpixel-antialiased;
+        text-overflow: ellipsis;
+        
+        
+        &.category-td{
+            position: relative;
+			//overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: pre-wrap;
+            >i{
+                font-style: normal;
+                // font-weight: bold;
+                // color: #248efc;
+				color:#333;
+                font-size: 14px;
+                // font-size: 15px;
+                position: absolute;
+                display: flex;
+                align-items: center;
+                width: 100%;
+                left: 0;
+                top: 0;
+                text-align: center;
+                justify-content:center
+            }
+			.mytabstyle1{
+				background-color: #e9f4fe;
+			}
+			.mytabstyle2{
+				background-color: #f9f8e7;
+			}
+        }
+      }
+    }
+  
+  .tb-total{
+      background-color: #e9f4fe;
+      height: 50px;
+      display: flex;
+      
+      .tb-td{
+        float: left;
+        display: inline-block;
+        height: 50px;
+        line-height: 50px;    
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        color: #2993f8;
+        transition: all .3s;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        b{
+            color: #333 !important;
+        }
+      }
+  }
+}
+
+.no-data{
+	height: 100%;
+	background: url(~static/img/space-page.png) center center no-repeat;
+}
+</style>
