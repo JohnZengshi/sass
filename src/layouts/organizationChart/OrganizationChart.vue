@@ -307,6 +307,11 @@ import CompanyDetail from './CompanyDetail'
                     return true
                   }
                   return false
+                case '6': // 那谁 监察员
+                  if (A == '1' || A == '2'){
+                    return true
+                  }
+                  return false
               }
             } else { // 双重身份的情况下的---店铺人员
               // console.log('来到了撒谎从userPositionInfo', userPositionInfo)

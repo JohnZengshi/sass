@@ -12,7 +12,7 @@
                                 </ul>
                                 <div class="back-btn" @click="goPreviousPage">返回上一级</div>
                             </div>
-                            <div class="body-row2 actions-status"
+                            <div id="body-row2-Zindex" class="body-row2 actions-status"
                                 :data-status="curStatus.statusName"
                                 :class="{'animat-scroll':curStatus.slipPointer, 'color1': nowStatus == 1, 'color2': nowStatus == 2,
                         'color3': nowStatus == 3, 'color4': nowStatus == 4, 'color5': nowStatus == 5, 'color6': nowStatus == 6,
@@ -92,7 +92,7 @@
                                 <!--备注-->
                                 <order-remark :refreshRemark="refreshRemark" :remarkDialog="remarkDialog" :orderNum="$route.query.orderNumber" :orderData="receiptsIntroList" @updateRemark="updateRemark"></order-remark>
                             </div>
-                            <div class="Rp_dataGrid_container body-row4"
+                            <div id="body-row4-Zindex" class="Rp_dataGrid_container body-row4"
                                 :class="{'animat-scroll':curStatus.slipPointer }">
                                 <!--滚动条上滑时出现的那个订单号-->
                                 <div class="tab-orderNum" @click="updataSlipPointer(false)">
@@ -1744,5 +1744,11 @@ export default {
     }
     input:-ms-input-placeholder{
         font-size:10px;
+    }
+    #body-row2-Zindex {
+        z-index:0;
+    }
+    #body-row4-Zindex {
+        z-index:0;
     }
 </style>

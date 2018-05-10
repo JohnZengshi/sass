@@ -462,7 +462,7 @@ export default {
           if (item['jewelryName'] == ''){
             this.$message({
               type:'warning',
-              message :'请填写首饰类别'
+              message :'首饰类别未填，不可保存'
             })
           }
           
@@ -471,18 +471,18 @@ export default {
             if (item['metalColor'] == '' && item['gemName'] == '') {
               this.$message({
                 type:'warning',
-                message :'请填写成色名称或宝石名称'
+                message :'成色名称或宝石名称未填，不可保存'
               })
             }
             else if(item['metalColor'] == ''){
               this.$message({
                 type:'warning',
-                message :'请填写成色名称'
+                message :'成色名称未填，不可保存'
               })
             } else{
               this.$message({
                 type:'warning',
-                message :'请填写宝石名称'
+                message :'宝石名称未填，不可保存'
               })
             }
           }
@@ -490,7 +490,7 @@ export default {
           if (item['productClasses'] == ''){
             this.$message({
               type:'warning',
-              message :'请填产品类别'
+              message :'产品类别未填，不可保存'
             })
           }
           
@@ -507,13 +507,13 @@ export default {
             if(res.data.state == 99 || res.data.state == 50020){
               this.$message({
                 type:'error',
-                message : res.data.msg
+                message : '添加商品失败'
               })
             }else{
               this.isRefreshFooter = !this.isRefreshFooter
               this.$message({
                 type:'success',
-                message :'商品创建成功'
+                message :'添加商品成功'
               })
               
               this.rowDataList = []
