@@ -183,7 +183,7 @@
         }
       },
       'userInfo' (val) {
-        console.log(val)
+        console.log('啦啦啦啦啦啦',val)
         this.operateNum = null
       },
       'positionData' (val) {
