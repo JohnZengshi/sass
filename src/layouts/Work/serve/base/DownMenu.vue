@@ -1,7 +1,7 @@
 <template>
   <div class="down-menu-main" :class="{'serve-has-hover': productType}">
     <span class="title-name select">
-      {{productType}}{{product.serviceTypeName}}
+      {{product.serviceTypeName}}
       <i class="iconfont icon-arrow-down drop-triangle" v-if="noChange"></i>
 <!--       <i v-show="!isSolid" class="el-icon-circle-close" title="清除" @click="clearTitleInfo"
       v-if="product.serviceTypeName"></i> -->
