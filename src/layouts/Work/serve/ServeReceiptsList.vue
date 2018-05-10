@@ -1,61 +1,63 @@
 <template>
-	<transition name="tp-ani">
-		<div class="app-wd container">
-			<!-- 头部 -->
-			<headerTit></headerTit>
-			<!-- 头部个人信息 -->
-			<!--状态栏-->
-			<div class="actions-status" :class="{'animat-scroll':curStatus.slipPointer}">
-				<headerMessege
-          @openAddCommodityWrap="openAddCommodityWrap"
-          :orderData="orderData"
-          :receiptData="receiptData"
-          ref="actionsStatus"
-          :curStatus="curStatus"
-          :isOperation="isOperation"
-        >
-				</headerMessege>
-			</div>
+  <div>
+    <transition name="tp-ani">
+      <div class="app-wd container">
+        <!-- 头部 -->
+        <headerTit></headerTit>
+        <!-- 头部个人信息 -->
+        <!--状态栏-->
+        <div class="actions-status" :class="{'animat-scroll':curStatus.slipPointer}">
+          <headerMessege
+            @openAddCommodityWrap="openAddCommodityWrap"
+            :orderData="orderData"
+            :receiptData="receiptData"
+            ref="actionsStatus"
+            :curStatus="curStatus"
+            :isOperation="isOperation"
+          >
+          </headerMessege>
+        </div>
 
-			<!--商品列表-->
-			<div class="commodity-container" v-loading="loadCommodity" element-loading-text="数据加载中...">
-				<div class="handle">
-					<span class="list-icon">
-						<i class="iconfont icon-liebiao"></i>
-						商品列表
-						<span class="tips-tit">( <img src="~assets/img/serve-light.png" alt=""> 小贴士:可关联多个售后商品)</span>
-					</span>
-					<div class="item">
-						<!-- <span v-if="isShow && curStatus.nowStatus == 1" class="add" @click="add" ref="ref_addGoods">添加商品</span> -->
-						<span v-if="isOperation" class="add" @click="openAddCommodityWrap('1')" ref="ref_addGoods">添加商品</span>
-					</div>
-				</div>
+        <!--商品列表-->
+        <div class="commodity-container" v-loading="loadCommodity" element-loading-text="数据加载中...">
+          <div class="handle">
+            <span class="list-icon">
+              <i class="iconfont icon-liebiao"></i>
+              商品列表
+              <span class="tips-tit">( <img src="~assets/img/serve-light.png" alt=""> 小贴士:可关联多个售后商品)</span>
+            </span>
+            <div class="item">
+              <!-- <span v-if="isShow && curStatus.nowStatus == 1" class="add" @click="add" ref="ref_addGoods">添加商品</span> -->
+              <span v-if="isOperation" class="add" @click="openAddCommodityWrap('1')" ref="ref_addGoods">添加商品</span>
+            </div>
+          </div>
 
-				<!-- 商品列表 -->
-				<serve-container-list :isOperation="isOperation" :showData="productData" @setBounding="setBounding" @remarkOut="remarkOut" @_seekProductListByService="_seekProductListByService" @openRemarkDialog="openRemarkDialog"></serve-container-list>
+          <!-- 商品列表 -->
+          <serve-container-list :isOperation="isOperation" :showData="productData" @setBounding="setBounding" @remarkOut="remarkOut" @_seekProductListByService="_seekProductListByService" @openRemarkDialog="openRemarkDialog"></serve-container-list>
 
-				<!-- 售后备注 -->
-				<serve-container-bottom :isOperation="isOperation" :receiptData="receiptData" @_seekReceiptFWSynopsis="_seekReceiptFWSynopsis"></serve-container-bottom>
+          <!-- 售后备注 -->
+          <serve-container-bottom :isOperation="isOperation" :receiptData="receiptData" @_seekReceiptFWSynopsis="_seekReceiptFWSynopsis"></serve-container-bottom>
 
-			</div>
+        </div>
 
-			<!--步骤条-->
-			<steps-path :orderNum="orderData.orderNum" :ifImport="orderData.ifImport" ref="stepsPath" @setStatus="getStatus">
-			</steps-path>
+        <!--步骤条-->
+        <steps-path :orderNum="orderData.orderNum" :ifImport="orderData.ifImport" ref="stepsPath" @setStatus="getStatus">
+        </steps-path>
 
-			<!--各个按钮操作区-->
-			<utilsdatagrid :curStatus="curStatus" @updataApi="updataApi" :isOperation="isOperation" :orderData="receiptData" :dataList="productData" @goPage="goPage">
-			</utilsdatagrid>
+        <!--各个按钮操作区-->
+        <utilsdatagrid :curStatus="curStatus" @updataApi="updataApi" :isOperation="isOperation" :orderData="receiptData" :dataList="productData" @goPage="goPage">
+        </utilsdatagrid>
 
-			<!-- 备注 -->
-			<remarkDialog ref="remarkDialogWrap" @_seekProductListByService="_seekProductListByService"></remarkDialog>
-	
-			<!-- 查找售后商品 -->
-			<add-commodity ref="addCommodityWrap" :receiptData="receiptData" :productData="productData" @updataApi="updataApi"></add-commodity>
-      <!-- 备注提示语 -->
-      <remarkTit ref="remarkTitWrap" :boundingData="boundingData"></remarkTit>
-		</div>
-	</transition>
+        <!-- 备注 -->
+        <remarkDialog ref="remarkDialogWrap" @_seekProductListByService="_seekProductListByService"></remarkDialog>
+    
+        <!-- 查找售后商品 -->
+        <add-commodity ref="addCommodityWrap" :receiptData="receiptData" :productData="productData" @updataApi="updataApi"></add-commodity>
+        <!-- 备注提示语 -->
+        <remarkTit ref="remarkTitWrap" :boundingData="boundingData"></remarkTit>
+      </div>
+    </transition>
+  </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'

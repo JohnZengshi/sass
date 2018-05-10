@@ -138,7 +138,7 @@ export default {
     }
 }
 </script>
-<style src="../../../assets/css/template/receiptsListBody.scss" lang="scss" scoped></style>
+<!-- <style src="../../../assets/css/template/receiptsListBody.scss" lang="scss" scoped></style> -->
 <style lang="scss" scoped>
 .status-name{
     clear: both;

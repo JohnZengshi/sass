@@ -67,7 +67,6 @@ export default {
         // console.log(msg)
       }
       cos.uploadFile(successCallBack, errorCallBack, progressCallBack, Cos.bucket, this.myFolder.url + file.name, file, 0)
-      console.log('看你是啥', _self.$refs.uploadForm)
       _self.$refs.uploadForm.reset()
     }
   }
