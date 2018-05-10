@@ -32,6 +32,7 @@ CONTENTS:
 		overflow: hidden;
 		height: 100%;
 		max-width: 100%;
+		border-radius: 10px;
 		outline: none;
 		direction: ltr;
 	}

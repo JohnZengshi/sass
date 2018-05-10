@@ -2,7 +2,7 @@
 	<div class="receipts-main">
 		<div class="header-options dayinMain">
 			<!-- 头部的上 -->
-			<div class="header-options-top skin-shield">
+			<div id="header-options-top" class="header-options-top skin-shield">
 				<div class="tittle-wrap">
 					<i class="iconfont icon-ruku"></i>
 					<div>入库</div>
@@ -927,5 +927,9 @@
 	
 	.Rp_title_container {
 		padding-top: 0px !important;
+	}
+
+	#header-options-top {
+		background-color: transparent;
 	}
 </style>

@@ -396,7 +396,7 @@
       top: 63px;
       height: 42px;
       margin-left: -5px;
-      background-color: #f5f8f7;
+      // background-color: #f5f8f7;
       width: 1270px;
       z-index:999;
     }
@@ -405,7 +405,7 @@
       z-index: 999;
       height: 40px;
       width: 1270px;
-      background-color: #f5f8f7;
+      // background-color: #f5f8f7;
       margin-left: -5px;
       margin-bottom:15px;
       p, ul{
