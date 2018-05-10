@@ -1,5 +1,6 @@
 <template>
-<transition name="tp-ani">
+<div>
+  <transition name="tp-ani">
   <div class="data-view">
     <div class="title">
       <i class="iconfont icon-liebiao"></i>金价设置
@@ -18,8 +19,7 @@
               <span class="input" 
                   :data-text="k.dayPrice" >
                   <input 
-                      type="text" 
-                      :value="k.dayPrice"  
+                      type="text"  
                       v-if="storePrivilege"
                       @focusout="edit(k,k.dayPrice)" 
                       @focusin="editDown(k.dayPrice, $event)"
@@ -30,8 +30,7 @@
               <span class="input" 
                   :data-text="k.lowestPrice">
                   <input 
-                      type="text" 
-                      :value="k.lowestPrice" 
+                      type="text"  
                       v-if="storePrivilege"
                       @focusout="edit(k,k.lowestPrice)"
                       @focusin="editDown(k.lowestPrice, $event)"
@@ -43,7 +42,6 @@
                   :data-text="k.exchangePrice" >
                   <input 
                       type="text" 
-                      :value="k.exchangePrice" 
                       v-if="storePrivilege"
                       @focusout="edit(k,k.exchangePrice)"
                       @focusin="editDown(k.exchangePrice, $event)"
@@ -55,7 +53,6 @@
                   :data-text="k.recyclePrice">
                   <input 
                       type="text" 
-                      :value="k.recyclePrice" 
                       v-if="storePrivilege"
                       @focusout="edit(k,k.recyclePrice)"
                       @focusin="editDown(k.recyclePrice, $event)"
@@ -86,6 +83,7 @@
     
   </div>
 </transition>
+</div>
 </template>
 
 <script>

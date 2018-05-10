@@ -5,7 +5,7 @@
       <i class="iconfont icon-liebiao"></i>上架设置
     </div>
     <div class="tpl-scroll">
-        <div class="kingtitle"> <i>*</i><span>开启后柜组已关联商品同步上架，请谨慎操作</span></div>
+        <div class="kingtitle"> <i>*</i><span>关闭后则柜组关联商品在小程序商城下架，请谨慎操作</span></div>
         <div class="kingswitchs" v-for="(item,index) in counterList" :key="index">
             <span>{{item.groupName}}</span>
             <Switchs class="switchcls"  :isDelRole="true" :groupName="item.groupName" :groupId="item.groupId" :sex="item.status" @switchsChange="setCostFlag"></Switchs>
@@ -35,10 +35,18 @@ export default {
     },
     
     created(){
-       //this.getShowCounterlist();
-       this.getCounterList();
+      if (this.shopId) {
+        this.getCounterList()
+      }
     },
-    
+    mounted () {
+      eventBus.$on('xcx-upload-data', (shopId) => {
+        this.getCounterList(shopId)
+      })
+    },
+         beforeDestroy () {
+      eventBus.$off('xcx-upload-data')
+     },
     methods:{
       //-----------------操作值   改变ui 部分
           setCostFlag(val){
@@ -71,12 +79,16 @@ export default {
                   //错误
               })
       },
-      getCounterList(){
-          let options = {shopId:sessionStorage.getItem('miniprogram')}
+      getCounterList(parm){
+        this.counterList = []
+          let options = {
+            shopId:  parm || this.shopId, //店铺ID
+          }
           shelvesGroupInfo(options).then((res)=>{
               console.log(res);
               if(res.data.state == 200){
                   let salesSettinglist = res.data.data.dataList;
+                  let datas = []
                   for(let i=0;i<salesSettinglist.length;i++){
                       let obj = {
                           groupName:salesSettinglist[i].groupName,
@@ -88,8 +100,10 @@ export default {
                       }else{
                           obj.status = 'N'
                       }
-                      this.counterList.push(obj);
+                      datas.push(obj)
+                      
                   }
+                  this.counterList = datas
                  
               }
           })

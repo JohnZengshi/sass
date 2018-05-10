@@ -3,17 +3,26 @@
   <div class="data-view">
     <div class="title">
       <i class="iconfont icon-liebiao"></i>店铺信息
-      <div class="headersave" @click="saveShopDetail">保存</div>
+      <div class="headersave" @click="allSave">保存</div>
     </div>
     <div class="tpl-scroll"  v-loading="fullLoading" element-loading-text="拼命进行中...">
          <div class="shopindexd">
-             <span class="verticalbar">|</span><i>*</i>
-             <span class="tiptitle">店铺首图：</span><div class="buttondiv"  @click="checkFile(99999)">上传店铺首图</div><span class="cluecls">&nbsp;&nbsp;建议上传750*562px的图片，仅可上传1张</span>
+            <span class="verticalbar">|</span><i>*</i>
+            <span class="tiptitle">店铺首图：</span>
+            
+              <div class="buttondiv">
+                <uploading :type="imgType" @cosImg="addShopPic">
+                上传店铺首图
+                </uploading>
+              </div>
+             <span class="cluecls">&nbsp;&nbsp;建议上传750*562px的图片，仅可上传1张</span>
          </div>
          <div class="shopcontainer">
-              <custhumbnail class="mycusthumbnail" @deletePic="deletePic" :switchimgList="shopFirstPic"  id="thumbnail" >
-              </custhumbnail>
-              <input style="display: none;" type="file" id="file_input" @change="changeFileInput"/>
+            <imgShow class="mycusthumbnail" @deleteImg="deleteShopPic" :imgSrc="mallsShopInfoLise.shopPic"  id="thumbnail" >
+            </imgShow>
+            <div class="custhum" v-if="!mallsShopInfoLise.shopPic">
+                缩略图
+            </div>
          </div>
 
           <div class="shopindexd">
@@ -22,19 +31,37 @@
          </div>
          <div class="shopcontainer">
            <div class="allspace textar" style="margin-bottom:20px;">
-               <textarea v-model="shopInfo"  placeholder="请输入店铺信息，最多200字符" maxlength="200" style="height:85px;width:785px;margin-left:10px;margin-top:10px;"></textarea>
+               <textarea v-model="mallsShopInfoLise.shopInfo"  placeholder="请输入店铺信息，最多200字符" maxlength="200" style="height:85px;width:785px;margin-left:10px;margin-top:10px;"></textarea>
            </div>
          </div>
 
-         <div class="shopindexd">
-             <span class="verticalbar">|</span>
-             <span class="tiptitle">门店照片<span>（选填）</span>：</span><div class="buttondiv"  @click="checkFile(99998)">上传门店照片</div><span class="cluecls">&nbsp;&nbsp;建议上传不少于3张250*180尺寸的图片，系统上限20张</span>
-         </div>
-         <div class="shopcontainer">
-                <custhumbnail class="mycusthumbnail" @deletePic="deletePic" :switchimgList="shopStorePic"  id="thumbnail" >
-                </custhumbnail>
-                <input style="display: none;" type="file" id="file_input" @change="changeFileInput"/>
-         </div>
+        <div class="shopindexd">
+          <span class="verticalbar">|</span>
+          <span class="tiptitle">门店照片<span>（选填）</span>：</span>
+
+          <div class="buttondiv">
+            <uploading :type="imgType" :isMore="true" @cosImg="addShopListImg">
+              上传门店照片
+            </uploading>
+          </div>
+
+          <span class="cluecls">&nbsp;&nbsp;建议上传不少于3张250*180尺寸的图片，系统上限20张</span>
+        </div>
+
+          <div class="shopcontainer">
+
+            <template v-for="(item, index) in mallsShopInfoLise.shopList">
+              <imgShow class="mycusthumbnail" @deleteImg="deleteShopListImg" :index="index" :imgSrc="item.logoSrc" :id="item.logoId"></imgShow>
+            </template>
+
+            <div class="custhum" v-if="!mallsShopInfoLise.shopList.length">
+              缩略图
+            </div>
+            
+<!--                 <custhumbnail class="mycusthumbnail" @deletePic="deletePic" :switchimgList="shopStorePic"  id="thumbnail" >
+                </custhumbnail> -->
+<!--                 <input style="display: none;" type="file" id="file_input" @change="changeFileInput"/> -->
+          </div>
 
           <div class="shopindexd">
              <span class="verticalbar">|</span><i>*</i>
@@ -43,62 +70,48 @@
          <div  class="shopcontainer">
                <div class="allspace callus">
                    <label>联系电话</label>
-                   <div><input v-model="phone" placeholder="请输入联系电话" maxlength="11" /></div>
+                   <div><input v-model="mallsShopInfoLise.phone" placeholder="请输入联系电话" maxlength="12" /></div>
                    
                </div>
                <div class="allspace callus" style="margin-bottom:20px;">
                    <label>店铺地址</label>
-                   <div><input v-model="address" placeholder="请输入店铺地址" maxlength="30" /></div>
+                   <div><input v-model="mallsShopInfoLise.address" placeholder="请输入店铺地址" maxlength="30" /></div>
                    
                </div>
          </div>
 
 
          <div class="shopindexd">
-             <span class="verticalbar">|</span><i>*</i>
-             <span class="tiptitle">店铺尾图：</span><div class="buttondiv"  @click="checkFile(99997)">上传店铺尾图</div><span class="cluecls">建议上传698*524px的图片，仅可上传一张</span>
+            <span class="verticalbar">|</span><i>*</i>
+            <span class="tiptitle">店铺尾图：</span>
+
+            <div class="buttondiv">
+              <uploading :type="imgType" @cosImg="addLastPic">
+                上传店铺尾图
+              </uploading>
+            </div>
+
+            <span class="cluecls">建议上传698*524px的图片，仅可上传一张</span>
          </div>
          <div class="shopcontainer">
-               <custhumbnail class="mycusthumbnail" @deletePic="deletePic" :switchimgList="shopEndPic"  id="thumbnail" >
-                </custhumbnail>
-                <input style="display: none;" type="file" id="file_input" @change="changeFileInput"/>
+            <imgShow class="mycusthumbnail" @deleteImg="deleteLastPic" :imgSrc="mallsShopInfoLise.lastPic"  id="thumbnail" >
+            </imgShow>
+            <div class="custhum" v-if="!mallsShopInfoLise.lastPic">
+                缩略图
+            </div>
          </div>
 
           <div class="shopindexd">
               <span class="verticalbar">|</span>
               <span class="tiptitle">分店信息<span>（选填）</span>：</span>
-              <div class="buttondiv"  @click="addStoreModel">+分店</div>
-          </div>
-          <div class="shopcontainer">
-              <i class="iconfont icon-shanchu1 mydel" v-if="defaultstore.otherId" @click="deleteStroedefault(defaultstore.otherId)"></i>
-              <div class="allspace callus">
-                  <label>分店名称</label>
-                  <!-- otherId -->
-                  <div><input v-model="defaultstore.otherName"  placeholder="请输入分店名称" maxlength="11" /></div>
-              </div>
-              <div class="allspace callus">
-                  <label>分店电话</label>
-                  <div><input v-model="defaultstore.otherPhone"  placeholder="请输入分店电话" maxlength="11" /></div>
-              </div>
-               <div class="allspace storeaddress" style="margin-bottom:20px;">
-                   <label>店铺地址</label>
-                   <div><textarea style="" v-model="defaultstore.otherAddress" placeholder="请输入店铺地址,最多30个字符" maxlength="30" /></div>
-               </div>
-              <div class="storepic">
-                <span class="tiptitle">分店照片：</span><div class="buttondiv"  @click="checkFile(99996)">上传分店照片</div><span class="cluecls">&nbsp;&nbsp;建议上传698*524px的图片，仅可上传一张</span>
-              </div>
-              <div>
-                  <custhumbnail class="mycusthumbnail" @deletePic="deletePic" :switchimgList="defaultstore.otherPic"  id="thumbnail" >
-                  </custhumbnail>
-                  <input style="display: none;" type="file" id="file_input" @change="changeFileInput"/>
-              </div>
+              <div class="buttondiv" vi-f="mallsShopInfoLise.otherShopList.length < 5" @click="addOtherShopList">+分店</div>
           </div>
 
-          <div class="storemodel" v-for="(item,index) in localotherShopList" :key="index">
+          <div class="storemodel" v-for="(item,index) in mallsShopInfoLise.otherShopList" :key="index">
                <div class="shopindexd" style="margin-top:10px;">
-                    <span class="verticalbar">|</span>
-                    <span class="tiptitle">分店信息<span>（选填）</span>：</span>
-                    <i class="iconfont icon-shanchu1 mydel" @click="deleteStroeoneof(item.otherId)"></i>
+<!--                     <span class="verticalbar">|</span>
+                    <span class="tiptitle">分店信息<span>（选填）</span>：</span> -->
+                    <i class="iconfont icon-shanchu1 mydel" @click="_operateMallsOtherShopOperation(item.otherId, index)"></i>
                 </div>
                 <div class="shopcontainer">
                     <div class="allspace callus">
@@ -107,7 +120,7 @@
                     </div>
                     <div class="allspace callus">
                         <label>分店电话</label>
-                        <div><input v-model="item.otherPhone"  placeholder="请输入分店电话" maxlength="11" /></div>
+                        <div><input v-model="item.otherPhone"  placeholder="请输入分店电话" maxlength="12" /></div>
                     </div>
                     <div class="allspace storeaddress" style="margin-bottom:20px;">
                         <label>店铺地址</label>
@@ -115,12 +128,22 @@
                         <div><textarea style="" v-model="item.otherAddress" placeholder="请输入店铺地址,最多30个字符" maxlength="30" /></div>
                     </div>
                     <div class="storepic">
-                      <span class="tiptitle">分店照片：</span><div class="buttondiv"  @click="storecheckFile(index)">上传分店照片</div><span class="cluecls">&nbsp;&nbsp;建议上传698*524px的图片，仅可上传一张</span>
+                      <span class="tiptitle">分店照片：</span>
+                      
+                      <div class="buttondiv">
+                        <uploading :type="imgType" :sceneIndex="index" @cosImg="addOtherShopImg">
+                          上传分店照片
+                        </uploading>
+                      </div>
+
+                      <span class="cluecls">&nbsp;&nbsp;建议上传698*524px的图片，仅可上传一张</span>
                     </div>
                     <div>
-                        <custhumbnail class="mycusthumbnail" @deletePic="deletePic" :switchimgList="item.otherPic"  id="thumbnail" >
-                        </custhumbnail>
-                        <input style="display: none;" type="file" id="file_input" @change="changeFileInput"/>
+                      <imgShow class="mycusthumbnail" @deleteImg="deleteOtherShopList(item)" :imgSrc="item.otherPic"  id="thumbnail" >
+                      </imgShow>
+                      <div class="custhum" v-if="!item.otherPic">
+                          缩略图
+                      </div>
                     </div>
                 </div>
           </div>
@@ -130,9 +153,12 @@
 </template>
 
 <script>
+import imgShow from './../base/imgShow'
+import uploading from 'base/uploading/uploading'
 import base from './../../../../config/base/index'
 import baseApi from 'Api/Base/base'
 import custhumbnail from './../upload/cusshopthumbnail';
+import {operateMallsShopImageOperation, operateMallsShopInfoUpdate, operateMallsOtherShopAdd, operateMallsOtherShopOperation, operateMallsOtherShopUpdate} from 'Api/commonality/operate'
 import {
   mallsShopInfo,//获取店铺信息
   mallsShopImageOperation,//商城店铺图片 操作
@@ -143,8 +169,25 @@ import {
   } from './../../../../Api/commonality/seek'
 export default {
     data(){
-       return{
-         fullLoading:false,
+      return{
+        // -------新--------
+        fullLoading: false,
+        oldData: {}, // 旧数据
+        request: 0,
+        mallsShopInfoLise: {
+          shopPic: '',
+          shopPicId: '',
+          shopInfo: '',
+          shopList: [],
+          phone: '',
+          lastPic: '',
+          lastPicId: '',
+          address: '',
+          otherShopList: []
+        },
+        imgType: '2', // 图片地址
+
+        // -------旧--------
         //  picTip:'',//用户操作的是店铺图片
         //  textTip:'',//用户操作的是店铺基本信息
         //  storeTip:'',//用户操作的是 分店
@@ -177,109 +220,688 @@ export default {
        }
     },
     components:{
-        custhumbnail
+      imgShow,
+      uploading,
+      custhumbnail
     },
     // props :['shopId','storePrivilege'],
+    props: ['shopId'],
     created(){
-       this.getmallsShopInfo();
+      // this.getmallsShopInfo();
+      if (this.shopId) {
+        this.seekMallsShopInfo(this.shopId)
+      }
+    },
+    mounted () {
+      eventBus.$on('xcx-upload-data', (shopId) => {
+        this.seekMallsShopInfo(shopId)
+      })
+    },
+         beforeDestroy () {
+      eventBus.$off('xcx-upload-data')
+     },
+    watch: {
+      'request' () {
+        console.log('this.request', this.request)
+        if (this.request == 0) {
+          this.$message({type:'success', message:"修改成功"})
+          this.seekMallsShopInfo(this.shopId)
+        }
+      }
     },
     methods:{
+      /*------------------------新----------------------------*/
+      deleteOtherShopList (item) {
+        item.otherPic = ''
+      },
+      // 总保存
+      allSave () {
+        // 过滤必填
+        if(!this.mallsShopInfoLise.shopPic){
+           this.$message({type:'warning', message:'至少上传1张店铺首图'});
+           return;
+        }
+
+        if(!this.mallsShopInfoLise.shopInfo){
+            this.$message({type:'warning', message:'请输入店铺信息!'});
+           return;
+        }
+
+        // if(!this.mallsShopInfoLise.phone || this.mallsShopInfoLise.phone.length != 11){
+        //   this.$message({type:'warning', message:'请输入联系电话!'});
+        //   return;
+        // }
+        if (this.mallsShopInfoLise.shopList.length) {
+          if(this.mallsShopInfoLise.shopList.length < 3) {
+            this.$message({type:'warning', message:'门店照片不可少于三张!'});
+            return;
+          }
+        }
+        
+
+        if(!this.mallsShopInfoLise.phone){
+          this.$message({type:'warning', message:'请输入联系电话!'});
+          return;
+        }
+
+
+        if(!this.mallsShopInfoLise.address){
+          this.$message({type:'warning', message:'请输入店铺地址'});
+           return;
+        }
+
+        if(!this.mallsShopInfoLise.lastPic){
+          this.$message({type:'warning', message:'至少上传1张店铺尾图'});
+          return;
+        }
+
+        let amendRecord = []
+        // 提取有修改过的数据集合 新增和修改
+        for (let i of this.mallsShopInfoLise.otherShopList) {
+          if (i.otherName || i.otherAddress || i.otherPhone || i.otherPic) {
+            amendRecord.push(i)
+          }
+        }
+        
+        console.log('当前记录的amendRecord', amendRecord)
+        for (let i of amendRecord) {
+          if (!i.otherName) {
+            this.$message({
+              message: '请填写分店名称',
+              type: 'warning'
+            });
+            return
+          }
+          if (!i.otherAddress) {
+            this.$message({
+              message: '请填写分店地址',
+              type: 'warning'
+            });
+            return
+          }
+          if (!i.otherPhone) {
+            this.$message({
+              message: '请填写分店联系电话',
+              type: 'warning'
+            });
+            return
+          }
+          // if (i.otherPhone.length != 11) {
+          //   this.$message({
+          //     message: '分店联系电话格式不对',
+          //     type: 'warning'
+          //   });
+          //   return
+          // }
+          
+          if (!i.otherPic) {
+            this.$message({
+              message: '请上传分店照片',
+              type: 'warning'
+            });
+            return
+          }
+        }
+
+        // 提取商城店铺图片操作
+        let amendMallsShopImage = this.filterMallsShopImageOperation()
+
+        // 提取修改值商城店铺信息更新
+        let amendMallsShopInfoUpdate = this.filterMallsShopInfoUpdate()
+
+        // 提取分店数据新增
+        let addOtherShopList = this.addFilterOtherShopList()
+
+        // 提取分店数据删除
+        let delOtherShopList = this.delFilterAddOtherShopList()
+
+        // 提取分店数据更改
+        let amendOtherShopList = this.amendFilterOtherShopList()
+
+        // 全部请求成功回调
+        this.request = amendMallsShopImage.length ? 1 : 0 + amendMallsShopInfoUpdate.length ? 1 : 0 + addOtherShopList.length ? 1 : 0 + amendOtherShopList.length ? 1 : 0
+
+        if (this.request == 0) {
+          this.$message({
+              message: '保存成功',
+              type: 'success'
+            });
+        }
+
+        if (amendMallsShopImage.length) {
+          this._operateMallsShopImageOperation(amendMallsShopImage)
+        }
+
+        if (amendMallsShopInfoUpdate.length) {
+          this._operateMallsShopInfoUpdate(amendMallsShopInfoUpdate)
+        }
+
+        if (addOtherShopList.length) {
+          this._operateMallsOtherShopAdd(addOtherShopList)
+        }
+
+        if (amendOtherShopList.length) {
+          this._operateMallsOtherShopUpdate(amendOtherShopList)
+        }
+
+      },
+
+      // 提取分店数据新增
+      addFilterOtherShopList () {
+        let datas = []
+        for (let i of this.mallsShopInfoLise.otherShopList) {
+          if (!i.otherId) {
+            let isHas = false
+            let objD = {
+              shopId: this.shopId,
+              otherShopName: i.otherName,
+              otherShopAddress: i.otherAddress,
+              otherShopPhone: i.otherPhone,
+              otherShopPic: i.otherPic
+            }
+            if (i.otherName) {
+              isHas = true
+            }
+            if (i.otherAddress) {
+              isHas = true
+            }
+            if (i.otherPhone) {
+              isHas = true
+            }
+            if (i.otherPic) {
+              isHas = true
+            }
+            if (isHas) {
+              datas.push(objD)
+            }
+          }
+        }
+        return datas
+      },
+
+      // 提取分店数据删除
+      delFilterAddOtherShopList () {
+        let datas = []
+        // let allData = []
+        // for (let i of this.oldData.otherShopList) {
+        //   allData.push(i.otherId)
+        // }
+        // // 提取删除值集合
+        // debugger
+        // for (let i of this.mallsShopInfoLise.otherShopList) {
+        //   if (!allData.includes(i.otherId)) {
+        //     let delObj = {
+        //       otherShopId: i.otherId,
+        //       operateType: 1
+        //     }
+        //     datas.push(delObj)
+        //   }
+        // }
+        return datas
+      },
+
+      // 提取分店数据更改
+      amendFilterOtherShopList () {
+        let options = []
+        for (let i of this.mallsShopInfoLise.otherShopList) {
+          for (let j of this.oldData.otherShopList) {
+            if (i.otherId == j.otherId) {
+
+              // 1.分店名称
+              if (i.otherName != j.otherName) {
+                let objD = {
+                  otherShopId: i.otherId,
+                  updateType: '1',
+                  updataData: i.otherName
+                }
+                options.push(objD)
+              }
+
+              // 2.分店地址
+              if (i.otherAddress != j.otherAddress) {
+                let objD = {
+                  otherShopId: i.otherId,
+                  updateType: '2',
+                  updataData: i.otherAddress
+                }
+                options.push(objD)
+              }
+
+              // 3.联系电话
+              if (i.otherPhone != j.otherPhone) {
+                let objD = {
+                  otherShopId: i.otherId,
+                  updateType: '3',
+                  updataData: i.otherPhone
+                }
+                options.push(objD)
+              }
+
+              // 4.图片
+              if (i.otherPic != j.otherPic) {
+                let objD = {
+                  otherShopId: i.otherId,
+                  updateType: '4',
+                  updataData: i.otherPic
+                }
+                options.push(objD)
+              }
+
+            }
+            
+          }
+        }
+        return options
+      },
+
+
+      // 提取商城店铺图片操作
+      filterMallsShopImageOperation () {
+        let options = []
+        // 店铺首图
+        options.push(...this.fliterOneAmendImg(this.oldData.shopPicId, this.oldData.shopPic, this.mallsShopInfoLise.shopPic, 1, 2))
+        // 店铺尾图
+        options.push(...this.fliterOneAmendImg(this.oldData.lastPicId, this.oldData.lastPic, this.mallsShopInfoLise.lastPic, 3, 4))
+        // 门店照片
+        // if (this.mallsShopInfoLise.shopList.length != this.oldData.shopList.length) {
+          options.push(...this.filterAmendImg(this.mallsShopInfoLise.shopList, this.oldData.shopList))
+        // }
+        return options
+      },
+
+      // 提取单图修改 id， 旧图，新图, 新增类型，删除类型
+      fliterOneAmendImg (id, oldUrl, newUrl, addNum, delNum) {
+        let datas = []
+        if (id) { // 存在修改和新增
+          if (oldUrl != newUrl) {
+            datas.push({
+              picId: id,
+              operateType: delNum
+            })
+            datas.push({
+              url: newUrl,
+              operateType: addNum
+            })
+          }
+        } else if (newUrl) { // 单纯新增
+          datas.push({
+            url: newUrl,
+            operateType: addNum
+          })
+        }
+        return datas
+      },
+
+      // 多图提取修改和新增 当前值，旧值
+      filterAmendImg (currentData, oldData) {
+        // 新增数据
+        let newData = []
+        // 删除数据
+        let delData = []
+        // 修改后的后台值
+        let amendData = []
+        // 提取新增和修改后的后台的值
+        if (currentData) {
+          for (let j of currentData) {
+            if (j.logoId) {
+              amendData.push(j.logoId)
+            } else {
+              let addObj = {
+                url: j.logoSrc,
+                operateType: '5'
+              }
+              newData.push(addObj)
+            }
+          }
+        }
+        // 提取删除值集合
+        for (let i of oldData) {
+          if (!amendData.includes(i.logoId)) {
+            let delObj = {
+              picId: i.logoId,
+              operateType: '6'
+            }
+            delData.push(delObj)
+          }
+        }
+        return [...newData,...delData]
+      },
+
+      // 商城店铺图片操作
+      _operateMallsShopImageOperation (parm) {
+        let options = {
+          shopId: this.shopId,
+          dataList: parm
+        }
+        operateMallsShopImageOperation(options)
+          .then(res => {
+            if (res.data.state == 200) {
+              this.request -= 1
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: 'warning'
+              });
+            }
+          })
+      },
+
+      // 商城店铺信息更新
+      _operateMallsShopInfoUpdate (parm) {
+        let options = {
+          shopId: this.shopId,
+          dataList: parm
+        }
+        operateMallsShopInfoUpdate(options)
+          .then(res => {
+            if (res.data.state == 200) {
+              this.request -= 1
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: 'warning'
+              });
+            }
+          })
+      },
+
+      // 商城店铺分店新增
+      _operateMallsOtherShopAdd (parm) {
+        let options = {
+          shopId: this.shopId,
+          dataList: parm
+        }
+        operateMallsOtherShopAdd(options)
+          .then(res => {
+            if (res.data.state == 200) {
+              this.request -= 1
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: 'warning'
+              });
+            }
+          })
+      },
+
+      // 删除分店
+      _operateMallsOtherShopOperation (otherShopId, Index) {
+        if (!otherShopId) {
+          this.mallsShopInfoLise.otherShopList.splice(Index, 1)
+          return
+        }
+        let options = {
+          shopId: this.shopId,
+          otherShopId: otherShopId,
+          operateType: '1'
+        }
+        operateMallsOtherShopOperation(options)
+          .then(res => {
+            if (res.data.state == 200) {
+              this.mallsShopInfoLise.otherShopList.splice(Index, 1)
+              this.$message({
+                message: '删除成功',
+                type: 'warning'
+              });
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: 'warning'
+              });
+            }
+          })
+      },
+
+      // 商城店铺分店更新
+      _operateMallsOtherShopUpdate (parm) {
+        let options = {
+          shopId: this.shopId,
+          dataList: parm
+        }
+        operateMallsOtherShopUpdate(options)
+          .then(res => {
+            if (res.data.state == 200) {
+              this.request -= 1
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: 'warning'
+              });
+            }
+
+          })
+      },
+
+      // 提取修改值商城店铺信息更新
+      filterMallsShopInfoUpdate () {
+        let options = []
+        // 店铺信息
+        if (this.mallsShopInfoLise.shopInfo != this.oldData.shopInfo) {
+          options.push({
+            updateType: 1,
+            updataData: this.mallsShopInfoLise.shopInfo
+          })
+        }
+
+        // 联系号码
+        if (this.mallsShopInfoLise.phone != this.oldData.phone) {
+          options.push({
+            updateType: 2,
+            updataData: this.mallsShopInfoLise.phone
+          })
+        }
+
+        // 店铺地址
+        if (this.mallsShopInfoLise.address != this.oldData.address) {
+          options.push({
+            updateType: 3,
+            updataData: this.mallsShopInfoLise.address
+          })
+        }
+
+        return options
+      },
+
+      // 删除店铺首图
+      deleteShopPic (parm) {
+        this.mallsShopInfoLise.shopPic = ''
+      },
+
+
+      // 删除门店照片
+      deleteShopListImg (parm) {
+        this.mallsShopInfoLise.shopList.splice(parm.index, 1)
+      },
+
+      // 删除店铺尾图
+      deleteLastPic (parm) {
+        this.mallsShopInfoLise.lastPic = ''
+      },
+
+
+      // 添加店铺首图
+      addShopPic (parm) {
+        this.mallsShopInfoLise.shopPic = parm.url
+      },
+
+      // 添加门店图片
+      addShopListImg (parm) {
+        console.log('添加门店图片', parm)
+        let datas = []
+        for (let i of parm) {
+          let objData = {
+            logoSrc: i,
+            logoId: ''
+          }
+          datas.push(objData)
+        }
+        this.mallsShopInfoLise.shopList.push(...datas)
+      },
+
+      // 添加店铺尾图
+      addLastPic (parm) {
+        this.mallsShopInfoLise.lastPic = parm.url
+      },
+
+      // 添加分店店铺图片
+      addOtherShopImg (parm) {
+        this.$set(this.mallsShopInfoLise.otherShopList[parm.index], 'otherPic', parm.url)
+      },
+
+      // 商城店铺信息
+      seekMallsShopInfo(parm){
+        let options = {
+          shopId: parm
+        }
+         //先获取店铺 历史记录数据 然后将数据装进 本地字段中
+        mallsShopInfo(options)
+          .then((res)=>{
+            console.log('获取到店铺里所有数据：',res);
+            if (res.data.state == 200) {
+              this.mallsShopInfoLise = res.data.data
+              this.oldData = JSON.parse(JSON.stringify(res.data.data))
+              console.log('旧数据', this.oldData)
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: 'warning'
+              });
+            }
+          })
+      },
+
+      // 添加分店
+      addOtherShopList () {
+        this.mallsShopInfoLise.otherShopList.push({
+          shopId: '',
+          otherShopName: '',
+          otherShopAddress: '',
+          otherShopPhone: '',
+          otherShopPic: ''
+        })
+      },
+
+      // 删除分店数据
+      deleteStroeoneof(otherid, Index){
+        console.log('删除分店')
+        this.mallsShopInfoLise.otherShopList.splice(Index, 1)
+        // let options = {
+        //     shopId:sessionStorage.getItem('miniprogram'),
+        //     otherShopId:otherid,
+        //     operateType:1
+        // }
+        // mallsOtherShopOperation(options).then((res)=>{
+        //     if(res.status == 200){
+        //          this.$message({type:'success',message:"删除成功"});
+        //         for(let i=0;i<this.localotherShopList.length;i++){
+        //             if(otherid == this.localotherShopList[i].otherId){
+        //                 this.localotherShopList.splice(i,1);
+        //                 return;
+        //             }
+        //         }
+        //     }else{
+        //          this.$message({type:'success',message:"删除失败"});
+        //     }
+        // })
+      },
+
+      /*------------------------旧----------------------------*/
       //-----------------操作值   改变ui 部分
-          addStoreModel(){
-            //添加新分店
-            let model = {otherName:'',otherAddress:'',otherPhone:'',otherPic:[],otherId:''}
-            this.localotherShopList.push(model);
-          },
-          deletePic(val){
-              //console.log(val);
-                if(this.shopPic === val){
-                    //删除后台数据库中店铺首图
+      addStoreModel(){
+        //添加新分店
+        let model = {otherName:'',otherAddress:'',otherPhone:'',otherPic:[],otherId:''}
+        this.localotherShopList.push(model);
+      },
+      deletePic(val){
+          //console.log(val);
+            if(this.shopPic === val){
+                //删除后台数据库中店铺首图
+                let obj={};
+                obj.url=this.shopPic;
+                obj.operateType = 2;
+                obj.picId = this.shopPicId;
+                this.bideShopFirstPic.push(obj);
+            }
+            if(this.lastPic === val){
+                //删除后台数据库中  店铺尾图
+                let obj={};
+                obj.url=this.lastPic;
+                obj.operateType = 4;
+                obj.picId = this.lastPicId;
+                this.bideShopEndPic.push(obj);
+            }
+            for(let i=0;i<this.shopList.length;i++){
+              //删除后台数据库中  店铺照片
+                 if(val === this.shopList[i].logoSrc){
                     let obj={};
-                    obj.url=this.shopPic;
-                    obj.operateType = 2;
-                    obj.picId = this.shopPicId;
-                    this.bideShopFirstPic.push(obj);
+                    obj.url=this.shopList[i].logoSrc;
+                    obj.operateType = 6;
+                    obj.picId = this.shopList[i].logoId;
+                    this.bideShopStorePic.push(obj);
+                 }
+            }
+           for(let i=0;i<this.shopFirstPic.length;i++){
+              if(val === this.shopFirstPic[i]){
+                   this.shopFirstPic.splice(i,1);
+                   return;
+              }
+           }
+          for(let i=0;i<this.shopStorePic.length;i++){
+              if(val === this.shopStorePic[i]){
+                  this.shopStorePic.splice(i,1);
+                  return;
+              }
+          }
+          for(let i=0;i<this.shopEndPic.length;i++){
+              if(val === this.shopEndPic[i]){
+                  this.shopEndPic.splice(i,1);
+                  return;
+              }
+          }
+          for(let i=0;i<this.defaultstore.otherPic.length;i++){
+              if(val === this.defaultstore.otherPic[i]){
+                  this.defaultstore.otherPic.splice(i,1);
+                  return;
+              }
+          }
+         // console.log(this.localotherShopList);
+          for(let i=0;i<this.localotherShopList.length;i++){
+              if(val === this.localotherShopList[i].otherPic[0]){
+                  this.localotherShopList[i].otherPic.splice(i,1);
+                  return;
+              }
+          }
+      },
+      fixStoreList(storeList){//每次 进入这个页面 提取分店的第一条数据单独放
+         // 将集合中的 第一条数据 提取出来，方便操作
+          for(let i=0;i<storeList.length;i++){
+              if(i==0){
+                this.defaultstore.otherName = storeList[i].otherName;
+                this.defaultstore.otherAddress = storeList[i].otherAddress;
+                this.defaultstore.otherPhone = storeList[i].otherPhone;
+                if(storeList[i].otherPic != null && storeList[i].otherPic != ''){
+                   this.defaultstore.otherPic.push(storeList[i].otherPic);
                 }
-                if(this.lastPic === val){
-                    //删除后台数据库中  店铺尾图
-                    let obj={};
-                    obj.url=this.lastPic;
-                    obj.operateType = 4;
-                    obj.picId = this.lastPicId;
-                    this.bideShopEndPic.push(obj);
-                }
-                for(let i=0;i<this.shopList.length;i++){
-                  //删除后台数据库中  店铺照片
-                     if(val === this.shopList[i].logoSrc){
-                        let obj={};
-                        obj.url=this.shopList[i].logoSrc;
-                        obj.operateType = 6;
-                        obj.picId = this.shopList[i].logoId;
-                        this.bideShopStorePic.push(obj);
-                     }
-                }
-               for(let i=0;i<this.shopFirstPic.length;i++){
-                  if(val === this.shopFirstPic[i]){
-                       this.shopFirstPic.splice(i,1);
-                       return;
+                this.defaultstore.otherId = storeList[i].otherId;
+              }else{
+                  
+                  if(storeList[i].otherPic == null || storeList[i].otherPic == ''){
+                     storeList[i].otherPic = [];
                   }
-               }
-              for(let i=0;i<this.shopStorePic.length;i++){
-                  if(val === this.shopStorePic[i]){
-                      this.shopStorePic.splice(i,1);
-                      return;
+                  let tempobj = {
+                      otherName:storeList[i].otherName,
+                      otherAddress:storeList[i].otherAddress,
+                      otherPhone:storeList[i].otherPhone,otherPic:[],otherId:storeList[i].otherId
                   }
+                  let temparr = [];
+                  temparr.push(storeList[i].otherPic);
+                  tempobj.otherPic = temparr;
+                // this.localotherShopList.push(storeList[i]);
+               // console.log('获取添加的分店照片:',tempobj);
+                 this.localotherShopList.push(tempobj);
               }
-              for(let i=0;i<this.shopEndPic.length;i++){
-                  if(val === this.shopEndPic[i]){
-                      this.shopEndPic.splice(i,1);
-                      return;
-                  }
-              }
-              for(let i=0;i<this.defaultstore.otherPic.length;i++){
-                  if(val === this.defaultstore.otherPic[i]){
-                      this.defaultstore.otherPic.splice(i,1);
-                      return;
-                  }
-              }
-             // console.log(this.localotherShopList);
-              for(let i=0;i<this.localotherShopList.length;i++){
-                  if(val === this.localotherShopList[i].otherPic[0]){
-                      this.localotherShopList[i].otherPic.splice(i,1);
-                      return;
-                  }
-              }
-          },
-          fixStoreList(storeList){//每次 进入这个页面 提取分店的第一条数据单独放
-             // 将集合中的 第一条数据 提取出来，方便操作
-              for(let i=0;i<storeList.length;i++){
-                  if(i==0){
-                    this.defaultstore.otherName = storeList[i].otherName;
-                    this.defaultstore.otherAddress = storeList[i].otherAddress;
-                    this.defaultstore.otherPhone = storeList[i].otherPhone;
-                    if(storeList[i].otherPic != null && storeList[i].otherPic != ''){
-                       this.defaultstore.otherPic.push(storeList[i].otherPic);
-                    }
-                    this.defaultstore.otherId = storeList[i].otherId;
-                  }else{
-                      
-                      if(storeList[i].otherPic == null || storeList[i].otherPic == ''){
-                         storeList[i].otherPic = [];
-                      }
-                      let tempobj = {
-                          otherName:storeList[i].otherName,
-                          otherAddress:storeList[i].otherAddress,
-                          otherPhone:storeList[i].otherPhone,otherPic:[],otherId:storeList[i].otherId
-                      }
-                      let temparr = [];
-                      temparr.push(storeList[i].otherPic);
-                      tempobj.otherPic = temparr;
-                    // this.localotherShopList.push(storeList[i]);
-                   // console.log('获取添加的分店照片:',tempobj);
-                     this.localotherShopList.push(tempobj);
-                  }
-              }
-          },
+          }
+      },
       //----------------网络请求部分------
        getmallsShopInfo(){
          //先获取店铺 历史记录数据 然后将数据装进 本地字段中
@@ -342,6 +964,7 @@ export default {
                             datalist.push(phone);
                             datalist.push(pic);
                     }else{
+                          console.log('AAAAAA111')
                         this.$message({type:'warning',message:"请完善分店信息"});
                         return;
                     }
@@ -369,6 +992,7 @@ export default {
                                 datalist.push(phone); 
                                 datalist.push(pic); 
                             }else{
+                                  console.log('AAAAAA222')
                                 this.$message({type:'warning',message:"请完善分店信息"});
                                 return;
                             }
@@ -390,6 +1014,7 @@ export default {
                                   lcoallistobj.otherShopPhone = this.localotherShopList[i].otherPhone;
                                    lcoallistobj.otherShopPic = this.localotherShopList[i].otherPic[0];
                             }else{
+                                  console.log('AAAAAA333')
                                 this.$message({type:'warning',message:"请完善分店信息"});
                                 return;
                             } 
@@ -415,6 +1040,7 @@ export default {
                            stroeobj.otherShopPhone = this.defaultstore.otherPhone;
                            stroeobj.otherShopPic = this.defaultstore.otherPic[0];
                     }else{
+                        console.log('AAAAAA444')
                         this.$message({type:'warning',message:"请完善分店信息"});
                         return;
                     }
@@ -432,6 +1058,7 @@ export default {
                                    lcoallistobj.otherShopPhone = this.localotherShopList[i].otherPhone;
                                    lcoallistobj.otherShopPic = this.localotherShopList[i].otherPic[0];
                             }else{
+                                  console.log('AAAAAA555')
                                  this.$message({type:'warning',message:"请完善分店信息"});
                                 return;
                             }
@@ -623,7 +1250,7 @@ export default {
                         　　return; 
                     　　} 
                 }else{
-                    this.$message({type:'warning',message:"请完善分店信息"});
+                    // this.$message({type:'warning',message:"请完善分店信息"});
                     return;
                 }
             }
@@ -668,28 +1295,28 @@ export default {
               }
           })
        },
-       deleteStroeoneof(otherid){
-          //删除分店数据
-          let _this = this;
-          let options = {
-              shopId:sessionStorage.getItem('miniprogram'),
-              otherShopId:otherid,
-              operateType:1
-          }
-          mallsOtherShopOperation(options).then((res)=>{
-              if(res.status == 200){
-                   _this.$message({type:'success',message:"删除成功"});
-                  for(let i=0;i<_this.localotherShopList.length;i++){
-                      if(otherid == _this.localotherShopList[i].otherId){
-                          _this.localotherShopList.splice(i,1);
-                          return;
-                      }
-                  }
-              }else{
-                   _this.$message({type:'success',message:"删除失败"});
-              }
-          })
-       },
+       // deleteStroeoneof(otherid){
+       //    //删除分店数据
+       //    let _this = this;
+       //    let options = {
+       //        shopId:sessionStorage.getItem('miniprogram'),
+       //        otherShopId:otherid,
+       //        operateType:1
+       //    }
+       //    mallsOtherShopOperation(options).then((res)=>{
+       //        if(res.status == 200){
+       //             _this.$message({type:'success',message:"删除成功"});
+       //            for(let i=0;i<_this.localotherShopList.length;i++){
+       //                if(otherid == _this.localotherShopList[i].otherId){
+       //                    _this.localotherShopList.splice(i,1);
+       //                    return;
+       //                }
+       //            }
+       //        }else{
+       //             _this.$message({type:'success',message:"删除失败"});
+       //        }
+       //    })
+       // },
        // ****************************  上传开始  *****************************************
         checkFile (type) {
             this.updataImgType = type
@@ -824,6 +1451,21 @@ export default {
   .data-view {
     width: 1080px;
     position: relative;
+    .custhum{
+        display: inline-block;
+        width:150px;height:150px;border:1px dashed #c0ccda;border-radius:5px;text-align: center;
+        background-color: #f5fefa;
+        font-size: 18px;
+        color: #999;
+        line-height: 148px;
+        cursor: pointer;
+        margin-top: 20px;
+    margin-left: 10px;
+    margin-bottom: 15px;
+        &:hover{
+            border:1px dashed #2993f8;
+        }         
+    }
     >.title {
       height: 40px;
       color: #999;
@@ -853,6 +1495,8 @@ export default {
       overflow-y: auto;
       padding-right: 40px;
         .storemodel{
+          margin: 10px 0;
+            padding: 10px;
            height: 450px;
            background-color: #f1f2f3;
            input{
@@ -874,8 +1518,8 @@ export default {
              color: #2993f8;
              font-weight: bold;
            }
-           >.buttondiv{
-              display: inline-block;
+           .buttondiv{
+            display: inline-block;
             background:#2993f8;
             border-radius: 4px;
             text-align: center;
@@ -885,13 +1529,14 @@ export default {
             font-size: 12px;
             line-height: 28px;
             cursor: pointer;
+            vertical-align: bottom;
            }
            >i{
              color: red;
              font-size: 16px;
            }
            >.tiptitle{
-             font-weight: bold;
+             // font-weight: bold;
              >span{
                font-size: 14px;
                color: #999;
@@ -954,7 +1599,7 @@ export default {
                 cursor: pointer;
               }
               >.tiptitle{
-                font-weight: bold;
+                // font-weight: bold;
                 >span{
                   font-size: 14px;
                   color: #999;

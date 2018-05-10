@@ -102,6 +102,7 @@ import BrandList from "./settings/BrandList"
 import MetalColor from "./settings/MetalColor"
 import Certificate from "./settings/Certificate"
 import BarCodeManage from './settings/BarCodeManage'
+import ServeManage from './settings/ServeManage'
 import menu from './menu.json'
 
 import BigPopup from './settingComponents/bigPopup'
@@ -165,6 +166,7 @@ export default {
         MetalColor,
         Certificate,
         BarCodeManage,
+        ServeManage,
         BigPopup,  // 操作弹框
         draggable //拖动插件
     },
@@ -507,6 +509,9 @@ export default {
                 case '10':
                     this.panel = BarCodeManage
                     break
+                case '11':
+                    this.panel = ServeManage
+                    break
             }
         },
     }
@@ -553,7 +558,7 @@ export default {
             float: left;
             background:#fff;
             border-radius: 10px;
-            box-shadow: 0px 0 15px #ddd;
+            box-shadow: 0px 0 15px #e2e2e2;
             // box-shadow: 0 0 20px 2px rgba(0,0,0,0.1);
             position: relative;
             .main-left-title {
@@ -573,7 +578,7 @@ export default {
             .main-left-menu {
                 position: absolute;
                 left: 0;
-                top: 72px;
+                top: 68px;
                 bottom: 0;
                 width: 158px;
                 border-bottom-left-radius: 10px;
@@ -624,7 +629,7 @@ export default {
                 width: 300px;
                 height: 370px;
                 margin-bottom: 20px;
-                box-shadow: 0px 0 15px #ddd;
+                box-shadow: 0px 0 15px #e2e2e2;
                 .supplier-setting-title {
                     height: 50px;
                     width: 100%;
@@ -683,7 +688,7 @@ export default {
             .storage-setting {
                 width: 300px;
                 height: 350px;
-                box-shadow: 0px 0 15px #ddd;
+                box-shadow: 0px 0 15px #e2e2e2;
                 .storage-setting-title {
                     height: 50px;
                     width: 100%;

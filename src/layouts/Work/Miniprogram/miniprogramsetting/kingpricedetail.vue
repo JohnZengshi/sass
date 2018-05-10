@@ -5,10 +5,10 @@
       <i class="iconfont icon-liebiao"></i>金价设置
     </div>
     <div class="tpl-scroll">
-        <div class="kingtitle"> <i>*</i><span>开启后将同步店铺今日金价信息到商城页面，请谨慎操作</span></div>
+        <div class="kingtitle"> <i>*</i><span>关闭后则今日金价信息将不显示在商城页面，请谨慎操作</span></div>
         <div class="kingswitchs">
             <span>今日金价</span>
-            <Switchs class="switchcls"  :isDelRole="true" :sex="pricestype" @switchsChange="setCostFlag"></Switchs>
+            <Switchs v-if="isShow" class="switchcls"  :isDelRole="true" :sex="pricestype" @switchsChange="setCostFlag"></Switchs>
       </div>
     </div>
   </div>
@@ -22,7 +22,8 @@ export default {
      props :['shopId'],
     data(){
        return{
-          pricestyle:'N',
+        isShow: true,
+        pricestyle:'N',
        }
     },
     computed:{
@@ -37,8 +38,18 @@ export default {
     },
     
     created(){
+      if (this.shopId) {
         this.getSettingHandle();
+      }
     },
+    mounted () {
+      eventBus.$on('xcx-upload-data', (shopId) => {
+        this.getSettingHandle(shopId)
+      })
+    },
+         beforeDestroy () {
+      eventBus.$off('xcx-upload-data')
+     },
     methods:{
       //-----------------操作值   改变ui 部分
           setCostFlag(val){
@@ -46,16 +57,16 @@ export default {
              if(val === 'Y'){
               //开启    N关闭
                 let options = {
-                    shopId:sessionStorage.getItem('miniprogram'),
+                    shopId:this.shopId,
                     operateType:1,
-                    dataId:sessionStorage.getItem('miniprogram')
+                    dataId:this.shopId
                 }
                 this.setSettingHandler(options);
              }else{
                    let options = {
-                    shopId:sessionStorage.getItem('miniprogram'),
+                    shopId:this.shopId,
                     operateType:2,
-                    dataId:sessionStorage.getItem('miniprogram')
+                    dataId:this.shopId
                 }
                 this.setSettingHandler(options);
              }
@@ -72,11 +83,15 @@ export default {
               //错误
           })
       },
-      getSettingHandle(){
+      getSettingHandle(parm){
+          this.isShow = false
           // 获取金价开启关闭状态
           let _this = this;
-          let options = {shopId:sessionStorage.getItem('miniprogram')}
+          let options = {
+            shopId: parm || this.shopId, //店铺ID
+          }
            goldPriceEnableInfo(options).then((res)=>{
+            this.isShow = true
                console.log('金价数据:',res);
                 if(res.data.state == 200){
                     if(res.data.data.status == null || res.data.data.status == ''){

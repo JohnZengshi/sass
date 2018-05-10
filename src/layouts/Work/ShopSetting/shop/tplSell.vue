@@ -16,7 +16,6 @@
               <p class="input">
                   <input 
                       type="text" 
-                      :value="k.defaultDiscount"  
                       v-if="storePrivilege"
                       @focusin="editFocusin(k.defaultDiscount, $event)"
                       @focusout="editFocusout(k,k.defaultDiscount)"
@@ -28,7 +27,6 @@
               <p class="input">
                   <input 
                       type="text" 
-                      :value="k.lowestDiscount"  
                       v-if="storePrivilege"
                       @focusin="editFocusin(k.lowestDiscount, $event)"
                       @focusout="editFocusout(k,k.lowestDiscount)"

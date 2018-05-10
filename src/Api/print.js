@@ -2,12 +2,13 @@ import 'whatwg-fetch'
 
 export default class PrintAPI {
 
-    //static serverHost = process.env.NODE_ENV === 'development' ? '/yunzhubao' : ''
+    static serverHost = process.env.NODE_ENV === 'development' ? '/yunzhubao' : ''
     // static serverHost = process.env.NODE_ENV === 'development' ? '/yunzhubao' : INTERFACE_URL_9083;
     // static serverHost = 'http://192.168.100.110:8082/yunzhubao'
-    static serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8083/yunzhubao' : ''
     static version = 'v1'
+
     static namespace = 'print'
+
     static getRequestUnit() {
         return {
             companyId: sessionStorage && sessionStorage.getItem('companyId'),
@@ -22,9 +23,10 @@ export default class PrintAPI {
     static getTemplateList(filter) {
         return fetch(this.serverHost + '/' + this.version + '/' + this.namespace + '/getTemplateList', {
             method: 'POST',
+            credentials: 'include',
             mode: 'cors',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
                 data: filter,

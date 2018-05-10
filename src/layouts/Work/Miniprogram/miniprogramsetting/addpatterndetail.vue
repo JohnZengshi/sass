@@ -65,9 +65,9 @@
                     <i class="iconfont icon-liebiao"></i><i class="validt">*</i>轮播图：<div  @click="checkFile(1)">上传轮播图</div><span>最多上传5张图片</span>
                 </div>
                 <div class="container">
-                      <custhumbnail class="mycusthumbnail" @deletePic="deletePic" :switchimgList="switchimgList"  id="thumbnail" >
-                      </custhumbnail>
-                    <input style="display: none;" type="file" id="file_input" @change="changeFileInput"/>
+                    <custhumbnail class="mycusthumbnail" @deletePic="deletePic" :switchimgList="switchimgList"  id="thumbnail" >
+                    </custhumbnail>
+                    <input style="display: none;" ref="fileOne" type="file" id="file_input" @change="changeFileInput"/>
                 </div>
 
                   <div class="title muswitchimg">
@@ -76,19 +76,20 @@
                 <div  class="container">
                      <custhumbnail class="mycusthumbnail" @deletePic="deletePic" :switchimgList="patternswitchlist"  id="thumbnail" >
                       </custhumbnail>
-                    <input style="display: none;" type="file" id="file_input" @change="changeFileInput"/>
+                    <input style="display: none;" ref="fileTwo" type="file" id="file_input" @change="changeFileInput"/>
                     
                 </div>
 
                 <div class="title muswitchimg">
                     <i class="iconfont icon-liebiao"></i><i class="validt">*</i>商品视频：<div  @click="checkFile(3)">上传视频</div><span>仅可上传一个视频，最多50M</span>
-                    <input style="display: none;" type="file" id="file_input" @change="changeFileInput"/>
+                    <input style="display: none;" ref="fileThree" type="file" id="file_input" @change="changeFileInput"/>
                 </div>
                 <div  class="container">
                     <div class="myprogress">
                         <span>{{patternvedio}}</span>
                         <el-progress class="pro" :percentage="vedioprogress" v-if="vedioprogress != 0 && vedioprogress != 100"></el-progress>
-                        <span class="successspan" v-if="vedioprogress == 100">上传成功<i class="iconfont icon-guanbi-copy" @click="chearVedioURi"></i></span>
+   <!--                      <span class="successspan" v-if="patternvedio">上传成功<i class="iconfont icon-guanbi-copy" @click="chearVedioURi"></i></span> -->
+                        <span class="successspan" v-if="patternvedio"><i class="iconfont icon-guanbi-copy" @click="chearVedioURi"></i></span>
                     </div>
                 </div>
 
@@ -183,10 +184,10 @@ export default{
                this.isVisible = !this.isVisible;
                return;
             }
-            if(this.tieinList.length<=0 && this.styleId != ''){
-                this.$message({type:'warning',message:'请先关联商品'});
-                return;
-            }
+            // if(this.tieinList.length<=0 && this.styleId != ''){
+            //     this.$message({type:'warning',message:'请先关联商品'});
+            //     return;
+            // }
             this.$router.go(-1);
         },
         goback(){
@@ -263,10 +264,11 @@ export default{
              options.status = 3;
          }
          programProductAdd(options).then((res)=>{
-          // console.log('获取款式新增返回数据：',res);
-           if(res.status == 200){
+           if(res.data.state == 200){
                this.styleId = res.data.data.styleId;
                this.savePatternpic();//款式基本数据返回，说明有款式ID了，再保存图片和关联商品
+           } else {
+              this.$message({type:'warning',message: res.data.msg});
            }
          })
       },
@@ -360,10 +362,10 @@ export default{
         programGirardImageHandler(options).then((res)=>{
             if(res.data.state == 200){
                 if(this.tieinList.length<=0 && this.styleId != ''){
-                    this.$message({type:'warning',message:'保存成功,请关联商品'});
+                    this.$message({type:'success',message:'保存成功'});
                     return;
                 }
-                this.$message({type:'success',message:'保存成功!'});
+                this.$message({type:'success',message:'保存成功'});
                 this.$router.go(-1);
             }
         })
@@ -421,7 +423,7 @@ export default{
             this.$message({type:'warning',message:'请先上传款号轮播图'});
             return;
         }
-        if(this.patternvedio == '' || this.patternvedio== null){
+        if(!this.patternvedio){
            this.$message({type:'warning',message:'请先上传视频'});
             return;
         }
@@ -432,26 +434,29 @@ export default{
            
         // }
         if(this.$route.query.stid != '' && this.$route.query.stid != null){
+
             this.updataPatternitem();//修改基本信息
+  
             this.updataPatternPic();//删除图片
             //this.savePatternpic();//，再保存图片
         }else{
            if(this.styleId != ''){
+
                 if(this.tieinList.length<=0 && this.styleId != ''){
-                    this.$message({type:'warning',message:'保存成功,请关联商品'});
+                    this.$message({type:'success',message:'保存成功'});
                     return;
                 }
                 // else{
                 //     this.updataPatternitem();//修改基本信息
                 //     this.updataPatternPic();//删除图片
                 // } 
-                this.$message({type:'success',message:'保存成功!'});
+                this.$message({type:'success',message:'保存成功'});
                 this.$router.go(-1);
            }else{
+  
                this.savePatternitem();//新增的时候，，这个值肯定没有，保存完了编辑，或者原本就是编辑页面，走修改
             }
         } 
-           
         this.isSavedetail = true;
                 // if(this.$route.query.stid == '' || this.$route.query.stid == null){
                 // this.savePatternitem();//保存基本信息 ----必须要先等基本信息返回了，才能执行 图片操作和关联操作
@@ -541,6 +546,9 @@ export default{
             // if (extName == 'png' || extName == 'jpg' || extName == 'JPEG' || extName == 'jpeg') {
             let successCallBack = function (result) {
                 //console.log('获取上传结果:',result);
+                if ( self.$refs.fileOne ) self.$refs.fileOne.value = ''
+                if ( self.$refs.fileTwo ) self.$refs.fileTwo.value = ''
+                if ( self.$refs.fileThree ) self.$refs.fileThree.value = ''
                 if (result.code === 0) {
                     if(self.updataImgType==1){
                        self.switchimgList.push(result.data.source_url);
@@ -550,16 +558,16 @@ export default{
                         self.patternvedio = result.data.source_url;
                     }
                     
-                let data = {
-                    type: type,
-                    objId: userId,
-                    url: result.data.source_url
-                }
-                baseApi.apiCall(data, updateUploadFileURL).then((response) => {
-                    if (response.data.state === 200) {
-                    //self.$store.dispatch('getUserInfo');
-                    }
-                })
+                // let data = {
+                //     type: type,
+                //     objId: userId,
+                //     url: result.data.source_url
+                // }
+                // baseApi.apiCall(data, updateUploadFileURL).then((response) => {
+                //     if (response.data.state === 200) {
+                //     //self.$store.dispatch('getUserInfo');
+                //     }
+                // })
                 }
             }
             let errorCallBack = function (result) {
@@ -673,7 +681,7 @@ export default{
           let options = {
               shopId:sessionStorage.getItem('miniprogram'),//店铺ID
               styleId:'',//款号ID
-              sellStatus:1,//3全部 2已售 1在售
+              sellStatus:4,//3全部 2已售 1在售
               page:this.page,//当前页
               pageSize:this.pageSize//每页显示数量
           }
@@ -930,7 +938,8 @@ export default{
     right: 0;
    .main-container{
      background-color: #fff;
-     height: 100%;
+     // height: 100%;
+     height: 730px;
      box-shadow: 0px 0 15px #e2e2e2;
      border-radius: 10px;
      
@@ -977,6 +986,8 @@ export default{
      float: left;
      
      >.container{
+        height: 620px;
+        margin-top: 60px;
        display: flex;
        justify-content: space-between;
        margin-top: 50px;

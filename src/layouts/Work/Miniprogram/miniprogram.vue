@@ -30,7 +30,7 @@
                     <!--左侧菜单-->
                     <menu-tab></menu-tab>
                     <!--数据内容区-->
-                    <router-view :shopId = "shopId" ></router-view>
+                    <router-view :shopId="shopId"></router-view>
                 </div>
             </div>
             
@@ -43,9 +43,9 @@ import {seekGetShopListByCo,seekGetUserInfo} from 'Api/commonality/seek.js'
 export default{
     data(){
         return{
-           shopname:"",
-           shopListByCo:[],
-           shopId:"",
+           shopname: "",
+           shopListByCo: [],
+           shopId: ""
         }
     },created(){
        this.fixUserPromise();
@@ -81,9 +81,11 @@ export default{
            //  console.log('获取用户角色:',sessionStorage.getItem('miniprogramrole'));
         },
         firstclick4(item,index) {
-            this.shopname = item.shopName;
-            this.shopId = item.shopId
-            sessionStorage.setItem('miniprogram',this.shopId);
+          this.shopname = item.shopName;
+          this.shopId = item.shopId
+          console.log('当前店铺信息', item)
+          eventBus.$emit('xcx-upload-data', item.shopId)
+          sessionStorage.setItem('miniprogram',this.shopId);
         },
         gtShopListByCo () { // 获取店铺列表
             let options = {
@@ -94,9 +96,12 @@ export default{
                 console.log(res.data.data.shopList)
                 this.shopListByCo = res.data.data.shopList
                 if (this.shopListByCo[0].shopId) {
-                    this.shopId = this.shopListByCo[0].shopId;
-                    this.shopname = this.shopListByCo[0].shopName;
-                    sessionStorage.setItem('miniprogram',this.shopId);
+                  this.shopId = this.shopListByCo[0].shopId;
+                  this.shopname = this.shopListByCo[0].shopName;
+                  // debugger;
+                  eventBus.$emit('xcx-upload-data', this.shopListByCo[0].shopId)
+                  console.log('this.shopListByCo[0].shopId', this.shopListByCo[0].shopId)
+                  sessionStorage.setItem('miniprogram',this.shopId);
                 }
             }, (res) => {
 
@@ -113,13 +118,13 @@ export default{
 <style lang="scss" scoped>
 .shop-container-tpl{
   width: 1250px;
-  margin: 0 auto 30px auto;
+  margin: 30px auto 30px auto;
   
   >.sp-title{
     width: 100%;
-    height: 90px;
+    height: 50px;
     color: #333;
-    padding-top: 40px;
+   // padding-top: 40px;
     position: relative;
     z-index: 9999;
     >.sp_crumbs{
@@ -265,7 +270,7 @@ export default{
    .main-container{
      background-color: #fff;
      height: 100%;
-     box-shadow: 0px 0 15px #ddd;
+     box-shadow: 0px 0 15px #e2e2e2;
      border-radius: 10px;
      
      >.title{
