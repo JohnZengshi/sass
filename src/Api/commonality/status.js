@@ -181,5 +181,7 @@ export const statusPosition = function (parm) {
             return "店长";
         case "5":
             return "店员";
+        case "6":
+            return "监察员";
     }
 }
