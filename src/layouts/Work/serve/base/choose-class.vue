@@ -14,7 +14,9 @@
         <li class="selectBox">
           <span class="selTittle">产品类别</span>
           <div class="input-w180">
-          <Cascade :propList="productCategory" :subclassKey="'typeList'" titleName="产品类别" @clear="callProductCategory" @dropReturn="changeVaueClasses">
+          <Cascade :propList="productCategory" :subclassKey="'typeList'" titleName="产品类别"
+          @clear="callVaueClasses"
+          @dropReturn="changeVaueClasses">
           </Cascade>
             <!-- <el-input v-model="phone" placeholder="请输入联系号码"></el-input> -->
           </div>
@@ -22,26 +24,30 @@
 
         <li class="selectBox">
           <span class="selTittle">成色大类</span>
-          <Cascade :propList="productClassListOne" :subclassKey="'childrenList'" titleName="成色大类" @clear="callProductCategory" @dropReturn="changeVaueColor">
+          <Cascade :propList="productClassListOne" :subclassKey="'childrenList'" titleName="成色大类"
+          @clear="clearVaueColor"
+          @dropReturn="changeVaueColor">
           </Cascade>
         </li>
 
         <li class="selectBox">
           <span class="selTittle">宝石名称</span>
-          <Cascade :propList="productClassListTwo" :subclassKey="'childrenList'" titleName="宝石名称" @clear="callProductCategory" @dropReturn="changeVaueGem">
+          <Cascade :propList="productClassListTwo" :subclassKey="'childrenList'" titleName="宝石名称"
+          @clear="clearVaueGem"
+          @dropReturn="changeVaueGem">
           </Cascade>
         </li>
 
         <li class="selectBox">
           <span class="selTittle">首饰类别</span>
-          <Cascade :propList="productClassListThree" :subclassKey="'childrenList'" titleName="宝石名称" @clear="callProductCategory" @dropReturn="changeVaueJewelry">
+          <Cascade :propList="productClassListThree" :subclassKey="'childrenList'" titleName="首饰类别" @clear="crearVaueJewelry" @dropReturn="changeVaueJewelry">
           </Cascade>
         </li>
 
         <li class="selectBox">
-          <span class="selTittle">金重/件重</span>
+          <span class="selTittle">件重</span>
           <div class="input-w180">
-            <el-input v-model="newData.goldWeight" placeholder="请输入"></el-input>
+            <el-input v-model="newData.weight" placeholder="请输入"></el-input>
           </div>
         </li>
 
@@ -73,6 +79,10 @@ export default{
       productClassListTwo: [], // 宝石名称
       productClassListThree: [], // 首饰类别
       newData: {
+        serviceId: '',
+        serviceTypeName: '',
+        serviceTypeId: '',
+        serviceTypeName: '',
         serviceTypeName: '',
         serviceId: '',
         type: '3',
@@ -88,12 +98,28 @@ export default{
         colorName: '',
         gemId: '',
         gemIdName: '',
-        goldWeight: ''
+        weight: ''
       }
     }
   },
   
   methods: {
+
+    initData () {
+        this.newData.serviceTypeName = ''
+        this.newData.serviceId = ''
+        this.newData.productId = ''
+        this.newData.productName = ''
+        this.newData.classesId = ''
+        this.newData.classesName = ''
+        this.newData.jewelryId = ''
+        this.newData.jewelryName = ''
+        this.newData.colorId = ''
+        this.newData.colorName = ''
+        this.newData.gemId = ''
+        this.newData.gemIdName = ''
+        this.newData.weight = ''
+    },
 
     open () {
       this.getProductClass()
@@ -144,7 +170,7 @@ export default{
         return
       }
 
-      if (!this.newData.goldWeight) {
+      if (!this.newData.weight) {
         this.$message({
           message: '请填写金重/件重',
           type: 'warning'
@@ -153,21 +179,23 @@ export default{
       }
 
       debugger
-      this.newData.productName = `${this.newData.classesName} - ${this.newData.jewelryName} - ${this.newData.colorName} - ${this.newData.gemIdName}`
+      this.newData.productName = `${this.newData.classesName}-${this.newData.jewelryName}-${this.newData.colorName}-${this.newData.gemIdName}`
 
       this.newData.productId = 'tProductId' + new Date().getTime()
 
+      let datas = JSON.parse(JSON.stringify(this.newData))
       this.$emit('chooseClassData', {
               orderNo: '',
-              orderType: '2', // 1系统添加 2.手工添加
+              orderType: '3', // 1本人商品 2.他人商品3.手工
               productList: [
-                this.newData
+                datas
               ]
           })
       this.close()
     },
     
     close () {
+      this.initData()
       this.popupShow = false
     },
 
@@ -251,10 +279,19 @@ export default{
       this.newData.classesName = val.item.operateName
     },
 
+    callVaueClasses () {
+      this.newData.classesId = ''
+      this.newData.classesName = ''
+    },
+
     changeVaueJewelry (val) {
-      console.log(val)
       this.newData.jewelryId = val.item.operateId
       this.newData.jewelryName = val.item.operateName
+    },
+
+    crearVaueJewelry () {
+      this.newData.jewelryId = ''
+      this.newData.jewelryName = ''
     },
 
     changeVaueColor (val) {
@@ -262,9 +299,19 @@ export default{
       this.newData.colorName = val.item.operateName
     },
 
+    clearVaueColor () {
+      this.newData.colorId = ''
+      this.newData.colorName = ''
+    },
+
     changeVaueGem (val) {
       this.newData.gemId = val.item.operateId
       this.newData.gemIdName = val.item.operateName
+    },
+
+    clearVaueGem () {
+      this.newData.gemId = ''
+      this.newData.gemIdName = ''
     },
 
     changeVaue(val) {
@@ -378,6 +425,8 @@ export default{
             .input-w180 {
               vertical-align: top;
               height: 36px;
+              width: 180px;
+              display: inline-block;
               .el-input {
                 height: 36px;
                 .el-input__inner {

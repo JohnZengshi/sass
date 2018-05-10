@@ -137,11 +137,18 @@ export default {
               orderType: i.type,
               productList: [i]
             }
+            for (let i of objData.productList) {
+              i.serviceId = i.serviceTypeId
+              i.orderType = i.type
+            }
             productDatas.push(objData)
           }
           this.userData.orderList = productDatas
           setTimeout(() => {
             this.$refs.addHomeWrap.initCheck(productDatas)
+            if (this.$refs.addHomeWrap) {
+              this.$refs.addHomeWrap.initKey()
+            }
           }, 100)
         },
         seekVisitor (parm) {

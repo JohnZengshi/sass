@@ -378,9 +378,9 @@ export default{
  right:-70px;
  bottom: 0;
  width:52px;
- min-height: 50px;
+ // min-height: 50px;
  background-color: #fff;
- border:1px solid #ededed;
+ // border:1px solid #ededed;
  border-radius: 5px;
  /*overflow: hidden;*/
  z-index: 3500;

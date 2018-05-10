@@ -9,6 +9,7 @@
         <div class="actions-status" :class="{'animat-scroll':curStatus.slipPointer}">
           <headerMessege
             @openAddCommodityWrap="openAddCommodityWrap"
+            @_seekReceiptFWSynopsis="_seekReceiptFWSynopsis"
             :orderData="orderData"
             :receiptData="receiptData"
             ref="actionsStatus"
@@ -150,7 +151,7 @@ export default{
     isOperation () {
       if (this.receiptData.makeOrderManId) {
         if (this.curStatus.nowStatus == 1) {
-          if (this.shopManageRole || sessionStorage.getItem('id') == this.receiptData.makeOrderManId) {
+          if (this.shopManageRole || sessionStorage.getItem('id') == this.receiptData.makeOrderManId || sessionStorage.getItem('id') == this.receiptData.sellUserId) {
             return true
           }
         }

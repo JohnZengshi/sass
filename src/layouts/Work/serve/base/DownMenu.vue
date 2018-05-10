@@ -1,7 +1,7 @@
 <template>
-  <div class="down-menu-main">
+  <div class="down-menu-main" :class="{'serve-has-hover': productType}">
     <span class="title-name select">
-      {{product.serviceTypeName}}
+      {{productType}}{{product.serviceTypeName}}
       <i class="iconfont icon-arrow-down drop-triangle" v-if="noChange"></i>
 <!--       <i v-show="!isSolid" class="el-icon-circle-close" title="清除" @click="clearTitleInfo"
       v-if="product.serviceTypeName"></i> -->
@@ -14,7 +14,7 @@
 <script>
 import {seekGetServiceTypeList} from 'Api/commonality/seek'
 export default {
-  props: ['noClear','product', 'showList'], // nameKey->取值的key
+  props: ['noClear','product', 'showList', 'productType'], // nameKey->取值的key
   data () {
     return {
         isSolid: false, // 实心
@@ -49,7 +49,6 @@ export default {
     display: inline-block;
     margin-top: 10px;
     position: relative;
-    cursor: pointer;
     vertical-align: top;
     &:after{
         content:'';
@@ -63,35 +62,16 @@ export default {
         transition: all .3s;
         margin-left: -3px;
     }
-    &:hover{
-        background:#e0ecf7;
-        color:#3195f5;
-        >ul{
-            opacity: 1;
-            visibility: visible;
-            top:30px;
-        }
-        &:after{
-            top: 18px;
-            border-bottom-color: #fff;
-        }
-        >.title-name .drop-triangle {
-            transform: rotate(180deg);
-            //color:#2993f8;
-        }
-        >.title-name {
-            color:#3195f5;
-        }
-        .title-name .el-icon-circle-close {
-            color:#2993f8;
-        }
-    }
     .title-name {
         padding: 0 8px;
+        width: 118px;
+        margin-top: 2px;
+        color: #dedede;
+        border: 1px solid #dedede;
+        border-radius: 5px;
         &.select{
             //color: #333;
         }
-        color:#666;
         text-align: center;
         display: block;
         height: 30px;
@@ -100,8 +80,10 @@ export default {
         line-height: 30px;
         .drop-triangle {
             font-size:12px;
+            color: #dedede;
             display: inline-block;
             //transform: scale(120%, 120%) !important;
+            float: right;
             transition: all .3s;
             transform-origin: center center;
         }
@@ -130,7 +112,7 @@ export default {
         top: 50px;
         right: -20px;
         z-index: 101;
-        max-height: 300px;
+        max-height: 200px;
         overflow: hidden;
         overflow-y: auto;
         li {
@@ -164,6 +146,36 @@ export default {
         }
         li.active:before {
             display: none;
+        }
+    }
+}
+.serve-has-hover{
+    cursor: pointer;
+    .title-name {
+        color:#666;
+        border: 1px solid #999;
+    }
+    &:hover{
+        background:#e0ecf7;
+        color:#3195f5;
+        >ul{
+            opacity: 1;
+            visibility: visible;
+            top:30px;
+        }
+        &:after{
+            top: 18px;
+            border-bottom-color: #fff;
+        }
+        >.title-name .drop-triangle {
+            transform: rotate(180deg);
+            //color:#2993f8;
+        }
+        >.title-name {
+            color:#3195f5;
+        }
+        .title-name .el-icon-circle-close {
+            color:#2993f8;
         }
     }
 }

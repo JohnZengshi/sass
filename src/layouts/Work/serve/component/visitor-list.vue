@@ -64,6 +64,7 @@ export default{
     }
   },
   mounted () {
+    this.dateChange()
     let _self = this
     $(".visit-table-wrap").mCustomScrollbar({
       theme: "minimal-dark",

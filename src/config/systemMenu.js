@@ -88,6 +88,12 @@ const systemMenu = [
 				path: '/work/sell',
 				icon: 'xiaoshou', 
 				children: []
+			},
+			{
+				text: '服务',
+				path: '/work/serve',
+				icon: 'xiaoshou', 
+				children: []
 			}
 		]
 	},

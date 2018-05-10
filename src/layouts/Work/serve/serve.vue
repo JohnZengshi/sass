@@ -28,20 +28,20 @@
                     <span class="spaceMark">|</span>
                     <DropDownMenu
                         style="float: left;"
-                        :nameKey="'username'"
-                        :titleInfo="filterData.receptionName || '接待员'"
-                        :showList="shopUserList"
-                        @changeData="dropReceptionReturn"
-                        @clearInfo="clearReception">
+                        :nameKey="'name'"
+                        :titleInfo="filterData.afterStatusName || '售后状态'"
+                        :showList="afterStatusList"
+                        @changeData="dropaAfterStatus"
+                        @clearInfo="clearAfterStatus">
                     </DropDownMenu>
                     <span class="spaceMark">|</span>
                     <DropDownMenu
                         style="float: left;"
-                        :nameKey="'name'"
-                        :titleInfo="filterData.afterStatusName || '售后类型'"
-                        :showList="afterStatusList"
-                        @changeData="dropaAfterStatus"
-                        @clearInfo="clearAfterStatus">
+                        :nameKey="'username'"
+                        :titleInfo="filterData.receptionName || '售后接待人'"
+                        :showList="shopUserList"
+                        @changeData="dropReceptionReturn"
+                        @clearInfo="clearReception">
                     </DropDownMenu>
                     
                     
@@ -61,7 +61,15 @@
                         </ul>
                     </div> -->
                     <span class="spaceMark">|</span>
-                    <div class="optionDiv selected">
+                    <DropDownMenu
+                        style="float: left;"
+                        :nameKey="'name'"
+                        :titleInfo="filterData.orderByName || '排序'"
+                        :showList="datas.times"
+                        @changeData="dropOrderByName"
+                        @clearInfo="clearOrderByName">
+                    </DropDownMenu>
+<!--                     <div class="optionDiv selected">
                         <span  class="title-name" :class="optionData.sort == '' ? '' : 'select'">
                            {{optionData.sort == '' ? '排序' : optionData.sort}}
                           <i class="iconfont icon-arrow-down" v-if="optionData.sort ==''"></i>
@@ -75,11 +83,11 @@
                                 {{item.name}}
                             </li>
                         </ul>
-                    </div>
+                    </div> -->
 
                     <div class="search">
-                        <input @keyup.enter="newReceipt" v-model="keyword" type="text" placeholder="请输入会员名/手机号">
-                        <div class="search-btn" @click="newReceipt">
+                        <input @keyup.enter="inputSeek" v-model="keyword" type="text" placeholder="请输入会员名/手机号">
+                        <div class="search-btn" @click="inputSeek">
                             <i class="iconfont icon-sousuo"></i>
                         </div>
                     </div>
@@ -130,7 +138,7 @@
 <script>
 import Vue from 'vue'
 import {mapGetters, mapActions} from "vuex"
-import {seekGetShopListByCo, seekServiceAfterList, seekMemberList} from 'Api/commonality/seek'
+import {seekGetShopListByCo, seekServiceAfterList, seekMemberList, seekGetServiceTypeList} from 'Api/commonality/seek'
 import {operateDelReceipt, operateCreateFWReceipt} from 'Api/commonality/operate'
 import {statusCashStatus} from 'Api/commonality/status'
 import receiptsList from './receiptsList'
@@ -158,10 +166,10 @@ export default {
             multipleIdentities: '',
             shopUserList: [], // 用户列表
             afterTypeList: [ // 售后类型列表
-                {
-                    serviceTypeId: '567',
-                    serviceTypeName: '999'
-                }
+                // {
+                //     serviceTypeId: '567',
+                //     serviceTypeName: '999'
+                // }
             ],
             afterStatusList: [ // 状态列表
                 {
@@ -277,6 +285,7 @@ export default {
         this.getShopListByCo(); // 店铺列表
         this.workProductClass(); // 产品类别
         this.workSupplierList(); // 供应商
+        this.productPropertyList();
         this.userType = sessionStorage.getItem('userType')
         this.multipleIdentities = sessionStorage.getItem('multipleIdentities')
         this.peoType = sessionStorage.getItem('companyPosition')
@@ -333,6 +342,15 @@ export default {
             "workProductClass", // 产品类别
             "workSupplierList" // 供应商
         ]),
+        productPropertyList () {
+            seekGetServiceTypeList().then((res) => {
+                if (res.data.state == 200) {
+                    this.afterTypeList = res.data.data.classesList[0].dataList
+                }
+            }, (res) => {
+                console.log(res)
+            })
+        },
 
         // 用户列表
         getUserList(parm) {
@@ -358,6 +376,9 @@ export default {
             this.page = 1
             this.showList = []
             this.filterFun(this.cbFun); // 获取单据列表
+        },
+        inputSeek () {
+            this.restorePage(this.cbFun); // 获取单据列表
         },
         // 选择店铺
         dropShopReturn (parm) {
@@ -390,7 +411,17 @@ export default {
             this.filterData.receptionId = parm.userId
             this.restorePage()
         },
-         // 还原接待人
+        // 排序
+        dropOrderByName (parm) {
+            this.filterData.orderByName = parm.name
+            this.filterData.orderBy = parm.type
+            this.restorePage()
+        },
+        clearOrderByName () {
+             this.filterData.orderByName = ''
+            this.filterData.orderBy = ''
+            this.restorePage()
+        },
         clearReception () {
             this.filterData.receptionName = ''
             this.filterData.receptionId = ''
@@ -555,6 +586,7 @@ export default {
         },
         filterFun (cbFun) { // 定位选择的过滤数据
             let options = {
+                keyword: this.keyword,
                 orderBy: this.filterData.orderBy || '1',
                 shopId: this.filterData.shopId,
                 afterType: this.filterData.afterType,

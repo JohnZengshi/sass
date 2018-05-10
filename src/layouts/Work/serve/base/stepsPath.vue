@@ -1,5 +1,6 @@
 <template>
 <div class="steps-path">
+<!-- <p>{{stepItem}}</p> -->
   <div class="steps-item" :class="item.statusClass" v-for="item,i in stepItem">
       <span class="status">{{item.statusName}}</span>
       <div class="user">
@@ -20,7 +21,7 @@ export default{
           createTime : '',
           userName : '',
           status: '1',
-          statusName : '进行中',
+          statusName : '处理中',
           statuscurClass : 'stayAudit', // 订单状态栏显示样式，根据样式配置自适应状态栏背景颜色变化
           statusClass : 'ing' //步骤条样式
         },
@@ -71,7 +72,7 @@ export default{
               this.stepItem.forEach((f, i) => {
                 
                 if (item.status == f.status) {
-                  if (item.status == 2 || item.status == 6) {
+                  if (item.status == 3) {
                     Object.assign(f, {
                       statusClass : item.status == status ? 'ing' : 'past'
                     })
@@ -92,6 +93,7 @@ export default{
                 
                 if (f.status == status) {
                    this.$emit('setStatus',{
+                    createTime: this.toStringCut(item.createTime),
                      statusName: f.statusName,
                      statuscurClass: f.statuscurClass,
                      status : f.status,

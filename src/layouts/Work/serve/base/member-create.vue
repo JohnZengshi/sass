@@ -126,7 +126,8 @@ export default{
               phone: this.phone,
               type: '1',
               memberId: res.data.data.memberId,
-              imageUri: ''
+              imageUri: '',
+              sex: this.sex[0]
             }
             if (this.currentData) {
               datas.imageUri = this.currentData.imageUri
@@ -239,6 +240,8 @@ export default{
             }
             .input-w180 {
               vertical-align: top;
+              width: 180px;
+              display: inline-block;
               height: 36px;
               .el-input {
                 height: 36px;

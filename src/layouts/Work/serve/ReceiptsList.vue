@@ -122,7 +122,7 @@ export default {
             } else {
                 switch (parm) {
                     case "1":
-                        return "进行中";
+                        return "处理中";
                     case "2":
                         return "已完成";
                     case "3":
@@ -138,7 +138,7 @@ export default {
     }
 }
 </script>
-<!-- <style src="../../../assets/css/template/receiptsListBody.scss" lang="scss" scoped></style> -->
+<style src="../../../assets/css/template/receiptsListBody.scss" lang="scss" scoped></style>
 <style lang="scss" scoped>
 .status-name{
     clear: both;

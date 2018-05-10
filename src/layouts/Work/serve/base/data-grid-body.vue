@@ -1,11 +1,12 @@
 <template>
   <div class="serve-data-grid-body-main">
-    <div style="min-height: 430px;padding-bottom: 80px;">
+    <div style="min-height: 430px; padding-bottom: 200px;">
       <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
         <div v-for="item in userData.orderList">
           <h5 v-if="item.orderType == 1" :class="{'is-seek': item.isSeek == 'Y'}">{{item.orderNo}}</h5>
-          <h5 v-if="item.orderType == 2" :class="{'is-seek': item.isSeek == 'Y'}">外来商品</h5>
-          <ul class="sever-product-list-wrap" v-for="(product, index) in item.productList">
+          <h5 v-if="item.orderType == 2" style="background-color: #fff3e3" :class="{'is-seek': item.isSeek == 'Y'}">{{item.orderNo}}</h5>
+          <h5 v-if="item.orderType == 3" :class="{'is-seek': item.isSeek == 'Y'}">外来商品</h5>
+          <ul class="sever-product-list-wrap" :class="{'on-compile-product': !filterType(product.productType)}" v-for="(product, index) in item.productList">
             <li>{{product.productName}}
               <i class="product-type" v-if="product.productType">{{filterProductType(product.productType)}}</i>
             </li>
@@ -14,15 +15,17 @@
             <li>{{product.price}}</li>
             <li>
               <DownMenu
+                :productType="filterType(product.productType)"
                 :showList="showList"
                 :noClear="true"
                 :product="product"
               ></DownMenu>
             </li>
             <li>
-              <el-checkbox v-if="product.serviceId || product.serviceTypeId" :label="product.productId" style="font-size: 0"></el-checkbox>
-              <label v-else class="no-check-tit">
-                <span @click="titChect"></span>
+              <el-checkbox v-if="filterCheckbox(product.productType, product.serviceId, product.serviceTypeId)" :label="product.productId" style="font-size: 0"></el-checkbox>
+              <label v-else class="no-check-tit" :class="{'cursor-h': filterProductType(product.productType)}">
+                <span v-if="filterProductType(product.productType)" @click="titChect"></span>
+                <span v-else></span>
               </label>
             </li>
           </ul>
@@ -72,6 +75,17 @@ export default{
     this._seekGetServiceTypeList()
   },
   methods: {
+    filterType (parm) {
+      return parm ? parm == 1 : false
+    },
+    filterCheckbox (productType, serviceId, serviceTypeId) {
+      if (this.filterType(productType)) {
+        if (serviceId || serviceTypeId) {
+          return true
+        }
+      }
+      return false
+    },
     _seekGetServiceTypeList () {
         seekGetServiceTypeList().then((res) => {
             if (res.data.state == 200) {
@@ -90,6 +104,7 @@ export default{
           this.checkedCities.push(j.productId)
         }
       }
+      this.$emit('updateData', this.checkedCities)
     },
     filterProductType (parm) {
       switch (parm) {
@@ -159,6 +174,7 @@ export default{
       float: left;
       font-size: 14px;
       text-align: center;
+      color: #040404;
       >.product-type{
         display: inline-block;
         font-style: normal;
@@ -166,6 +182,8 @@ export default{
         border-radius: 2px;
         font-size: 12px;
         line-height: 12px;
+      }
+      .product-type-one{
         color: #fff;
         background-color: #ffa200;
       }
@@ -176,7 +194,6 @@ export default{
         line-height: 20px;
         font-size: 0;
         text-align: center;
-        cursor: pointer;
         display: inline-block;
         position: relative;
         white-space: nowrap;
@@ -195,24 +212,46 @@ export default{
           z-index: 1;
         }
       }
+
+      .cursor-h{
+        cursor: pointer;
+      }
+
     }
     >li:nth-child(1){
       width: 190px;
+      overflow: hidden;
+      white-space:nowrap; 
+      text-overflow:ellipsis; 
     }
     >li:nth-child(2){
-      width: 124px;
+      width: 120px;
+      overflow: hidden;
+      white-space:nowrap; 
+      text-overflow:ellipsis; 
     }
     >li:nth-child(3){
-      width: 86px;
+      width: 82px;
+      overflow: hidden;
+      white-space:nowrap; 
+      text-overflow:ellipsis; 
     }
     >li:nth-child(4){
-      width: 86px;
+      width: 76px;
+      overflow: hidden;
+      white-space:nowrap; 
+      text-overflow:ellipsis; 
     }
     >li:nth-child(5){
-      width: 100px;
+      width: 118px;
     }
     >li:nth-child(6){
       width: 54px;
+    }
+  }
+  .on-compile-product{
+    >li{
+      color: #dedede;
     }
   }
 }

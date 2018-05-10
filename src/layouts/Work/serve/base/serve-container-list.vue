@@ -14,6 +14,28 @@ export default{
   components: {
     serveContainerDetail
   },
+  mounted () {
+    $(".serve-container-list-main").mCustomScrollbar({
+      axis: 'x',
+      theme: "minimal-dark",
+      autoHideScrollbar: true,
+      scrollInertia: 500,
+      mouseWheel: {
+        scrollAmount: 200,
+        preventDefault: false,
+        normalizeDelta: false
+      },
+      advanced: {
+        updateOnSelectorChange: "div",
+        updateOnContentResize: true
+      },
+      callbacks: {
+        onScrollStart: function() {
+          
+        }
+      }
+    })
+  },
   methods: {
     setBounding(parm) {
       console.log('parm', parm)

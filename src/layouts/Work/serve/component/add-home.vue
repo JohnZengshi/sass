@@ -1,5 +1,5 @@
 <template>
-  <div class="serve-add-home-main" @click.stop.prevent="closeSeek">
+  <div class="serve-add-home-main">
     <div class="serve-add-c-batch-header">
       <div class="add-c-title" @click.stop.prevent="closeSeek">查找售后商品</div>
       <div class="operate-bar-top">
@@ -9,7 +9,7 @@
         </div>
         <div class="search">
           <input @click.stop="" @focus="openSeek" v-model="keyWord" @keyup.enter="seekUserData" type="text" :placeholder="listType == '1' ? '姓名/手机号/单据号/条码号' : '姓名/手机号/单据号/条码号'">
-          <div class="search-btn" @click="seekSearch">
+          <div class="search-btn" @click="seekUserData">
             <i class="iconfont icon-sousuo"></i>
           </div>
           <ul class="seek-list" v-show="inputSeekState && keyWord">
@@ -26,7 +26,7 @@
           </ul>
         </div>
       </div>
-      <ul class="operation-btn">
+      <ul class="operation-btn" @click.stop.prevent="closeSeek">
         <li @click="seekVisitor">
           <p>
             <i class="iconfont icon-chazhaofangke"></i>
@@ -47,7 +47,7 @@
         </li>
       </ul>
     </div>
-    <div class="serve-add-c-user-message">
+    <div class="serve-add-c-user-message" @click.stop.prevent="closeSeek">
       <template v-if="userData.memberId">
         <div class="user-message-left">
           <FormatImg :logo="userData.avatarUrl" class="user-m-i-img" :userName="userData.memberName" :size="85"></FormatImg>
@@ -91,6 +91,8 @@
     <choose-class ref="chooseClassWrap" @chooseClassData="chooseClassData"></choose-class>
     <!-- 确认弹窗 -->
     <affirm-popup ref="affirmPopupWrap" :innnerTit="innnerTit" @affirm="affirmNew"></affirm-popup>
+    <!-- 动态确认弹窗 -->
+    <affirm-popup ref="affirmPopupTwoWrap" :innnerTit="affirmTits" @affirm="openMemberOrChooseClass"></affirm-popup>
     <!-- 关联确认弹窗 -->
     <affirm-popup ref="affirmPopupRelevanceWrap" :innnerTit="'此商品未与用户关联，是否添加?'" @affirm="affirmAdd"></affirm-popup>
   </div>
@@ -117,7 +119,8 @@ export default {
     return {
       inputSeekState: '', // 输入框响应状态
       cacheData: {}, // 缓存用户数据
-      innnerTit: '是否添加?',
+      innnerTit: '未搜索到任何信息，去手动添加商品？',
+      affirmTits: '',
       keyWord: '',
       shopId: this.$route.query.shopId,
       listType: '1',
@@ -136,6 +139,9 @@ export default {
     }
   },
   methods: {
+    initKey () {
+      this.keyWord = ''
+    },
     closeSeek () {
       console.log('呗执行了')
       this.inputSeekState = ''
@@ -155,6 +161,7 @@ export default {
       this.$refs.user_data_list_wrap.initCheck(parm)
     },
     colse (parm) {
+      this.keyWord = ''
       this.$emit('close', parm)
     },
     _seekGetMemberInfoByService(parm) {
@@ -197,15 +204,14 @@ export default {
         this._seekAfterProductList(this.memberList[0])
       } else {
         if (this.listType == 2) {
-          this.innnerTit = '未搜索到任何信息，去手动添加商品？'
+          this.affirmTits = '未搜索到任何信息，去手动添加商品？'
         } else {
-          this.innnerTit = '未搜索到任何信息，为此创建会员？'
+          this.affirmTits = '未搜索到任何信息，为此创建会员？'
         }
-        this.$refs.affirmPopupRelevanceWrap.open()
+        this.$refs.affirmPopupTwoWrap.open()
       }
     },
     _seekAfterProductList(item) {
-      console.log('===============999999999999')
       this.inputSeekState = ''
       let options = {
         keyWord: item.keyWord,
@@ -217,11 +223,13 @@ export default {
         .then(res => {
           if (res.data.state == 200) {
             this.cacheData = res.data.data
-            // for (let i of this.cacheData.orderList) {
-            //   for (let j of i.productList) {
-            //     j.type = i.orderType
-            //   }
-            // }
+            for (let i of this.cacheData.orderList) {
+              for (let j of i.productList) {
+                if (j.serviceTypeId) {
+                  j.serviceId = j.serviceTypeId
+                }
+              }
+            }
             // 用户
             if (this.listType == 1) {
               let datas = res.data.data
@@ -275,6 +283,7 @@ export default {
       this.userData.phone = parm.phone
       this.userData.avatarUrl = parm.imageUri
       this.userData.orderList = []
+      this.userData.sex = parm.sex
     },
     open(parm) {
       this.dialog = true

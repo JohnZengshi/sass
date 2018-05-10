@@ -17,11 +17,21 @@
            </h5>
            <div class="select-container">
               <div class="item storage" v-text="receiptData.shopName"><!--店铺--></div>
-              <div class="item storage" v-text="receiptData.sellName"><!--人--></div>
+              <div v-if="!isOperation" class="item storage" v-text="receiptData.sellName"><!--人--></div>
+              <!--人-->
+              <DropDownMenu
+                  v-if="isOperation"
+                  style="float: left;"
+                  :nameKey="'userName'"
+                  :titleInfo="receiptData.sellName || '店铺'"
+                  :showList="shopUserList"
+                  @changeData="dropUserReturn"
+                  @clearInfo="clearUser">
+              </DropDownMenu>
            </div>
            <div class="select-container-name">
-            <div class="item">库位</div>
-            <div class="item">售后接待</div>
+              <div class="item">库位</div>
+              <div class="item">售后接待</div>
            </div>
         </div>
         <!--商品属性-->
@@ -81,10 +91,12 @@
 
 <script>
 import {mapActions,mapGetters} from 'vuex'
-import {operateHandleXGReceipt} from 'Api/commonality/operate'
+import {operateHandleXGReceipt, operateUpdateServiceByNum} from 'Api/commonality/operate'
+import {seekGetShopUserList} from 'Api/commonality/seek'
 // import selectDrop from './dropDownMenu'
 import orderRemark from './orderRemark'
 import memberCreate from './member-create'
+import DropDownMenu from 'base/menu/DownMenu'
 import FormatImg from 'components/template/DefaultHeadFormat.vue'
 export default{
   props: ['receiptData','curStatus', 'isOperation'],
@@ -93,13 +105,15 @@ export default{
       // 备注权限
       isRemark : false,
       //是否为 制单人
-      isSinglePerson: false
+      isSinglePerson: false,
+      shopUserList: []
     }
   },
   components:{
     orderRemark,
     FormatImg,
-    memberCreate
+    memberCreate,
+    DropDownMenu
   },
   computed: {
     ...mapGetters([
@@ -118,12 +132,72 @@ export default{
     }
   },
   
+  created () {
+    this.getShopUserList()
+  },
+
   methods: {
     ...mapActions([
         "getShopListByCo", // 请求店铺列表
         "workSupplierList" // 请求供应商
     ]),
-    
+    // 获取员工列表
+    getShopUserList(parm) {
+      let options = {
+        page: 1,
+        pageSize: 9999,
+        shopId: this.$route.query.shopId
+      }
+      seekGetShopUserList(options).then((res) => {
+        if(res.data.state == 200) {
+          this.shopUserList = res.data.data.shopUserList
+        } else {
+          this.$message({
+            type:'error',
+            message : res.data.msg
+          })
+        }
+      }, (res) => {
+
+      })
+    },
+
+    dropUserReturn (parm) {
+      let options = {
+        dataList: [
+          {
+            operateType: '7',
+            objectData: parm.userId
+          }
+        ],
+        orderNum: this.$route.query.orderNumber,
+        shopId: this.$route.query.shopId
+      }
+      this._operateUpdateServiceByNum(options, '修改成功')
+    },
+
+    _operateUpdateServiceByNum (options, tit) {
+      operateUpdateServiceByNum(options)
+        .then(res => {
+          if (res.data.state == 200) {
+            this.$message({
+              message: tit,
+              type: 'success'
+            })
+            this.$emit('_seekReceiptFWSynopsis')
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: 'warning'
+            })
+          }
+        })
+    },
+    clearUser (parm) {
+
+    },
+
+
     // 时间戳格式化
     dateFormat (parm) {
       if (!parm) return ''
@@ -139,11 +213,11 @@ export default{
     filterVipGroup (parm) {
       switch (parm) {
         case '1':
-          return '初级'
+          return '普通'
         case '2':
           return '中级'
         case '3':
-          return '高级'
+          return '重要'
       }
     },
 

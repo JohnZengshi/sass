@@ -22,6 +22,7 @@
             <i class="iconfont icon-jia3 add-img-logo-icon"></i>
           </div>
         </UploadingImg>
+        
       </div>
 
     </div>
@@ -42,6 +43,7 @@ export default{
   },
   methods: {
     cosImg (parm) {
+      // let datas = parm.splice(0, 6 - receiptData.dataList.length - parm.length)
       let options = {
         dataList: [],
         orderNum: this.$route.query.orderNumber,
@@ -55,6 +57,7 @@ export default{
           }
         )
       }
+      
       this._operateUpdateServiceByNum(options, '新增图片成功')
     },
     delImg (parm) {

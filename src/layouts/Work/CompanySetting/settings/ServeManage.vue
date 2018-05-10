@@ -22,7 +22,7 @@
                         <div>添加售后小类</div>
                     </div>
                     <div class="body">
-                        <input v-model="addTypeText" type="text" placeholder="输入售后小类">
+                        <input v-model="addTypeText" maxlength="6" type="text" placeholder="输入售后小类">
                     </div>
                     <div class="foot" solt="footer">
                         <div class="ope-btn" @click="insertProductType">确定</div>
@@ -34,6 +34,7 @@
                         :item='item'
                         type="2"
                         :stockType='stockType'
+                        :maxlength="6"
                         @messageBack="msgBack"
                         @delAction="delBack"
                     >

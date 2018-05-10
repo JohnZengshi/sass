@@ -13,7 +13,7 @@
 
 
     <!-- 系统 -->
-    <template v-if="item.type == 1">
+    <template v-if="item.type == 1 || item.type == 2">
       
       <div class="item-inner">
         <p>条形码</p>
@@ -34,7 +34,7 @@
 
 
     <!-- 人工 -->
-    <template v-else>
+    <template v-if="item.type == 3">
 
       <div class="item-inner">
         <p>产品类型</p>
@@ -47,13 +47,21 @@
       </div>
   
       <div class="item-inner">
-        <p>宝石名称</p>
+        <p>首饰名称</p>
         <p>{{item.gemName}}</p>
       </div>
     
+
       <div class="item-inner">
-        <p>金重</p>
-        <p>{{item.goldWeight}}</p>
+        <p>宝石名称</p>
+        <p>{{item.jewelryName}}</p>
+      </div>
+    
+
+
+      <div class="item-inner">
+        <p>件重</p>
+        <p>{{item.weight}}</p>
       </div>
 
     </template>
@@ -68,28 +76,6 @@ export default{
     return {
       status: 2,
     }
-  },
-  mounted () {
-    $(".serve-container-list-main").mCustomScrollbar({
-      axis: 'x',
-      theme: "minimal-dark",
-      autoHideScrollbar: true,
-      scrollInertia: 500,
-      mouseWheel: {
-        scrollAmount: 200,
-        preventDefault: false,
-        normalizeDelta: false
-      },
-      advanced: {
-        updateOnSelectorChange: "div",
-        updateOnContentResize: true
-      },
-      callbacks: {
-        onScrollStart: function() {
-          
-        }
-      }
-    })
   },
   methods: {
     delGoods (parm) {
@@ -157,7 +143,7 @@ export default{
 .serve-container-detail-wrap{
   margin: 20px 10px 0 10px;
   width: 250px;
-  height: 326px;
+  height: 346px;
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);

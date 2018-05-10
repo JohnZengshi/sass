@@ -11,7 +11,7 @@
                     <span>修改的内容</span>
                 </div>
                 <div class="body1-wrap" v-if="type == 3">
-                    <input v-model="addTypeText" type="text" placeholder="输入名称">
+                    <input :maxlength="maxlength ? maxlength : ''" v-model="addTypeText" type="text" placeholder="输入名称">
                     <el-select v-model="value" placeholder="请选择">
                         <el-option
                         v-for="item in option"
@@ -21,7 +21,7 @@
                         </el-option>
                     </el-select>
                 </div>
-                <input v-else type="text" v-model="operateName"> 
+                <input :maxlength="maxlength ? maxlength : ''" v-else type="text" v-model="operateName"> 
             </div>
             <div id="chart-div" ref="refsEcharts" style="height: 230px; width: 270px; margin:0 auto;"></div>
             <div class="btn-block">
@@ -55,7 +55,8 @@ export default {
         'stockType',
         'isMerge',
         'isDefault', // 是否默认
-        'bigClass'
+        'bigClass',
+        'maxlength'
     ],
     watch: {
         'item': function (newVal) {

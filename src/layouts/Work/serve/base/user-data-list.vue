@@ -55,8 +55,9 @@ export default {
           }
         }
       }
-      console.log('options.productList', options)
-      debugger
+      console.log('options.productList-options', options)
+      console.log('options.productList-this.userData.orderList', this.userData.orderList)
+      console.log('options.productList-this.checkData', this.checkData)
       for (let i of options.productList) {
         if (i.productId.indexOf('tProductId') != -1) {
           i.productId = ''
@@ -86,6 +87,7 @@ export default {
   height: 530px;
   margin-top: 26px;
   .footer {
+    cursor: pointer;
       margin-top: 20px;
       .btn {
           width: 150px;
