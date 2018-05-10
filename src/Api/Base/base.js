@@ -17,7 +17,7 @@ function apiCall(param, URL) {
   }
   // let serverHost = process.env.NODE_ENV === 'development' ? '' : '' // http://192.168.100.110:8082/yunzhubao
   // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8082/yunzhubao' : ''
-  let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8082/yunzhubao' : ''
+  let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8099' : ''
   // let serverHost = 'http://www.jzmsoft.com'
   //let url = serverHost + URL
   //console.log(url)

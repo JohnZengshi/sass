@@ -27,7 +27,7 @@
   </div>
   <!--编辑班组名-->
   <div v-if="dialog.dialogSlot == 'editGroup'" class="addGroup">
-     <input type="text" placeholder="请输入班组名称" :value="editInputGroup" ref="editInputGroup" v-model="editInputGroup" />
+     <input type="text" placeholder="请输入班组名称" ref="editInputGroup" v-model="editInputGroup" />
   </div>
   
   <!--添加班组成员-->

@@ -213,6 +213,9 @@ export default {
                     }
                 ]
             }
+            if (!this.stockType) {
+                return
+            }
             //console.log(options)
             seekStockData(options).then((res) => {
                 console.log(res)

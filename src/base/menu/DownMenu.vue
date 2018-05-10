@@ -8,13 +8,13 @@
       v-if="!noChange && !noClear"></i>
     </span>
     <ul class="drop-list">
-      <li :class="{active: actIndex == index}" v-for="(item, index) in showList" @click="itemClick(item, index)">{{item.name || item.shopName || item.userName}}</li>
+      <li :class="{active: actIndex == index}" v-for="(item, index) in showList" @click="itemClick(item, index)">{{nameKey ? item[nameKey] : item.name || item.shopName || item.userName}}</li>
     </ul>
   </div>
 </template>
 <script>
 export default {
-  props: ['titleInfo', 'showList', 'isSolid', 'specialStyle', 'noClear'], // isSolid->实心
+  props: ['titleInfo', 'showList', 'isSolid', 'specialStyle', 'noClear', 'nameKey'], // isSolid->实心 nameKey->取值的key
   data () {
     return {
       actIndex: null,

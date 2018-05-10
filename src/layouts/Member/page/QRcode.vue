@@ -1,15 +1,17 @@
 <template>
   <div class="QRcode-container" :class="isHandover ? 'is-hover' : ''" ref="qrCode">
-    <div class="QRCode" v-loading="loading"><img src="" id="qrious"></div>
+    <div class="QRCode" v-loading="loading">
+    <img style="width: 180px;height: 180px;" :src="bigUrl" alt="">
+<!--     <img src="" id="qrious"> -->
+</div>
     <div class="QRCode-hover">
-      <div class="QRCode"><img src="" id="qrious1"></div>
+      <div class="QRCode"><img style="width: 120px;height: 120px;" :src="smallUrl" id="qrious1"></div>
       <img src="../../../assets/img/login/login-qCode.jpg" />
     </div>
 
     <div v-if="!isHandover" class="QRcode-lose">二维码已失效
       <span class="txt" @click="QRCodeRefresh">点我刷新</span>
     </div>
-
   </div>
 </template>
 
@@ -21,21 +23,26 @@
   export default {
     data() {
       return {
+        bigUrl: '',
+        smallUrl: '',
         WebSocketUrl: '',
         qr: '',
         qrCodeUrl: '',
         loginKey: '',
         sessionId: '',
-        isHandover: true, //切换
+        isHandover: true,
         reConnectFlag: 5,
-        loading: true
+        loading: true,
       }
     },
     mounted() {
-      this._downloadTable();
+      this.$nextTick(function () {
+        this._downloadTable()
+      })
     },
     methods: {
       updateQrCodeLogin() {
+        let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
         if(this.$refs.qrCode) {
           this.isHandover = true
           this.loading = true
@@ -43,16 +50,22 @@
 
             this.loginKey = res.data.data.split("key=", 13)[1];
             this.qrCodeUrl = res.data.data + '&sessionId=' + this.sessionId;
-            new QRious({
-              element: document.getElementById('qrious'),
-              size: 180,
-              value: this.qrCodeUrl
-            });
-            new QRious({
-              element: document.getElementById('qrious1'),
-              size: 120,
-              value: this.qrCodeUrl
-            });
+            console.log('this.qrCodeUrl', this.qrCodeUrl)
+            this.smallUrl = serverHost + '/v1/web/createQRCode' + '?height=120&width=120&' + 'content=' + encodeURIComponent(this.qrCodeUrl)
+            this.bigUrl = serverHost + '/v1/web/createQRCode' + '?height=580&width=580&' + 'content=' + encodeURIComponent(this.qrCodeUrl)
+
+            // http://192.168.100.110:8082/yunzhubao/v1/web/createQRCode?height=580&width=580&content=http://192.168.100.110:9097/yunzhubao-bat/v1/web/logined?operate=001&key=1524632164229&sessionId=session-b61d2f56-b5c2-400a-97c6-845b756891ba
+
+            // new QRious({
+            //   element: document.getElementById('qrious'),
+            //   size: 180,
+            //   value: encodeURI(this.qrCodeUrl)
+            // });
+            // new QRious({
+            //   element: document.getElementById('qrious1'),
+            //   size: 120,
+            //   value: encodeURI(this.qrCodeUrl)
+            // });
 
             this.loading = false
             setTimeout(() => {
@@ -75,7 +88,6 @@
         }
         downloadTable(options)
           .then(res => {
-            console.log('查看二维码数据:',res);
             if(res.data.state === 200) {
               this.WebSocketUrl = res.data.data.url;
               this.createWebSocket()

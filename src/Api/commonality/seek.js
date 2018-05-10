@@ -781,8 +781,48 @@ export const shelvesGroupInfo = function(parm) {
     let URL = "/v1/weChat/shelvesGroupInfo";
     return apiCall(parm, URL);
 }
-//************************************** 报表导出 *********************************************************
-export const reportDerived = function(parm) {
-    let URL = '/v1/export/exportExcelBySmart'
-    return apiCall(parm, URL)
+export const seekGetShopRoleList = function(parm) {
+    //获取柜组信息状态
+    let URL = "/v1/auth/getShopRoleList";
+    return apiCall(parm, URL);
+}
+export const seekCreateQRCode = function(parm) {
+    //获取柜组信息状态
+    let URL = "/v1/web/createQRCode";
+    return apiCall(parm, URL);
+}
+export const seekSmallProgramShopList = function(parm) {
+    let URL = "/v1/weChat/smallProgramShopList";
+    return apiCall(parm, URL);
+}
+
+export const seekGetServiceTypeList = function(parm) { // 服务售后类型
+    let URL = "/v1/public/getServiceTypeList";
+    return apiCall(parm, URL);
+}
+
+export const seekGetMemberInfoByService = function(parm) { // 获取会员全称
+    let URL = "/v1/public/getMemberInfoByService";
+    return apiCall(parm, URL);
+}
+
+export const seekAfterProductList = function(parm) { // 售后商品列表
+    let URL = "/v1/public/afterProductList";
+    return apiCall(parm, URL);
+}
+export const seekServiceAfterList = function(parm) { // 5.73
+    let URL = "/v1/public/serviceAfterList";
+    return apiCall(parm, URL);
+}
+export const seekReceiptFWSynopsis = function(parm) { // 单据简介-服务
+    let URL = "/v1/public/receiptFWSynopsis";
+    return apiCall(parm, URL);
+}
+export const seekProductListByService = function(parm) { // 商品列表-服务模块
+    let URL = "/v1/public/productListByService";
+    return apiCall(parm, URL);
+}
+export const seekGetServiceStatusList = function(parm) { // 服务单据状态列表
+    let URL = "/v1/public/getServiceStatusList";
+    return apiCall(parm, URL);
 }

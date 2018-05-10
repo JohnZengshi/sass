@@ -521,18 +521,47 @@ export const operateProductTypeDragSord = function (parm) { // 产品类别拖�
   let URL = "/v1/headquarter/productTypeDragSord";
   return apiCall(parm, URL);
 }
-// 监察员的添加与删除
-export const addOrdelInspect = function (parm) { // 产品类别拖动
-  let URL = "/v1/auth/inspectoRoleOperation";
+export const operateSettingShopSeeById = function (parm) { // 设置可查看店铺
+  let URL = "/v1/auth/settingShopSeeById";
   return apiCall(parm, URL);
 }
-// 查看店铺
-export const lookStore = function (parm) {
-  let URL = "/v1/auth/getShopRoleList";
-  return apiCall(parm, URL);
+export const operateMallsShopImageOperation = function(parm) { // 商城店铺图片操作
+    let URL = "/v1/weChat/mallsShopImageOperation";
+    return apiCall(parm, URL);
 }
-// 设置可以查看的店铺
-export const setShopSee = function (parm){
-  let URL = '/v1/auth/settingShopSeeById';
-  return apiCall(parm, URL);
+export const operateMallsShopInfoUpdate = function(parm) { // 商城店铺信息更新
+    let URL = "/v1/weChat/mallsShopInfoUpdate";
+    return apiCall(parm, URL);
+}
+export const operateMallsOtherShopAdd = function(parm) { // 商城分店新增
+    let URL = "/v1/weChat/mallsOtherShopAdd";
+    return apiCall(parm, URL);
+}
+export const operateMallsOtherShopOperation = function(parm) { // 商城分店操作
+    let URL = "/v1/weChat/mallsOtherShopOperation";
+    return apiCall(parm, URL);
+}
+export const operateMallsOtherShopUpdate = function(parm) { // 商城分店信息更新
+    let URL = "/v1/weChat/mallsOtherShopUpdate";
+    return apiCall(parm, URL);
+}
+export const operateServiceOperation = function(parm) { // 服务类型维护
+    let URL = "/v1/public/serviceOperation";
+    return apiCall(parm, URL);
+}
+export const operateCreateFWReceipt = function(parm) { // 单据操作-新建-服务
+    let URL = "/v1/public/createFWReceipt";
+    return apiCall(parm, URL);
+}
+export const operateAddAfterProduct = function(parm) { // 6.74添加售后单商品
+    let URL = "/v1/public/addAfterProduct";
+    return apiCall(parm, URL);
+}
+export const operateUpdateServiceByNum = function(parm) { // 服务单据修改
+    let URL = "/v1/public/updateServiceByNum";
+    return apiCall(parm, URL);
+}
+export const operateDelOrderByFW = function(parm) { // 删除服务单据
+    let URL = "/v1/public/delOrderByFW";
+    return apiCall(parm, URL);
 }

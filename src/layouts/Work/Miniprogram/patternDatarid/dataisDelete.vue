@@ -4,7 +4,7 @@
             <img class="close-icon" src="../../../../assets/img/close-preview.png" @click.stop="handleclose" />
             <img class="headerimg" src="../../../../../static/img/message/5.png" />
             <h3>提示</h3>
-            <span>此操作将使该商品从单据中移除, 是否继续?</span>
+            <span>是否取消该商品关联款式?</span>
             <div class="clost-div"  @click.stop="handleclose">取&nbsp;消</div>
             <div class="mybtn-div" @click.stop="confirmrequest">确&nbsp;定</div>
         </div>
@@ -102,7 +102,10 @@ export default {
             span{
                 position: absolute;
                 top:125px;
-                left: 9%;
+                left: 0;
+                right: 0;
+                text-align: center;
+                margin: auto;
             }
             .mybtn-div{
                 border: 1px solid #2993f8;

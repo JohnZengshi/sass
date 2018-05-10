@@ -1,0 +1,219 @@
+<template>
+  <div class="serve-data-grid-body-main">
+    <div style="min-height: 430px;padding-bottom: 80px;">
+      <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
+        <div v-for="item in userData.orderList">
+          <h5 v-if="item.orderType == 1" :class="{'is-seek': item.isSeek == 'Y'}">{{item.orderNo}}</h5>
+          <h5 v-if="item.orderType == 2" :class="{'is-seek': item.isSeek == 'Y'}">外来商品</h5>
+          <ul class="sever-product-list-wrap" v-for="(product, index) in item.productList">
+            <li>{{product.productName}}
+              <i class="product-type" v-if="product.productType">{{filterProductType(product.productType)}}</i>
+            </li>
+            <li>{{product.barcode}}</li>
+            <li>{{product.classesType == 1 ? product.goldWeight : product.weight}}</li>
+            <li>{{product.price}}</li>
+            <li>
+              <DownMenu
+                :showList="showList"
+                :noClear="true"
+                :product="product"
+              ></DownMenu>
+            </li>
+            <li>
+              <el-checkbox v-if="product.serviceId || product.serviceTypeId" :label="product.productId" style="font-size: 0"></el-checkbox>
+              <label v-else class="no-check-tit">
+                <span @click="titChect"></span>
+              </label>
+            </li>
+          </ul>
+        </div>
+      </el-checkbox-group>
+    </div>
+  </div>
+</template>
+<script>
+import DownMenu from './DownMenu'
+import {seekGetServiceTypeList} from 'Api/commonality/seek'
+export default{
+  components: {
+    DownMenu
+  },
+  props: ['userData'],
+  data () {
+    return {
+      showList: [],
+      checkedCities: [],
+      name: ''
+    }
+  },
+  mounted () {
+    $(".serve-data-grid-body-main").mCustomScrollbar({
+      axis: 'y',
+      theme: "minimal-dark",
+      autoHideScrollbar: true,
+      scrollInertia: 500,
+      mouseWheel: {
+        scrollAmount: 200,
+        preventDefault: false,
+        normalizeDelta: false
+      },
+      advanced: {
+        updateOnSelectorChange: "div",
+        updateOnContentResize: true
+      },
+      callbacks: {
+        onScrollStart: function() {
+          
+        }
+      }
+    })
+  },
+  created () {
+    this._seekGetServiceTypeList()
+  },
+  methods: {
+    _seekGetServiceTypeList () {
+        seekGetServiceTypeList().then((res) => {
+            if (res.data.state == 200) {
+                this.showList = res.data.data.classesList[0].dataList
+            } else {
+                this.$message({
+                   message: res.data.msg,
+                   type: 'warning'
+                })
+            }
+        })
+    },
+    initCheck (parm) {
+      for (let i of parm) {
+        for (let j of i.productList) {
+          this.checkedCities.push(j.productId)
+        }
+      }
+    },
+    filterProductType (parm) {
+      switch (parm) {
+        case '1':
+          return '销售'
+        case '2':
+          return '退货'
+        case '3':
+          return '回收'
+        case '4':
+          return '换货'
+      }
+    },
+    // 选中数据
+    changeShopData (parm) {
+
+    },
+    // 清除数据
+    clearShopData (parm) {
+
+    },
+    handleCheckedCitiesChange (parm) {
+      this.$emit('updateData', this.checkedCities)
+    },
+    titChect () {
+      this.$message({
+        message: '请选择售后类型',
+        type: 'warning'
+      })
+    }
+  }
+}
+</script>
+<style lang="scss">
+.serve-data-grid-body-main{
+  .el-checkbox{
+    vertical-align: top;
+    margin-top: 17px;
+    height: 20px!important;
+    line-height: 20px!important;
+  }
+  .el-checkbox__inner{
+    border-radius: 2px!important;
+  }
+}
+</style>
+<style lang="scss" scoped>
+.serve-data-grid-body-main{
+  height: 430px;
+  // border: 1px solid red;
+  h5{
+    height: 20px;
+    padding-left: 14px;
+    line-height: 20px;
+    font-size: 11px;
+    color: #666;
+    background-color: #eef7fe;
+  }
+  .is-seek{
+    background-color: #fff3e3;
+  }
+  .sever-product-list-wrap{
+    height: 54px;
+    >li{
+      height: 100%;
+      line-height: 54px;
+      float: left;
+      font-size: 14px;
+      text-align: center;
+      >.product-type{
+        display: inline-block;
+        font-style: normal;
+        padding: 1px 4px;
+        border-radius: 2px;
+        font-size: 12px;
+        line-height: 12px;
+        color: #fff;
+        background-color: #ffa200;
+      }
+      .no-check-tit{
+        vertical-align: top;
+        margin-top: 17px;
+        height: 20px;
+        line-height: 20px;
+        font-size: 0;
+        text-align: center;
+        cursor: pointer;
+        display: inline-block;
+        position: relative;
+        white-space: nowrap;
+        span{
+          display: inline-block;
+          position: relative;
+          border: 1px solid #bfcbd9;
+          border-radius: 2px;
+          box-sizing: border-box;
+          width: 18px;
+          height: 18px;
+          text-align: center;
+          margin-left: -5px;
+          margin-top: 1px;
+          background-color: #fff;
+          z-index: 1;
+        }
+      }
+    }
+    >li:nth-child(1){
+      width: 190px;
+    }
+    >li:nth-child(2){
+      width: 124px;
+    }
+    >li:nth-child(3){
+      width: 86px;
+    }
+    >li:nth-child(4){
+      width: 86px;
+    }
+    >li:nth-child(5){
+      width: 100px;
+    }
+    >li:nth-child(6){
+      width: 54px;
+    }
+  }
+}
+</style>

@@ -14,6 +14,8 @@ import addminiprogram from "./apply/addminiprogram.js"
 import shopSetting from "./apply/shopSetting.js"
 import report from "./apply/report"
 import sell from "./apply/sell.js"
+import serve from "./apply/serve.js"
+
 import label from "./apply/label.js"
 import template from './apply/template' // 模板
 const work = {
@@ -37,6 +39,7 @@ const work = {
     {...addminiprogram},
     {...shopSetting},
     {...sell},
+    {...serve},
     {...report},
     {...label},
     {...template}]

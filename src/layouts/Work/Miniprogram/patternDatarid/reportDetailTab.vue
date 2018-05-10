@@ -188,4 +188,7 @@ export default {
 </script>
 
 <style>
+/*.tab_detail_table{
+    border: 1px solid yellow;
+}*/
 </style>

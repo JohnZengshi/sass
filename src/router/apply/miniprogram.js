@@ -9,6 +9,11 @@ import uppershelfset from "./../../layouts/Work/Miniprogram/miniprogramsetting/u
 const routes = {
     path: 'miniprogram',
     component: miniprogram,
+    beforeEnter: (to, from, next) => {
+      if (sessionStorage.getItem('isSmallProgram') == 'Y') {
+        next()
+      }
+    },
     children: [
         {path: "", component: patternset},
         {path: 'shopdetail', component: shopdetail},

@@ -43,6 +43,10 @@
         {
             "name": "条码管理",
             "catalogList": ""
+        },
+        {
+            "name": "服务管理",
+            "catalogList": ""
         }
     ]
 }
