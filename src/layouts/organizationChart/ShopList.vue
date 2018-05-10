@@ -252,14 +252,17 @@
       lookDetail (item, index) {
         // this.$store.dispatch('workOrganizationChange', item.userId)
         console.log(item)
+        let isShopMap = true
         this.userIndex = item.role
         this.listIndex = index
         let options = {
           userId: item.userId
         }
+        sessionStorage.setItem('shopMan',true)
         this.$emit('shopUserInfo', options)
         this.$emit('shopSettingUserRole', options)
         this.$emit('shopGetUserInfo', options)
+        this.$emit('lookShopMan',isShopMap)
       },
       shopInfo (item, index) {
         this.actIndex = index

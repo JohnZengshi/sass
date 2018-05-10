@@ -93,6 +93,7 @@
             @shopInfo="_seekShopInfo"
             @addStaff="addStaff"
             @closeAccordion="closeAccordion"
+            @lookShopMan="lookShopMan"
           ></ShopList>
           <AddPopup
             v-if="isQueryOption"
@@ -299,6 +300,7 @@
         this.operateType = '2'
       },
       lookDetail (item, parm, index) {
+        console.log('点了查看')
         // this.$store.dispatch('workOrganizationChange', item.userId)
         //console.log(this.offHeight)
         this.userIndex = index
@@ -306,10 +308,15 @@
         //   this.$refs[parm].style.height = this.offHeight + 'px'
         // }
         console.log(item)
+        let shopMan = false
         sessionStorage.setItem('storeUserID',item.userId)
         this.$emit('getStoreList', item.userId)
         this.$emit('getStoreAllList', item.userId)
         this.$emit('getRoleShowList', item.role)
+        console.log('1111111111111111111111111')
+        console.log(shopMan)
+        this.$emit('OrganizShopMan',shopMan)
+        console.log('1111111111111111111111111')
 
         let options = {
           userId: item.userId 
@@ -373,7 +380,10 @@
             }
           })
       },
-
+      lookShopMan(shopMan){
+        console.log('店铺人员信息',shopMan)
+        this.$emit('OrganizShopMan',shopMan)
+      }
     },
 
   }

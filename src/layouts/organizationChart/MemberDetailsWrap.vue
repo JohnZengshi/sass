@@ -79,6 +79,7 @@
     </section>
 
     <!-- 店铺查看权限 -->
+    <div v-if="!lookShopMan">
     <section v-if="showList && ListShow" class="store-list-wrap">
       <h4 class="title-icon-wrap store-title">
         <i></i>
@@ -102,6 +103,8 @@
         <li class="nodedian" v-for="(item,index) in checkList" :key="index"><el-checkbox v-model="item.status" @change="itemCheckend()" :checked="item.status === 'Y' ? true : false"><span>{{item.shopNamem}}</span></el-checkbox></li>
       </ul> -->
     </section>
+
+    </div>
     
     <a class="del-staff el-icon-delete" v-if="deleteRole" href="javascript: void(0)" @click.stop="delDialog = true"></a>
     <!-- <a class="del-staff" v-if="isDelRole && delDualRole" href="javascript: void(0)" @click="_operatePrivilege">删除员工</a> -->
@@ -131,7 +134,7 @@
       Switchs,
       FormatImg
     },
-    props: ['deleteRole', 'editOrAddRole', 'roleDataList', 'userRoleDataList', 'userInfo', 'settingUserRole', 'positionData', 'isCompile', 'isWarden', 'isDelRole', 'isAddRole', 'delStaffRole', 'isUserShopManager', 'isSuperTube','storeData','showList','storeAllData','checkAll'], // 删除权限, 编辑权限, 添加的权限
+    props: ['deleteRole', 'editOrAddRole', 'roleDataList', 'userRoleDataList', 'userInfo', 'settingUserRole', 'positionData', 'isCompile', 'isWarden', 'isDelRole', 'isAddRole', 'delStaffRole', 'isUserShopManager', 'isSuperTube','showList','storeAllData','checkAll','lookShopMan','checkID'], // 删除权限, 编辑权限, 添加的权限
     data () {
       return {
         //timeRange :'1' 45天  '2' 不限   costFlag:'Y' 开启成本 'N'关闭成本
@@ -162,7 +165,8 @@
         checked: '',
         checkList: [],
         checkitemLits: [],
-        valLength:0
+        valLength:0,
+        storeData:[]
       }
     },
     watch: {
@@ -203,15 +207,18 @@
         //   this.Doubleid = false;
         // }
         this.getRoleName()
+      },
+      'checkAll' (val) {
+        console.log('99999999999',val)
       }
 
     },
     created () {
       this.getRoleName()
-      console.log(this.deleteRole)
       this.checked = this.checkAll
       this.checkList = this.storeAllData
-      this.checkitemLits = this.getItemArray(this.checkList)
+      this.getAllCheckList()
+      this.getLookShop()
     },
     mounted () {
       let _self = this
@@ -234,7 +241,7 @@
       $('.el-checkbox__label').css({
         "fontSize":"12px",
       })
-      $('.member-details-main .store-list-wrap .check-store-list li,.nonedian').css('listStyle','none')
+      $('.member-details-main .store-list-wrap .check-store-list .nonedian').css('listStyle','none')
       $('.nonedian span').css({
         "verticalAlign":"top",
         "lineHeight":"20px"
@@ -266,7 +273,7 @@
         "fontSize":"12px",
         "lineHeight":"18px"
       })
-      $('.el-checkbox-group label:nth-of-type(2)').css("display","none")
+      // $('.el-checkbox-group label:nth-of-type(2)').css("display","none")
     },
     computed: {
       allAddRole () {
@@ -562,36 +569,48 @@
         // console.log(this.userInfo)
       },
       itemCheckend(val){
+        
+        let newValArray = val.filter(item => {
+          if(item){
+            return true
+          }
+        })
+        console.log(newValArray)
+
+        console.log(this.checkList)
+        console.log(this.checkList.length)
         // 判断是不是全选
-        if(this.checkList.length === (val.length)){
+        if(this.checkList.length === (newValArray.length)){
           this.checked = true
-          this.storeCheckAll()
+          // this.storeCheckAll()
         }else {
           this.checked = false
           // 获取选中的店铺
-        }
-        if(val.length == 0){
-          this.getAllnoCheck()          
-        }else {
-          let addnewListData = []
-          let delnewListData = []
-  
-          let allListData = this.checkList
+          if(newValArray.length == 0){
+            this.getAllnoCheck()          
+          }else {
+            let addnewListData = []
+            let delnewListData = []
 
-          for(let i = 0;i<val.length;i++){
-            console.log(val[i])
-            allListData.forEach(item => {
-               if(item.shopId == val[i]){
-                addnewListData.push(item)
-              }else {
-                delnewListData.push(item)
-              }
+            let allListData = this.checkList
+
+            for(let i = 0;i<newValArray.length;i++){
+              console.log(newValArray[i])
+              allListData.forEach(item => {
+                if(item.shopId == newValArray[i]){
+                  addnewListData.push(item)
+                }else {
+                  delnewListData.push(item)
+                }
             })
+
+            console.log(addnewListData)
+            console.log(delnewListData)
           }
 
           this.getOneCheck(addnewListData,'1')
           this.getOneCheck(delnewListData,'2')
-
+          }
         }
 
       },
@@ -668,6 +687,42 @@
 
         setShopSee(dataObj).then(res => {
           if(res.data.state !== 200){
+            this.$store.dispatch('workPopupError', res.data.msg);
+          }
+        })
+      },
+      getAllCheckList(){
+        if(!this.checkID){
+          return
+        }
+        let options = {
+          userId: this.checkID,
+          type: '3'
+        }
+
+        lookStore(options).then(res => {
+          if(res.data.state === 200){
+            console.log(res.data.data.dataList)
+            this.checkList = res.data.data.dataList
+            console.log('所有选择店铺',res.data.data.dataList)
+            this.checkitemLits = this.getItemArray(this.checkList)
+          } else {
+            this.$store.dispatch('workPopupError', res.data.msg);
+          }
+        })
+      },
+      getLookShop(){
+        if(!this.checkID){
+          return
+        }
+        let options = {
+          userId: this.checkID,
+          type: '1'
+        }
+        lookStore(options).then(res => {
+          if(res.data.state === 200){
+            this.storeData = res.data.data.dataList
+          } else {
             this.$store.dispatch('workPopupError', res.data.msg);
           }
         })

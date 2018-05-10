@@ -32,6 +32,7 @@
           @getStoreList="getStoreList"
           @getRoleShowList="getRoleShowList"
           @getStoreAllList="getStoreAllList"
+          @OrganizShopMan="OrganizShopMan"
         ></DepUserList>
 
         <CompanyDetail
@@ -77,6 +78,8 @@
             :storeAllData="storeAllData"
             :showList="showList"
             :checkAll="checkAll"
+            :lookShopMan="lookShopMan"
+            :checkID="checkID"
             class="member-details-wrap"
             @delUserRoleDataList="delUserRoleDataList"
             @addBtn="addBtn"
@@ -183,7 +186,9 @@ import CompanyDetail from './CompanyDetail'
         storeAllData:[],
         // headquartersShow:false
         showList: false,
-        checkAll: false
+        checkAll: false,
+        lookShopMan: false,
+        checkID:''
       }
     },
     computed: {
@@ -769,10 +774,13 @@ import CompanyDetail from './CompanyDetail'
         })
       },
       getStoreAllList(parm){
+        this.checkID = parm
         let options = {
           userId: parm,
           type: '3'
         }
+
+        console.log('123321123',options)
 
         lookStore(options).then(res => {
           if(res.data.state === 200){
@@ -793,7 +801,7 @@ import CompanyDetail from './CompanyDetail'
         console.log(options)
         lookStore(options).then(res => {
           if(res.data.state === 200){
-            console.log(res.data.data.dataList)
+            console.log('初始化请求啦',res.data.data.dataList)
             this.storeData = res.data.data.dataList
           } else {
             this.$store.dispatch('workPopupError', res.data.msg);
@@ -801,7 +809,6 @@ import CompanyDetail from './CompanyDetail'
         })
       },
       getRoleShowList(parm){
-        console.log('101010101',parm)
         if(sessionStorage.getItem('guanliyuan') === 'true'){
           if(parm == '1' || parm == '2'){
             this.showList = true
@@ -811,9 +818,9 @@ import CompanyDetail from './CompanyDetail'
         } else {
             this.showList = true          
         }
-        console.log('0000000000000009292',this.showList)
       },
       checekAllRole(data){
+        console.log('checkAll',data)
         let count = 0
         for(let i = 0;i<data.length;i++){
           if(data[i].status === 'N'){
@@ -825,6 +832,10 @@ import CompanyDetail from './CompanyDetail'
         } else {
           return false
         }
+      },
+      OrganizShopMan(val){
+        console.log('OrganizShopMan',val)
+        this.lookShopMan = val
       }
     },
     mounted(){
