@@ -126,6 +126,7 @@
 import Vue from 'vue'
 import {mapGetters} from 'vuex'
 import {seekGetDepUserList, seekGetShopListByCo, seekMemberList, seekGetUserApply, seekDynamic} from 'Api/commonality/seek'
+
 import { lookStore } from 'Api/commonality/operate'
 // import {seekGetUserInfo} from '../../src/Api/commonality/seek'
 import {seekGetUserInfo} from '../../../src/Api/commonality/seek'

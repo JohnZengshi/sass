@@ -495,7 +495,7 @@
               this.$store.dispatch('workPopupError', '删除成功');
               this.$emit('_seekGetDepUserList')
               this.getSeekCompanyInfo();
-              setTimeout(window.location.reload(),500);
+              // setTimeout(window.location.reload(),500);
             } else {
               this.$store.dispatch('workPopupError', res.data.msg);
             }
@@ -546,6 +546,7 @@
         // console.log(this.checked)
         // console.log(this.checkList)
         let oldData = this.checkList
+        console.log('嘿',oldData)
         let newListData = []
         if(this.checked){
           for(let i=0;i<oldData.length;i++){
@@ -560,7 +561,7 @@
           }
           this.checkitemLits = this.getItemArray(newListData)
         }
-        console.log(newListData)
+        console.log('嘿嘿',newListData)
 
         this.checkList = newListData
 
@@ -575,19 +576,16 @@
             return true
           }
         })
-        console.log(newValArray)
-
-        console.log(this.checkList)
-        console.log(this.checkList.length)
         // 判断是不是全选
         if(this.checkList.length === (newValArray.length)){
           this.checked = true
+          this.storeCheckAll()
           // this.storeCheckAll()
         }else {
           this.checked = false
           // 获取选中的店铺
           if(newValArray.length == 0){
-            this.getAllnoCheck()          
+            this.storeCheckAll()          
           }else {
             let addnewListData = []
             let delnewListData = []
@@ -627,7 +625,8 @@
       getAllChcek(newListData){ // 全选点击后设置查看店铺
         let options = []
         let optionsObj ={}
-        for(let j = 0;j<newListData.length;j++){
+        for(let j=0;j<newListData.length;j++){
+          optionsObj ={}
           if(newListData[j].status === 'N') {
             optionsObj['operateType'] = '1'
           }else {
@@ -638,7 +637,6 @@
 
           options.push(optionsObj)
         }
-        // console.log(options)
         let dataObj = {
           "dataList" : options
         }
@@ -702,10 +700,9 @@
 
         lookStore(options).then(res => {
           if(res.data.state === 200){
-            console.log(res.data.data.dataList)
             this.checkList = res.data.data.dataList
-            console.log('所有选择店铺',res.data.data.dataList)
             this.checkitemLits = this.getItemArray(this.checkList)
+            console.log('嘿',this.checkList)
           } else {
             this.$store.dispatch('workPopupError', res.data.msg);
           }

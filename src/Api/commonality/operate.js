@@ -565,3 +565,15 @@ export const operateDelOrderByFW = function(parm) { // 删除服务单据
     let URL = "/v1/public/delOrderByFW";
     return apiCall(parm, URL);
 }
+export const addOrdelInspect = function(parm) { // 添加或删除监察者
+    let URL = "/v1/auth/inspectoRoleOperation";
+    return apiCall(parm, URL);
+}
+export const lookStore = function(parm) { // 查看店铺列表
+    let URL = "/v1/auth/getShopRoleList";
+    return apiCall(parm, URL);
+}
+export const setShopSee = function(parm) {
+    let URL = "/v1/auth/settingShopSeeById";
+    return apiCall(parm, URL);
+}
