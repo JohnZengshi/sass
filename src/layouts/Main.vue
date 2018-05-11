@@ -1217,8 +1217,8 @@ export default {
     	height: 100%;
     	width: 100%;
     	overflow: auto;
-      position: relative;
-    	padding-bottom: 100px;
+        position: relative;
+    	// padding-bottom: 100px;
         .index-img {
             height: 100%;
     	    width: 100%;

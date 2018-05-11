@@ -95,6 +95,7 @@ export default {
         width: 100%;
         height: 90px;
         position: relative;
+        background: #f5f8f7;
         img{
             position: absolute;
             top: 50%;
