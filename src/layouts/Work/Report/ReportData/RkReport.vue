@@ -999,7 +999,7 @@
         console.log('导出报表')
         let exportTabData = this.dataGridOptions
         exportTabData['exportType'] = 'RK'
-        console.log(exportTabData)
+        console.log('导出报表啥啥啥啥啥啥',exportTabData)
         if(exportTabData.type === 1){
           downLoaderFile('/v1/export/exportExcelByReport',exportTabData)
         } else {
