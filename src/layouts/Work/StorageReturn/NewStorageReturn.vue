@@ -233,12 +233,16 @@
                                         </span>
                                     </div>
                                     <ul class="header-wrap-btn">
-                                        <li v-if='addRole && dataGridOptions.type == 1' class="confirm-btn">
-                                            <!--单个添加--> <input ref="inputDom" @keyup.enter="addNewGoods($event)" v-model="enterOrderNum" type="text" placeholder="扫描/输入条码号添加商品">
-                                        </li>
-                                        <li v-if='addRole && dataGridOptions.type == 1' style="cursor: pointer;" class="confirm-btn" @click.stop="appendBatchRow">
-                                            批量添加
-                                        </li>
+                                    
+                                        <template v-if="isMakeOrderManId">
+                                            <li v-if='addRole && dataGridOptions.type == 1' class="confirm-btn">
+                                                <!--单个添加--> <input ref="inputDom" @keyup.enter="addNewGoods($event)" v-model="enterOrderNum" type="text" placeholder="扫描/输入条码号添加商品">
+                                            </li>
+                                            <li v-if='addRole && dataGridOptions.type == 1' style="cursor: pointer;" class="confirm-btn" @click.stop="appendBatchRow">
+                                                批量添加
+                                            </li>
+                                        </template>
+
                                         <li class="confirm-btn" v-show="getOperateTakeOrderName">
                                             {{getOperateTakeOrderName}}
                                         </li>
@@ -743,6 +747,9 @@ export default {
                     return false
                 }
             }
+        },
+        isMakeOrderManId () {
+            return this.receiptsIntroList.makeOrderManId == sessionStorage.getItem("id");
         },
         printOptions () { // 打印单据
             let isCheckOrderMan = this.receiptsIntroList.isCheckOrderMan === "Y";

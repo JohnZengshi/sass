@@ -349,19 +349,19 @@ module.exports = {
       toFixed: true,
       countCut: 2
     },
-    {
-      id: '1d56',
-      text: '购买',
-      width: '80',
-      type: 'totalBuy',
-      unit: '(元)',
-      footerUnit: '',
-      totalName: '',
-      childType: 'buy',
-      totalType: 'totalBuy',
-      toFixed: true,
-      countCut: 2
-    },
+    // {
+    //   id: '1d56',
+    //   text: '购买',
+    //   width: '80',
+    //   type: 'totalBuy',
+    //   unit: '(元)',
+    //   footerUnit: '',
+    //   totalName: '',
+    //   childType: 'buy',
+    //   totalType: 'totalBuy',
+    //   toFixed: true,
+    //   countCut: 2
+    // },
     {
       id: '1bh8',
       text: '回收',
@@ -572,19 +572,19 @@ module.exports = {
       countCut: 2,
       sort: ''
     },
-    {
-      id: 'vs16',
-      text: '购买',
-      width: '80',
-      type: 'totalBuy',
-      unit: '(元)',
-      footerUnit: '',
-      totalName: '',
-      childType: 'buy',
-      totalType: 'totalBuy',
-      toFixed: true,
-      countCut: 2
-    },
+    // {
+    //   id: 'vs16',
+    //   text: '购买',
+    //   width: '80',
+    //   type: 'totalBuy',
+    //   unit: '(元)',
+    //   footerUnit: '',
+    //   totalName: '',
+    //   childType: 'buy',
+    //   totalType: 'totalBuy',
+    //   toFixed: true,
+    //   countCut: 2
+    // },
     {
       id: 'g318',
       text: '回收',
@@ -807,19 +807,19 @@ module.exports = {
       countCut: 2,
       sort: ''
     },
-    {
-      id: 'vs16',
-      text: '购买',
-      width: '80',
-      type: 'totalBuy',
-      unit: '(元)',
-      footerUnit: '',
-      totalName: '',
-      childType: 'buy',
-      totalType: 'totalBuy',
-      toFixed: true,
-      countCut: 2
-    },
+    // {
+    //   id: 'vs16',
+    //   text: '购买',
+    //   width: '80',
+    //   type: 'totalBuy',
+    //   unit: '(元)',
+    //   footerUnit: '',
+    //   totalName: '',
+    //   childType: 'buy',
+    //   totalType: 'totalBuy',
+    //   toFixed: true,
+    //   countCut: 2
+    // },
     {
       id: 'g318',
       text: '回收',

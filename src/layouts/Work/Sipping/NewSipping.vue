@@ -239,12 +239,14 @@
                                         </span>
                                     </div>
                                     <ul class="header-wrap-btn">
-                                        <li v-if='addRole && dataGridOptions.type == 1' class="confirm-btn">
-                                            <!--单个添加--> <input style="width:150px;margin-right:12px;" ref="inputDom" @keyup.enter="addNewGoods" @focus="getfocusorblur(1)" @blur="getfocusorblur(2)" v-model="enterOrderNum" type="text" placeholder="扫描/输入条码号添加商品">
-                                        </li>
-                                        <li v-if='addRole && dataGridOptions.type == 1' class="confirm-btn" @click.stop="appendBatchRow">
-                                            批量添加
-                                        </li>
+                                        <template v-if="isMakeOrderManId">
+                                            <li v-if='addRole && dataGridOptions.type == 1' class="confirm-btn">
+                                                <!--单个添加--> <input style="width:150px;margin-right:12px;" ref="inputDom" @keyup.enter="addNewGoods" @focus="getfocusorblur(1)" @blur="getfocusorblur(2)" v-model="enterOrderNum" type="text" placeholder="扫描/输入条码号添加商品">
+                                            </li>
+                                            <li v-if='addRole && dataGridOptions.type == 1' class="confirm-btn" @click.stop="appendBatchRow">
+                                                批量添加
+                                            </li>
+                                        </template>
                                         <!-- <li class="confirm-btn" v-if="addRole && propOptons.reportType == 3">
                                             <div v-if="isSelDelect" @click="isSelDelect = false">批量删除</div>
                                         </li> -->
@@ -820,6 +822,9 @@ export default {
                     return false
                 }
             }
+        },
+        isMakeOrderManId () {
+            return this.receiptsIntroList.makeOrderManId == sessionStorage.getItem("id");
         },
         printOptions () { // 打印单据
             let isCheckOrderMan = this.receiptsIntroList.isCheckOrderMan === "Y";

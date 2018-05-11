@@ -12,10 +12,10 @@
         </el-form-item>
         <el-form-item style="margin-top: 20px;">
           <span v-if="false" class="radio" v-bind:class="{'active': isRemember}" @click="handleRemember">&nbsp;记住登录状态</span>
-          <span @click="gotoExperience" style="float: left; cursor: pointer;">快速体验</span>
+<!--           <span @click="gotoExperience" style="float: left; cursor: pointer;">快速体验</span> -->
           <span style="float:right;">
-            <span style="cursor:pointer;-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;" @click="gotoForget">忘记密码?</span>
-            <span style="color:#4fdcca;margin-left:16px;cursor:pointer;-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;" @click="gotoRegistry">免费注册</span>
+    <!--         <span style="cursor:pointer;-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;" @click="gotoForget">忘记密码?</span> -->
+  <!--           <span style="color:#4fdcca;margin-left:16px;cursor:pointer;-webkit-user-select:none; -moz-user-select:none; -ms-user-select:none; user-select:none;" @click="gotoRegistry">免费注册</span> -->
           </span>
         </el-form-item>
         <el-form-item style="margin-top: 20px;">
@@ -35,9 +35,9 @@
         <el-form-item style="margin-top: 20px;">
           <el-button native-type="button" type="primary" size="large" class="btn-block" @click="ajaxLogin">登录</el-button>
         </el-form-item>
-        <span style="float:right; margin-top: 10px;">
+<!--         <span style="float:right; margin-top: 10px;">
           <span style="color:#4fdcca;cursor:pointer;" @click="gotoRegistry">免费注册</span>
-        </span>
+        </span> -->
       </el-form>
   </div>
 </template>
