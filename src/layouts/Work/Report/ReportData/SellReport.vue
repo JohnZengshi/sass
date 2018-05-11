@@ -229,7 +229,7 @@
 					</el-popover>
 
 					<el-button type="primary" class="popover_primary" v-popover:reportPrint>
-						<span class="txt">99打印报表</span>
+						<span class="txt">打印报表</span>
 						<i class="iconfont icon-dayin"></i>
 					</el-button>
 				</div>

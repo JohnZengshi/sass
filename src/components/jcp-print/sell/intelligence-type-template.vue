@@ -21,10 +21,11 @@
 				</div>
 			</div>
 		</div>
-		<div v-show="types.indexOf('销售')>=0">
-			<table class="table-box">
+		<div id="win">
+		<template v-show="types.indexOf('销售')>=0">
+			<table class="table-box" header-rows="2">
 				<tr>
-					<td colspan="19" class="center font-bold" style="border-top: 0px;">销售报表</td>
+					<td colspan="16" class="center font-bold" style="border-top: 0px;">销售报表</td>
 				</tr>
 				<tr>
 					<td>序号</td>
@@ -97,16 +98,16 @@
 							<td>{{productSellTypeList.totalBuy|RMBUNIT}}</td>
 							<td>{{Number(productSellTypeList.totalRealPrice)+Number(productSellTypeList.totalExchange)-productSellTypeList.totalBuy|RMBUNIT}}</td>
 							<td>{{productSellTypeList.totalCost|RMBUNIT}}</td>
-							<td>{{(Number(productSellTypeList.totalRealPrice)-Number(productSellTypeList.totalCost)).toFixed(2)|RMBUNIT}}</td>
+							<td>{{Number(productSellTypeList.totalRealPrice)-Number(productSellTypeList.totalCost)|RMBUNIT}}</td>
 						</tr>
 					</template>
 				</template>
 			</table>
-		</div>
-		<div v-show="types.indexOf('回购')>=0">
-			<table class="table-box">
+		</template>
+		<template v-show="types.indexOf('回购')>=0">
+			<table class="table-box" header-rows="2">
 				<tr>
-					<td colspan="19" class="center font-bold" style="border-top: 0px;">回购报表</td>
+					<td colspan="11" class="center font-bold" style="border-top: 0px;">回购报表</td>
 				</tr>
 				<tr>
 					<td>序号</td>
@@ -165,6 +166,7 @@
 					</tr>
 				</template>
 			</table>
+		</template>
 		</div>
 		<div class="printDate">
 			打印时间：{{printDate}}
@@ -194,7 +196,7 @@
 			GRAMUNIT:(num)=>{
 				if(num){
 					if(Number(num)){
-						return num+"g";
+						return Number(num).toFixed(2)+"g";
 					}
 					return "0g";
 				}else{
@@ -204,7 +206,7 @@
 			RMBUNIT:(num)=>{
 				if(num){
 					if(Number(num)){
-						return num+"元";
+						return Number(num).toFixed(3) +"元";
 					}
 					return "0元";
 				}else{
@@ -214,7 +216,7 @@
 			NOUNIT:(num)=>{
 				if(num){
 					if(Number(num)){
-						return num;
+						return Number(num).toFixed(3);
 					}
 					return 0;
 				}else{
