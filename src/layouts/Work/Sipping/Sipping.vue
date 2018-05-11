@@ -71,7 +71,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="optionDiv sell-new-data oper-btn" @click="newReceipt" v-if="companyPosition != 4 && companyPosition != 5 || multipleIdentities == 'Y'">
+                    <div class="optionDiv sell-new-data oper-btn" @click="newReceipt" v-if="companyPosition && (companyPosition != 4 && companyPosition != 5 || multipleIdentities == 'Y')">
                         <span>新建发货单</span>
                     </div>
                 </div>

@@ -151,7 +151,7 @@ export default {
           } else {
             switch (i) {
               case 0:
-                  this.flag = i;
+                this.flag = i;
                 this.panel = GoldPriceSetting;
                 break;
               case 1:

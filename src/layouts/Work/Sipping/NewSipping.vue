@@ -1189,6 +1189,8 @@ export default {
                     this.dataType = 3
                     this.isShop = true
                     sessionStorage.setItem('companyPosition', '5') // 店员
+                } else if (this.userInfoData.roleList[i].role == 6) {
+                    this.isShop = true                    
                 }
                 }
                 if (this.isShop == true && this.isCompany == true) {
