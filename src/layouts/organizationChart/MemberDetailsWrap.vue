@@ -79,7 +79,7 @@
     </section>
 
     <!-- 店铺查看权限 -->
-    <div v-if="!lookShopMan">
+    <template v-if="!lookShopMan">
     <section v-if="showList && ListShow" class="store-list-wrap">
       <h4 class="title-icon-wrap store-title">
         <i></i>
@@ -104,7 +104,7 @@
       </ul> -->
     </section>
 
-    </div>
+    </template>
     
     <a class="del-staff el-icon-delete" v-if="deleteRole" href="javascript: void(0)" @click.stop="delDialog = true"></a>
     <!-- <a class="del-staff" v-if="isDelRole && delDualRole" href="javascript: void(0)" @click="_operatePrivilege">删除员工</a> -->
@@ -719,10 +719,24 @@
         lookStore(options).then(res => {
           if(res.data.state === 200){
             this.storeData = res.data.data.dataList
+            console.log('所有的店铺',this.storeData)
+            this.checked = this.getCheckCount(this.storeData)
           } else {
             this.$store.dispatch('workPopupError', res.data.msg);
           }
         })
+      },
+      getCheckCount(data){
+        let count = 0
+        for(let i = 0; i<data.length; i++){
+          if(data[i].status === 'N'){
+            count++
+          }
+        }
+        if(count === data.length){
+          return true
+        }
+        return false
       }
     }
   }

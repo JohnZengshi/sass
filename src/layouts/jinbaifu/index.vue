@@ -5,7 +5,7 @@
 			<!-- <a href="javascript: void(0)" @click="newPopup.JinBaiF = true">金百福数据导入</a> -->
 			<a href="javascript: void(0)" @click="newPopup.JinBaiF = true">智能导入</a>
 			<a :href="downUrl">模板下载</a>
-			<a href="javascript: void(0)" @click="ruleOptionDia = true">规则配置</a>
+			<a href="javascript: void(0)" @click="ruleOptionDia = true">导入规则</a>
 		</div>
 		<div class="batch-body">
 			<div class="table-wrap">
