@@ -153,10 +153,10 @@ export default {
     cursor: pointer;
     .title-name {
         color:#666;
-        border: 1px solid #999;
+        border: 1px solid #DCDFE6;
     }
     &:hover{
-        background:#e0ecf7;
+        // background:#e0ecf7;
         color:#3195f5;
         >ul{
             opacity: 1;

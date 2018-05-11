@@ -49,6 +49,7 @@
                 </el-dialog>
                 <el-dialog :visible.sync="operateDialog" customClass="operateDig">
                     <big-popup
+                        v-if="operateDialog"
                         :item='item'
                         type="2"  
                         isMerge='1'
