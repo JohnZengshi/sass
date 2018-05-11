@@ -407,7 +407,7 @@ export default {
 						{
 							modifyType: '10',
 							dataType: '2',
-							objectData: item.price||0
+							objectData: item.huigouoprice||0
 						}
 						)
 				} else if (type == '回购金价') {
@@ -545,7 +545,7 @@ export default {
 						{
 							modifyType: '10',
 							dataType: '2',
-							objectData: item.price||0
+							objectData: item.huigouoprice||0
 						}
 						)
 					//this.updateSell()
