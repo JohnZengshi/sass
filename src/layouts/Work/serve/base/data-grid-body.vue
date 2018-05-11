@@ -8,7 +8,12 @@
           <h5 v-if="item.orderType == 3" :class="{'is-seek': item.isSeek == 'Y'}">外来商品</h5>
           <ul class="sever-product-list-wrap" :class="{'on-compile-product': !filterType(product.productType)}" v-for="(product, index) in item.productList">
             <li>{{product.productName}}
-              <i class="product-type" v-if="product.productType">{{filterProductType(product.productType)}}</i>
+              <i class="product-type" :class="{
+                'state-one': product.productType == 1,
+                'state-two': product.productType == 2,
+                'state-three': product.productType == 3,
+                'state-four': product.productType == 4
+              }" v-if="product.productType">{{filterProductType(product.productType)}}</i>
             </li>
 
             <li>
@@ -39,7 +44,8 @@
                 
               </el-checkbox>
 
-              <label v-else class="no-check-tit" :class="{'cursor-h': filterProductType(product.productType)}">
+              <label v-else class="no-check-tit" :class="{
+                'cursor-h': filterProductType(product.productType)}">
                 <span v-if="filterType(product.productType)" @click="titChect"></span>
                 <span v-else style="cursor: auto"></span>
               </label>
@@ -215,10 +221,28 @@ export default{
       >.product-type{
         display: inline-block;
         font-style: normal;
-        padding: 1px 4px;
+        padding: 2px 4px;
         border-radius: 2px;
         font-size: 12px;
         line-height: 12px;
+
+      }
+      .state-one{
+        background-color: #dcedfe;
+        color: #2993f8;
+      }
+      .state-two{
+        background-color: #ffe9ff;
+        color: #c46de8;  
+      }
+      .state-three{
+        background-color: #fee5ea;
+        color: #ff607e; 
+        
+      }
+      .state-four{
+        background-color: #feede5;
+        color: #fd914f; 
       }
       .product-type-one{
         color: #fff;
@@ -253,7 +277,7 @@ export default{
       .cursor-h{
         cursor: pointer;
       }
-
+                                      
     }
     >li:nth-child(1){
       padding-left: 14px;
