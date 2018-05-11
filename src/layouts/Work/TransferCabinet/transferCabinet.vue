@@ -56,7 +56,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="optionDiv sell-new-data oper-btn" @click="newReceipt" v-if="userType && (userType != 1 || multipleIdentities == 'Y')">
+                    <div class="optionDiv sell-new-data oper-btn" @click="newReceipt" v-if="userType && userType != 'undefined' && (userType != 1 || multipleIdentities == 'Y')">
                         <span>新建调柜单</span>
                     </div>
                 </div>
@@ -220,6 +220,7 @@ export default {
         // this.workProductClass(); // 产品类别
         this.multipleIdentities = sessionStorage.getItem('multipleIdentities')
         this.userType = sessionStorage.getItem('userType')
+        console.log('嘿呵呵呵userType',this.userType)
     },
     mounted () {
         let self = this

@@ -77,6 +77,13 @@ export default {
 
                 this.$refs.name.style.lineHeight = this.size + 'px'
                 this.$refs.name.style.fontSize = parseInt((this.size * 38) / 70) + 'px'
+                if(this.size<120){
+                    this.$refs.name.style.lineHeight = (this.size+2) + 'px'
+                }
+                if(this.size<40){
+                    this.$refs.name.style.lineHeight = (this.size+6) + 'px'
+                    // this.$refs.name.style.fontSize = parseInt((this.size * 38) / 70) + 'px'
+                }
             }
             
         }

@@ -74,7 +74,10 @@ export default{
    
     fatchCounter( shopId ){
       
-      if( this.shopId == '') return
+      if( this.shopId == ''){
+        this.loading = false
+        return
+      } 
       this.loading = true
       seekShowCounterList({
           shopId : this.shopId
