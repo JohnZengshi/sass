@@ -41,6 +41,10 @@ export const downLoaderFile = (url,data) => {
 
     let dataStr = ''
     for (const key in newData) {
+        if(key === 'sortList'){
+            newData[key] = JSON.stringify(newData[key])
+            console.log(newData[key])
+        }
         dataStr+=key+'='+newData[key]+'&'
     }
 
@@ -67,7 +71,7 @@ export const downLoaderFile = (url,data) => {
 //     // let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
     let hrefurl = serverHost + url + '?' + dataStr
 
-    console.log(hrefurl)
+    console.log('啦啦啦啦',hrefurl)
 
     var a = document.createElement('a');
     a.href = hrefurl;
