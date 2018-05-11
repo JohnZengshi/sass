@@ -92,7 +92,7 @@ const systemMenu = [
 			{
 				text: '服务',
 				path: '/work/serve',
-				icon: 'xiaoshou', 
+				icon: 'fuwu', 
 				children: []
 			}
 		]

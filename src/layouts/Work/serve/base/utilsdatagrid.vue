@@ -1,5 +1,5 @@
 <template>
-<div class="utils-container" v-if="curStatus.nowStatus != 3">
+<div class="serve-utils-container" v-if="curStatus.nowStatus != 3">
  
  <!--提交审核 是制单人 并且单据为待审核状态  -->
 <!--   <span
@@ -39,7 +39,7 @@
   
   <!-- 进行中，制单人 -->
   <span v-if="isOperation" data-text="完成售后" @click="submitAudit">
-    <i class="iconfont icon-beizhu"></i>
+    <i class="iconfont icon-shouhou"></i>
   </span>
   
   <!-- 进行中，制单人 -->
@@ -373,11 +373,11 @@ export default{
 </script>
 
 <style lang="scss" scoped>
-.utils-container{
+.serve-utils-container{
  position:absolute;
  right:-70px;
  bottom: 0;
- width:52px;
+ width:50px;
  // min-height: 50px;
  background-color: #fff;
  // border:1px solid #ededed;
@@ -388,7 +388,6 @@ export default{
  >.receipts{
    
  }
- 
  >span,>.receipts >span{
   height: 50px;
   padding: 5px;

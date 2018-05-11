@@ -284,6 +284,7 @@ export default {
       this.userData.avatarUrl = parm.imageUri
       this.userData.orderList = []
       this.userData.sex = parm.sex
+      this.userData.type = parm.type
     },
     open(parm) {
       this.dialog = true
@@ -304,11 +305,11 @@ export default {
     filterVipGroup(parm) {
       switch (parm) {
         case '1':
-          return '初级'
+          return '普通'
         case '2':
           return '中级'
         case '3':
-          return '高级'
+          return '重要'
       }
     }
   }
@@ -381,6 +382,7 @@ export default {
           right: 0;
           top: 0;
           background: #2993f8;
+          border-radius: 0 5px 5px 0;
           text-align: center;
           cursor: pointer;
           i {
@@ -396,7 +398,7 @@ export default {
           top: 28px;
           left: 0;
           z-index: 200;
-          box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.05);
           li {
             height: 30px;
             width: 200px;
@@ -404,7 +406,13 @@ export default {
             font-size: 0;
             cursor: pointer;
             &:hover {
-              background: #e0ecf7;
+              background: rgb(247, 247, 247);
+              color: #2993f8;
+              p {
+                span{
+                  color: #2993f8;
+                }
+              }
             }
             .seek-list-img {
               float: left;
@@ -445,10 +453,19 @@ export default {
         vertical-align: top;
         display: inline-block;
         height: 50px;
-        margin-left: 30px;
+        // margin-left: 30px;
+        margin: 5px 0 0 30px;
         cursor: pointer;
+        &:hover{
+          >p{
+            color: #2993f8;
+            >i{
+              color: #2993f8;
+            }
+          }
+        }
         p:first-child {
-          margin-bottom: 8px;
+          margin-bottom: 5px;
         }
         p {
           font-size: 12px;
@@ -457,6 +474,9 @@ export default {
           >i {
             font-size: 26px;
             color: #999;
+            // &:hover{
+            //   color: #2993f8;
+            // }
           }
         }
       }
@@ -485,7 +505,7 @@ export default {
       }
       p {
         color: #333;
-        margin-bottom: 10px;
+        margin-bottom: 8px;
         overflow: hidden;
         .sex-icon {
           width: 12px;
@@ -541,6 +561,7 @@ export default {
         width: 100px;
         p:first-child {
           margin-top: 50px;
+          font-weight: bold;
         }
         p {
           font-size: 12px;

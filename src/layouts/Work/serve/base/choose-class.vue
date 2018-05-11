@@ -2,7 +2,7 @@
 <div class="audit-popup" v-if="popupShow">
     <i class="el-icon-close" @click="close"></i>
     <div class="audit-tittle">
-        <img src="~static/img/bohui.png">
+        <img src="~static/img/copy.png">
         <a href="http://192.168.100.109:8080/yunzhubao/v1/export/exportExcelByBusinss?content=https%3A%2F%2Fws.yunzhubao.com%3A9093%2Fyunzhubao-bat%2Fv1%2Fweb%2Flogined%3Foperate%3D001%26key%3D1525400614877%26sessionId%3Dsession-380d5853-0152-40a9-bc29-6157bb4db9a8">
         <div>添加售后商品</div>
         </a>

@@ -57,7 +57,7 @@ export default {
     .ui-table_th{
         display:inline-block;
         line-height: 40px;
-        text-align: center;
+        text-align: left;
         color: #686868;
         font-size:12px;
         float: left;
@@ -77,6 +77,12 @@ export default {
             // font-size: 14px;
             color:#2993f8;
         }
+    }
+    .ui-table_th:first-child{
+      padding-left: 14px;
+    }
+    .ui-table_th:last-child{
+      text-align: center;
     }
 }
 

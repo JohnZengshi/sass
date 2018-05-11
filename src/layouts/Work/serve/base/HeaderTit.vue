@@ -53,6 +53,7 @@ export default{
       border-radius: 5px;
       transition: all .3s;
       margin-top: 5px;
+      font-weight: bold;
       background-color: #2993f8;
       &:hover {
         background-color: #057aea;
