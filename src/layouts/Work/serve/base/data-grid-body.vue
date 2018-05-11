@@ -8,11 +8,29 @@
           <h5 v-if="item.orderType == 3" :class="{'is-seek': item.isSeek == 'Y'}">外来商品</h5>
           <ul class="sever-product-list-wrap" :class="{'on-compile-product': !filterType(product.productType)}" v-for="(product, index) in item.productList">
             <li>{{product.productName}}
-              <i class="product-type" v-if="product.productType">{{filterProductType(product.productType)}}</i>
+              <i class="product-type" :class="{
+                'state-one': product.productType == 1,
+                'state-two': product.productType == 2,
+                'state-three': product.productType == 3,
+                'state-four': product.productType == 4
+              }" v-if="product.productType">{{filterProductType(product.productType)}}</i>
             </li>
-            <li>{{product.barcode}}</li>
-            <li>{{product.classesType == 1 ? product.goldWeight : product.weight}}</li>
-            <li>{{product.price}}</li>
+
+            <li>
+              {{product.barcode}}
+              <i v-if="!product.barcode" class="no-data-line"></i>
+            </li>
+
+            <li>
+              {{product.classesType == 1 ? product.goldWeight : product.weight}}
+              <i v-if="product.classesType == 1 ? !product.goldWeight : !product.weight" class="no-data-line"></i>
+            </li>
+
+            <li>
+              {{product.price}}
+              <i v-if="!product.price" class="no-data-line"></i>
+            </li>
+
             <li>
               <DownMenu
                 :productType="filterType(product.productType)"
@@ -22,11 +40,16 @@
               ></DownMenu>
             </li>
             <li>
-              <el-checkbox v-if="filterCheckbox(product.productType, product.serviceId, product.serviceTypeId)" :label="product.productId" style="font-size: 0"></el-checkbox>
-              <label v-else class="no-check-tit" :class="{'cursor-h': filterProductType(product.productType)}">
-                <span v-if="filterProductType(product.productType)" @click="titChect"></span>
-                <span v-else></span>
+              <el-checkbox v-if="filterCheckbox(product.productType, product.serviceId, product.serviceTypeId)" :label="product.productId" style="font-size: 0">
+                
+              </el-checkbox>
+
+              <label v-else class="no-check-tit" :class="{
+                'cursor-h': filterProductType(product.productType)}">
+                <span v-if="filterType(product.productType)" @click="titChect"></span>
+                <span v-else style="cursor: auto"></span>
               </label>
+
             </li>
           </ul>
         </div>
@@ -76,9 +99,13 @@ export default{
   },
   methods: {
     filterType (parm) {
-      return parm ? parm == 1 : false
+      return parm ? parm == 1 : true
     },
     filterCheckbox (productType, serviceId, serviceTypeId) {
+      console.log('productType', productType)
+      console.log('serviceId', serviceId)
+      console.log('serviceTypeId', serviceTypeId)
+      console.log('this.filterType(productType)', this.filterType(productType))
       if (this.filterType(productType)) {
         if (serviceId || serviceTypeId) {
           return true
@@ -150,6 +177,9 @@ export default{
     border-radius: 2px!important;
   }
 }
+.mCustomScrollBox{
+  border-radius: 0!important;
+}
 </style>
 <style lang="scss" scoped>
 .serve-data-grid-body-main{
@@ -175,13 +205,44 @@ export default{
       font-size: 14px;
       text-align: center;
       color: #040404;
+      position: relative;
+      .no-data-line{
+        display: block;
+        // position: absolute;
+        // top: 0;
+        // bottom: 0;
+        // right: 0;
+        // left: 0;
+        margin-top: 25px;
+        height: 1px;
+        width: 50px;
+        background-color: #dedede;
+      }
       >.product-type{
         display: inline-block;
         font-style: normal;
-        padding: 1px 4px;
+        padding: 2px 4px;
         border-radius: 2px;
         font-size: 12px;
         line-height: 12px;
+
+      }
+      .state-one{
+        background-color: #dcedfe;
+        color: #2993f8;
+      }
+      .state-two{
+        background-color: #ffe9ff;
+        color: #c46de8;  
+      }
+      .state-three{
+        background-color: #fee5ea;
+        color: #ff607e; 
+        
+      }
+      .state-four{
+        background-color: #feede5;
+        color: #fd914f; 
       }
       .product-type-one{
         color: #fff;
@@ -216,10 +277,12 @@ export default{
       .cursor-h{
         cursor: pointer;
       }
-
+                                      
     }
     >li:nth-child(1){
+      padding-left: 14px;
       width: 190px;
+      text-align: left;
       overflow: hidden;
       white-space:nowrap; 
       text-overflow:ellipsis; 

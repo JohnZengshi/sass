@@ -32,7 +32,7 @@
               <span v-if="isOperation" class="add" @click="openAddCommodityWrap('1')" ref="ref_addGoods">添加商品</span>
             </div>
           </div>
-
+          <img v-if="seekResponse && !productData.length" class="no-data-img" src="~static/img/space-page.png">
           <!-- 商品列表 -->
           <serve-container-list :isOperation="isOperation" :showData="productData" @setBounding="setBounding" @remarkOut="remarkOut" @_seekProductListByService="_seekProductListByService" @openRemarkDialog="openRemarkDialog"></serve-container-list>
 
@@ -54,6 +54,7 @@
     
         <!-- 查找售后商品 -->
         <add-commodity ref="addCommodityWrap" :receiptData="receiptData" :productData="productData" @updataApi="updataApi"></add-commodity>
+
         <!-- 备注提示语 -->
         <remarkTit ref="remarkTitWrap" :boundingData="boundingData"></remarkTit>
       </div>
@@ -109,6 +110,7 @@ export default{
 				dataList: []
 			},
       productData: [], // 商品列表数据
+      seekResponse: false,
 			dgDataList : [],
 			// 订单数据
       orderData : Object.assign({},{
@@ -143,7 +145,9 @@ export default{
     ]),
     shopManageRole: function() { // 店长
       if(this.userPositionInfo) {
-        return jurisdictions.jurisdictionShopManageRole(this.userPositionInfo.roleList)
+        if (this.userPositionInfo.roleList) {
+          return jurisdictions.jurisdictionShopManageRole(this.userPositionInfo.roleList)
+        }
       }
       return false
     },
@@ -177,11 +181,13 @@ export default{
         })
     },
     _seekProductListByService () {
+      this.seekResponse = false
       let options = {
         orderNum: this.orderNum
       }
       seekProductListByService(options)
         .then(res => {
+          this.seekResponse = true
           if (res.data.state == 200) {
               this.productData = res.data.data.productList         
           } else {
@@ -306,6 +312,8 @@ export default{
 							padding: 0px 10px;
 							background-color: #2993f8;
 							color: #fff;
+              font-size: 12px;
+              font-weight: block;
 							&:hover {
 								background-color: #057aea;
 							}
@@ -317,7 +325,16 @@ export default{
 					}
 				}
 			}
-
+      .no-data-img {
+        position: absolute;
+        left: 0;
+        top: 50px;
+        right: 0;
+        bottom: 0;
+        width: 310px;
+        height: 310px;
+        margin: 0 auto;
+      }
 
 		}
 	}

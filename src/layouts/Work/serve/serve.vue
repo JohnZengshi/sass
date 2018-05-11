@@ -44,22 +44,6 @@
                         @clearInfo="clearReception">
                     </DropDownMenu>
                     
-                    
-    <!--                 <div class="optionDiv selected">
-                        <span  class="title-name" :class="optionData.shop == '' ? '' : 'select'">
-                           {{optionData.shop == '' ? '店铺' : optionData.shop}}
-                          <i class="iconfont icon-arrow-down" v-if="optionData.shop ==''"></i>
-                          <i class="el-icon-circle-close" @click="getAllquery('warehouse','shop')" title="清除" v-else></i>
-                        </span>
-                        <ul>
-                            <li 
-                                @click="getShopId(item, index)" :key="index"
-                                :class = "optionData.shop == item.shopName ? 'active' :''"
-                                v-for="(item, index) in shopListByCo">
-                                {{item.shopName}}
-                            </li>
-                        </ul>
-                    </div> -->
                     <span class="spaceMark">|</span>
                     <DropDownMenu
                         style="float: left;"
@@ -69,21 +53,6 @@
                         @changeData="dropOrderByName"
                         @clearInfo="clearOrderByName">
                     </DropDownMenu>
-<!--                     <div class="optionDiv selected">
-                        <span  class="title-name" :class="optionData.sort == '' ? '' : 'select'">
-                           {{optionData.sort == '' ? '排序' : optionData.sort}}
-                          <i class="iconfont icon-arrow-down" v-if="optionData.sort ==''"></i>
-                          <i class="el-icon-circle-close" @click="getAllquery('sortSelect','sort')" title="清除" v-else></i>
-                        </span>
-                        <ul>
-                            <li 
-                                @click="getSort(item, index)" :key="index"
-                                :class = "optionData.sort == item.name ? 'active' :''"
-                                v-for="(item, index) in datas.times">
-                                {{item.name}}
-                            </li>
-                        </ul>
-                    </div> -->
 
                     <div class="search">
                         <input @keyup.enter="inputSeek" v-model="keyword" type="text" placeholder="请输入会员名/手机号">
@@ -93,7 +62,7 @@
                     </div>
 
                     <div class="optionDiv sell-new-data oper-btn" @click="newReceipt">
-                        <span>新建售后单</span>
+                        <span style="font-size: 12px;font-weight: blod;">新建售后单</span>
                     </div>
                 </div>
             </div>
@@ -281,7 +250,7 @@ export default {
     },
     created () {
         this.filterFun(this.cbFun); // 获取单据列表
-        this.workRepositoryList(); // 库位列表
+        // this.workRepositoryList(); // 库位列表
         this.getShopListByCo(); // 店铺列表
         this.workProductClass(); // 产品类别
         this.workSupplierList(); // 供应商
@@ -309,20 +278,23 @@ export default {
     },
     computed: {
         ...mapGetters([
-            "repositoryList", // 库位列表
+            // "repositoryList", // 库位列表
             "shopListByCo", // 店铺列表
             "productClass", // 产品类别
-            "supplierListData", // 供应商
             "userPositionInfo" // 职位信息
         ]),
         shopRole: function () { // 店员
             if (this.userPositionInfo) {
-                return jurisdictions.jurisdictionShopRole(this.userPositionInfo.roleList);
+                if (this.userPositionInfo.roleList) {
+                    return jurisdictions.jurisdictionShopRole(this.userPositionInfo.roleList)
+                }
             }
         },
         computedRole: function () { // 公司
             if (this.userPositionInfo) {
-                return jurisdictions.jurisdictionComputedRole(this.userPositionInfo.roleList)
+                if (this.userPositionInfo.roleList) {
+                    return jurisdictions.jurisdictionComputedRole(this.userPositionInfo.roleList)
+                }    
             }
         }
     },
@@ -337,7 +309,7 @@ export default {
     },
     methods: {
         ...mapActions([
-            "workRepositoryList", // 库位列表
+            // "workRepositoryList", // 库位列表
             "getShopListByCo", // 店铺列表
             "workProductClass", // 产品类别
             "workSupplierList" // 供应商
@@ -346,6 +318,11 @@ export default {
             seekGetServiceTypeList().then((res) => {
                 if (res.data.state == 200) {
                     this.afterTypeList = res.data.data.classesList[0].dataList
+                } else {
+                    this.$message({
+                      message: res.data.msg,
+                      type: 'warning'
+                    })
                 }
             }, (res) => {
                 console.log(res)
@@ -657,38 +634,6 @@ export default {
             this.filterFun(); // 请求数据
             this.recordData();
         },
-        cutShopData (item2, index2, index, typeName) { // 切换店铺(小类)
-            this.queryList[index].name = item2.shopName;
-            this.queryList[index].id = item2.shopId;
-            this.amendFun(item2, index2, typeName);
-            this.restoreData();
-            this.filterFun();
-            this.outList();
-        },
-        cutMonny (item2, index2, index, typeName) { // 切换收银状态
-            this.queryList[index].name = item2.name;
-            this.queryList[index].id = item2.type;
-            this.amendFun(item2, index2, typeName);
-            this.restoreData();
-            this.filterFun();
-            this.outList();
-        },
-        cutSortData (item2, index2, index, typeName) { // 切换排序(小类)
-            this.queryList[index].name = item2.name;
-            this.queryList[index].id = item2.type;
-            this.amendFun(item2, index2, typeName);
-            this.restoreData();
-            this.filterFun();
-            this.outList();
-        },
-        cutShopByCo (item2, index2, index, typeName) { // 切换供应商
-            this.queryList[index].name = item2.shopName;
-            this.queryList[index].id = item2.shopId;
-            this.amendFun(item2, index2, typeName);
-            this.restoreData();
-            this.filterFun();
-            this.outList();
-        },
         amendFun (item2, index2, typeName) { // 修改选择数据item2, index, typeName
             switch (typeName) {
                 case "排序":
@@ -708,41 +653,9 @@ export default {
                     break;
             }
         },
-        // delectQuery (parm, item) { // 删除一条选中数据
-        //     Vue.delete(this.queryList, parm);
-        //     switch (item.typeName) {
-        //         case "供应商":
-        //             this.selectData.supplier = [];
-        //             this.selectObject.supplier = null;
-        //             break;
-        //         case "入库库位":
-        //             this.selectData.warehouse = [];
-        //             this.selectObject.warehouse = null;
-        //             break;
-        //         case "排序":
-        //             this.selectData.sortSelect = [];
-        //             this.selectObject.sortSelect = null;
-        //             break;
-        //     }
-        //     this.filterFun();
-        // },
         emptyQuery () { // 清空查询筛选条件
             this.queryList = [];
             this.filterFun();
-        },
-        getShopId (parm, index) { // 选择店铺
-            let selectObject = {
-                "typeName": "店铺",
-                "name": parm.shopName,
-                "id": parm.shopId
-            }
-            this.optionData.shop = parm.shopName
-            this.selectObject.warehouse = selectObject;
-            this.selectData.warehouse = [];
-            Vue.set(this.selectData.warehouse, index, true)
-            this.restoreData();
-            this.filterFun();
-            this.outList();
         },
         getAllquery (parm,pm) { // 全选
             this.selectData[parm] = [];
@@ -807,26 +720,6 @@ export default {
                 }
             }, (response) => {
             });
-        },
-        delectProduct (parm) { // 删除商品
-            let _seft = this;
-            let options = {
-                "orderNum": parm
-            }
-            operateDelReceipt(options).then(response => {
-                if (response.data.state === 200) {
-                    this.$store.dispatch('workPopupError', "删除成功");
-                    _seft.getAll(); // 待会改不请求
-                    // alert("删除成功")
-                } else {
-                    this.$store.dispatch('workPopupError', response.data.msg);
-                }
-            }, response => {
-            })
-        },
-        delectReceipts (parm) {
-            this.popup.deleteReceipts = true;
-            this.popup.receiptsOrderNum = parm;
         }
     }
 }

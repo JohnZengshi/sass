@@ -521,10 +521,10 @@
 				</div>
 			</div>
 			<!--质保单打印-->
-			<div id="windowPrintView" v-if="isPreview" ref="windowPrintView">
+			<!--<div id="windowPrintView" v-if="isPreview" ref="windowPrintView">
 				<TemplatePreviewCanvasComponent :isPrintCanvas="true" :canvas="canvas" :templateData="templateData" :class="i%2==0 ? 'printViewInside' : ''" v-for="(i,index) in pageNumber" :key="index" :page="i">
 				</TemplatePreviewCanvasComponent>
-			</div>
+			</div>-->
 
 			<!-- 新需求-新增销售加判断 -->
 			<changeType ref="changeTypeWrap" @updateData="updateData"></changeType>
@@ -534,7 +534,8 @@
 			
 			<!--打印模块-->
 			<div style="display: none;">
-				<print-template title="销售" ref="detailTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></print-template>
+				<sell-template title="销售" ref="sellTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></sell-template>
+				<warranty-template :template="warrantyTemplate.template" :dataList="warrantyTemplate.dataList"></warranty-template>
 			</div>
 			
 		</div>
@@ -593,8 +594,8 @@
 	Vue.use(Option)
 	Vue.use(Button)
 
-	import printTemplate from "@/components/jcp-print/bill/sell/template";
-
+	import sellTemplate from "@/components/jcp-print/bill/sell/template";
+	import warrantyTemplate from "@/components/jcp-print/warranty/template";
 	export default {
 		components: {
 			storageReturnReceiptsIntro,
@@ -619,7 +620,8 @@
 			changeType,
 			typeOne,
 			remarkTit,
-			printTemplate,
+			sellTemplate,
+			warrantyTemplate,
 		},
 		directives: {
 			focus: {
@@ -631,6 +633,7 @@
 		},
 		data() {
 			return {
+				warrantyTemplate:{template:{},dataList:{}},
 				isDisabled: true,
 				remarkDialog: false,
 				placeText: '请选择',
@@ -1535,7 +1538,7 @@
 			},
 			//打印表格 
 			tabPrin() {
-				this.$refs.detailTemplate.print();
+				this.$refs.sellTemplate.print();
 			},
 			selectWay() {
 				this.selWay = 1
@@ -1892,15 +1895,14 @@
 				printAPI.getPrintQualityData({
 					orderId: orderNumber
 				}).then(json => {
-					sessionStorage.setItem("kkkkkkkkkk-2017-6-30", JSON.stringify(json.data))
 					if(json.state == 200) {
 						if(json.data.backuProductList && json.data.backuProductList.length > 0) {
 							if(json.data.productList) json.data.productList.push(...json.data.backuProductList)
 						}
 						this.templateData = json.data
 						this.isPreview = true
-						this.windowPrint()
-					} else {
+						this.windowPrint(template, json.data)
+					}else {
 						this.$message({
 							message: json.msg,
 							type: error
@@ -1910,36 +1912,9 @@
 			},
 
 			//质保单打印
-			windowPrint() {
-				let print = null;
-				this.appPrint = document.getElementById('appPrint')
-
-				if(this.IntervalOut) clearInterval(this.IntervalOut)
-				document.getElementById('app').style.display = 'none';
-
-				setTimeout(() => {
-					this.appPrint.innerHTML = this.$refs.windowPrintView.innerHTML
-				}, 1000)
-				//return
-				setTimeout(() => {
-					print = document.execCommand('print');
-				}, 1500)
-
-				this.IntervalOut = setInterval(() => {
-					if(print) {
-						document.getElementById('app').style.display = 'block';
-						if(this.IntervalOut) clearInterval(this.IntervalOut)
-						this.IntervalOut = null;
-						this.appPrint.innerHTML = '';
-					} else if(print == false) {
-						if(this.IntervalOut) clearInterval(this.IntervalOut)
-						if(!window.print()) {
-							document.getElementById('app').style.display = 'block';
-							this.IntervalOut = null;
-							this.appPrint.innerHTML = '';
-						}
-					}
-				}, 10)
+			windowPrint(templateList, data){
+				this.warrantyTemplate.template = templateList;
+				this.warrantyTemplate.dataList = data;
 			},
 
 			receiptsChange() { // 监听商品列表数据改变

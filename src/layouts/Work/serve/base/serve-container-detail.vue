@@ -27,7 +27,7 @@
   
       <div class="item-inner">
         <p>售价</p>
-        <p>{{item.price}}</p>
+        <p>{{item.price}}元</p>
       </div>
 
     </template>
@@ -61,7 +61,7 @@
 
       <div class="item-inner">
         <p>件重</p>
-        <p>{{item.weight}}</p>
+        <p>{{item.weight}}g</p>
       </div>
 
     </template>
@@ -141,16 +141,16 @@ export default{
 </script>
 <style lang="scss">
 .serve-container-detail-wrap{
-  margin: 20px 10px 0 10px;
+  margin: 10px 10px 0 20px;
   width: 250px;
   height: 346px;
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
   display: inline-block;
   padding: 30px 18px;
   overflow: hidden;
   position: relative;
+  background-color: rgb(246, 247, 248);
   .del-btn {
     width: 54px;
     height: 36px;
@@ -163,6 +163,7 @@ export default{
     cursor: pointer;
   }
   &:hover{
+    box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
     >.del-btn{
       opacity: 1;
     }
@@ -178,7 +179,7 @@ export default{
     right: 0px;
     top: 36px;
     border-radius: 20px 0 0 20px;
-    background-color: #f6f6f6;
+    background-color: #fff;
     cursor: pointer;
     text-align: center;
     transition: all .3s;
@@ -194,21 +195,24 @@ export default{
     }
   }
   >.server-type-name{
-    font-size: 18px;
+    height: 28px;
+    line-height: 28px;
+    font-size: 14px;
+    font-weight: bold;
     display: inline-block;
     background-color: rgb(255, 96, 126);
     border-radius: 5px;
     color: #fff;
-    padding: 5px 5px;
+    padding: 0 5px;
   }
   >.jewelry-name{
-    height: 29px;
+    line-height: 18px;
     font-weight: bold;
-    font-size: 22px;
+    font-size: 18px;
     margin-top: 15px;
     color: #2993f8;
     width: 180px;
-    overflow:hidden;
+    overflow-x:hidden;
     text-overflow: ellipsis;
   }
   >.item-inner{
@@ -218,11 +222,11 @@ export default{
       font-size: 14px;
       line-height: 14px;
       display: inline-block;
-      overflow:hidden;
+      // overflow:hidden;
       text-overflow: ellipsis;
     }
     >p:first-child{
-      width: 70px;
+      min-width: 56px;
       color: #999;
       margin-right: 20px;
       text-align: justify;

@@ -15,24 +15,28 @@
             {{receiptData.orderNum}} 
             <span v-if="receiptData.ifImport=='Y'"  class="icon-cloud"></span>
            </h5>
-           <div class="select-container">
-              <div class="item storage" v-text="receiptData.shopName"><!--店铺--></div>
-              <div v-if="!isOperation" class="item storage" v-text="receiptData.sellName"><!--人--></div>
-              <!--人-->
+           <ul class="serve-select-container-wrap">
+           <!--店铺-->
+            <li>
+              <div class="serve-h-tit" v-text="receiptData.shopName"></div>
+              <div class="serve-h-tit-b">库位</div>
+            </li>
+            <!--人-->
+            <li>
+              <div v-if="!isOperation" class="serve-h-tit" v-text="receiptData.sellName"></div>
               <DropDownMenu
                   v-if="isOperation"
                   style="float: left;"
                   :nameKey="'userName'"
-                  :titleInfo="receiptData.sellName || '店铺'"
+                  :titleInfo="receiptData.sellName || '接待人'"
                   :showList="shopUserList"
                   @changeData="dropUserReturn"
                   @clearInfo="clearUser">
               </DropDownMenu>
-           </div>
-           <div class="select-container-name">
-              <div class="item">库位</div>
-              <div class="item">售后接待</div>
-           </div>
+              <div class="serve-h-tit-b">售后接待</div>
+            </li>
+             
+           </ul>
         </div>
         <!--商品属性-->
         <div class="item product-attr">
@@ -445,6 +449,7 @@ export default{
               border-radius: 5px;
               font-size: 14px;
               line-height: 14px;
+              margin-left: 25px;
               color: #fff;
               background-color: rgb(255, 162, 0);
             }
@@ -472,7 +477,7 @@ export default{
         bottom: 0;
         left: 0;
         right: 0;
-        margin: auto;
+        margin: 30px auto 0 auto;
         width: 160px;
         height: 70px;
         li{
@@ -484,6 +489,7 @@ export default{
             height: 42px;
           }
           p{
+            margin-top: 5px;
             font-size: 12px;
             width: 50px;
             text-align: center;
@@ -572,7 +578,32 @@ export default{
   }
   
 }
-
+.serve-select-container-wrap{
+  li{
+    display: inline-block;
+    .serve-h-tit{
+      padding: 0 8px;
+      color: #666;
+      text-align: center;
+      display: block;
+      height: 30px;
+      font-weight: bold;
+      font-size: 14px;
+      line-height: 30px;
+    }
+    .serve-h-tit-b{
+      padding: 0 8px;
+      font-size: 12px;
+      color: #a9a8a7;
+    }
+  }
+  li:first-child{
+    margin-right: 10px;
+    .serve-h-tit, .serve-h-tit-b{
+      padding: 0;
+    }
+  }
+}
 .select-container{
   display: flex;
   >.item{
@@ -616,7 +647,8 @@ export default{
 .select-container-name{
   display: flex;
   .item{
-    width: 106px;
+    width: 126px;
+    overflow: hidden;
     font-size: 12px;
     color: #a9a8a7;
   }

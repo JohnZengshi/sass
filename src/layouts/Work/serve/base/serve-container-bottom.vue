@@ -44,12 +44,19 @@ export default{
   methods: {
     cosImg (parm) {
       // let datas = parm.splice(0, 6 - receiptData.dataList.length - parm.length)
+      let imgList = []
+      let canAdd = 6 - this.receiptData.dataList.length // 剩余可以添加的数
+      if (parm.length > canAdd) {
+        imgList = parm.splice(0, canAdd)
+      } else {
+        imgList = parm
+      }
       let options = {
         dataList: [],
         orderNum: this.$route.query.orderNumber,
         shopId: this.$route.query.shopId
       }
-      for (let i of parm) {
+      for (let i of imgList) {
         options.dataList.push(
           {
             operateType: '3',
@@ -136,13 +143,14 @@ export default{
     width: 500px;
     border-radius: 5px;
     overflow: hidden;
+    padding: 8px 10px;
     background-color: rgb(246,247,249);
     >textarea, span{
-      padding: 8px 10px;
-      height: 80px;
+      height: 66px;
       font-size: 14px;
       lin-height: 14px;
-      width: 500px;
+      width: 480px;
+      overflow: hidden;
       background-color: rgb(246,247,249);
     }
   }

@@ -2,7 +2,7 @@
 <div class="audit-popup" v-if="popupShow">
     <i class="el-icon-close" @click="close"></i>
     <div class="audit-tittle">
-        <img src="~static/img/bohui.png">
+        <img src="~static/img/copy.png">
         <div>添加会员</div>
     </div>
     <div class="audit-text">
