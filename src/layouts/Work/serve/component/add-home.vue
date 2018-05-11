@@ -501,7 +501,7 @@ export default {
       overflow: hidden;
       margin-left: 10px;
       p:first-child {
-        margin-top: 26px;
+        margin-top: 30px;
       }
       p {
         color: #333;
@@ -560,7 +560,7 @@ export default {
         height: 128px;
         width: 100px;
         p:first-child {
-          margin-top: 50px;
+          margin-top: 44px;
           font-weight: bold;
         }
         p {

@@ -295,6 +295,7 @@ export default{
     }
     >li:nth-child(3){
       width: 82px;
+      text-align: left;
       overflow: hidden;
       white-space:nowrap; 
       text-overflow:ellipsis; 
