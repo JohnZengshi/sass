@@ -158,6 +158,7 @@ export default {
     &:hover{
         // background:#e0ecf7;
         color:#3195f5;
+        
         >ul{
             opacity: 1;
             visibility: visible;
@@ -173,6 +174,7 @@ export default {
         }
         >.title-name {
             color:#3195f5;
+            border: 1px solid #2993f8;
         }
         .title-name .el-icon-circle-close {
             color:#2993f8;
