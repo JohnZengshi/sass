@@ -27,6 +27,7 @@
   	  @tabCell="tabCell">
   	</data-edit-footer>
 	</template>
+    
 	<template v-else>
 	  <!--表格内容区  -->
     <data-grid-body 

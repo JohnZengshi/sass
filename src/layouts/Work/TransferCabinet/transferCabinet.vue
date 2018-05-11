@@ -56,7 +56,7 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="optionDiv sell-new-data oper-btn" @click="newReceipt" v-if="userType != 1 || multipleIdentities == 'Y'">
+                    <div class="optionDiv sell-new-data oper-btn" @click="newReceipt" v-if="userType && (userType != 1 || multipleIdentities == 'Y')">
                         <span>新建调柜单</span>
                     </div>
                 </div>

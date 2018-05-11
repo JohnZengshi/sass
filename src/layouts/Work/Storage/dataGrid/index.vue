@@ -338,7 +338,7 @@
 		position: relative;
 		overflow: auto;
 		&.animat-scroll {
-			height: 600px;
+			height: 540px;
 		}
 		&.animat-scroll-firefox {
 			height: 550px;

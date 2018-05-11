@@ -19,15 +19,20 @@ export default {
     created () {
     },
     watch: {
-        userName () {
-            this.customStyle()
-            this.formatFunction()
+        'userName' (val) {
+            // this.formatFunction()
+            // this.customStyle()
+            console.log('啦啦啦，userName',val)
+            setTimeout(() => {
+                this.formatFunction()
+                this.customStyle()
+            }, 0)
         }
     },
     mounted () {
         setTimeout(() => {
-            this.customStyle()
             this.formatFunction()
+            this.customStyle()
         }, 500)
     },
     methods: {
@@ -36,22 +41,28 @@ export default {
             let secondValue = ''
             if (this.userName) {
                 temValue = this.userName.substring(0, 1)
-                secondValue = this.userName.substring(1, 2)
+                // secondValue = this.userName.substring(1, 2)
+                console.log('数字1',temValue)
+                this.formatValue = temValue
             }
             // let temValue = this.userName.substring(0, 1)
             if (/^[a-zA-Z]$/.test(temValue)) {
                 // this.formatValue = 
                 if (/^[a-zA-Z]$/.test(secondValue)) {
-                    this.formatValue = temValue.toUpperCase() + secondValue.toLowerCase()
+                    // this.formatValue = temValue.toUpperCase() + secondValue.toLowerCase()
+                    this.formatValue = temValue.toUpperCase()
                 } else if (/^[\u4E00-\u9FA5]$/.test(secondValue)) {
                     this.formatValue = temValue
                 }
             } else if (/^[\u4E00-\u9FA5]$/.test(temValue)) {
                 this.formatValue = temValue
             }
+
         },
         customStyle () { // 自定义样式
+            console.log('我进来了')
             if (this.$refs.name) {
+                console.log('我有refs')
                 this.$refs.img_bg.style.width = this.size + 'px'
                 this.$refs.img_bg.style.height = this.size + 'px'
                 // this.$refs.img_bg.style.padding = (this.size * 4) / 70 + 'px'
@@ -69,6 +80,11 @@ export default {
             }
             
         }
+    },
+    updated(){
+        console.log('嘿,logo',this.logo)
+        console.log('嘿,userName',this.userName)
+        console.log('嘿,size',this.size)
     }
 }
 </script>
@@ -82,6 +98,7 @@ export default {
         position: absolute;
         top: 3px;
         left: 1px;
+        font-size: 0;
     }
     .img-name {
         font-weight: bold;
