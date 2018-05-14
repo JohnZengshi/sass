@@ -172,7 +172,7 @@ export default {
       //功能操作区 权限
       isShow: true,
       // 复制选中的数据
-      copyOrderObject : {},
+      copyOrderObject: {},
       copyOrderArray: [],
       
       // 规则配置
@@ -270,11 +270,10 @@ export default {
        this.rowDataList = data
       }
     },
-    
     // 更新选中数据 以便进行复制
-    updataCopyOrderObject (data) {
+    updataCopyOrderObject(data){
       if(data){
-       this.copyOrderObject = Object.assign({}, data)
+      	this.copyOrderObject = Object.assign({}, data)
       }
     },
     // loading
@@ -357,7 +356,7 @@ export default {
     },
     
     // 复制操作成功之后 初始化复制相关属性
-    emptyCopy () {
+    emptyCopy(){
       this.updataApi()
       this.$refs.datagrid.$refs.dgridfixed.activeSelectOn = -1
       this.copyOrderArray = []
@@ -365,7 +364,7 @@ export default {
     },
     
     // 复制
-    submitCopy (num) {
+    submitCopy(num){
       if (!/^(\d)*$/.test(num)) {
         this.$message({
           type:'warning',
@@ -378,7 +377,6 @@ export default {
         })
       } else {
         this.copyPopupShow(false)
-        
         // 复制操作
         if (!this.isShowPopup){
           //复制以保存的
@@ -406,24 +404,18 @@ export default {
     },
     
     copyPopupShow (type) {
-      if (this.copyOrderObject.barcode == undefined) {
+      if(this.copyOrderObject.barcode == undefined) {
         this.isShowPopup = false
         this.$message({
           type:'warning',
           message :'请选中需要复制的商品'
         })
-//    } else if (this.dgDataList.length == 0) {
-//      this.isShowPopup = false
-//      this.$message({
-//        type:'warning',
-//        message :'无商品时不可复制'
-//      })
       } else {
         this.isShowPopup = type
       }
     },
     // 更新单据页面API接口出数据
-    updataApi (){
+    updataApi(){
       this.dgDataList = []
       this.isRefreshFooter = !this.isRefreshFooter
       // 商品列表
@@ -454,18 +446,16 @@ export default {
     },
     
     // 保存新增商品
-    seve () {
+    seve(){
       // 保存之前需要对必填项进行提示
       if (this.rowDataList.length > 0) {
         this.rowDataList.forEach((item) => {
-          
           if (item['jewelryName'] == ''){
             this.$message({
               type:'warning',
               message :'首饰类别未填，不可保存'
             })
           }
-          
           // 成色名称 宝石名称
           if (item['gemName'] == '' && item['metalColor'] == ''){
             if (item['metalColor'] == '' && item['gemName'] == '') {
@@ -515,13 +505,10 @@ export default {
                 type:'success',
                 message :'添加商品成功'
               })
-              
               this.rowDataList = []
               if(this.$refs.datagrid){
-                
                 // 清空子组件里面新增的商品列表 
                 this.$refs.datagrid.addDatalist = []
-                
                 this.updataApi()
               }
             }
@@ -557,7 +544,6 @@ export default {
   
   mounted(){
     this.$nextTick(() => {
-      
       // 获取入库下载模板URL链接
       downloadTable({
         infoType : '1',
