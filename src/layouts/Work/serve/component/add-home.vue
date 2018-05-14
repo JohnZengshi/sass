@@ -194,13 +194,18 @@ export default {
     },
     // 确认添加或替换
     affirmAdd() {
+      this.deWeight(this.cacheData.orderList)
+      // console.log('确认添加或替换', this.cacheData.orderList)
+      // this.userData.orderList.push(...this.cacheData.orderList)
+    },
+    deWeight (parm) {
       let hasData = []
       for (let i of this.userData.orderList) {
         for (let j of i.productList) {
           hasData.push(j.productId)
         }
       }
-      for (let i of this.cacheData.orderList) {
+      for (let i of parm) {
         debugger
         let datas = {
           orderNo: i.orderNo,
@@ -217,8 +222,6 @@ export default {
           this.userData.orderList.push(datas)
         }
       }
-      // console.log('确认添加或替换', this.cacheData.orderList)
-      // this.userData.orderList.push(...this.cacheData.orderList)
     },
     seekUserData() {
       if (this.memberList.length == 1) {
@@ -269,7 +272,8 @@ export default {
               if (res.data.data.memberId != this.userData.memberId) {
                 this.$refs.affirmPopupRelevanceWrap.open()
               } else {
-                this.userData.orderList.push(...res.data.data.orderList)
+                this.deWeight(res.data.data.orderList)
+                // this.userData.orderList.push(...res.data.data.orderList)
               }
             }
           } else {

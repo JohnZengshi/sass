@@ -128,11 +128,11 @@ export default{
       }
       return false
     },
-    // 已完成 && 店长，制单人
+    // 已完成 && 店长，制单人 --> 撤销审核
     isRevocation () {
       if (this.orderData.makeOrderManId) {
         if (this.curStatus.nowStatus == 2) {
-          if (this.shopManageRole || sessionStorage.getItem('id') == this.orderData.makeOrderManId) {
+          if (this.shopManageRole || sessionStorage.getItem('id') == this.orderData.makeOrderManId || sessionStorage.getItem('id') == this.orderData.sellUserId) {
             return true
           }
         }
