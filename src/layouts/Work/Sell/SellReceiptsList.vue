@@ -535,8 +535,8 @@
 			<!--打印模块-->
 			<div style="display: none;">
 				<sell-template title="销售" ref="sellTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></sell-template>
-				<warranty-template :template="warrantyTemplate.template" :dataList="warrantyTemplate.dataList"></warranty-template>
 			</div>
+			<warranty-template :template="warrantyTemplate.template" :dataList="warrantyTemplate.dataList"></warranty-template>
 			
 		</div>
 	</transition>
