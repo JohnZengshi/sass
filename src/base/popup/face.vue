@@ -5,7 +5,7 @@
             <div>未开通功能提示</div>
         </div>
         <div class="body">
-            <p>你未开通人脸识别功能，请联系客服</p>
+            <p>你未开通{{tit}}功能，请联系客服</p>
             <p><span>0755-82328918</span>进行开通</p>
             <a href="javascript: void(0)" @click="close">确定</a>
         </div>
@@ -17,6 +17,7 @@ export default {
     props: ['currentShop'],
     data () {
         return {
+            tit: '人脸识别',
             "isShow": false,
             "showList": [
                 {
@@ -31,7 +32,9 @@ export default {
         }
     },
     mounted () {
-        eventBus.$on('open-face-popup', () => {
+        eventBus.$on('open-face-popup', (parm) => {
+            console.log('传过来的值', parm)
+            this.tit = parm
             this.open()
         })
     },

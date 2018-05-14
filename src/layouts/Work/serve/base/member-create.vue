@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import {operateMemberCreate} from 'Api/commonality/operate'
+import {operateRelateFaceMember, operateMemberCreate} from 'Api/commonality/operate'
 export default{
   props: ['currentData'],
   data() {
@@ -108,13 +108,15 @@ export default{
         username: this.username,
         phone: this.phone,
         type: '1',
+        avatarUrl: this.currentData.imageUri,
         sex: this.sex[0]
       }
       if (this.currentData) {
         options.principalList = [
           {
-            userId: this.currentData.id,
-            avatarUrl: this.currentData.imageUri
+            userId: sessionStorage.id
+            // userId: this.currentData.id,
+            // avatarUrl: this.currentData.imageUri
           }
         ]
       }
@@ -132,9 +134,10 @@ export default{
             if (this.currentData) {
               datas.imageUri = this.currentData.imageUri
             }
-            this.popupShow = false
-            this.$emit('affirm', datas)
-            this.initData()
+            this.successCallback(res.data.data, datas)
+            // this.popupShow = false
+            // this.$emit('affirm', datas)
+            // this.initData()
           } else {
             this.$message({
               message: res.data.msg,
@@ -144,6 +147,36 @@ export default{
         })
     },
     
+    successCallback (parm, datas) {
+        // this.successCallback = false
+        let options = {
+            shopId: this.$route.query.shopId,
+            memberId: parm.memberId,
+            otherId: this.currentData.id
+        }
+        operateRelateFaceMember(options)
+            .then((res)=> {
+                if (res.data.state == 200) {
+                  this.popupShow = false
+                  this.$emit('affirm', datas)
+                  this.initData()
+                    // this.isAddLeaguer = false
+                    // this.$message({
+                    //     message: '关联成功',
+                    //     type: 'success'
+                    // })
+                    // this.$refs.clientDetailIndexWrap._seekList()
+                    // this.$emit('successOperationIntention')
+                } else {
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'warning'
+                    })
+                }
+            })
+            
+    },
+
     initData () {
       this.username = ''
       this.phone = ''

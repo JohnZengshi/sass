@@ -81,9 +81,12 @@ export default{
            //  console.log('获取用户角色:',sessionStorage.getItem('miniprogramrole'));
         },
         firstclick4(item,index) {
+          if (item.dredge == 'N') {
+            eventBus.$emit('open-face-popup', '小程序')
+            return
+          }
           this.shopname = item.shopName;
           this.shopId = item.shopId
-          console.log('当前店铺信息', item)
           eventBus.$emit('xcx-upload-data', item.shopId)
           sessionStorage.setItem('miniprogram',this.shopId);
         },

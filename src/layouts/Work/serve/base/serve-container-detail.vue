@@ -22,7 +22,7 @@
 
       <div class="item-inner">
         <p>{{item.classesType == 1 ? '金重' : '件重'}}</p>
-        <p>{{item.goldWeight}}</p>
+        <p>{{item.goldWeight}}g</p>
       </div>
   
       <div class="item-inner">
@@ -60,7 +60,8 @@
 
 
       <div class="item-inner">
-        <p>件重</p>
+        <!-- <p>件重</p> -->
+        <p>{{item.classesType == 1 ? '金重' : '件重'}}</p>
         <p>{{item.weight}}g</p>
       </div>
 

@@ -143,11 +143,9 @@ export default {
       this.keyWord = ''
     },
     closeSeek () {
-      console.log('呗执行了')
       this.inputSeekState = ''
     },
     openSeek () {
-      console.log('回去焦点')
       if (this.keyWord) {
         this.inputSeekState = true
       }
@@ -196,8 +194,31 @@ export default {
     },
     // 确认添加或替换
     affirmAdd() {
-      console.log('确认添加或替换', this.cacheData.orderList)
-      this.userData.orderList.push(...this.cacheData.orderList)
+      let hasData = []
+      for (let i of this.userData.orderList) {
+        for (let j of i.productList) {
+          hasData.push(j.productId)
+        }
+      }
+      for (let i of this.cacheData.orderList) {
+        debugger
+        let datas = {
+          orderNo: i.orderNo,
+          orderType: i.orderType,
+          productList: []
+        }
+        for (let j of i.productList) {
+          debugger
+          if (!hasData.includes(j.productId)) {
+            datas.productList.push(j)
+          }
+        }
+        if (datas.productList.length) {
+          this.userData.orderList.push(datas)
+        }
+      }
+      // console.log('确认添加或替换', this.cacheData.orderList)
+      // this.userData.orderList.push(...this.cacheData.orderList)
     },
     seekUserData() {
       if (this.memberList.length == 1) {
@@ -242,7 +263,7 @@ export default {
               this.userData.totalPrice = datas.totalPrice,
               this.userData.avatarUrl = datas.avatarUrl,
               this.userData.sex = datas.sex
-              this.userData.orderList = []
+              this.userData.orderList = datas.orderList
             } else {
               // 如果不是当前用户的
               if (res.data.data.memberId != this.userData.memberId) {
@@ -278,6 +299,7 @@ export default {
     },
     // 确认创建会员
     affirmCreateMember(parm) {
+      debugger
       this.userData.memberId = parm.memberId
       this.userData.memberName = parm.username
       this.userData.phone = parm.phone

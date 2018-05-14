@@ -142,7 +142,7 @@ export default {
             ],
             afterStatusList: [ // 状态列表
                 {
-                    name: '进行中',
+                    name: '处理中',
                     value: '1'
                 },
                 {
@@ -563,7 +563,7 @@ export default {
         },
         filterFun (cbFun) { // 定位选择的过滤数据
             let options = {
-                keyword: this.keyword,
+                keyWord: this.keyword,
                 orderBy: this.filterData.orderBy || '1',
                 shopId: this.filterData.shopId,
                 afterType: this.filterData.afterType,

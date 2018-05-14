@@ -45,7 +45,7 @@
         </li>
 
         <li class="selectBox">
-          <span class="selTittle">件重</span>
+          <span class="selTittle">金重/件重</span>
           <div class="input-w180">
             <el-input v-model="newData.weight" placeholder="请输入"></el-input>
           </div>
