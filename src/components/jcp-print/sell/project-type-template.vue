@@ -58,11 +58,11 @@
 							<td>{{item.totalSoldPrice|NOUNIT}}</td>
 							<td>{{item.totalRealPrice|NOUNIT}}</td>
 							<td>{{item.totalExchange|NOUNIT}}</td>
-							<td>{{(Number(item.totalSoldPrice)+Number(item.totalExchange)).toFixed(2)|NOUNIT}}</td>
+							<td>{{add(item.totalSoldPrice, item.totalExchange)|NOUNIT}}</td>
 							<td>{{item.totalBuy|NOUNIT}}</td>
-							<td>{{(Number(item.totalSoldPrice)+Number(item.totalExchange)-item.totalBuy).toFixed(2)|NOUNIT}}</td>
+							<td>{{add(item.totalSoldPrice, item.totalExchange, -item.totalBuy)|NOUNIT}}</td>
 							<td>{{item.totalCost|NOUNIT}}</td>
-							<td>{{(Number(item.totalSoldPrice)-Number(item.totalCost)).toFixed(2)|NOUNIT}}</td>
+							<td>{{add(item.totalRealPrice, -item.totalCost)|NOUNIT}}</td>
 						</tr>
 					<tr>
 						<td colspan="2">合计</td>
@@ -75,11 +75,11 @@
 						<td>{{productSellTypeList.totalSoldPrice|RMBUNIT}}</td>
 						<td>{{productSellTypeList.totalRealPrice|RMBUNIT}}</td>
 						<td>{{productSellTypeList.totalExchange|RMBUNIT}}</td>
-						<td>{{(Number(productSellTypeList.totalSoldPrice)+Number(productSellTypeList.totalExchange)).toFixed(2)|RMBUNIT}}</td>
+						<td>{{add(productSellTypeList.totalSoldPrice, productSellTypeList.totalExchange)|RMBUNIT}}</td>
 						<td>{{productSellTypeList.totalBuy|RMBUNIT}}</td>
-						<td>{{(Number(productSellTypeList.totalSoldPrice)+Number(productSellTypeList.totalExchange)-productSellTypeList.totalBuy).toFixed(2)|RMBUNIT}}</td>
+						<td>{{add(productSellTypeList.totalSoldPrice, productSellTypeList.totalExchange, -productSellTypeList.totalBuy)|RMBUNIT}}</td>
 						<td>{{productSellTypeList.totalCost|RMBUNIT}}</td>
-						<td>{{(Number(productSellTypeList.totalSoldPrice)-Number(productSellTypeList.totalCost)).toFixed(2)|RMBUNIT}}</td>
+						<td>{{add(productSellTypeList.totalRealPrice, -productSellTypeList.totalCost)|RMBUNIT}}</td>
 					</tr>
 					</template>
 				</template>
@@ -123,7 +123,7 @@
 						<td>{{productSellTypeList.totalNum}}</td>
 						<td>{{productSellTypeList.totalWeight|GRAMUNIT}}</td>
 						<td>{{productSellTypeList.totalGoldWeight|GRAMUNIT}}</td>
-						<td>{{productSellTypeList.totalGoldPrice}}元/g</td>
+						<td>{{productSellTypeList.totalGoldPrice}}</td>
 						<td>{{productSellTypeList.totalSoldPrice|RMBUNIT}}</td>
 						<td>{{productSellTypeList.discount}}</td>
 						<td>{{productSellTypeList.totalWage|RMBUNIT}}</td>
@@ -135,7 +135,7 @@
 						<td>{{productTypeList.totalNum}}</td>
 						<td>{{productTypeList.totalWeight|GRAMUNIT}}</td>
 						<td>{{productTypeList.totalGoldWeight|GRAMUNIT}}</td>
-						<td>{{productTypeList.totalGoldPrice}}元/g</td>
+						<td>{{productTypeList.totalGoldPrice}}</td>
 						<td>{{productTypeList.totalSoldPrice|RMBUNIT}}</td>
 						<td>{{productTypeList.discount}}</td>
 						<td>{{productTypeList.totalWage|RMBUNIT}}</td>
@@ -216,6 +216,13 @@
 			this.printDate = moment().format("YYYY-MM-DD HH-mm");
 		},
 		methods: {
+			add(...numbers){
+				let r = 0;
+				for(let a of numbers){
+					r = _.add(r,Number(a)||0);
+				}
+				return r?Number(r).toFixed(2):0;
+			},
 			print(){
 				let doc = {
 					documents: document,
