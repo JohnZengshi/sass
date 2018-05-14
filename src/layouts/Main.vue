@@ -247,6 +247,22 @@ export default {
         }
     },
     created () {
+        // this.$notify({
+        //     duration: 200000,
+        //     title: '新消息',
+        //     message: 'hintTit',
+        //     type: 'success',
+        //     onClick: () => {
+        //         this.$router.push(
+        //             {
+        //                 path: '/faceRecognition/visitList',
+        //                 query: {
+        //                     id: '2492fc5b2cb343d6975dd543ebd9cf8e'
+        //                 }
+        //             }
+        //         )
+        //     }
+        // })
         this.userRoleList()
         this.getSeekUserInfo()
         this.getSeekGetUserInfo(); // 职位信息
@@ -311,6 +327,7 @@ export default {
                 }
                 const h = _self.$createElement;
                 _self.$notify({
+                    duration: 2000,
                     title: '新消息',
                     message: hintTit,
                     type: 'success'

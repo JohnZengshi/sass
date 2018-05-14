@@ -45,9 +45,9 @@
         </li>
 
         <li class="selectBox">
-          <span class="selTittle">金重/件重</span>
+          <span class="selTittle">{{newData.classesType == 1 ? '金重' : '件重'}}</span>
           <div class="input-w180">
-            <el-input v-model="newData.weight" placeholder="请输入"></el-input>
+            <el-input v-model="newData.newWeight" placeholder="请输入重量，默认单位g"></el-input>
           </div>
         </li>
 
@@ -79,6 +79,7 @@ export default{
       productClassListTwo: [], // 宝石名称
       productClassListThree: [], // 首饰类别
       newData: {
+        classesType: '1', // 默认计件
         serviceId: '',
         serviceTypeName: '',
         serviceTypeId: '',
@@ -98,7 +99,7 @@ export default{
         colorName: '',
         gemId: '',
         gemIdName: '',
-        weight: ''
+        newWeight: ''
       }
     }
   },
@@ -118,7 +119,7 @@ export default{
         this.newData.colorName = ''
         this.newData.gemId = ''
         this.newData.gemIdName = ''
-        this.newData.weight = ''
+        this.newData.newWeight = ''
     },
 
     open () {
@@ -154,23 +155,23 @@ export default{
         return
       }
 
-      if (!this.newData.colorId) {
+      if (!this.newData.colorId && !this.newData.gemId) {
         this.$message({
-          message: '请选择成色名称',
+          message: '请选择成色名称或宝石名称',
           type: 'warning'
         })
         return
       }
 
-      if (!this.newData.gemId) {
-        this.$message({
-          message: '请选择宝石名称',
-          type: 'warning'
-        })
-        return
-      }
+      // if (!this.newData.gemId) {
+      //   this.$message({
+      //     message: '请选择宝石名称',
+      //     type: 'warning'
+      //   })
+      //   return
+      // }
 
-      if (!this.newData.weight) {
+      if (!this.newData.newWeight) {
         this.$message({
           message: '请填写金重/件重',
           type: 'warning'
@@ -184,6 +185,15 @@ export default{
       this.newData.productId = 'tProductId' + new Date().getTime()
 
       let datas = JSON.parse(JSON.stringify(this.newData))
+
+      if (this.newData.classesType == '1') {
+        datas.goldWeight = this.newData.newWeight
+        this.newData.classesType = '2'
+      } else {
+        datas.weight = this.newData.newWeight
+        this.newData.classesType = '1'
+      }
+
       this.$emit('chooseClassData', {
               orderNo: '',
               orderType: '3', // 1本人商品 2.他人商品3.手工
@@ -275,6 +285,8 @@ export default{
     },
 
     changeVaueClasses (val) {
+      console.log(val)
+      this.newData.classesType = val.type
       this.newData.classesId = val.item.operateId
       this.newData.classesName = val.item.operateName
     },

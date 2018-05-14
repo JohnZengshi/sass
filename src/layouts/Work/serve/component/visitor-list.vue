@@ -93,6 +93,7 @@ export default{
     dateChange (val) {
       console.log('日期切换无效', val)
       this.page = 1
+      this.visitData = []
       this._seekList()
     },
     timeFormat (parm, timeType = '000000') {
@@ -102,7 +103,6 @@ export default{
         return year + month + data + timeType
     },
     checkData (parm) {
-      console.log()
       this.currentData = parm
       if (parm.memberId) {
         let options = {
@@ -146,9 +146,9 @@ export default{
     },
 
     _seekList () {
-      if (this.visitData.length == this.totalNum && this.visitData.length > 0) {
-        return
-      }
+      // if (this.visitData.length == this.totalNum && this.visitData.length > 0) {
+      //   return
+      // }
       let options = {
         beginTime: this.timeFormat(moment(this.beginTime).format('YYYY-MM-DD')),
         endTime: this.timeFormat(moment(this.beginTime).format('YYYY-MM-DD'), '235959'),

@@ -145,6 +145,13 @@ export default{
       }
     }
   },
+  created () {
+    if (this.$route.query.id) {
+      this.seekDetail({
+        id: this.$route.query.id
+      })
+    }
+  },
   methods: {
     closeChoMember () {
       this.isRadio = false

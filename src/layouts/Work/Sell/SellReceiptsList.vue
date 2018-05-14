@@ -1290,9 +1290,9 @@
 					this.entry.tep4List.isShowBtn1 = false
 					this.entry.tep5List.isShowBtn = false
 					this.entry.tep5List.isShowBtn1 = false
-					this.entry.tep2List.leftClassId = ''
-					this.entry.tep3List.leftClassId = ''
-					this.entry.tep4List.leftClassId = ''
+					// this.entry.tep2List.leftClassId = ''
+					// this.entry.tep3List.leftClassId = ''
+					// this.entry.tep4List.leftClassId = ''
 					this.entry.tep5List.leftClassId = ''
 					this.entry.tep1List.rightClassId = ''
 					this.entry.tep2List.rightClassId = ''

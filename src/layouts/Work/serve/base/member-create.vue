@@ -108,13 +108,13 @@ export default{
         username: this.username,
         phone: this.phone,
         type: '1',
-        avatarUrl: this.currentData.imageUri,
         sex: this.sex[0]
       }
       if (this.currentData) {
+        options.avatarUrl = this.currentData.imageUri
         options.principalList = [
           {
-            userId: sessionStorage.id
+            userId: sessionStorage.getItem('id')
             // userId: this.currentData.id,
             // avatarUrl: this.currentData.imageUri
           }
@@ -133,11 +133,12 @@ export default{
             }
             if (this.currentData) {
               datas.imageUri = this.currentData.imageUri
+              this.successCallback(res.data.data, datas)
+            } else {
+              this.popupShow = false
+              this.$emit('affirm', datas)
+              this.initData()
             }
-            this.successCallback(res.data.data, datas)
-            // this.popupShow = false
-            // this.$emit('affirm', datas)
-            // this.initData()
           } else {
             this.$message({
               message: res.data.msg,

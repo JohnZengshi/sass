@@ -63,6 +63,7 @@ export default{
       return this.checkList.includes(parm)
     },
     checkData (parm) {
+      console.log('当前数据。。。', parm)
       if (this.shopId) {
         let isAdd = true
         this.checkList.forEach((currentValue, index, arr) => {
