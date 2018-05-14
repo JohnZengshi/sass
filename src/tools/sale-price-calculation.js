@@ -57,31 +57,30 @@ export const SalePriceCalculatoin = {
 	 */
 	calculateExchange(data, name){
 		if(name == "回购价"){
-			let huigouoprice = Number(data.huigouoprice)?data.huigouoprice:0;
+			let price = Number(data.price)?data.price:0;
 			//改变实售价，影响折扣
 			if(data.productType != 1){
 				//珠宝
-				data.abrasion = SalePriceCalculatoin.formulaJewelleryBack(huigouoprice, data.paymentPrice, data.estimatePrice);
+				data.abrasion = SalePriceCalculatoin.formulaJewelleryBack(price, data.paymentPrice, data.estimatePrice);
 			}else if(data.calcMethod == 1){
 				//计重
-				data.abrasion = SalePriceCalculatoin.formulaWeightBack(huigouoprice, data.goldWeight, data.exchangeGoldPrice, data.paymentPrice);
+				data.abrasion = SalePriceCalculatoin.formulaWeightBack(price, data.goldWeight, data.exchangeGoldPrice, data.paymentPrice);
 			}else{
 				//计件
-				data.abrasion = SalePriceCalculatoin.formulaPieceBack(huigouoprice, data.goldWeight, data.exchangeGoldPrice, data.paymentPrice);
+				data.abrasion = SalePriceCalculatoin.formulaPieceBack(price, data.goldWeight, data.exchangeGoldPrice, data.paymentPrice);
 			}
 			data.abrasion = Math.abs(data.abrasion);
 		}else{
 			if(data.productType != 1){
 				//珠宝
-				data.huigouoprice = -SalePriceCalculatoin.formulaJewellery(data.estimatePrice, data.abrasion, data.paymentPrice);
+				data.price = SalePriceCalculatoin.formulaJewellery(data.estimatePrice, data.abrasion, data.paymentPrice);
 			}else if(data.calcMethod == 1){
 				//计重
-				data.huigouoprice = -SalePriceCalculatoin.formulaWeight(data.goldWeight, data.abrasion, data.exchangeGoldPrice, data.paymentPrice);
+				data.price = SalePriceCalculatoin.formulaWeight(data.goldWeight, data.abrasion, data.exchangeGoldPrice, data.paymentPrice);
 			}else{
 				//计件			
-				data.huigouoprice = -SalePriceCalculatoin.formulaPiece(data.goldWeight, data.abrasion, data.exchangeGoldPrice, data.paymentPrice);
+				data.price = SalePriceCalculatoin.formulaPiece(data.goldWeight, data.abrasion, data.exchangeGoldPrice, data.paymentPrice);
 			}
-			data.price = -data.huigouoprice;
 			//如果回购价小于0，则归零。
 			if(data.price<0){
 				data.price = 0;

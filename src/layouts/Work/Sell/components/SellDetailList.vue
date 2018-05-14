@@ -147,10 +147,10 @@
 
 		<!-- 				<span v-if="status != 1 || multipleIdentities == 'N' && isOrderMan == false && status == 1 || companyPosition != 4 && companyPosition != 5 && multipleIdentities == 'N' || multipleIdentities == 'Y' && isOrderMan == false && status == 1 && companyPosition != 4 && companyPosition != 5"> -->
                          <!-- v-bind:value="(item.price).indexOf('-')>0?item.price:'-'+item.price"  -->
-						<input v-if="status == 2 && shopRole" type="text" v-model="item.huigouoprice"  @keyup="computeFun(item, '回购价')" @keyup.enter="sendData(item, '回购价', item.calcMethod)" @blur="sendData(item, '回购价', item.calcMethod)">
+						-<input v-if="status == 2 && shopRole" type="text" v-model="item.price"  @keyup="computeFun(item, '回购价')" @keyup.enter="sendData(item, '回购价', item.calcMethod)" @blur="sendData(item, '回购价', item.calcMethod)">
                          <!-- v-model="item.price" -->
 						<span v-else>
-								{{item.huigouoprice}}
+								{{item.price}}
 								<!-- {{(item.price).indexOf('-')>0?item.price:'-'+item.price}} -->
 						</span>
 					</div> <!--  :placeholder="unit4(item.price)" -->
@@ -407,7 +407,7 @@ export default {
 						{
 							modifyType: '10',
 							dataType: '2',
-							objectData: item.huigouoprice||0
+							objectData: item.price||0
 						}
 						)
 				} else if (type == '回购金价') {
@@ -545,7 +545,7 @@ export default {
 						{
 							modifyType: '10',
 							dataType: '2',
-							objectData: item.huigouoprice||0
+							objectData: item.price||0
 						}
 						)
 					//this.updateSell()
