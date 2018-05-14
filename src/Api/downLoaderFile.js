@@ -42,7 +42,25 @@ export const downLoaderFile = (url,data) => {
     let dataStr = ''
     for (const key in newData) {
         if(key === 'sortList'){
-            newData[key] = JSON.stringify(newData[key])
+            newData[key] = JSON.stringify(newData[key]) + ''
+            // newData[key] = newData[key].join(',')
+            console.log('嘿嘿',newData[key])
+            // let str = ''
+            // console.log(newData[key].length)
+            // for(let i = 0;i<newData[key].length;i++){
+            //     if(i === 0){
+            //         if((newData[key].length-1) == 0) {
+            //             str+=JSON.stringify(newData[key][i])                                        
+            //         }else{
+            //             str+=JSON.stringify(newData[key][i])+'&'
+            //         }
+            //     } else if(i === (newData[key].length - 1)){
+            //         str+='sortList='+JSON.stringify(newData[key][i])
+            //     } else{
+            //         str+='sortList='+JSON.stringify(newData[key][i])+'&'
+            //     }
+            // }
+            // newData[key] = str
             console.log(newData[key])
         }
         dataStr+=key+'='+newData[key]+'&'
@@ -70,11 +88,12 @@ export const downLoaderFile = (url,data) => {
 //     // 正式
 //     // let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
     let hrefurl = serverHost + url + '?' + dataStr
-
-    console.log('啦啦啦啦',hrefurl)
+    
+    let strurl = encodeURI(hrefurl)
+    console.log('啦啦啦啦',strurl)
 
     var a = document.createElement('a');
-    a.href = hrefurl;
+    a.href = encodeURI(hrefurl);
     a.download = "filename.xlsx";
     a.click();                    
 }
