@@ -3,14 +3,15 @@
 <!--明细-->
 <div class="ui-table-container default-line" ref="tableContainer" v-if="reportType == 1">
 	<div>
-	  <template v-for="(tb, index) in tempArray">
-  		<div class="tb-tr">
-  			<div class="tb-td"
-  				v-for="tab in detailDataGridColumn" 
-  				:style="tableCell(tab.width)" 
-  				v-text = "tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"
-  			></div>
-  		</div>
+	  	<template v-for="(tb, index) in tempArray">
+  			<div class="tb-tr" :key="index">
+  				<div class="tb-td"
+  					v-for="(tab,num) in detailDataGridColumn" 
+  					:style="tableCell(tab.width)" 
+  					v-text = "tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"
+					:key="num"
+  				></div>
+  			</div>
 		</template>
 		<div v-if="isDate" class="no-data"></div>
 	</div>
@@ -18,18 +19,20 @@
 	
 <div class="ui-table-container con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
 	<div>
-		<div class="tb-category" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)">
-			<div v-for="(tb, index) in caty.productTypeList" >
+		<div class="tb-category" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind">
+			<div v-for="(tb, index) in caty.productTypeList" :key="index">
 				
 				<template v-for="(tb1, index1) in tb.detailList">
-  				<div class="tb-tr" :index="addIndex()">
-  					<template v-for="tab in detailDataGridColumn">
+  				<div class="tb-tr" :index="addIndex()" :key="index1">
+  					<template v-for="(tab,index2) in detailDataGridColumn">
   						<div class="tb-td category-td"
+						  	:key="index2"
   							v-if="tab.text == '产品类别' && index1 == 0" 
   							:style="tableCell(tab.width)" >
   							<i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7; line-height: 20px;'">{{tb[tab.childType]}}</i>
   						</div>
   						<div class="tb-td category-td"
+						  	:key="index2"
   							v-else-if="tab.text == '位置名称' && index == 0 && index1 == 0"
   							:style="tableCell(tab.width)"
   						>	
@@ -37,6 +40,7 @@
   						</div>
   						<div class="tb-td"
   							v-else
+							:key="index2"
 							style="overflow: hidden;"
   							:class="{backLine:tab.childType != ''}"
   							:style="tableCell(tab.width)" 
@@ -52,6 +56,7 @@
 				<div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch"><!-- 类型小计 -->
 					<div class="tb-td"
 						v-for="(tab,f) in detailDataGridColumn" 
+						:key="f"
 						:style="tableCell(tab.width)" 
 						v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
 					></div>
@@ -60,6 +65,7 @@
 			<div class="tb-total" style="background:#e9f4fe;" v-if="positionSwitch"> <!-- 位置小计 -->
 				<div class="tb-td"
 					v-for="(tab,f) in detailDataGridColumn" 
+					:key="f"
 					:style="tableCell(tab.width)" 
 					v-html = "f == 1 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"
 				></div>
@@ -72,11 +78,12 @@
 <!--产品分类-->
 <div class="ui-table-container produc-line" ref="tableContainer" v-else-if="reportType == 3">
 	<div>
-		<div class="tb-category" v-for="caty in dataGridStorage.dataList" >
+		<div class="tb-category" v-for="(caty,index) in dataGridStorage.dataList" :key="index">
 		  <template v-for="(tb, index) in caty.productTypeList">
-  			<div class="tb-tr">
-  				<template v-for="tab in detailDataGridColumn">
+  			<div class="tb-tr" :key="index">
+  				<template v-for="(tab,index4) in detailDataGridColumn">
   					<div class="tb-td category-td"
+					  	:key="index4"
   						v-if="tab.text == '产品类别' && index == 0" 
   						:style="tableCell(tab.width)"
   						v-text="tb[tab.childType]"
@@ -84,6 +91,7 @@
   						<!-- <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i> -->
   					</div>
   					<div class="tb-td category-td"
+					  	:key="index4"
   						v-else-if="tab.text == '位置名称' && index == 0"
   						:style="tableCell(tab.width)"
   					>	
@@ -91,6 +99,7 @@
   					</div>
   					<div class="tb-td"
   						v-else
+						:key="index4"
   						:style="tableCell(tab.width)" 
   						v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
   					</div>
@@ -120,12 +129,17 @@ export default {
 	
 	watch:{
 		'dataGridStorage':function(){
-			console.log(this.dataGridStorage.length);
 			this.tempArray = []
 			this.cheackData()
 			this.storageFormatDate()
 			//console.log(1111)
 			this.tabCellHeight()
+
+			console.log(this.tempArray)
+			console.log(this.detailDataGridColumn)
+			console.log(this.dataGridStorage)
+			console.log(this.tabCell)
+			console.log(this.reportType)
 		},
 		// 'reportType': function (val) {
 		// 	//console.log(this.positionSwitch)
@@ -148,25 +162,25 @@ export default {
 			_this.$emit('lazyloadSend',123 )
 		})
 		
-		$(".ui-table-container").mCustomScrollbar({
-            theme: "minimal-dark",
-            axis: 'y',
-            mouseWheel: {
-                scrollAmount: 200,
-                preventDefault: false,
-                normalizeDelta: false,
-                scrollInertia : 0
-            },
-            callbacks: {
-                onTotalScroll: function () {
-					if (_this.reportType == 1) {
-						_this.$emit('lazyloadSend', {refresh: true})
-					} else {
-						//console.log('略略略')
-					}
-                }
-            }
-        });
+		// $(".ui-table-container").mCustomScrollbar({
+        //     theme: "minimal-dark",
+        //     axis: 'y',
+        //     mouseWheel: {
+        //         scrollAmount: 200,
+        //         preventDefault: false,
+        //         normalizeDelta: false,
+        //         scrollInertia : 0
+        //     },
+        //     callbacks: {
+        //         onTotalScroll: function () {
+		// 			if (_this.reportType == 1) {
+		// 				_this.$emit('lazyloadSend', {refresh: true})
+		// 			} else {
+		// 				//console.log('略略略')
+		// 			}
+        //         }
+        //     }
+        // });
 		this.tabCellHeight()
 	},
 	methods:{
@@ -186,6 +200,7 @@ export default {
 		tabCellHeight () {
 			this.heightArr = []
 			//console.log(this.dataGridStorage)
+			console.log(this.dataGridStorage.dataList)
 			if (this.dataGridStorage.dataList) {
 				for (let i = 0; i < this.dataGridStorage.dataList.length; i++) {
 					let data = 0
@@ -197,7 +212,7 @@ export default {
 					}
 					this.heightArr.push(data)
 				}
-				//console.log(this.heightArr)
+				console.log('这是什么鬼高度',this.heightArr)
 			}
 		},
 		tableCell( width ){
@@ -236,6 +251,9 @@ export default {
 	},
 	update(){
 		console.log('updata')
+	},
+	created () {
+		
 	}
 }
 </script>
