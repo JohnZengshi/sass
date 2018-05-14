@@ -1824,9 +1824,18 @@
 					type: '1'
 				}
 				seekProductClassList(options).then((res) => {
-					this.entry.tep2List.classesList = res.data.data.list
-					this.entry.tep2List.leftClassId = res.data.data.list[0].classesId
-					this.entry.tep2List.rightClassList = res.data.data.list[0].childrenList
+					debugger
+					if(res.data.state == 200) {
+						this.entry.tep2List.classesList = res.data.data.list
+						this.entry.tep2List.leftClassId = res.data.data.list[0].classesId
+						this.entry.tep2List.rightClassList = res.data.data.list[0].childrenList
+					} else {
+						this.$message({
+              message: res.data.msg,
+              type: 'warning'
+            })
+					}
+
 				}, (res) => {})
 			},
 			productTypeList() { // 产品大类
@@ -1862,6 +1871,7 @@
 				if(type == 1) {
 					this.entry.tep1List.rightClassId = id
 					this.tep = 3
+					console.log('entry.tep2List.classesList', this.entry.tep2List.classesList)
 				} else if(type == 2) {
 					this.entry.tep2List.rightClassId = id
 					this.tep = 4
