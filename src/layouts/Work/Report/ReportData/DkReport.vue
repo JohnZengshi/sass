@@ -228,6 +228,7 @@
                 :newList="newList"
 				:reportType="getReportType()">
 			</report-detail>
+            <report-load v-if="dataGridStorage.totalNum != '0' && dataGridOptions.type === 1" @LoadOptionsDefault="LoadOptionsDefault"></report-load>            
 		</div>
 		
 	</div>
@@ -298,16 +299,19 @@ import customTemplate from "@/components/jcp-print/commons/intelligence-type-tem
 
 // 导出报表
 import { downLoaderFile } from 'Api/downLoaderFile'
+// 加载控件
+import ReportLoad from './LoadOptions/ReportLoadOption'
 
 export default {
     components:{
     	ReportDetail,
-      TablePrint,
-      DropDownMenu,
-      detailTemplate,
-			projectTypeTemplate,
-			intelligenceTypeTemplate,
-			customTemplate,
+        TablePrint,
+        DropDownMenu,
+        detailTemplate,
+		projectTypeTemplate,
+		intelligenceTypeTemplate,
+        customTemplate,
+        ReportLoad,
     },
      data() {
       return {
@@ -982,7 +986,7 @@ export default {
         // 导出报表
         exportTab(){
             console.log('导出报表')
-            let exportTabData = this.dataGridOptions
+            let exportTabData =Object.assign({},this.dataGridOptions)
             exportTabData['exportType'] = 'DK'
             console.log(exportTabData)
             if(exportTabData.type === 1){
@@ -990,7 +994,79 @@ export default {
             } else {
             downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)          
             }
+        },
+
+        // 加载控件
+        getNewListData(e){
+        // var e = e || window.event
+        console.log('啦啦',e.target.dataset.index)
+        console.log('啦啦啦啦啦啦啦',this.dataGridOptions)        
+        $('.LoadOptions li').eq(e.target.dataset.index).addClass('action').siblings().removeClass('action')
+        $('.LoadOptions').css('display','none');
+
+        // 页面加载
+
+        switch (e.target.dataset.index) {
+          case '0':
+            this.loadIndex = 10;            
+            break;
+          case '1':
+            this.loadIndex = 20;            
+            break;
+          case '2':
+            this.loadIndex = 100;                      
+            break;
+          case '3':
+            this.loadIndex = 9999;                      
+            break;
+          default:
+            break;
         }
+
+        // console.log('啦啦啦啦啦啦啦',this.dataGridOptions)
+        // //this.dataGridOptions.pageSize += 50;
+        // seekEntryStorage(this.dataGridOptions).then((res) => {
+        //   if(res.data.state == 200) {
+        //     this.dataGridStorage = res.data.data
+        //     console.log(this.dataGridStorage)
+        //   }
+        //   if(res.data.state == 200101) {
+        //     this.$message({
+        //       type: 'error',
+        //       message: res.data.msg
+        //     })
+        //   }
+        //   this.loading = false
+        // }, (res) => {
+
+        // })
+
+        }, 
+        LoadOptionsDefault(pageSize){
+        console.log('调用了')
+        if(this.dataGridOptions.pageSize>this.dataGridStorage.totalNum) {
+           // 更换文字
+          $('.loadControl span').html('已经到底了').css('color','#474747')
+          return;
+        }
+        this.loading = true;    
+        this.dataGridOptions.pageSize += pageSize;            
+        seekDKReport(this.dataGridOptions).then((res) => {
+          if(res.data.state == 200) {
+            this.dataGridStorage = res.data.data
+            console.log('到底了没',this.dataGridStorage)
+          }
+          if(res.data.state == 200101) {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            })
+          }
+          this.loading = false
+        }, (res) => {
+
+        })
+        },
     },
     
     mounted(){
