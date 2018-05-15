@@ -65,16 +65,20 @@ export const JaTools = {
 		let list = page.page;
 		let content = $("<div>");
 		content.css({
-				"line-height": "130%",
 				"width": page.width + "mm",
 				"height": page.height + "mm",
 				"transform": "rotate(" + page.rotateDeg + "deg)",
 		});
 		for(let data of list) {
-			let box = $("<div>").css({
+			let box = $("<div>");
+			if(data.componnent =="line"){//线条
+				box = $("<hr>");
+			}else if(data.componnent =="charCode"){//条码
+				box = $("<img class='jatools-coder' src='http://127.0.0.1:31227/api?type=coder&code=" + data.sample + "&style=type:ean13;show-text:false;&width=130&height=80'>");
+			}
+			box.css({
 				"-webkit-font-smoothing": "antialiased",
 				"font-smoothing": "antialiased",
-				"line-height": "130%",
 				"position": "absolute",
 				"border": (data.border ? '1px solid #000;' : 'none'),
 				"top": data.top + "mm",
@@ -105,19 +109,18 @@ export const JaTools = {
 			switch(data.componnent) {
 				//线条
 				case "line":
-					box.append($("<hr>").css({
+					box.css({
+						"border": "0.5px solid",
+						"margin":"0",
 						"width": data.width + "mm",
-						"border": "0.5px solid"
-					}));
+					});
 					break;
 					//条形码
 				case "charCode":
-					let code = $("<img class='jatools-coder' src='http://127.0.0.1:31227/api?type=coder&code=" + data.sample + "&style=type:ean13;show-text:false;&width=130&height=80'>");
-					code.css({
+					box.css({
 						"width": data.width + "mm",
 						"height": data.height + "mm"
 					});
-					box.append(code);
 					break;
 					//默认文本
 				default:
