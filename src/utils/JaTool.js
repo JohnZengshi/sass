@@ -9,7 +9,7 @@ export const JaTools = {
 		let jcp = getJCP();
 		let pageList = JaTools.transformation(template, dataList);
 		let html = [];
-		let myDoc = {copyrights: '西金网络科技拥有版权  www.yunzhubao.com'};
+		let myDoc = {copyrights:'西金网络科技拥有版权  www.yunzhubao.com', noMargins:true};
 		for(let page of pageList){
 			html.push(JaTools.transformationDataToHtml(page));
 			myDoc.settings = {paperWidth: page.width, paperHeight: page.height};
@@ -65,6 +65,7 @@ export const JaTools = {
 		let list = page.page;
 		let content = $("<div>");
 		content.css({
+				"line-height": "130%",
 				"width": page.width + "mm",
 				"height": page.height + "mm",
 				"transform": "rotate(" + page.rotateDeg + "deg)",
@@ -73,6 +74,7 @@ export const JaTools = {
 			let box = $("<div>").css({
 				"-webkit-font-smoothing": "antialiased",
 				"font-smoothing": "antialiased",
+				"line-height": "130%",
 				"position": "absolute",
 				"border": (data.border ? '1px solid #000;' : 'none'),
 				"top": data.top + "mm",
