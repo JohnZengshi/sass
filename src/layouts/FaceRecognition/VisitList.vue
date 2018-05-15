@@ -124,9 +124,13 @@ export default{
     eventBus.$on('new-client-come-on', () => {
       this.newClient()
     })
+    this.$nextTick(function () {
+      this.openDetail()
+    })
   },
   watch: {
     '$route' (to, from) {
+      this.openDetail()
       this.shopId = ''
       this._seekList()
     },
@@ -145,14 +149,21 @@ export default{
       }
     }
   },
-  created () {
-    if (this.$route.query.id) {
-      this.seekDetail({
-        id: this.$route.query.id
-      })
-    }
-  },
   methods: {
+    openDetail () {
+      if (this.$route.query.id) {
+        setTimeout(() => {
+            this.seekDetail({
+              id: this.$route.query.id
+            })
+            this.$router.push(
+              {
+                  path: '/faceRecognition/visitList'
+              }
+            )
+          }, 1000)
+      }
+    },
     closeChoMember () {
       this.isRadio = false
       this.isChoseMember = false
@@ -190,7 +201,13 @@ export default{
     // },
     seekDetail (parm) {
       this.currentSeekData = parm
-      this.$refs.clientDetailWrap.open()
+      if (this.$refs.clientDetailWrap) {
+        this.$refs.clientDetailWrap.open()
+      } else {
+        setTimeout(() => {
+          this.$refs.clientDetailWrap.open()
+        }, 1000)
+      }
     },
     saveAddIntention () {
       this.$refs.visitTableSign.save()

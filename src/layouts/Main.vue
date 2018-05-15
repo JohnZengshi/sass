@@ -307,8 +307,10 @@ export default {
             // let socketUrl = 'wss://app.yunzhubao.com:9092/yunzhubao/ws/facepass/'
             let ws = new WebSocket(`${socketUrl}${parm}`)
             ws.onopen = function(evt) {
+                console.log('访客连接成功', evt)
             }
             ws.onmessage = function(evt) {
+                console.log('有访客来', evt)
                 let hintTit = '有新访客到店，请及时接待'
                 let datas = JSON.parse(evt.data)
                 if (datas.vipFlag == 1) {
@@ -326,16 +328,33 @@ export default {
                     hintTit = hintTit + datas.userName + '到店，请及时接待'
                 }
                 const h = _self.$createElement;
+                // _self.$notify({
+                //     duration: 2000,
+                //     title: '新消息',
+                //     message: hintTit,
+                //     type: 'success'
+                // })
                 _self.$notify({
                     duration: 2000,
                     title: '新消息',
                     message: hintTit,
-                    type: 'success'
+                    type: 'success',
+                    onClick: () => {
+                        _self.$router.push(
+                            {
+                                path: '/faceRecognition/visitList',
+                                query: {
+                                    id: datas.id
+                                }
+                            }
+                        )
+                    }
                 })
 
                 eventBus.$emit('new-client-come-on')
             }
             ws.error = function(evt) {
+                console.log('访客连接失败', evt)
             }
             _self.closeWebSocket = () => {
                 ws.close()
