@@ -196,12 +196,14 @@
 					<div class="rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
 						<report-detail-trade :dataGridStorage="tradeStorage" :tabSwitch="tabSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
 						</report-detail-trade>
+            <report-load v-if="tradeStorage.totalNum != '0' && dataGridOptions.type === 1" @LoadOptionsDefault="LoadOptionsDefault"></report-load>            
 					</div>
 
 					<!--销售报表-->
 					<div class="rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
 						<report-detail :dataGridStorage="sellStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
 						</report-detail>
+            <report-load v-if="sellStorage.totalNum != '0' && dataGridOptions.type === 1" @LoadOptionsDefault="LoadOptionsDefault"></report-load>                        
 					</div>
 
 				</div>
@@ -304,6 +306,9 @@ import customTemplate from "@/components/jcp-print/sell/intelligence-type-templa
 // 导出报表
 import { downLoaderFile } from "Api/downLoaderFile";
 
+// 加载控件
+import ReportLoad from './LoadOptions/ReportLoadOption'
+
 export default {
   components: {
     ReportDetail,
@@ -317,7 +322,8 @@ export default {
     detailTemplate,
     projectTypeTemplate,
     intelligenceTypeTemplate,
-    customTemplate
+    customTemplate,
+    ReportLoad
   },
   data() {
     return {
@@ -627,6 +633,10 @@ export default {
     this.$store.dispatch("checkBrowser", type => {
       this.reportPrint_fixed = type;
     });
+
+    // 初始化所有数据
+    this.send()
+
   },
   methods: {
     choseMenu(type) {
@@ -899,6 +909,7 @@ export default {
         this.beginTime = this.getDate(0, "start").format;
         this.endTime = this.getDate(0, "end").format;
       }
+      // this.send()
     },
     printSuffix(index) {
       switch (index) {
@@ -1291,6 +1302,7 @@ export default {
         if (res.data.state === 200) {
           //数据表格数据
           this.tradeStorage = res.data.data;
+          console.log('回购数据',this.tradeStorage)
         } else {
           this.$message({
             type: "error",
@@ -1432,9 +1444,10 @@ export default {
     // 导出报表
     exportTab() {
       console.log("导出报表");
-      let exportTabData = this.dataGridOptions;
+      let exportTabData =Object.assign({},this.dataGridOptions);
 
       exportTabData["exportType"] = "XS";
+
       if (this.sellShowId === "sales") {
         exportTabData["sellFlag"] = "1";
       } else if (this.sellShowId === "buyback") {
@@ -1449,7 +1462,34 @@ export default {
       } else {
         downLoaderFile("/v1/export/exportExcelBySmart", exportTabData);
       }
-    }
+    },
+    LoadOptionsDefault(pageSize){
+        let isAlltotal = false
+        // 回购到底
+        if(this.dataGridOptions.pageSize>this.tradeStorage.totalNum){
+          isAlltotal = true
+        }
+        // 销售报表到底
+        if(this.dataGridOptions.pageSize>this.sellStorage.totalNum){
+          isAlltotal = true
+        }
+
+        if(isAlltotal) {
+           // 更换文字
+          $('.loadControl span').html('已经到底了').css('color','#474747')
+          return;
+        }
+        this.loading = true;    
+        this.dataGridOptions.pageSize += pageSize;            
+        // 销售
+        if (this.sellShowId === "sales") {
+          this.sellSend()
+        } else if (this.sellShowId === "buyback") {
+          this.sellTradeSend()
+        } else {
+          this.sellCollectSend()
+        }
+      },
   },
 
   mounted() {
@@ -1498,7 +1538,7 @@ export default {
 .Rp_dataGrid_container {
   &.last-table {
     margin-bottom: 150px;
-    height: 645px !important;
+    // height: 645px !important;
   }
   .report-change {
     float: right;

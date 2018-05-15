@@ -73,7 +73,6 @@ export default {
     },
     methods: {
         LoadOptionsDefault(){
-            console.log('点击了')
              // 更换文字
             $('.loadControl span').html('点击继续加载').css('color','#474747')
             this.$emit('LoadOptionsDefault', this.pageSizeNum)
