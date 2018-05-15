@@ -41,12 +41,13 @@
 
       </ul>
     </div>
-    <div class="audit-btn" @click="_operateMemberCreate">确定</div>
+    <div class="audit-btn" @click="_saveMenber">确定</div>
 </div>
 </template>
 
 <script>
 import {operateRelateFaceMember, operateMemberCreate} from 'Api/commonality/operate'
+import {seekGetMemberInfoByPhone} from 'Api/commonality/seek'
 export default{
   props: ['currentData'],
   data() {
@@ -85,15 +86,7 @@ export default{
       }, 0)
     },
 
-    _operateMemberCreate () {
-
-      if (!this.username) {
-        this.$message({
-          message: '请输入用户名',
-          type: 'warning'
-        })
-        return
-      }
+    _saveMenber () {
 
       if (!this.phone) {
         this.$message({
@@ -103,6 +96,56 @@ export default{
         return
       }
 
+      if (!this.username) {
+        this.$message({
+          message: '请输入用户名',
+          type: 'warning'
+        })
+        return
+      }
+
+      this._seekGetMemberInfoByPhone()
+    },
+    //  查询会员
+    _seekGetMemberInfoByPhone () {
+      let options = {
+        shopId: this.$route.query.shopId,
+        phone: this.phone
+      }
+      seekGetMemberInfoByPhone(options)
+        .then(res => {
+          if (res.data.state == 200) {
+            if (res.data.data.memberId) {
+              let datas = {
+                username: res.data.data.userName,
+                phone: res.data.data.phone,
+                type: res.data.data.type,
+                memberId: res.data.data.memberId,
+                imageUri: res.data.data.avatarUrl,
+                sex: res.data.data.sex
+              }
+              if (this.currentData) {
+                datas.imageUri = this.currentData.imageUri
+                this.successCallback(res.data.data, datas)
+              } else {
+                this.popupShow = false
+                this.$emit('affirm', datas)
+                this.initData()
+              }
+            } else {
+              debugger
+              this._operateMemberCreate()
+            }
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: 'warning'
+            })
+          }
+        })
+    },
+    // 添加会员
+    _operateMemberCreate () {
       let options = {
         shopId: this.$route.query.shopId,
         username: this.username,
@@ -120,6 +163,7 @@ export default{
           }
         ]
       }
+
       operateMemberCreate(options)
         .then((res) => {
           if (res.data.state == 200) {
@@ -147,7 +191,6 @@ export default{
           }
         })
     },
-    
     successCallback (parm, datas) {
         // this.successCallback = false
         let options = {

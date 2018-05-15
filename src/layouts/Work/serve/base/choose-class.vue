@@ -47,7 +47,7 @@
         <li class="selectBox">
           <span class="selTittle">{{newData.classesType == 1 ? '金重' : '件重'}}</span>
           <div class="input-w180">
-            <el-input v-model="newData.newWeight" placeholder="请输入重量，默认单位g"></el-input>
+            <el-input @blur="formatW" v-model="newData.newWeight" placeholder="请输入重量，默认单位g"></el-input>
           </div>
         </li>
 
@@ -120,6 +120,11 @@ export default{
         this.newData.gemId = ''
         this.newData.gemIdName = ''
         this.newData.newWeight = ''
+    },
+
+    // 格式化成三位小数
+    formatW () {
+      this.newData.newWeight = Number(this.newData.newWeight).toFixed(3)
     },
 
     open () {

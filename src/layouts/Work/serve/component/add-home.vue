@@ -70,11 +70,11 @@
             <p>件数</p>
           </li>
           <li>
-            <p>{{userData.totalWeight}}</p>
-            <p>件重</p>
+            <p>{{userData.totalWeight}}g</p>
+            <p>总重</p>
           </li>
           <li>
-            <p>{{userData.totalPrice}}</p>
+            <p>{{userData.totalPrice}}元</p>
             <p>售价</p>
           </li>
         </ul>
