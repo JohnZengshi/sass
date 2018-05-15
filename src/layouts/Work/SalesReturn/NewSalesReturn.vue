@@ -251,6 +251,10 @@
                   <span class="iconfont icon-shenhebohui"></span>
                   <span>驳回审核</span>
                 </div>
+                <div class="btn" @click="exportTab()">
+                  <span class="iconfont icon-daochu"></span>
+                  <span>导出表格</span>
+                </div>
                 <div class="btn" @click="loadPagePrint()">
                   <span class="iconfont icon-dayin"></span>
                   <span>打印单据</span>
@@ -340,6 +344,9 @@
 
   import FormatImg from 'components/template/DefaultHeadFormat.vue'
   import * as jurisdictions from '../../../Api/commonality/jurisdiction'
+
+  // 导出表格 
+  import {downLoaderFile} from 'Api/downLoaderFile'
 
   export default {
     data() {
@@ -1663,7 +1670,17 @@
             this.$store.dispatch('workPopupError', response.data.msg);
           }
         }, (response) => {})
-      }
+      },
+      // 导出报表
+        exportTab(){
+            let exportTabData = Object.assign({},this.dataGridOptions)
+            exportTabData['exportType'] = 'TH'
+            if(exportTabData.type == 1){
+                downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
+            } else {
+                downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)                
+            }
+        }
     }
   }
 </script>
@@ -1681,12 +1698,13 @@
   .sortwrap-text {
     margin-top: 2px;
     line-height: 16px;
-    width: 55px;
+    text-align: center;
+    width: 60px;
     position: relative;
     .sortwrap-img {
       position: absolute;
       top: 8px;
-      right: 1px;
+      right: -2px;
     }
   }
   

@@ -105,14 +105,14 @@ export default {
             "userPositionInfo" // 职位信息
         ]),
         shopRole: function () { // 店员
-			//console.log(this.userPositionInfo.roleList)
+			console.log('123987',this.userPositionInfo.roleList)
             if (this.userPositionInfo) {
                 return jurisdictions.jurisdictionShopRole(this.userPositionInfo.roleList);
             }
 		},
 		companyRole: function () { // 公司
-			//console.log(this.userPositionInfo.roleList)
-			//console.log(jurisdictions.jurisdictionComputedManageRole(this.userPositionInfo.roleList))
+			console.log('123987',this.userPositionInfo.roleList)
+			// console.log('123987',jurisdictions.jurisdictionComputedManageRole(this.userPositionInfo.roleList))
             if (this.userPositionInfo) {
                 return jurisdictions.jurisdictionComputedRole(this.userPositionInfo.roleList);
             }

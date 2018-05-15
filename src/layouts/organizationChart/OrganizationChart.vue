@@ -476,6 +476,7 @@ import CompanyDetail from './CompanyDetail'
       }
       this.getRoleUsr()
 
+      console.log('当前用户数据',this.userInfoData)
       // 初始话店铺列表
       // this.seekStoreList()
     },
@@ -710,6 +711,7 @@ import CompanyDetail from './CompanyDetail'
         seekGetShopListByCo(options)
           .then(res => {
             if (res.data.state === 200) {
+              console.log('店铺列表',res.data.data.shopList)
               this.shopDataList = res.data.data.shopList
               let _self = this
               res.data.data.shopList.forEach(function (element, index) {
@@ -718,7 +720,7 @@ import CompanyDetail from './CompanyDetail'
             } else {
               this.$store.dispatch('workPopupError', res.data.msg)
             }
-          })
+        })
       },
       _seekMemberList (shopId, index) {
         let options = {

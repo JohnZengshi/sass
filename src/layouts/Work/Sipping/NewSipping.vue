@@ -1904,10 +1904,13 @@ export default {
 
         // 导出报表
         exportTab(){
-            let exportTabData = this.dataGridOptions
-            exportTabData['businssType'] = 'FH'
-            console.log(exportTabData)
-            downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
+            let exportTabData = Object.assign({},this.dataGridOptions)
+            exportTabData['exportType'] = 'FH'
+            if(exportTabData.type == 1){
+                downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
+            } else {
+                downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)                
+            }
         }
     }
 }
