@@ -41,19 +41,18 @@
         <p>{{item.classesName}}</p>
       </div>
 
-      <div class="item-inner">
+      <div v-if="item.colorName" class="item-inner">
         <p>成色名称</p>
         <p>{{item.colorName}}</p>
       </div>
   
-      <div class="item-inner">
-        <p>首饰名称</p>
+      <div v-if="item.gemNam" class="item-inner">
+        <p>宝石名称</p>
         <p>{{item.gemName}}</p>
       </div>
-    
 
       <div class="item-inner">
-        <p>宝石名称</p>
+        <p>首饰名称</p>
         <p>{{item.jewelryName}}</p>
       </div>
     
@@ -159,7 +158,7 @@ export default{
     right: 0px;
     top: 0px;
     opacity: 0;
-    transition: all 1s;
+    transition: all 0.5s;
     background: url('~static/img/delete_nor.png') no-repeat center center;
     cursor: pointer;
   }
