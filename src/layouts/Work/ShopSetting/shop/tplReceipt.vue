@@ -48,18 +48,18 @@ export default{
           discountlist : [],
           index : 0,
           priceTailData : [
-            {
-              text : '不处理',
-              icon : 'shielding'
-            },
-            {
-              text : '四舍五入',
-              icon : 'stealth'
-            },
-            {
-              text : '抹掉小数',
-              icon : 'message'
-            }
+            // {
+            //   text : '不处理',
+            //   icon : 'shielding'
+            // },
+            // {
+            //   text : '四舍五入',
+            //   icon : 'stealth'
+            // },
+            // {
+            //   text : '抹掉小数',
+            //   icon : 'message'
+            // }
           ]
        }
     },
@@ -71,7 +71,7 @@ export default{
        }
     },
     created(){
-       if( this.shopId != ''){
+       if( this.shopId){
          this.fatchEndMoney()
        }
        console.log('created',this.shopId)
