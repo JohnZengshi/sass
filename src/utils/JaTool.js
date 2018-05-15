@@ -9,7 +9,7 @@ export const JaTools = {
 		let jcp = getJCP();
 		let pageList = JaTools.transformation(template, dataList);
 		let html = [];
-		let myDoc = {copyrights:'西金网络科技拥有版权  www.yunzhubao.com', noMargins:true};
+		let myDoc = {copyrights: '西金网络科技拥有版权  www.yunzhubao.com'};
 		for(let page of pageList){
 			html.push(JaTools.transformationDataToHtml(page));
 			myDoc.settings = {paperWidth: page.width, paperHeight: page.height};
