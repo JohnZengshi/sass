@@ -96,7 +96,7 @@ export default{
       },
 	  exportTabData: {
 		"orderNum": this.$route.query.orderNumber,
-		"businssType": 'XG',
+		"exportType": 'XG',
 		"type": '1',
 		"page": 1,
 		"pageSize": 9999,

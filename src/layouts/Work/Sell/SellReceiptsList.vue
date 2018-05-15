@@ -129,7 +129,7 @@
 									<div class="cash-content">
 										<div>
 											<div class="title-info" v-if="priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">
-												<p v-if="isRole">
+												<p v-if="isJrole">
 													暂无收银信息,快去收银吧~
 												</p>
 												<p v-else>
