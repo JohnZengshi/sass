@@ -63,7 +63,7 @@
             <span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(3, 4)" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义
                     <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
                     <div class="customDia" ref="customDia">
-                    <div class="body" v-if="openReset">
+                    <div class="body">
                         <div class="list-wrap">
                         <ul>
                             <li></li>
@@ -489,10 +489,10 @@
         }
       },
       resetOption() {
-        this.openReset = false
-        setTimeout(() => {
-           this.openReset = true 
-        }, 100)
+        // this.openReset = false
+        // setTimeout(() => {
+        //    this.openReset = true 
+        // }, 100)
         this.dataGridOptions.wColorId = ''
         this.dataGridOptions.wGemId = ''
         this.dataGridOptions.wJewelryId = '1'
@@ -614,12 +614,19 @@
 
       },
       tabHover(index, evt) {
-        this.$refs.customDia.style.zIndex = "10"
-        this.$refs.customDia.style.opacity = '1'
-      },
-      tabOut(index, evt) {
-        this.$refs.customDia.style.zIndex = "-1"
-        this.$refs.customDia.style.opacity = '0'
+          //if (this.dataGridOptions.type == 4 && index == 3) {
+            this.$refs.customDia.style.zIndex = "10"
+            // this.$refs.customDia.style.position = "absolute"
+            this.$refs.customDia.style.opacity = '1'
+            this.$refs.customDia.style.display = 'block'
+          //}
+        },
+        tabOut(index, evt) {
+          //if (this.dataGridOptions.type == 4 && index == 3) {
+            this.$refs.customDia.style.zIndex = "-1"
+            this.$refs.customDia.style.opacity = '0'
+            this.$refs.customDia.style.display = 'none'
+          //}
       },
       cancelSort(item, index) { // 取消排序
         this.sortList.splice(index, 1)
@@ -855,7 +862,7 @@
       //分销商
       getShopListByCo() {
         let options = {
-          page: "",
+          page: '1',
           pageSize: '10'
         }
         seekGetShopListByCo(options).then((res) => {

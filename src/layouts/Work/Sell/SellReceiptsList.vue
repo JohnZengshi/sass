@@ -129,7 +129,12 @@
 									<div class="cash-content">
 										<div>
 											<div class="title-info" v-if="priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">
-												暂无收银信息，快去<span style="cursor: pointer;" @click="collectMoney">收银</span>吧~
+												<p v-if="isRole">
+													暂无收银信息,快去收银吧~
+												</p>
+												<p v-else>
+													暂无收银信息，快去<span style="cursor: pointer;color: #2993f8;" @click="collectMoney">收银</span>吧~
+												</p>	
 											</div>
 											<div v-else>
 												<div class="cash-item" v-if="priceType.cash != 0.00">
@@ -1104,7 +1109,7 @@
 				"userInfo", // 用户基本信息
 				"saveSuccess", // 保存弹窗
 				"saveSuccessData", // 保存弹窗数据
-				// "userPositionInfo" // 职位信息
+				"userPositionInfo" // 职位信息
 			]),
 			filterUserType () {
 				// 制单人或店长
@@ -1253,6 +1258,12 @@
 					return Math.ceil(this.templateData.productList.length / number) || 1
 				}
 
+			},
+			// 判断是不是监察员
+			isJrole:function() {
+				if (this.userPositionInfo) {
+                	return jurisdictions.jurisdictionJCY(this.userPositionInfo.roleList);
+            	}
 			}
 		},
 		watch: {

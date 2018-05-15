@@ -215,6 +215,7 @@
         console.log('11111111111111111111112 begin')
         this.getAllCheckList()
         this.getLookShop()
+        this.getCanSeeShop()
         console.log('11111111111111111111112 end')
       }
 
@@ -726,9 +727,27 @@
         }
         lookStore(options).then(res => {
           if(res.data.state === 200){
-            this.storeData = res.data.data.dataList
+            // this.storeData = res.data.data.dataList
             this.checked = this.getCheckCount(this.storeData)
             console.log('所有的店铺',this.checked)
+          } else {
+            this.$store.dispatch('workPopupError', res.data.msg);
+          }
+        })
+      },
+      getCanSeeShop(){
+         if(!this.checkID){
+          return
+        }
+        let options = {
+          userId: this.checkID,
+          type: '1'
+        }
+        lookStore(options).then(res => {
+          if(res.data.state === 200){
+            this.storeData = res.data.data.dataList
+            // this.checked = this.getCheckCount(this.storeData)
+            // console.log('所有的店铺',this.checked)
           } else {
             this.$store.dispatch('workPopupError', res.data.msg);
           }
