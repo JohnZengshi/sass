@@ -22,7 +22,7 @@
 			</div>
 		</div>
 		<div id="win">
-		<template v-show="types.indexOf('销售')>=0">
+		<div v-show="types.indexOf('销售')>=0">
 			<table class="table-box" header-rows="2">
 				<tr>
 					<td colspan="16" class="center font-bold" style="border-top: 0px;">销售报表</td>
@@ -84,11 +84,10 @@
 							</tr>
 						</template>
 						<tr>
-							<td colspan="2">合计</td>
-							<td>{{productSellTypeList.totalNum}}</td>
+							<td colspan="3">合计</td>
+							<td>{{productSellTypeList.totalNum}}件</td>
 							<td>{{productSellTypeList.totalWeight|GRAMUNIT}}</td>
 							<td>{{productSellTypeList.totalGoldWeight|GRAMUNIT}}</td>
-							<td>{{productSellTypeList.totalGoldPrice|GRAMUNIT}}</td>
 							<td>{{productSellTypeList.totalWage|RMBUNIT}}</td>
 							<td>{{productSellTypeList.totalDiscount}}</td>
 							<td>{{productSellTypeList.totalSoldPrice|RMBUNIT}}</td>
@@ -103,70 +102,70 @@
 					</template>
 				</template>
 			</table>
-		</template>
-		<template v-show="types.indexOf('回购')>=0">
-			<table class="table-box" header-rows="2">
-				<tr>
-					<td colspan="11" class="center font-bold" style="border-top: 0px;">回购报表</td>
-				</tr>
-				<tr>
-					<td>序号</td>
-					<td>回购类型</td>
-					<td>产品类别</td>
-					<td>首饰名称</td>
-					<td>件数(件)</td>
-					<td>件重(g)</td>
-					<td>回购金价(元/g)</td>
-					<td>旧料价(元)</td>
-					<td>折旧(%)</td>
-					<td>工费总额(元)</td>
-					<td>回购价(元)</td>
-				</tr>
-				<template v-for="productTypeList in buyBackList.productTypeList">
-					<template v-for="productSellTypeList in productTypeList.productSellTypeList">
-						<template v-for="(productType, rowNum) in productSellTypeList.productTypeList">
-							<tr v-for="(item,index) in productType.detailList">
-								<td>{{item.index}}</td>
-								<td v-if="rowNum==0 && index==0" :rowspan="productSellTypeList.rows">
-									{{productSellTypeList.sellType|SELL_TYPE}}
-								</td>
-								<td v-if="index==0" :rowspan="productType.detailList.length">
-									{{productType.className}}
-								</td>
-								<td>{{item.className}}</td>
-								<td>{{item.num|NOUNIT}}</td>
-								<td>{{item.weight|NOUNIT}}</td>
-								<td>{{item.goldWeight|NOUNIT}}</td>
-								<td>{{item.soldPrice|NOUNIT}}</td>
-								<td>{{item.discount}}</td>
-								<td>{{item.wage|NOUNIT}}</td>
-								<td>{{item.buy|NOUNIT}}</td>
+		</div>
+		<div v-show="types.indexOf('回购')>=0">
+				<table class="table-box" header-rows="2">
+					<tr>
+						<td colspan="11" class="center font-bold" style="border-top: 0px;">回购报表</td>
+					</tr>
+					<tr>
+						<td>序号</td>
+						<td>回购类型</td>
+						<td>产品类别</td>
+						<td>首饰名称</td>
+						<td>件数(件)</td>
+						<td>件重(g)</td>
+						<td>回购金价(元/g)</td>
+						<td>旧料价(元)</td>
+						<td>折旧(%)</td>
+						<td>工费总额(元)</td>
+						<td>回购价(元)</td>
+					</tr>
+					<template v-for="productTypeList in buyBackList.productTypeList">
+						<template v-for="productSellTypeList in productTypeList.productSellTypeList">
+							<template v-for="(productType, rowNum) in productSellTypeList.productTypeList">
+								<tr v-for="(item,index) in productType.detailList">
+									<td>{{item.index}}</td>
+									<td v-if="rowNum==0 && index==0" :rowspan="productSellTypeList.rows">
+										{{productSellTypeList.sellType|SELL_TYPE}}
+									</td>
+									<td v-if="index==0" :rowspan="productType.detailList.length">
+										{{productType.className}}
+									</td>
+									<td>{{item.className}}</td>
+									<td>{{item.num|NOUNIT}}</td>
+									<td>{{item.weight|NOUNIT}}</td>
+									<td>{{item.goldWeight|NOUNIT}}</td>
+									<td>{{item.soldPrice|NOUNIT}}</td>
+									<td>{{item.discount}}</td>
+									<td>{{item.wage|NOUNIT}}</td>
+									<td>{{item.buy|NOUNIT}}</td>
+								</tr>
+							</template>
+							<tr>
+								<td colspan="4">小计</td>
+								<td>{{productSellTypeList.totalNum}}</td>
+								<td>{{productSellTypeList.totalWeight|GRAMUNIT}}</td>
+								<td>{{productSellTypeList.totalGoldWeight}}元/g</td>
+								<td>{{productSellTypeList.totalGoldPrice|RMBUNIT}}</td>
+								<td>{{productSellTypeList.discount}}</td>
+								<td>{{productSellTypeList.totalWage|RMBUNIT}}</td>
+								<td>{{productSellTypeList.totalBuy|RMBUNIT}}</td>
 							</tr>
 						</template>
 						<tr>
-							<td colspan="4">小计</td>
-							<td>{{productSellTypeList.totalNum}}</td>
-							<td>{{productSellTypeList.totalWeight|GRAMUNIT}}</td>
-							<td>{{productSellTypeList.totalGoldWeight}}元/g</td>
-							<td>{{productSellTypeList.totalGoldPrice|RMBUNIT}}</td>
-							<td>{{productSellTypeList.discount}}</td>
-							<td>{{productSellTypeList.totalWage|RMBUNIT}}</td>
-							<td>{{productSellTypeList.totalBuy|RMBUNIT}}</td>
+							<td colspan="4">合计</td>
+							<td>{{productTypeList.totalNum}}</td>
+							<td>{{productTypeList.totalWeight|GRAMUNIT}}</td>
+							<td>{{productTypeList.totalGoldWeight}}元/g</td>
+							<td>{{productTypeList.totalGoldPrice|RMBUNIT}}</td>
+							<td>{{productTypeList.discount}}</td>
+							<td>{{productTypeList.totalWage|RMBUNIT}}</td>
+							<td>{{productTypeList.totalBuy|RMBUNIT}}</td>
 						</tr>
 					</template>
-					<tr>
-						<td colspan="4">合计</td>
-						<td>{{productTypeList.totalNum}}</td>
-						<td>{{productTypeList.totalWeight|GRAMUNIT}}</td>
-						<td>{{productTypeList.totalGoldWeight}}元/g</td>
-						<td>{{productTypeList.totalGoldPrice|RMBUNIT}}</td>
-						<td>{{productTypeList.discount}}</td>
-						<td>{{productTypeList.totalWage|RMBUNIT}}</td>
-						<td>{{productTypeList.totalBuy|RMBUNIT}}</td>
-					</tr>
-				</template>
-			</table>
-		</template>
+				</table>
+		</div>
 		</div>
 		<div class="printDate">
 			打印时间：{{printDate}}
