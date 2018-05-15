@@ -1816,13 +1816,15 @@ export default {
                 console.log(response);
             })
         },
-
         // 导出报表
         exportTab(){
-            let exportTabData = this.dataGridOptions
-            exportTabData['businssType'] = 'DK'
-            console.log(exportTabData)
-            downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
+            let exportTabData = Object.assign({},this.dataGridOptions)
+            exportTabData['exportType'] = 'DK'
+            if(exportTabData.type == 1){
+                downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
+            } else {
+                downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)                
+            }
         }
     }
 }

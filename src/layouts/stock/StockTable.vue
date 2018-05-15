@@ -526,6 +526,7 @@
 				this.dataGridOptions.page = 1
 				this.dataGridOptions.pageSize = 15
 				this.dataGridOptions.productClass = val;
+				console.log('切换成旧料',this.dataGridOptions.productClass)
 				//this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
 				this.loading = true;
 				this.send()
@@ -597,17 +598,44 @@
 			setReportType(port) {
 				if(port) {
 					if(port == 1) {
-						Object.assign(this.dataGridOptions, {
-//							storageId: '',
-//							shopId: '',
-//							counterId: '',
-							productClass: '1',
-							sortFlag: '0',
-							type: 1,
-							page: 1,
-							pageSize: 15,
-							keyWord: ''
-						})
+						if(this.inconspanactive1){
+							Object.assign(this.dataGridOptions, {
+	//							storageId: '',
+	//							shopId: '',
+	//							counterId: '',
+								productClass: '1',
+								sortFlag: '0',
+								type: 1,
+								page: 1,
+								pageSize: 15,
+								keyWord: ''
+							})
+							
+						} else if(this.inconspanactive2){
+							Object.assign(this.dataGridOptions, {
+	//							storageId: '',
+	//							shopId: '',
+	//							counterId: '',
+								productClass: '2',
+								sortFlag: '0',
+								type: 1,
+								page: 1,
+								pageSize: 15,
+								keyWord: ''
+							})
+						} else {
+							Object.assign(this.dataGridOptions, {
+	//							storageId: '',
+	//							shopId: '',
+	//							counterId: '',
+								productClass: '1',
+								sortFlag: '0',
+								type: 1,
+								page: 1,
+								pageSize: 15,
+								keyWord: ''
+							})
+						}
 					} else if(port == 2) {
 						delete this.dataGridOptions.page
 						delete this.dataGridOptions.pageSize
@@ -617,14 +645,35 @@
 						delete this.dataGridOptions.nColorId
 						delete this.dataGridOptions.nGemId
 						delete this.dataGridOptions.nJewelryId
-						Object.assign(this.dataGridOptions, {
-//							storageId: '',
-//							shopId: '',
-//							counterId: '',
-							productClass: '1',
-							sortFlag: this.positionSwitch ? "1" : "0",
-							type: 1,
-						})
+
+						if(this.inconspanactive1){
+							Object.assign(this.dataGridOptions, {
+	//							storageId: '',
+	//							shopId: '',
+	//							counterId: '',
+								productClass: '1',
+								sortFlag: this.positionSwitch ? "1" : "0",
+								type: 1,
+							})
+						}else if(this.inconspanactive2){
+							Object.assign(this.dataGridOptions, {
+	//							storageId: '',
+	//							shopId: '',
+	//							counterId: '',
+								productClass: '2',
+								sortFlag: this.positionSwitch ? "1" : "0",
+								type: 1,
+							})
+						} else {
+							Object.assign(this.dataGridOptions, {
+	//							storageId: '',
+	//							shopId: '',
+	//							counterId: '',
+								productClass: '1',
+								sortFlag: this.positionSwitch ? "1" : "0",
+								type: 1,
+							})
+						}
 					} else if(port == 3) {
 						delete this.dataGridOptions.page
 						delete this.dataGridOptions.pageSize
@@ -634,30 +683,88 @@
 						delete this.dataGridOptions.nColorId
 						delete this.dataGridOptions.nGemId
 						delete this.dataGridOptions.nJewelryId
-						Object.assign(this.dataGridOptions, {
-//							storageId: '',
-//							shopId: '',
-//							counterId: '',
-							productClass: '1',
-							sortFlag: this.positionSwitch ? "1" : "0",
-							type: 1,
-						})
+
+						if(this.inconspanactive1){
+							Object.assign(this.dataGridOptions, {
+	//							storageId: '',
+	//							shopId: '',
+	//							counterId: '',
+								productClass: '1',
+								sortFlag: this.positionSwitch ? "1" : "0",
+								type: 1,
+							})
+						}else if(this.inconspanactive2){
+							Object.assign(this.dataGridOptions, {
+	//							storageId: '',
+	//							shopId: '',
+	//							counterId: '',
+								productClass: '2',
+								sortFlag: this.positionSwitch ? "1" : "0",
+								type: 1,
+							})
+						}else {
+							Object.assign(this.dataGridOptions, {
+	//							storageId: '',
+	//							shopId: '',
+	//							counterId: '',
+								productClass: '1',
+								sortFlag: this.positionSwitch ? "1" : "0",
+								type: 1,
+							})
+
+						}
+
 					} else if(port == 4) {
-						Object.assign(this.dataGridOptions, {
-//							storageId: '',
-//							shopId: '',
-//							counterId: '',
-							productClass: '1',
-							sortFlag: this.positionSwitch ? "1" : "0",
-							type: 1,
-							keyWord: '',
-							wColorId: '',
-							wGemId: '',
-							wJewelryId: '1',
-							nColorId: '',
-							nGemId: '',
-							nJewelryId: '1'
-						})
+						if(this.inconspanactive1){
+							Object.assign(this.dataGridOptions, {
+	//							storageId: '',
+	//							shopId: '',
+	//							counterId: '',
+								productClass: '1',
+								sortFlag: this.positionSwitch ? "1" : "0",
+								type: 1,
+								keyWord: '',
+								wColorId: '',
+								wGemId: '',
+								wJewelryId: '1',
+								nColorId: '',
+								nGemId: '',
+								nJewelryId: '1'
+							})
+						} else if(this.inconspanactive2){
+							Object.assign(this.dataGridOptions, {
+	//							storageId: '',
+	//							shopId: '',
+	//							counterId: '',
+								productClass: '2',
+								sortFlag: this.positionSwitch ? "1" : "0",
+								type: 1,
+								keyWord: '',
+								wColorId: '',
+								wGemId: '',
+								wJewelryId: '1',
+								nColorId: '',
+								nGemId: '',
+								nJewelryId: '1'
+							})
+						} else {
+							Object.assign(this.dataGridOptions, {
+	//							storageId: '',
+	//							shopId: '',
+	//							counterId: '',
+								productClass: '1',
+								sortFlag: this.positionSwitch ? "1" : "0",
+								type: 1,
+								keyWord: '',
+								wColorId: '',
+								wGemId: '',
+								wJewelryId: '1',
+								nColorId: '',
+								nGemId: '',
+								nJewelryId: '1'
+							})
+
+						}
 					}
 				}
 				this.dataGridOptions.type = port

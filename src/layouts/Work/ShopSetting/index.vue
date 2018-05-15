@@ -81,6 +81,7 @@ export default{
               page : '',
               pageSize : '10'
           }).then((res)=>{
+              console.log(res.body.data.shopList)
               this.shopLister = res.body.data.shopList
               this.shopDefaultData = this.shopLister[0]
               this.fatchUserPermission()

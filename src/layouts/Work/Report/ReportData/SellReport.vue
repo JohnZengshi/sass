@@ -626,16 +626,16 @@ export default {
     this.printSelectDate.startTime = this.beginTime;
     this.printSelectDate.endTime = this.endTime;
 
-    this.getShopListByCo(); //店铺
+    console.log('初始化的参数',this.dataGridOptions)
+    this.dataGridOptions.shopId = ''
+    // 初始化所有数据
+    this.send()
 
-    //this.send()
+    this.getShopListByCo(); //店铺
 
     this.$store.dispatch("checkBrowser", type => {
       this.reportPrint_fixed = type;
     });
-
-    // 初始化所有数据
-    this.send()
 
   },
   methods: {
@@ -1223,6 +1223,7 @@ export default {
 
     send(type) {
       if (this.modleSwitch.type) {
+        console.log('type有没有')
         this.sellSend();
         this.sellTradeSend();
         this.sellCollectSend();
@@ -1239,7 +1240,7 @@ export default {
       if (this.getReportType() == 1) {
         Object.assign(this.dataGridOptions, {
           page: 1,
-          pageSize: 9999
+          pageSize: 15,
         });
       } else {
         delete this.dataGridOptions.page;
@@ -1499,10 +1500,12 @@ export default {
       if (companyName) {
         this.printSelectDate.companyName = "公司名：" + companyName.companyName;
       }
-	});
+	  });
 	
-	var $btn = $('')
-  }
+	  var $btn = $('')
+    },
+
+    
 };
 </script>
 
