@@ -216,7 +216,7 @@ export const getProductStatusLogList = function (parm) { // 商品修改列表
     return apiCall(parm, URL);
 }
 export const seekGetShopListByCo = function (parm) { // 8.2店铺列表
-    let URL = "/v1/public/getShopListByCo";
+    let URL = "/v1/auth/getShopListById";
     return apiCall(parm, URL);
 }
 export const seekReceiptRemark = function (parm) { // 单据备注

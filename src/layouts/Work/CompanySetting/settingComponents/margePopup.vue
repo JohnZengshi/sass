@@ -34,12 +34,14 @@ export default {
             jewelryList: [], // 首饰
             confirmId: '',
             classesName: '',
-            proType: 1
+            proType: 1,
+            toName:''
         }
     },
     props: [
         'classType',
         'startId',
+        'startName',
         'addBig',
         'itemId',
         'selType'
@@ -87,6 +89,7 @@ export default {
             console.log(item)
             this.confirmId = item.classesId
             this.classesId = item.classesId
+            this.toName = item.classesName
         },
         selectLeftClass (item, index) { // 选择大类
             console.log(item)
@@ -113,11 +116,13 @@ export default {
                 opeType = 1
             }
             let options = {
-                    type: opeType,
-                    fromId: this.startId,
-                    toId: this.confirmId
-                }
-            this.$confirm('此操作将合并此类下的数据, 是否继续?', '提示', {
+                type: opeType,
+                fromId: this.startId,
+                toId: this.confirmId
+            }
+            
+            let str = '是否将'+this.startName+'的数据合并至'+this.toName
+            this.$confirm(str, '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             }).then(() => { 
@@ -154,6 +159,7 @@ export default {
             
         },
         productClassList (val) { // 大小类列表
+            console.log('这个val是什么',val)
             seekProductClassList({type: this.classType}).then((res) => {
                 console.log(res)
                 if (val) {

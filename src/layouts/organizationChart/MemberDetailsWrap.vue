@@ -210,6 +210,12 @@
       },
       'checkAll' (val) {
         console.log('99999999999',val)
+      },
+      'checkID' (val){
+        console.log('11111111111111111111112 begin')
+        this.getAllCheckList()
+        this.getLookShop()
+        console.log('11111111111111111111112 end')
       }
 
     },
@@ -533,15 +539,16 @@
       addBtn () {
         this.$emit('addBtn')
       },
-      handleCheckAllChange(val) {
-        this.checkedCities = val ? cityOptions : [];
-        this.isIndeterminate = false;
-      },
-      handleCheckedCitiesChange(value) {
-        let checkedCount = value.length;
-        this.checkAll = checkedCount === this.cities.length;
-        this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
-      },
+      // handleCheckAllChange(val) {
+      //   this.checkedCities = val ? cityOptions : [];
+      //   this.isIndeterminate = false;
+      // },
+      // handleCheckedCitiesChange(value) {
+      //   let checkedCount = value.length;
+      //   this.checkAll = checkedCount === this.cities.length;
+      //   this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+      // },
+      // 全选方法
       storeCheckAll(val){
         // console.log(this.checked)
         // console.log(this.checkList)
@@ -646,28 +653,28 @@
           }
         })
       },
-      getAllnoCheck(){
-        let data = this.checkList
-        let options = []
-        let optionsObj ={}
+      // getAllnoCheck(){
+      //   let data = this.checkList
+      //   let options = []
+      //   let optionsObj ={}
 
-        for(let j = 0;j<data.length;j++){
-          optionsObj.operateType = '2'
-          optionsObj.shopId = data[j].shopId
-          optionsObj.userId = this.userInfo.userId
-          options.push(optionsObj)
-        }
-
-        let dataObj = {
-          "dataList" : options
-        }
-        setShopSee(dataObj).then(res => {
-          if(res.data.state !== 200){
-            this.$store.dispatch('workPopupError', res.data.msg);
-          }
-        })
+      //   for(let j = 0;j<data.length;j++){
+      //     optionsObj.operateType = '2'
+      //     optionsObj.shopId = data[j].shopId
+      //     optionsObj.userId = this.userInfo.userId
+      //     options.push(optionsObj)
+      //   }
+      //   console.log(options)
+      //   let dataObj = {
+      //     "dataList" : options
+      //   }
+      //   setShopSee(dataObj).then(res => {
+      //     if(res.data.state !== 200){
+      //       this.$store.dispatch('workPopupError', res.data.msg);
+      //     }
+      //   })
         
-      },
+      // },
       getOneCheck(data,type){
         let options = []
         let optionsObj ={}
@@ -690,6 +697,7 @@
         })
       },
       getAllCheckList(){
+        console.log('调用了')
         if(!this.checkID){
           return
         }
@@ -714,28 +722,33 @@
         }
         let options = {
           userId: this.checkID,
-          type: '1'
+          type: '3'
         }
         lookStore(options).then(res => {
           if(res.data.state === 200){
             this.storeData = res.data.data.dataList
-            console.log('所有的店铺',this.storeData)
             this.checked = this.getCheckCount(this.storeData)
+            console.log('所有的店铺',this.checked)
           } else {
             this.$store.dispatch('workPopupError', res.data.msg);
           }
         })
       },
       getCheckCount(data){
+        if(data.length === 0) {
+          return false
+        }
         let count = 0
         for(let i = 0; i<data.length; i++){
           if(data[i].status === 'N'){
             count++
           }
         }
-        if(count === data.length){
+        console.log('N的个数 还有店铺数',count,data)
+        if(data.length !== 0 && count === data.length){
           return true
         }
+
         return false
       }
     }

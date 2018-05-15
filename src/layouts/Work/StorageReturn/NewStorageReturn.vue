@@ -1665,10 +1665,13 @@ export default {
         },
         // 导出报表
         exportTab(){
-            let exportTabData = this.dataGridOptions
-            exportTabData['businssType'] = 'TK'
-            console.log(exportTabData)
-            downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
+            let exportTabData = Object.assign({},this.dataGridOptions)
+            exportTabData['exportType'] = 'TK'
+            if(exportTabData.type == 1){
+                downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
+            } else {
+                downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)                
+            }
         }
     }
 }

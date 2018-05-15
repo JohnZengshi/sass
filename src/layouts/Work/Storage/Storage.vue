@@ -845,7 +845,10 @@
 				this.recordData();
 			},
 			getShopList() { // 店铺列表
-				let options = "";
+				let options = {
+					page: 1,
+					pageSize: 9999
+				};
 				let _self = this;
 				seekGetShopListByCo(options).then((response) => {
 					if(response.data.state === 200) {

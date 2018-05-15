@@ -7,7 +7,7 @@
                 <span class="breadcrumb-item">打印模板</span>
             </div>
             <div class="template-list-content">
-                <div class="operation-dropdown-container">
+                <div class="operation-dropdown-container" v-if="!Jrole">
                     <div class="operation-dropdown-menu-list">
                         <el-button class="el-dropdown-link" type="primary">
                             <i class="icon icon-create"></i><span class="create-text">新建</span>
@@ -98,6 +98,9 @@ import TemplatePreviewDialog from 'components/template/TemplatePreviewDialog'
 import LoadLabelTemplateDataDialog from 'components/template/LoadLabelTemplateDataDialog'
 import TemplatePreviewCanvasComponent from 'components/template/TemplatePreviewCanvas'
 
+import {mapGetters, mapActions} from "vuex"
+import * as jurisdictions from 'Api/commonality/jurisdiction'
+
 export default {
     name: 'TemplateListPage',
     data() {
@@ -144,7 +147,16 @@ export default {
             labelList: state => state.template.labelList,
             shopList: state => state.template.shopList,
             templateSizeList: state => state.template.templateSizeList
-        })
+        }),
+        ...mapGetters([
+            "shopListByCo", // 店铺列表
+            "userPositionInfo" // 职位信息
+        ]),
+        Jrole: function () {
+            if (this.userPositionInfo) {
+                return jurisdictions.jurisdictionJCY(this.userPositionInfo.roleList);
+            }
+        }
     },
     components: {
         QualityTemplate,

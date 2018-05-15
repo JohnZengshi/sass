@@ -3,9 +3,9 @@
 		<div class="batch-top">
 			<h3><i class="iconfont icon-daoru1"></i>导入日记<!-- <i class="iconfont icon-ruku" style="color: #2993f8; margin-left: 10px;"></i> --></h3>
 			<!-- <a href="javascript: void(0)" @click="newPopup.JinBaiF = true">金百福数据导入</a> -->
-			<a href="javascript: void(0)" @click="newPopup.JinBaiF = true">智能导入</a>
-			<a :href="downUrl">模板下载</a>
-			<a href="javascript: void(0)" @click="ruleOptionDia = true">导入规则</a>
+			<a v-if="!Jrole" href="javascript: void(0)" @click="newPopup.JinBaiF = true">智能导入</a>
+			<a v-if="!Jrole" :href="downUrl">模板下载</a>
+			<a v-if="!Jrole" href="javascript: void(0)" @click="ruleOptionDia = true">导入规则</a>
 		</div>
 		<div class="batch-body">
 			<div class="table-wrap">
@@ -205,6 +205,11 @@
 					return jurisdictions.jurisdictionComputedRole(this.userPositionInfo.roleList)
 				}
 			},
+			Jrole: function () {
+            if (this.userPositionInfo) {
+                return jurisdictions.jurisdictionJCY(this.userPositionInfo.roleList);
+            }
+        }
 		},
 		watch: {
 			// 'newPopup': function () {
