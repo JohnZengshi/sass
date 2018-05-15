@@ -80,6 +80,7 @@ export const JaTools = {
 				"-webkit-font-smoothing": "antialiased",
 				"font-smoothing": "antialiased",
 				"position": "absolute",
+				"white-space":"nowrap",
 				"border": (data.border ? '1px solid #000;' : 'none'),
 				"top": data.top + "mm",
 				"left": data.left + "mm",
