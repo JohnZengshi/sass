@@ -41,20 +41,20 @@
 					<tr>
 						<td rowspan="2">{{index+1}}</td>
 						<td rowspan="2">{{item.now.barcode}}</td>
-						<td>{{item.now.metalColor+item.now.gemName+item.now.jewelryName}}</td>
+						<td>{{add(item.now.metalColor,item.now.gemName,item.now.jewelryName)}}</td>
 						<td>{{item.now.totalWeight}}</td>
 						<td>{{item.now.netWeight}}</td>
-						<td>{{item.now.mainWeight}}</td>
-						<td>{{item.now.deputyWeight}}</td>
+						<td>{{add(item.now.mainWeight, item.now.unit)}}</td>
+						<td>{{add(item.now.deputyWeight, item.now.deputyUnit)}}</td>
 						<td>{{item.now.soldPrice}}</td>
 						<td>{{item.now.costPrice}}</td>
 					</tr>
 					<tr>
-						<td>{{item.old.metalColor+item.old.gemName+item.old.jewelryName}}</td>
+						<td>{{add(item.old.metalColor, item.old.gemName, item.old.jewelryName)}}</td>
 						<td>{{item.old.totalWeight}}&nbsp;</td>
 						<td>{{item.old.netWeight}}</td>
-						<td>{{item.old.mainWeight}}</td>
-						<td>{{item.old.deputyWeight}}</td>
+						<td>{{add(item.old.mainWeight, item.old.unit)}}</td>
+						<td>{{add(item.old.deputyWeight, item.old.deputyUnit)}}</td>
 						<td>{{item.old.soldPrice}}</td>
 						<td>{{item.old.costPrice}}</td>
 					</tr>
@@ -63,16 +63,16 @@
 					<td colspan="3" rowspan="2">合计</td>
 					<td>{{sellList.now.weight}}g</td>
 					<td>{{sellList.now.netWeight}}g</td>
-					<td>{{sellList.now.mainWeight}}</td>
-					<td>{{sellList.now.deputyWeight}}</td>
+					<td>{{sellList.now.mainWeight}}(ct,g)</td>
+					<td>{{sellList.now.deputyWeight}}(ct,g)</td>
 					<td>{{sellList.now.price}}元</td>
 					<td>{{sellList.now.cost}}元</td>
 				</tr>
 				<tr>
 					<td>{{sellList.old.weight}}g</td>
 					<td>{{sellList.old.netWeight}}g</td>
-					<td>{{sellList.old.mainWeight}}</td>
-					<td>{{sellList.old.deputyWeight}}</td>
+					<td>{{sellList.old.mainWeight}}(ct,g)</td>
+					<td>{{sellList.old.deputyWeight}}(ct,g)</td>
 					<td>{{sellList.old.price}}元</td>
 					<td>{{sellList.old.cost}}元</td>
 				</tr>
@@ -118,6 +118,13 @@
 			this.printDate = moment().format("YYYY-MM-DD HH:mm");
 		},
 		methods: {
+			add(...args){
+				let r = "";
+				for(let item of args){
+					r = _.add(r, item);
+				}
+				return r;
+			},
 			print() {
 				let doc = {
 					documents: document,
