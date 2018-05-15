@@ -41,7 +41,7 @@
 					<tr>
 						<td rowspan="2">{{index+1}}</td>
 						<td rowspan="2">{{item.now.barcode}}</td>
-						<td>{{item.now.jewelryName}}</td>
+						<td>{{item.now.metalColor+item.now.gemName+item.now.jewelryName}}</td>
 						<td>{{item.now.totalWeight}}</td>
 						<td>{{item.now.netWeight}}</td>
 						<td>{{item.now.mainWeight}}</td>
@@ -50,7 +50,7 @@
 						<td>{{item.now.costPrice}}</td>
 					</tr>
 					<tr>
-						<td>{{item.old.jewelryName}}</td>
+						<td>{{item.old.metalColor+item.old.gemName+item.old.jewelryName}}</td>
 						<td>{{item.old.totalWeight}}&nbsp;</td>
 						<td>{{item.old.netWeight}}</td>
 						<td>{{item.old.mainWeight}}</td>
