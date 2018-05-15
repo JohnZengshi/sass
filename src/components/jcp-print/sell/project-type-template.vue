@@ -213,7 +213,7 @@
 			}
 		},
 		mounted() {
-			this.printDate = moment().format("YYYY-MM-DD HH-mm");
+			this.printDate = moment().format("YYYY-MM-DD HH:mm");
 		},
 		methods: {
 			add(...numbers){

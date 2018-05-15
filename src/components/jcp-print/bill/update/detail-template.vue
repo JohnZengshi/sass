@@ -105,7 +105,7 @@
 		filters:{
 			DATA_FORMAT:(date)=>{
 				if(date){
-					return moment(date, "YYYYMMDDHHmmss").format("YYYY-MM-DD HH-mm");
+					return moment(date, "YYYYMMDDHHmmss").format("YYYY-MM-DD HH:mm");
 				}
 			}
 		},
@@ -115,7 +115,7 @@
 			}
 		},
 		mounted() {
-			this.printDate = moment().format("YYYY-MM-DD HH-mm");
+			this.printDate = moment().format("YYYY-MM-DD HH:mm");
 		},
 		methods: {
 			print() {
