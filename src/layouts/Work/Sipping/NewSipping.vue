@@ -15,7 +15,7 @@
                                 <div class="back-btn" @click="goPreviousPage">返回上一级</div>
                             </div>
    
-                            <div class="body-row2 actions-status"
+                            <div id="body-row2" class="body-row2 actions-status"
                                 :data-status="curStatus.statusName"
                                 :class="{'animat-scroll':curStatus.slipPointer, 'color1': curStatus.status == 1, 'color2': curStatus.status == 2,
                         'color3': curStatus.status == 3, 'color4': curStatus.status == 4, 'color5': curStatus.status == 5, 'color6': curStatus.status == 6,
@@ -2055,5 +2055,7 @@ input:-moz-placeholder{
 input:-ms-input-placeholder{
     font-size:10px;
 }
-
+#body-row2 {
+    z-index: 0
+}
 </style>

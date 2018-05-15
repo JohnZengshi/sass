@@ -13,7 +13,7 @@
               </ul>
               <div class="back-btn" @click="goPreviousPage">返回上一级</div>
             </div>
-            <div class="body-row2 actions-status" :data-status="curStatus.statusName" :class="{'animat-scroll':curStatus.slipPointer, 'color1': nowStatus == 1, 'color2': nowStatus == 2,
+            <div id="body-row2" class="body-row2 actions-status" :data-status="curStatus.statusName" :class="{'animat-scroll':curStatus.slipPointer, 'color1': nowStatus == 1, 'color2': nowStatus == 2,
                         'color3': nowStatus == 3, 'color4': nowStatus == 4, 'color5': nowStatus == 5, 'color6': nowStatus == 6,
                         'color7': nowStatus == 7, 'color8': nowStatus == 8
                         }">
@@ -1774,5 +1774,8 @@
   .item-name{
     font-size: 12px;
     color: #a9a8a7;
+  }
+  #body-row2 {
+    z-index:0;
   }
 </style>
