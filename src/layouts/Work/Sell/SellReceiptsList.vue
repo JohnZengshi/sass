@@ -1533,28 +1533,22 @@
 					this.attributeType = 2
 				}
 			},
-			operateCashierAct() { // 打单操作
+			operateCashierAct() { 
+				// 打单操作
 				if(this.isPrintOnly && this.templateId == '') {
 					this.$message({
 						type: 'error',
 						message: '请选择打印模板！'
 					})
 				} else if(this.isPrintOnly || this.isCashierOnly) {
-					if(this.isPrintOnly) {
-						this.print()
+					if((this.isCashierOnly && this.receiptsIntroList.cashStatus == 2) && this.isPrintOnly){
+						this.orderPayAndPrint();
+					}else if(this.isPrintOnly) {
+						this.print();
 					} else if(this.isCashierOnly && this.receiptsIntroList.cashStatus == 2) {
-						this.orderPay()
+						this.orderPay();
 					}
 				}
-			},
-			print() {
-				this.cashierDialog = false
-				let selectedTemplate = find(this.qualityTemplateList, {
-					templateId: this.templateId
-				})
-
-				this.$emit('printOrder', this.orderNum, selectedTemplate && JSON.parse(selectedTemplate.content))
-				this.printOrder(this.$route.query.orderNumber, selectedTemplate && JSON.parse(selectedTemplate.content))
 			},
 			//打印表格 
 			tabPrin() {
@@ -1611,6 +1605,80 @@
 					result = _.add(result, Number(item));
 				}
 				return result;
+			},
+			/**
+			 * 收银打单
+			 */
+			orderPayAndPrint(){
+				if(this.receiptsIntroList.cashStatus != 2){
+					return;
+				}
+				if(this.mathAdd(this.priceType.card, this.priceType.cash, this.priceType.alipay, this.priceType.wechat, this.priceType.other)<this.totalPrice){
+					return this.$message({
+          message: '实收金额应大于应收金额！',
+          type: 'warning'
+        });
+				}
+				this.cashierDialog = false;
+				let options = {
+					orderNum: this.$route.query.orderNumber,
+					remark: '',
+					operateType: 2,
+					payList: [{
+							payType: '0',
+							price: this.priceType.change
+						},
+						{
+							payType: '1',
+							price: this.priceType.card
+						},
+						{
+							payType: '2',
+							price: this.priceType.cash
+						},
+						{
+							payType: '3',
+							price: this.priceType.alipay
+						},
+						{
+							payType: '4',
+							price: this.priceType.wechat
+						},
+						{
+							payType: '6',
+							price: this.priceType.other
+						},
+					]
+				}
+				this.$confirm('确定要执行收银操作吗?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+				}).then(() => {
+					operateOrderPay(options).then((res) => {
+						this.isShowBox = true
+						this.isShowFooter = false
+						if(this.isPrintOnly == true) {
+							this.print()
+						}
+						this.getSeekSellReceiptsIntro(); // 单据简介
+						this.send();
+						this.sellData()
+						this.statusREfresh = true
+						this.sellcollectMoney(); // 收银信息
+						this.print();
+					}, (res) => {
+						this.isShowFooter = true
+					})
+				}).catch(() => {
+				});
+			},
+			print(){
+				this.cashierDialog = false
+				let selectedTemplate = find(this.qualityTemplateList, {
+					templateId: this.templateId
+				})
+				this.$emit('printOrder', this.orderNum, selectedTemplate && JSON.parse(selectedTemplate.content))
+				this.printOrder(this.$route.query.orderNumber, selectedTemplate && JSON.parse(selectedTemplate.content))
 			},
 			orderPay() { // 单据操作收银
 				if(this.receiptsIntroList.cashStatus != 2){
