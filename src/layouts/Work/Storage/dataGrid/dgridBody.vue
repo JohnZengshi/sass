@@ -57,7 +57,6 @@
 				datagridSelectData: {},
 				selectConfig: {},
 				activeSelectOn: -1,
-
 				// 时间计时器
 				mouseEvent: {
 					x: -1,
@@ -116,18 +115,16 @@
 					this.$emit('updateActiveIndex', index)
 				}
 			},
-
 			// 监听表格被选中 用于复制操作
-			datagridClick(item, index) {
+			datagridClick(item, index){
 				// 过滤空数据
-				//if(item.barcode == '') return
-				if(this.activeSelectOn == index) {
+				if(this.activeSelectOn == index){
 					this.$emit('updateActiveSelectOn', {
 						item: {},
 						index: -1
 					})
 					this.activeSelectOn = -1
-				} else {
+				}else{
 					this.$emit('updateActiveSelectOn', {
 						item: item,
 						index: index
@@ -858,7 +855,6 @@
 						this.$emit("addRow");
 						let empty_setInterval = setInterval(()=>{
 							nextInput = $("#"+tab.type+(index+1))[0];
-							debugger
 							if(nextInput){
 								nextInput.focus();
 								clearTimeout(empty_setInterval)

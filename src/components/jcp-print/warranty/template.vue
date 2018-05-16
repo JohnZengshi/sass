@@ -116,14 +116,31 @@
 			},
 			BASE_STYLE:(data)=>{
 				let {top, left, width, height, border, backgroundImage, textAlign, rotateDeg} = data;
-				return {
+				let style = {
 					"-webkit-font-smoothing": "antialiased",
 					"font-smoothing": "antialiased",
 					"position": "absolute",
 					"border": (border ? '1px solid #000;' : 'none'),
 					"top": top + "mm",
-					"left": left + "mm", 
-				};
+					"left": left + "mm",
+				}
+				switch(rotateDeg) {
+					case 90:
+						style["transform"] = "rotate(" + rotateDeg + "deg) translateY(-" + height + "mm)";
+						style["transform-origin"] = "0px 0px 0px"; 
+						break;
+					case 180:
+						style["transform"] = "rotate(" + rotateDeg + "deg) translate(-" + width + "mm, -" + height + "mm)";
+						style["transform-origin"] = "0px 0px 0px";
+						break;
+					case 270:
+						style["transform"] =  "rotate(" + rotateDeg + "deg) translateX(-" + width + "mm)";
+						style["transform-origin"] =  "0px 0px 0px";
+						break;
+					default:
+						break;
+				}
+				return style;
 			},
 			PAGE_STYLE:(data)=>{
 				let {width, height, backgroundImage, rotateDeg} = data;
@@ -134,6 +151,7 @@
 			    "background-size": "100% 100%",
 			    "background-repeat": "no-repeat",
      			"background-image": "url(" + transformFileURL(backgroundImage) + ")",
+					"transform": "rotate(" + rotateDeg + "deg)",
 				}
 			}
 		},
@@ -230,7 +248,12 @@
 				return _.max(numbers);
 			},
 			print(){
-				let {width, height} = this.template;
+				let {width, height, rotateDeg} = this.template;
+				if(rotateDeg == 90 || rotateDeg == 270){
+					let w = width;
+					width = height;
+					height = w;
+				}
 				let doc = {
 					pagePrefix:"zbd-",
 					documents: document,

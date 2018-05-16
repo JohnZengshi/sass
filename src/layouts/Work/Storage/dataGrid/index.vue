@@ -131,25 +131,29 @@
 				}
 
 			},
-			// 
+			removeCopy(){
+				this.$refs.dgridfixed.datagridClick({}, this.activeSelectOnIndex);
+			},
+			//
 			refresh(){
 				seekNewGoodsInfoList({
 					page: 1,
 					pageSize: this.pageNum * this.pageSize,
 					orderNum: this.orderNum
-				}).then((res) => {
-					if(res.data.state == 200) {
+				}).then((res) =>{
+					if(res.data.state == 200){
 						this.dgDataList = res.data.data.rowDataList;
 						this.$emit('updataData', {
 							key: 'dgDataList',
 							data: this.dgDataList
 						})
+						this.removeCopy();
 					}
 					this.$emit('updataLoader', false)
 				})
 			},
 			// 获取商品列表
-			fetchGoodList() {
+			fetchGoodList(){
 				this.$emit('updataLoader', true)
 				seekNewGoodsInfoList({
 					page: this.pageNum,
@@ -297,7 +301,6 @@
 				this.fetchGoodList()
 				// 监听滚动条跟鼠标滚轮 对页面进行上滑、下滑操作
 				let datagrid = this.datagridScroll = new datagridScroll(this.$refs.datagrid)
-
 				datagrid.scroll = (evt, num, wheel) => {
 					// 状态栏显示 页面进行下滑
 					if(num < 10 && wheel == 1) {
