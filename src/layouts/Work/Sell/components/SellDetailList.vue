@@ -143,7 +143,7 @@
 				<span>回购价
 					<i></i>
 				</span>
-				<div>
+				<div style="margin-left: 16px;">
 
 		<!-- 				<span v-if="status != 1 || multipleIdentities == 'N' && isOrderMan == false && status == 1 || companyPosition != 4 && companyPosition != 5 && multipleIdentities == 'N' || multipleIdentities == 'Y' && isOrderMan == false && status == 1 && companyPosition != 4 && companyPosition != 5"> -->
                          <!-- v-bind:value="(item.price).indexOf('-')>0?item.price:'-'+item.price"  -->
