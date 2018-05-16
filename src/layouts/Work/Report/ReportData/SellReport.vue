@@ -196,14 +196,14 @@
 					<div class="rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
 						<report-detail-trade :dataGridStorage="tradeStorage" :tabSwitch="tabSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
 						</report-detail-trade>
-            <report-load v-if="tradeStorage.totalNum != '0' && dataGridOptions.type === 1" @LoadOptionsDefault="LoadOptionsDefault"></report-load>            
+            <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1" @LoadOptionsDefault="LoadOptionsDefault"></report-load>            
 					</div>
 
 					<!--销售报表-->
 					<div class="rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
 						<report-detail :dataGridStorage="sellStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
 						</report-detail>
-            <report-load v-if="sellStorage.totalNum != '0' && dataGridOptions.type === 1" @LoadOptionsDefault="LoadOptionsDefault"></report-load>                        
+            <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type === 1" @LoadOptionsDefault="LoadOptionsDefault"></report-load>                        
 					</div>
 
 				</div>
@@ -304,7 +304,7 @@ import intelligenceTypeTemplate from "@/components/jcp-print/sell/intelligence-t
 import customTemplate from "@/components/jcp-print/sell/intelligence-type-template";
 
 // 导出报表
-import { downLoaderFile } from "Api/downLoaderFile";
+import { downLoaderFile } from "Api/downLoaderFile"
 
 // 加载控件
 import ReportLoad from './LoadOptions/ReportLoadOption'
@@ -608,6 +608,10 @@ export default {
         this.dataGridOptions.sortFlag = 0;
       }
       this.send();
+    },
+    "sellShowId": function () {
+      this.dataGridOptions.pageSize = 15
+      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
     }
   },
   created() {
@@ -904,12 +908,14 @@ export default {
         this.dataGridOptions.beginTime = this.getDate(0, "start").fullData;
         this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
         this.dataGridOptions.reportType = 1;
+        this.dataGridOptions.sellStatu = 1;
 
         //日期控件默认设置时间
         this.beginTime = this.getDate(0, "start").format;
         this.endTime = this.getDate(0, "end").format;
+
+        this.send()
       }
-      // this.send()
     },
     printSuffix(index) {
       switch (index) {
@@ -1132,7 +1138,7 @@ export default {
     //店铺
     getShopListByCo() {
       let options = {
-        page: "",
+        page: 1,
         pageSize: "10"
       };
       seekGetShopListByCo(options).then(
