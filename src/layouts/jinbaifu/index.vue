@@ -82,7 +82,7 @@
 		</div>
 		<NewPopup v-if="newPopup.JinBaiF" :newPopup="newPopup.JinBaiF" @closePopup="closePopup"></NewPopup>
 		<el-dialog top="40px" :show-close="true" :visible.sync="ruleOptionDia" customClass="ruleOption">
-			<div class="rule-title"><i class="iconfont icon-liebiao"></i>规则配置</div>
+			<div class="rule-title"><i class="iconfont icon-liebiao"></i>导入规则</div>
 			<div class="tab-list">
 				<ul>
 					<li @click="tabAction(index)" v-for="(item, index) in tabList" :key="index" :class="{active: actIndex == index}">

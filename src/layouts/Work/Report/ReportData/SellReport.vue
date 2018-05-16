@@ -1271,6 +1271,7 @@ export default {
           //数据表格数据
           //成色大类、小类
           this.sellStorage = res.data.data;
+          console.log('sellStorage',sellStorage)
           //明细
           if (this.tabClassActive.reportType == 3) {
             this.sellStorage.printDetailList = res.data.data.detailList;

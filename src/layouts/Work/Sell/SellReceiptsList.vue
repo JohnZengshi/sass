@@ -2591,7 +2591,7 @@
 					orderNum:this.$route.query.orderNumber,
 					type: 1
 				}
-            	exportTabData['businssType'] = 'XS'
+            	exportTabData['exportType'] = 'XS'
             	console.log(exportTabData)
             	downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
         	},
