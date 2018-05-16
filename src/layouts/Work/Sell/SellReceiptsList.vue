@@ -2506,13 +2506,13 @@
 						this.selWay = null
 						this.totalPrice = res.data.data.totalPrice
 						this.goodsTypeList.saleList = res.data.data.saleList
-						for(let item of res.data.data.recycleList){
-							item.huigouoprice = -item.price;
-						}
+//						for(let item of res.data.data.recycleList){
+//							item.huigouoprice = -item.price;
+//						}
 						this.goodsTypeList.recycleList = res.data.data.recycleList
-						for(let item of res.data.data.exchangeList){
-							item.huigouoprice = -item.price;
-						}
+//						for(let item of res.data.data.exchangeList){
+//							item.huigouoprice = -item.price;
+//						}
 						this.goodsTypeList.exchangeList = res.data.data.exchangeList
 						if(this.goodsTypeList.saleList.length == 0 && this.goodsTypeList.recycleList.length == 0 && this.goodsTypeList.exchangeList.length == 0) {
 							this.isBlank = true

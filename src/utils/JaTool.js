@@ -9,7 +9,7 @@ export const JaTools = {
 		let jcp = getJCP();
 		let pageList = JaTools.transformation(template, dataList);
 		let html = [];
-		let myDoc = {copyrights: '西金网络科技拥有版权  www.yunzhubao.com'};
+		let myDoc = {copyrights:'西金网络科技拥有版权  www.yunzhubao.com', noMargins:true};
 		for(let page of pageList){
 			html.push(JaTools.transformationDataToHtml(page));
 			myDoc.settings = {paperWidth: page.width, paperHeight: page.height};
@@ -70,10 +70,17 @@ export const JaTools = {
 				"transform": "rotate(" + page.rotateDeg + "deg)",
 		});
 		for(let data of list) {
-			let box = $("<div>").css({
+			let box = $("<div>");
+			if(data.componnent =="line"){//线条
+				box = $("<hr>");
+			}else if(data.componnent =="charCode"){//条码
+				box = $("<img class='jatools-coder' src='http://127.0.0.1:31227/api?type=coder&code=" + data.sample + "&style=type:ean13;show-text:false;&width=130&height=80'>");
+			}
+			box.css({
 				"-webkit-font-smoothing": "antialiased",
 				"font-smoothing": "antialiased",
 				"position": "absolute",
+				"white-space":"nowrap",
 				"border": (data.border ? '1px solid #000;' : 'none'),
 				"top": data.top + "mm",
 				"left": data.left + "mm",
@@ -103,19 +110,18 @@ export const JaTools = {
 			switch(data.componnent) {
 				//线条
 				case "line":
-					box.append($("<hr>").css({
+					box.css({
+						"border": "0.5px solid",
+						"margin":"0",
 						"width": data.width + "mm",
-						"border": "0.5px solid"
-					}));
+					});
 					break;
 					//条形码
 				case "charCode":
-					let code = $("<img class='jatools-coder' src='http://127.0.0.1:31227/api?type=coder&code=" + data.sample + "&style=type:ean13;show-text:false;&width=130&height=80'>");
-					code.css({
+					box.css({
 						"width": data.width + "mm",
 						"height": data.height + "mm"
 					});
-					box.append(code);
 					break;
 					//默认文本
 				default:

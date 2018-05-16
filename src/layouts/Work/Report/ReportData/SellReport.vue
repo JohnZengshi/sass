@@ -240,8 +240,8 @@
 				<div style="display: none;">
 						<detail-template v-if="this.tabClassActive.index==0" ref="detailTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></detail-template>
 						<intelligence-type-template v-if="this.tabClassActive.index==1" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></intelligence-type-template>
-						<project-type-template v-if="this.tabClassActive.index==2" ref="projectTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></project-type-template>
 						<custom-template v-if="this.tabClassActive.index==3" ref="customTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></custom-template>
+						<project-type-template v-if="this.tabClassActive.index==2" ref="projectTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></project-type-template>
 				</div>
 				
 			</div>

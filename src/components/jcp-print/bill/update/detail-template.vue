@@ -1,7 +1,7 @@
 <template>
 	<div class="print-box breakable" id="page1">
 		<div class="print-header">
-			<h1 class="title center">{{title}}报表</h1>
+			<h1 class="title center">{{title}}单据</h1>
 			<div class="head-option">
 				<div class="left">{{headerData.companyName}}</div>
 				<div class="right">制单时间 {{headerData.createDate|DATA_FORMAT}}</div>
@@ -41,20 +41,20 @@
 					<tr>
 						<td rowspan="2">{{index+1}}</td>
 						<td rowspan="2">{{item.now.barcode}}</td>
-						<td>{{item.now.jewelryName}}</td>
+						<td>{{add(item.now.metalColor,item.now.gemName,item.now.jewelryName)}}</td>
 						<td>{{item.now.totalWeight}}</td>
 						<td>{{item.now.netWeight}}</td>
-						<td>{{item.now.mainWeight}}</td>
-						<td>{{item.now.deputyWeight}}</td>
+						<td>{{add(item.now.mainWeight, item.now.unit)}}</td>
+						<td>{{add(item.now.deputyWeight, item.now.deputyUnit)}}</td>
 						<td>{{item.now.soldPrice}}</td>
 						<td>{{item.now.costPrice}}</td>
 					</tr>
 					<tr>
-						<td>{{item.old.jewelryName}}</td>
+						<td>{{add(item.old.metalColor, item.old.gemName, item.old.jewelryName)}}</td>
 						<td>{{item.old.totalWeight}}&nbsp;</td>
 						<td>{{item.old.netWeight}}</td>
-						<td>{{item.old.mainWeight}}</td>
-						<td>{{item.old.deputyWeight}}</td>
+						<td>{{add(item.old.mainWeight, item.old.unit)}}</td>
+						<td>{{add(item.old.deputyWeight, item.old.deputyUnit)}}</td>
 						<td>{{item.old.soldPrice}}</td>
 						<td>{{item.old.costPrice}}</td>
 					</tr>
@@ -63,16 +63,16 @@
 					<td colspan="3" rowspan="2">合计</td>
 					<td>{{sellList.now.weight}}g</td>
 					<td>{{sellList.now.netWeight}}g</td>
-					<td>{{sellList.now.mainWeight}}</td>
-					<td>{{sellList.now.deputyWeight}}</td>
+					<td>{{sellList.now.mainWeight}}(ct,g)</td>
+					<td>{{sellList.now.deputyWeight}}(ct,g)</td>
 					<td>{{sellList.now.price}}元</td>
 					<td>{{sellList.now.cost}}元</td>
 				</tr>
 				<tr>
 					<td>{{sellList.old.weight}}g</td>
 					<td>{{sellList.old.netWeight}}g</td>
-					<td>{{sellList.old.mainWeight}}</td>
-					<td>{{sellList.old.deputyWeight}}</td>
+					<td>{{sellList.old.mainWeight}}(ct,g)</td>
+					<td>{{sellList.old.deputyWeight}}(ct,g)</td>
 					<td>{{sellList.old.price}}元</td>
 					<td>{{sellList.old.cost}}元</td>
 				</tr>
@@ -105,7 +105,7 @@
 		filters:{
 			DATA_FORMAT:(date)=>{
 				if(date){
-					return moment(date, "YYYYMMDDHHmmss").format("YYYY-MM-DD HH-mm");
+					return moment(date, "YYYYMMDDHHmmss").format("YYYY-MM-DD HH:mm");
 				}
 			}
 		},
@@ -115,9 +115,16 @@
 			}
 		},
 		mounted() {
-			this.printDate = moment().format("YYYY-MM-DD HH-mm");
+			this.printDate = moment().format("YYYY-MM-DD HH:mm");
 		},
 		methods: {
+			add(...args){
+				let r = "";
+				for(let item of args){
+					r = _.add(r, item);
+				}
+				return r;
+			},
 			print() {
 				let doc = {
 					documents: document,
