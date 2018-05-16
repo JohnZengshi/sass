@@ -6,7 +6,7 @@
 				<div v-if="baseList.type=='PropertyComponent'" :style="baseList.data|BASE_STYLE">
 					<!--条形码-->
 					<template v-if="baseList.data.propertyCode=='orderNum'">
-						<img class='jatools-coder' :style="baseList.data|IMG_STYLE" :src="'http://127.0.0.1:31227/api?type=coder&code='+baseList.lable+'&style=type:code128;show-text:false;&width=130&height=80'" >
+						<img class='jatools-coder' :style="baseList.data|IMG_STYLE" :src="'http://127.0.0.1:31227/api?type=coder&code='+baseList.lable+'&style=type:code128;autofit:true;show-text:false;&width=130&height=80'" >
 					</template>
 					<template v-else>
 						<!--前缀-->
@@ -32,7 +32,7 @@
 							<div v-if="item.type=='PropertyComponent'" :style="item.data|DYNAMIC_STYLE">
 								<!--条形码-->
 								<template v-if="item.data.propertyCode=='orderNum'">
-									<img class='jatools-coder' style="width:130px,height:80px" :src="'http://127.0.0.1:31227/api?type=coder&code='+item.lable+'&style=type:code128;show-text:false;&width=130&height=80'">
+									<img class='jatools-coder' style="width:130px,height:80px" :src="'http://127.0.0.1:31227/api?type=coder&code='+item.lable+'&style=type:code128;autofit:true;show-text:false;&width=130&height=80'">
 								</template>
 								<template v-else>
 									<!--前缀-->
