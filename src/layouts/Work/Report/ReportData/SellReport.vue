@@ -1241,6 +1241,7 @@ export default {
         Object.assign(this.dataGridOptions, {
           page: 1,
           pageSize: 15,
+          // sellStatu:'1'
         });
       } else {
         delete this.dataGridOptions.page;
