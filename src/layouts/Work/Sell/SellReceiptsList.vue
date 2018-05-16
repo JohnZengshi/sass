@@ -1109,7 +1109,7 @@
 				"userInfo", // 用户基本信息
 				"saveSuccess", // 保存弹窗
 				"saveSuccessData", // 保存弹窗数据
-				"userPositionInfo" // 职位信息
+				// "userPositionInfo" // 职位信息
 			]),
 			filterUserType () {
 				// 制单人或店长
