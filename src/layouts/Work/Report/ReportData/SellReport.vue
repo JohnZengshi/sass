@@ -1482,6 +1482,7 @@ export default {
           $('.loadControl span').html('已经到底了').css('color','#474747')
           return;
         }
+        
         this.loading = true;    
         this.dataGridOptions.pageSize += pageSize;            
         // 销售
