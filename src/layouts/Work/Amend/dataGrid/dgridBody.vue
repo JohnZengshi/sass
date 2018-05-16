@@ -167,9 +167,7 @@ export default{
       }
     }
   },
-
   props:['fixedFullSize','dgDataList','activeClassIndex','synopsiData','selectContainer','smallDataList','orderNum','seekFlag', 'seekBarcode'],
-  
   created(){
     this.selectConfig = fetch.Select
   },
@@ -181,7 +179,6 @@ export default{
     }
   },
   methods: {
-    
     //重置index
     resetIndex( index ){
      if( index == 0 ) applyIndex = 0
@@ -190,12 +187,10 @@ export default{
     addIndex(){
      applyIndex++
     },
-    
     getIndex(){
       // this.$emit('getIndex',applyIndex)
       return applyIndex
     },
-    
     updataSelectContainer (data) {
       this.$emit('updataSelectContainer', {
         fixedfIndex : data.selectCur_tr_index,
@@ -211,7 +206,6 @@ export default{
         this.$emit('updateActiveIndex',index)
       }
     },
-    
     // 监听表格被选中 用于复制操作
     datagridClick (item, index){
       // 过滤空数据
@@ -517,9 +511,6 @@ export default{
     
     // input方法
     inputChange(item, tab){
-      // console.log(item)
-      // console.log(tab)
-      // isNaN(parseFloat('numm2'))
       return
       let price = isNaN(parseFloat(item[tab.type])) ? 0 : parseFloat(item[tab.type]).toFixed(2)
       // 修改成本， 同步计算售价
@@ -613,16 +604,7 @@ export default{
       let inMethodType = (item['inMethod'] == null || item['inMethod'] == '') ? '计重' : item['inMethod']
       // 销售工费
       if(tab.type === 'soldFee'){
-        // Object.assign(item, {
-        //   soldFee : (this.toNum(item['soldFee'])).toFixed(2)
-        // })
       }
-      // 销售工费方式
-      // if(tab.type === 'soldMethod'){
-      //   Object.assign(item, {
-      //     soldMethod : (this.toNum(item['soldMethod'])).toFixed(2)
-      //   })
-      // }
       // 进货工费
       if(tab.type === 'inFee'){
         console.log(111)
@@ -806,7 +788,6 @@ export default{
           this.$emit('updataApi')
           return
         }
-        
         fetch.deleteGoods({
           operate : '2',
           orderNum : this.orderNum,
@@ -830,23 +811,20 @@ export default{
     },
     
     // 通过配置信息检测是否需要加载下拉框数据
-    hasfetchData (type){
+    hasfetchData(type){
       for (let action in this.selectConfig) {
         let config = this.selectConfig[action]
         if ( type == action && this.datagridSelectData[config.resData] == undefined) {
-          
           if(config.datalist && config.datalist.length > 0){
             Object.assign(this.datagridSelectData, {
               [config.resData] : config.datalist
             })
             return
           }
-          
           // 创建空数组 便于存放后面请求回来的数据
           Object.assign(this.datagridSelectData, {
             [config.resData] : []
           })
-          
           // 对重定向的处理
           if (config.resDataRedirect == undefined) {
             // 拿到对应的请求接口
@@ -868,27 +846,21 @@ export default{
       }
       return Object.keys(this.selectConfig).includes(type)
     },
-    
     // 
     fetchData (fetch, config) {
       if (config.localStorage && localStorage[config.localStorage]) {
-        
         let tempData = JSON.parse(decodeURIComponent(localStorage[config.localStorage])).filter(f => f.classesName == config.classesName )
         this.$set(this.datagridSelectData, config.resData, tempData[0].childrenList)
-        
       } else if( typeof fetch === 'function') {
-        
         fetch(config, (res) => {
           // 回调方法
           let resArray = res
           let rpData = []
-          
           if (resArray.length > 0) {
             //拿到childrenList列表里面的数据
             if (config.isResolveChildren) {
               resArray.filter( f => f.childrenList ? rpData.push(...f.childrenList && f.childrenList.filter(j => j)) : '' )
             }
-            
             // 根据对应的字段名进行存储
            if (rpData.length > 0) {
               this.$set(this.datagridSelectData, config.resData, rpData)
@@ -902,9 +874,8 @@ export default{
     },
     
     //下拉选择 点击事件
-    selecChange (fg) {     
+    selecChange(fg) {     
       fg.event.stopPropagation()
-      
       this.clearTime()
       let tpData = this.datagridSelectData[fg.td.type]
       let coord = fg.event.target.getBoundingClientRect()
@@ -921,18 +892,15 @@ export default{
     },
     
     // 纯手工下拉条
-    addSelect (item, coord, fg) {
+    addSelect(item, coord, fg){
       let elem = document.getElementById('j_datagrid_select')
-      
       let events = (item) => {
         let productId = this.dgDataList[fg.fIndex].now.productId
-
         // 更新view视图
         this.$set(this.dgDataList[fg.fIndex].old, fg.td.type, item.classesName)
         this.selectClassTdIndex = -1
         this.elemHide(elem)
         //productTypeId
-        
         let tempJSON = {
           [fg.td.type]: item.classesName,
           productId: productId
@@ -943,22 +911,8 @@ export default{
           })
           this.$set(this.dgDataList[fg.fIndex].old, 'productTypeId' , item.classesId)
         }
-        
-        // 下拉选择之后需要对数据做一些处理
-        //this.inputChange(this.dgDataList[fg.fIndex].old, fg.td)
-        
-        //if(fg.td.type == 'mainCalcMethod'  // 主石计价方式
-          //|| fg.td.type == 'deputyCalcMethod' // 副石计价方式
-          //|| fg.td.type == 'inMethod' // 工费计价方式
-         // || fg.td.type == 'calcMethod' // 配件计价方式
-        //){
-          //console.log(fg.event, this.dgDataList[fg.fIndex],fg.fIndex,'fg.td.type:', fg.td.type)
-          //this.inputFocusout(fg.event, this.dgDataList[fg.fIndex], fg.td, fg.fIndex)
-        //}else{
-          this.$emit('updataEditApi', tempJSON)
-        //}
+        this.$emit('updataEditApi', tempJSON)
       }
-      
       if (!elem) {
         // 下拉框生成
         elem = document.createElement('div')
@@ -970,16 +924,12 @@ export default{
       } else {
         elem.innerHTML = ''
       }
-      
       //item
       if (elem && item.length > 0) {
-        
         // 下拉列表生成
         item.forEach((j) => {
-          
           let el = document.createElement('div')
           el.innerHTML = j.classesName || ''
-          
           // 二级菜单
           if (j.typeList && j.typeList.length > 0){
             el.className = 'item'
@@ -995,25 +945,20 @@ export default{
               childItem.appendChild(child)
               child.addEventListener('click',() => {events(f)} , false)
             })
-            
             el.appendChild(childItem)
-            
           }else {
             el.className = 'item '+ (j.classesName == fg.tr[fg.td.type] ? 'active' : '')
             el.addEventListener('click',() => {events(j)} , false)
             el.setAttribute('title', j.classesName)
             elem.className = 'datagrid-select-container overflow'
           }
-          
           elem.appendChild(el)
         })
-        
         elem.style.cssText = 'left:'+ coord.left +'px;top:'+ coord.top +'px;'
       }else{
         this.elemHide(elem)
-      } 
+      }
     },
- 
     // 隐藏下拉条
     elemHide (elem) {
       if (elem){
@@ -1028,13 +973,12 @@ export default{
     },
     
     // 下拉条定时器
-    clearTime (type) {
-      if ('boolean' === typeof type ){
+    clearTime(type) {
+      if('boolean' === typeof type ){
         this.intervalGap = type
       }else{
         this.intervalGap = true
       }
-      
       if (window.intervalGap) {
        clearTimeout(window.intervalGap)
        window.intervalGap = null
@@ -1046,7 +990,6 @@ export default{
       let elem = document.getElementById('j_datagrid_select')
       switch (evt.type) {
         case 'mousemove':
-        
          if(fIndex != undefined){
            if(this.mouseEvent.x != fIndex || this.mouseEvent.y != cIndex){
              this.elemHide(elem)
@@ -1070,11 +1013,6 @@ export default{
     
     // 查看详情
     gotoDetails (item) {
-      //console.log(item)
-//    this.$message({
-//      type:'info',
-//      message :'暂未开发'
-//    })
       this.$router.push({path: '/inventory', query: {text: '单据详情', barcode: item.now.barcode, productId: item.now.productId}})
     }
   

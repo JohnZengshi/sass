@@ -4,7 +4,7 @@
             <div class="titile-left">
                 公告中心
             </div>
-            <div class="titile-right">
+            <div class="titile-right" v-if="!Jrole">
                 <div class="btn" @click="goPage(1)">新建公告</div>
             </div>
         </div>
@@ -186,6 +186,11 @@ export default {
                 return jurisdictions.jurisdictionShopRole(this.userPositionInfo.roleList);
             }
         },
+        Jrole: function () {
+            if (this.userPositionInfo) {
+                return jurisdictions.jurisdictionJCY(this.userPositionInfo.roleList);
+            }
+        }
     },
     methods: {
         getUserInfo () {

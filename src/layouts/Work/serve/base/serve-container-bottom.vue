@@ -1,6 +1,6 @@
 <template>
   <div class="serve-container-bottom-main">
-    <p class="user-m-h">售后用户信息</p>
+    <p class="user-m-h">售后备注</p>
     <div class="bottom-wrap">
 
       <div class="user-m-inner">

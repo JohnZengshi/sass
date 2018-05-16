@@ -49,6 +49,7 @@
                 </el-dialog>
                 <el-dialog :visible.sync="operateDialog" customClass="operateDig">
                     <big-popup
+                        v-if="operateDialog"
                         :item='item'
                         type="2"  
                         isMerge='1'
@@ -63,6 +64,7 @@
                     <marge-popup
                         classType='5'
                         :startId='startId'
+                        :startName="startName"
                         @margeBack="margeInfoBack"
                         @openDialog="openDialog"
                         :selType="selType"
@@ -98,6 +100,7 @@ export default {
             checked:false,
             successDialog: false,
             startId: '', // 交换的id
+            startName: '', // 交换的id的名字
             margeDialog: false,
             isLoading: true,
             selType: '',
@@ -257,6 +260,7 @@ export default {
             if (val.type == 10) {
                 this.margeDialog = true
                 this.startId = val.operateId
+                this.startName = val.operateName
             }
         },
         operateItem (item, type) { // 修改操作

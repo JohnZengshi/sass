@@ -47,7 +47,7 @@
 </template>
 <script>
 import {GetSF} from 'assets/js/getTime'
-import {seekListVisitor} from 'Api/commonality/seek'
+import {seekListVisitor, seekGetMemberInfo} from 'Api/commonality/seek'
 import memberCreate from '../base/member-create'
 
 var moment = require('moment');
@@ -91,7 +91,9 @@ export default{
       return GetSF(parm)
     },
     dateChange (val) {
+      console.log('日期切换无效', val)
       this.page = 1
+      this.visitData = []
       this._seekList()
     },
     timeFormat (parm, timeType = '000000') {
@@ -103,16 +105,50 @@ export default{
     checkData (parm) {
       this.currentData = parm
       if (parm.memberId) {
-
+        let options = {
+          shopId: this.$route.query.shopId,
+          memberId: parm.memberId
+        }
+        seekGetMemberInfo(options)
+          .then(res => {
+            debugger
+            if (res.data.state == 200) {
+              let datas = {
+                username: res.data.data.username,
+                phone: res.data.data.phone,
+                type: res.data.data.type,
+                memberId: parm.memberId,
+                imageUri: res.data.data.memberLogo,
+                sex: res.data.data.sex
+              }
+              this.affirmMemberCreate(datas)
+              // this.totalNum = res.data.data.totalNum
+              // this.visitData.push(...res.data.data.dataList)
+            } else {
+                this.$message({
+                    message: res.data.msg,
+                    type: 'warning'
+                });
+            }
+          })
+        // let datas = {
+        //   username: parm.userName,
+        //   phone: parm.phone,
+        //   type: parm.type,
+        //   memberId: parm.memberId,
+        //   imageUri: parm.imageUri,
+        //   sex: parm.sex
+        // }
+        // this.affirmMemberCreate(datas)
       } else {
         this.$refs.memberCreateWrap.open()
       }
     },
 
     _seekList () {
-      if (this.visitData.length == this.totalNum && this.visitData.length > 0) {
-        return
-      }
+      // if (this.visitData.length == this.totalNum && this.visitData.length > 0) {
+      //   return
+      // }
       let options = {
         beginTime: this.timeFormat(moment(this.beginTime).format('YYYY-MM-DD')),
         endTime: this.timeFormat(moment(this.beginTime).format('YYYY-MM-DD'), '235959'),

@@ -289,12 +289,14 @@ export default{
     }
     >li:nth-child(2){
       width: 120px;
+      text-align: left;
       overflow: hidden;
       white-space:nowrap; 
       text-overflow:ellipsis; 
     }
     >li:nth-child(3){
       width: 82px;
+      text-align: left;
       overflow: hidden;
       white-space:nowrap; 
       text-overflow:ellipsis; 

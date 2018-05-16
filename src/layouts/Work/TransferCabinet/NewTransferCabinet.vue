@@ -13,7 +13,7 @@
                         </ul>
                         <div class="back-btn" @click="goPreviousPage">返回上一级</div>
                     </div>
-                    <div class="body-row2 actions-status"
+                    <div id="body-row2" class="body-row2 actions-status"
                         :data-status="curStatus.statusName"
                         :class="{'animat-scroll':isRemark, 'color1': nowStatus == 1, 'color2': nowStatus == 2,
                         'color3': nowStatus == 3, 'color4': nowStatus == 4, 'color5': nowStatus == 5, 'color6': nowStatus == 6,
@@ -1570,10 +1570,14 @@ export default {
         // }
         // 导出报表
         exportTab(){
-            let exportTabData = this.dataGridOptions
-            exportTabData['businssType'] = 'DG'
-            console.log(exportTabData)
-            downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
+            let exportTabData = Object.assign({},this.dataGridOptions)
+            exportTabData['exportType'] = 'DG'
+            console.log(exoprtTabData)
+            if(exportTabData.type == 1){
+                downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
+            } else {
+                downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)                
+            }
         }
     }
 }
@@ -1621,4 +1625,7 @@ color: #d6d6d6;
   	padding-left: 6px;
   }
 }
+    #body-row2{
+        z-index:0;
+    }
 </style>

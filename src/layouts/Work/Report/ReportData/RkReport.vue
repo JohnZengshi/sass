@@ -63,7 +63,7 @@
             <span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(3, 4)" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义
                     <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
                     <div class="customDia" ref="customDia">
-                    <div class="body" v-if="openReset">
+                    <div class="body">
                         <div class="list-wrap">
                         <ul>
                             <li></li>
@@ -160,6 +160,18 @@
         <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
           <report-detail :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" @scrollClass="tabScrollShow" :positionSwitch="positionSwitch" :newList="newList" @lazyloadSend="lazyloadSend" @sortList="sortListAct" :reportType="getReportType()">
           </report-detail>
+          <!-- 数据加载控件 bengin-->
+          <!-- <div class="loadControl">
+            <p><span @click="LoadOptionsDefault">更多未读取数据</span> <a href="javascript:viod(0)" @click="isLoadOptions">切换</a></p>
+            <ul class="LoadOptions" @click="getNewListData($event)">
+              <li class="action" data-index="0">加载10条</li>
+              <li data-index="1">加载20条</li>
+              <li data-index="2">加载100条</li>
+              <li data-index="3">全部加载</li>
+            </ul>  
+          </div> -->
+          <!-- 数据加载控件 end-->
+          <report-load v-if="dataGridStorage.totalNum != '0' && dataGridOptions.type === 1" @LoadOptionsDefault="LoadOptionsDefault"></report-load>
         </div>
 
       </div>
@@ -229,6 +241,9 @@
   //导出报表
   import { downLoaderFile } from 'Api/downLoaderFile'
 
+  // 加载控件
+  import ReportLoad from './LoadOptions/ReportLoadOption'
+
   export default {
     components: {
       ReportDetail,
@@ -239,7 +254,8 @@
       detailTemplate,
 			projectTypeTemplate,
 			intelligenceTypeTemplate,
-			customTemplate,
+      customTemplate,
+      ReportLoad,
     },
     data() {
       return {
@@ -374,7 +390,7 @@
           }],
           type: 2,
           page: 1,
-          pageSize: 9999,
+          pageSize: 10,
           keyWord: '',
           wColorId: '',
           wGemId: '',
@@ -403,7 +419,7 @@
           name: '产品类别',
           value: '1'
         }],
-        
+        loadIndex:10
       };
     },
     created() {
@@ -425,7 +441,7 @@
       this.getProductTypeList() //产品类别
       this.getGetUserList() //审核人
       this.getShopListByCo() //分销商  
-      // this.send()
+      this.send()
       this.$store.dispatch('checkBrowser', (type) => {
         this.reportPrint_fixed = type
       })
@@ -473,10 +489,10 @@
         }
       },
       resetOption() {
-        this.openReset = false
-        setTimeout(() => {
-           this.openReset = true 
-        }, 100)
+        // this.openReset = false
+        // setTimeout(() => {
+        //    this.openReset = true 
+        // }, 100)
         this.dataGridOptions.wColorId = ''
         this.dataGridOptions.wGemId = ''
         this.dataGridOptions.wJewelryId = '1'
@@ -506,7 +522,7 @@
               sortFlag: '0',
               type: 1,
               page: 1,
-              pageSize: 50,
+              pageSize: 15,
               keyWord: ''
             })
           } else if(port == 2) {
@@ -586,21 +602,31 @@
         this.loading = true;
         //this.page = 1
         this.dataGridOptions.page = 1
-        this.dataGridOptions.pageSize = 9999
+        // this.dataGridOptions.pageSize = 9999
+        this.dataGridOptions.pageSize = 15
+
         this.tabClassActive.index = index;
         this.setReportType(type)
 
+        console.log('切换明细',this.dataGridOptions)
         // 设置type
-        this.exportTabData.type = type
+        // this.exportTabData.type = type
 
       },
       tabHover(index, evt) {
-        this.$refs.customDia.style.zIndex = "10"
-        this.$refs.customDia.style.opacity = '1'
-      },
-      tabOut(index, evt) {
-        this.$refs.customDia.style.zIndex = "-1"
-        this.$refs.customDia.style.opacity = '0'
+          //if (this.dataGridOptions.type == 4 && index == 3) {
+            this.$refs.customDia.style.zIndex = "10"
+            // this.$refs.customDia.style.position = "absolute"
+            this.$refs.customDia.style.opacity = '1'
+            this.$refs.customDia.style.display = 'block'
+          //}
+        },
+        tabOut(index, evt) {
+          //if (this.dataGridOptions.type == 4 && index == 3) {
+            this.$refs.customDia.style.zIndex = "-1"
+            this.$refs.customDia.style.opacity = '0'
+            this.$refs.customDia.style.display = 'none'
+          //}
       },
       cancelSort(item, index) { // 取消排序
         this.sortList.splice(index, 1)
@@ -691,7 +717,7 @@
 
       toggleAttribute() {
         this.dataGridOptions.page = 1
-        this.dataGridOptions.pageSize = 99999
+        this.dataGridOptions.pageSize = 15
         this.loading = true;
         this.send()
 
@@ -836,7 +862,7 @@
       //分销商
       getShopListByCo() {
         let options = {
-          page: "",
+          page: '1',
           pageSize: '10'
         }
         seekGetShopListByCo(options).then((res) => {
@@ -969,7 +995,7 @@
       //懒加载
       lazyloadSend(s) {
         this.currentPage++
-        this.dataGridOptions.pageSize += 50;
+        // this.dataGridOptions.pageSize += 50;
         this.send()
       },
 
@@ -997,16 +1023,89 @@
       // 导出报表
       exportTab(){
         console.log('导出报表')
-        let exportTabData = this.dataGridOptions
+        // let exportTabData = this.dataGridOptions
+        let exportTabData = Object.assign({},this.dataGridOptions)
         exportTabData['exportType'] = 'RK'
-        console.log(exportTabData)
         if(exportTabData.type === 1){
           downLoaderFile('/v1/export/exportExcelByReport',exportTabData)
         } else {
           downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)          
         }
-      }
+      },
 
+
+      // 加载控件
+      getNewListData(e){
+        // var e = e || window.event
+        console.log('啦啦',e.target.dataset.index)
+        console.log('啦啦啦啦啦啦啦',this.dataGridOptions)        
+        $('.LoadOptions li').eq(e.target.dataset.index).addClass('action').siblings().removeClass('action')
+        $('.LoadOptions').css('display','none');
+
+        // 页面加载
+
+        switch (e.target.dataset.index) {
+          case '0':
+            this.loadIndex = 10;            
+            break;
+          case '1':
+            this.loadIndex = 20;            
+            break;
+          case '2':
+            this.loadIndex = 100;                      
+            break;
+          case '3':
+            this.loadIndex = 9999;                      
+            break;
+          default:
+            break;
+        }
+
+        // console.log('啦啦啦啦啦啦啦',this.dataGridOptions)
+        // //this.dataGridOptions.pageSize += 50;
+        // seekEntryStorage(this.dataGridOptions).then((res) => {
+        //   if(res.data.state == 200) {
+        //     this.dataGridStorage = res.data.data
+        //     console.log(this.dataGridStorage)
+        //   }
+        //   if(res.data.state == 200101) {
+        //     this.$message({
+        //       type: 'error',
+        //       message: res.data.msg
+        //     })
+        //   }
+        //   this.loading = false
+        // }, (res) => {
+
+        // })
+
+      }, 
+      LoadOptionsDefault(pageSize){
+        console.log('调用了')
+        if(this.dataGridOptions.pageSize>this.dataGridStorage.totalNum) {
+           // 更换文字
+          $('.loadControl span').html('已经到底了').css('color','#474747')
+          return;
+        }
+        this.loading = true;    
+        this.dataGridOptions.pageSize += pageSize;            
+        seekEntryStorage(this.dataGridOptions).then((res) => {
+          if(res.data.state == 200) {
+            this.dataGridStorage = res.data.data
+            console.log('到底了没',this.dataGridStorage)
+          }
+          if(res.data.state == 200101) {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            })
+          }
+          this.loading = false
+        }, (res) => {
+
+        })
+      },
+      
     },
 
     mounted() {
@@ -1023,3 +1122,54 @@
   }
 </script>
 <style lang="scss" src="./../../../../assets/css/customDialog/customDialog.scss"></style>
+
+<style lang="scss" scoped>
+.loadControl{
+  position: relative;
+  background: #fff1d9;
+  text-align: center;
+  font-size: 14px;
+  color:#e99a1d;
+  line-height: 22px;
+  a{
+    color:#b6b2aa;
+    text-decoration: underline;
+  }
+  span{
+      cursor: pointer;
+  }
+  .LoadOptions{
+    display: none;
+    position: absolute;
+    top: -170px;
+    right: 448px;
+    width: 140px;
+    height: 168px;
+    background: #fff;
+    z-index: 998;
+    li{
+      position: relative;
+      width: 100%;
+      height: 42px;
+      line-height: 42px;
+      color:#7a7a7a;
+      font-size: 14px;
+      border: 1px solid #f1f2f3;
+      cursor: pointer;
+    }
+    .action {
+      color:#2993f8;
+      &::before{
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 2px;
+        height: 100%;
+        background: #2993f8;
+      }
+    }
+  }
+}
+</style>

@@ -1,8 +1,7 @@
 <template>
 <!--表头-->
 <div class="ui-table_column">
-  <div class="ui-table_th" v-for="tab in detailDataGridColumn" :style="tableCell(tab.width)">
-    {{tab.text }} <i v-if="tab.unit !=''">{{ tab.unit}}</i>
+  <div class="ui-table_th" v-for="tab in detailDataGridColumn" :style="tableCell(tab.width)">{{tab.text }} <i v-if="tab.unit !=''">{{ tab.unit}}</i>
   </div>
 </div>
 </template>

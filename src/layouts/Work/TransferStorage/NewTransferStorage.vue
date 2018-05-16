@@ -15,7 +15,7 @@
                                 <div class="back-btn" @click="goPreviousPage">返回上一级</div>
                             </div>
                             
-                            <div class="body-row2 actions-status"
+                            <div id='body-row2' class="body-row2 actions-status"
                                 :data-status="curStatus.statusName"
                                 :class="{'animat-scroll':curStatus.slipPointer, 'color1': nowStatus == 1, 'color2': nowStatus == 2,
                         'color3': nowStatus == 3, 'color4': nowStatus == 4, 'color5': nowStatus == 5, 'color6': nowStatus == 6,
@@ -238,12 +238,14 @@
                                         </span>
                                     </div>
                                     <ul class="header-wrap-btn">
-                                        <li v-if='addRole && dataGridOptions.type == 1' class="confirm-btn">
-                                            <!--单个添加--> <input ref="inputDom" @keyup.enter="addNewGoods" style="width:150px;"  @focus="changeborder($event,1)" @blur="changeborder($event,2)"  v-model="enterOrderNum" type="text" placeholder="扫描/输入条码号添加商品">
-                                        </li>
-                                        <li v-if='addRole && dataGridOptions.type == 1' class="confirm-btn" @click.stop="appendBatchRow">
-                                            批量添加
-                                        </li>
+                                        <template v-if="isMakeOrderManId">
+                                            <li v-if='addRole && dataGridOptions.type == 1' class="confirm-btn">
+                                                <!--单个添加--> <input ref="inputDom" @keyup.enter="addNewGoods" style="width:150px;"  @focus="changeborder($event,1)" @blur="changeborder($event,2)"  v-model="enterOrderNum" type="text" placeholder="扫描/输入条码号添加商品">
+                                            </li>
+                                            <li v-if='addRole && dataGridOptions.type == 1' class="confirm-btn" @click.stop="appendBatchRow">
+                                                批量添加
+                                            </li>
+                                        </template>    
                                         <!-- <li class="confirm-btn" v-if="addRole && propOptons.reportType == 3">
                                             <div v-if="isSelDelect" @click="isSelDelect = false">批量删除</div>
                                         </li> -->
@@ -796,6 +798,9 @@ export default {
                     return false
                 }
             }
+        },
+        isMakeOrderManId () {
+            return this.receiptsIntroList.makeOrderManId == sessionStorage.getItem("id");
         },
         printOptions () { // 打印单据
             let isCheckOrderMan = this.receiptsIntroList.isCheckOrderMan === "Y";
@@ -1811,13 +1816,15 @@ export default {
                 console.log(response);
             })
         },
-
         // 导出报表
         exportTab(){
-            let exportTabData = this.dataGridOptions
-            exportTabData['businssType'] = 'DK'
-            console.log(exportTabData)
-            downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
+            let exportTabData = Object.assign({},this.dataGridOptions)
+            exportTabData['exportType'] = 'DK'
+            if(exportTabData.type == 1){
+                downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
+            } else {
+                downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)                
+            }
         }
     }
 }
@@ -1923,5 +1930,8 @@ color: #d6d6d6;
     .item-name{
 	    font-size: 12px;
 	    color: #a9a8a7;
+    }
+    #body-row2 {
+        z-index:0
     }
 </style>

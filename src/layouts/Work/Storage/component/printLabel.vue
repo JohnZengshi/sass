@@ -95,7 +95,7 @@
 				// 导出报表数据
 				exportTabData: {
 					"orderNum": this.$route.query.orderNumber,
-					"businssType": 'RK',
+					"exportType": 'RK',
 					"type": '1',
 					"page": 1,
 					"pageSize": 9999,

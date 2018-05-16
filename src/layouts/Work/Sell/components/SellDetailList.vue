@@ -634,12 +634,12 @@ export default {
 			if (type == 1) {
 				this.goodTypeText = "销售"
 			} else if (type == 2) {
-				this.goodTypeText = "换货"
-				// if (this.item.productClass == '2') {
-				// 	this.goodTypeText = "换货"
-				// } else {
-				// 	this.goodTypeText = "退货"
-				// }
+				// this.goodTypeText = "换货"
+				if (this.item.productClass == '2') {
+					this.goodTypeText = "换货"
+				} else {
+					this.goodTypeText = "退货"
+				}
 			} else if (type == 3) {
 				this.goodTypeText = "回收"
 			}

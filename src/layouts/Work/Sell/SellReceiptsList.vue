@@ -55,7 +55,7 @@
 											</div>
 											<div class="item shop">
 												<!-- 注： orderData.shopName 店铺名需要另外一个接口去拿  5.38 单据简介  表尾组件已经做了接口调用，直接传过来即可 -->
-												<select-drop class="selected_dropdown" :titleName="receiptsIntroList.sellManName" dataType="销售人1" v-if="nowStatus != 2 && nowStatus != 3 && nowStatus != 5 && nowStatus != 6 && nowStatus != 7" :propList="shopUserList" :isDrop="true" @dropReturn="dropReturn">
+												<select-drop class="selected_dropdown" :titleName="receiptsIntroList.sellManName" dataType="销售人1" v-if="filterUserType" :propList="shopUserList" :isDrop="true" @dropReturn="dropReturn">
 												</select-drop>
 												<span v-else>
                                                     {{receiptsIntroList.sellManName}}
@@ -129,7 +129,12 @@
 									<div class="cash-content">
 										<div>
 											<div class="title-info" v-if="priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">
-												暂无收银信息，快去<span style="cursor: pointer;" @click="collectMoney">收银</span>吧~
+												<p v-if="isJrole">
+													暂无收银信息,快去收银吧~
+												</p>
+												<p v-else>
+													暂无收银信息，快去<span style="cursor: pointer;color: #2993f8;" @click="collectMoney">收银</span>吧~
+												</p>	
 											</div>
 											<div v-else>
 												<div class="cash-item" v-if="priceType.cash != 0.00">
@@ -1104,8 +1109,17 @@
 				"userInfo", // 用户基本信息
 				"saveSuccess", // 保存弹窗
 				"saveSuccessData", // 保存弹窗数据
-				// "userPositionInfo" // 职位信息
+				"userPositionInfo" // 职位信息
 			]),
+			filterUserType () {
+				// 制单人或店长
+				if(this.receiptsIntroList.makeOrderManId == sessionStorage.id || this.shopManageRole) {
+					if (this.nowStatus != 2 && this.nowStatus != 3 && this.nowStatus != 5 && this.nowStatus != 6 && this.nowStatus != 7) {
+						return true
+					}
+				}
+				return false
+			},
 			shopManRole: function() { // 店员
 				if(this.userPositionInfo) {
 					return jurisdictions.jurisdictionShopManRole(this.userPositionInfo.roleList)
@@ -1244,6 +1258,12 @@
 					return Math.ceil(this.templateData.productList.length / number) || 1
 				}
 
+			},
+			// 判断是不是监察员
+			isJrole:function() {
+				if (this.userPositionInfo) {
+                	return jurisdictions.jurisdictionJCY(this.userPositionInfo.roleList);
+            	}
 			}
 		},
 		watch: {
@@ -1281,9 +1301,9 @@
 					this.entry.tep4List.isShowBtn1 = false
 					this.entry.tep5List.isShowBtn = false
 					this.entry.tep5List.isShowBtn1 = false
-					this.entry.tep2List.leftClassId = ''
-					this.entry.tep3List.leftClassId = ''
-					this.entry.tep4List.leftClassId = ''
+					// this.entry.tep2List.leftClassId = ''
+					// this.entry.tep3List.leftClassId = ''
+					// this.entry.tep4List.leftClassId = ''
 					this.entry.tep5List.leftClassId = ''
 					this.entry.tep1List.rightClassId = ''
 					this.entry.tep2List.rightClassId = ''
@@ -1815,9 +1835,18 @@
 					type: '1'
 				}
 				seekProductClassList(options).then((res) => {
-					this.entry.tep2List.classesList = res.data.data.list
-					this.entry.tep2List.leftClassId = res.data.data.list[0].classesId
-					this.entry.tep2List.rightClassList = res.data.data.list[0].childrenList
+					debugger
+					if(res.data.state == 200) {
+						this.entry.tep2List.classesList = res.data.data.list
+						this.entry.tep2List.leftClassId = res.data.data.list[0].classesId
+						this.entry.tep2List.rightClassList = res.data.data.list[0].childrenList
+					} else {
+						this.$message({
+              message: res.data.msg,
+              type: 'warning'
+            })
+					}
+
 				}, (res) => {})
 			},
 			productTypeList() { // 产品大类
@@ -1853,6 +1882,7 @@
 				if(type == 1) {
 					this.entry.tep1List.rightClassId = id
 					this.tep = 3
+					console.log('entry.tep2List.classesList', this.entry.tep2List.classesList)
 				} else if(type == 2) {
 					this.entry.tep2List.rightClassId = id
 					this.tep = 4
@@ -2476,13 +2506,13 @@
 						this.selWay = null
 						this.totalPrice = res.data.data.totalPrice
 						this.goodsTypeList.saleList = res.data.data.saleList
-						for(let item of res.data.data.recycleList){
-							item.huigouoprice = -item.price;
-						}
+//						for(let item of res.data.data.recycleList){
+//							item.huigouoprice = -item.price;
+//						}
 						this.goodsTypeList.recycleList = res.data.data.recycleList
-						for(let item of res.data.data.exchangeList){
-							item.huigouoprice = -item.price;
-						}
+//						for(let item of res.data.data.exchangeList){
+//							item.huigouoprice = -item.price;
+//						}
 						this.goodsTypeList.exchangeList = res.data.data.exchangeList
 						if(this.goodsTypeList.saleList.length == 0 && this.goodsTypeList.recycleList.length == 0 && this.goodsTypeList.exchangeList.length == 0) {
 							this.isBlank = true
@@ -2561,7 +2591,7 @@
 					orderNum:this.$route.query.orderNumber,
 					type: 1
 				}
-            	exportTabData['businssType'] = 'XS'
+            	exportTabData['exportType'] = 'XS'
             	console.log(exportTabData)
             	downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
         	},

@@ -3,9 +3,9 @@
 		<div class="batch-top">
 			<h3><i class="iconfont icon-daoru1"></i>导入日记<!-- <i class="iconfont icon-ruku" style="color: #2993f8; margin-left: 10px;"></i> --></h3>
 			<!-- <a href="javascript: void(0)" @click="newPopup.JinBaiF = true">金百福数据导入</a> -->
-			<a href="javascript: void(0)" @click="newPopup.JinBaiF = true">智能导入</a>
-			<a :href="downUrl">模板下载</a>
-			<a href="javascript: void(0)" @click="ruleOptionDia = true">导入规则</a>
+			<a v-if="!Jrole" href="javascript: void(0)" @click="newPopup.JinBaiF = true">智能导入</a>
+			<a v-if="!Jrole" :href="downUrl">模板下载</a>
+			<a v-if="!Jrole" href="javascript: void(0)" @click="ruleOptionDia = true">导入规则</a>
 		</div>
 		<div class="batch-body">
 			<div class="table-wrap">
@@ -13,10 +13,10 @@
 					<table class="new-template-table" cellpadding="0" cellspacing="0">
 						<thead>
 							<tr class="table-title">
-								<th class="item fileName">
-									<div style="width: 258px">时间</div>
+								<th class="item fileName" style="width: 258px">
+									<div>时间</div>
 								</th>
-								<th class="item fileSize">
+								<th style="width: 160px" class="item fileSize">
 									<div style="width: 160px">操作人</div>
 								</th>
 								<!--<th class="item fileSize"><div style="width: 217px">导入类型</div></th>-->
@@ -43,34 +43,34 @@
 					<table class="new-template-table" cellpadding="0" cellspacing="0">
 						<tbody>
 							<tr v-if="item" v-for="(item, index) in diaryList" :key="index">
-								<td>
-									<div style="width: 258px">
+								<td style="width: 258px; overflow: hidden;">
+									<div style="width: 258px; overflow: hidden;">
 										<span v-text="preciseSun(item.createTime)"></span>
 										<span class="ml10" v-text="preciseMinute(item.createTime)"></span></div>
 								</td>
-								<td>
-									<div style="width: 160px">{{item.userName == null ? 'null' : item.userName}}</div>
+								<td style="width: 160px">
+									<div>{{item.userName == null ? 'null' : item.userName}}</div>
 								</td>
-								<td>
-									<div style="width: 217px">
+								<td style="width: 217px">
+									<div>
 										{{(item.storageName == ''|| item.storageName == null ) ? (item.shopName == '' ? '无' : item.shopName == null ? 'null' : item.shopName) : item.storageName}}
 									</div>
 								</td>
-								<td>
+								<td style="width: 217px">
 									<span v-if="viewRk" @click="goOrder(item, 1, $event)" class="cursor">{{getOrder(item, 1)}}</span>
 									<span v-else class="no-cursor">{{getOrder(item, 1)}}</span>
 									<span @click="goOrder(item, 2, $event)" class="cursor">{{getOrder(item, 2)}}</span>
 								</td>
-								<td>
-									<div style="width: 140px">{{getSucceed(item.status)}}</div>
+								<td style="width: 140px">
+									<div>{{getSucceed(item.status)}}</div>
 								</td>
-								<td>
-									<div style="width: 120px">
+								<td style="width: 127px">
+									<div>
 										<a class="download-btn" :href="item.fileSrc">下载</a>
 									</div>
 								</td>
-								<td>
-									<div style="width: 120px">
+								<td style="width: 127px">
+									<div>
 										<a v-if="item.cancel == 'Y'" @click="revocationFun(item.logId, index)" class="revocation-btn" href="javascript: void(0)">撤销导入</a>
 									</div>
 								</td>
@@ -82,7 +82,7 @@
 		</div>
 		<NewPopup v-if="newPopup.JinBaiF" :newPopup="newPopup.JinBaiF" @closePopup="closePopup"></NewPopup>
 		<el-dialog top="40px" :show-close="true" :visible.sync="ruleOptionDia" customClass="ruleOption">
-			<div class="rule-title"><i class="iconfont icon-liebiao"></i>规则配置</div>
+			<div class="rule-title"><i class="iconfont icon-liebiao"></i>导入规则</div>
 			<div class="tab-list">
 				<ul>
 					<li @click="tabAction(index)" v-for="(item, index) in tabList" :key="index" :class="{active: actIndex == index}">
@@ -205,6 +205,11 @@
 					return jurisdictions.jurisdictionComputedRole(this.userPositionInfo.roleList)
 				}
 			},
+			Jrole: function () {
+            if (this.userPositionInfo) {
+                return jurisdictions.jurisdictionJCY(this.userPositionInfo.roleList);
+            }
+        }
 		},
 		watch: {
 			// 'newPopup': function () {

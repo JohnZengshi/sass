@@ -216,7 +216,7 @@ export const getProductStatusLogList = function (parm) { // 商品修改列表
     return apiCall(parm, URL);
 }
 export const seekGetShopListByCo = function (parm) { // 8.2店铺列表
-    let URL = "/v1/public/getShopListByCo";
+    let URL = "/v1/auth/getShopListById";
     return apiCall(parm, URL);
 }
 export const seekReceiptRemark = function (parm) { // 单据备注
@@ -824,5 +824,9 @@ export const seekProductListByService = function(parm) { // 商品列表-服务�
 }
 export const seekGetServiceStatusList = function(parm) { // 服务单据状态列表
     let URL = "/v1/public/getServiceStatusList";
+    return apiCall(parm, URL);
+}
+export const seekGetMemberInfoByPhone = function(parm) { // 根据手机号查询会员信息
+    let URL = "/v1/public/getMemberInfoByPhone";
     return apiCall(parm, URL);
 }
