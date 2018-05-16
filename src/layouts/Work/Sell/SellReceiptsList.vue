@@ -1835,7 +1835,6 @@
 					type: '1'
 				}
 				seekProductClassList(options).then((res) => {
-					debugger
 					if(res.data.state == 200) {
 						this.entry.tep2List.classesList = res.data.data.list
 						this.entry.tep2List.leftClassId = res.data.data.list[0].classesId
