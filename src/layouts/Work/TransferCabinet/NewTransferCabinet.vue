@@ -1572,6 +1572,7 @@ export default {
         exportTab(){
             let exportTabData = Object.assign({},this.dataGridOptions)
             exportTabData['exportType'] = 'DG'
+            console.log(exoprtTabData)
             if(exportTabData.type == 1){
                 downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
             } else {
