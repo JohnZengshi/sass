@@ -266,7 +266,8 @@ export default {
               this.userData.totalPrice = datas.totalPrice,
               this.userData.avatarUrl = datas.avatarUrl,
               this.userData.sex = datas.sex
-              this.userData.orderList = datas.orderList
+              this.deWeight(datas.orderList)
+              // this.userData.orderList.push(datas.orderList)
             } else {
               // 如果不是当前用户的
               if (res.data.data.memberId != this.userData.memberId) {
