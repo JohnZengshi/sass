@@ -264,6 +264,13 @@ export default {
             this.closeWebSocket()
             this.establishWebSocket(parm)
         });
+        this.$nextTick(() => {
+            setTimeout(() => {
+                if (!this.userInfo.userName) {
+                   this.getSeekUserInfo() 
+                }
+            }, 1000)
+        })
     },
     watch: {
         'personalInfo': function () {
