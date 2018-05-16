@@ -74,7 +74,8 @@ export const JaTools = {
 			if(data.componnent =="line"){//线条
 				box = $("<hr>");
 			}else if(data.componnent =="charCode"){//条码
-				box = $("<img class='jatools-coder' src='http://127.0.0.1:31227/api?type=coder&code=" + data.sample + "&style=type:ean13;show-text:false;&width=130&height=80'>");
+				box = $("<img class='jatools-coder' src='http://127.0.0.1:31227/api?type=coder&code=" + data.sample + "&style=type:code128;show-text:false;&width=130&height=80'>");
+				debugger
 			}
 			box.css({
 				"-webkit-font-smoothing": "antialiased",
