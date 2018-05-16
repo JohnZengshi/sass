@@ -240,8 +240,8 @@
 				<div style="display: none;">
 						<detail-template v-if="this.tabClassActive.index==0" ref="detailTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></detail-template>
 						<intelligence-type-template v-if="this.tabClassActive.index==1" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></intelligence-type-template>
-						<custom-template v-if="this.tabClassActive.index==3" ref="customTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></custom-template>
 						<project-type-template v-if="this.tabClassActive.index==2" ref="projectTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></project-type-template>
+						<custom-template v-if="this.tabClassActive.index==3" ref="customTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></custom-template>
 				</div>
 				
 			</div>
@@ -1240,7 +1240,7 @@ export default {
       if (this.getReportType() == 1) {
         Object.assign(this.dataGridOptions, {
           page: 1,
-          pageSize: 15,
+          // pageSize: 15,
           // sellStatu:'1'
         });
       } else {
@@ -1272,7 +1272,6 @@ export default {
           //数据表格数据
           //成色大类、小类
           this.sellStorage = res.data.data;
-          console.log('sellStorage',sellStorage)
           //明细
           if (this.tabClassActive.reportType == 3) {
             this.sellStorage.printDetailList = res.data.data.detailList;
@@ -1468,13 +1467,19 @@ export default {
     },
     LoadOptionsDefault(pageSize){
         let isAlltotal = false
-        // 回购到底
-        if(this.dataGridOptions.pageSize>this.tradeStorage.totalNum){
-          isAlltotal = true
+        console.log('页面',this.sellStorage.totalNum)
+        
+        if(this.sellShowId === "sales"){
+           // 销售报表到底
+          if(this.dataGridOptions.pageSize>this.sellStorage.totalNum){
+            isAlltotal = true
+          }
         }
-        // 销售报表到底
-        if(this.dataGridOptions.pageSize>this.sellStorage.totalNum){
-          isAlltotal = true
+        if(this.sellShowId === "buyback"){
+          // 回购到底
+          if(this.dataGridOptions.pageSize>this.tradeStorage.totalNum){
+            isAlltotal = true
+          }
         }
 
         if(isAlltotal) {
@@ -1482,9 +1487,9 @@ export default {
           $('.loadControl span').html('已经到底了').css('color','#474747')
           return;
         }
-        
         this.loading = true;    
-        this.dataGridOptions.pageSize += pageSize;            
+        this.dataGridOptions.pageSize += pageSize;     
+        console.log(this.dataGridOptions.pageSize)       
         // 销售
         if (this.sellShowId === "sales") {
           this.sellSend()
