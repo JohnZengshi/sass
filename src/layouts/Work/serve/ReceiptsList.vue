@@ -107,12 +107,7 @@ export default {
             if (item.isLocking == 'Y') {
                 return 6
             } else {
-                switch (parm) {
-                    case "1":
-                        return 1;
-                    case "2":
-                        return 2;
-                }
+                return parm;
             }
             
         },

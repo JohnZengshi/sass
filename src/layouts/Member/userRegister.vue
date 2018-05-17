@@ -101,6 +101,14 @@
             this.loading = false
             if(res.data.data.errcode == 40029 || res.data.data.errcode == 40163){
               this.$store.dispatch('workPopupError', res.data.data.errmsg)
+            } else if(!res.data.data.companyId){
+              this.$router.push(
+                {
+                  path: '/member/login',
+                  query: {
+                    isCompany: 'N'
+                  }
+                })
             }else if(res.data.data.Id){
               if(res.data.data.Id){
                 sessionStorage.setItem('id', res.data.data.Id);
@@ -171,7 +179,17 @@
             sessionStorage.setItem("nickname", res.data.data.userName);
             sessionStorage.setItem("tokenId", res.data.data.tokenId);
             sessionStorage.setItem("userId", res.data.data.userId);
-            this.$router.push('/mainIndex');
+            if(!res.data.data.companyId){
+              this.$router.push(
+                {
+                  path: '/member/login',
+                  query: {
+                    isCompany: 'N'
+                  }
+                })
+            } else {
+              this.$router.push('/mainIndex');
+            }
           } else {
             this.$store.dispatch('workPopupError', res.data.msg);
           }

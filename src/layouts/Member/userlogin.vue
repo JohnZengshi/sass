@@ -126,12 +126,23 @@ export default {
   },
   created(){
       this.getsellBackRandomOneAdminList();
+      // if (this.$route.query.isCompany) {
+        // this.isShowAboutusdialog = true
+      // }
   },
   mounted(){
     $('input,.el-input__inner').css('paddingLeft','35px')
     $('.password-number .el-input__inner').css('width','188px')
     $('.el-input-group__append span').css('marginLeft','-40px')
     $('.el-input-group__append').css('border','none')
+    this.$nextTick(function () {
+      if (this.$route.query.isCompany) {
+        this.showAboutUs();
+        this.$router.push('/member/login')
+      }
+      // Code that will run only after the
+      // entire view has been rendered
+    })
   },
   methods: {
     setType (num) {
@@ -221,17 +232,21 @@ export default {
             this.userInfo.password = '';
           }
           self.$store.commit(types.SET_USER_INFO, res.data.data);
-          sessionStorage.setItem('id', res.data.data.Id);
-          sessionStorage.setItem('companyId', res.data.data.companyId);
-         //  sessionStorage.setItem('companyId', '');//判断公司是否存在
-          sessionStorage.setItem('sig', res.data.data.sig);
-          sessionStorage.setItem("nickname", res.data.data.userName);
-          sessionStorage.setItem("tokenId", res.data.data.tokenId);
-          sessionStorage.setItem("experience", 'N');
-          sessionStorage.removeItem('rootIndex')
-			    sessionStorage.removeItem('childIndex')
-          self.$router.push('/mainIndex');
-          clearInterval(this.intersubsub)
+          if(res.data.data.companyId){
+            sessionStorage.setItem('id', res.data.data.Id);
+            sessionStorage.setItem('companyId', res.data.data.companyId);
+           //  sessionStorage.setItem('companyId', '');//判断公司是否存在
+            sessionStorage.setItem('sig', res.data.data.sig);
+            sessionStorage.setItem("nickname", res.data.data.userName);
+            sessionStorage.setItem("tokenId", res.data.data.tokenId);
+            sessionStorage.setItem("experience", 'N');
+            sessionStorage.removeItem('rootIndex')
+            sessionStorage.removeItem('childIndex')
+            self.$router.push('/mainIndex');
+            clearInterval(this.intersubsub)
+          } else {
+            this.showAboutUs();
+          }
         } else {
           this.$store.dispatch('workPopupError', res.data.msg);
         }

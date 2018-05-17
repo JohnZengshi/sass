@@ -526,10 +526,10 @@
 				</div>
 			</div>
 			<!--质保单打印-->
-			<!--<div id="windowPrintView" v-if="isPreview" ref="windowPrintView">
+			<div id="windowPrintView" v-if="isPreview" ref="windowPrintView">
 				<TemplatePreviewCanvasComponent :isPrintCanvas="true" :canvas="canvas" :templateData="templateData" :class="i%2==0 ? 'printViewInside' : ''" v-for="(i,index) in pageNumber" :key="index" :page="i">
 				</TemplatePreviewCanvasComponent>
-			</div>-->
+			</div>
 
 			<!-- 新需求-新增销售加判断 -->
 			<changeType ref="changeTypeWrap" @updateData="updateData"></changeType>
@@ -1109,7 +1109,7 @@
 				"userInfo", // 用户基本信息
 				"saveSuccess", // 保存弹窗
 				"saveSuccessData", // 保存弹窗数据
-				"userPositionInfo" // 职位信息
+				// "userPositionInfo" // 职位信息
 			]),
 			filterUserType () {
 				// 制单人或店长
@@ -1301,9 +1301,9 @@
 					this.entry.tep4List.isShowBtn1 = false
 					this.entry.tep5List.isShowBtn = false
 					this.entry.tep5List.isShowBtn1 = false
-					this.entry.tep2List.leftClassId = ''
-					this.entry.tep3List.leftClassId = ''
-					this.entry.tep4List.leftClassId = ''
+					// this.entry.tep2List.leftClassId = ''
+					// this.entry.tep3List.leftClassId = ''
+					// this.entry.tep4List.leftClassId = ''
 					this.entry.tep5List.leftClassId = ''
 					this.entry.tep1List.rightClassId = ''
 					this.entry.tep2List.rightClassId = ''
@@ -1533,28 +1533,22 @@
 					this.attributeType = 2
 				}
 			},
-			operateCashierAct() { // 打单操作
+			operateCashierAct() { 
+				// 打单操作
 				if(this.isPrintOnly && this.templateId == '') {
 					this.$message({
 						type: 'error',
 						message: '请选择打印模板！'
 					})
 				} else if(this.isPrintOnly || this.isCashierOnly) {
-					if(this.isPrintOnly) {
-						this.print()
+					if((this.isCashierOnly && this.receiptsIntroList.cashStatus == 2) && this.isPrintOnly){
+						this.orderPayAndPrint();
+					}else if(this.isPrintOnly) {
+						this.print();
 					} else if(this.isCashierOnly && this.receiptsIntroList.cashStatus == 2) {
-						this.orderPay()
+						this.orderPay();
 					}
 				}
-			},
-			print() {
-				this.cashierDialog = false
-				let selectedTemplate = find(this.qualityTemplateList, {
-					templateId: this.templateId
-				})
-
-				this.$emit('printOrder', this.orderNum, selectedTemplate && JSON.parse(selectedTemplate.content))
-				this.printOrder(this.$route.query.orderNumber, selectedTemplate && JSON.parse(selectedTemplate.content))
 			},
 			//打印表格 
 			tabPrin() {
@@ -1611,6 +1605,80 @@
 					result = _.add(result, Number(item));
 				}
 				return result;
+			},
+			/**
+			 * 收银打单
+			 */
+			orderPayAndPrint(){
+				if(this.receiptsIntroList.cashStatus != 2){
+					return;
+				}
+				if(this.mathAdd(this.priceType.card, this.priceType.cash, this.priceType.alipay, this.priceType.wechat, this.priceType.other)<this.totalPrice){
+					return this.$message({
+          message: '实收金额应大于应收金额！',
+          type: 'warning'
+        });
+				}
+				this.cashierDialog = false;
+				let options = {
+					orderNum: this.$route.query.orderNumber,
+					remark: '',
+					operateType: 2,
+					payList: [{
+							payType: '0',
+							price: this.priceType.change
+						},
+						{
+							payType: '1',
+							price: this.priceType.card
+						},
+						{
+							payType: '2',
+							price: this.priceType.cash
+						},
+						{
+							payType: '3',
+							price: this.priceType.alipay
+						},
+						{
+							payType: '4',
+							price: this.priceType.wechat
+						},
+						{
+							payType: '6',
+							price: this.priceType.other
+						},
+					]
+				}
+				this.$confirm('确定要执行收银操作吗?', '提示', {
+					confirmButtonText: '确定',
+					cancelButtonText: '取消',
+				}).then(() => {
+					operateOrderPay(options).then((res) => {
+						this.isShowBox = true
+						this.isShowFooter = false
+						if(this.isPrintOnly == true) {
+							this.print()
+						}
+						this.getSeekSellReceiptsIntro(); // 单据简介
+						this.send();
+						this.sellData()
+						this.statusREfresh = true
+						this.sellcollectMoney(); // 收银信息
+						this.print();
+					}, (res) => {
+						this.isShowFooter = true
+					})
+				}).catch(() => {
+				});
+			},
+			print(){
+				this.cashierDialog = false
+				let selectedTemplate = find(this.qualityTemplateList, {
+					templateId: this.templateId
+				})
+				this.$emit('printOrder', this.orderNum, selectedTemplate && JSON.parse(selectedTemplate.content))
+				this.printOrder(this.$route.query.orderNumber, selectedTemplate && JSON.parse(selectedTemplate.content))
 			},
 			orderPay() { // 单据操作收银
 				if(this.receiptsIntroList.cashStatus != 2){
@@ -1835,9 +1903,17 @@
 					type: '1'
 				}
 				seekProductClassList(options).then((res) => {
-					this.entry.tep2List.classesList = res.data.data.list
-					this.entry.tep2List.leftClassId = res.data.data.list[0].classesId
-					this.entry.tep2List.rightClassList = res.data.data.list[0].childrenList
+					if(res.data.state == 200) {
+						this.entry.tep2List.classesList = res.data.data.list
+						this.entry.tep2List.leftClassId = res.data.data.list[0].classesId
+						this.entry.tep2List.rightClassList = res.data.data.list[0].childrenList
+					} else {
+						this.$message({
+              message: res.data.msg,
+              type: 'warning'
+            })
+					}
+
 				}, (res) => {})
 			},
 			productTypeList() { // 产品大类
@@ -1873,6 +1949,7 @@
 				if(type == 1) {
 					this.entry.tep1List.rightClassId = id
 					this.tep = 3
+					console.log('entry.tep2List.classesList', this.entry.tep2List.classesList)
 				} else if(type == 2) {
 					this.entry.tep2List.rightClassId = id
 					this.tep = 4
@@ -1932,9 +2009,42 @@
 			},
 
 			//质保单打印
-			windowPrint(templateList, data){
+			windowPrint1(templateList, data){
 				this.warrantyTemplate.template = templateList;
 				this.warrantyTemplate.dataList = data;
+			},
+
+			//质保单打印
+			windowPrint() {
+				let print = null;
+				this.appPrint = document.getElementById('appPrint')
+
+				if(this.IntervalOut) clearInterval(this.IntervalOut)
+				document.getElementById('app').style.display = 'none';
+
+				setTimeout(() => {
+					this.appPrint.innerHTML = this.$refs.windowPrintView.innerHTML
+				}, 1000)
+				//return
+				setTimeout(() => {
+					print = document.execCommand('print');
+				}, 1500)
+
+				this.IntervalOut = setInterval(() => {
+					if(print) {
+						document.getElementById('app').style.display = 'block';
+						if(this.IntervalOut) clearInterval(this.IntervalOut)
+						this.IntervalOut = null;
+						this.appPrint.innerHTML = '';
+					} else if(print == false) {
+						if(this.IntervalOut) clearInterval(this.IntervalOut)
+						if(!window.print()) {
+							document.getElementById('app').style.display = 'block';
+							this.IntervalOut = null;
+							this.appPrint.innerHTML = '';
+						}
+					}
+				}, 10)
 			},
 
 			receiptsChange() { // 监听商品列表数据改变
@@ -2496,13 +2606,13 @@
 						this.selWay = null
 						this.totalPrice = res.data.data.totalPrice
 						this.goodsTypeList.saleList = res.data.data.saleList
-						for(let item of res.data.data.recycleList){
-							item.huigouoprice = -item.price;
-						}
+//						for(let item of res.data.data.recycleList){
+//							item.huigouoprice = -item.price;
+//						}
 						this.goodsTypeList.recycleList = res.data.data.recycleList
-						for(let item of res.data.data.exchangeList){
-							item.huigouoprice = -item.price;
-						}
+//						for(let item of res.data.data.exchangeList){
+//							item.huigouoprice = -item.price;
+//						}
 						this.goodsTypeList.exchangeList = res.data.data.exchangeList
 						if(this.goodsTypeList.saleList.length == 0 && this.goodsTypeList.recycleList.length == 0 && this.goodsTypeList.exchangeList.length == 0) {
 							this.isBlank = true
@@ -2581,7 +2691,7 @@
 					orderNum:this.$route.query.orderNumber,
 					type: 1
 				}
-            	exportTabData['businssType'] = 'XS'
+            	exportTabData['exportType'] = 'XS'
             	console.log(exportTabData)
             	downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
         	},

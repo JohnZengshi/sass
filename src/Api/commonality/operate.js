@@ -13,8 +13,8 @@ export const operateDelJinbaifu = function (parm) {
     return apiCall(parm, URL);
 }
 export const operateUpdateGoods = function (parm) {
-    let URL = "/v1/goods/updateGoods";
-    return apiCall(parm, URL);
+  let URL = "/v1/goods/updateGoods";
+  return apiCall(parm, URL);
 }
 export const operatePrivilege = function (parm) { // 用户权限操作-通过用户ID
     let URL = "/v1/auth/operatePrivilege";
@@ -105,8 +105,8 @@ export const operateOWhourse = function (parm) {
     return apiCall(parm, URL);
 }
 export const updateGoods = function (parm) { // 商品修改
-    let URL = "/v1/goods/updateGoods";
-    return apiCall(parm, URL);
+  let URL = "/v1/goods/updateGoods";
+  return apiCall(parm, URL);
 }
 export const deleteUpdateGoods = function (parm) {
     let URL = "/v1/goods/deleteUpdateGoods";

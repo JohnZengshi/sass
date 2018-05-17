@@ -78,11 +78,13 @@ export default{
        
        fatchShopItem(){
           seekGetShopListByCo({
-              page : '',
+              page : '1',
               pageSize : '10'
           }).then((res)=>{
-              console.log(res.body.data.shopList)
-              this.shopLister = res.body.data.shopList
+            debugger
+            if (res.data.state == 200) {
+              // console.log(res.body.data.shopList)
+              this.shopLister = res.data.data.shopList
               this.shopDefaultData = this.shopLister[0]
               this.fatchUserPermission()
               console.log(123123123)
@@ -94,6 +96,13 @@ export default{
                   this.iconShow = true
                  this.meauShow = true  
               }
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: 'warning'
+              })
+            }
+
           })
        },
        

@@ -143,14 +143,15 @@
 				<span>回购价
 					<i></i>
 				</span>
-				<div>
+				<div style="margin-left: 16px;">
 
 		<!-- 				<span v-if="status != 1 || multipleIdentities == 'N' && isOrderMan == false && status == 1 || companyPosition != 4 && companyPosition != 5 && multipleIdentities == 'N' || multipleIdentities == 'Y' && isOrderMan == false && status == 1 && companyPosition != 4 && companyPosition != 5"> -->
                          <!-- v-bind:value="(item.price).indexOf('-')>0?item.price:'-'+item.price"  -->
-						<input v-if="status == 2 && shopRole" type="text" v-model="item.huigouoprice"  @keyup="computeFun(item, '回购价')" @keyup.enter="sendData(item, '回购价', item.calcMethod)" @blur="sendData(item, '回购价', item.calcMethod)">
+						{{item.price?"-":""}}
+						<input v-if="status == 2 && shopRole" type="text" v-model="item.price"  @keyup="computeFun(item, '回购价')" @keyup.enter="sendData(item, '回购价', item.calcMethod)" @blur="sendData(item, '回购价', item.calcMethod)">
                          <!-- v-model="item.price" -->
 						<span v-else>
-								{{item.huigouoprice}}
+								-{{item.price}}
 								<!-- {{(item.price).indexOf('-')>0?item.price:'-'+item.price}} -->
 						</span>
 					</div> <!--  :placeholder="unit4(item.price)" -->
@@ -407,7 +408,7 @@ export default {
 						{
 							modifyType: '10',
 							dataType: '2',
-							objectData: item.huigouoprice||0
+							objectData: item.price||0
 						}
 						)
 				} else if (type == '回购金价') {
@@ -545,7 +546,7 @@ export default {
 						{
 							modifyType: '10',
 							dataType: '2',
-							objectData: item.huigouoprice||0
+							objectData: item.price||0
 						}
 						)
 					//this.updateSell()
@@ -634,12 +635,12 @@ export default {
 			if (type == 1) {
 				this.goodTypeText = "销售"
 			} else if (type == 2) {
-				this.goodTypeText = "换货"
-				// if (this.item.productClass == '2') {
-				// 	this.goodTypeText = "换货"
-				// } else {
-				// 	this.goodTypeText = "退货"
-				// }
+				// this.goodTypeText = "换货"
+				if (this.item.productClass == '2') {
+					this.goodTypeText = "换货"
+				} else {
+					this.goodTypeText = "退货"
+				}
 			} else if (type == 3) {
 				this.goodTypeText = "回收"
 			}
