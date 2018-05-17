@@ -680,6 +680,7 @@ export default {
                 // productClass: '1',
                 sortFlag: this.positionSwitch ? "1" : "0",
                 type: 1,
+                pageSize:15
               })
             } else if (port == 3) {
               delete this.dataGridOptions.page
@@ -697,6 +698,7 @@ export default {
                 // productClass: '1',
                 sortFlag: this.positionSwitch ? "1" : "0",
                 type: 1,
+                pageSize:15
               })
             } else if (port == 4) {
               Object.assign(this.dataGridOptions, {
@@ -712,7 +714,8 @@ export default {
                 wJewelryId: '1',
                 nColorId: '',
                 nGemId: '',
-                nJewelryId: '1'
+                nJewelryId: '1',
+                pageSize:15
               })
             }
           }
@@ -873,6 +876,8 @@ export default {
                   checkUserList : [],
                 })  
             }
+            this.dataGridOptions.pageSize = 15
+            $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send()
         },
         dropReturn (val) {
@@ -908,6 +913,8 @@ export default {
                 this.dataGridOptions.checkUserList[0].checkUserId = val.item.operateId
             }
             this.currentPage = 1
+            this.dataGridOptions.pageSize = 15
+            $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send()
         },
     	//退库位
@@ -964,13 +971,17 @@ export default {
             this.dataGridOptions.productTypeId = val.item.operateId
             this.printSelectDate.productType = val.item.operateName
             this.currentPage = 1
+            this.dataGridOptions.pageSize = 15
+            $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
     		this.send()
         },
     	//产品类别
     	callProductCategory( res ){
     		if( res.length == 0 ){
     			this.printSelectDate.productType = ''
-    			this.dataGridOptions.productTypeId = ''
+                this.dataGridOptions.productTypeId = ''
+                this.dataGridOptions.pageSize = 15
+                $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
     			this.send()
     			return
     		}
@@ -1097,11 +1108,15 @@ export default {
         getTimeData(val) {
             this.dataGridOptions.beginTime = val.substr(0, 10).split('-').join("") + "000000"
             this.printSelectDate.startTime = val
+            this.dataGridOptions.pageSize = 15
+            $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send();
         },
         overTimeDate(val) {
             this.dataGridOptions.endTime = val.substr(0, 10).split('-').join("") + "235959"
-			this.printSelectDate.endTime = val
+            this.printSelectDate.endTime = val
+            this.dataGridOptions.pageSize = 15
+            $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send();
         },
         

@@ -14,10 +14,10 @@
                     </div>
                     <ul class="Recognizable-list">
                         <dl>
-                            <dd v-for="(t, f) in item.classList" v-if="t.type == 1 && t.editable == 0">{{t.aliasName}}</dd>
+                            <dd v-for="(t, f) in item.classList" v-if="t.type == 1 && t.editable == 0" :key="f">{{t.aliasName}}</dd>
                             <span></span>
                         </dl>
-                        <li v-for="(t, f) in item.classList" v-if="t.type == 1 && t.editable == 1">
+                        <li v-for="(t, f) in item.classList" v-if="t.type == 1 && t.editable == 1" :key="f">
                             <input type="text" v-model="t.aliasName" placeholder="名称替换">
                             <i class="iconfont icon-jian" @click="delImportSetting(t)"></i>
                         </li>
@@ -32,14 +32,14 @@
                         <i class="iconfont icon-jia" @click="showNew(item.coreName, 2)"></i>
                     </div>
                     <ul class="numerical-list" v-if="item.isNumTrans == 'Y'">
-                        <li v-for="(t, f) in item.classList" v-if="t.type == 2">
+                        <li v-for="(t, f) in item.classList" v-if="t.type == 2" :key="f">
                             <div class="input-wrap" :class="{disabled: t.editable==0}">
                                 <input :disabled="t.editable==0" :class="{disabled: t.editable==0}" class="inp1" type="text" placeholder="输入..." v-model="t.aliasName">
                                 <i class="iconfont icon-zhuanhuan"></i>
                                 <input :disabled="t.editable==0" :class="{disabled: t.editable==0}" v-model="t.replacedValue" class="inp2" type="text">
                                 <em class="iconfont icon-arrow-down" v-if="item.dataList"></em>
                                 <ul class="drop-list" v-if="item.dataList">
-                                    <li v-for="(lit, i) in item.dataList">{{lit.classesName}}</li>
+                                    <li v-for="(lit, i) in item.dataList" :key="i">{{lit.classesName}}</li>
                                 </ul>
                             </div>
                             <i class="iconfont icon-jian" @click="delImportSetting(t)"></i>
@@ -51,7 +51,7 @@
                                 <input class="inp2" :placeholder="item.className" type="text" @focus="inputFocus($event)" v-model="item.replaced" @keyup="isAllowChange(item, $event)" @blur="inputBlur($event, 2, item)">
                                 <em class="iconfont icon-arrow-down" v-if="item.dataList"></em>
                                 <ul class="drop-list" v-if="item.dataList">
-                                    <li v-for="(lit, i) in item.dataList" @click="valueBack(lit, item)">{{lit.classesName}}</li>
+                                    <li v-for="(lit, i) in item.dataList" @click="valueBack(lit, item)" :key="i">{{lit.classesName}}</li>
                                 </ul>
                             </div>
                             <i class="iconfont icon-jian" @click="cancelNew(item.coreName, 2)"></i>
