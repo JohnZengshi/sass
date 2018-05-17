@@ -6,6 +6,9 @@
 			<a v-if="!Jrole" href="javascript: void(0)" @click="newPopup.JinBaiF = true">智能导入</a>
 			<a v-if="!Jrole" :href="downUrl">模板下载</a>
 			<a v-if="!Jrole" href="javascript: void(0)" @click="ruleOptionDia = true">导入规则</a>
+			<!-- <a v-if="!Jrole" href="javascript: void(0)" @click="SmartImport()">智能导入</a>
+			<a v-if="!Jrole" href="javascript: void(0)" @click="downloadTemplate()">模板下载</a>
+			<a v-if="!Jrole" href="javascript: void(0)" @click="importRules()">导入规则</a> -->
 		</div>
 		<div class="batch-body">
 			<div class="table-wrap">
@@ -80,9 +83,12 @@
 				</div>
 			</div>
 		</div>
+
 		<NewPopup v-if="newPopup.JinBaiF" :newPopup="newPopup.JinBaiF" @closePopup="closePopup"></NewPopup>
+
 		<el-dialog top="40px" :show-close="true" :visible.sync="ruleOptionDia" customClass="ruleOption">
-			<div class="rule-title"><i class="iconfont icon-liebiao"></i>导入规则</div>
+			<div class="rule-title"><i class="iconfont icon-liebiao"></i>导入配置</div>
+			<!-- tab栏 -->
 			<div class="tab-list">
 				<ul>
 					<li @click="tabAction(index)" v-for="(item, index) in tabList" :key="index" :class="{active: actIndex == index}">
@@ -90,9 +96,11 @@
 					</li>
 				</ul>
 			</div>
+			<!-- tab切换的内容 -->
 			<div class="page-wrap">
 				<component :is="panel" :ruleOptionDia="ruleOptionDia"></component>
 			</div>
+			<!-- 尾部的约束 -->
 			<div class="page-footer">
 				<div class="footer-title">
 					<span class="iconfont icon-qc-required"></span>总体约束
@@ -104,6 +112,24 @@
 				<p>5. 每一行之间，可以进行调换位置</p>
 			</div>
 		</el-dialog>
+
+		<!-- 一级弹窗 -->
+		<el-dialog :visible.sync="dialogVisible" custom-class="dialogDom" element-loading-text="拼命加载中">
+			<div class="sell-type-one-main">
+				<div class="dia-title" slot="title">
+					<img src="~static/img/smartimport.png">
+					<h3>选择{{ titleStr }}类型</h3>
+				</div>
+				<div class="list-wrap first-wrap">
+					<div id="btn-wrap" class="btn-wrap">
+						<li :class="!rkRole ? 'disabledActive' : ''" @click="RkClick(titleStr)">入库{{ aClickType }}</li>
+						<li :class="!xsRole ? 'disabledActive' : ''" @click="XSClick(titleStr)">销售单{{ aClickType }}</li>
+						<li :class="!hyRole ? 'disabledActive' : ''" @click="HYClick(titleStr)">会员{{ aClickType }}</li>
+					</div>
+				</div>
+  			</div>
+		</el-dialog>
+
 	</div>
 </template>
 <script>
@@ -124,6 +150,8 @@
 	import Product from "./components/product"
 	import Weight from "./components/weight"
 	import Other from "./components/other"
+
+	import {seekShowCounterList,seekGetUserInfo} from 'Api/commonality/seek'
 
 	export default {
 		// props: [
@@ -188,7 +216,15 @@
 				},
 
 				loading: true,
-				loadingTxt: 'loading...'
+				loadingTxt: 'loading...',
+
+				aClickType:'', // 点击后对应的文字
+				dialogVisible: false,
+				titleStr:'',
+				rkRole:true,
+				xsRole:true,
+				hyRole:true,
+				roleData: '',
 			}
 		},
 		computed: {
@@ -224,6 +260,7 @@
 		created() {
 			this.getDownUrl(); // 获取模板地址
 			this.getList(this.cbFun);
+			this.getUserType()
 		},
 		mounted() {
 			let self = this
@@ -585,7 +622,178 @@
 				}, (response) => {
 					this.$store.dispatch('workPopupError', response.data.msg);
 				})
+			},
+			importRules() {
+				this.dialogVisible = true
+				this.aClickType = '配置'
+				this.titleStr = '导入配置'
+				// // 导入配置
+				// if(this.roleData < 4){
+				// 	this.rkRole = true
+				// 	this.xsRole = false
+				// 	this.hyRole = false
+				// }
+			},
+			downloadTemplate() {
+				this.dialogVisible = true
+				this.aClickType = '模板'
+				this.titleStr = '模板下载'
+				// if(this.roleData < 4){
+				// 	this.rkRole = true
+				// 	this.xsRole = true
+				// 	this.hyRole = true
+				// }
+			},
+			SmartImport() {
+
+				// if(!this.rkRole){
+				// 	console.log('禁用')
+				// 	$('#btn-wrap #rk').css('cursor','not-allowed')
+				// }
+
+				// if(!this.xsRole){
+				// 	$('#btn-wrap #xs').css('cursor','not-allowed')					
+				// }
+
+				// if(!this.hyRole){
+				// 	$('#btn-wrap #hy').css('cursor','not-allowed')
+				// }
+
+				this.dialogVisible = true
+				this.aClickType = '导入'
+				this.titleStr = '智能导入'
+				// if(this.roleData < 4){
+				// 	this.rkRole = true
+				// 	this.xsRole = true
+				// 	this.hyRole = true
+				// }
+				
+			},
+			RkClick(title) {
+				if(this.rkRole){
+					if(title === '模板下载'){
+						console.log(title)
+						this.downUrlbyClick('2')
+						this.dialogVisible = false										
+					}
+					if(title === '智能导入'){
+						console.log(title)
+						this.newPopup.JinBaiF = true
+						this.dialogVisible = false										
+						
+					}
+					if(title === '导入配置'){
+						console.log(title)
+						this.ruleOptionDia = true
+						this.dialogVisible = false										
+						
+					}
+				} else {
+					return
+				}
+
+			},
+			XSClick(title) {
+				if(this.xsRole){
+					if(title === '模板下载'){
+						console.log(title)
+						this.downUrlbyClick('3')
+						this.dialogVisible = false										
+					}
+					if(title === '智能导入'){
+						
+						this.newPopup.JinBaiF = true
+						this.dialogVisible = false															
+						
+					}
+					if(title === '导入配置'){
+						console.log(title)
+						this.ruleOptionDia = true
+						this.dialogVisible = false
+						
+						
+						
+					}
+				} else {
+					return
+				}
+				
+			},
+			HYClick(title) {
+				if(this.hyRole){
+					if(title === '模板下载'){
+						console.log(title)
+						this.downUrlbyClick('4')
+						this.dialogVisible = false					
+					}
+					if(title === '智能导入'){
+						console.log(title)
+						this.newPopup.JinBaiF = true
+						this.dialogVisible = false															
+						
+					}
+					if(title === '导入配置'){
+						console.log(title)
+						this.ruleOptionDia = true
+						this.dialogVisible = false										
+						
+					}
+				} else {
+					return
+				}
+			},
+			// 模板下载
+			downUrlbyClick(type){
+				let options = {
+					"type": "2", // 1 URL 2 文件 3 视频
+					"infoType": type // 1 入库模板下载地址
+				}
+				downloadTable(options).then((response) => {
+					if(response.data.state === 200) {
+						var a = document.createElement('a');
+    					a.href = encodeURI(response.data.data.url);
+    					a.click();
+					} else {
+						this.$store.dispatch('workPopupError', response.data.msg)
+					}
+				}, (response) => {
+					this.$store.dispatch('workPopupError', response.data.msg)
+				})
+			},
+			
+			
+			
+			// 获取用户权限
+			getUserType() {
+				seekGetUserInfo({
+                	userId: sessionStorage.getItem('id')
+            	}).then(res => {
+					let tempRes = res.data.data.roleList.map( f => f.role )
+					if( tempRes.length > 0 ){
+						// 判断是不是店员
+						if( tempRes.length === 1 ) {
+							this.roleData = tempRes[0]
+							// 店员 没有权限
+							if( tempRes.filter( f => f > 4 ).length > 0 ){
+								this.rkRole = false
+								this.xsRole = false
+								this.hyRole = false
+							} else {
+								this.rkRole = true
+								this.xsRole = true
+								this.hyRole = true
+							}
+						}else {
+							this.rkRole = true
+							this.xsRole = true
+							this.hyRole = true
+						}
+					}
+				})
 			}
+
+
+
 		}
 	}
 </script>
@@ -836,4 +1044,165 @@
 		width: 217px;
 		text-decoration: underline;
 	}
+</style>
+<style lang="scss" scoped>
+.sell-type-one-main {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    // width: 100%;
+    // height: 100%;
+	transform:translate(-50%,-50%);
+    background: #fff;
+    z-index: 10;
+    .dia-title {
+        // width: 78px;
+        position: absolute;
+        top:24px;
+        left: 50%;
+        margin-left: -45px;
+        img {
+            display: block;
+            margin: 0 auto;
+            width: 46px;
+            height: 46px;
+            margin-bottom: 12px;
+        }
+        h3 {
+            font-size: 12px;
+            color:#333;
+            text-align: center;
+        }
+    }
+    .list-wrap {
+        width: 320px;
+        height: 271px;
+        padding-top: 180px;
+        margin-bottom: 130px;
+        .btn-wrap {
+            width: 180px;
+            // height: 70px;
+            margin: 0 auto;
+			.disabledActive {
+				cursor: not-allowed;
+			}
+            li {
+                display: block;
+                height: 40px;
+                font-style: normal;
+                text-align:center;
+                background-color: rgb(244, 244, 244);
+                color: #2993f8;
+                // background: #2993f8;
+                // color:#fff;
+                font-size: 14px;
+                line-height: 40px;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: all 0.6s;
+                &:hover{
+                    background: #2993f8;
+                    color: #fff;
+                }
+            }
+            li:nth-child(2) {
+                margin-top: 40px;
+                // color: #2993f8;
+               // background-color: rgb(244, 244, 244);
+            }
+			li:nth-child(3){
+				margin-top: 40px;
+			}
+        }
+        .left-list {
+            width: 108px;
+            height: 100%;
+            border-right: 1px solid #f1f2f3;
+            float: left;
+            overflow-x: hidden;
+            overflow-y: auto;
+            li {
+                width: 108px;
+                height: 41px;
+                border-bottom: 1px solid #f1f2f3;
+                line-height: 41px;
+                font-size: 14px;
+                color:#333;
+                text-align: center;
+                cursor: pointer;
+                .active-block {
+                    display: none;
+                }
+            }
+            li:hover {
+                background:#f6f7f8;
+                color: #2993f8;
+            }
+            li.active {
+                .active-block {
+                    display: block;
+                    height: 100%;
+                    float: left;
+                    width: 3px;
+                    background:#2993f8;
+                }
+            }
+        }
+        .right-list {
+            width: 211px;
+            height: 100%;
+            float: left;
+            overflow-x: hidden;
+            overflow-y: auto;
+            li {
+                width: 192px;
+                height: 41px;
+                line-height: 41px;
+                font-size: 14px;
+                color:#333;
+                cursor: pointer;
+                margin-left: 19px;
+            }
+            li:hover {
+                background:#f6f7f8;
+                color: #2993f8;
+            }
+            li.active {
+                color:#2993f8;
+            }
+        }
+    }
+    .footer {
+        height: 50px;
+        width: 100%;
+        float: left;
+        border-top: 1px solid #f1f2f3;
+        padding-left: 22px;
+        padding-right: 22px;
+        line-height: 50px;
+        padding-top: 0;
+        background:#fff;
+        .footer-left {
+            height: 100%;
+            float: left;
+            font-size: 14px;
+            color:#999999;
+            cursor: pointer;
+        }
+        .footer-right {
+            height: 100%;
+            float: right;
+            span {
+                float: left;
+                font-size: 14px;
+                cursor: pointer;
+                color: #333;
+            }
+            span:nth-child(1) {
+                margin-right: 15px;
+                color: #999;
+            }
+        }
+    }
+}
 </style>

@@ -1,5 +1,8 @@
 <template>
     <div>
+	    	<div style="display: none;">
+	    		<setting-template  ref="settingTemplate" :template="canvas"></setting-template>
+	    	</div>
         <div class="template-edit-page">
             <div class="breadcrumb">
                 <router-link class="breadcrumb-item" to="/mainIndex" exact>返回上一级</router-link>
@@ -54,6 +57,7 @@ import TemplatePreviewDialog from 'components/template/TemplatePreviewDialog'
 import LoadLabelTemplateDataDialog from 'components/template/LoadLabelTemplateDataDialog'
 import TemplatePreviewCanvasComponent from 'components/template/TemplatePreviewCanvas'
 import Lodop from 'components/template/Lodop'
+import settingTemplate from "@/components/jcp-print/setting/template";
 export default {
     name: 'TemplateEditPage',
     data() {
@@ -113,7 +117,8 @@ export default {
         TemplatePreviewDialog,
         LoadLabelTemplateDataDialog,
         TemplatePreviewCanvasComponent,
-        Lodop
+        Lodop,
+    		settingTemplate,
     },
     methods: {
         // 键盘处理函数，处理删除，复制，粘贴组件
@@ -183,18 +188,19 @@ export default {
         },
         // 预览模板
         previewTemplate(canvas) {
-            this.canvas = JSON.parse(JSON.stringify(canvas))
-            
-//          this.canvas.components.forEach(component => {
-//             console.log('预览模板:',component.type)
-//          })
-            this.isPreview = true
-            
-            if(  this.template.type == 2 ){ //标签
-            	this.printTemplate()
-            }else{
-            	this.$refs.templatePreviewDialog.show()
-            }
+            this.canvas = canvas;
+            this.$refs.settingTemplate.print();
+//          
+////          this.canvas.components.forEach(component => {
+////             console.log('预览模板:',component.type)
+////          })
+//          this.isPreview = true
+//          
+//          if(  this.template.type == 2 ){ //标签
+//          	this.printTemplate()
+//          }else{
+//          	this.$refs.templatePreviewDialog.show()
+//          }
         },
         templatePreviewDialogCloseHandler() {
             this.isPreview = false

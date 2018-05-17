@@ -136,7 +136,7 @@ export default {
             }).then((res) => {
                 
                let tempRes = res.data.data.roleList.map( f => f.role )
-               
+               console.log('用户类型',tempRes)
                if( tempRes.length > 0 ){
                  if( tempRes.length == 1 ){
                      if( tempRes.filter( f => f >= 4 ).length > 0 ){
@@ -267,9 +267,8 @@ export default {
             console.log(JSON.stringify(data));
             this.jinbaifuDate = fileData
         },
-        
+        // 判断是否填写参数
         jinbaifuUpload () {
-            
             
             if ( this.newDatas.shopId != '' && this.changeCounterId == '') {
                 return this.$store.dispatch('workPopupError', "请选择柜组")
@@ -287,13 +286,12 @@ export default {
                 return this.$store.dispatch('workPopupError', "请选择")
             }
            
-            
             this.fullscreenLoading = true;
-            var url = INTERFACE_URL_9097 + "/b1/rukuAutoUpload"
-            console.log(this.jinbaifuDate)
+            // var url = INTERFACE_URL_9097 + "/b1/rukuAutoUpload"
+            let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8088' : ''
+            let url = serverHost + "/b1/rukuAutoUpload"
             let xhr = this.$http.post(url, this.jinbaifuDate).then((response) => {
                 this.fullscreenLoading = false;
-                console.log(response)
                 if (response.data.state === 200) {
                     if( response.data.data.flag == 1){
                       this.$store.dispatch('workPopupError', response.data.data.message);
@@ -311,6 +309,7 @@ export default {
               this.$store.dispatch('workPopupError', response.data.msg);
             })
         },
+
         closeCb () {
             this.$emit("closePopup", false)
         }

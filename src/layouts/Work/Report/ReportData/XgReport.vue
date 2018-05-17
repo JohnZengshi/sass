@@ -537,6 +537,7 @@
               // productClass: '1',
               sortFlag: this.positionSwitch ? "1" : "0",
               type: 1,
+              pageSize: 15
             })
           } else if(port == 3) {
             delete this.dataGridOptions.page
@@ -554,6 +555,7 @@
               // productClass: '1',
               sortFlag: this.positionSwitch ? "1" : "0",
               type: 1,
+              pageSize: 15
             })
           } else if(port == 4) {
             Object.assign(this.dataGridOptions, {
@@ -569,7 +571,8 @@
               wJewelryId: '1',
               nColorId: '',
               nGemId: '',
-              nJewelryId: '1'
+              nJewelryId: '1',
+              pageSize: 15
             })
           }
         }
@@ -765,6 +768,9 @@
             checkUserList: [],
           })
         }
+        this.dataGridOptions.pageSize = 15
+        $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
+
         this.send()
       },
       dropReturn(val) {
@@ -789,12 +795,17 @@
           this.dataGridOptions.checkUserList[0].checkUserId = val.item.operateId
         }
         this.currentPage = 1
+        this.dataGridOptions.pageSize = 15
+        $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
         this.send()
       },
       changeVaue(val) {
         this.dataGridOptions.productTypeId = val.item.operateId
         this.printSelectDate.productType = val.item.operateName
         this.currentPage = 1
+        this.dataGridOptions.pageSize = 15
+        $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+
         this.send()
       },
  
@@ -853,11 +864,15 @@
       getTimeData(val) {
         this.dataGridOptions.beginTime = val.substr(0, 10).split('-').join("") + "000000"
         this.printSelectDate.startTime = val
+        this.dataGridOptions.pageSize = 15
+        $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
         this.send();
       },
       overTimeDate(val) {
         this.dataGridOptions.endTime = val.substr(0, 10).split('-').join("") + "235959"
         this.printSelectDate.endTime = val
+        this.dataGridOptions.pageSize = 15
+        $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
         this.send();
       },
 
@@ -959,52 +974,7 @@
         }
       },
 
-       // 加载控件
-      getNewListData(e){
-        // var e = e || window.event
-        console.log('啦啦',e.target.dataset.index)
-        console.log('啦啦啦啦啦啦啦',this.dataGridOptions)        
-        $('.LoadOptions li').eq(e.target.dataset.index).addClass('action').siblings().removeClass('action')
-        $('.LoadOptions').css('display','none');
-
-        // 页面加载
-
-        switch (e.target.dataset.index) {
-          case '0':
-            this.loadIndex = 10;            
-            break;
-          case '1':
-            this.loadIndex = 20;            
-            break;
-          case '2':
-            this.loadIndex = 100;                      
-            break;
-          case '3':
-            this.loadIndex = 9999;                      
-            break;
-          default:
-            break;
-        }
-
-        // console.log('啦啦啦啦啦啦啦',this.dataGridOptions)
-        // //this.dataGridOptions.pageSize += 50;
-        // seekEntryStorage(this.dataGridOptions).then((res) => {
-        //   if(res.data.state == 200) {
-        //     this.dataGridStorage = res.data.data
-        //     console.log(this.dataGridStorage)
-        //   }
-        //   if(res.data.state == 200101) {
-        //     this.$message({
-        //       type: 'error',
-        //       message: res.data.msg
-        //     })
-        //   }
-        //   this.loading = false
-        // }, (res) => {
-
-        // })
-
-      }, 
+       // 加载控件 
       LoadOptionsDefault(pageSize){
         console.log('调用了')
         if(this.dataGridOptions.pageSize>this.dataGridStorage.totalNum) {

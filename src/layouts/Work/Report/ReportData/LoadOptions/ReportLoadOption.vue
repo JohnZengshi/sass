@@ -1,6 +1,6 @@
 <template>
     <!-- 数据加载控件 bengin-->
-    <div class="loadControl">
+    <div id="loadControl" class="loadControl" >
         <p><span @click="LoadOptionsDefault">更多未读取数据</span> <a href="javascript:void(0)" @click="isLoadOptions">切换</a></p>
         <ul v-show="isShow" class="LoadOptions" @click="getNewListData($event)">
             <li class="action" data-index="0">加载10条</li>
@@ -20,6 +20,11 @@
   font-size: 14px;
   color:#e99a1d;
   line-height: 22px;
+  opacity: 0;
+  transition: all .5s;
+  &:hover {
+      opacity: 1;
+  }
   a{
     color:#b6b2aa;
     text-decoration: underline;
@@ -103,7 +108,18 @@ export default {
             default:
                 break;
             }
-        }
+        },
+        // RLHover(e){
+        //     console.log('进来')
+        //     $('#loadControl').css({
+        //         opacity:1
+        //     })
+        // },
+        // RLOut(e){
+        //     console.log('隐藏')
+        //     $('#loadControl').css('opacity','0')
+            
+        // }
     }
 };
 </script>
