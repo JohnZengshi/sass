@@ -830,3 +830,7 @@ export const seekGetMemberInfoByPhone = function(parm) { // 根据手机号查�
     let URL = "/v1/public/getMemberInfoByPhone";
     return apiCall(parm, URL);
 }
+export const seekGetReportsComprehensive = function(parm) { // 报表-进销存汇总
+    let URL = "/v1/reports/getReportsComprehensive";
+    return apiCall(parm, URL);
+}

@@ -11,6 +11,7 @@ import ThReport from './../../layouts/Work/Report/ReportData/ThReport.vue'
 import FhReport from './../../layouts/Work/Report/ReportData/FhReport.vue'
 import XgReport from './../../layouts/Work/Report/ReportData/XgReport.vue'
 import RkReport from './../../layouts/Work/Report/ReportData/RkReport.vue'
+import HZReport from './../../layouts/Work/Report/ReportData/HZReport.vue'
 import ReportIndexPage from './../../layouts/Work/Report/ReportData/ReportIndexPage.vue'
 const routes = {
   path: 'report',
@@ -26,6 +27,7 @@ const routes = {
     {path: "fhreport", component: FhReport},
     {path: "rkreport", component: RkReport},
     {path: "xgreport", component: XgReport},
+    {path: "hzReport", component: HZReport}
   ]
 }
 export default routes;
