@@ -20,9 +20,9 @@
             >
             </DropDownMenu>
             <span class="spaceMark">|</span>   -->
-        <Cascade
+            <Cascade
                 :propList="productCategory"
-                titleName="产品类别"
+                titleName="全公司"
                 @clear = "callProductCategory"
                 @dropReturn = "changeVaue"
             >
@@ -244,29 +244,29 @@
     
   </div>
     
-    <div class="printBtn exportBtn" @click="exportTab()">
+<!--     <div class="printBtn exportBtn" @click="exportTab()">
         <i class="iconfont icon-daochu"></i>
         <span>导出报表</span>
-    </div>
+    </div> -->
     <!-- 按钮组 -->
 
-    <div class="printBtn" @click="tabPrin()">
+<!--     <div class="printBtn" @click="tabPrin()">
         <i class="iconfont icon-dayin1"></i>
         <span>打印报表</span>
-    </div>
+    </div> -->
   
     <!--打印模块-->
     <div style="display: none;">
-        <detail-template v-if="this.tabClassActive.index==0" title="发货" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detail-template>
-        <intelligence-type-template v-if="this.tabClassActive.index==1" title="发货" ref="intelligenceTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></intelligence-type-template>
-        <project-type-template v-if="this.tabClassActive.index==2" title="发货" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></project-type-template>
-        <custom-template v-if="this.tabClassActive.index==3" title="发货" ref="customTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></custom-template>
+        <detail-template v-if="this.tabClassActive.index==0" title="汇总" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detail-template>
+        <intelligence-type-template v-if="this.tabClassActive.index==1" title="汇总" ref="intelligenceTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></intelligence-type-template>
+        <project-type-template v-if="this.tabClassActive.index==2" title="汇总" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></project-type-template>
+        <custom-template v-if="this.tabClassActive.index==3" title="汇总" ref="customTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></custom-template>
     </div>
 </div>
 <!--打印模块-->
 <div ref="tablePrint" v-else-if="isPrint==1" >
   <table-print 
-    typeName="发货"
+    typeName="汇总"
     :tabSwitch = "tabSwitch"
     :reportType="getReportType()"
     :printSelectDate = "printSelectDate"
@@ -283,6 +283,7 @@
 
 <script>
 import Vue from 'vue'
+import {mapGetters} from 'vuex'
 import find from 'lodash/find'
  import {seekGetReportsComprehensive} from './../../../../Api/commonality/seek.js'
  import {
@@ -295,7 +296,7 @@ import find from 'lodash/find'
     seekMemberList,
     seekSettingUserRole
  } from './../../../../Api/commonality/seek.js'
-import Cascade from './../../../../components/template/Cascade'
+import Cascade from './base/Cascade'
 import DropDownMenu from './../../../../components/template/DropDownMenu'
 // import ReportDetail from './dataGrid/reportDetailTab'
 import ReportDetail from './newDataGrid/hzReportDetailTab'
@@ -329,6 +330,23 @@ export default {
      data() {
       return {
         openReset: true,
+        // productCategory: [
+        //     {
+        //         classesName: '全公司',
+        //         classesType: '1',
+
+        //     },
+        //     {
+        //         classesName: '全仓库',
+        //         classesType: '2',
+                
+        //     },
+        //     {
+        //         classesName: '全店铺',
+        //         classesType: '3',
+                
+        //     }
+        // ],
         pickerOptions1: {
           shortcuts: [{
             text: '今天',
@@ -385,7 +403,7 @@ export default {
       
         //产品类别
         productCategoryType : [],
-        productCategory :[],
+        // productCategory :[],
         categoryProps:{
           value:'classesId',
           label:'classesName',
@@ -423,7 +441,7 @@ export default {
         
         //入库库位
         storageSpaceValue : '',
-        repositoryList: [], 
+        // repositoryList: [], 
 
         provider: '',
         providerId: '',
@@ -562,7 +580,51 @@ export default {
             this.send()
         }
     },
+    computed: {
+        ...mapGetters([
+            "repositoryList", // 库位列表
+            "shopListByCo" // 店铺列表
+        ]),
+        productCategory () {
+            return [
+                {
+                    classesName: '全公司',
+                    classesType: '1',
+                    childen: []
+                },
+                {
+                    classesName: '全仓库',
+                    classesType: '2',
+                    childen: this.repositoryList
+                },
+                {
+                    classesName: '全店铺',
+                    classesType: '3',
+                    childen: this.shopListByCo
+                    
+                }
+            ]
+        }
+    },
+    mounted: function () {
+      this.$nextTick(function () {
+        this._seekRepositoryList()
+      })
+    },
     methods: {
+        _seekRepositoryList () {
+            seekRepositoryList()
+                .then(res => {
+                    if (res.data.state == 200) {
+
+                    } else {
+                        this.$message({
+                          message: res.data.msg,
+                          type: 'warning'
+                        })
+                    }
+                })
+        },
         choseMenu (type) {
           if (type == 1) {
             this.positionSwitch = !this.positionSwitch
@@ -942,35 +1004,35 @@ export default {
         
         //产品类别
         getProductTypeList() {
-            getProductTypeList().then((res) => {
-                let  productCategory = res.data.data.list
-                if( productCategory.length > 0 ){
-              let tempCategory = [];
-              productCategory.forEach((item) =>{
+            // getProductTypeList().then((res) => {
+            //     let  productCategory = res.data.data.list
+            //     if( productCategory.length > 0 ){
+            //   let tempCategory = [];
+            //   productCategory.forEach((item) =>{
                 
-                switch( Number(item.classesType) ){
-                  case 1 :
-                    //item.classesName = '素金类';
-                    item.classesId = item.classesType
-                    tempCategory.push(item);
-                  break;
-                  case 2 :
-                    //item.classesName = '珠宝类'
-                    item.classesId = item.classesType
-                    tempCategory.push(item)
-                  break;
-                  case 3 :
-                    //item.classesName = '饰品类'
-                    item.classesId = item.classesType
-                    tempCategory.push(item)
-                  break;
-                }
-              })
-              this.productCategory = tempCategory
-            }
-            }, (res) => {
-                console.log(res);
-            })
+            //     switch( Number(item.classesType) ){
+            //       case 1 :
+            //         //item.classesName = '素金类';
+            //         item.classesId = item.classesType
+            //         tempCategory.push(item);
+            //       break;
+            //       case 2 :
+            //         //item.classesName = '珠宝类'
+            //         item.classesId = item.classesType
+            //         tempCategory.push(item)
+            //       break;
+            //       case 3 :
+            //         //item.classesName = '饰品类'
+            //         item.classesId = item.classesType
+            //         tempCategory.push(item)
+            //       break;
+            //     }
+            //   })
+            //   this.productCategory = tempCategory
+            // }
+            // }, (res) => {
+            //     console.log(res);
+            // })
         },
         
         //获取库位列表
