@@ -20,8 +20,8 @@
 <div class="ui-table-container con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
   <div>
 <!--   {{dataGridStorage.dataList}} -->
-    <div class="tb-category hz-tb-category" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind">
-      <div class="left-type-name-wrap" :style="getRightH(caty.productTypeList)">
+    <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind">
+      <div class="left-type-name-wrap" :style="getRightH(caty)">
         <p>{{caty.typeName}}</p>
       </div>
       <div class="right-type-inner-wrap">
@@ -58,11 +58,41 @@
           </template>
           
           <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
+    <!--           <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch">
+          <div class="tb-td"
+            v-for="(tab,f) in detailDataGridColumn" 
+            :key="f"
+            :style="tableCell(tab.width)" 
+            v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
+          ></div>
+        </div> -->
+ <!--        <div>
+          {{tb}}
+        </div> -->
           <!-- 类型小计 -->
         </div>
       </div>
-      <div style="background:#e9f4fe;border: 1px solid red;" v-if="!positionSwitch">
-        小计
+      <div class="total-num-wrap" style="background:#e9f4fe;border: 1px solid red;" v-if="!positionSwitch">
+        <div>
+          小计
+        </div>
+        <ul class="total-num-inner">
+<!--           <li>{{caty}}</li> -->
+          <li>{{caty.totalNum1}}</li>
+          <li>{{caty.totalWeight1}}</li>
+          <li>{{caty.totalGoldWeight1}}</li>
+          <li>{{caty.totalPrice1}}</li>
+          <li>{{caty.totalCost1}}</li>
+        </ul>
+<!--         <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch">
+          <div class="tb-td"
+            v-for="(tab,f) in detailDataGridColumn" 
+            :key="f"
+            :style="tableCell(tab.width)" 
+            v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType], tab.countCut) : caty[tab.totalType]"
+          ></div> -->
+
+        </div>
 <!--         <div class="tb-td"
           v-for="(tab,f) in detailDataGridColumn" 
           :key="f"
@@ -207,27 +237,27 @@ export default {
         },
     tabCellHeight () {
       this.heightArr = []
-      //console.log(this.dataGridStorage)
-      console.log(this.dataGridStorage.dataList)
-      if (this.dataGridStorage.dataList) {
-        for (let i = 0; i < this.dataGridStorage.dataList.length; i++) {
-          let data = 0
-          for (let j = 0; j < this.dataGridStorage.dataList[i].productTypeList.length; j++) {
-            data += this.dataGridStorage.dataList[i].productTypeList[j].detailList.length * 50
-            if (i == 0) {
-              //console.log(this.dataGridStorage.dataList[i].productTypeList[j].detailList.length)
-            }
-          }
-          this.heightArr.push(data)
-        }
-        console.log('这是什么鬼高度',this.heightArr)
-      }
+      // if (this.dataGridStorage.dataList) {
+      //   for (let i = 0; i < this.dataGridStorage.dataList.length; i++) {
+      //     let data = 0
+      //     for (let j = 0; j < this.dataGridStorage.dataList[i].productTypeList.length; j++) {
+      //       data += this.dataGridStorage.dataList[i].productTypeList[j].detailList.length * 50
+      //       if (i == 0) {
+      //         //console.log(this.dataGridStorage.dataList[i].productTypeList[j].detailList.length)
+      //       }
+      //     }
+      //     this.heightArr.push(data)
+      //   }
+      // }
     },
     getRightH (parm) {
       let Num = 0
+      console.log('号好好', parm)
       if (parm) {
-        for (let i of parm) {
-          if (i.detailList) {
+        console.log('parmparmparmparmparmparmparm', parm)
+        for (let i of parm.productTypeList) {
+          console.log('iiiiiiiiiiiiiiiiiiii', i)
+          if (i) {
             for (let j of i.detailList) {
               Num += 50
             }
@@ -236,7 +266,7 @@ export default {
       }
 
       return {
-        height: Num
+        'height': Num + 'px'
       }
     },
     tableCell( width ){
@@ -300,7 +330,6 @@ export default {
     .hz-tb-category{
       overflow: hidden;
       // display: flex;
-      border: 1px solid red;
     }
     .hz-type-wrap{
       position: absolute;
@@ -308,7 +337,6 @@ export default {
       bottom: 0;
       left: 0;
       right: 0;
-      border: 1px solid red;
     }
     .left-type-name-wrap{
       position: relative;
@@ -336,7 +364,6 @@ export default {
       display: inline-block;
       width: 1024px;
       overflow: hidden;
-      border: 1px solid yellow;
     }
     &.produc-line {
     .tb-tr:nth-child(even){
