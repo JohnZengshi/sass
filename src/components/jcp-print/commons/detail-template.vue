@@ -109,7 +109,7 @@
 		font-size: 12px;
 		width: 208mm;
 		margin: 0 auto;
-		padding: 10px;
+		padding: 20px;
 	}
 	
 	.explain-box {
