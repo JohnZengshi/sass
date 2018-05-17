@@ -65,6 +65,7 @@
 					"-webkit-font-smoothing": "antialiased",
 					"font-smoothing": "antialiased",
 					"position": "absolute",
+					"white-space": "nowrap",
 					"border": (border ? '1px solid #000;' : 'none'),
 					"top": top + "mm",
 					"left": left + "mm",
