@@ -168,11 +168,29 @@
 		mounted() {},
 		methods: {
 			trancation(dataList, template) {
+				template = this.filterTemplateGroup(template);
 				//计算页码
 				let pageNumber = this.computingPageNumber(template, dataList.productList.length);
 				//生成对象
 				this.pageList = this.pageFactory(pageNumber, dataList, template);
 				this.print();
+			},
+			/**
+			 * 过滤掉模板分组
+			 */
+			filterTemplateGroup(template){
+				for(let component of template.components) {
+					if(component.type == "ContainerComponent") {
+						template.components = _.concat(template.components, component.data.children);
+					}else if(component.type == "ItemListComponent") {
+						for(let item of component.data.children){
+							if(item.type == "ContainerComponent") {
+								component.data.children = _.concat(component.data.children, item.data.children);
+							}
+						}
+					}
+				}
+				return template;
 			},
 			/**
 			 * 页码对象工厂
@@ -194,7 +212,7 @@
 			getBaseList(dataList, template) {
 				let list = [];
 				for(let component of template.components) {
-					if(component.type != "ItemListComponent") {
+					if(component.type != "ItemListComponent" && component.type != "ContainerComponent") {
 						let array = _.concat(dataList.baseInfoList, _.nth(dataList.productList, 0));
 						let temp = _.find(array, (o) => {
 							return o.key == component.data.propertyCode
@@ -245,7 +263,8 @@
 						numbers.push(length / item.data.number);
 					}
 				}
-				return _.max(numbers);
+				let n = _.max(numbers);
+				return n||1;
 			},
 			print(){
 				let {width, height, rotateDeg} = this.template;
