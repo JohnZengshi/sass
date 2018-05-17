@@ -216,7 +216,7 @@ export default {
                     isUnderline: false,
                     fontFamily: '微软雅黑, Microsoft YaHei',
                     fontSize: 14,
-                    color: '#333'
+                    color: '#000000'
                 },
                 sample: '',
                 valueStyle: {
@@ -225,7 +225,7 @@ export default {
                     isUnderline: false,
                     fontFamily: '微软雅黑, Microsoft YaHei',
                     fontSize: 14,
-                    color: '#333'
+                    color: '#000000'
                 },
                 suffix: '',
                 suffixStyle: {
@@ -234,7 +234,7 @@ export default {
                     isUnderline: false,
                     fontFamily: '微软雅黑, Microsoft YaHei',
                     fontSize: 14,
-                    color: '#333'
+                    color: '#000000'
                 },
                 left: 0,
                 top: 0,

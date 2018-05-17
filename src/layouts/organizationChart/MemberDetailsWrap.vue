@@ -226,6 +226,7 @@
       this.checkList = this.storeAllData
       this.getAllCheckList()
       this.getLookShop()
+      this.getCanSeeShop()      
     },
     mounted () {
       let _self = this
@@ -745,6 +746,7 @@
         }
         lookStore(options).then(res => {
           if(res.data.state === 200){
+            console.log(this.storeData)
             this.storeData = res.data.data.dataList
             // this.checked = this.getCheckCount(this.storeData)
             // console.log('所有的店铺',this.checked)

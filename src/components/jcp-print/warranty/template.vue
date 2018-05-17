@@ -6,7 +6,7 @@
 				<div v-if="baseList.type=='PropertyComponent'" :style="baseList.data|BASE_STYLE">
 					<!--条形码-->
 					<template v-if="baseList.data.propertyCode=='orderNum'">
-						<img class='jatools-coder' :style="baseList.data|IMG_STYLE" :src="'http://127.0.0.1:31227/api?type=coder&code='+baseList.lable+'&style=type:code128;show-text:false;&width=130&height=80'" >
+						<img class='jatools-coder' :style="baseList.data|IMG_STYLE" :src="'http://127.0.0.1:31227/api?type=coder&code='+baseList.lable+'&style=type:code128;autofit:true;show-text:false;&width=130&height=80'" >
 					</template>
 					<template v-else>
 						<!--前缀-->
@@ -32,7 +32,7 @@
 							<div v-if="item.type=='PropertyComponent'" :style="item.data|DYNAMIC_STYLE">
 								<!--条形码-->
 								<template v-if="item.data.propertyCode=='orderNum'">
-									<img class='jatools-coder' style="width:130px,height:80px" :src="'http://127.0.0.1:31227/api?type=coder&code='+item.lable+'&style=type:code128;show-text:false;&width=130&height=80'">
+									<img class='jatools-coder' style="width:130px,height:80px" :src="'http://127.0.0.1:31227/api?type=coder&code='+item.lable+'&style=type:code128;autofit:true;show-text:false;&width=130&height=80'">
 								</template>
 								<template v-else>
 									<!--前缀-->
@@ -116,14 +116,31 @@
 			},
 			BASE_STYLE:(data)=>{
 				let {top, left, width, height, border, backgroundImage, textAlign, rotateDeg} = data;
-				return {
+				let style = {
 					"-webkit-font-smoothing": "antialiased",
 					"font-smoothing": "antialiased",
 					"position": "absolute",
 					"border": (border ? '1px solid #000;' : 'none'),
 					"top": top + "mm",
-					"left": left + "mm", 
-				};
+					"left": left + "mm",
+				}
+				switch(rotateDeg) {
+					case 90:
+						style["transform"] = "rotate(" + rotateDeg + "deg) translateY(-" + height + "mm)";
+						style["transform-origin"] = "0px 0px 0px"; 
+						break;
+					case 180:
+						style["transform"] = "rotate(" + rotateDeg + "deg) translate(-" + width + "mm, -" + height + "mm)";
+						style["transform-origin"] = "0px 0px 0px";
+						break;
+					case 270:
+						style["transform"] =  "rotate(" + rotateDeg + "deg) translateX(-" + width + "mm)";
+						style["transform-origin"] =  "0px 0px 0px";
+						break;
+					default:
+						break;
+				}
+				return style;
 			},
 			PAGE_STYLE:(data)=>{
 				let {width, height, backgroundImage, rotateDeg} = data;
@@ -134,6 +151,7 @@
 			    "background-size": "100% 100%",
 			    "background-repeat": "no-repeat",
      			"background-image": "url(" + transformFileURL(backgroundImage) + ")",
+					"transform": "rotate(" + rotateDeg + "deg)",
 				}
 			}
 		},
@@ -230,7 +248,12 @@
 				return _.max(numbers);
 			},
 			print(){
-				let {width, height} = this.template;
+				let {width, height, rotateDeg} = this.template;
+				if(rotateDeg == 90 || rotateDeg == 270){
+					let w = width;
+					width = height;
+					height = w;
+				}
 				let doc = {
 					pagePrefix:"zbd-",
 					documents: document,

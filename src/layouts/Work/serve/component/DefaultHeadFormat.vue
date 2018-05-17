@@ -36,8 +36,13 @@ export default {
             let secondValue = ''
             if (this.userName) {
                 temValue = this.userName.substring(0, 1)
-                secondValue = this.userName.substring(1, 2)
+                // secondValue = this.userName.substring(1, 2)
+                this.formatValue = temValue
             }
+            // if (this.userName) {
+            //     temValue = this.userName.substring(0, 1)
+            //     secondValue = this.userName.substring(1, 2)
+            // }
             // let temValue = this.userName.substring(0, 1)
             if (/^[a-zA-Z]$/.test(temValue)) {
                 // this.formatValue = 

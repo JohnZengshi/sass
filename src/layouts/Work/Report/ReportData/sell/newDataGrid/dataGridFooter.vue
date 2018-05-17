@@ -3,8 +3,11 @@
 <div class="ui-table_footer">
 	<div class="th_footer" v-for="(tab,f) in detailDataGridColumn" 
 		:style="tableCell(tab.width)">
-  		<p class="totalNum" v-html="v_html(tab)"></p>
-      <p class="total-more" v-if="f == 0"><span v-if="reportType == 1">{{dataGridStorage.totalNum}}</span><span v-else>合计</span></p>
+      <p class="total-more" v-if="f == 0">
+      	<span v-if="reportType == 1">{{dataGridStorage.totalNum}}</span>
+      	<span v-else>合计</span>
+      </p>
+      <p class="totalNum" v-else v-html="v_html(tab)"></p>
 	</div>
 </div>
 </template>

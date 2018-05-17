@@ -144,7 +144,6 @@ export default{
         type : '3',
         objId : this.orderData.orderNum
       }).then((res) => {
-        // console.log(2222,res.data)
         if (res.data.state == 200){
           this.dgDataList = res.data.data.rowDataList
           this.sellList = res.data.data;
@@ -152,15 +151,12 @@ export default{
             now : res.data.data.now,
             old : res.data.data.old
           })
-          console.log(this.footerData)
           this.dgDataList.forEach(f =>{
             if (f['old'] == undefined) {
               Object.assign(f, {old: {} })
             }
           })
-          
           this.updataData(this.dgDataList)
-          
         } else if (res.data.state == 815){ // 返回空数组
           this.dgDataList = []
         } else{
@@ -181,7 +177,7 @@ export default{
       this.fixedFullSize = size 
     },
     
-    updataData (datalist){
+    updataData(datalist){
       this.$emit('updataData',{
         key : 'dgDataList',
         data : datalist
@@ -215,10 +211,10 @@ export default{
       }
     },
 
-    // 编辑、新增功能
-    updataEditApi (data){
-      // console.log(data)
-      // 编辑保存商品, 只需判断新增商品list是否为空
+    //编辑、新增功能
+    updataEditApi(data){
+      //编辑保存商品, 只需判断新增商品list是否为空
+      debugger
       fetch.updataGoodsList({
         orderNum : this.orderData.orderNum,
         confirmType: '1',

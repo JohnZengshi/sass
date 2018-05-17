@@ -1,6 +1,6 @@
 <template>
   <div class="serve-container-bottom-main">
-    <p class="user-m-h">售后用户信息</p>
+    <p class="user-m-h">售后备注</p>
     <div class="bottom-wrap">
 
       <div class="user-m-inner">
@@ -81,6 +81,9 @@ export default{
       this._operateUpdateServiceByNum(options, '删除图片成功')
     },
     amendRemark () {
+      if (this.receiptData.remark == null) {
+        return
+      }
       let options = {
         dataList: [
           {
@@ -92,7 +95,6 @@ export default{
         shopId: this.$route.query.shopId
       }
       this._operateUpdateServiceByNum(options, '修改备注成功')
-      console.log('修改售后备注')
     },
     _operateUpdateServiceByNum (options, tit) {
       operateUpdateServiceByNum(options)

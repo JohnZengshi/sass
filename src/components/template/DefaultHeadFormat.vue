@@ -48,6 +48,7 @@ export default {
             // let temValue = this.userName.substring(0, 1)
             if (/^[a-zA-Z]$/.test(temValue)) {
                 // this.formatValue = 
+                this.formatValue = temValue.toUpperCase()
                 if (/^[a-zA-Z]$/.test(secondValue)) {
                     // this.formatValue = temValue.toUpperCase() + secondValue.toLowerCase()
                     this.formatValue = temValue.toUpperCase()
@@ -60,9 +61,7 @@ export default {
 
         },
         customStyle () { // 自定义样式
-            console.log('我进来了')
             if (this.$refs.name) {
-                console.log('我有refs')
                 this.$refs.img_bg.style.width = this.size + 'px'
                 this.$refs.img_bg.style.height = this.size + 'px'
                 // this.$refs.img_bg.style.padding = (this.size * 4) / 70 + 'px'

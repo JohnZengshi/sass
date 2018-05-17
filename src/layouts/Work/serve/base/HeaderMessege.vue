@@ -26,7 +26,6 @@
               <div v-if="!isOperation" class="serve-h-tit" v-text="receiptData.sellName"></div>
               <DropDownMenu
                   v-if="isOperation"
-                  style="float: left;"
                   :nameKey="'userName'"
                   :titleInfo="receiptData.sellName || '接待人'"
                   :showList="shopUserList"
@@ -579,8 +578,10 @@ export default{
   
 }
 .serve-select-container-wrap{
+  max-width: 400px;
   li{
     display: inline-block;
+    max-width: 200px;
     .serve-h-tit{
       padding: 0 8px;
       color: #666;

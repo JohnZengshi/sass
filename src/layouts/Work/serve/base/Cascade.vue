@@ -60,7 +60,10 @@ export default {
             this.optionData.titleInfo = item.classesName
             this.returnData.operateId = item.classesId
             this.returnData.operateName = item.classesName
-            this.$emit("dropReturn", {item: this.returnData, type: item.classesType})
+            this.$emit("dropReturn", {
+                item: this.returnData,
+                type: item.classesType
+            })
         },
         clearTitleInfo () {
             this.optionData.titleInfo = ''

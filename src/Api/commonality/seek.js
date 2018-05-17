@@ -826,3 +826,7 @@ export const seekGetServiceStatusList = function(parm) { // 服务单据状态�
     let URL = "/v1/public/getServiceStatusList";
     return apiCall(parm, URL);
 }
+export const seekGetMemberInfoByPhone = function(parm) { // 根据手机号查询会员信息
+    let URL = "/v1/public/getMemberInfoByPhone";
+    return apiCall(parm, URL);
+}
