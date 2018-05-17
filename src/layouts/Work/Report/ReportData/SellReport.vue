@@ -551,7 +551,8 @@ export default {
         nColorId: "",
         nGemId: "",
         nJewelryId: "1",
-        reportType: 1
+        reportType: 1,
+        sellStatu:''
       },
       dialogOptions: {
         conditionList: ["不选", "大类", "小类"],
@@ -702,7 +703,8 @@ export default {
             counterId: "",
             // productClass: '1',
             sortFlag: this.positionSwitch ? "1" : "0",
-            type: 1
+            type: 1,
+            pageSize:15
           });
         } else if (port == 3) {
           delete this.dataGridOptions.page;
@@ -719,7 +721,8 @@ export default {
             counterId: "",
             // productClass: '1',
             sortFlag: this.positionSwitch ? "1" : "0",
-            type: 1
+            type: 1,
+            pageSize:15
           });
         } else if (port == 4) {
           Object.assign(this.dataGridOptions, {
@@ -735,12 +738,13 @@ export default {
             wJewelryId: "1",
             nColorId: "",
             nGemId: "",
-            nJewelryId: "1"
+            nJewelryId: "1",
+            pageSize:15
           });
         }
       }
       this.dataGridOptions.type = port;
-      //this.send()
+      this.send()
     },
     tabs(index, type) {
       if (this.tabClassActive.index == index) return;
@@ -900,6 +904,8 @@ export default {
             value: "1"
           }
         ]);
+        this.dataGridOptions.pageSize = 15
+        $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
         this.send();
       } else {
@@ -913,6 +919,9 @@ export default {
         //日期控件默认设置时间
         this.beginTime = this.getDate(0, "start").format;
         this.endTime = this.getDate(0, "end").format;
+
+        this.dataGridOptions.pageSize = 15
+        $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
         this.send()
       }
@@ -987,7 +996,8 @@ export default {
         this.printSelectDate.salesperson = "’";
         this.printSelectDate.operateId = "";
       }
-
+      this.dataGridOptions.pageSize = 15
+      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
     dropReturn(val) {
@@ -1031,6 +1041,8 @@ export default {
       }
 
       this.currentPage = 1;
+      this.dataGridOptions.pageSize = 15
+      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
 
@@ -1055,6 +1067,8 @@ export default {
           value: "1"
         }
       ]);
+      this.dataGridOptions.pageSize = 15
+      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
 
@@ -1079,6 +1093,9 @@ export default {
           value: "1"
         }
       ]);
+      
+      this.dataGridOptions.pageSize = 15
+      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
       this.send();
     },
@@ -1095,6 +1112,8 @@ export default {
     },
 
     storageFunc() {
+      this.dataGridOptions.pageSize = 15
+      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
 
@@ -1173,6 +1192,8 @@ export default {
           .split("-")
           .join("") + "000000";
       this.printSelectDate.startTime = val;
+      this.dataGridOptions.pageSize = 15
+      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
     overTimeDate(val) {
@@ -1182,6 +1203,8 @@ export default {
           .split("-")
           .join("") + "235959";
       this.printSelectDate.endTime = val;
+      this.dataGridOptions.pageSize = 15
+      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
     getDate(day, type) {
@@ -1229,7 +1252,6 @@ export default {
 
     send(type) {
       if (this.modleSwitch.type) {
-        console.log('type有没有')
         this.sellSend();
         this.sellTradeSend();
         this.sellCollectSend();
@@ -1241,7 +1263,7 @@ export default {
 			 */
     sellSend() {
       this.loading = true;
-
+      this.dataGridOptions.sellStatu = ''
       //明细
       if (this.getReportType() == 1) {
         Object.assign(this.dataGridOptions, {
@@ -1296,6 +1318,7 @@ export default {
     //回购数据请求
     sellTradeSend() {
       this.loading = true;
+      this.dataGridOptions.sellStatu = ''
       if (this.dataGridOptions.makeUserList) {
         if (this.dataGridOptions.makeUserList[0].makeUserId == "") {
           delete this.dataGridOptions.makeUserList;
@@ -1325,7 +1348,7 @@ export default {
     //收银数据请求
     sellCollectSend() {
       this.loading = true;
-
+      this.dataGridOptions.sellStatu = '1'
       if (this.dataGridOptions.makeUserList) {
         if (this.dataGridOptions.makeUserList[0].makeUserId == "") {
           delete this.dataGridOptions.makeUserList;
