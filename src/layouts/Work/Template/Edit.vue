@@ -189,7 +189,7 @@ export default {
         // 预览模板
         previewTemplate(canvas) {
             this.canvas = canvas;
-            this.$refs.settingTemplate.print();
+            this.$refs.settingTemplate.print(canvas);
 //          
 ////          this.canvas.components.forEach(component => {
 ////             console.log('预览模板:',component.type)

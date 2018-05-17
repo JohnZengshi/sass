@@ -15,7 +15,6 @@
 		filters: {
 			Line_STYLE:(data)=>{
 				let {top, left, width, height, color, rotateDeg} = data;
-				debugger
 				let style = {
 					"-webkit-font-smoothing": "antialiased",
 					"font-smoothing": "antialiased",

@@ -50,8 +50,8 @@
 		},
 		mounted() {},
 		methods: {
-			print(){
-				let {width, height, rotateDeg} = this.template;
+			print(template){
+				let {width, height, rotateDeg} = template;
 				if(rotateDeg == 90 || rotateDeg == 270){
 					let w = width;
 					width = height;

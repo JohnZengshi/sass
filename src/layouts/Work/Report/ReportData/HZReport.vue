@@ -304,10 +304,10 @@ import ReportDetail from './newDataGrid/hzReportDetailTab'
 // import TablePrint from './print/dataGridPrint'
 import TablePrint from './newPrint/reportDetailTab'
 //打印模板，明细，产品分类，智能分类=自定义
-import detailTemplate from "@/components/jcp-print/commons/detail-template";
-import projectTypeTemplate from "@/components/jcp-print/commons/project-type-template";
-import intelligenceTypeTemplate from "@/components/jcp-print/commons/intelligence-type-template";
-import customTemplate from "@/components/jcp-print/commons/intelligence-type-template";
+import detailTemplate from "@/components/jcp-print/jxc/detail-template";
+import projectTypeTemplate from "@/components/jcp-print/jxc/project-type-template";
+import intelligenceTypeTemplate from "@/components/jcp-print/jxc/intelligence-type-template";
+import customTemplate from "@/components/jcp-print/jxc/intelligence-type-template";
 
 // 导出报表
 import { downLoaderFile } from 'Api/downLoaderFile'
