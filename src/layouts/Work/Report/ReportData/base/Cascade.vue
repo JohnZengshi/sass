@@ -11,7 +11,7 @@
                 <i class="el-icon-caret-right"></i>
                 <ul class="drop-list-right">
                     <li v-for="(item, index) in rightListData" @click="itemClick(item, index)">
-                        {{item.classesName}}
+                        {{item.repositoryName}}
                     </li>
                 </ul>
             </li> 
@@ -48,7 +48,7 @@ export default {
             // if (this.subclassKey) {
 
             // }typeList
-            this.rightListData = item.childen
+            this.rightListData = item.children
         },
         getDataType (type, item) {
             //console.log(item)
@@ -57,9 +57,14 @@ export default {
         itemClick (item, index) {
             this.returnData.operateIndex = index
             //console.log(item)
-            this.optionData.titleInfo = item.classesName
-            this.returnData.operateId = item.classesId
-            this.returnData.operateName = item.classesName
+            // this.optionData.titleInfo = item.classesName
+            // this.returnData.operateId = item.classesId
+            // this.returnData.operateName = item.classesName
+            if (item.classesType == '2') {
+                this.optionData.titleInfo = item.repositoryName
+                this.returnData.operateId = item.repositoryId
+                this.returnData.operateName = item.repositoryName
+            }
             this.$emit("dropReturn", {
                 item: this.returnData,
                 type: item.classesType

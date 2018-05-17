@@ -330,23 +330,24 @@ export default {
      data() {
       return {
         openReset: true,
-        // productCategory: [
-        //     {
-        //         classesName: '全公司',
-        //         classesType: '1',
+        productCategory: [
+            {
+                classesName: '全公司',
+                classesType: '1',
+                children: []
 
-        //     },
-        //     {
-        //         classesName: '全仓库',
-        //         classesType: '2',
-                
-        //     },
-        //     {
-        //         classesName: '全店铺',
-        //         classesType: '3',
-                
-        //     }
-        // ],
+            },
+            {
+                classesName: '全仓库',
+                classesType: '2',
+                children: []
+            },
+            {
+                classesName: '全店铺',
+                classesType: '3',
+                children: []
+            }
+        ],
         pickerOptions1: {
           shortcuts: [{
             text: '今天',
@@ -582,45 +583,40 @@ export default {
     },
     computed: {
         ...mapGetters([
-            "repositoryList", // 库位列表
+            // "repositoryList", // 库位列表
             "shopListByCo" // 店铺列表
-        ]),
-        productCategory () {
-            return [
-                {
-                    classesName: '全公司',
-                    classesType: '1',
-                    childen: []
-                },
-                {
-                    classesName: '全仓库',
-                    classesType: '2',
-                    childen: this.repositoryList
-                },
-                {
-                    classesName: '全店铺',
-                    classesType: '3',
-                    childen: this.shopListByCo
+        ])
+        // productCategory () {
+        //     return [
+        //         {
+        //             classesName: '全公司',
+        //             classesType: '1',
+        //             childen: []
+        //         },
+        //         {
+        //             classesName: '全仓库',
+        //             classesType: '2',
+        //             childen: this.repositoryList
+        //         },
+        //         {
+        //             classesName: '全店铺',
+        //             classesType: '3',
+        //             childen: this.shopListByCo
                     
-                }
-            ]
-        }
-    },
-    mounted: function () {
-      this.$nextTick(function () {
-        this._seekRepositoryList()
-      })
+        //         }
+        //     ]
+        // }
     },
     methods: {
         _seekRepositoryList () {
             seekRepositoryList()
                 .then(res => {
                     if (res.data.state == 200) {
-
+                        this.productCategory[1].children = res.data.data.repositoryList
                     } else {
                         this.$message({
-                          message: res.data.msg,
-                          type: 'warning'
+                           message: res.data.msg,
+                           type: 'warning'
                         })
                     }
                 })
@@ -1240,6 +1236,7 @@ export default {
             if(companyName){
               this.printSelectDate.companyName = '公司名：'+ companyName.companyName 
             }
+            this._seekRepositoryList()
         })
     }
  }
