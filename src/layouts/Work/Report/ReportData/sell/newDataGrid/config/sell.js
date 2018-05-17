@@ -68,7 +68,7 @@ module.exports = {
       childType: 'weight',
       totalType: 'subtotalWeight',
       toFixed: true,
-      countCut: 2,
+      countCut: 3,
       sort: ''
     },
     {
@@ -95,7 +95,7 @@ module.exports = {
       childType: 'goldWeight',
       totalType: 'subtotalGoldWeight',
       toFixed: true,
-      countCut: 2,
+      countCut: 3,
       sort: ''
     },
     {
