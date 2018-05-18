@@ -229,7 +229,6 @@ import PropertySettingComponent from './PropertySetting'
 import ItemListSettingComponent from './ItemListSetting'
 import FileUploadForm from './FileUploadForm'
 import * as types from '../../vuex/mutation-types'
-
 import {
     transformFileURL,
     getPPI,
@@ -241,6 +240,21 @@ import extend from 'lodash/extend'
 import find from 'lodash/find'
 
 export default {
+        components: {
+            TextComponent,
+            ImageComponent,
+            LineComponent,
+            ContainerComponent,
+            PropertyComponent,
+            ItemListComponent,
+            TextSettingComponent,
+            ImageSettingComponent,
+            LineSettingComponent,
+            ContainerSettingComponent,
+            PropertySettingComponent,
+            ItemListSettingComponent,
+            FileUploadForm,
+        },
         data() {
             return {
                 fonts : '',
@@ -310,21 +324,6 @@ export default {
                 
                 dialogVisible : false
             }
-        },
-        components: {
-            TextComponent,
-            ImageComponent,
-            LineComponent,
-            ContainerComponent,
-            PropertyComponent,
-            ItemListComponent,
-            TextSettingComponent,
-            ImageSettingComponent,
-            LineSettingComponent,
-            ContainerSettingComponent,
-            PropertySettingComponent,
-            ItemListSettingComponent,
-            FileUploadForm
         },
         computed: {
             

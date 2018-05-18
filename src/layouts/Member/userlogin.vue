@@ -256,7 +256,7 @@ export default {
       let data = {
         phone: this.userInfo.phoneNumber,
         type: '02'
-      };
+      }
       if (!(/^1[34578]\d{9}$/.test(data.phone))) {
         //alert("请正确输入有效手机号.");
         this.$store.dispatch('workPopupError', "请正确输入有效手机号");

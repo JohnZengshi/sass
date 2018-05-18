@@ -318,6 +318,14 @@
         </div>
       </div>
     </div>
+    
+			<!--打印模块-->
+			<div style="display: none;">
+				<detail-template v-if="this.tabClassActive.index==0" title="退货" :reportType="4" ref="detailTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></detail-template>
+				<intelligence-type-template v-if="this.tabClassActive.index==1" title="退货" :reportType="4" ref="intelligenceTypeTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></intelligence-type-template>
+				<project-type-template v-if="this.tabClassActive.index==2" title="退货" :reportType="4" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></project-type-template>
+				<custom-template v-if="this.tabClassActive.index==3" title="退货" :reportType="4" ref="customTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></custom-template>
+			</div>
   </div>
 </template>
 <script>
@@ -348,12 +356,38 @@
   // 导出表格 
   import {downLoaderFile} from 'Api/downLoaderFile'
 
+	//打印模板，明细，产品分类，智能分类=自定义
+	import detailTemplate from "@/components/jcp-print/bill/commons/detail-template";
+	import projectTypeTemplate from "@/components/jcp-print/bill/commons/project-type-template";
+	import intelligenceTypeTemplate from "@/components/jcp-print/bill/commons/intelligence-type-template";
+	import customTemplate from "@/components/jcp-print/bill/commons/intelligence-type-template";
+
   export default {
+    components: {
+      receiptsRemark,
+      error,
+      affirm,
+      auditReceipts,
+      delectReceipts,
+      BatchAddReceipts,
+      SalesReturnReceiptsIntro,
+      ReportDetail,
+      TablePrint,
+      stepsPath,
+      orderRemark,
+      selectDrop,
+      DropDownMenu,
+      FormatImg,
+      detailTemplate,
+			projectTypeTemplate,
+			intelligenceTypeTemplate,
+			customTemplate,
+    },
     data() {
       return {
         isSelDelect: true, // 批量删除操作
         receiptInfoList: '',
-        "receiptsIntroList": "", // 单据简介
+        "receiptsIntroList": {}, // 单据简介
         "introListOption": false, // 关闭单据简介的编辑
         "supplierListData1": [{
             name: "全部",
@@ -609,22 +643,6 @@
           value: '1'
         }]
       }
-    },
-    components: {
-      receiptsRemark,
-      error,
-      affirm,
-      auditReceipts,
-      delectReceipts,
-      BatchAddReceipts,
-      SalesReturnReceiptsIntro,
-      ReportDetail,
-      TablePrint,
-      stepsPath,
-      orderRemark,
-      selectDrop,
-      DropDownMenu,
-      FormatImg
     },
     created() {
       // 简单检测浏览器 表格底部高度填充，主要对firefox进行操作
@@ -1062,52 +1080,22 @@
 
       //打印表格 
       tabPrin() {
-
-        if(this.dataGridStorage.productTypeList && this.dataGridStorage.productTypeList.length == 0 ||
-          this.dataGridStorage.printDetailList && this.dataGridStorage.printDetailList.length == 0) {
-          this.$message({
-            type: 'error',
-            message: '暂无数据打印'
-          })
-          return;
-        }
-        this.isPrint = 1;
-        let print = null;
-
-        this.appPrint = document.getElementById('appPrint')
-
-        if(this.IntervalOut) clearInterval(this.IntervalOut)
-        document.getElementById('app').style.display = 'none';
-
-        setTimeout(() => {
-          this.appPrint.innerHTML = this.$refs.tablePrint.innerHTML
-        }, 1000)
-        setTimeout(() => {
-          print = document.execCommand('print');
-        }, 1500)
-
-        this.IntervalOut = setInterval(() => {
-          if(print) {
-            document.getElementById('app').style.display = 'block';
-            this.isPrint = 0;
-            if(this.IntervalOut) clearInterval(this.IntervalOut)
-            this.IntervalOut = null;
-            this.appPrint.innerHTML = '';
-            // 这个请求还是有必要存在的， 打印结束 需要重新获取数据
-            this.send()
-          } else if(print == false) {
-            if(this.IntervalOut) clearInterval(this.IntervalOut)
-            if(!window.print()) {
-              document.getElementById('app').style.display = 'block';
-              this.isPrint = 0;
-              this.IntervalOut = null;
-              this.appPrint.innerHTML = '';
-              // 这个请求还是有必要存在的， 打印结束 需要重新获取数据
-              this.send()
-            }
-          }
-        }, 10)
-
+        switch (this.tabClassActive.index){
+					case 0:
+						this.$refs.detailTemplate.print();
+						break;
+					case 1:
+						this.$refs.intelligenceTypeTemplate.print();
+						break;
+					case 2:
+						this.$refs.projectTypeTemplate.print();
+						break;
+					case 3:
+						this.$refs.customTemplate.print();
+						break;
+					default:
+						break;
+				}
       },
       sendGoods() {
         let options = {
