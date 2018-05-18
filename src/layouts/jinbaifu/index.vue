@@ -688,7 +688,19 @@
 						this.ruleOptionDia = true
 						this.dialogVisible = false
 						this.importType = '1'
-						console.log('导入配置',this.importType)													
+						console.log('导入配置',this.importType)
+						this.tabList = [
+							'基本信息',
+							'产品类型',
+							'重量',
+							'证书',
+							'主石',
+							'副石',
+							'工费',
+							'配件',
+							'其他费用',
+							'标价',
+							]													
 					}
 				} else {
 					return
