@@ -23,7 +23,7 @@
   opacity: 0;
   transition: all .5s;
   &:hover {
-      opacity: 1;
+      opacity: 1 !important;
   }
   a{
     color:#b6b2aa;

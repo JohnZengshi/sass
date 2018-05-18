@@ -162,25 +162,36 @@ export default {
 			_this.$emit('lazyloadSend',123 )
 		})
 		
-		// $(".ui-table-container").mCustomScrollbar({
-        //     theme: "minimal-dark",
-        //     axis: 'y',
-        //     mouseWheel: {
-        //         scrollAmount: 200,
-        //         preventDefault: false,
-        //         normalizeDelta: false,
-        //         scrollInertia : 0
-        //     },
-        //     callbacks: {
-        //         onTotalScroll: function () {
-		// 			if (_this.reportType == 1) {
-		// 				_this.$emit('lazyloadSend', {refresh: true})
-		// 			} else {
-		// 				//console.log('略略略')
-		// 			}
-        //         }
-        //     }
-        // });
+		$(".ui-table-container").mCustomScrollbar({
+            theme: "minimal-dark",
+            axis: 'y',
+            mouseWheel: {
+                scrollAmount: 200,
+                preventDefault: false,
+                normalizeDelta: true,
+                scrollInertia : 50
+            },
+            callbacks: {
+                onTotalScroll: function () {
+					console.log('滚轮到底了')
+					$('.loadControl').css({
+						opacity:1
+					})
+                },
+				onUpdate(){
+					console.log('滚动条更新')
+					$('.loadControl').css({
+						opacity:0
+					})
+				},
+				whileScrolling(){
+					console.log('滚动条活动')
+					$('.loadControl').css({
+						opacity:0
+					})
+				}
+            }
+        });
 		this.tabCellHeight()
 	},
 	methods:{
