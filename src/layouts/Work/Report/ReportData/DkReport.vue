@@ -228,7 +228,7 @@
                 :newList="newList"
 				:reportType="getReportType()">
 			</report-detail>
-            <report-load v-if="dataGridStorage.totalNum != '0' && dataGridOptions.type === 1" @LoadOptionsDefault="LoadOptionsDefault"></report-load>            
+            <report-load v-if="dataGridStorage.totalNum != '0' && dataGridOptions.type === 1 && dataGridStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>            
 		</div>
 		
 	</div>

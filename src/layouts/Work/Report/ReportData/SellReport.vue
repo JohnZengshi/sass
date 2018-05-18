@@ -196,14 +196,14 @@
 					<div class="rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
 						<report-detail-trade :dataGridStorage="tradeStorage" :tabSwitch="tabSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
 						</report-detail-trade>
-            <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1" @LoadOptionsDefault="LoadOptionsDefault"></report-load>            
+            <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1 && tradeStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>            
 					</div>
 
 					<!--销售报表-->
 					<div class="rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
 						<report-detail :dataGridStorage="sellStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
 						</report-detail>
-            <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type === 1" @LoadOptionsDefault="LoadOptionsDefault"></report-load>                        
+            <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type === 1 && sellStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>                        
 					</div>
 
 				</div>
