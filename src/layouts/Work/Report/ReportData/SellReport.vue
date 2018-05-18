@@ -904,10 +904,12 @@ export default {
             value: "1"
           }
         ]);
+
         this.dataGridOptions.pageSize = 15
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
         this.send();
+        
       } else {
         //收银统计
         //后台请求时间

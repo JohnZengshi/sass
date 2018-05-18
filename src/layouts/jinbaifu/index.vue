@@ -6,7 +6,7 @@
 			<!-- <a v-if="!Jrole" href="javascript: void(0)" @click="newPopup.JinBaiF = true">智能导入</a>
 			<a v-if="!Jrole" :href="downUrl">模板下载</a>
 			<a v-if="!Jrole" href="javascript: void(0)" @click="ruleOptionDia = true">导入规则</a> -->
-			<a v-if="!Jrole" href="javascript: void(0)" @click="SmartImport()">智能导入</a>
+			<a v-if="!Jrole" href="javascript: void(0)" @click="SmartImport()">导入中心</a>
 			<a v-if="!Jrole" href="javascript: void(0)" @click="downloadTemplate()">模板下载</a>
 			<a v-if="!Jrole" href="javascript: void(0)" @click="importRules()">导入规则</a>
 		</div>

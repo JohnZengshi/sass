@@ -482,7 +482,7 @@
         console.log(this.userInfo.userId)
 
         switch (this.positionData.roleList[0].role) {
-          case '2':
+            case '2':
             operateType = '1'
             break;
             case '3':
@@ -491,7 +491,11 @@
             case '4':
             operateType = '3';
             break;
+            case '6':
+            operateType = '2';
+            break;
         }
+        console.log(this.positionData.roleList[0].role)
 
         if(this.positionData.roleList[0].role === '6'){
           let options = {
@@ -522,13 +526,14 @@
           if (this.positionData.roleList[0].shopId) {
             options.dataList[0].operateType = '4'
           }
+          console.log('请求的参数',options)
           operatePrivilege(options)
             .then(res => {
               if (res.data.state === 200) {
                 this.$store.dispatch('workPopupError', '删除成功');
                 this.$emit('_seekGetDepUserList')
                 this.getSeekCompanyInfo();
-                setTimeout(window.location.reload(),500);
+                // setTimeout(window.location.reload(),500);
               } else {
                 this.$store.dispatch('workPopupError', res.data.msg);
               }
