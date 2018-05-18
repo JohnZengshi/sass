@@ -1,14 +1,17 @@
 <template>
 <!--表头-->
-<div class="ui-table_column">
-  <div @click="headSort(tab)" class="ui-table_th" v-for="tab in [detailDataGridColumnItem, ...detailDataGridColumn]" :style="tableCell(tab.width)">
-    {{tab.text }} <i v-if="tab.unit !=''">{{ tab.unit}}</i>
-        <!-- <em v-if="tab.sort == ''" class="iconfont icon-sort-copy"></em>
-        <em v-if="tab.sort == '1'" class="iconfont icon-sort-up"></em>
-        <em v-if="tab.sort == '2'" class="iconfont icon-sort2"></em> -->
-        <img v-if="tab.sort == ''" src="~static/img/sort/default.png">
-        <img v-if="tab.sort == '1'" src="~static/img/sort/up.png">
-        <img v-if="tab.sort == '2'" src="~static/img/sort/down.png">
+<div class="ui-table_column-hz">
+  <div class="ui-table_th" style="width: 210px;">模块</div>
+  <div style="width: 1029px; display: flex;">
+    <div @click="headSort(tab)" class="ui-table_th" v-for="tab in detailDataGridColumn" :style="tableCell(tab.width)">
+      {{tab.text }} <i v-if="tab.unit !=''">{{ tab.unit}}</i>
+          <!-- <em v-if="tab.sort == ''" class="iconfont icon-sort-copy"></em>
+          <em v-if="tab.sort == '1'" class="iconfont icon-sort-up"></em>
+          <em v-if="tab.sort == '2'" class="iconfont icon-sort2"></em> -->
+          <img v-if="tab.sort == ''" src="~static/img/sort/default.png">
+          <img v-if="tab.sort == '1'" src="~static/img/sort/up.png">
+          <img v-if="tab.sort == '2'" src="~static/img/sort/down.png">
+    </div>
   </div>
 </div>
 </template>
@@ -18,22 +21,22 @@ export default {
   props : ['detailDataGridColumn','tabCell', 'reportType','newList'],
   data () {
         return {
-            detailDataGridColumnItem:{
-              id: '0', //id 
-              text: '模块', //头部title文字
-              width: '210', //单元格宽
-              type: '', //合计类型值
-              type1: '', //合计类型值
-              unit: '', //头部单位补充文字
-              footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
-              totalName: '', //底部合计 提示文字
-              childType: '', //单元格类型
-              totalType: '', //小计
-              totalType0: '', //小计1
-              toFixed: false, //是否进行小数点精确截取
-              countCut: 0, //小数点截取位数
-              editOldType : ''
-            },
+            // detailDataGridColumnItem:{
+            //   id: '0', //id 
+            //   text: '模块', //头部title文字
+            //   width: '210', //单元格宽
+            //   type: '', //合计类型值
+            //   type1: '', //合计类型值
+            //   unit: '', //头部单位补充文字
+            //   footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
+            //   totalName: '', //底部合计 提示文字
+            //   childType: '', //单元格类型
+            //   totalType: '', //小计
+            //   totalType0: '', //小计1
+            //   toFixed: false, //是否进行小数点精确截取
+            //   countCut: 0, //小数点截取位数
+            //   editOldType : ''
+            // },
             isOld: '1',
             sortList: [{classTypeName: '1'}]
         }
@@ -225,11 +228,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.ui-table_column{
+.ui-table_column-hz{
     height: 40px;
     background-color: #f5f5f5;
     //overflow: hidden;
-    display: flex;
+    // display: flex;
     position: relative;
     width: 100%;
     margin-top: -40px;

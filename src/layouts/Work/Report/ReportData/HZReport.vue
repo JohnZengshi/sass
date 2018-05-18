@@ -256,15 +256,15 @@
     </div> -->
   
     <!--打印模块-->
-    <div style="display: none;">
+<!--     <div style="display: none;">
         <detail-template v-if="this.tabClassActive.index==0" title="汇总" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detail-template>
         <intelligence-type-template v-if="this.tabClassActive.index==1" title="汇总" ref="intelligenceTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></intelligence-type-template>
         <project-type-template v-if="this.tabClassActive.index==2" title="汇总" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></project-type-template>
         <custom-template v-if="this.tabClassActive.index==3" title="汇总" ref="customTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></custom-template>
-    </div>
+    </div> -->
 </div>
 <!--打印模块-->
-<div ref="tablePrint" v-else-if="isPrint==1" >
+<!-- <div ref="tablePrint" v-else-if="isPrint==1" >
   <table-print 
     typeName="汇总"
     :tabSwitch = "tabSwitch"
@@ -272,7 +272,7 @@
     :printSelectDate = "printSelectDate"
     :dataGridStorage="dataGridStorage">
   </table-print>
-</div>  
+</div>   -->
 </transition>
 </template>
 
@@ -330,23 +330,24 @@ export default {
      data() {
       return {
         openReset: true,
-        // productCategory: [
-        //     {
-        //         classesName: '全公司',
-        //         classesType: '1',
+        productCategory: [
+            {
+                classesName: '全公司',
+                classesType: '1',
+                children: []
 
-        //     },
-        //     {
-        //         classesName: '全仓库',
-        //         classesType: '2',
-                
-        //     },
-        //     {
-        //         classesName: '全店铺',
-        //         classesType: '3',
-                
-        //     }
-        // ],
+            },
+            {
+                classesName: '全仓库',
+                classesType: '2',
+                children: []
+            },
+            {
+                classesName: '全店铺',
+                classesType: '3',
+                children: []
+            }
+        ],
         pickerOptions1: {
           shortcuts: [{
             text: '今天',
@@ -395,7 +396,7 @@ export default {
         
         loading:true,
         
-        dataGridStorage : {},
+        dataGridStorage : [],
         dataGridDetailList : [],
     
       //成本核算
@@ -538,7 +539,7 @@ export default {
         this.printSelectDate.endTime = this.endTime
         this.getShop(); //库位
         this.getProductTypeList() //产品类别
-        this.getShopListByCo() //收货店铺
+        this.getShopListByCo() //店铺
         this.getUserList(); //制单人
         this.getGetUserList() //审核人
         this.send()
@@ -582,45 +583,60 @@ export default {
     },
     computed: {
         ...mapGetters([
-            "repositoryList", // 库位列表
+            // "repositoryList", // 库位列表
             "shopListByCo" // 店铺列表
-        ]),
-        productCategory () {
-            return [
-                {
-                    classesName: '全公司',
-                    classesType: '1',
-                    childen: []
-                },
-                {
-                    classesName: '全仓库',
-                    classesType: '2',
-                    childen: this.repositoryList
-                },
-                {
-                    classesName: '全店铺',
-                    classesType: '3',
-                    childen: this.shopListByCo
+        ])
+        // productCategory () {
+        //     return [
+        //         {
+        //             classesName: '全公司',
+        //             classesType: '1',
+        //             childen: []
+        //         },
+        //         {
+        //             classesName: '全仓库',
+        //             classesType: '2',
+        //             childen: this.repositoryList
+        //         },
+        //         {
+        //             classesName: '全店铺',
+        //             classesType: '3',
+        //             childen: this.shopListByCo
                     
-                }
-            ]
-        }
-    },
-    mounted: function () {
-      this.$nextTick(function () {
-        this._seekRepositoryList()
-      })
+        //         }
+        //     ]
+        // }
     },
     methods: {
+        changeVaue (parm) {
+            if (parm.type == 1) {
+                this.dataGridOptions.receiveObject = parm.type
+            } else if (parm.type == 2) {
+                if (parm.item.operateId) {
+                    this.dataGridOptions.receiveObject = 4
+                    this.dataGridOptions.repositoryId = parm.item.operateId
+                } else {
+                    this.dataGridOptions.receiveObject = parm.type
+                }
+                
+            } else if (parm.type == 3) {
+                if (parm.item.operateId) {
+                    this.dataGridOptions.receiveObject = 5
+                    this.dataGridOptions.repositoryId = parm.item.operateId
+                } else {
+                    this.dataGridOptions.receiveObject = parm.type
+                }
+            }
+        },
         _seekRepositoryList () {
             seekRepositoryList()
                 .then(res => {
                     if (res.data.state == 200) {
-
+                        this.productCategory[1].children = res.data.data.repositoryList
                     } else {
                         this.$message({
-                          message: res.data.msg,
-                          type: 'warning'
+                           message: res.data.msg,
+                           type: 'warning'
                         })
                     }
                 })
@@ -923,12 +939,12 @@ export default {
       storageFunc(){
         this.send()
       },
-      changeVaue (val) {
-            this.dataGridOptions.productTypeId = val.item.operateId
-            this.printSelectDate.productType = val.item.operateName
-            this.currentPage = 1
-        this.send()
-        },
+      // changeVaue (val) {
+      //       this.dataGridOptions.productTypeId = val.item.operateId
+      //       this.printSelectDate.productType = val.item.operateName
+      //       this.currentPage = 1
+      //   this.send()
+      //   },
       //产品类别
       callProductCategory( res ){
         
@@ -992,10 +1008,11 @@ export default {
         //收货店铺
         getShopListByCo(){
           let options = {
-                page: "",
-                pageSize: '10'
+                page: "1",
+                pageSize: '100'
             }
             seekGetShopListByCo(options).then((res) => {
+                this.productCategory[2].children = res.body.data.shopList
                 this.distributorList = res.body.data.shopList
             }, (res) => {
                 console.log(res);
@@ -1207,7 +1224,6 @@ export default {
 
         }, 
         LoadOptionsDefault(pageSize){
-        console.log('调用了')
         if(this.dataGridOptions.pageSize>this.dataGridStorage.totalNum) {
            // 更换文字
           $('.loadControl span').html('已经到底了').css('color','#474747')
@@ -1240,6 +1256,7 @@ export default {
             if(companyName){
               this.printSelectDate.companyName = '公司名：'+ companyName.companyName 
             }
+            this._seekRepositoryList()
         })
     }
  }

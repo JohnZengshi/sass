@@ -2,7 +2,9 @@
 <transition name="tp-ani">
 <div class="tab_detail_table">
   <!--表头 start-->
-  <data-grid-header :newList="newList" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header>
+  <data-grid-header-t v-if="reportType == 2 || reportType == 4" :newList="newList" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header-t>
+  <!--表头 start-->
+  <data-grid-header v-else :newList="newList" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header>
   
   
   
@@ -54,7 +56,8 @@
 </template>
 
 <script>
-import DataGridHeader from './hz/dataGridHeader'
+import DataGridHeader from './dataGridHeader'
+import DataGridHeaderT from './hz/dataGridHeader'
 import DataGridBody from './hz/dataGridBody'
 import DataEditBody from './editBody'
 import DataGridFooter from './dataGridFooter'
@@ -75,7 +78,8 @@ export default {
     DataGridBody,
     DataEditBody,
     DataGridHeader,
-    DataEditFooter
+    DataEditFooter,
+    DataGridHeaderT
   },
   watch :{
         reportType:function(){

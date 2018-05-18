@@ -20,7 +20,8 @@
 <div class="ui-table-container con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
   <div>
 <!--   {{dataGridStorage.dataList}} -->
-    <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind">
+   <!--  <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind"> -->
+    <div class="tb-category hz-tb-category" v-if="caty.typeName == '销售'" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind">
       <div class="left-type-name-wrap" :style="getRightH(caty)">
         <p>{{caty.typeName}}</p>
       </div>
@@ -57,8 +58,8 @@
             
           </template>
           
-          <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
-    <!--           <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch">
+          <!-- <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div> -->
+<!--               <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch">
           <div class="tb-td"
             v-for="(tab,f) in detailDataGridColumn" 
             :key="f"
@@ -72,17 +73,19 @@
           <!-- 类型小计 -->
         </div>
       </div>
-      <div class="total-num-wrap" style="background:#e9f4fe;border: 1px solid red;" v-if="!positionSwitch">
+      <div class="total-num-wrap" v-if="!positionSwitch">
         <div>
           小计
         </div>
         <ul class="total-num-inner">
-<!--           <li>{{caty}}</li> -->
-          <li>{{caty.totalNum1}}</li>
-          <li>{{caty.totalWeight1}}</li>
-          <li>{{caty.totalGoldWeight1}}</li>
-          <li>{{caty.totalPrice1}}</li>
-          <li>{{caty.totalCost1}}</li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li>{{caty.totalNum}}</li>
+          <li>{{caty.totalWeight}}</li>
+          <li>{{caty.totalGoldWeight}}</li>
+          <li>{{caty.totalPrice}}</li>
+          <li>{{caty.totalCost}}</li>
         </ul>
 <!--         <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch">
           <div class="tb-td"
@@ -252,11 +255,8 @@ export default {
     },
     getRightH (parm) {
       let Num = 0
-      console.log('号好好', parm)
       if (parm) {
-        console.log('parmparmparmparmparmparmparm', parm)
         for (let i of parm.productTypeList) {
-          console.log('iiiiiiiiiiiiiiiiiiii', i)
           if (i) {
             for (let j of i.detailList) {
               Num += 50
@@ -291,15 +291,22 @@ export default {
       },
       
       cheackData(){
-        if( this.dataGridStorage.productTypeList ){
-          this.isDate = this.dataGridStorage.productTypeList.length == 0
-        }else if( this.dataGridStorage.buyBackList ){
-                this.isDate = this.dataGridStorage.buyBackList.length == 0
-            }else if( this.dataGridStorage.detailList ){
-                this.isDate = this.dataGridStorage.detailList.length == 0
-            }else{
-          this.isDate = true;
+        let isHas = true
+        for (let i of dataGridStorage.dataList) {
+          if (i.productTypeList.length) {
+            isHas = false
+          }
         }
+        this.isDate = isHas
+        // if( this.dataGridStorage.productTypeList ){
+        //   this.isDate = this.dataGridStorage.productTypeList.length == 0
+        // }else if( this.dataGridStorage.buyBackList ){
+        //         this.isDate = this.dataGridStorage.buyBackList.length == 0
+        //     }else if( this.dataGridStorage.detailList ){
+        //         this.isDate = this.dataGridStorage.detailList.length == 0
+        //     }else{
+        //   this.isDate = true;
+        // }
       }
       
   },
@@ -362,8 +369,65 @@ export default {
     .right-type-inner-wrap{
       // flex: 1;
       display: inline-block;
-      width: 1024px;
+      width: 1029px;
       overflow: hidden;
+    }
+    .total-num-wrap{
+      height: 50px;
+      width: 100%;
+      background: #e9f4fe;
+      >div{
+        float: left;
+        display: inline-block;
+        height: 50px;
+        line-height: 50px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        color: #2993f8;
+        transition: all .3s;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 210px;
+      }
+      >ul{
+        width: 1029px;
+        display: flex;
+        li{
+          float: left;
+          display: inline-block;
+          height: 50px;
+          text-align: center;
+          line-height: 50px;
+          text-align: center;
+          font-size: 14px;
+          font-weight: bold;
+          color: #2993f8;
+          transition: all .3s;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        li:nth-child(1){
+          width: 106px;
+        }
+        li:nth-child(2){
+          width: 176px;
+        }
+        li:nth-child(3){
+          width: 146px;
+        }
+        li:nth-child(4){
+          width: 146px;
+        }
+        li:nth-child(5){
+          width: 146px;
+        }
+        li:nth-child(6){
+          width: 146px;
+        }
+      }
     }
     &.produc-line {
     .tb-tr:nth-child(even){
