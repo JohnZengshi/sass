@@ -30,7 +30,7 @@ export const JaTools = {
 				let mapcode = _.find(item.codeList, {key:components.data.propertyCode});
 				if(!mapcode)mapcode = new Object();
 				let componnent = JaTools.getComponnent(components.type, components.data.propertyType, components.data.propertyCode);
-				let temp = _.cloneDeep(_.assignIn(components.data, {sample:mapcode.value, componnent:componnent}));
+				let temp = _.cloneDeep(_.assignIn(components.data, {sample:mapcode.value, componnent:componnent, type:components.type}));
 				page.push(temp);
 			}
 			pageList.push({page:page, width:template.width, height:template.height, rotateDeg:template.rotateDeg});
@@ -70,7 +70,7 @@ export const JaTools = {
 				"transform": "rotate(" + page.rotateDeg + "deg)",
 		});
 		for(let data of list) {
-			if(!data.isNullPrint && !data.sample){
+			if(!data.isNullPrint && !data.sample && (data.type == "PropertyComponent")){
 				continue;
 			}
 			let box = $("<div>");
