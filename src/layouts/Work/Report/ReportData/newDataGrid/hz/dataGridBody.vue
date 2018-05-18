@@ -21,7 +21,7 @@
   <div>
 <!--   {{dataGridStorage.dataList}} -->
    <!--  <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind"> -->
-    <div class="tb-category hz-tb-category" v-if="caty.typeName == '销售'" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind">
+    <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind">
       <div class="left-type-name-wrap" :style="getRightH(caty)">
         <p>{{caty.typeName}}</p>
       </div>
@@ -29,7 +29,7 @@
 
         <div style="margin-bottom: 2px;" v-for="(tb, index) in caty.productTypeList" :key="index">
           <template v-for="(tb1, index1) in tb.detailList">
-            <div class="tb-tr" :index="addIndex()" :key="index1">
+            <div class="tb-tr hz-td-tr" :index="addIndex()" :key="index1">
               <template v-for="(tab,index2) in detailDataGridColumn">
                 <div class="tb-td category-td"
                   :key="index2"
@@ -77,15 +77,15 @@
         <div>
           小计
         </div>
-        <ul class="total-num-inner">
+        <ul>
           <li></li>
           <li></li>
           <li></li>
-          <li>{{caty.totalNum}}</li>
-          <li>{{caty.totalWeight}}</li>
-          <li>{{caty.totalGoldWeight}}</li>
-          <li>{{caty.totalPrice}}</li>
-          <li>{{caty.totalCost}}</li>
+          <li>{{caty.totalNum0}}</li>
+          <li>{{caty.totalWeight0}}</li>
+          <li>{{caty.totalGoldWeight0}}</li>
+          <li>{{caty.totalPrice0}}</li>
+          <li>{{caty.totalCost0}}</li>
         </ul>
 <!--         <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch">
           <div class="tb-td"
@@ -138,11 +138,19 @@
             > 
               <i :style="'height:'+ caty.productTypeList.length * 50 +'px;  color: #2993f8; background:#fff;'">{{caty[tab.childType]}}</i>
             </div>
-            <div class="tb-td"
+<!--             <div class="tb-td"
               v-else
             :key="index4"
               :style="tableCell(tab.width)" 
               v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
+            </div> -->
+            <div class="tb-td"
+              v-else
+            :key="index4"
+              :style="tableCell(tab.width)"
+              v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
+              >
+<!--               {{tab}} -->
             </div>
           </template>
         </div>
@@ -169,7 +177,7 @@ export default {
   props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch'],
   
   watch:{
-    'dataGridStorage':function(){
+    'dataGridStorage' () {
       this.tempArray = []
       this.cheackData()
       this.storageFormatDate()
@@ -334,8 +342,12 @@ export default {
 .ui-table-container{
     height: 556px;
     overflow-y: auto;
+    // .hz-td-tr:nth-child(2n+1){
+    //   background-color: red!important;
+    // }
     .hz-tb-category{
       overflow: hidden;
+      font-size: 0;
       // display: flex;
     }
     .hz-type-wrap{
@@ -375,6 +387,7 @@ export default {
     .total-num-wrap{
       height: 50px;
       width: 100%;
+      // font-size: 0;
       background: #e9f4fe;
       >div{
         float: left;
@@ -394,29 +407,45 @@ export default {
       >ul{
         width: 1029px;
         display: flex;
+        // font-size: 0;
         li{
+          // float: left;
+          // display: inline-block;
+          // height: 50px;
+          // text-align: center;
+          // line-height: 50px;
+          // text-align: center;
+          // font-size: 14px;
+          // font-weight: bold;
+          // color: #2993f8;
+          // transition: all .3s;
+          // overflow: hidden;
+          // white-space: nowrap;
+          // text-overflow: ellipsis;
           float: left;
           display: inline-block;
           height: 50px;
-          text-align: center;
           line-height: 50px;
           text-align: center;
           font-size: 14px;
-          font-weight: bold;
-          color: #2993f8;
-          transition: all .3s;
-          overflow: hidden;
+          font-weight: 500;
+          transition: all .1s;
           white-space: nowrap;
+          color: #333;
+          -webkit-font-smoothing: subpixel-antialiased;
           text-overflow: ellipsis;
+          overflow: hidden;
+          // width: 106px;
+
         }
         li:nth-child(1){
           width: 106px;
         }
         li:nth-child(2){
-          width: 176px;
+          width: 236px;
         }
         li:nth-child(3){
-          width: 146px;
+          width: 176px;
         }
         li:nth-child(4){
           width: 146px;
@@ -425,6 +454,12 @@ export default {
           width: 146px;
         }
         li:nth-child(6){
+          width: 146px;
+        }
+        li:nth-child(7){
+          width: 146px;
+        }
+        li:nth-child(8){
           width: 146px;
         }
       }

@@ -6,11 +6,11 @@
             <i class="el-icon-circle-close" title="清除" @click="clearTitleInfo" v-else></i>
         </span>
         <ul class="drop-list">
-            <li @mouseover="tabData(item, index)" v-for="(item, index) in propList" >
+            <li @click.stop="changeDigItem(item)" @mouseover="tabData(item, index)" v-for="(item, index) in propList" >
                 {{getDataType(dataType, item)}}
-                <i class="el-icon-caret-right"></i>
-                <ul class="drop-list-right">
-                    <li v-for="(it, index) in rightListData" @click="itemClick(it, index, item.classesType)">
+                <i class="el-icon-caret-right" v-if="index"></i>
+                <ul class="drop-list-right" v-if="index">
+                    <li v-for="(it, index) in rightListData" @click.stop="itemClick(it, index, item.classesType)">
                         {{it.repositoryName || it.shopName}}
                     </li>
                 </ul>
@@ -53,6 +53,15 @@ export default {
         getDataType (type, item) {
             //console.log(item)
             return item.classesName
+        },
+        changeDigItem (item) {
+            this.optionData.titleInfo = item.classesName
+            this.returnData.operateId = ''
+            this.returnData.operateName = ''
+            this.$emit("dropReturn", {
+                item: {},
+                type: item.classesType
+            })
         },
         itemClick (item, index, classesType) {
             this.returnData.operateIndex = index
@@ -129,7 +138,7 @@ export default {
             //color:#2993f8;
         }
         >.title-name {
-            width: 180px;
+            // width: 180px;
             color: #3195f5;
             text-align: center;
         }
@@ -145,7 +154,7 @@ export default {
         display: block;
         text-align: center;
         height: 30px;
-        width: 180px;
+        // width: 180px;
         // font-weight: bold;
         font-size: 14px;
         padding:0 8px;
