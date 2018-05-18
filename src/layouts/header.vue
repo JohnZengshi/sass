@@ -28,7 +28,7 @@
     <div class="page-side">
         <div class="user-info">
             <!-- <img @click="goAdmin" v-if="userInfo" class="user-img" :src="userInfo.userLogo"> -->
-            <FormatImg :logo="userInfo.userLogo" @click.native="goAdmin" class="img" :userName="userInfo.userName" :size="40"></FormatImg>
+            <FormatImg :logo="userInfo.userLogo" @click.native="goAdmin" class="img" :userName="userInfo.userName || userInfo.phone" :size="40"></FormatImg>
             <div v-if="userInfo" class="userInfo_silder">欢迎您！
                 <el-dropdown @command="selectMenu">
                     <span class="el-dropdown-link">
