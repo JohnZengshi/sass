@@ -477,7 +477,7 @@ export default {
             beginTime : '',
             endTime : '',
             settingType: '1',
-            receiveObject: '5',
+            receiveObject: '1',
             storageId: '',
             storageId: '',
             shopId: '',

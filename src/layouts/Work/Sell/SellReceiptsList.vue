@@ -1025,21 +1025,6 @@
 		},
 		mounted() {
 			let self = this
-			printAPI.getTemplateList({
-				type: 1,
-				fieldType: 'full'
-			}).then(json => {
-				this.qualityTemplateList = json.data.qualityList
-				if(this.qualityTemplateList.length > 0) {
-					this.disabled = false
-					this.isPrintOnly = true
-					this.placeText = "请选择"
-				} else {
-					this.disabled = true
-					this.isPrintOnly = false
-					this.placeText = "无打印模板"
-				}
-			})
 			$(".row4-data-main").mCustomScrollbar({
 				axis: 'x',
 				theme: "minimal-dark",
@@ -1363,6 +1348,24 @@
 			...mapActions([
 				"workPopupError" // 错误弹窗
 			]),
+			seekGetTemplateList (parm) {
+				printAPI.getTemplateList({
+					type: 1,
+					shopId: parm,
+					fieldType: 'full'
+				}).then(json => {
+					this.qualityTemplateList = json.data.qualityList
+					if(this.qualityTemplateList.length > 0) {
+						this.disabled = false
+						this.isPrintOnly = true
+						this.placeText = "请选择"
+					} else {
+						this.disabled = true
+						this.isPrintOnly = false
+						this.placeText = "无打印模板"
+					}
+				})
+			},
 			setBounding(parm) {
 				this.$refs.remarkTitWrap.open(parm)
 				// this.boundingData = parm
@@ -2641,6 +2644,8 @@
 						this.receiptsIntroList = response.data.data;
 						// this.cashStatus = res.data.data.cashStatus
 						this.getShopUserList(response.data.data.shopId)
+						debugger
+						this.seekGetTemplateList(response.data.data.shopId)
 						if(response.data.data.makeOrderManId == sessionStorage.getItem('id')) {
 							this.isMakeMan = true
 						}

@@ -52,14 +52,14 @@
           </li>
         </ul>
       </div>
-      <div class="echartdiv">
-      <Charts
+<!--       <div class="echartdiv"> -->
+<!--       <Charts
         :changeRepository="changeRepository"
         :changeShop="changeShop"
         :changeCounter="changeCounter"
-      ></Charts>
-      <StatisticsNumber :statisticalIndexData="statisticalIndexData"></StatisticsNumber>
-      </div>
+      ></Charts> -->
+<!--       <StatisticsNumber :statisticalIndexData="statisticalIndexData"></StatisticsNumber> -->
+<!--       </div> -->
     </div>
     <div class="footer-wrap" v-show="false">
       <!-- 成品 -->
@@ -389,7 +389,8 @@
   width: 1250px;
   margin: 30px auto;
   .stock-header-wrap{
-    height: 410px;
+    // height: 410px;
+    height: 30px;
     position: relative;
     .headervisi{
       position: fixed;

@@ -32,7 +32,7 @@
             <div v-if="userInfo" class="userInfo_silder">欢迎您！
                 <el-dropdown @command="selectMenu">
                     <span class="el-dropdown-link">
-                        {{userInfo.userName}}<i class="el-icon-caret-bottom el-icon--right"></i>
+                        {{userInfo.userName || userInfo.phone}}<i class="el-icon-caret-bottom el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown" class="layout-drop-item">
                         <!--<el-dropdown-item command="a">个人信息</el-dropdown-item>-->
