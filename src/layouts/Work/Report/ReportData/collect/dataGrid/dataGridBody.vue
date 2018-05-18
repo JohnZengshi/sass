@@ -33,7 +33,7 @@
             </template>
           </div>
           <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
-          <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch">
+          <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch && tb.detailList.length>0">
             <!-- 类型小计 -->
             <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"></div>
           </div>
@@ -71,6 +71,8 @@
         this.tabCellHeight()
 
         this.reduceAssign()
+        console.log('这是表格里面的小鸡',this.detailDataGridColumn)
+        console.log('这是表格里面的小鸡',this.positionSwitch)
         
       },
       // 'reportType': function (val) {
@@ -187,6 +189,7 @@
         if(this.dataGridStorage.productTypeList) {
           if(this.dataGridStorage.productTypeList[0].productSellTypeList) {
             this.otherDatagrid = this.dataGridStorage.productTypeList[0].productSellTypeList
+            console.log('小鸡',this.otherDatagrid)
           }
         }
       }

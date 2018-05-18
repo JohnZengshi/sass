@@ -196,14 +196,14 @@
 					<div class="rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
 						<report-detail-trade :dataGridStorage="tradeStorage" :tabSwitch="tabSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
 						</report-detail-trade>
-            <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1" @LoadOptionsDefault="LoadOptionsDefault"></report-load>            
+            <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1 && tradeStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>            
 					</div>
 
 					<!--销售报表-->
 					<div class="rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
 						<report-detail :dataGridStorage="sellStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
 						</report-detail>
-            <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type === 1" @LoadOptionsDefault="LoadOptionsDefault"></report-load>                        
+            <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type === 1 && sellStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>                        
 					</div>
 
 				</div>
@@ -608,7 +608,7 @@ export default {
       } else {
         this.dataGridOptions.sortFlag = 0;
       }
-      this.send();
+      // this.send();
     },
     "sellShowId": function () {
       this.dataGridOptions.pageSize = 15
@@ -904,18 +904,20 @@ export default {
             value: "1"
           }
         ]);
+
         this.dataGridOptions.pageSize = 15
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
         this.send();
+        
       } else {
+        console.log('收银统计')
         //收银统计
         //后台请求时间
         this.dataGridOptions.beginTime = this.getDate(0, "start").fullData;
         this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
         this.dataGridOptions.reportType = 1;
         this.dataGridOptions.sellStatu = 1;
-
         //日期控件默认设置时间
         this.beginTime = this.getDate(0, "start").format;
         this.endTime = this.getDate(0, "end").format;
@@ -923,7 +925,7 @@ export default {
         this.dataGridOptions.pageSize = 15
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
-        this.send()
+        // this.send()
       }
     },
     printSuffix(index) {
@@ -1252,10 +1254,11 @@ export default {
 
     send(type) {
       if (this.modleSwitch.type) {
+        this.dataGridOptions.sellStatu = ''        
         this.sellSend();
         this.sellTradeSend();
         this.sellCollectSend();
-      }
+      } 
     },
 
     /*
@@ -1263,7 +1266,6 @@ export default {
 			 */
     sellSend() {
       this.loading = true;
-      this.dataGridOptions.sellStatu = ''
       //明细
       if (this.getReportType() == 1) {
         Object.assign(this.dataGridOptions, {
@@ -1286,6 +1288,7 @@ export default {
           delete this.dataGridOptions.cashierList;
         }
       }
+
       let tempOption = Object.assign({}, this.dataGridOptions);
       if (this.printSelectDate.operateId != "") {
         this.$set(tempOption, "salesmenList", [
@@ -1294,7 +1297,7 @@ export default {
           }
         ]);
       }
-
+      
       seekSellList(tempOption).then(res => {
         if (res.data.state === 200) {
           //数据表格数据
@@ -1318,7 +1321,6 @@ export default {
     //回购数据请求
     sellTradeSend() {
       this.loading = true;
-      this.dataGridOptions.sellStatu = ''
       if (this.dataGridOptions.makeUserList) {
         if (this.dataGridOptions.makeUserList[0].makeUserId == "") {
           delete this.dataGridOptions.makeUserList;
@@ -1348,7 +1350,6 @@ export default {
     //收银数据请求
     sellCollectSend() {
       this.loading = true;
-      this.dataGridOptions.sellStatu = '1'
       if (this.dataGridOptions.makeUserList) {
         if (this.dataGridOptions.makeUserList[0].makeUserId == "") {
           delete this.dataGridOptions.makeUserList;

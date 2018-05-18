@@ -12,6 +12,7 @@
                         可识别列名
                         <i class="iconfont icon-jia" @click="showNew(item.coreName, 1)"></i>
                     </div>
+
                     <ul class="Recognizable-list">
                         <dl>
                             <dd v-for="(t, f) in item.classList" v-if="t.type == 1 && t.editable == 0" :key="f">{{t.aliasName}}</dd>
@@ -31,6 +32,7 @@
                         数值转换
                         <i class="iconfont icon-jia" @click="showNew(item.coreName, 2)"></i>
                     </div>
+
                     <ul class="numerical-list" v-if="item.isNumTrans == 'Y'">
                         <li v-for="(t, f) in item.classList" v-if="t.type == 2" :key="f">
                             <div class="input-wrap" :class="{disabled: t.editable==0}">
@@ -44,6 +46,7 @@
                             </div>
                             <i class="iconfont icon-jian" @click="delImportSetting(t)"></i>
                         </li>
+
                         <li v-if="getFlagType(item.coreName, 2)">
                             <div class="input-wrap">
                                 <input class="inp1" type="text" placeholder="输入..." v-model="item.numName">
@@ -57,10 +60,12 @@
                             <i class="iconfont icon-jian" @click="cancelNew(item.coreName, 2)"></i>
                         </li>
                     </ul>
+
                     <div class="item-footer">
                         <div class="footer-title"><i class="iconfont icon-qc-required"></i>约束条件</div>
                         <p>{{item.remark}}</p>
                     </div>
+
                 </div>
             <!-- </div> -->
         </div>
@@ -100,6 +105,7 @@ export default {
                 },
             ],
             brandList: [], // 品牌列表
+
             barFlag: false,
             hanFlag: false,
             hanFlag1: false,
@@ -111,9 +117,57 @@ export default {
             scdwFlag1: false,
             beiFlag: false,
 
+            // 单据的
+            djFlag: false,
+            ztFlag: false,
+            cpFlag: false,
+            jsFlag: false,
+            bsFlag: false,
+            ssFlag: false,
+            jjFlag: false,
+            jzFlag: false,
+            bjFlag: false,
+            sjFlag: false,
+            zkFlag: false,
+            cbFlag: false,
+
+            gfFlag:false,
+            tradeManFlag:false,
+            createTimeFlag:false,
+            cashTimeFlag:false,
+            cashierFlag:false,
+            memberNumFlag:false,
+            memberNameFlag:false,
+            memberPhoneFlag:false,
+            memberSexFlag:false,
+            supplierFlag:false,
+            certifiNoFlag:false,
+            sectionNumFlag:false,
+            fusWeightFlag:false,
+            neatnessFlag:false,
+            colorFlag:false,
+            orderRemarkFlag:false,
+            mainWeightFlag:false,
+            payWeixinFlag:false,
+            payAlipayFlag:false,
+            payUnionpayFlag:false,
+            payOtherFlag:false,
+            payCashFlag:false,
+
+            // 会员
+            principalNameFlag:false,
+            gradeFlag:false,
+            birthdayFlag:false,
+            memberEmailFlag:false,
+            weixinhaoFlag:false,
+            professionFlag:false,
+            addressFlag:false,
+            labelFlag:false,
+            openTimeFlag:false,
+
         }
     },
-    props: ['ruleOptionDia'],
+    props: ['ruleOptionDia','importType'],
     watch: {
         ruleOptionDia (val) {
             // console.log(val)
@@ -151,6 +205,7 @@ export default {
             
         },
         getFlagType (name, type) {
+            console.log(name)
             if (type == 1) {
                 switch (name) {
                     case 'barcode':
@@ -167,6 +222,95 @@ export default {
                         return this.scdwFlag;
                     case 'remark':
                         return this.beiFlag;
+
+                    case 'orderNum':
+                        return this.djFlag;
+                    case 'sellStatus':
+                        return this.ztFlag;
+                    case 'subProductType':
+                        return this.cpFlag;
+                    case 'colorName':
+                        return this.jsFlag;
+                    case 'gemName':
+                        return this.bsFlag;
+                    case 'jewelryName':
+                        return this.ssFlag;
+                    case 'goldPrice':
+                        return this.jjFlag;
+                    case 'totalWeight':
+                        return this.jzFlag;
+                    case 'soldPrice':
+                        return this.bjFlag;
+                    case 'price':
+                        return this.sjFlag;
+                    case 'discount':
+                        return this.zkFlag;
+                    case 'cost':
+                        return this.cbFlag;
+                    case 'soldFee':
+                        return this.gfFlag;
+                    case 'tradeMan':
+                        return this.tradeManFlag;
+                    case 'createTime':
+                        return this.createTimeFlag;
+                    case 'cashTime':
+                        return this.cashTimeFlag;
+                    case 'cashier':
+                        return this.cashierFlag;
+                    case 'memberNum':
+                        return this.memberNumFlag;
+                    case 'memberName':
+                        return this.memberNameFlag;
+                    case 'memberPhone':
+                        return this.memberPhoneFlag;
+                    case 'memberSex':
+                        return this.memberSexFlag;
+                    case 'supplier':
+                        return this.supplierFlag;
+                    case 'certifiNo':
+                        return this.certifiNoFlag;
+                    case 'sectionNum':
+                        return this.sectionNumFlag;
+                    case 'fusWeight':
+                        return this.fusWeightFlag;
+                    case 'neatness':
+                        return this.neatnessFlag;
+                    case 'color':
+                        return this.colorFlag;
+                    case 'orderRemark':
+                        return this.orderRemarkFlag;
+                    case 'mainWeight':
+                        return this.mainWeightFlag;
+                    case 'payWeixin':
+                        return this.payWeixinFlag;
+                    case 'payAlipay':
+                        return this.payAlipayFlag;
+                    case 'payUnionpay':
+                        return this.payUnionpayFlag;
+                    case 'payOther':
+                        return this.payOtherFlag;
+                    case 'payCash':
+                        return this.payCashFlag;
+                    case 'principalName':
+                        return this.principalNameFlag;
+                    case 'grade':
+                        return this.gradeFlag;
+                    case 'birthday':
+                        return this.birthdayFlag;
+                    case 'memberEmail':
+                        return this.memberEmailFlag;
+                    case 'weixinhao':
+                        return this.weixinhaoFlag;
+                    case 'profession':
+                        return this.professionFlag;
+                    case 'address':
+                        return this.addressFlag;
+                    case 'label':
+                        return this.labelFlag;
+                    case 'openTime':
+                        return this.openTimeFlag;
+     
+                    
                 }
             } else {
                 switch (name) {
@@ -204,7 +348,9 @@ export default {
             //el.target.offsetParent.children[4].className = 'drop-list'
             
         },
+
         showNew (name, type) {
+            console.log(name)
             if (type == 1) {
                 switch (name) {
                     case 'barcode':
@@ -228,6 +374,136 @@ export default {
                     case 'remark':
                         this.beiFlag = true
                         break;
+
+                    case 'orderNum':
+                        this.djFlag= true
+                        break;
+                    case 'sellStatus':
+                        this.ztFlag= true
+                        break;
+                    case 'subProductType':
+                        this.cpFlag= true
+                        break;
+                    case 'colorName':
+                        this.jsFlag= true
+                        break;
+                    case 'gemName':
+                        this.bsFlag= true
+                        break;
+                    case 'jewelryName':
+                        this.ssFlag= true
+                        break;
+                    case 'goldPrice':
+                        this.jjFlag= true
+                        break;
+                    case 'totalWeight':
+                        this.jzFlag= true
+                        break;
+                    case 'soldPrice':
+                        this.bjFlag= true
+                        break;
+                    case 'price':
+                        this.sjFlag= true
+                        break;
+                    case 'discount':
+                        this.zkFlag= true
+                        break;
+                    case 'cost':
+                        this.cbFlag= true
+                        break;
+                    case 'soldFee':
+                        this.gfFlag= true
+                        break;
+                    case 'tradeMan':
+                        this.tradeManFlag= true
+                        break;
+                    case 'createTime':
+                        this.createTimeFlag= true
+                        break;
+                    case 'cashTime':
+                        this.cashTimeFlag= true
+                        break;
+                    case 'cashier':
+                        this.cashierFlag= true
+                        break;
+                    case 'memberNum':
+                        this.memberNumFlag= true
+                        break;
+                    case 'memberName':
+                        this.memberNameFlag= true
+                        break;
+                    case 'memberPhone':
+                        this.memberPhoneFlag= true
+                        break;
+                    case 'memberSex':
+                        this.memberSexFlag= true
+                        break;
+                    case 'supplier':
+                        this.supplierFlag= true
+                        break;
+                    case 'certifiNo':
+                        this.certifiNoFlag= true
+                        break;
+                    case 'sectionNum':
+                        this.sectionNumFlag= true
+                        break;
+                    case 'fusWeight':
+                        this.fusWeightFlag= true
+                        break;
+                    case 'neatness':
+                        this.neatnessFlag= true
+                        break;
+                    case 'color':
+                        this.colorFlag= true
+                        break;
+                    case 'orderRemark':
+                        this.orderRemarkFlag= true
+                        break;
+                    case 'mainWeight':
+                        this.mainWeightFlag= true
+                        break;
+                    case 'payWeixin':
+                        this.payWeixinFlag= true
+                        break;
+                    case 'payAlipay':
+                        this.payAlipayFlag= true
+                        break;
+                    case 'payUnionpay':
+                        this.payUnionpayFlag= true
+                        break;
+                    case 'payOther':
+                        this.payOtherFlag= true
+                        break;
+                    case 'payCash':
+                        this.payCashFlag= true
+                        break;
+                    case 'principalName':
+                        this.principalNameFlag= true
+                        break;
+                    case 'grade':
+                        this.gradeFlag= true
+                        break;
+                    case 'birthday':
+                        this.birthdayFlag= true
+                        break;
+                    case 'memberEmail':
+                        this.memberEmailFlag= true
+                        break;
+                    case 'weixinhao':
+                        this.weixinhaoFlag= true
+                        break;
+                    case 'profession':
+                        this.professionFlag= true
+                        break;
+                    case 'address':
+                        this.addressFlag= true
+                        break;
+                    case 'label':
+                        this.labelFlag= true
+                        break;
+                    case 'openTime':
+                        this.openTimeFlag= true
+                        break;
                 }
             } else {
                 switch (name) {
@@ -244,6 +520,7 @@ export default {
             }
             
         },
+
         cancelNew (name, type) { // 取消新增
             if (type == 1) {
                 switch (name) {
@@ -268,6 +545,138 @@ export default {
                     case 'remark':
                         this.beiFlag = false
                         break;
+
+                    case 'orderNum':
+                        this.djFlag= false
+                        break;
+                    case 'sellStatus':
+                        this.ztFlag= false
+                        break;
+                    case 'subProductType':
+                        this.cpFlag= false
+                        break;
+                    case 'colorName':
+                        this.jsFlag= false
+                        break;
+                    case 'gemName':
+                        this.bsFlag= false
+                        break;
+                    case 'jewelryName':
+                        this.ssFlag= false
+                        break;
+                    case 'goldPrice':
+                        this.jjFlag= false
+                        break;
+                    case 'totalWeight':
+                        this.jzFlag= false
+                        break;
+                    case 'soldPrice':
+                        this.bjFlag= false
+                        break;
+                    case 'soldPrice':
+                        this.sjFlag= false
+                        break;
+                    case 'discount':
+                        this.zkFlag= false
+                        break;
+                    case 'cost':
+                        this.cbFlag= false
+                        break;
+                    case 'soldFee':
+                        this.gfFlag= false
+                        break;
+                    case 'tradeMan':
+                        this.tradeManFlag= false
+                        break;
+                    case 'tradeMan':
+                        this.createTimeFlag= false
+                        break;
+                    case 'cashTime':
+                        this.cashTimeFlag= false
+                        break;
+                    case 'cashier':
+                        this.cashierFlag= false
+                        break;
+                    case 'memberNum':
+                        this.memberNumFlag= false
+                        break;
+                    case 'memberName':
+                        this.memberNameFlag= false
+                        break;
+                    case 'memberPhone':
+                        this.memberPhoneFlag= false
+                        break;
+                    case 'memberSex':
+                        this.memberSexFlag= false
+                        break;
+                    case 'supplier':
+                        this.supplierFlag= false
+                        break;
+                    case 'certifiNo':
+                        this.certifiNoFlag= false
+                        break;
+                    case 'sectionNum':
+                        this.sectionNumFlag= false
+                        break;
+                    case 'fusWeight':
+                        this.fusWeightFlag= false
+                        break;
+                    case 'neatness':
+                        this.neatnessFlag= false
+                        break;
+                    case 'color':
+                        this.colorFlag= false
+                        break;
+                    case 'orderRemark':
+                        this.orderRemarkFlag= false
+                        break;
+                    case 'mainWeight':
+                        this.mainWeightFlag= false
+                        break;
+                    case 'payWeixin':
+                        this.payWeixinFlag= false
+                        break;
+                    case 'payAlipay':
+                        this.payAlipayFlag= false
+                        break;
+                    case 'payUnionpay':
+                        this.payUnionpayFlag= false
+                        break;
+                    case 'payOther':
+                        this.payOtherFlag= false
+                        break;
+                    case 'payCash':
+                        this.payCashFlag= false
+                        break;
+                    case 'principalName':
+                        this.principalNameFlag= false
+                        break;
+                    case 'grade':
+                        this.gradeFlag= false
+                        break;
+                    case 'birthday':
+                        this.birthdayFlag= false
+                        break;
+                    case 'memberEmail':
+                        this.memberEmailFlag= false
+                        break;
+                    case 'weixinhao':
+                        this.weixinhaoFlag= false
+                        break;
+                    case 'profession':
+                        this.professionFlag= false
+                        break;
+                    case 'address':
+                        this.addressFlag= false
+                        break;
+                    case 'label':
+                        this.labelFlag= false
+                        break;
+                    case 'openTime':
+                        this.openTimeFlag= false
+                        break;
+
+
                 }
             } else {
                 switch (name) {
@@ -292,7 +701,8 @@ export default {
                 type: type,
                 aliasName: item.addName,
                 newValue: item.numName,
-                replacedValue: item.replaced
+                replacedValue: item.replaced,
+                importType:this.importType
             }
             seekAddImportSetting(options).then((res) => {
                 if (res.data.state == 200) {
@@ -319,6 +729,42 @@ export default {
             this.scdwFlag = false
             this.scdwFlag1 = false
             this.beiFlag = false
+
+            this.djFlag=false
+            this.ztFlag=false
+            this.cpFlag=false
+            this.jsFlag=false
+            this.bsFlag=false
+            this.ssFlag=false
+            this.jjFlag=false
+            this.jzFlag=false
+            this.bjFlag=false
+            this.sjFlag=false
+            this.zkFlag=false
+            this.cbFlag=false
+
+            this.gfFlag=false
+            this.tradeManFlag=false
+            this.createTimeFlag=false
+            this.cashTimeFlag=false
+            this.cashierFlag=false
+            this.memberNumFlag=false
+            this.memberNameFlag=false
+            this.memberPhoneFlag=false
+            this.memberSexFlag=false
+            this.supplierFlag=false
+            this.certifiNoFlag=false
+            this.sectionNumFlag=false
+            this.fusWeightFlag=false
+            this.neatnessFlag=false
+            this.colorFlag=false
+            this.orderRemarkFlag=false
+            this.mainWeightFlag=false
+            this.payWeixinFlag=false
+            this.payAlipayFlag=false
+            this.payUnionpayFlag=false
+            this.payOtherFlag=false
+            this.payCashFlag=false
         },
         // addNameAct1 (type, t, item) {
         //     console.log(item)
@@ -415,14 +861,17 @@ export default {
                         addFlag: false,
                         dataList: this.handInchList
                     })
-                }else {
+                } else if(item.coreName == 'brandName'){
+
+                } else {
                     Object.assign(item, {
                         isNumTrans: 'N',
                         addName: '',
                         addFlag: false,
                     })
-                }
-                // console.log(item)
+                } 
+
+                console.log(item)
                 if (i==1) {
                     this.firstList.push(item)
                 } else if (i==2) {
@@ -445,11 +894,22 @@ export default {
             // console.log(this.fiveList)
         },
         getImportSetting () { // 获取当前类数据
-            seekGetImportSetting().then((res) => {
+            let options = {
+                importType: this.importType
+            }
+            seekGetImportSetting(options).then((res) => {
                 console.log(res)
                 res.data.data.dataList.forEach((item, index) => {
                     //console.log(item)
                     if (item.name == '基本信息') {
+                        this.dataObj = item
+                        this.dataTransfer()
+                    }
+                    if(item.name == '单据') {
+                        this.dataObj = item
+                        this.dataTransfer()
+                    }
+                    if(item.name == '会员') {
                         this.dataObj = item
                         this.dataTransfer()
                     }

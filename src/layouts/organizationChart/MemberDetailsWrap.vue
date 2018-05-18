@@ -183,7 +183,7 @@
         }
       },
       'userInfo' (val) {
-        console.log('啦啦啦啦啦啦',val)
+        // console.log('啦啦啦啦啦啦',val)
         this.operateNum = null
       },
       'positionData' (val) {
@@ -209,14 +209,15 @@
         this.getRoleName()
       },
       'checkAll' (val) {
-        console.log('99999999999',val)
+        // console.log('99999999999',val)
       },
       'checkID' (val){
-        console.log('11111111111111111111112 begin')
-        this.getAllCheckList()
+        // console.log('11111111111111111111112 begin')
+        // console.log(val)
         this.getLookShop()
         this.getCanSeeShop()
-        console.log('11111111111111111111112 end')
+        this.getAllCheckList()
+        // console.log('11111111111111111111112 end')
       }
 
     },
@@ -330,13 +331,13 @@
         for (let i of roleList) {
           names = `${names}、${statusPosition(i)}`
         }
-        console.log(roleList)
+        // console.log(roleList)
         //return names.slice(1, names.length)
         this.roleName = names.slice(1, names.length)
-        console.log(this.roleName)
+        // console.log(this.roleName)
       },
       switchsChange (parm) {
-        console.log(parm)
+        // console.log(parm)
       },
       changeRoleName (parm) {
         if (parm === '5' || parm === '6') {
@@ -351,7 +352,7 @@
           }
           operatePrivilege(options)
             .then(res => {
-              console.log(res)
+              // console.log(res)
               this.$emit('_seekGetDepUserList')
               if (parm === '5') {
                 this.roleName = '管理员'
@@ -455,7 +456,7 @@
               } else {
                 this.settingUserRole.costFlag = 'N'
               }
-              console.log(this.settingUserRole.costFlag)
+              // console.log(this.settingUserRole.costFlag)
             } else {
               this.$store.dispatch('workPopupError', res.data.msg);
             }
@@ -478,11 +479,11 @@
         let operateType = '';
         // if (this.userInfo.isCompany) { // 是公司的操作
         // }//operateType字段： 副管理员：1 ， 职员：2，店长：3，店员：4，监察员：6
-        console.log(this.positionData.roleList[0].role)        
-        console.log(this.userInfo.userId)
+        // console.log(this.positionData.roleList[0].role)        
+        // console.log(this.userInfo.userId)
 
         switch (this.positionData.roleList[0].role) {
-          case '2':
+            case '2':
             operateType = '1'
             break;
             case '3':
@@ -491,7 +492,11 @@
             case '4':
             operateType = '3';
             break;
+            case '6':
+            operateType = '2';
+            break;
         }
+        console.log(this.positionData.roleList[0].role)
 
         if(this.positionData.roleList[0].role === '6'){
           let options = {
@@ -522,13 +527,14 @@
           if (this.positionData.roleList[0].shopId) {
             options.dataList[0].operateType = '4'
           }
+          // console.log('请求的参数',options)
           operatePrivilege(options)
             .then(res => {
               if (res.data.state === 200) {
                 this.$store.dispatch('workPopupError', '删除成功');
                 this.$emit('_seekGetDepUserList')
                 this.getSeekCompanyInfo();
-                setTimeout(window.location.reload(),500);
+                // setTimeout(window.location.reload(),500);
               } else {
                 this.$store.dispatch('workPopupError', res.data.msg);
               }
@@ -541,21 +547,10 @@
       addBtn () {
         this.$emit('addBtn')
       },
-      // handleCheckAllChange(val) {
-      //   this.checkedCities = val ? cityOptions : [];
-      //   this.isIndeterminate = false;
-      // },
-      // handleCheckedCitiesChange(value) {
-      //   let checkedCount = value.length;
-      //   this.checkAll = checkedCount === this.cities.length;
-      //   this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
-      // },
+      
       // 全选方法
       storeCheckAll(val){
-        // console.log(this.checked)
-        // console.log(this.checkList)
         let oldData = this.checkList
-        console.log('嘿',oldData)
         let newListData = []
         if(this.checked){
           for(let i=0;i<oldData.length;i++){
@@ -570,7 +565,7 @@
           }
           this.checkitemLits = this.getItemArray(newListData)
         }
-        console.log('嘿嘿',newListData)
+        // console.log('嘿嘿',newListData)
 
         this.checkList = newListData
 
@@ -602,7 +597,7 @@
             let allListData = this.checkList
 
             for(let i = 0;i<newValArray.length;i++){
-              console.log(newValArray[i])
+              // console.log(newValArray[i])
               allListData.forEach(item => {
                 if(item.shopId == newValArray[i]){
                   addnewListData.push(item)
@@ -611,8 +606,8 @@
                 }
             })
 
-            console.log(addnewListData)
-            console.log(delnewListData)
+            // console.log(addnewListData)
+            // console.log(delnewListData)
           }
 
           this.getOneCheck(addnewListData,'1')
@@ -624,7 +619,7 @@
       getItemArray(data){
         let newData =[]
         newData = data.map(item => {
-          console.log(item)
+          // console.log(item)
           if(item.status === 'N'){
             return item.shopId
           }
@@ -699,7 +694,7 @@
         })
       },
       getAllCheckList(){
-        console.log('调用了')
+        // console.log('调用了')
         if(!this.checkID){
           return
         }
@@ -712,7 +707,8 @@
           if(res.data.state === 200){
             this.checkList = res.data.data.dataList
             this.checkitemLits = this.getItemArray(this.checkList)
-            console.log('嘿',this.checkList)
+            this.checked = this.getCheckCount(this.checkList)
+            // console.log('嘿',this.checkList)
           } else {
             this.$store.dispatch('workPopupError', res.data.msg);
           }
@@ -730,7 +726,7 @@
           if(res.data.state === 200){
             // this.storeData = res.data.data.dataList
             this.checked = this.getCheckCount(this.storeData)
-            console.log('所有的店铺',this.checked)
+            // console.log('所有的店铺',this.checked)
           } else {
             this.$store.dispatch('workPopupError', res.data.msg);
           }
@@ -746,10 +742,9 @@
         }
         lookStore(options).then(res => {
           if(res.data.state === 200){
-            console.log(this.storeData)
             this.storeData = res.data.data.dataList
             // this.checked = this.getCheckCount(this.storeData)
-            // console.log('所有的店铺',this.checked)
+            console.log('所有的店铺',this.storeData)
           } else {
             this.$store.dispatch('workPopupError', res.data.msg);
           }
@@ -765,7 +760,6 @@
             count++
           }
         }
-        console.log('N的个数 还有店铺数',count,data)
         if(data.length !== 0 && count === data.length){
           return true
         }

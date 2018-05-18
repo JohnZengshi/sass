@@ -191,7 +191,8 @@
 					type: 3,
 					beginTime: this.selectDate.beginTime,
 					endTime: this.selectDate.endTime,
-					shopId: this.selectDate.shopId
+					shopId: this.selectDate.shopId,
+					sellStatus:'1'
 				}).then((res) => {
 					if(res.data.state === 200) {
 						this.sellStorage = res.data.data

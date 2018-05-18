@@ -289,8 +289,10 @@
         this.shopId = ''
         this.operateType = '1'
         this.isQueryOption = true
+        this.isInspector = false        
       },
       addInspector(){ // 添加监察员
+        this.shopId = ''      
         this.isInspector = true
         this.isQueryOption = true        
       },
@@ -298,6 +300,7 @@
         this.shopId = ''
         this.isQueryOption = true
         this.operateType = '2'
+        this.isInspector = false        
       },
       lookDetail (item, parm, index) {
         console.log('点了查看')

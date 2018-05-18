@@ -6,7 +6,7 @@
 			<a v-if="!Jrole" href="javascript: void(0)" @click="newPopup.JinBaiF = true">智能导入</a>
 			<a v-if="!Jrole" :href="downUrl">模板下载</a>
 			<a v-if="!Jrole" href="javascript: void(0)" @click="ruleOptionDia = true">导入规则</a>
-			<!-- <a v-if="!Jrole" href="javascript: void(0)" @click="SmartImport()">智能导入</a>
+			<!-- <a v-if="!Jrole" href="javascript: void(0)" @click="SmartImport()">导入中心</a>
 			<a v-if="!Jrole" href="javascript: void(0)" @click="downloadTemplate()">模板下载</a>
 			<a v-if="!Jrole" href="javascript: void(0)" @click="importRules()">导入规则</a> -->
 		</div>
@@ -42,6 +42,7 @@
 						</thead>
 					</table>
 				</div>
+
 				<div class="jbf-table-inner jbf-table-body" @scroll="onScroll($event)">
 					<table class="new-template-table" cellpadding="0" cellspacing="0">
 						<tbody>
@@ -84,7 +85,7 @@
 			</div>
 		</div>
 
-		<NewPopup v-if="newPopup.JinBaiF" :newPopup="newPopup.JinBaiF" @closePopup="closePopup"></NewPopup>
+		<NewPopup v-if="newPopup.JinBaiF" :newPopup="newPopup.JinBaiF" :importType="importType" @closePopup="closePopup"></NewPopup>
 
 		<el-dialog top="40px" :show-close="true" :visible.sync="ruleOptionDia" customClass="ruleOption">
 			<div class="rule-title"><i class="iconfont icon-liebiao"></i>导入配置</div>
@@ -98,7 +99,7 @@
 			</div>
 			<!-- tab切换的内容 -->
 			<div class="page-wrap">
-				<component :is="panel" :ruleOptionDia="ruleOptionDia"></component>
+				<component :importType='importType' :is="panel" :ruleOptionDia="ruleOptionDia"></component>
 			</div>
 			<!-- 尾部的约束 -->
 			<div class="page-footer">
@@ -225,6 +226,7 @@
 				xsRole:true,
 				hyRole:true,
 				roleData: '',
+				importType:'1'
 			}
 		},
 		computed: {
@@ -679,14 +681,28 @@
 					if(title === '智能导入'){
 						console.log(title)
 						this.newPopup.JinBaiF = true
-						this.dialogVisible = false										
+						this.dialogVisible = false
+						this.importType = '1'																
 						
 					}
 					if(title === '导入配置'){
 						console.log(title)
 						this.ruleOptionDia = true
-						this.dialogVisible = false										
-						
+						this.dialogVisible = false
+						this.importType = '1'
+						console.log('导入配置',this.importType)
+						this.tabList = [
+							'基本信息',
+							'产品类型',
+							'重量',
+							'证书',
+							'主石',
+							'副石',
+							'工费',
+							'配件',
+							'其他费用',
+							'标价',
+						]													
 					}
 				} else {
 					return
@@ -701,7 +717,7 @@
 						this.dialogVisible = false										
 					}
 					if(title === '智能导入'){
-						
+						this.importType = '2'						
 						this.newPopup.JinBaiF = true
 						this.dialogVisible = false															
 						
@@ -710,9 +726,10 @@
 						console.log(title)
 						this.ruleOptionDia = true
 						this.dialogVisible = false
-						
-						
-						
+						this.importType = '2'
+						this.tabList = ['单据']
+						console.log('导入配置',this.importType)													
+						this.panel = BasePage
 					}
 				} else {
 					return
@@ -729,14 +746,19 @@
 					if(title === '智能导入'){
 						console.log(title)
 						this.newPopup.JinBaiF = true
-						this.dialogVisible = false															
+						this.dialogVisible = false
+						this.importType = '3'
+						console.log(this.diaryList)																					
 						
 					}
 					if(title === '导入配置'){
 						console.log(title)
 						this.ruleOptionDia = true
-						this.dialogVisible = false										
-						
+						this.dialogVisible = false			
+						this.importType = '3'
+						this.tabList=['会员']
+						console.log('导入配置',this.importType)							
+						this.panel = BasePage
 					}
 				} else {
 					return

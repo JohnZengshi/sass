@@ -8,7 +8,7 @@
                 </p>   
             </div>
             <div  class="jinbaifu-wrap">
-                <div class="choose-wrap clearfix" v-if="type != 2 ">
+                <div class="choose-wrap clearfix" v-if="type != 2 && importType == 1">
                     <p>选择仓库</p>
                     <ul class="clearfix">
                         <li :title="item.repositoryName" :class="{actions: item.repositoryId == newDatas.repositoryId}" v-for="(item,index) in repositoryList" :key="index" @click="getRepositoryId(item.repositoryId)">
@@ -26,7 +26,7 @@
                             </li>
                         </ul>
                     <!--     <div :key="index" v-if="isRepository[index]" class="xj-radio-wrap counter-radio-20"> -->
-                        <div :key="index" class="xj-radio-wrap counter-radio-20">
+                        <div :key="index" class="xj-radio-wrap counter-radio-20" v-if="importType == 1">
                             <el-radio-group v-model="changeCounterId" @change="changeCounter">
                                 <div class="counter-wrap" v-for="(item,index) of counterList" :key="index">
                                     <el-radio  :label="item.counterId">{{item.counterName}}</el-radio>
@@ -94,7 +94,7 @@ export default {
         }
     },
     props: [
-        'newPopup'
+        'newPopup','importType'
     ],
     watch: {
         'newPopup': function () {
@@ -216,7 +216,12 @@ export default {
             this.newDatas.shopId = parm
             this.isRepository = []
             this.isRepository[index] = true
-            this._seekShowCounterList(parm, index)
+
+            if(this.importType == 1){
+                this._seekShowCounterList(parm, index)
+            }else {
+                this.counterList = []
+            }
         },
         uploadingOne (e) {
             //var files = e.currentTarget.files[0];
@@ -259,8 +264,12 @@ export default {
               })
             }else if( this.changeCounterId != ''){ //柜组
               Object.assign(data.data,{
-                 counterId : this.changeCounterId
+                    counterId : this.changeCounterId
               })
+            } else if(this.newDatas.shopId != '') {
+                Object.assign(data.data,{
+                    shopId : this.newDatas.shopId
+                })
             }
             fileData.append("data", JSON.stringify(data));
             console.log("参数数据查看：",data);
@@ -269,28 +278,30 @@ export default {
         },
         // 判断是否填写参数
         jinbaifuUpload () {
+            // 入库导入
+            if(this.importType == 1){
+                if ( this.newDatas.shopId != '' && this.changeCounterId == '') {
+                    return this.$store.dispatch('workPopupError', "请选择柜组")
+                }
+
+                if ( this.newDatas.repositoryId == '' && this.changeCounterId == '') {
+                    return this.$store.dispatch('workPopupError', "请选择导入位置")
+                }
             
-            if ( this.newDatas.shopId != '' && this.changeCounterId == '') {
-                return this.$store.dispatch('workPopupError', "请选择柜组")
-            }
-            if ( this.newDatas.repositoryId == '' && this.changeCounterId == '') {
-                return this.$store.dispatch('workPopupError', "请选择导入位置")
-            }
-            
-            if ( this.fileUrl == '') {
-                return this.$store.dispatch('workPopupError', "请选择文件")
-            }
+                if ( this.fileUrl == '') {
+                    return this.$store.dispatch('workPopupError', "请选择文件")
+                }
                         
-            this.addFileData()
-            if (!this.jinbaifuDate) {
-                return this.$store.dispatch('workPopupError', "请选择")
-            }
-           
-            this.fullscreenLoading = true;
-            // var url = INTERFACE_URL_9097 + "/b1/rukuAutoUpload"
-            let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8088' : ''
-            let url = serverHost + "/b1/rukuAutoUpload"
-            let xhr = this.$http.post(url, this.jinbaifuDate).then((response) => {
+                this.addFileData()
+                if (!this.jinbaifuDate) {
+                    return this.$store.dispatch('workPopupError', "请选择")
+                }
+                console.log(this.jinbaifuDate)
+                this.fullscreenLoading = true;
+                // var url = INTERFACE_URL_9097 + "/b1/rukuAutoUpload"
+                let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8088' : ''
+                let url = serverHost + "/b1/rukuAutoUpload"
+                let xhr = this.$http.post(url, this.jinbaifuDate).then((response) => {
                 this.fullscreenLoading = false;
                 if (response.data.state === 200) {
                     if( response.data.data.flag == 1){
@@ -302,12 +313,73 @@ export default {
                 } else {
                     this.$store.dispatch('workPopupError', response.data.msg);
                 }
-            }, (response) => {
+                }, (response) => {
+                    this.$store.dispatch('workPopupError', response.data.msg);
+                }).catch((e)=>{
+                    console.log(e);
+                    this.$store.dispatch('workPopupError', response.data.msg);
+                })
+            } else if(this.importType == 2) {
+                if(this.newDatas.shopId == '') {
+                    return this.$store.dispatch('workPopupError', "请选择店铺")
+                }
+                this.fullscreenLoading = true;
+                // var url = INTERFACE_URL_9097 + "/b1/rukuAutoUpload"
+                let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8088' : ''
+                let url = serverHost + "/b1/importOrderFile"
+                this.addFileData()
+                if (!this.jinbaifuDate) {
+                    return this.$store.dispatch('workPopupError', "请选择")
+                }
+                let xhr = this.$http.post(url, this.jinbaifuDate).then((response) => {
+                this.fullscreenLoading = false;
+                if (response.data.state === 200) {
+                    this.closeCb();                    
+                    if( response.data.data.flag == 1){
+                      this.$store.dispatch('workPopupError', response.data.data.message);
+                    }else if( response.data.data.flag == 0){
+                      this.$store.dispatch('workPopupError', response.data.data.message);
+                    }
+                } else {
+                    this.$store.dispatch('workPopupError', response.data.msg);
+                }
+                }, (response) => {
+                    this.$store.dispatch('workPopupError', response.data.msg);
+                }).catch((e)=>{
+                    console.log(e);
                 this.$store.dispatch('workPopupError', response.data.msg);
-            }).catch((e)=>{
-              console.log(e);
-              this.$store.dispatch('workPopupError', response.data.msg);
-            })
+                })
+            } else if(this.importType == 3){
+                if(this.newDatas.shopId == '') {
+                    return this.$store.dispatch('workPopupError', "请选择店铺")
+                }
+                this.fullscreenLoading = true;
+                // var url = INTERFACE_URL_9097 + "/b1/rukuAutoUpload"
+                let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8088' : ''
+                let url = serverHost + "/b1/importMemberFile"
+                this.addFileData()
+                if (!this.jinbaifuDate) {
+                    return this.$store.dispatch('workPopupError', "请选择")
+                }
+                let xhr = this.$http.post(url, this.jinbaifuDate).then((response) => {
+                this.fullscreenLoading = false;
+                if (response.data.state === 200) {
+                    this.closeCb();                    
+                    if( response.data.data.flag == 1){
+                      this.$store.dispatch('workPopupError', response.data.data.message);
+                    }else if( response.data.data.flag == 0){
+                      this.$store.dispatch('workPopupError', response.data.data.message);
+                    }
+                } else {
+                    this.$store.dispatch('workPopupError', response.data.msg);
+                }
+                }, (response) => {
+                    this.$store.dispatch('workPopupError', response.data.msg);
+                }).catch((e)=>{
+                    console.log(e);
+                    this.$store.dispatch('workPopupError', response.data.msg);
+                })
+            }
         },
 
         closeCb () {

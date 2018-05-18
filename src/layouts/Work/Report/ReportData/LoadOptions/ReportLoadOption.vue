@@ -3,8 +3,8 @@
     <div id="loadControl" class="loadControl" >
         <p><span @click="LoadOptionsDefault">更多未读取数据</span> <a href="javascript:void(0)" @click="isLoadOptions">切换</a></p>
         <ul v-show="isShow" class="LoadOptions" @click="getNewListData($event)">
-            <li class="action" data-index="0">加载10条</li>
-            <li data-index="1">加载20条</li>
+            <li class="action" data-index="0">加载30条</li>
+            <li data-index="1">加载50条</li>
             <li data-index="2">加载100条</li>
             <li data-index="3">全部加载</li>
         </ul>  
@@ -23,7 +23,7 @@
   opacity: 0;
   transition: all .5s;
   &:hover {
-      opacity: 1;
+      opacity: 1 !important;
   }
   a{
     color:#b6b2aa;
@@ -73,7 +73,7 @@ export default {
     data () {
         return {
             isShow: false,
-            pageSizeNum: 10
+            pageSizeNum: 30
         }
     },
     methods: {
@@ -94,10 +94,10 @@ export default {
             // 页面加载
             switch (e.target.dataset.index) {
             case '0':
-                this.pageSizeNum = 10
+                this.pageSizeNum = 30
                 break;
             case '1':
-                this.pageSizeNum = 20            
+                this.pageSizeNum = 50            
                 break;
             case '2':
                 this.pageSizeNum = 100            
