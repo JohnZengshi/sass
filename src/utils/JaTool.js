@@ -70,6 +70,9 @@ export const JaTools = {
 				"transform": "rotate(" + page.rotateDeg + "deg)",
 		});
 		for(let data of list) {
+			if(!data.isNullPrint && !data.sample){
+				continue;
+			}
 			let box = $("<div>");
 			if(data.componnent =="line"){//线条
 				box = $("<hr>");
