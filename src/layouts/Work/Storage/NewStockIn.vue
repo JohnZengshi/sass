@@ -3748,6 +3748,7 @@ export default {
             })
         },
         previewTemplate (canvas, selectedProducts, isPrint) {
+            debugger
             this.print.canvas = canvas
             if (selectedProducts.length) {
                 this.$store.dispatch('getPrintLabelData', {
@@ -3779,6 +3780,7 @@ export default {
         },
         //预览模板
         printTemplate () {
+            debugger
             Vue.nextTick(() => {
                 this.$refs.lodop.multipagePrint()
             })

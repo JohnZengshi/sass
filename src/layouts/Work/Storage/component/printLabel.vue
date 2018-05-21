@@ -253,6 +253,7 @@
 				}
 			},
 			previewTemplate(canvas, selectedProducts, isPrint) {
+				debugger
 				if(selectedProducts.length > 0) {
 					let productList = selectedProducts.map(selectedProduct => {
 						return {
@@ -261,6 +262,7 @@
 					});
 					this.$store.dispatch('getPrintLabelData', {productList:productList}).then(json => {
 						if(json.state == 200) {
+							debugger
 							this.$set(this.print, 'templateData', json.data)
 							//this.print.templateData = json.data;
 							this.print.isPreview = true;
@@ -268,11 +270,13 @@
 						}
 					})
 				} else {
+					debugger
 					this.$store.dispatch('getPrintLabelData', {
 						isTmp: 1,
 						productType: 1
 					}).then(json => {
 						if(json.state == 200) {
+							debugger
 							this.print.templateData.productList = json.data.productList.slice(0, 1)
 							this.print.isPreview = true
 							this.printTemplate(canvas, json.data.productList);
@@ -282,6 +286,7 @@
 			},
 			//预览模板
 			printTemplate(templateList, dataList){
+				debugger
 				JaTools.print(templateList, dataList);
 			},
 			reportsPrintRK(){ // 获取单据打印数据

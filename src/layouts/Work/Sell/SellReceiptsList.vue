@@ -538,10 +538,10 @@
 			<remarkTit ref="remarkTitWrap" :boundingData="boundingData"></remarkTit>
 			
 			<!--打印模块-->
-			<div style="display: none;">
+<!-- 			<div style="display: none;"> -->
 				<sell-template title="销售" ref="sellTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></sell-template>
 				<warranty-template :template="warrantyTemplate.template" :dataList="warrantyTemplate.dataList"></warranty-template>
-			</div>
+<!-- 			</div> -->
 			
 		</div>
 	</transition>
@@ -1676,11 +1676,13 @@
 				});
 			},
 			print(){
+				debugger
 				this.cashierDialog = false
 				let selectedTemplate = find(this.qualityTemplateList, {
 					templateId: this.templateId
 				})
 				this.$emit('printOrder', this.orderNum, selectedTemplate && JSON.parse(selectedTemplate.content))
+				debugger
 				this.printOrder(this.$route.query.orderNumber, selectedTemplate && JSON.parse(selectedTemplate.content))
 			},
 			orderPay() { // 单据操作收银
@@ -2001,7 +2003,7 @@
 						}
 						this.templateData = json.data
 						this.isPreview = true
-						this.windowPrint(template, json.data)
+						this.windowPrint1(template, json.data)
 					}else {
 						this.$message({
 							message: json.msg,
@@ -2013,6 +2015,7 @@
 
 			//质保单打印
 			windowPrint1(templateList, data){
+				debugger
 				this.warrantyTemplate.template = templateList;
 				this.warrantyTemplate.dataList = data;
 			},
@@ -2644,7 +2647,6 @@
 						this.receiptsIntroList = response.data.data;
 						// this.cashStatus = res.data.data.cashStatus
 						this.getShopUserList(response.data.data.shopId)
-						debugger
 						this.seekGetTemplateList(response.data.data.shopId)
 						if(response.data.data.makeOrderManId == sessionStorage.getItem('id')) {
 							this.isMakeMan = true

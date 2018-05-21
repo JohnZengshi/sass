@@ -28,6 +28,12 @@
 				<div v-if="dynamicList.type=='ItemListComponent'" :style="dynamicList.data|BASE_W_H_STYLE">
 					<div v-for="children in dynamicList.list" style="position: relative;width: 100%;height: 25px;">
 						<template v-for="item in children">
+<!-- 									// 空值打印
+			if(!data.isNullPrint && !data.sample && (data.type == "PropertyComponent")){
+				continue;
+			} -->
+							<!-- 空值打印 -->
+<!-- 							<div v-if="!item.isNullPrint && !item.sample && (item.type == 'PropertyComponent')" :style="item.data|DYNAMIC_STYLE"> -->
 							<!--销售产品数据-->
 							<div v-if="item.type=='PropertyComponent'" :style="item.data|DYNAMIC_STYLE">
 								<!--条形码-->
@@ -168,11 +174,15 @@
 		mounted() {},
 		methods: {
 			trancation(dataList, template) {
+				sessionStorage.setItem('数据源dataList', JSON.stringify(dataList))
+				sessionStorage.setItem('数据源template', JSON.stringify(template))
 				template = this.filterTemplateGroup(template);
 				//计算页码
 				let pageNumber = this.computingPageNumber(template, dataList.productList.length);
 				//生成对象
 				this.pageList = this.pageFactory(pageNumber, dataList, template);
+				sessionStorage.setItem('生成对象pageList', JSON.stringify(this.pageList))
+				debugger
 				this.print();
 			},
 			/**
@@ -205,6 +215,7 @@
 					item.baseList = this.getBaseList(dataList, template);
 					//获取模板动态域信息
 					item.dynamicList = this.getDynamicList(i, pageNumber, dataList, template);
+					// item.dynamicList = [];
 					pageList.push(item);
 				}
 				return pageList;
@@ -212,13 +223,24 @@
 			getBaseList(dataList, template) {
 				let list = [];
 				for(let component of template.components) {
+						// debugger
+					// ItemListComponent（动态）  ContainerComponent（组合）
 					if(component.type != "ItemListComponent" && component.type != "ContainerComponent") {
-						let array = _.concat(dataList.baseInfoList, _.nth(dataList.productList, 0));
+						// 获取基本信息时，默认把第一个产品信息当做基本信息使用-----用户非法输入 -start
+						let array = _.concat(dataList.baseInfoList, dataList.productList[0].codeList);
+						// let array = _.concat(dataList.baseInfoList);
 						let temp = _.find(array, (o) => {
+							// debugger
+							console.log('o.key', o.key)
 							return o.key == component.data.propertyCode
 						})
+
+						debugger
+
 						if(temp) component.lable = temp.value;
+						// -start
 						list.push(component);
+
 					}
 				}
 				return list;
@@ -231,6 +253,7 @@
 				for(let item of template.components) {
 					if(item.type == "ItemListComponent") {
 						item.list = [];
+						// 数据条数  打印配置里的动态数据域条数
 						let start = index * item.data.number;
 						let end = index * item.data.number + item.data.number;
 						if(start > dataList.productList.length) continue;
@@ -238,6 +261,7 @@
 						for(let product of productList) {
 							let childrenList = [];
 							for(let children of item.data.children) {
+								// 获取动态数据，用户非法把基本信息拖到了动态域里-----用户非法输入 -dataList.baseInfoList
 								let array = _.concat(product.codeList, dataList.baseInfoList);
 								let temp = _.find(array, (o) => {
 									return o.key == children.data.propertyCode
@@ -255,7 +279,7 @@
 			/**
 			 * 计算页数
 			 */
-			computingPageNumber(template, length) {
+			computingPageNumber(template, length) { // length-> 商品集合的长度
 				//页码集合，取最大页码
 				let numbers = [];
 				for(let item of template.components) {

@@ -192,6 +192,7 @@ export default {
             this.$refs.qualityTemplateSelectorDialog.show();
         },
         printOrder (orderNumber, template) {
+            debugger
             this.$refs.qualityTemplateSelectorDialog.close();
         }
     }

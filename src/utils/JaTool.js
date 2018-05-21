@@ -9,6 +9,7 @@ export const JaTools = {
 		let jcp = getJCP();
 		let pageList = JaTools.transformation(template, dataList);
 		let html = [];
+		// 默认打印边距  noMargins
 		let myDoc = {copyrights:'西金网络科技拥有版权  www.yunzhubao.com', noMargins:true};
 		for(let page of pageList){
 			html.push(JaTools.transformationDataToHtml(page));
@@ -24,6 +25,7 @@ export const JaTools = {
 	 */
 	transformation(template, dataList){
 		let pageList = [];
+		JaTools.filterTemplateGroup(template)
 		for(let item of dataList){
 			let page = [];
 			for(let components of template.components){
@@ -35,6 +37,7 @@ export const JaTools = {
 			}
 			pageList.push({page:page, width:template.width, height:template.height, rotateDeg:template.rotateDeg});
 		}
+		// debugger
 		return pageList;
 	},
 	/**
@@ -43,6 +46,7 @@ export const JaTools = {
 	getComponnent(type, propertyType, propertyCode){
 		switch(type){
 				case "PropertyComponent":
+					// 4条形码
 					return propertyType == 4?"charCode":propertyCode;
 				break
 				case "LineComponent":
@@ -58,6 +62,23 @@ export const JaTools = {
 				break
 		}
 	},
+		/**
+	 * 过滤掉模板分组
+	 */
+	filterTemplateGroup(template){
+		for(let component of template.components) {
+			if(component.type == "ContainerComponent") {
+				template.components = _.concat(template.components, component.data.children);
+			}else if(component.type == "ItemListComponent") {
+				for(let item of component.data.children){
+					if(item.type == "ContainerComponent") {
+						component.data.children = _.concat(component.data.children, item.data.children);
+					}
+				}
+			}
+		}
+		return template;
+	},
 	/**
 	 * 将数据转成页面
 	 */
@@ -70,6 +91,7 @@ export const JaTools = {
 				"transform": "rotate(" + page.rotateDeg + "deg)",
 		});
 		for(let data of list) {
+			// 空值打印
 			if(!data.isNullPrint && !data.sample && (data.type == "PropertyComponent")){
 				continue;
 			}
@@ -121,6 +143,7 @@ export const JaTools = {
 					break;
 					//条形码
 				case "charCode":
+				
 					box.css({
 						"width": data.width + "mm",
 						"height": data.height + "mm"
