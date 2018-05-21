@@ -173,7 +173,7 @@ export default {
   
   >.steps-item{
     color: #d6d6d6;
-    height: 80px;
+    height: 60px;
     position: relative;
     font-size: 12px;
     display: flex;

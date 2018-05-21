@@ -107,7 +107,7 @@
                                         <div>{{f3.barcode}}</div>
                                     </div>
                                     <div class="item">
-                                        <label>金重</label>
+                                        <label>件重</label>
                                         <div>{{f3.goldWeight}}<span>g</span></div>
                                     </div>
                                     <div class="item">
@@ -161,6 +161,7 @@ export default {
                 this.getMemberInfo()
                 this.latelyBuyRecord()
             }
+            console.log('数据',this.buyInfo)
         }
 
     },
@@ -171,6 +172,7 @@ export default {
             theme: "minimal-dark",
             axis: "y"
         });
+
     },
     methods: {
         openOrderList (index) {
