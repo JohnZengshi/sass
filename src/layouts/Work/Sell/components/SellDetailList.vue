@@ -147,13 +147,14 @@
 
 		<!-- 				<span v-if="status != 1 || multipleIdentities == 'N' && isOrderMan == false && status == 1 || companyPosition != 4 && companyPosition != 5 && multipleIdentities == 'N' || multipleIdentities == 'Y' && isOrderMan == false && status == 1 && companyPosition != 4 && companyPosition != 5"> -->
                          <!-- v-bind:value="(item.price).indexOf('-')>0?item.price:'-'+item.price"  -->
-						{{item.price?"-":""}}
-						<input v-if="status == 2 && shopRole" type="text" v-model="item.price"  @keyup="computeFun(item, '回购价')" @keyup.enter="sendData(item, '回购价', item.calcMethod)" @blur="sendData(item, '回购价', item.calcMethod)">
-                         <!-- v-model="item.price" -->
-						<span v-else>
-								-{{item.price}}
-								<!-- {{(item.price).indexOf('-')>0?item.price:'-'+item.price}} -->
-						</span>
+          <template v-if="status == 2 && shopRole">
+           	{{item.price?"-":""}}
+           	<input type="text" v-model="item.price"  @keyup="computeFun(item, '回购价')" @keyup.enter="sendData(item, '回购价', item.calcMethod)" @blur="sendData(item, '回购价', item.calcMethod)">
+          </template>
+					<span v-else>
+							-{{item.price}}
+							<!-- {{(item.price).indexOf('-')>0?item.price:'-'+item.price}} -->
+					</span>
 					</div> <!--  :placeholder="unit4(item.price)" -->
 				<i>元</i>
 			</div>
