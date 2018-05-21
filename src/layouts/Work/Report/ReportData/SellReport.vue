@@ -80,6 +80,7 @@
 						<div class="xj-switch" v-if="sellShowId == 'sales'">
 							<span class="btn" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" :class="{active: tabSwitch}">专列项</span>
 						</div>
+
 						<template v-if="sellShowId == 'sales' || sellShowId == 'buyback' ">
 							<div class="tab">
 								<span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span>
@@ -88,7 +89,7 @@
 								<span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(3, 4)" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义
               <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
               <div class="customDia" ref="customDia">
-              <div class="body" v-if="openReset">
+              <div class="body">
                   <div class="list-wrap">
                   <ul>
                       <li></li>
@@ -99,7 +100,7 @@
                   <ul>
                       <li>计重类</li>
                       <li>
-                      <DropDownMenu
+                      <ZDYDropDownMenu
                           titleName="不选"
                           dataType="customDia"
                           dataDataType="成色名称-计重"
@@ -107,10 +108,10 @@
                           :resetFlag='resetFlag'
                           @infoBack="diaInfoBack"
                       >
-                      </DropDownMenu>
+                      </ZDYDropDownMenu>
                       </li>
                       <li>
-                      <DropDownMenu
+                      <ZDYDropDownMenu
                           titleName="不选"
                           dataType="customDia"
                           dataDataType="宝石名称-计重"
@@ -118,10 +119,10 @@
                           :resetFlag='resetFlag'
                           @infoBack="diaInfoBack"
                       >
-                      </DropDownMenu>
+                      </ZDYDropDownMenu>
                       </li>
                       <li>
-                      <DropDownMenu
+                      <ZDYDropDownMenu
                           titleName="大类"
                           dataType="customDia"
                           dataDataType="首饰类别-计重"
@@ -129,13 +130,13 @@
                           :resetFlag='resetFlag'
                           @infoBack="diaInfoBack"
                       >
-                      </DropDownMenu>
+                      </ZDYDropDownMenu>
                       </li>
                   </ul>
                   <ul>
                       <li>计件类</li>
                       <li>
-                      <DropDownMenu
+                      <ZDYDropDownMenu
                           titleName="不选"
                           dataType="customDia"
                           dataDataType="成色名称-计件"
@@ -143,10 +144,10 @@
                           :resetFlag='resetFlag'
                           @infoBack="diaInfoBack"
                       >
-                      </DropDownMenu>
+                      </ZDYDropDownMenu>
                       </li>
                       <li>
-                      <DropDownMenu
+                      <ZDYDropDownMenu
                           titleName="不选"
                           dataType="customDia"
                           dataDataType="宝石名称-计件"
@@ -154,10 +155,10 @@
                           :resetFlag='resetFlag'
                           @infoBack="diaInfoBack"
                       >
-                      </DropDownMenu>
+                      </ZDYDropDownMenu>
                       </li>
                       <li>
-                      <DropDownMenu
+                      <ZDYDropDownMenu
                           titleName="大类"
                           dataType="customDia"
                           dataDataType="首饰类别-计件"
@@ -165,7 +166,7 @@
                           :resetFlag='resetFlag'
                           @infoBack="diaInfoBack"
                       >
-                      </DropDownMenu>
+                      </ZDYDropDownMenu>
                       </li>
                   </ul>
                   </div>
@@ -289,7 +290,8 @@ import {
 import ReportDetail from "./sell/newDataGrid/sell";
 import ReportDetailTrade from "./sell/newDataGrid/buyback";
 import ReportDetailCollect from "./sell/collect";
-import DropDownMenu from "./../../../../components/template/DropDownMenu";
+import DropDownMenu from "./../../../../components/template/DropDownMenu"
+import ZDYDropDownMenu from "./../../../../components/template/DropDownMenu1"
 //打印模块
 import TablePrintSell from "./sell/print/sellPrint";
 import TablePrintTrade from "./sell/print/buybackPrint";
@@ -323,7 +325,8 @@ export default {
     projectTypeTemplate,
     intelligenceTypeTemplate,
     customTemplate,
-    ReportLoad
+    ReportLoad,
+    ZDYDropDownMenu
   },
   data() {
     return {
@@ -652,10 +655,6 @@ export default {
       }
     },
     resetOption() {
-      this.openReset = false;
-      setTimeout(() => {
-        this.openReset = true;
-      }, 100);
       this.dataGridOptions.wColorId = "";
       this.dataGridOptions.wGemId = "";
       this.dataGridOptions.wJewelryId = "1";
@@ -663,12 +662,11 @@ export default {
       this.dataGridOptions.nGemId = "";
       this.dataGridOptions.nJewelryId = "1";
       this.resetFlag = true;
-      this.send();
     },
     compOption() {
       if (this.dataGridOptions.type != 4) {
         this.dataGridOptions.type == 4;
-        this.setReportType(type);
+        this.setReportType(this.dataGridOptions.type);
       } else {
         this.send();
       }

@@ -10,24 +10,24 @@
           <router-link tag="span" to="/work/report/" class="path_crumbs">报表</router-link> > <span class="txt">入库</span>
         </div>
         <div class="Rp_selected_container">
-          <DropDownMenu class="selected_dropdown" titleName="入库库位" dataType="库位" :propList="repositoryList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </DropDownMenu>
+          <HeaderDropDownMenu class="selected_dropdown" titleName="入库库位" dataType="库位" :propList="repositoryList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+          </HeaderDropDownMenu>
 
           <span class="spaceMark">|</span>
           <Cascade :propList="productCategory" titleName="产品类别" @clear="callProductCategory" @dropReturn="changeVaue">
           </Cascade>
           <span class="spaceMark">|</span>
-          <DropDownMenu class="selected_dropdown" titleName="供应商" dataType="供应商" :propList="providerList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </DropDownMenu>
+          <HeaderDropDownMenu class="selected_dropdown" titleName="供应商" dataType="供应商" :propList="providerList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+          </HeaderDropDownMenu>
           <span class="spaceMark">|</span>
-          <DropDownMenu class="selected_dropdown" titleName="分销商" dataType="店铺" :propList="distributorList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </DropDownMenu>
+          <HeaderDropDownMenu class="selected_dropdown" titleName="分销商" dataType="店铺" :propList="distributorList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+          </HeaderDropDownMenu>
           <span class="spaceMark">|</span>
-          <DropDownMenu class="selected_dropdown" titleName="制单人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </DropDownMenu>
+          <HeaderDropDownMenu class="selected_dropdown" titleName="制单人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+          </HeaderDropDownMenu>
           <span class="spaceMark">|</span>
-          <DropDownMenu class="selected_dropdown" titleName="审核人" dataType="审核人" :propList="auditorUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </DropDownMenu>
+          <HeaderDropDownMenu class="selected_dropdown" titleName="审核人" dataType="审核人" :propList="auditorUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+          </HeaderDropDownMenu>
           <div class="report-data">
             <div class="block until" data-txt="至">
               <el-date-picker size="mini" v-model="beginTime" @change="getTimeData" type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
@@ -214,7 +214,8 @@
   import Lodop from 'components/template/Lodop'
   import { seekEntryStorage } from './../../../../Api/commonality/operate.js'
   import Cascade from './../../../../components/template/Cascade'
-  import DropDownMenu from './../../../../components/template/DropDownMenu'
+  import DropDownMenu from './../../../../components/template/DropDownMenu1'
+  import HeaderDropDownMenu from './../../../../components/template/DropDownMenu'
   import {
     seekRepositoryList,
     seekShowProviderList,
@@ -256,6 +257,7 @@
 			intelligenceTypeTemplate,
       customTemplate,
       ReportLoad,
+      HeaderDropDownMenu
     },
     data() {
       return {
@@ -490,10 +492,10 @@
         }
       },
       resetOption() {
-        this.openReset = false
-        setTimeout(() => {
-           this.openReset = true 
-        }, 100)
+        // this.openReset = false
+        // setTimeout(() => {
+        //    this.openReset = true 
+        // }, 100)
         this.dataGridOptions.wColorId = ''
         this.dataGridOptions.wGemId = ''
         this.dataGridOptions.wJewelryId = '1'
@@ -501,7 +503,7 @@
         this.dataGridOptions.nGemId = ''
         this.dataGridOptions.nJewelryId = '1'
         this.resetFlag = true
-        this.send()
+        // this.send()
       },
       compOption() {
         if(this.dataGridOptions.type != 4) {

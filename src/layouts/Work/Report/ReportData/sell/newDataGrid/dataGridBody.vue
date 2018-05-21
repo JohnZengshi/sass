@@ -103,19 +103,19 @@
         },
         callbacks: {
           onTotalScroll: function () {
-					console.log('滚轮到底了')
+					// console.log('滚轮到底了')
 					$('.loadControl').css({
 						opacity:1
 					})
                 },
 				onUpdate(){
-					console.log('滚动条更新')
+					// console.log('滚动条更新')
 					$('.loadControl').css({
 						opacity:0
 					})
 				},
 				whileScrolling(){
-					console.log('滚动条活动')
+					// console.log('滚动条活动')
 					$('.loadControl').css({
 						opacity:0
 					})
