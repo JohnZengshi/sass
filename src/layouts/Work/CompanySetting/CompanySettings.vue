@@ -20,8 +20,6 @@
                 </div>
             </div>
             <div class="main-right">
-                <!-- 供应商设置 begin -->
-                <!-- 供应商设置 end -->
                 <div class="supplier-setting">
                     <div class="supplier-setting-title">
                         <h4><i class="iconfont icon-liebiao"></i>供应商设置</h4>
