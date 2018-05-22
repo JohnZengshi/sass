@@ -485,7 +485,8 @@ export default {
             wJewelryId: '1',
             nColorId: '',
             nGemId: '',
-            nJewelryId: '1'
+            nJewelryId: '1',
+            specialId: ''
         },
         dialogOptions: {
           conditionList: [
@@ -563,11 +564,16 @@ export default {
     },
     methods: {
         choseMenu (type) {
-          if (type == 1) {
-            this.positionSwitch = !this.positionSwitch
-          } else if (type == 2) {
-            this.tabSwitch = !this.tabSwitch
-          }
+            if(this.tabSwitch) {
+                this.dataGridOptions.specialId = ''
+            } else {
+                this.dataGridOptions.specialId = '1'
+            }
+            if (type == 1) {
+                this.positionSwitch = !this.positionSwitch
+            } else if (type == 2) {
+                this.tabSwitch = !this.tabSwitch
+            }
         },
         resetOption () {
             // this.openReset = false

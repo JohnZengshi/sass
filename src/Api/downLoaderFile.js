@@ -75,7 +75,7 @@ export const downLoaderFile = (url,data) => {
 //     // 内网
         let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8083/yunzhubao' : ''
         
-    // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.109:8080/yunzhubao' : ''
+        // let serverHost = 'http://192.168.100.109:8080/yunzhubao'
 //     //let serverHost = process.env.NODE_ENV === 'development' ? 'https://program.yunzhubao.com/yunzhubao/' : ''
 //     // UAT
 //     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8099' : ''
@@ -92,7 +92,6 @@ export const downLoaderFile = (url,data) => {
     
     let strurl = encodeURI(hrefurl)
     console.log('啦啦啦啦',strurl)
-
     var a = document.createElement('a');
     a.href = encodeURI(hrefurl);
     a.download = "filename.xlsx";
