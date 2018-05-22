@@ -60,7 +60,7 @@
 												<span v-else>
                                                     {{receiptsIntroList.sellManName}}
                                                 </span>
-												<div class="item-name" style="margin-left: 8px;">店员</div>
+												<div class="item-name" style="margin-left: 8px;">销售员</div>
 											</div>
 										</div>
 									</div>
@@ -202,7 +202,7 @@
 									<div class="tittle-left">商品</div>
 									<div class="tittle-right">
 										<span>详情说明</span>
-										<input v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
+										<input ref="detailInputWrap" v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
 										<span class="tooltip" v-if="isShowTooltip">输入/扫描条码号</span>
 
 									</div>
@@ -412,13 +412,16 @@
 									</ul>
 								</div>
 								<div class="footer">
-									<div class="footer-left" @click.stop="goNext" v-if="isSkip == false">
-										跳过
-									</div>
-									<div class="footer-right">
+									
+									<div class="footer-left">
 										<span @click.stop="goPro" v-if="entry.tep2List.isShowBtn">上一步</span>
 										<span @click.stop="goNext" v-if="entry.tep2List.isShowBtn1">下一步</span>
 									</div>
+
+									<div class="footer-right" @click.stop="goNext" v-if="isSkip == false">
+										跳过
+									</div>
+									
 								</div>
 							</div>
 							<!--  珠宝名称 -->
@@ -1087,6 +1090,10 @@
 				eventBus.$on('update-data-sell-List', () => {
 					this.send()
 				})
+				if (this.$refs.detailInputWrap) {
+					this.$refs.detailInputWrap.focus()
+				}
+				
 			})
 		},
 		computed: {
@@ -2644,7 +2651,6 @@
 						this.receiptsIntroList = response.data.data;
 						// this.cashStatus = res.data.data.cashStatus
 						this.getShopUserList(response.data.data.shopId)
-						debugger
 						this.seekGetTemplateList(response.data.data.shopId)
 						if(response.data.data.makeOrderManId == sessionStorage.getItem('id')) {
 							this.isMakeMan = true

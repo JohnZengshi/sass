@@ -377,7 +377,7 @@ export const workShopList = ({commit}, parm) => {
 export const getShopListByCo = ({commit}, parm) => {
     var options = {
       "page": "1",
-      "pageSize": "30"
+      "pageSize": "9999"
     }
     seeks.seekGetShopListByCo(options).then((response) => {
         if (response.data.state === 200) {

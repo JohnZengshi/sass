@@ -216,6 +216,7 @@ export const getProductStatusLogList = function (parm) { // 商品修改列表
     return apiCall(parm, URL);
 }
 export const seekGetShopListByCo = function (parm) { // 8.2店铺列表
+    parm.pageSize = 9999
     let URL = "/v1/auth/getShopListById";
     return apiCall(parm, URL);
 }

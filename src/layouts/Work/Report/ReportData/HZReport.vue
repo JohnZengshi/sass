@@ -250,18 +250,19 @@
     </div> -->
     <!-- 按钮组 -->
 
-<!--     <div class="printBtn" @click="tabPrin()">
+    <div class="printBtn" @click="tabPrin()">
         <i class="iconfont icon-dayin1"></i>
         <span>打印报表</span>
-    </div> -->
-  
+    </div>
     <!--打印模块-->
-<!--     <div style="display: none;">
-        <detail-template v-if="this.tabClassActive.index==0" title="汇总" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detail-template>
-        <intelligence-type-template v-if="this.tabClassActive.index==1" title="汇总" ref="intelligenceTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></intelligence-type-template>
-        <project-type-template v-if="this.tabClassActive.index==2" title="汇总" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></project-type-template>
-        <custom-template v-if="this.tabClassActive.index==3" title="汇总" ref="customTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></custom-template>
-    </div> -->
+    <div style="display: none;">
+        <intelligence-type-template v-if="this.tabClassActive.index==1" title="进销存汇总" ref="intelligenceTypeTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></intelligence-type-template>
+
+        <project-type-template v-if="this.tabClassActive.index==2" title="进销存汇总" ref="projectTypeTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></project-type-template>
+
+        <custom-template v-if="this.tabClassActive.index==3" title="进销存汇总" ref="customTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></custom-template>
+
+    </div>
 </div>
 <!--打印模块-->
 <!-- <div ref="tablePrint" v-else-if="isPrint==1" >
@@ -304,7 +305,6 @@ import ReportDetail from './newDataGrid/hzReportDetailTab'
 // import TablePrint from './print/dataGridPrint'
 import TablePrint from './newPrint/reportDetailTab'
 //打印模板，明细，产品分类，智能分类=自定义
-import detailTemplate from "@/components/jcp-print/jxc/detail-template";
 import projectTypeTemplate from "@/components/jcp-print/jxc/project-type-template";
 import intelligenceTypeTemplate from "@/components/jcp-print/jxc/intelligence-type-template";
 import customTemplate from "@/components/jcp-print/jxc/intelligence-type-template";
@@ -321,13 +321,12 @@ export default {
         TablePrint,
         Cascade,
         DropDownMenu,
-        detailTemplate,
         projectTypeTemplate,
         intelligenceTypeTemplate,
         customTemplate,
         ReportLoad,
     },
-     data() {
+    data() {
       return {
         openReset: true,
         productCategory: [
@@ -479,7 +478,6 @@ export default {
             settingType: '1',
             receiveObject: '1',
             storageId: '',
-            storageId: '',
             shopId: '',
             counterId: '',
             productTypeId: '',
@@ -586,8 +584,19 @@ export default {
     computed: {
         ...mapGetters([
             // "repositoryList", // 库位列表
+            "userPositionInfo", // 职位信息
             "shopListByCo" // 店铺列表
-        ])
+        ]),
+        shopRole: function () { // 店员
+            if (this.userPositionInfo) {
+                return jurisdictions.jurisdictionShopRole(this.userPositionInfo.roleList);
+            }
+        },
+        computedRole: function () { // 公司
+            if (this.userPositionInfo) {
+                return jurisdictions.jurisdictionComputedRole(this.userPositionInfo.roleList)
+            }
+        }
         // productCategory () {
         //     return [
         //         {
@@ -610,6 +619,18 @@ export default {
         // }
     },
     methods: {
+        // 提取有数据的值
+        filterHasData (parm) {
+          let datas = []
+          for (let i of parm) {
+            if (i.productTypeList.length) {
+              datas.push(i)
+            }
+          }
+          return {
+            dataList: datas
+          }
+        },
         changeVaue (parm) {
             if (parm.type == 1) {
                 this.dataGridOptions.receiveObject = parm.type
@@ -685,9 +706,9 @@ export default {
           if( port )  { 
             if (port == 1) {
               Object.assign(this.dataGridOptions, {
-                storageId: '',
-                shopId: '',
-                counterId: '',
+                // storageId: '',
+                // shopId: '',
+                // counterId: '',
                 // productClass: '1',
                 sortFlag: '0',
                 type: 1,
@@ -705,9 +726,9 @@ export default {
               delete this.dataGridOptions.nGemId
               delete this.dataGridOptions.nJewelryId
               Object.assign(this.dataGridOptions, {
-                storageId: '',
-                shopId: '',
-                counterId: '',
+                // storageId: '',
+                // shopId: '',
+                // counterId: '',
                 // productClass: '1',
                 sortFlag: this.positionSwitch ? "1" : "0",
                 type: 1,
@@ -722,18 +743,18 @@ export default {
               delete this.dataGridOptions.nGemId
               delete this.dataGridOptions.nJewelryId
               Object.assign(this.dataGridOptions, {
-                storageId: '',
-                shopId: '',
-                counterId: '',
+                // storageId: '',
+                // shopId: '',
+                // counterId: '',
                 // productClass: '1',
                 sortFlag: this.positionSwitch ? "1" : "0",
                 type: 1,
               })
             } else if (port == 4) {
               Object.assign(this.dataGridOptions, {
-                storageId: '',
-                shopId: '',
-                counterId: '',
+                // storageId: '',
+                // shopId: '',
+                // counterId: '',
                 // productClass: '1',
                 sortFlag: this.positionSwitch ? "1" : "0",
                 type: 1,

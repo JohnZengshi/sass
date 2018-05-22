@@ -69,7 +69,6 @@ export default {
             // this.optionData.titleInfo = item.classesName
             // this.returnData.operateId = item.classesId
             // this.returnData.operateName = item.classesName
-            debugger
             if (classesType == '2') {
                 this.optionData.titleInfo = item.repositoryName
                 this.returnData.operateId = item.repositoryId

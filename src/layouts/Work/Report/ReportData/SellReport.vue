@@ -878,11 +878,11 @@ export default {
         this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
         this.dataGridOptions.reportType = 3;
         //日期控件默认设置时间
-        this.beginTime = this.getDate(
-          -(new Date().getDate() - 1),
-          "start"
-        ).format;
-        this.endTime = this.getDate(0, "end").format;
+        // this.beginTime = this.getDate(
+        //   -(new Date().getDate() - 1),
+        //   "start"
+        // ).format;
+        // this.endTime = this.getDate(0, "end").format;
 
         this.sellShowId = "sales";
         this.currentReportName = "销售报表";

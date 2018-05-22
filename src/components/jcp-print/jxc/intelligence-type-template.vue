@@ -24,50 +24,39 @@
 		<div>
 			<table class="table-box">
 				<tr>
+					<td>模块</td>
 					<td>序号</td>
 					<td>产品类别</td>
 					<td>首饰名称</td>
 					<td>件数(件)</td>
 					<td>件重(g)</td>
 					<td>金重(g)</td>
-					<td>主石(ct,g)</td>
-					<td>副石(ct,g)</td>
 					<td>售价(元)</td>
 					<td>成本(元)</td>
 				</tr>
-				<template v-for="dataList in sellList.dataList">
+				<template v-if="dataList.productTypeList.length" v-for="(dataList, ind) in sellList.dataList">
+					<tr>
+						<td :rowspan="filterLength(dataList)">{{dataList.typeName}}</td>
+					</tr>
 					<template v-for="productTypeList in dataList.productTypeList">
 							<tr v-for="(item, index) in productTypeList.detailList">
-								<td>{{item.index}}</td>
-								<td v-if="index==0" :rowspan="productTypeList.detailList.length">{{productTypeList.className}}</td>
-								<td>{{item.className}}</td>
-								<td>{{item.num|NOUNIT}}</td>
-								<td>{{item.weight|NOUNIT}}</td>
-								<td>{{item.goldWeight|NOUNIT}}</td>
-								<td>{{item.main}}</td>
-								<td>{{item.deputy}}</td>
-								<td>{{item.price|NOUNIT}}</td>
-								<td>{{item.cost|NOUNIT}}</td>
-							</tr>
-							<tr>
-								<td colspan="3">小计</td>
-								<td>{{productTypeList.totalNum1}}件</td>
-								<td>{{productTypeList.totalWeight1|GRAMUNIT}}</td>
-								<td>{{productTypeList.totalGoldWeight1|GRAMUNIT}}</td>
-								<td>{{productTypeList.totalMain1}}</td>
-								<td>{{productTypeList.totalDeputy1}}</td>
-								<td>{{productTypeList.totalPrice1|RMBUNIT}}</td>
-								<td>{{productTypeList.totalCost1|RMBUNIT}}</td>
+									<td>{{item.index}}</td>
+									<td v-if="index==0" :rowspan="productTypeList.detailList.length">{{productTypeList.className}}</td>
+									<td>{{item.className}}</td>
+									<td>{{item.num|NOUNIT}}</td>
+									<td>{{item.weight|NOUNIT}}</td>
+									<td>{{item.goldWeight|NOUNIT}}</td>
+									<td>{{item.price|NOUNIT}}</td>
+									<td>{{item.cost|NOUNIT}}</td>
 							</tr>
 					</template>
 					
 					<tr>
-						<td colspan="3">合计</td>
+						<td colspan="3">小计</td>
+						<td></td>
 						<td>{{dataList.totalNum0}}件</td>
 						<td>{{dataList.totalWeight0|GRAMUNIT}}</td>
 						<td>{{dataList.totalGoldWeight0|GRAMUNIT}}</td>
-						<td>{{dataList.totalMain0}}</td>
-						<td>{{dataList.totalDeputy0}}</td>
 						<td>{{dataList.totalPrice0|RMBUNIT}}</td>
 						<td>{{dataList.totalCost0|RMBUNIT}}</td>
 					</tr>
@@ -150,6 +139,20 @@
 			this.printDate = moment().format("YYYY-MM-DD HH:mm");
 		},
 		methods: {
+			filterLength (parm) {
+				let Num = 1
+	      if (parm) {
+	        for (let i of parm.productTypeList) {
+	          if (i) {
+	            for (let j of i.detailList) {
+	              Num += 1
+	            }
+	          }
+	        }
+	      }
+
+	      return Num
+			},
 			transition(now){
 				if(!now)return;
 				let i = 1;
