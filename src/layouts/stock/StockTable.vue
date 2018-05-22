@@ -175,7 +175,7 @@
 		props: ['changeRepository', 'changeShop', 'changeCounter'],
 		data() {
 			return {
-				inconspanactive1:false,
+				inconspanactive1:true,
 				inconspanactive2:false,
 				customDialog: false, // 自定义列表弹窗
 				page: 1,

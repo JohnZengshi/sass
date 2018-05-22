@@ -79,6 +79,15 @@ export const jurisdictionComputedRole = function (parm) { // 公司人
     }
     return false;
 }
+export const jurisdictionOfficeClerk = function (parm) { // 职员
+    for (let i of parm) {
+        switch (i.role) {
+            case "3":
+                return true;
+        }
+    }
+    return false;
+}
 export const jurisdictionShopRole = function (parm) { // 店铺人
     for (let i of parm) {
         switch (i.role) {

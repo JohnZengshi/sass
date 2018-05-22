@@ -22,6 +22,7 @@
             <span class="spaceMark">|</span>   -->
             <Cascade
                 :propList="productCategory"
+                :computedRole="computedRole"
                 titleName="全公司"
                 @clear = "callProductCategory"
                 @dropReturn = "changeVaue"
@@ -596,6 +597,26 @@ export default {
             if (this.userPositionInfo) {
                 return jurisdictions.jurisdictionComputedRole(this.userPositionInfo.roleList)
             }
+        },
+        computedManageRole: function () { // 公司
+            if (this.userPositionInfo) {
+                return jurisdictions.jurisdictionComputedManageRole(this.userPositionInfo.roleList)
+            }
+        },
+        officeClerk () { // 职员
+            if (this.userPositionInfo) {
+                return jurisdictions.jurisdictionOfficeClerk(this.userPositionInfo.roleList)
+            }
+        },
+        shopManageRole () { // 店长
+            if (this.userPositionInfo) {
+                return jurisdictions.jurisdictionShopManageRole(this.userPositionInfo.roleList)
+            }
+        },
+        isJrole:function() { // 判断是不是监察员
+            if (this.userPositionInfo) {
+                return jurisdictions.jurisdictionJCY(this.userPositionInfo.roleList);
+            }
         }
         // productCategory () {
         //     return [
@@ -659,17 +680,39 @@ export default {
             this.send()
         },
         _seekRepositoryList () {
-            seekRepositoryList()
-                .then(res => {
-                    if (res.data.state == 200) {
-                        this.productCategory[1].children = res.data.data.repositoryList
-                    } else {
-                        this.$message({
-                           message: res.data.msg,
-                           type: 'warning'
-                        })
-                    }
-                })
+            if (this.userPositionInfo.roleList) {
+                let options = {
+                    page: '1',
+                    pageSize: 9999,
+                    type: 1 // 1.可查看 2.所属 3.全部
+                }
+
+                if (this.computedManageRole || this.officeClerk) { // 管理员 // 职员
+                    options.type = 3
+                } else if (this.shopManageRole) { // 店长
+                    options.type = 2
+                } else if (this.shopRole) { // 店员
+                    options.type = 1
+                } else if (this.isJrole) { // 监察员
+                    options.type = 2
+                }
+
+                seekRepositoryList(options)
+                    .then(res => {
+                        if (res.data.state == 200) {
+                            this.productCategory[1].children = res.data.data.repositoryList
+                        } else {
+                            this.$message({
+                               message: res.data.msg,
+                               type: 'warning'
+                            })
+                        }
+                    })
+            } else {
+                setTimeout(() => {
+                    this._seekRepositoryList()
+                }, 1500)
+            }
         },
         choseMenu (type) {
           if (type == 1) {
