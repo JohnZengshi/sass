@@ -20,7 +20,7 @@
                         <li>
                             <label>负责人</label>
                             <div>
-                                <el-checkbox @change="leaderChange()" v-model="isLeader" v-if="!shopManageRole">{{leader}}</el-checkbox>
+                                <el-checkbox @change="leaderChange()" v-model="dataInfo.isLeader" v-if="!shopManageRole && !shopManRole">{{leader}}</el-checkbox>
                                 <span style=" display: inline-block;margin-top:4px;width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;" @click="isChoseLeader = true" v-else>{{dataInfo.principalList.length == 0 ? '指派' : this.leaderStr}}</span>
                             </div>
                         </li>
@@ -241,15 +241,15 @@ export default {
         }
     },
     created () {
-      if (this.shopRole && this.shopManRole) {
-        this.dataInfo.principalList.forEach((item, index) => {
-            if (item.userId == sessionStorage.getItem('id')) {
-                return
-            } else {
-                this.dataInfo.principalList.push({userId: sessionStorage.getItem('id')})
-            }
-        }) 
-      }
+    //   if (this.shopRole && this.shopManRole) {
+    //     this.dataInfo.principalList.forEach((item, index) => {
+    //         if (item.userId == sessionStorage.getItem('id')) {
+    //             return
+    //         } else {
+    //             this.dataInfo.principalList.push({userId: sessionStorage.getItem('id')})
+    //         }
+    //     }) 
+    //   }
     },
     watch: {
         addLeaguer (val) {
@@ -429,7 +429,7 @@ export default {
             if (this.shopManageRole) {
                 return
             } else {
-                if (isLeader) {
+                if (this.dataInfo.isLeader) {
                     this.dataInfo.principalList = [
                         {
                             userId: sessionStorage.getItem('id')

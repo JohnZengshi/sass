@@ -10,7 +10,7 @@
                 </div>
                 <el-menu class="main-left-menu" @select="selectItem">
                     
-                    <el-menu-item :class="{active: actIndex == index}" class="main-left-menu-item" :index="index + ''" v-for="(item, index) in catalog">
+                    <el-menu-item :class="{active: actIndex == index}" class="main-left-menu-item" :index="index + ''" v-for="(item, index) in catalog" :key="index">
                         <span :class="{active: actIndex == index}" class="active-bar"></span>
                         {{item.name}}
                     </el-menu-item>
@@ -27,7 +27,7 @@
                     </div>
                     <div class="supplier-list">
                         <ul>
-                            <li v-for="(item, index) in supplierList" @click="supplierAct(item)"><i>●</i>{{item.supplierName}}</li>
+                            <li v-for="(item, index) in supplierList" @click="supplierAct(item)" :key="index"><i>●</i>{{item.supplierName}}</li>
                         </ul>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="storage-list">
                         <ul>
-                            <li @click="openOperateDia(item)" v-for="(item, index) in repositoryList"><i>●</i>{{item.repositoryName}}<span class="default-flag iconfont icon-duigou" v-if="item.isDefault == 'Y'"></span></li>
+                            <li @click="openOperateDia(item)" v-for="(item, index) in repositoryList" :key="index"><i>●</i>{{item.repositoryName}}<span class="default-flag iconfont icon-duigou" v-if="item.isDefault == 'Y'"></span></li>
                         </ul>
                     </div>
                 </div>

@@ -10,7 +10,7 @@
 			<router-link tag="span" to="/work/report/" class="path_crumbs">报表</router-link> > <span class="txt">发货</span>
 		</div>
 		<div class="Rp_selected_container">
-            <DropDownMenu
+            <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="发货库位"
                 dataType="库位"
@@ -18,7 +18,7 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
             <span class="spaceMark">|</span>	
   			<Cascade
                 :propList="productCategory"
@@ -29,7 +29,7 @@
             </Cascade>
   			<span class="spaceMark">|</span>
   			
-             <DropDownMenu
+             <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="收货店铺"
                 dataType="店铺"
@@ -37,10 +37,10 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
             <span class="spaceMark">|</span>
             
-            <DropDownMenu
+            <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="制单人"
                 dataType="制单人"
@@ -48,10 +48,10 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
             <span class="spaceMark">|</span>
             
-            <DropDownMenu
+            <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="审核人"
                 dataType="审核人"
@@ -59,10 +59,10 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
             <span class="spaceMark">|</span>
             
-            <DropDownMenu
+            <HeaderDropDownMenu
                 v-if="!takeUserDisabled"
                 class="selected_dropdown"
                 titleName="收货人"
@@ -71,7 +71,7 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
             <div v-else class="selected_dropdown el-dropdown placeholder disabled">
                <span class="el-dropdown-link">收货人</span>
                <i class="iconfont icon-arrow-down"></i>
@@ -133,7 +133,7 @@
                 >自定义
                     <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
                     <div class="customDia" ref="customDia">
-                    <div class="body" v-if="openReset">
+                    <div class="body">
                         <div class="list-wrap">
                         <ul>
                             <li></li>
@@ -294,7 +294,8 @@ import find from 'lodash/find'
     seekSettingUserRole
  } from './../../../../Api/commonality/seek.js'
 import Cascade from './../../../../components/template/Cascade'
-import DropDownMenu from './../../../../components/template/DropDownMenu'
+import DropDownMenu from './../../../../components/template/DropDownMenu1'
+import HeaderDropDownMenu from './../../../../components/template/DropDownMenu'
 // import ReportDetail from './dataGrid/reportDetailTab'
 import ReportDetail from './newDataGrid/reportDetailTab'
 //打印模块
@@ -323,6 +324,7 @@ export default {
 		intelligenceTypeTemplate,
         customTemplate,
         ReportLoad,
+        HeaderDropDownMenu
     },
      data() {
       return {
@@ -568,10 +570,10 @@ export default {
           }
         },
         resetOption () {
-            this.openReset = false
-            setTimeout(() => {
-               this.openReset = true 
-            }, 100)
+            // this.openReset = false
+            // setTimeout(() => {
+            //    this.openReset = true 
+            // }, 100)
             this.dataGridOptions.wColorId = ''
             this.dataGridOptions.wGemId = ''
             this.dataGridOptions.wJewelryId = '1'
@@ -579,12 +581,12 @@ export default {
             this.dataGridOptions.nGemId = ''
             this.dataGridOptions.nJewelryId = '1'
             this.resetFlag = true
-            this.send()
+            // this.send()
         },
         compOption () {
             if (this.dataGridOptions.type != 4) {
                 this.dataGridOptions.type == 4
-                this.setReportType(type)
+                this.setReportType(this.dataGridOptions.type)
             } else {
                 this.send()
             }
@@ -940,10 +942,11 @@ export default {
         //收货店铺
         getShopListByCo(){
         	let options = {
-                page: "",
-                pageSize: '10'
+                page: '1',
+                pageSize: '90'
             }
             seekGetShopListByCo(options).then((res) => {
+                console.log('收货列表',res.body.data.shopList)
                 this.distributorList = res.body.data.shopList
             }, (res) => {
                 console.log(res);
