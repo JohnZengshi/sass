@@ -1603,12 +1603,12 @@ color: #d6d6d6;
 .sortwrap-text{
     margin-top: 2px;
     line-height: 16px;
-    width: 55px;
+    width: 60px;
     position: relative;
     .sortwrap-img{
         position: absolute;
         top: 8px;
-        right: 1px;
+        right: -2px;
     }
 }
 .select-container-name{
