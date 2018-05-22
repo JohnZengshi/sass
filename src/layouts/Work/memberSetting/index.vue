@@ -296,6 +296,18 @@
                 </div>
             </div>
             <!-- 产品类别-消费发放配置 .4 end -->
+
+            <!-- 积分发放配置 .5 begin -->
+            <div class="issue">
+                <div class="all-title">
+                    <p>积分发放配置
+                        <swichs></swichs>
+                        <el-button class="fr" type="primary" size="small">+ 配置条件</el-button>
+                    </p>
+                </div>
+                <!--  -->
+            </div>
+            <!-- 积分发放配置 .5 end -->
         </div>
         <!-- 内容主体 end-->
     </div>
@@ -465,7 +477,7 @@ $fontColor:#47a3fb;
             }
         }
         .product-setting{
-            height: 850px;
+            height: 900px;
             padding: 0 40px;
             .product-setting-content{
                 background: #f6f7f8;
@@ -531,6 +543,10 @@ $fontColor:#47a3fb;
                 }
             }            
         }   
+        .issue{
+            height: 260px;
+            padding: 0 40px;            
+        }
         // 大标题
         .all-title {
             margin-bottom: 30px;
