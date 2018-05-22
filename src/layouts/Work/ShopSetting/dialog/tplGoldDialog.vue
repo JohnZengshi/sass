@@ -135,7 +135,7 @@ export default{
      
      
      'dialog.dialogVisible' : function(val){
-       console.log(val)
+        console.log(this.dialog)       
         //this.editSelectData = []
         this.smallDataList = []
         this.selectClassAll = false

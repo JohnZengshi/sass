@@ -222,9 +222,11 @@ export default{
     width: 300px;
     float: right;
     background-color: #fff;
-    height: 100%;
+    height: 370px;
     box-shadow: 0px 0 15px #ddd;
     border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
     >.title {
       height: 50px;
       color: #333;
@@ -245,7 +247,7 @@ export default{
     }
 }
 .counter-container{
-  height: 670px;
+  height: 320px;
   
   overflow: hidden;
   overflow-y: auto;
