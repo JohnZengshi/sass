@@ -305,9 +305,107 @@
                         <el-button class="fr" type="primary" size="small">+ 配置条件</el-button>
                     </p>
                 </div>
-                <!--  -->
+                <div class="issue-content">
+                    <!-- 注册 -->
+                    <div class="item">
+                        <div class="item-circle"></div>
+                        <span class="item-title">注册福利：</span>
+                        <span>注册成为会员，赠送</span>
+                        <span class="input-box">
+                            <el-input class="item-input"></el-input>
+                        </span>
+                        <span>分</span>
+                    </div>
+                    <!-- 生日 -->
+                    <div class="item">
+                        <div class="item-circle"></div>
+                        <span class="item-title">生日福利：</span>
+                        <span>会员生日当天，赠送</span>
+                        <span class="input-box">
+                            <el-input class="item-input"></el-input>
+                        </span>
+                        <span>分</span>
+                    </div>
+                    <!-- 签到 -->
+                    <div class="item">
+                        <div class="item-circle"></div>
+                        <span class="item-title">签到福利：</span>
+                        <span>会员单次签到，赠送</span>
+                        <span class="input-box">
+                            <el-input class="item-input"></el-input>
+                        </span>
+                        <span class="fg-fen">分；</span>
+                        <span>会员连续签到，赠送</span>
+                        <span class="input-box">
+                            <el-input class="item-input"></el-input>
+                        </span>
+                        <span>分</span>
+                    </div>
+                </div>
             </div>
             <!-- 积分发放配置 .5 end -->
+
+            <!-- 积分消耗配置 .6 begin -->
+            <div class="consumption">
+                <div class="all-title">
+                    <p>积分消耗配置
+                        <swichs></swichs>
+                    </p>
+                </div>
+                <div class="consumption-content">
+                    <!-- 抵现 -->
+                    <div class="item">
+                        <div class="item-circle"></div>
+                        <span class="item-title">积分抵现：</span>
+                        <span>每次使用</span>
+                        <span class="input-box">
+                            <el-input class="item-input"></el-input>
+                        </span>
+                        <span>分，</span>
+                        <span>可抵</span>
+                        <span class="input-box">
+                            <el-input class="item-input"></el-input>
+                        </span>
+                        <span>元</span>
+                    </div>
+                    <!-- 计重上限 -->
+                    <div class="item">
+                        <div class="item-circle"></div>
+                        <span class="item-title">计重抵扣上限：</span>
+                        <span>最多可抵扣单价实售价</span>
+                        <span class="input-box">
+                            <el-input class="item-input"></el-input>
+                        </span>
+                        <span>%</span>
+                    </div>
+                    <!-- 计件上限 -->
+                    <div class="item">
+                        <div class="item-circle"></div>
+                        <span class="item-title">计件抵扣上限：</span>
+                        <span>最多可抵扣单价实售价</span>
+                        <span class="input-box">
+                            <el-input class="item-input"></el-input>
+                        </span>
+                        <span>%</span>
+                    </div>
+                    <!-- 计重计件相互抵扣 -->
+                    <div class="item">
+                        <div class="item-circle"></div>
+                        <span class="item-title">计重计件是否相互抵扣：</span>
+                        <el-radio v-model="radio" label="1">抵扣</el-radio>
+                        <el-radio v-model="radio" label="2">不抵扣</el-radio>
+                    </div>
+                    <!-- 消耗匹配类型 -->
+                    <div class="item">
+                        <div class="item-circle"></div>
+                        <span class="item-title">消耗匹配类型：</span>
+                        <el-radio v-model="radio" label="1">销售</el-radio>
+                        <el-radio v-model="radio" label="2">购买</el-radio>
+                        <el-radio v-model="radio" label="3">实收</el-radio>
+                    </div>
+                </div>
+            </div>
+            <!-- 积分消耗配置 .6 end -->
         </div>
         <!-- 内容主体 end-->
     </div>
@@ -414,6 +512,7 @@ $fontColor:#47a3fb;
                 width: 100%;
                 display:flex;
                 justify-content: space-between;
+                border-radius: 10px;                
                 // padding: 0 50px;
                 .integral-xs{
                     width: 25%;
@@ -482,6 +581,7 @@ $fontColor:#47a3fb;
             .product-setting-content{
                 background: #f6f7f8;
                 padding: 26px 30px;
+                border-radius: 10px;                
                 .producet-jz{
                     // height: 500px;
                     margin-bottom: 30px;
@@ -544,8 +644,94 @@ $fontColor:#47a3fb;
             }            
         }   
         .issue{
-            height: 260px;
-            padding: 0 40px;            
+            height: 280px;
+            padding: 0 40px;
+            margin-bottom: 40px;      
+            .issue-content {
+                height: 220px;
+                background: #f6f7f8;
+                padding: 40px 30px;
+                border-radius: 10px;
+                .item {
+                    height: 38px;
+                    margin-bottom: 24px;
+                    color: #333;
+                    font-size: 14px;
+                    .item-circle{
+                        display: inline-block;
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: #fdb133;
+                        margin-right: 20px;
+                    }
+                    .item-title{
+                        margin-right: 32px;
+                    }
+                    .input-box {
+                        display: inline-block;
+                        // width: 100px;
+                        height: 38px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                    }
+                    .item-input{
+                        width: 100px;
+                        border-radius: 4px;
+                        .el-input__inner {
+                            border-radius: 10px !important;
+                        }
+                    }
+                    .fg-fen {
+                        margin-right: 50px;
+                    }
+                }
+            }     
+        }
+        .consumption {
+            height: 400px;
+            padding: 0 40px;
+            margin-bottom: 40px; 
+            .consumption-content {
+                height: 310px;
+                padding: 40px 30px;
+                background: #f6f7f8;
+                border-radius: 10px;
+                .item {
+                    height: 38px;
+                    margin-bottom: 24px;
+                    color: #333;
+                    font-size: 14px;
+                    .item-circle{
+                        display: inline-block;
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: #fdb133;
+                        margin-right: 20px;
+                    }
+                    .item-title{
+                        margin-right: 32px;
+                    }
+                    .input-box {
+                        display: inline-block;
+                        // width: 100px;
+                        height: 38px;
+                        border: 1px solid #ccc;
+                        border-radius: 4px;
+                    }
+                    .item-input{
+                        width: 100px;
+                        border-radius: 4px;
+                        .el-input__inner {
+                            border-radius: 10px !important;
+                        }
+                    }
+                    .fg-fen {
+                        margin-right: 50px;
+                    }
+                }
+            }
         }
         // 大标题
         .all-title {
@@ -582,6 +768,7 @@ export default {
             radio2: 3,
             num8:100,
             num9:1,
+            radio:''
         }
     },
     components:{
