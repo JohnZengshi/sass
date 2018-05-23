@@ -66,16 +66,32 @@
                     <div class="title">备注</div>
                     <el-input
                         type="textarea"
-                        :rows="2"
-                        maxlength=50
+                        :rows="4"
+                        :maxlength="50"
                         placeholder="请输入备注"
                         v-model="textarea">
                     </el-input>
                 </div>
                 <div class="member-edit-bq">
-                    
+                    <div class="title fl">标签</div>
+                    <div class="bq-item fl">
+                        标签内容
+                    </div>
+                    <div class="bq-item fl">
+                        标签内容
+                    </div>
+                    <div class="bq-item fl">
+                        标签内容
+                    </div>
+                    <div class="bq-add fl">
+                        添加标签
+                    </div>
                 </div>
             </div>
+        </div>
+        <!-- 返回按钮 -->
+        <div class="return-btn">
+            <el-button style="width:80px" type="primary" size="medium" @click="goBack">返回</el-button>
         </div>
     </div>
 </template>
@@ -114,6 +130,7 @@
     }
 }
 .member-edit {
+    margin-bottom: 20px;
     h4 {
         padding-left: 8px;
         position: relative;
@@ -158,13 +175,16 @@
     .member-edit-bottom {
         padding: 0 8px;
         display: flex;
+        height: 150px;
         .member-edit-bz {
             width: 50%;
             .title {
+                margin-right: 10px;
                 display: inline-block;
                 position: relative;
                 padding-left: 8px;
                 color: #2993f8;
+                font-size: 14px;
                 &::before{
                     content: '';
                     display: inline-block;
@@ -177,11 +197,62 @@
                 }
             }
             .el-textarea{
-                width: 50%;
+                width: 80%;
                 vertical-align: top;
             }
         }
+        .member-edit-bq{
+            width: 50%;
+            // display: flex;
+            // flex-wrap: wrap;
+            .title {
+                height: 26px;
+                margin-right: 10px;
+                display: inline-block;
+                position: relative;
+                padding-left: 8px;
+                color: #2993f8;
+                font-size: 14px;
+                &::before{
+                    content: '';
+                    display: inline-block;
+                    width: 2px;
+                    height: 14px;
+                    background: #2993f8;
+                    position: absolute;
+                    top: 3px;
+                    left: 0;
+                }
+            }
+            .bq-item{
+                width: 86px;
+                height: 26px;
+                margin-right: 14px;
+                margin-bottom: 10px;
+                background: #2993f8;
+                color: #fff;
+                text-align: center;
+                line-height: 26px;
+                border-top-right-radius: 10px;
+                border-bottom-left-radius: 10px;
+            }
+            .bq-add {
+                width: 86px;
+                height: 26px;
+                background: #fff;
+                color: #2993f8;
+                text-align: center;
+                border-top-right-radius: 10px;
+                border-bottom-left-radius: 10px;
+                border-style: dashed;
+                cursor: pointer;
+            }
+        }
     }
+}
+.return-btn {
+    display:flex;
+    justify-content: center;
 }
 </style>
 
@@ -210,6 +281,10 @@ export default {
         },
         getLevel(type){
             this.actionType = type
+        },
+        goBack(){
+            this.$emit('goBack',true)
+
         }
     },
     created() {

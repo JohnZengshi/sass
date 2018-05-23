@@ -33,7 +33,7 @@
         </div>
         <div class="memberinfo-bottom">
                 <!-- 信息 -->
-                <div class="item-card">
+                <div class="item-card" @click="infomationShow">
                     <div class="item-card-message">
                         <img class="fl" src="../../../../../static/img/xx.png" alt="">信息
                     </div>
@@ -92,10 +92,12 @@ import FormatImg from "components/template/DefaultHeadFormat.vue"
 
 export default {
   data() {
-    return {};
+    return {
+        informationFlag:false
+    };
   },
   components: {
-    FormatImg
+    FormatImg,
   },
   props: ["memberInfo"],
   methods: {
@@ -117,6 +119,10 @@ export default {
     },
     hiddenBtnJF() {
       $(".btn-group-jf").removeClass("btn-show");
+    },
+    // 显示个人信息编辑
+    infomationShow(){
+        this.$emit('infomationShow',true)
     }
   }
 };

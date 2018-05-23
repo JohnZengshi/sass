@@ -1,17 +1,20 @@
 <template>
     <el-dialog
         :visible.sync="memberFlag"
-        title="会员信息"
+        :title="titleMessage"
         top="10%"
         customClass="member-info-dialog"
         :close-on-click-modal="false"
         @close="close"
         >
         <!-- 主页面 -->
-        <member-info-home v-if="homePage" :memberInfo="memberInfo"></member-info-home>
+        <member-info-home v-show="homePage" :memberInfo="memberInfo" @infomationShow="infomationShow"></member-info-home>
 
-        <!-- 编辑页面 -->
-        <information-edit :memberInfo="memberInfo"></information-edit>
+        <!-- 信息编辑页面 -->
+        <information-edit v-show="informationPage" :memberInfo="memberInfo" @goBack="goBack"></information-edit>
+
+        <!-- 交易记录页面 -->
+        <trading v-show="tradingPage" :memberInfo="memberInfo"></trading>
         
     </el-dialog>
 </template>
@@ -214,23 +217,28 @@
 import { seekGetMemberInfo } from 'Api/commonality/seek'
 import memberInfoHome from './memberPage/home.vue'
 import informationEdit from './memberPage/information'
+import trading from './memberPage/trading'
 
 export default {
     data () {
         return {
+            titleMessage:'会员信息',
             memberInfo:{
                 logo:'',
                 memberName:''
             },
             memberFlag: false,
+
             homePage:false,
-            informationPage:true,
+            informationPage:false,
+            tradingPage:true,
 
         }
     },
     components:{
         memberInfoHome,
-        informationEdit
+        informationEdit,
+        trading,
     },
     props:['memberInfoFlag','shopId','memberId'],
     methods:{
@@ -250,6 +258,19 @@ export default {
         close () {
             this.$emit("closeReturn", {status: false})
         },
+        closeHome(parm) {
+            this.memberFlag = parm
+            this.$emit("closeReturn", {status: false})            
+        },
+        // 其他弹窗返回
+        goBack(parm) {
+            this.homePage = parm
+            this.informationPage = false
+        },
+        infomationShow(parm) {
+            this.informationPage = parm
+            this.homePage = false
+        }
     },
     watch:{
         memberInfoFlag(val) {
@@ -257,6 +278,17 @@ export default {
             if(val){
                 // 获取会员信息
                 this.getMemberInfo()
+            }
+        },
+        homePage(val) {
+            if(val) {
+                this.titleMessage = '会员信息'
+            }
+            if(this.informationPage) {
+                this.titleMessage = '会员信息'                
+            }
+            if(this.tradingPage){
+                this.titleMessage = '交易记录'                                
             }
         }
     },
