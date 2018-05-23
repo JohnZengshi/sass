@@ -2,11 +2,11 @@
 
 // 接口地址
 
-window.INTERFACE_URL_9097 = "http://192.168.100.110:9097/yunzhubao-bat"  // 本地环境
-window.INTERFACE_URL_9083 = "http://192.168.100.110:8082/yunzhubao" // 本地环境
+// window.INTERFACE_URL_9097 = "http://192.168.100.110:9097/yunzhubao-bat"  // 本地环境
+// window.INTERFACE_URL_9083 = "http://192.168.100.110:8082/yunzhubao" // 本地环境
 
-// window.INTERFACE_URL_9097 = ""//upload.yunzhubao.com:9093/yunzhubao-bat  // 正式环境
-// window.INTERFACE_URL_9083 = "" // 正式环境
+window.INTERFACE_URL_9097 = ""//upload.yunzhubao.com:9093/yunzhubao-bat  // 正式环境
+window.INTERFACE_URL_9083 = "" // 正式环境
 
 var Z_S_B = ''
 
