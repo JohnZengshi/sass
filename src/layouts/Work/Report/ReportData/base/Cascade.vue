@@ -6,7 +6,7 @@
             <i class="el-icon-circle-close" title="清除" @click="clearTitleInfo" v-else></i>
         </span>
         <ul class="drop-list">
-            <li v-if="item.classesType != '3' ? productCategory : true" @click.stop="changeDigItem(item)" @mouseover="tabData(item, index)" v-for="(item, index) in propList" >
+            <li v-if="item.classesType != '3' ? computedRole : true" @click.stop="changeDigItem(item)" @mouseover="tabData(item, index)" v-for="(item, index) in propList" >
                 {{getDataType(dataType, item)}}
                 <i class="el-icon-caret-right" v-if="index"></i>
                 <ul class="drop-list-right" v-if="index">

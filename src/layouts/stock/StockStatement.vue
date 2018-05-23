@@ -284,19 +284,26 @@
         seekRepositoryList()
           .then(res => {
             if (res.data.state === 200) {
-              this.repositoryList = res.data.data.repositoryList
+              this.repositoryList = [...res.data.data.repositoryList, {
+                isDefault: "Y",
+                repositoryId: "",
+                repositoryName: "全部仓库"
+              }]
             }
           })
       },
       _seekGetShopListByCo () {
         let options = {
           page: 1,
-          pageSize: 99
+          pageSize: 9999
         }
         seekGetShopListByCo(options)
           .then(res => {
             if (res.data.state === 200) {
-              this.shopList = res.data.data.shopList
+              this.shopList = [...res.data.data.shopList, {
+                shopId: '',
+                shopName: '全部店铺'
+              }]
             }
           })
       },

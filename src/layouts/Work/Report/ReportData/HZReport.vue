@@ -299,6 +299,7 @@ import find from 'lodash/find'
     seekSettingUserRole
  } from './../../../../Api/commonality/seek.js'
 import Cascade from './base/Cascade'
+import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from './../../../../components/template/DropDownMenu'
 // import ReportDetail from './dataGrid/reportDetailTab'
 import ReportDetail from './newDataGrid/hzReportDetailTab'
@@ -589,32 +590,32 @@ export default {
             "shopListByCo" // 店铺列表
         ]),
         shopRole: function () { // 店员
-            if (this.userPositionInfo) {
+            if (this.userPositionInfo.roleList) {
                 return jurisdictions.jurisdictionShopRole(this.userPositionInfo.roleList);
             }
         },
         computedRole: function () { // 公司
-            if (this.userPositionInfo) {
+            if (this.userPositionInfo.roleList) {
                 return jurisdictions.jurisdictionComputedRole(this.userPositionInfo.roleList)
             }
         },
         computedManageRole: function () { // 公司
-            if (this.userPositionInfo) {
+            if (this.userPositionInfo.roleList) {
                 return jurisdictions.jurisdictionComputedManageRole(this.userPositionInfo.roleList)
             }
         },
         officeClerk () { // 职员
-            if (this.userPositionInfo) {
+            if (this.userPositionInfo.roleList) {
                 return jurisdictions.jurisdictionOfficeClerk(this.userPositionInfo.roleList)
             }
         },
         shopManageRole () { // 店长
-            if (this.userPositionInfo) {
+            if (this.userPositionInfo.roleList) {
                 return jurisdictions.jurisdictionShopManageRole(this.userPositionInfo.roleList)
             }
         },
         isJrole:function() { // 判断是不是监察员
-            if (this.userPositionInfo) {
+            if (this.userPositionInfo.roleList) {
                 return jurisdictions.jurisdictionJCY(this.userPositionInfo.roleList);
             }
         }

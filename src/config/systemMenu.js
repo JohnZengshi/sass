@@ -157,6 +157,12 @@ const systemMenu = [
 				path: '/work/report/sellreport',
 				icon: 'xiaoshou', 
 				children: []
+			},
+			{
+				text: '进销存汇总',
+				path: '/work/report/hzreport',
+				icon: 'jinxiaocun', 
+				children: []
 			}
 		]
 	},

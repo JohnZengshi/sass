@@ -180,12 +180,6 @@ export default {
       this.storageFormatDate()
       //console.log(1111)
       this.tabCellHeight()
-
-      console.log(this.tempArray)
-      console.log(this.detailDataGridColumn)
-      console.log(this.dataGridStorage)
-      console.log(this.tabCell)
-      console.log(this.reportType)
     },
     // 'reportType': function (val) {
     //  //console.log(this.positionSwitch)
@@ -235,7 +229,19 @@ export default {
       let datas = []
       for (let i of parm) {
         if (i.productTypeList.length) {
-          datas.push(i)
+          let isTrue = false
+          for (let j of i.productTypeList) {
+            if (j.detailList.length) {
+              // datas.push(i)
+              isTrue = true
+            }
+          }
+          if (isTrue) {
+            datas.push(i)
+          }
+          // if (i.productTypeList[0].detailList.length) {
+          //   datas.push(i)
+          // }
         }
       }
       return datas
