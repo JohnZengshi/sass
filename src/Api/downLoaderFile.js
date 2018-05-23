@@ -96,5 +96,13 @@ export const downLoaderFile = (url,data) => {
     var a = document.createElement('a');
     a.href = encodeURI(hrefurl);
     a.download = "filename.xlsx";
-    a.click();                    
+    // $('a').click();
+    // a.click();      
+    invokeClick(a)              
+}
+// 兼容火狐
+function invokeClick(element) {
+    var evt = document.createEvent("MouseEvents");
+    evt.initEvent("click", true, true);
+    element.dispatchEvent(evt);
 }

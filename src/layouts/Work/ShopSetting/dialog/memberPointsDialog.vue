@@ -8,24 +8,40 @@
         :show-close="false"
     >
     
-    <!-- 新增头部 -->
-    <div class="title" slot="title">
-        <i class="el-icon-close" @click="close"></i>
-        <div class="tips">
-            <p><img src="../../../../../static/img/copy.png" /></p>新建模板
-        </div>
-    </div>
+    <!-- 新增弹框 -->
+    <template v-if="dialog.dialogType === 'add'">
+      <!-- 新增头部 -->
+      <div class="title" slot="title">
+          <i class="el-icon-close" @click="close"></i>
+          <div class="tips">
+              <p><img src="../../../../../static/img/copy.png" /></p>新建模板
+          </div>
+      </div>
 
-    <!-- 新增输入框 -->
-    <div class="counter">
-        <p>模板名称</p>
-        <input type="text" placeholder="请输入，最多10个字符" value="" maxlength="10" v-model="templateName"/>
-    </div>
+      <!-- 新增输入框 -->
+      <div class="counter">
+          <input type="text" placeholder="请输入，最多10个字符" value="" maxlength="10" v-model="templateName"/>
+      </div>
+    </template>
+
+    <!-- 批量设置弹框 -->
+    <template v-if="dialog.dialogType === 'settingAll'">
+        <!-- 头部 -->
+        <div class="title"  slot="title">
+          <i class="el-icon-close" @click="close"></i>
+          <div class="tips">
+            <p><img src="../../../../../static/img/piliang.png" /></p>批量设置
+          </div>
+        </div>
+        <!-- 内容 -->
+        <div>待定</div>
+    </template>
 
     <!-- 尾部内容 -->
     <div slot="footer" class="dialog-footer">
         <el-button type="primary" size="small" @click="sure">确 定</el-button>
     </div>
+
     </el-dialog>
 </template>
 

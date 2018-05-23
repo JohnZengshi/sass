@@ -19,6 +19,7 @@
                     <component :is="panel"></component>
                 </div>
             </div>
+            <!-- 右边设置 -->
             <div class="main-right">
                 <div class="supplier-setting">
                     <div class="supplier-setting-title">
@@ -42,7 +43,20 @@
                         </ul>
                     </div>
                 </div>
+                <!-- 会员积分模板配置 -->
+                <div class="member-points">
+                    <div class="member-title">
+                        <h4><i class="iconfont icon-liebiao"></i>会员积分模板设置</h4>
+                        <span @click="addDialog(2)">+模板</span>
+                    </div>
+                    <div class="member-list">
+                        <ul>
+                            <li @click="openMenberPoint"><i>●</i>会员默认模板</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
+
         </div>
         <div>
             <el-dialog :visible.sync="addDialog" customClass="addDig">
@@ -203,7 +217,6 @@ export default {
                     }
                 ]
             }
-            console.log(options)
             operateDelProvIder(options).then((res) => {
                 console.log(res)
                 if (res.data.state == 200) {
@@ -514,6 +527,9 @@ export default {
                     break
             }
         },
+        openMenberPoint(){
+            this.$router.push('/work/memberSettingIndex')
+        }
     }
 }
 </script>
@@ -625,9 +641,10 @@ export default {
                 background:#fff;
                 border-radius: 10px;
             }
+
             .supplier-setting {
                 width: 300px;
-                height: 370px;
+                height: 230px;
                 margin-bottom: 20px;
                 box-shadow: 0px 0 15px #ddd;
                 .supplier-setting-title {
@@ -653,7 +670,7 @@ export default {
                     }
                 }
                 .supplier-list {
-                    height: 350px;
+                    height: 180px;
                     width: 100%;
                     ul {
                         width: 100%;
@@ -685,10 +702,12 @@ export default {
                     }
                 }
             }
+
             .storage-setting {
                 width: 300px;
-                height: 350px;
+                height: 230px;
                 box-shadow: 0px 0 15px #ddd;
+                margin-bottom: 20px;
                 .storage-setting-title {
                     height: 50px;
                     width: 100%;
@@ -712,7 +731,73 @@ export default {
                     }
                 }
                 .storage-list {
-                    height: 340px;
+                    height: 180px;
+                    width: 100%;
+                    ul {
+                        width: 100%;
+                        li {
+                            height: 42px;
+                            line-height: 42px;
+                            padding-left: 30px;
+                            color:#666;
+                            font-size: 14px;
+                            position: relative;
+                            cursor: pointer;
+                            i {
+                                font-style: normal;
+                                margin-right: 20px;
+                            }
+                            .default-flag {
+                                position: absolute;
+                                right: 16px;
+                                top: 0;
+                                color: #2993f8;
+                            }
+                        }
+                        li:nth-child(1n+0) i{
+                            color:#f7b73b;
+                        }
+                        li:nth-child(2n+0) i{
+                            color:#ef8641;
+                        }
+                        li:nth-child(3n+0) i{
+                            color:#cd5867;
+                        }
+                        li:hover {
+                            background:#f1f2f3;
+                        }
+                    }
+                }
+            }
+
+            .member-points{
+                width: 300px;
+                height: 238px;
+                box-shadow: 0px 0 15px #ddd;
+                .member-title{
+                    height: 50px;
+                    width: 100%;
+                    padding: 0 16px;
+                    h4 {
+                        float: left;
+                        font-weight: normal;
+                        line-height: 50px;
+                        height: 50px;
+                        .iconfont {
+                            margin-right: 13px;
+                            color: #2993f8;
+                        }
+                    }
+                    span {
+                        float: right;
+                        line-height: 50px;
+                        font-size: 14px;
+                        color:#2993f8;
+                        cursor: pointer;
+                    }
+                }
+                .member-list{
+                    height: 188px;
                     width: 100%;
                     ul {
                         width: 100%;

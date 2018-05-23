@@ -622,6 +622,7 @@ export default {
             })
             this.leaderStr = arr.join(',')
         },
+        
         getMemberInfo () { // 获取会员信息
             let options = {
                 shopId: this.shopId,

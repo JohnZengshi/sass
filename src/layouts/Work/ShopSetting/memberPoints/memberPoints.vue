@@ -141,6 +141,7 @@ export default {
             dialog: {
                 dialogVisible: false,
                 dialogSize: 'counter_x_small',
+                dialogType: 'add'
             },
             // 会员列表
             memberList:[],

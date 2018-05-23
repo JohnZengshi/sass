@@ -94,7 +94,7 @@
                     <div class="producet-jz">
                         <div class="title">
                             <span>计重类</span>
-                            <el-button type="primary" size="mini">批量设置</el-button>
+                            <el-button type="primary" size="mini" @click="jzSetting">批量设置</el-button>
                         </div>
                         <div class="content">
                             <div class="item">
@@ -196,7 +196,7 @@
                     <div class="porducet-jj">
                         <div class="title">
                             <span>计件类</span>
-                            <el-button type="primary" size="mini">批量设置</el-button>
+                            <el-button type="primary" size="mini" @click="jjsetting">批量设置</el-button>
                         </div>
                         <div class="content">
                             <div class="item">
@@ -408,6 +408,9 @@
             <!-- 积分消耗配置 .6 end -->
         </div>
         <!-- 内容主体 end-->
+
+        <!-- 批量设置 配置条件弹框  -->
+        <memberDialog :dialog="dialog" @closeDialog="closeDialog" ></memberDialog>
     </div>
 </template>
 
@@ -759,7 +762,9 @@ $fontColor:#47a3fb;
 </style>
 
 <script>
-import Swichs from './Swichs';
+import Swichs from './Swichs'
+import memberDialog from '../ShopSetting/dialog/memberPointsDialog'
+
 export default {
     data () {
         return {
@@ -768,12 +773,38 @@ export default {
             radio2: 3,
             num8:100,
             num9:1,
-            radio:''
+            radio:'',
+            // 弹框数据
+            dialog: {
+                dialogVisible: false,
+                dialogSize: 'counter_x_small',
+                dialogType: 'settingAll'
+            },
         }
     },
     components:{
         Swichs,
-    }
+        memberDialog
+    },
+    methods: {
+        // 计重批量设置
+        jzSetting(){
+            this.dialog.dialogVisible = true
+        },
+        jjsetting(){
+            this.dialog.dialogVisible = true            
+        },
+        closeDialog(parm){
+            this.dialog.dialogVisible = parm
+        },
+    },
+    created(){
+
+    },
+    mounted(){
+
+    },
+
 }
 </script>
 
