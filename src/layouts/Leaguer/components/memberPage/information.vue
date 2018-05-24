@@ -32,7 +32,7 @@
                 <div class="item" @mouseover="showBtn" @mouseout="hiddenBtn">
                     <span class="item-label">负责人</span>
                     <i @click="isChoseLeader = true" id="iconjia" class="iconfont icon-jia jia"></i>
-                    <span>{{ leaderStr || '指派' }}</span>
+                    <span>{{ leaderStr }}</span>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="item">
                     <span class="item-label">性别</span>
-                    <el-radio-group v-model="sex" @change="setSex">
+                    <el-radio-group v-model="dataInfo.sex" @change="setSex">
                         <el-radio :label="1">男</el-radio>
                         <el-radio :label="2">女</el-radio>
                     </el-radio-group>
@@ -56,11 +56,11 @@
                 </div>
                 <div class="item">
                     <span class="item-label">微信号</span>
-                    <input type="text" v-model="weixin" @blur="setWeixin(weixin)">
+                    <input type="text" v-model="dataInfo.weixin" @blur="setWeixin">
                 </div>
                 <div class="item">
                     <span class="item-label">邮箱</span>
-                    <input type="text" v-model="email" @blur="setEmail">
+                    <input type="text" v-model="dataInfo.email" @blur="setEmail">
                 </div>
             </div>
             <div class="member-edit-bottom">
@@ -71,16 +71,17 @@
                         :rows="4"
                         :maxlength="50"
                         placeholder="请输入备注"
-                        v-model="remark"
+                        v-model="dataInfo.remark"
                         @blur="setRemark">
                     </el-input>
                 </div>
                 <div class="member-edit-bq">
                     <div class="title fl">标签</div>
-                    <div class="bq-item fl" v-for="(item,index) in getSignList(oldMemberInfo.signList)" :key="index">
-                        {{item}}
+                    <div class="bq-item fl" v-for="(item,index) in dataInfo.signList" :key="index">
+                        <i @click.stop="delLabel(item, index)" class="iconfont icon-guanbi-copy"></i>
+                        {{item.signName}}
                     </div>
-                    <input type="text" placeholder="添加标签" maxlength="6" class="bq-add fl" />
+                    <input @blur="followCreateSign" v-model="signName" type="text" placeholder="添加标签" maxlength="6" class="bq-add fl" />
                 </div>
             </div>
         </div>
@@ -244,6 +245,20 @@
                 line-height: 26px;
                 border-top-right-radius: 10px;
                 border-bottom-left-radius: 10px;
+                position: relative;
+                i {
+                    position: absolute;
+                    top: -8px;
+                    right: -4px;
+                    font-size: 12px;
+                    opacity: 0;
+                    transition: all .5s;
+                    &:hover {
+                        color: #666;
+                        opacity: 1;                        
+                        cursor: pointer;
+                    }
+                }
             }
             .bq-add {
                 width: 86px;
@@ -282,7 +297,7 @@ export default {
             weixin:'',
             email:'',
             leaderStr:'',
-
+            signName:'',
             // 弹框
             isChoseLeader:false,
             dataInfo: {
@@ -306,6 +321,7 @@ export default {
                 email: '', // 邮箱
                 wx: '', // 微信号
                 industry: '', // 行业
+                sex:'',
                 provinceId: '',
                 provinceName: '',
                 cityId: '',
@@ -339,19 +355,11 @@ export default {
         // 修改会员等级
         getLevel(type){
             this.actionType = type
-            let options = {
+            let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
-                username: this.oldMemberInfo.username,
-                phone:this.oldMemberInfo.phone,
-                type:this.actionType,
-                principalList:this.dataInfo.principalList,
-                sex:this.sex,
-                weixin:this.weixin,
-                signList:this.oldMemberInfo.signList,
-                email:this.email,
-                remark:this.remark
-            }
+                type
+            })
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
@@ -372,6 +380,7 @@ export default {
         },
         // 负责人
         getHead(list) {
+            console.log('我里个去',list)
             if(list){
                 if(list.length === 0) {
                     return '指派'
@@ -386,6 +395,8 @@ export default {
                         return newArrr.join(',')
                     }
                 }
+            } else {
+                return '指派'
             }
         },
         // 格式化时间
@@ -409,25 +420,18 @@ export default {
         closeChoLeader(parm) {
             this.dataInfo.principalList = []
             this.isChoseLeader = false
-            this.leaderStr = parm.nameList.join(',')
 
             parm.list.forEach((item, index) => {
                 this.dataInfo.principalList.push({userId: item})
             })
+
+            this.leaderStr = parm.nameList.join(',') || '指派'
+            
             // 修改负责人
-            let options = {
+            let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
-                username: this.oldMemberInfo.username,
-                phone:this.oldMemberInfo.phone,
-                type:this.actionType,
-                principalList:this.dataInfo.principalList,
-                sex:this.sex,
-                weixin:this.weixin,
-                signList:this.oldMemberInfo.signList,
-                email:this.email,
-                remark:this.remark
-            }
+            })
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
@@ -444,20 +448,11 @@ export default {
             })
         },
         // 修改微信号
-        setWeixin(weixin){
-            let options = {
+        setWeixin(){
+            let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
-                username: this.oldMemberInfo.username,
-                phone:this.oldMemberInfo.phone,
-                type:this.actionType,
-                principalList:this.dataInfo.principalList,
-                sex:this.sex,
-                weixin:this.weixin,
-                signList:this.oldMemberInfo.signList,
-                email:this.email,
-                remark:this.remark
-            }
+            })
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
@@ -475,19 +470,10 @@ export default {
         },
         // 修改性别
         setSex(){
-                let options = {
-                    memberId: this.memberId,
-                    shopId: this.shopId,
-                    username: this.oldMemberInfo.username,
-                    phone:this.oldMemberInfo.phone,
-                    type:this.actionType,
-                    principalList:this.dataInfo.principalList,
-                    sex:this.sex,
-                    weixin:this.weixin,
-                    signList:this.oldMemberInfo.signList,
-                    email:this.email,
-                    remark:this.remark
-                }
+            let options = Object.assign({},this.dataInfo,{
+                memberId: this.memberId,
+                shopId: this.shopId,
+            })
                 operateMemberUpdateBy(options).then(res => {
                     console.log(res.data.state)
                     if(res.data.state === 200) {
@@ -506,19 +492,10 @@ export default {
         // 修改邮箱
         setEmail(){
             
-            let options = {
+            let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
-                username: this.oldMemberInfo.username,
-                phone:this.oldMemberInfo.phone,
-                type:this.actionType,
-                principalList:this.dataInfo.principalList,
-                sex:this.sex,
-                weixin:this.weixin,
-                signList:this.oldMemberInfo.signList,
-                email:this.email,
-                remark:this.remark
-            }
+            })
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
@@ -536,19 +513,10 @@ export default {
         },
         // 修改备注
         setRemark(){
-            let options = {
+            let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
-                username: this.oldMemberInfo.username,
-                phone:this.oldMemberInfo.phone,
-                type:this.actionType,
-                principalList:this.dataInfo.principalList,
-                sex:this.sex,
-                weixin:this.weixin,
-                signList:this.oldMemberInfo.signList,
-                email:this.email,
-                remark:this.remark
-            }
+            })
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
@@ -563,29 +531,83 @@ export default {
                     })
                 }
             })
+        },
+        // 修改标签
+        followCreateSign () { // 创建标签
+            let options = {
+                shopId: this.shopId,
+                signName: this.signName
+            }
+            operateFollowCreateSign(options).then((res) => {
+                if (res.data.state == 200) {
+                    this.dataInfo.signList.push({
+                        signName: this.signName,
+                        signId: res.data.data.signId
+                    })
+                    this.signName = ''
+
+                    let optionsdata = Object.assign({},this.dataInfo,{
+                        memberId: this.memberId,
+                        shopId: this.shopId,
+                    })
+
+                    operateMemberUpdateBy(optionsdata).then(res => {
+                        if(res.data.state === 200) {
+                            this.$message({
+                                type: 'success',
+                                message: '添加标签成功'
+                            })
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                message: '添加标签失败'
+                            })
+                        }
+                    })
+
+                }
+            }, (res) => {
+                console.log(res)
+            })
+        },
+        // 删除标签
+        delLabel (item, index) {
+            this.dataInfo.signList.splice(index, 1)
+            let optionsdata = Object.assign({},this.dataInfo,{
+                        memberId: this.memberId,
+                        shopId: this.shopId,
+                    })
+
+                    operateMemberUpdateBy(optionsdata).then(res => {
+                        if(res.data.state === 200) {
+                            this.$message({
+                                type: 'success',
+                                message: '删除标签成功'
+                            })
+                        } else {
+                            this.$message({
+                                type: 'error',
+                                message: '删除标签失败'
+                            })
+                        }
+                    })
         }
     },
     watch:{
         oldMemberInfo(val) {
+            this.dataInfo = Object.assign(this.dataInfo,this.oldMemberInfo)
             this.actionType = this.oldMemberInfo.type
-            this.sex = this.oldMemberInfo.sex
-            this.weixin = this.oldMemberInfo.weixin
-            this.email = this.oldMemberInfo.email
-            this.remark = this.oldMemberInfo.remark
+            this.leaderStr = this.getHead(this.dataInfo.principalList)
         },
     },
     created() {
+        this.dataInfo = Object.assign(this.dataInfo,this.oldMemberInfo)
         // 等级标签
         this.actionType = this.oldMemberInfo.type
-        this.sex = this.oldMemberInfo.sex
-        this.weixin = this.oldMemberInfo.weixin
-        this.email = this.oldMemberInfo.email
-        this.remark = this.oldMemberInfo.remark,
-        this.dataInfo.principalList = this.oldMemberInfo.principalList
     },
     mounted() {
         // 初始化的负责人显示
-        this.leaderStr = this.getHead(this.oldMemberInfo.principalList)
+        this.leaderStr = this.getHead(this.dataInfo.principalList)
     },
 }
 </script>

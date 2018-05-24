@@ -2,53 +2,127 @@
     <div class="memberinfo-content">
         <div class="trading-top-num">
             <div class="num-item num-item-zz">
-                <p class="num">8500</p>
+                <p class="num">{{buyRecordInfo.totalPrice || 0}}</p>
                 <p class="label">交易总额（元）</p>
             </div>
             <div class="num-item num-item-cs">
-                <p class="num">12</p>
+                <p class="num">{{buyRecordInfo.totalNum || 0}}</p>
                 <p class="label">交易次数（次）</p>
             </div>
             <div class="num-item num-item-js">
-                <p class="num">15</p>
+                <p class="num">{{buyRecordInfo.totalWeight || 0}}</p>
                 <p class="label">件数（件）</p>
             </div>
         </div>
         <div class="trading-bottom-list">
-            <div class="list-item">
+            <!-- 销售 -->
+            <div class="list-item" v-for="(item,index) in buyRecordInfo.dataList.saleList" :key="index">
                 <div class="item-title">
-                    <span class="fl title-djh">FC2222222222222</span>
-                    <span class="fr title-time">2018-6-8 12.50</span>
+                    <span class="fl title-djh">{{ buyRecordInfo.dataList.orderNum }}</span>
+                    <span class="fr title-time">{{ _formDataTimeYND(buyRecordInfo.dataList.PayTime) }}</span>
                 </div>
                 <div class="item-info">
                     <div class="info-title">
-                        <span class="title-h">千足金财宝项链</span>
+                        <span class="title-h">{{item.jewelryName}}</span>
                         <span class="title-b">销售</span>
                     </div>
                     <div class="info-main">
                         <div class="main-item">
                             <span class="fl">条码号</span>
-                            <span class="fr">11000000000000</span>
+                            <span class="fr">{{item.barCode}}</span>
                         </div>
                         <div class="main-item">
                             <span class="fl">工费</span>
-                            <span class="fr">110元/g</span>
+                            <span class="fr">{{item.paymentPrice}}元/g</span>
                         </div>
                         <div class="main-item">
-                            <span class="fl">销售</span>
-                            <span class="fr">110元</span>
+                            <span class="fl">售价</span>
+                            <span class="fr">{{ item.saleGoldPrice }}元</span>
                         </div>
                         <div class="main-item">
                             <span class="fl">折扣</span>
-                            <span class="fr">80%</span>
+                            <span class="fr">{{ item.discount }}%</span>
                         </div>
                         <div class="main-item">
                             <span class="fl">实售价</span>
-                            <span class="fr">110元</span>
+                            <span class="fr">{{ item.newPrice }}元</span>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- 退货 -->
+            <div class="list-item" v-for="(item1,index1) in buyRecordInfo.dataList.exchangeList" :key="index1">
+                <div class="item-title">
+                    <span class="fl title-djh">{{ buyRecordInfo.dataList.orderNum }}</span>
+                    <span class="fr title-time">{{ _formDataTimeYND(buyRecordInfo.dataList.PayTime) }}</span>
+                </div>
+                <div class="item-info">
+                    <div class="info-title">
+                        <span class="title-h">{{item1.jewelryName}}</span>
+                        <span class="title-b">退货</span>
+                    </div>
+                    <div class="info-main">
+                        <div class="main-item">
+                            <span class="fl">条码号</span>
+                            <span class="fr">{{item1.barCode}}</span>
+                        </div>
+                        <div class="main-item">
+                            <span class="fl">工费</span>
+                            <span class="fr">{{item1.paymentPrice}}元/g</span>
+                        </div>
+                        <div class="main-item">
+                            <span class="fl">售价</span>
+                            <span class="fr">{{ item1.saleGoldPrice }}元</span>
+                        </div>
+                        <div class="main-item">
+                            <span class="fl">折扣</span>
+                            <span class="fr">{{ item1.discount }}%</span>
+                        </div>
+                        <div class="main-item">
+                            <span class="fl">实售价</span>
+                            <span class="fr">{{ item1.newPrice }}元</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 回收 -->
+            <div class="list-item" v-for="(item2,index2) in buyRecordInfo.dataList.recycleList" :key="index2">
+                <div class="item-title">
+                    <span class="fl title-djh">{{ buyRecordInfo.dataList.orderNum }}</span>
+                    <span class="fr title-time">{{ _formDataTimeYND(buyRecordInfo.dataList.PayTime) }}</span>
+                </div>
+                <div class="item-info">
+                    <div class="info-title">
+                        <span class="title-h">{{item2.jewelryName}}</span>
+                        <span class="title-b">回收</span>
+                    </div>
+                    <div class="info-main">
+                        <div class="main-item">
+                            <span class="fl">条码号</span>
+                            <span class="fr">{{item2.barCode}}</span>
+                        </div>
+                        <div class="main-item">
+                            <span class="fl">工费</span>
+                            <span class="fr">{{item2.paymentPrice}}元/g</span>
+                        </div>
+                        <div class="main-item">
+                            <span class="fl">售价</span>
+                            <span class="fr">{{ item2.saleGoldPrice }}元</span>
+                        </div>
+                        <div class="main-item">
+                            <span class="fl">折扣</span>
+                            <span class="fr">{{ item2.discount }}%</span>
+                        </div>
+                        <div class="main-item">
+                            <span class="fl">实售价</span>
+                            <span class="fr">{{ item2.newPrice }}元</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
         </div>
         <div class="return-btn-group">
             <div class="btn" @click="goBack">返回</div>
@@ -181,17 +255,23 @@
 </style>
 
 <script>
+import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
+
 export default {
     data () {
         return {
             
         }
     },
-    props:['memberInfo'],
+    props:['buyRecordInfo'],
     methods: {
         goBack() {
             this.$emit('goBack',true)            
-        }
+        },
+         // 格式化时间
+        _formDataTimeYND(parm){
+            return GetNYR(parm)
+        },
     }
 }
 </script>

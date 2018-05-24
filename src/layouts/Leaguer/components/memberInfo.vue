@@ -14,7 +14,7 @@
         <information-edit v-show="informationPage" :oldMemberInfo="oldMemberInfo" :shopId="shopId" :memberId="memberId" @goBack="goBack"></information-edit>
 
         <!-- 交易记录页面 -->
-        <trading v-show="tradingPage" :memberInfo="memberInfo" @goBack="goBack"></trading>
+        <trading v-show="tradingPage" :buyRecordInfo="buyRecordInfo" @goBack="goBack"></trading>
 
         <!-- 来访记录页面 -->
         <visiting v-show="visitingPage" :memberInfo="memberInfo" @goBack="goBack"></visiting>
@@ -225,7 +225,7 @@
 <script>
 
 import { getMemberInfoById } from 'Api/member'
-import {seekFollowSignList, seekUserInfo, seekGetMemberInfo, seekGoodsSellOrder} from 'Api/commonality/seek'
+import {seekFollowSignList, seekUserInfo, seekGetMemberInfo, seekGoodsSellOrder, seekLatelyBuyRecord} from 'Api/commonality/seek'
 
 
 import memberInfoHome from './memberPage/home.vue'
@@ -241,6 +241,7 @@ export default {
             titleMessage:'会员信息',
             memberInfo:{},
             oldMemberInfo:{},
+            buyRecordInfo:{},
 
             memberFlag: false,
 
@@ -287,6 +288,20 @@ export default {
                 this.oldMemberInfo = datas
             })
         },
+        // 获取交易信息内容
+        getBuyRecord(){
+            let options = {
+                shopId: this.shopId,
+                memberId: this.memberId,
+                page:'1',
+                pageSize:'2000',
+            }
+            seekLatelyBuyRecord(options).then(res => {
+                console.log('老接口购买记录',res.data.data)
+                let datas = res.data.data
+                this.buyRecordInfo = datas
+            })  
+        },
         close () {
             this.$emit("closeReturn", {status: false})
             this.homePage=true
@@ -308,6 +323,8 @@ export default {
             this.visitingPage = false
             this.followPage = false
             this.integralPage = false
+            this.getMemberInfo()
+            this.getOldMemberInfo()
         },
         infomationShow(parm) {
             this.informationPage = parm
@@ -362,6 +379,11 @@ export default {
         informationPage(val) {
             if(val){
                 this.getOldMemberInfo()
+            }
+        },
+        tradingPage(val){
+            if(val){
+                this.getBuyRecord()
             }
         }
     },
