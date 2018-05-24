@@ -23,7 +23,7 @@
    <!--  <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind"> -->
     <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in filterHasData(dataGridStorage.dataList)" :index="resetIndex(ind)" :key="ind">
       <div class="left-type-name-wrap" :style="getRightH(caty)">
-        <p>{{caty.typeName}}<span v-if="caty.typeName != '期初'">({{caty.totalReceiptNum0}})</span></p>
+        <p>{{caty.typeName}}<span v-if="caty.typeName != '期初' && caty.typeName != '期末'">({{caty.totalReceiptNum0}})</span></p>
       </div>
       <div class="right-type-inner-wrap">
 
