@@ -3405,7 +3405,7 @@
 				width: 1250px;
 				overflow: visible;
 				margin: 0;
-				background: #f5f8f7;
+				// background: #f5f8f7;
 				box-sizing: border-box;
 				margin-bottom: 30px;
 				.member-btn {

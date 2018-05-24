@@ -490,6 +490,7 @@ export default {
             beginTime : '',
             endTime : '',
             shopFlag: '', // 给后台添加备注
+            storageFlag: '', // 给后台添加备注
             settingType: '1',
             receiveObject: '1',
             storageId: '',
@@ -671,6 +672,7 @@ export default {
             this.dataGridOptions.storageId = ''
             this.dataGridOptions.shopId = ''
             this.dataGridOptions.shopFlag = ''
+            this.dataGridOptions.storageFlag = ''
             if (parm.type == 1) {
                 this.dataGridOptions.receiveObject = parm.type
             } else if (parm.type == 2) {
@@ -679,6 +681,7 @@ export default {
                     this.dataGridOptions.storageId = parm.item.operateId
                 } else {
                     this.dataGridOptions.receiveObject = parm.type
+                    this.dataGridOptions.storageFlag = '1'
                 }
                 
             } else if (parm.type == 3) {
