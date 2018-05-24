@@ -158,6 +158,7 @@
                 @closeReturn="closeEditReturn"
                 @seekHistoryList="seekHistoryList"
             ></editLeaguerDia> -->
+
             <!-- 会员信息 begin -->
             <member-info
                 @closeReturn="closeEditReturn" 
@@ -234,6 +235,10 @@ import FormatImg from 'components/template/DefaultHeadFormat.vue'
 import ClientDetail from './ClientTemplate/ClientDetail.vue'
 // 会员信息
 import memberInfo from  './components/memberInfo'
+
+// 获取会员信息
+import { getMemberInfoById } from '../../Api/member'
+
 export default {
     components: {
         DropDownMenu,

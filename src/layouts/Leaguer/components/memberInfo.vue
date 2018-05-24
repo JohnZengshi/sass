@@ -8,14 +8,23 @@
         @close="close"
         >
         <!-- 主页面 -->
-        <member-info-home v-show="homePage" :memberInfo="memberInfo" @infomationShow="infomationShow"></member-info-home>
+        <member-info-home v-show="homePage" :memberInfo="memberInfo" @infomationShow="infomationShow" @tradingShow="tradingShow" @visitingShow="visitingShow" @integralShow="integralShow" @followShow="followShow"></member-info-home>
 
         <!-- 信息编辑页面 -->
-        <information-edit v-show="informationPage" :memberInfo="memberInfo" @goBack="goBack"></information-edit>
+        <information-edit v-show="informationPage" :oldMemberInfo="oldMemberInfo" :shopId="shopId" :memberId="memberId" @goBack="goBack"></information-edit>
 
         <!-- 交易记录页面 -->
-        <trading v-show="tradingPage" :memberInfo="memberInfo"></trading>
-        
+        <trading v-show="tradingPage" :memberInfo="memberInfo" @goBack="goBack"></trading>
+
+        <!-- 来访记录页面 -->
+        <visiting v-show="visitingPage" :memberInfo="memberInfo" @goBack="goBack"></visiting>
+
+        <!-- 跟进页面 -->
+        <follow v-show="followPage" @goBack="goBack"></follow>
+
+        <!-- 积分记录页面 -->
+        <integral v-show="integralPage" :memberInfo="memberInfo" @goBack="goBack"></integral>
+
     </el-dialog>
 </template>
 
@@ -80,7 +89,7 @@
                         color: #fff;
                         text-align: center;
                         border-radius: 4px;
-                        background: orange;
+                        background: #ffc62e;
                         position: absolute;
                         top: 5px;
                     }
@@ -214,31 +223,42 @@
 </style>
 
 <script>
-import { seekGetMemberInfo } from 'Api/commonality/seek'
+
+import { getMemberInfoById } from 'Api/member'
+import {seekFollowSignList, seekUserInfo, seekGetMemberInfo, seekGoodsSellOrder} from 'Api/commonality/seek'
+
+
 import memberInfoHome from './memberPage/home.vue'
 import informationEdit from './memberPage/information'
 import trading from './memberPage/trading'
+import visiting from './memberPage/visiting'
+import follow from './memberPage/follow'
+import integral from './memberPage/integral'
 
 export default {
     data () {
         return {
             titleMessage:'会员信息',
-            memberInfo:{
-                logo:'',
-                memberName:''
-            },
+            memberInfo:{},
+            oldMemberInfo:{},
+
             memberFlag: false,
 
-            homePage:false,
+            homePage:true,
             informationPage:false,
-            tradingPage:true,
-
+            tradingPage:false,
+            visitingPage:false,
+            followPage:false,
+            integralPage:false,
         }
     },
     components:{
         memberInfoHome,
         informationEdit,
         trading,
+        visiting,
+        follow,
+        integral,
     },
     props:['memberInfoFlag','shopId','memberId'],
     methods:{
@@ -249,14 +269,32 @@ export default {
                 shopId: this.shopId,
                 memberId: this.memberId
             }
-            seekGetMemberInfo(options).then(res => {
+            getMemberInfoById(options).then(res => {
                 console.log('会员信息',res.data.data)
                 let datas = res.data.data
                 this.memberInfo = datas
             })
         },
+        // 获取老接口的会员信息
+        getOldMemberInfo() {
+            let options = {
+                shopId: this.shopId,
+                memberId: this.memberId
+            }
+            seekGetMemberInfo(options).then(res => {
+                console.log('老接口会员信息',res.data.data)
+                let datas = res.data.data
+                this.oldMemberInfo = datas
+            })
+        },
         close () {
             this.$emit("closeReturn", {status: false})
+            this.homePage=true
+            this.informationPage=false
+            this.tradingPage=false
+            this.visitingPage=false
+            this.followPage=false
+            this.integralPage=false
         },
         closeHome(parm) {
             this.memberFlag = parm
@@ -266,9 +304,29 @@ export default {
         goBack(parm) {
             this.homePage = parm
             this.informationPage = false
+            this.tradingPage = false
+            this.visitingPage = false
+            this.followPage = false
+            this.integralPage = false
         },
         infomationShow(parm) {
             this.informationPage = parm
+            this.homePage = false
+        },
+        tradingShow(parm) {
+            this.tradingPage = parm
+            this.homePage = false
+        },
+        visitingShow(parm) {
+            this.visitingPage = parm
+            this.homePage = false
+        },
+        followShow(parm) {
+            this.followPage = parm
+            this.homePage = false
+        },
+        integralShow(parm) {
+            this.integralPage = parm
             this.homePage = false
         }
     },
@@ -290,6 +348,21 @@ export default {
             if(this.tradingPage){
                 this.titleMessage = '交易记录'                                
             }
+            if(this.visitingPage){
+                this.titleMessage = '来访记录'                                
+            }
+            if(this.followPage){
+                this.titleMessage = '跟进记录'                                
+            }
+            if(this.integralPage){
+                this.titleMessage = '积分记录'
+            }
+        },
+        // 获取老接口的会员信息
+        informationPage(val) {
+            if(val){
+                this.getOldMemberInfo()
+            }
         }
     },
     created() {
@@ -298,7 +371,6 @@ export default {
     },
     mounted() {
         // 控制按钮的显示
-
     }
 }
 </script>
