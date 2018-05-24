@@ -22,6 +22,7 @@
             <span class="spaceMark">|</span>   -->
             <Cascade
                 v-if="computedRole"
+                :computedRole="computedRole"
                 :propList="productCategory"
                 titleName="全公司"
                 @clear = "callProductCategory"
