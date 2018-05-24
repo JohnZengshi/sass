@@ -700,6 +700,7 @@ export default {
         },
         clearShop () {
             this.dataGridOptions.receiveObject = 3
+            this.dataGridOptions.shopName = ''
             this.dataGridOptions.shopId = ''
             this.dataGridOptions.shopFlag = '1'
             this.send()
