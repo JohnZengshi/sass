@@ -96,7 +96,7 @@ export default {
         text-align: center;
         display: block;
         height: 30px;
-        font-weight: bold;
+        // font-weight: bold;
         font-size: 14px;
         line-height: 30px;
         .drop-triangle {

@@ -21,13 +21,22 @@
             </DropDownMenu>
             <span class="spaceMark">|</span>   -->
             <Cascade
+                v-if="computedRole"
                 :propList="productCategory"
-                :computedRole="computedRole"
                 titleName="全公司"
                 @clear = "callProductCategory"
                 @dropReturn = "changeVaue"
             >
             </Cascade>
+
+            <DownMenu
+              v-else
+              :titleInfo="dataGridOptions.shopName ? dataGridOptions.shopName : '全店铺'"
+              :showList="productCategory[2].children"
+              :nameKey="'shopName'"
+              @changeData="changeShopData"
+              @clearInfo="clearShop"
+            ></DownMenu>
 <!--         <span class="spaceMark">|</span>
         
              <DropDownMenu
@@ -300,6 +309,7 @@ import find from 'lodash/find'
  } from './../../../../Api/commonality/seek.js'
 import Cascade from './base/Cascade'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
+import DownMenu from 'base/menu/DownMenu'
 import DropDownMenu from './../../../../components/template/DropDownMenu'
 // import ReportDetail from './dataGrid/reportDetailTab'
 import ReportDetail from './newDataGrid/hzReportDetailTab'
@@ -323,6 +333,7 @@ export default {
         TablePrint,
         Cascade,
         DropDownMenu,
+        DownMenu,
         projectTypeTemplate,
         intelligenceTypeTemplate,
         customTemplate,
@@ -482,6 +493,7 @@ export default {
             receiveObject: '1',
             storageId: '',
             shopId: '',
+            shopName: '',
             counterId: '',
             productTypeId: '',
             makeUserList: [
@@ -678,6 +690,21 @@ export default {
                 }
             }
             this.send()
+        },
+        changeShopData (parm) {
+            this.dataGridOptions.receiveObject = 5
+            this.dataGridOptions.shopId = parm.shopId
+            this.dataGridOptions.shopName = parm.shopName
+            this.send()
+        },
+        clearShop () {
+            this.dataGridOptions.receiveObject = 3
+            this.dataGridOptions.shopId = ''
+            this.dataGridOptions.shopFlag = '1'
+            this.send()
+        },
+        changeShopVaue (parm) {
+            console.log('选择店铺', parm)
         },
         callProductCategory () {
             this.dataGridOptions.receiveObject = 1
@@ -1094,6 +1121,10 @@ export default {
             seekGetShopListByCo(options).then((res) => {
                 this.productCategory[2].children = res.body.data.shopList
                 this.distributorList = res.body.data.shopList
+                if (res.body.data.shopList.length == 1) {
+                    this.dataGridOptions.shopFlag = '1'
+                    this.changeShopData(res.body.data.shopList[0])
+                }
             }, (res) => {
                 console.log(res);
             })
