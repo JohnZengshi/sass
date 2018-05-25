@@ -1126,7 +1126,7 @@ export default {
             seekGetShopListByCo(options).then((res) => {
                 this.productCategory[2].children = res.body.data.shopList
                 this.distributorList = res.body.data.shopList
-                if (res.body.data.shopList.length == 1) {
+                if (res.body.data.shopList.length == 1 && !this.computedRole) {
                     this.dataGridOptions.shopFlag = '1'
                     this.changeShopData(res.body.data.shopList[0])
                 }

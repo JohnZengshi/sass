@@ -153,26 +153,22 @@
         <table-print :tabSwitch="tabSwitch" :reportType="getReportType()" @sortList="sortListAct" :positionSwitch="positionSwitch" :printSelectDate="printSelectDate" :dataGridStorage="dataGridStorage">
         </table-print>
       </div>
-      
-   <!-- 明细0 -->
-          <!--   <detailTemplate v-if="this.tabClassActive.index==0" title="库存-明细" ref="detailTemplate" :sellList="printData" :headerData="printSelectDate"></detailTemplate> -->
+
+
+            <intelligence-type-template v-if="this.tabClassActive.index==1" title="库存" ref="intelligenceTypeTemplate" :sellList="printData" :headerData="printSelectDate"></intelligence-type-template>
 
         <!--打印模块-->
         <div style="display: none;">
             
             <!-- 明细0 -->
-            <detailTemplate v-if="this.tabClassActive.index==0" title="库存-明细" ref="detailTemplate" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
+            <detailTemplate v-if="this.tabClassActive.index==0" title="库存" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detailTemplate>
 
 
             <!-- 智能1 -->
-            <intelligence-type-template v-if="tabClassActive.index==1" title="库存-智能分类" ref="intelligenceTypeTemplate" :sellList="printData" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
+            <intelligence-type-template v-if="tabClassActive.index==1" title="库存" ref="intelligenceTypeTemplate" :sellList="printData" :headerData="printSelectDate"></intelligence-type-template>
 
             <!-- 产品分类 -->
-            <project-type-template v-if="this.tabClassActive.index==2" title="库存-产品分类" ref="projectTypeTemplate" :sellList="printData" :headerData="printSelectDate" :positionSwitch="positionSwitch"></project-type-template>
-
-
-            <!-- 自定义3 -->
-            <intelligence-type-template v-if="tabClassActive.index==3" title="库存-自定义" ref="customTemplate" :sellList="printData" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
+            <project-type-template v-if="this.tabClassActive.index==2" title="库存" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></project-type-template>
 
 <!-- 
             <project-type-template v-if="tabClassActive.index==2" title="库存" ref="projectTypeTemplate" :sellList="printData" :headerData="printSelectDate"></project-type-template>
@@ -199,8 +195,8 @@
   import TablePrint from './print/reportDetailTab'
 
   //打印模板，明细，产品分类，智能分类=自定义
-  import detailTemplate from "@/components/jcp-print/kc/detail-template";
-  import projectTypeTemplate from "@/components/jcp-print/kc/project-type-template";
+  import detailTemplate from "@/components/jcp-print/commons/detail-template";
+  import projectTypeTemplate from "@/components/jcp-print/commons/project-type-template";
   import intelligenceTypeTemplate from "@/components/jcp-print/kc/intelligence-type-template";
   import customTemplate from "@/components/jcp-print/kc/intelligence-type-template";
 
@@ -209,7 +205,7 @@
     props: ['changeRepository', 'changeShop', 'changeCounter'],
     data() {
       return {
-        printData: {},
+        printData: [],
         inconspanactive1:true,
         inconspanactive2:false,
         customDialog: false, // 自定义列表弹窗
@@ -466,31 +462,14 @@
           return;
         }
         this.loading = true;
-        this.dataGridOptions.pageSize = 0
+        this.dataGridOptions.pageSize = 9999999
         seekStockProductList(this.dataGridOptions).then((res) => {
-          console.log('打印响应数据', res)
           this.dataGridOptions.pageSize = 15
           debugger
           if(res.data.state == 200) {
-            if (res.data.data.detailList) {
-              if (res.data.data.detailList[0] instanceof Array) {
-                let datas = res.data.data
-                let allData = []
-                for(let i of res.data.data.detailList) {
-                  allData.push(...i)
-                }
-                datas.detailList = allData
-                this.printData = datas
-              } else {
-                this.printData = res.data.data
-              }
-            } else {
-              this.printData = res.data.data
-            }
-            setTimeout(() => {
-              this.currentPrint()
-              this.loading = false
-            }, 2000)
+            this.printData = res.data.data
+            this.currentPrint()
+            this.loading = false
           } else {
             this.$message({
               type: 'info',
@@ -515,7 +494,6 @@
             this.$refs.projectTypeTemplate.print();
             break;
           case 3:
-            // this.$refs.detailTemplate.print();
             this.$refs.customTemplate.print();
             break;
           default:

@@ -15,7 +15,7 @@ export const JaTools = {
 			myDoc.settings = {paperWidth: page.width, paperHeight: page.height};
 		}
 		myDoc.documents = {html: html};
-		jcp.printPreview(myDoc, false);
+		jcp.printPreview(myDoc, true);
 	},
 	/**
 	 * 将对象转换，合并

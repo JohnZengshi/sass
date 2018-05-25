@@ -1544,6 +1544,7 @@
 				}
 			},
 			operateCashierAct() { 
+				debugger
 				// 打单操作
 				if(this.isPrintOnly && this.templateId == '') {
 					this.$message({

@@ -156,7 +156,7 @@
 					paperName:"A4",
 				};
 				var jcp = getJCP();
-				jcp.printPreview(myDoc, false);
+				jcp.printPreview(myDoc, true);
 			},
 			computedTotalRealPrice() {
 				this.totalRealPrice = this.sellStorage.productTypeList[0].totalRealPrice;

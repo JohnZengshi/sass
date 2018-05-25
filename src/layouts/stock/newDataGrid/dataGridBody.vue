@@ -29,7 +29,7 @@
 							v-else-if="tab.text == '位置名称' && index == 0 && index1 == 0"
 							:style="tableCell(tab.width)"
 						>	
-							<i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;'">{{caty[tab.childType]}}</i>
+							<i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;'">{{tab.childType}}{{caty[tab.childType]}}</i>
 						</div>
 						<div class="tb-td"  :key="tabindex"
 							v-else

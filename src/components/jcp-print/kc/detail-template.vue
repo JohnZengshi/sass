@@ -1,12 +1,12 @@
 <template>
   <div class="print-box breakable" id="page1">
     <div class="print-header">
-      <h1 class="title center">{{title}}单据</h1>
+      <h1 class="title center">{{title}}报表</h1>
       <div class="head-option">
-        <div class="left">{{headerData.companyName}}</div>
-        <div class="right">制单时间:{{headerData.createDate|DATA_FORMAT}}</div>
+<!--         <div class="left">{{headerData.companyName}}</div> -->
+<!--         <div class="right">制单时间:{{headerData.createDate|DATA_FORMAT}}</div> -->
       </div>
-      <div>
+<!--       <div>
         <div class="explain-box">
           单据号：{{headerData.orderNum}}
         </div>
@@ -87,7 +87,7 @@
             收货人：{{headerData.consigneeName}}
           </div>
         </template>
-      </div>
+      </div> -->
     </div>
     <div>
       <table class="table-box">
