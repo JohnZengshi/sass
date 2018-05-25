@@ -1,7 +1,7 @@
 <template>
 	<!--表头-->
 	<div>
-		<div class="dg_bd-fixed" :style="'width:'+ fixedFullSize +'px'">
+		<div class="dg_bd-fixed" :style="'width:'+ fixedFullSize +'px'" @click="showData">
 			<div class="dg_tr" v-for="item,k in dgDataList" :index="resetIndex(k)" :class="{move: activeClassIndex == k , add: item.productId == '', selectOn : activeSelectOn == k }" @click="datagridClick(item, k)" @mousemove="datagridHover(k, $event)" @mouseleave="datagridHover(k,$event)" :data-index="addIndex()">
 				<div class="dg_td" :style="'width:'+ f.width +'px'" v-for="f,i in fixedData">
 					<!--下拉框编辑-->
@@ -27,8 +27,9 @@
 							<!--&& f.type != 'jewelryName'-->
 							<i v-if="isShowIcon(item[f.type]) && !f.noRemove" @click="griditemClear($event, item, f, k)" class="el-icon-circle-close" title="清除"></i>
 						</div>
-						<span v-else-if="f.type=='heavyCode' || f.readonly" :style="'width: '+f.width+'px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;'" :title="item[f.type]">{{item[f.type]}}</span>
-						<input :id="f.type+k" maxlength="12" type="text" @mousemove="inputMousemove($event,item, f)" @focusin="inputFocusin($event, item[f.type])" @keypress="dataGridkeyInput($event, item, f,k)" @input="inputChange(item, f)" @keydown="limitNumber($event, f.limitNumber)" :disabled="f.type=='heavyCode' || f.readonly" @focusout="inputFocusout($event, item, f, k)" class="dg-select-edit-ipt" :title="item[f.type]" v-model="item[f.type]" v-else />
+						<!--<span v-else-if="f.type=='heavyCode' || f.readonly" :style="'width: '+f.width+'px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;'" :title="item[f.type]">{{item[f.type]}}</span>-->
+						<span v-else-if="f.readonly" :style="'width: '+f.width+'px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;'" :title="item[f.type]">{{item[f.type]}}</span>
+						<input :id="f.type+k" maxlength="12" type="text" @mousemove="inputMousemove($event,item, f)" @focusin="inputFocusin($event, item[f.type])" @keypress="dataGridkeyInput($event, item, f,k)" @input="inputChange(item, f)" @keydown="limitNumber($event, f.limitNumber)" :disabled="f.readonly" @focusout="inputFocusout($event, item, f, k)" class="dg-select-edit-ipt" :title="item[f.type]" v-model="item[f.type]" v-else />
 					</template>
 					<template v-else>{{item[f.type]}}</template>
 				</div>
@@ -86,6 +87,9 @@
 					event.returnValue = true;
 				}
 			},
+			showData(){
+      	console.log(this.dgDataList)
+      },
 			//重置index
 			resetIndex(index) {
 				if(index == 0) applyIndex = 0
@@ -1123,7 +1127,6 @@
 				let elem = document.getElementById('j_datagrid_select')
 				switch(evt.type) {
 					case 'mousemove':
-
 						if(fIndex != undefined) {
 							if(this.mouseEvent.x != fIndex || this.mouseEvent.y != cIndex) {
 								this.elemHide(elem)
@@ -1160,7 +1163,6 @@
 					}
 				})
 			}
-
 		}
 	}
 </script>

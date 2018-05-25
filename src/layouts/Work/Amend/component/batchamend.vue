@@ -223,17 +223,16 @@ export default{
       this.$set(this.popup, 'isShowData', this.popup.amendingData == '')
       
       // 非全选情况要对修改范围进行验证
-    //   if (!this.switchType){
-    //     if(!this.selectRange('sel1')){
-    //       this.selectRange('sel2')
-    //     }
-    //   }
-      
+         if (!this.switchType){
+           if(!this.selectRange('sel1')){
+             this.selectRange('sel2')
+           }
+         }
+      let _Arry = []
       if ( 
         !this.popup.isShowBigClass &&
         !this.popup.isShowLittleClass && 
         !this.popup.isShowData) {
-        let _Arry = []
         
         // 全选
         if (this.switchType){
@@ -251,6 +250,7 @@ export default{
         } else{
             this.allFlag = 2
           if(!this.popup.editRanges){
+          	console.log('123123')
             let sRow = parseFloat(this.popup.amendingStartRow)
             let eRow = parseFloat(this.popup.amendingEndRow)
             // this.dataList.forEach((item,i) => {
@@ -269,6 +269,7 @@ export default{
           }
         }
         
+        console.log(_Arry.length)
         if(_Arry.length > 0){
            
         //   operateUpdateGoods({
@@ -304,23 +305,23 @@ export default{
     //选择范围错误提示
     selectRange (sel) {
       
-    //   if (sel == 'sel1') {
-    //     if (this.popup.amendingStartRow == '' || this.popup.amendingStartRow < 0 || this.popup.amendingStartRow > this.dataList.length ) {
-    //       this.popup.blurTitle = "调整的范围为 0-"+ this.dataList.length+"行"
-    //       this.$set(this.popup, 'editRanges', true)
-    //       return true
-    //     }else{
-    //       this.$set(this.popup, 'editRanges', false)
-    //       return false
-    //     }
-    //   } else {
-    //     if (this.popup.amendingEndRow == '' || this.popup.amendingEndRow <= this.popup.amendingStartRow || this.popup.amendingEndRow > this.dataList.length) {
-    //       this.popup.blurTitle = "调整的范围为 0- "+this.dataList.length+" 行"
-    //       this.$set(this.popup, 'editRanges', true)
-    //     }else{
-    //       this.$set(this.popup, 'editRanges', false)
-    //     }
-    //   }
+         if (sel == 'sel1') {
+           if (this.popup.amendingStartRow == '' || this.popup.amendingStartRow < 1 || this.popup.amendingStartRow > this.dataList.length ) {
+             this.popup.blurTitle = "调整的范围为 1-"+ this.dataList.length+"行"
+             this.$set(this.popup, 'editRanges', true)
+             return true
+           }else{
+             this.$set(this.popup, 'editRanges', false)
+             return false
+           }
+         } else {
+           if (this.popup.amendingEndRow == '' || this.popup.amendingEndRow > this.dataList.length) {
+             this.popup.blurTitle = "调整的范围为 1- "+this.dataList.length+" 行"
+             this.$set(this.popup, 'editRanges', true)
+           }else{
+             this.$set(this.popup, 'editRanges', false)
+           }
+         }
     },
     
     selectInput(val, type){
@@ -340,6 +341,7 @@ export default{
             this.popup.amendingPitchOn = '1'
             this.$set(this.popup, 'editRanges', true)
         }
+        console.log(this.popup)
     },
     
     productCertificateList () { // 证书下拉列表
@@ -490,7 +492,7 @@ export default{
 .amend-popup-wrap1{ // 批量修改
     padding:0 24px;
     width: 320px;
-    height: 500px;
+    height: 520px;
     background: #fff;
     border-radius: 10px;
     position: fixed;
@@ -617,7 +619,7 @@ export default{
             .titleBox1{
               position: absolute;
               left: 70px;
-              bottom: -17px;
+              bottom: -22px;
               color: red;
               font-size: 12px;
             }
