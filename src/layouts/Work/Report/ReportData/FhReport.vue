@@ -1087,6 +1087,7 @@ export default {
            this.send()
         },
         tabPrin(){
+            debugger
         	switch (this.tabClassActive.index){
 						case 0:
 							this.$refs.detailTemplate.print();

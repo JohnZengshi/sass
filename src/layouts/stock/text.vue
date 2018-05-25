@@ -4,38 +4,37 @@
     <div class="RP_report_wrapper ui-page-max-width" v-loading="loading" element-loading-text="数据查询中">
       <!-- v-loading = "loading" -->
 
-			<div class="Rp_dataGrid_container">
-				<div class="rp_gridState">
-					<p class="side-nav"><i class="iconfont icon-baobiao"></i>商品列表</p>
-					<div class="sort-wrap">
-						<label>排序:</label>
-						<div class="sortwrap-text" v-for="(item, index) in sortList" :key="index">
-							{{item.name}}
-							<img class="sortwrap-img" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
-							<img class="sortwrap-img" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
-							<i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
-						</div>
-					</div>
-					<div class="right-wrap">
-						<div class="search-wrap">
-							<input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" />
-							<!--<i class="iconfont icon-sousuo" @click="send"></i>-->
-						</div>
-						<!-- <div @click="toggleAttribute" class="iconfont-wrap">
-							<span v-if="dataGridOptions.productClass == 1">成品</span>
-							<span v-if="dataGridOptions.productClass == 2">旧料</span>
-							<i class="iconfont icon-qiehuan"></i>
-						</div> 修改样式位置-->
-						<div class="iconfont-wrap">
-							<span style="margin-right:25px;" :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)" >成品</span>
-							<span style="margin-right:25px;" :class="inconspanactive2 == true ? 'myspanactive' : ''"  @click="toggleAttribute(2)" >旧料</span>
-						</div>
-						<div class="tab">
-							<span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span>
-							<span :class="1 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(1, 2)">智能分类</span>
-							<span :class="2 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(2, 3)">产品分类</span>
-							<!--自定原点击事件：@click="tabs(3, 4)"-->
-							<span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义
+      <div class="Rp_dataGrid_container">
+        <div class="rp_gridState">
+          <p class="side-nav"><i class="iconfont icon-baobiao"></i>商品列表</p>
+          <div class="sort-wrap">
+            <label>排序:</label>
+            <div class="sortwrap-text" v-for="(item, index) in sortList" :key="index">
+              {{item.name}}
+              <img class="sortwrap-img" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
+              <img class="sortwrap-img" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
+              <i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
+            </div>
+          </div>
+          <div class="right-wrap">
+            <div class="search-wrap">
+              <input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" />
+              <!--<i class="iconfont icon-sousuo" @click="send"></i>-->
+            </div>
+            <!-- <div @click="toggleAttribute" class="iconfont-wrap">
+              <span v-if="dataGridOptions.productClass == 1">成品</span>
+              <span v-if="dataGridOptions.productClass == 2">旧料</span>
+              <i class="iconfont icon-qiehuan"></i>
+            </div> 修改样式位置-->
+            <div class="iconfont-wrap">
+              <span style="margin-right:25px;" :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)" >成品</span>
+              <span style="margin-right:25px;" :class="inconspanactive2 == true ? 'myspanactive' : ''"  @click="toggleAttribute(2)" >旧料</span>
+            </div>
+            <div class="tab">
+              <span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span>
+              <span :class="1 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(1, 2)">智能分类</span>
+              <span :class="2 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(2, 3)">产品分类</span>
+              <span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(3, 4)" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义
                                 <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
                                 <div class="customDia" ref="customDia" style="display: none;">
                                     <div class="body">
@@ -154,26 +153,22 @@
         <table-print :tabSwitch="tabSwitch" :reportType="getReportType()" @sortList="sortListAct" :positionSwitch="positionSwitch" :printSelectDate="printSelectDate" :dataGridStorage="dataGridStorage">
         </table-print>
       </div>
-      
-   <!-- 明细0 -->
-          <!--   <detailTemplate v-if="this.tabClassActive.index==0" title="库存-明细" ref="detailTemplate" :sellList="printData" :headerData="printSelectDate"></detailTemplate> -->
+
+
+            <intelligence-type-template v-if="this.tabClassActive.index==1" title="库存" ref="intelligenceTypeTemplate" :sellList="printData" :headerData="printSelectDate"></intelligence-type-template>
 
         <!--打印模块-->
         <div style="display: none;">
             
             <!-- 明细0 -->
-            <detailTemplate v-if="this.tabClassActive.index==0" title="库存-明细" ref="detailTemplate" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
+            <detailTemplate v-if="this.tabClassActive.index==0" title="库存" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detailTemplate>
 
 
             <!-- 智能1 -->
-            <intelligence-type-template v-if="tabClassActive.index==1" title="库存-智能分类" ref="intelligenceTypeTemplate" :sellList="printData" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
+            <intelligence-type-template v-if="tabClassActive.index==1" title="库存" ref="intelligenceTypeTemplate" :sellList="printData" :headerData="printSelectDate"></intelligence-type-template>
 
             <!-- 产品分类 -->
-            <project-type-template v-if="this.tabClassActive.index==2" title="库存-产品分类" ref="projectTypeTemplate" :sellList="printData" :headerData="printSelectDate" :positionSwitch="positionSwitch"></project-type-template>
-
-
-            <!-- 自定义3 -->
-            <intelligence-type-template v-if="tabClassActive.index==3" title="库存-自定义" ref="customTemplate" :sellList="printData" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
+            <project-type-template v-if="this.tabClassActive.index==2" title="库存" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></project-type-template>
 
 <!-- 
             <project-type-template v-if="tabClassActive.index==2" title="库存" ref="projectTypeTemplate" :sellList="printData" :headerData="printSelectDate"></project-type-template>
@@ -200,8 +195,8 @@
   import TablePrint from './print/reportDetailTab'
 
   //打印模板，明细，产品分类，智能分类=自定义
-  import detailTemplate from "@/components/jcp-print/kc/detail-template";
-  import projectTypeTemplate from "@/components/jcp-print/kc/project-type-template";
+  import detailTemplate from "@/components/jcp-print/commons/detail-template";
+  import projectTypeTemplate from "@/components/jcp-print/commons/project-type-template";
   import intelligenceTypeTemplate from "@/components/jcp-print/kc/intelligence-type-template";
   import customTemplate from "@/components/jcp-print/kc/intelligence-type-template";
 
@@ -210,7 +205,7 @@
     props: ['changeRepository', 'changeShop', 'changeCounter'],
     data() {
       return {
-        printData: {},
+        printData: [],
         inconspanactive1:true,
         inconspanactive2:false,
         customDialog: false, // 自定义列表弹窗
@@ -467,31 +462,14 @@
           return;
         }
         this.loading = true;
-        this.dataGridOptions.pageSize = 0
+        this.dataGridOptions.pageSize = 9999999
         seekStockProductList(this.dataGridOptions).then((res) => {
-          console.log('打印响应数据', res)
           this.dataGridOptions.pageSize = 15
           debugger
           if(res.data.state == 200) {
-            if (res.data.data.detailList) {
-              if (res.data.data.detailList[0] instanceof Array) {
-                let datas = res.data.data
-                let allData = []
-                for(let i of res.data.data.detailList) {
-                  allData.push(...i)
-                }
-                datas.detailList = allData
-                this.printData = datas
-              } else {
-                this.printData = res.data.data
-              }
-            } else {
-              this.printData = res.data.data
-            }
-            setTimeout(() => {
-              this.currentPrint()
-              this.loading = false
-            }, 2000)
+            this.printData = res.data.data
+            this.currentPrint()
+            this.loading = false
           } else {
             this.$message({
               type: 'info',
@@ -516,7 +494,6 @@
             this.$refs.projectTypeTemplate.print();
             break;
           case 3:
-            // this.$refs.detailTemplate.print();
             this.$refs.customTemplate.print();
             break;
           default:

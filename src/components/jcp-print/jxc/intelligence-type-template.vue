@@ -40,7 +40,7 @@
 					</tr>
 					<template v-for="productTypeList in dataList.productTypeList">
 							<tr v-for="(item, index) in productTypeList.detailList">
-									<td>{{item.index}}</td>
+									<td>{{index + 1}}</td>
 									<td v-if="index==0" :rowspan="productTypeList.detailList.length">{{productTypeList.className}}</td>
 									<td>{{item.className}}</td>
 									<td>{{item.num|NOUNIT}}</td>
