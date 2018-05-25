@@ -7,15 +7,15 @@
             </div>
         </div>
         <div class="integral-list">
-            <div class="integral-item item-header">
+            <div class="integral-item item-header" v-if="integralData.dataList.length != 0">
                 <span>积分类型</span>
                 <span>积分明细</span>
                 <span>时间</span>
             </div>
-            <div class="integral-item">
-                <span>单次签到</span>
-                <span>+2</span>
-                <span>12-18</span>
+            <div class="integral-item" v-for="(item,index) in integralData.dataList" :key="index">
+                <span>{{getLabel(item.type)}}</span>
+                <span>+{{item.score}}</span>
+                <span>{{item.date}}</span>
             </div>
         </div>
         <div class="return-btn-group">
@@ -56,15 +56,49 @@
 </style>
 
 <script>
+import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
+
 export default {
     data () {
         return {
             
         }
     },
+    props:['integralData'],
     methods: {
         goBack() {
             this.$emit('goBack',true)
+        },
+        _GetNYR(data) {
+            return GetNYR(data)
+        },
+        getLabel(type){
+            switch (type) {
+                case '1':
+                    return '单次签到'
+                    break;
+                case '2':
+                    return '连续签到'
+                    break;
+                case '3':
+                    return '到店消费'
+                    break;
+                case '4':
+                    return '消费抵现'
+                    break;
+                case '5':
+                    return '人工修改'
+                    break;
+                case '6':
+                    return '生日福利'
+                    break;
+                case '7':
+                    return '注册福利'
+                    break;
+            
+                default:
+                    break;
+            }
         }
     }
 }

@@ -2,24 +2,24 @@
     <div class="silder-container">
         <!-- 标题 -->
         <div class="title">
-            <i class="iconfont icon-liebiao"></i>会员积分模板设置
-            <a href="javascript:;" class="add" @click="addPoints">+ 模板</a>
+            <i class="iconfont icon-liebiao"></i>会员积分模板
+            <!-- <a href="javascript:;" class="add" @click="addPoints">+ 模板</a> -->
         </div>
         <!-- 列表内容 -->
         <div class="counter-container" v-loading="loading">
             <!-- 栗子 -->
-            <div class="item edit" @click="goMemberSettingIndex">
+            <div class="item edit" @click="goMemberSettingIndex(index)" v-for="(item,index) in templateDataList" :key="index">
+               <span class="txt">{{ item.templateName }}</span>
+            </div>
+            <!-- <div class="item edit">
                <span class="txt">会员积分默认模板</span>
             </div>
             <div class="item edit">
                <span class="txt">会员积分默认模板</span>
-            </div>
-            <div class="item edit">
-               <span class="txt">会员积分默认模板</span>
-            </div>
+            </div> -->
         </div>
     <!-- 添加模板弹框 -->
-    <member-points-dialog :dialog="dialog" @closeDialog="closeDialog" @getMemberPointsList="getMemberPointsList"></member-points-dialog>
+    <!-- <member-points-dialog :dialog="dialog" @closeDialog="closeDialog" @getMemberPointsList="getMemberPointsList"></member-points-dialog> -->
 
     </div>
 </template>
@@ -132,6 +132,8 @@
 
 <script>
 import memberPointsDialog from  '../dialog/memberPointsDialog'
+import { templateIntegralDetails,consumeTemplateUpdate } from 'Api/member'
+
 export default {
     data () {
         return {
@@ -144,8 +146,8 @@ export default {
                 dialogType: 'add'
             },
             // 会员列表
-            memberList:[],
-
+            templateDataList:[],
+            templateName:''
         }
     },
     components:{
@@ -161,16 +163,18 @@ export default {
             this.dialog.dialogVisible = true
         },
         // 获取会员列表
-        getMemberPointsList() {
-            console.log('获取列表')
+        getTemplateList(){
+            getTemplateIntegralList().then(res => {
+                this.templateDataList = res.data.data.dataList
+            })
         },
         // 会员模板跳转
         goMemberSettingIndex(){
-            this.$router.push('/work/memberSettingIndex')
+            this.$router.push({path:'/work/memberSettingIndex',params:{templateId:this.templateDataList[index].templateId}})
         }
     },
     created(){
-        this.getMemberPointsList()
+        this.getTemplateList()
     },
     mounted () {
         

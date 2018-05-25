@@ -50,8 +50,8 @@
                     <p class="item-card-info"><i class="color2">●</i><span class="card-info-label">交易总额：</span><span>{{ memberInfo.totalPrice ? memberInfo.totalPrice+'元' : '-' }}</span></p>
                     <p class="item-card-info"><i class="color2">●</i><span class="card-info-label">交易次数：</span><span>{{ memberInfo.totalNum != 0 ? memberInfo.totalNum+'次' : '-' }}</span></p>
                     <div class="btn-group-jy">
-                        <div class="btn-kj">快捷开单</div>
-                        <div class="btn-kj">关联销售单</div>
+                        <div v-if="isShopMan" class="btn-kj">快捷开单</div>
+                        <div v-if="isShopMan" class="btn-kj">关联销售单</div>
                     </div>
                 </div>
                 <!-- 来访 -->
@@ -70,7 +70,7 @@
                     <p class="item-card-info"><i class="color4">●</i><span class="card-info-label">跟进总数：</span><span>{{ memberInfo.followNum != 0 ? memberInfo.followNum+'次' : '-' }}</span></p>
                     <p class="item-card-info"><i class="color4">●</i><span class="card-info-label">最近跟进：</span><span>{{ _formDataTimeYND(memberInfo.followTime) ? _formDataTimeYND(memberInfo.followTime) : '-' }}</span></p>
                     <div class="btn-group-gj">
-                        <div class="btn-gj">创建跟进</div>
+                        <div v-if="isShopMan" class="btn-gj">创建跟进</div>
                     </div>
                 </div>
                 <!-- 积分 -->
@@ -81,7 +81,7 @@
                     <p class="item-card-info"><i class="color5">●</i><span class="card-info-label">积分总数：</span><span>{{ memberInfo.score ? memberInfo.score+'分' : '-'}}</span></p>
                     <p class="item-card-info"></p>
                     <div class="btn-group-jf">
-                        <div class="btn-jf">积分修改</div>
+                        <div v-if="isShopMan" class="btn-jf">积分修改</div>
                     </div>
                 </div>
                 
@@ -103,6 +103,7 @@
 import FormatImg from "components/template/DefaultHeadFormat.vue"
 import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
 
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
   data() {
@@ -114,6 +115,22 @@ export default {
     FormatImg,
   },
   props: ["memberInfo"],
+  computed:{
+    ...mapGetters([
+        "userPositionInfo"
+    ]),
+    isShopMan(){
+        if(this.userPositionInfo.roleList.length === 1){
+            if(this.userPositionInfo.roleList[0].role > 3){
+                return true
+            } else {
+                return false
+            }
+        } else {
+            return true
+        }
+    }
+  },
   methods: {
     // 显示按钮
     showBtn() {

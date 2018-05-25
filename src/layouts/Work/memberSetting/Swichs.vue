@@ -17,24 +17,55 @@
 </template>
 <script>
   export default {
-    props: ['type'],
+    props: ['type','status'],
     data () {
       return {
-        switchs: 'initial',
+        switchs: false,
       }
     },
     created () {
-      this.switchs = true
+      switch (this.type) {
+        case 'addOrSubConfig':
+          if(this.status == 'N') {
+            this.switchs = true
+          } else{
+            this.switchs = false
+          }
+          break;
+        case 'productTypeConfig':
+          if(this.status == 'N') {
+            this.switchs = true
+          } else{
+            this.switchs = false
+          }
+          break;
+        case 'consumeConfig':
+          if(this.status == 'N') {
+            this.switchs = true
+          } else{
+            this.switchs = false
+          }
+          break;
+        case 'consumeConfig':
+          if(this.status == 'N') {
+            this.switchs = true
+          } else{
+            this.switchs = false
+          }
+          break;
+      
+        default:
+          break;
+      }
+      
     },  
     methods: {
       getState (parm) {
-        if (this.switchs === 'initial') {
-          return
-        }
         return parm
       },
       switchMove () {
         this.switchs = !this.switchs
+        this.$emit("switchChange",this.type,this.switchs)
       }
     }
   }

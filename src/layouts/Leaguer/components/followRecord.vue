@@ -365,6 +365,7 @@ export default {
             console.log(Day)
             this.endTime = Year + '-' + month + '-' + Day
             this.startTime = Year + '-' + month + '-' + (Day- (Day-1))
+            
             this.adminStartTime = Year + month + Day + '000000'
             this.adminEndTime = Year + month + (Day- (Day-1)) + '000000'
             //this.seekReceipts()

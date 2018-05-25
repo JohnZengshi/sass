@@ -64,8 +64,8 @@
   <!--金价加减操作-->
   <div v-else-if="dialog.dialogSlot == 'goldAdd'" class="addGold">
      <div class="item-container">
-         <div class="item" v-for="item,i in dialog.smallDataList">
-             <span class="txt" v-text="item.smallClassName"></span>
+         <div class="item" v-for="(item,i) in dialog.smallDataList" :key="i">
+             <span class="txt" v-text="item.smallClassName || item.classesName"></span>
              <i 
                 class="iconfont" 
                 :class="item.selected ? 'icon-duigou':'empty'" 
@@ -75,13 +75,19 @@
      </div>
      <div class="addSet" :class="dialog.smallDataList.length > 1 ? '':'small'">
          <div class="selectAll" v-if="dialog.smallDataList.length > 1 ">
-                            全选<i class="iconfont" 
+                 全选<i class="iconfont" 
                  :class="selectClassAll ? 'icon-duigou' :'empty'" 
                  :title="selectClassAll ? '取消全选' :'全选'"
                  @click="selectAll"></i>
          </div>
+
          <div class="operate-model">
-            <div class="input-number">
+            <div class="input-number-pl" v-if="dialog.setjz === 1">
+                <input class="yuan" type="text">
+                <input class="score" type="text">
+                <p style="color:#2993f8;font-size:12px;">（消费金额 : 兑换积分）</p>
+            </div>
+            <div class="input-number" v-else>
                 <i class="el-icon-minus" title="减" @click="selectMinus"></i>
                 <i class="el-icon-plus" title="加" @click="selectPlus"></i>
                 <input type="text" value="" 
@@ -94,7 +100,7 @@
             </div>
             <el-button type="primary" @click="sure" size="small">确 定</el-button>
          </div>
-     </div>
+      </div>
   </div>
   
   <div slot="footer" class="dialog-footer" v-if="dialog.dialogSlot != 'goldAdd'">
@@ -558,6 +564,30 @@ export default{
       }
     }
   }
+}
+.input-number-pl {
+    width: 133px;
+    height: 24px;
+    float: left;
+    .yuan {
+      width: 48%;
+      height: 24px;
+      line-height: 24px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      text-align: center;
+      
+    }
+    .score {
+      width: 48%;
+      height: 24px;
+      line-height: 24px;      
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      text-align: center;
+      
+    }
+
 }
 </style>
 <style lang="scss">

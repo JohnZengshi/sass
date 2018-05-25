@@ -47,11 +47,12 @@
                 <div class="member-points">
                     <div class="member-title">
                         <h4><i class="iconfont icon-liebiao"></i>会员积分模板设置</h4>
-                        <span @click="addDialog(2)">+模板</span>
+                        <span @click="addDialogAct(3)">+模板</span>
                     </div>
                     <div class="member-list">
                         <ul>
-                            <li @click="openMenberPoint"><i>●</i>会员默认模板</li>
+                            <li v-for="(item,index) in templateDataList" :key="index" @click.stop="openMenberPoint(index)" ><i>●</i>{{item.templateName}}</li>
+                            <li @click.stop="openMenberPoint(1)" ><i>●</i>默认模板</li>
                         </ul>
                     </div>
                 </div>
@@ -67,6 +68,7 @@
                 <div class="body">
                     <input v-if="newPopupType == 1" v-model="supplierName" type="text" placeholder="输入供应商名称">
                     <input v-if="newPopupType == 2" v-model="repositoryName" type="text" placeholder="输入库位名称">
+                    <input v-if="newPopupType == 3" v-model="templateName" type="text" placeholder="输入模板名称" maxlength="10">
                 </div>
                 <div class="foot" solt="footer">
                     <div class="ope-btn" @click="selectMethods()">确定</div>
@@ -104,6 +106,8 @@
 import {mapActions, mapGetters} from 'vuex'
 import {seekShowProviderList} from './../../../Api/commonality/seek'
 
+import { getTemplateIntegralList, templateCreate } from 'Api/member'
+
 import {operateAddProvIder, operateDelProvIder, addRepository, operateStockInfoUpdate, operateDelRepository, operateSupplierInfoUpdate} from './../../../Api/commonality/operate'
 import ProductName from "./settings/ProductName"
 import GemName from "./settings/GemName"
@@ -139,14 +143,16 @@ export default {
             actIndex: 0,
             supplierList: [], // 供应商列表
             stockType: null, // 库存类型
-            isDefault: ''
-            
+            isDefault: '',
+            templateDataList:[],
+            templateName:''
         }
     },
     created () {
         this.workRepositoryList(); // 库位列表
         this.workProductClass(); // 产品类别
         this.showProviderList() // 供应商列表
+        this.getTemplateList() // 会员模板列表
     },
     mounted () {
         let self = this
@@ -189,7 +195,7 @@ export default {
             "repositoryList", // 库位列表
             "productClass", // 产品类别
             // "supplierListData", // 供应商列表
-            // "userType", // 监听编辑权限
+            "userType", // 监听编辑权限
             "applyUserList" // 应用用户列表
         ]),
         productClassPull: function () {
@@ -206,7 +212,8 @@ export default {
     methods: {
         ...mapActions([
             "workProductClass", // 产品类别
-            "workRepositoryList" // 库位列表
+            "workRepositoryList", // 库位列表
+            "getUserInfo"
         ]),
         delSupplier () { // 删除供应商
             let options = {
@@ -372,6 +379,8 @@ export default {
                 this. addProvIder()
             } else if (this.newPopupType == 2) {
                 this.repository()
+            } else if (this.newPopupType == 3){
+                this.addTemplat()
             }
         },
         addProvIder () { // 新增供应商
@@ -527,8 +536,36 @@ export default {
                     break
             }
         },
-        openMenberPoint(){
-            this.$router.push('/work/memberSettingIndex')
+        openMenberPoint(index){
+            if(index===1)
+            this.$router.push({path:'/work/memberSettingIndex',params:{templateId:1110}})
+            // this.$router.push({path:'/work/memberSettingIndex',params:{templateId:this.templateDataList[index].templateId}})
+        },
+        // 积分模板的添加
+        getTemplateList(){
+            getTemplateIntegralList().then(res => {
+                this.templateDataList = res.data.data.dataList
+            })
+        },
+        addTemplat(){
+            let options = {
+                templateName: this.templateName
+            }
+            templateCreate(options).then(res => {
+                if(res.data.state == 200) {
+                    this.supplierName = ''                    
+                    this.$message({
+                        type: 'success',
+                        message: '添加成功!'
+                    })
+                    this.getTemplateIntegralList()
+                } else {
+                    this.$message({
+                        type: 'warning',
+                        message: res.data.msg
+                    })
+                }
+            })
         }
     }
 }

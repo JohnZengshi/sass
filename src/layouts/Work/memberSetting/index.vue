@@ -37,44 +37,44 @@
             <div class="integral-add-subtract">
                 <div class="integral-setting-title">
                     <p>积分加减法规则
-                       <swichs></swichs>
+                       <swichs :type="'addOrSubConfig'" :status="templateInfoData.addOrSubConfig"></swichs>
                     </p>
                 </div>
                 <div class="integral-content">
                     <!-- 销售 -->
                     <div class="integral-xs">
                         <div class="integral-left xs">销售</div>
-                            <el-radio-group class="integral-right" v-model="radio2">
-                                <el-radio class="intergral-item" :label="3">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="6">返还积分</el-radio>
-                                <el-radio class="intergral-item" :label="9">无</el-radio>
+                            <el-radio-group class="integral-right" v-model="templateInfoData.sellConfig" :disabled="isDisabled">
+                                <el-radio class="intergral-item" :label="1">增加积分</el-radio>
+                                <el-radio class="intergral-item" :label="2">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="3">无</el-radio>
                             </el-radio-group>
                     </div>
                     <!-- 退货 -->
                     <div class="integral-th">
                         <div class="integral-left th">退货</div>
-                            <el-radio-group class="integral-right" v-model="radio2">
-                                <el-radio class="intergral-item" :label="3">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="6">返还积分</el-radio>
-                                <el-radio class="intergral-item" :label="9">无</el-radio>
+                            <el-radio-group class="integral-right" v-model="templateInfoData.refundConfig" :disabled="isDisabled">
+                                <el-radio class="intergral-item" :label="1">增加积分</el-radio>
+                                <el-radio class="intergral-item" :label="2">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="3">无</el-radio>
                             </el-radio-group>
                     </div>
                     <!-- 换货 -->
                     <div class="integral-hh">
                         <div class="integral-left hh">换货</div>
-                            <el-radio-group class="integral-right" v-model="radio2">
-                                <el-radio class="intergral-item" :label="3">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="6">返还积分</el-radio>
-                                <el-radio class="intergral-item" :label="9">无</el-radio>
+                            <el-radio-group class="integral-right" v-model="templateInfoData.exchangeConfig" :disabled="isDisabled">
+                                <el-radio class="intergral-item" :label="1">增加积分</el-radio>
+                                <el-radio class="intergral-item" :label="2">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="3">无</el-radio>
                             </el-radio-group>
                     </div>
                     <!-- 回收 -->
                     <div class="integral-hs">
                         <div class="integral-left hs">回收</div>
-                            <el-radio-group class="integral-right" v-model="radio2">
-                                <el-radio class="intergral-item" :label="3">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="6">返还积分</el-radio>
-                                <el-radio class="intergral-item" :label="9">无</el-radio>
+                            <el-radio-group class="integral-right" v-model="templateInfoData.recoveryConfig" :disabled="isDisabled">
+                                <el-radio class="intergral-item" :label="1">增加积分</el-radio>
+                                <el-radio class="intergral-item" :label="2">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="3">无</el-radio>
                             </el-radio-group>
                     </div>
                 </div>
@@ -86,100 +86,22 @@
             <div class="product-setting">
                 <div class="all-title">
                     <p>产品类别-消费发放配置
-                        <swichs></swichs>
+                        <swichs :type="'productTypeConfig'" :status="templateInfoData.productTypeConfig" @switchChange="switchChange"></swichs>
                     </p>
                 </div>
                 <div class="product-setting-content">
                     <!-- 计重类 begin -->
-                    <div class="producet-jz">
+                    <div class="producet-jz" v-if="templateInfoData.poductTypeList.classesType == 1">
                         <div class="title">
                             <span>计重类</span>
                             <el-button type="primary" size="mini" @click="jzSetting">批量设置</el-button>
                         </div>
                         <div class="content">
-                            <div class="item">
-                                <p class="item-title">黄金(克)</p>
+                            <div class="item" v-for="(item,index) in templateInfoData.poductTypeList.typeList" :key="index">
+                                <p class="item-title">{{ item.classesName }}</p>
                                 <p class="item-input">
-                                    <input type="text" v-model="num8">
-                                    <input type="text" v-model="num9">
-                                    <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
-                                    <el-input v-model="input" placeholder="请输入内容"></el-input> -->
-                                </p>
-                                <p class="item-message">
-                                    <span>消费（元）</span>
-                                    <span>可积（分）</span>
-                                </p>
-                            </div>
-                            <div class="item">
-                                <p class="item-title">黄金(克)</p>
-                                <p class="item-input">
-                                    <input type="text" v-model="num8">
-                                    <input type="text" v-model="num9">
-                                    <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
-                                    <el-input v-model="input" placeholder="请输入内容"></el-input> -->
-                                </p>
-                                <p class="item-message">
-                                    <span>消费（元）</span>
-                                    <span>可积（分）</span>
-                                </p>
-                            </div>
-                            <div class="item">
-                                <p class="item-title">黄金(克)</p>
-                                <p class="item-input">
-                                    <input type="text" v-model="num8">
-                                    <input type="text" v-model="num9">
-                                    <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
-                                    <el-input v-model="input" placeholder="请输入内容"></el-input> -->
-                                </p>
-                                <p class="item-message">
-                                    <span>消费（元）</span>
-                                    <span>可积（分）</span>
-                                </p>
-                            </div>
-                            <div class="item">
-                                <p class="item-title">黄金(克)</p>
-                                <p class="item-input">
-                                    <input type="text" v-model="num8">
-                                    <input type="text" v-model="num9">
-                                    <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
-                                    <el-input v-model="input" placeholder="请输入内容"></el-input> -->
-                                </p>
-                                <p class="item-message">
-                                    <span>消费（元）</span>
-                                    <span>可积（分）</span>
-                                </p>
-                            </div>
-                            <div class="item">
-                                <p class="item-title">黄金(克)</p>
-                                <p class="item-input">
-                                    <input type="text" v-model="num8">
-                                    <input type="text" v-model="num9">
-                                    <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
-                                    <el-input v-model="input" placeholder="请输入内容"></el-input> -->
-                                </p>
-                                <p class="item-message">
-                                    <span>消费（元）</span>
-                                    <span>可积（分）</span>
-                                </p>
-                            </div>
-                            <div class="item">
-                                <p class="item-title">黄金(克)</p>
-                                <p class="item-input">
-                                    <input type="text" v-model="num8">
-                                    <input type="text" v-model="num9">
-                                    <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
-                                    <el-input v-model="input" placeholder="请输入内容"></el-input> -->
-                                </p>
-                                <p class="item-message">
-                                    <span>消费（元）</span>
-                                    <span>可积（分）</span>
-                                </p>
-                            </div>
-                            <div class="item">
-                                <p class="item-title">黄金(克)</p>
-                                <p class="item-input">
-                                    <input type="text" v-model="num8">
-                                    <input type="text" v-model="num9">
+                                    <input type="number" @blur="setConsumeTemplateUpdate" v-model="item.yuan" :disabled="isDisabled">
+                                    <input type="number" @blur="setConsumeTemplateUpdate" v-model="item.score" :disabled="isDisabled">
                                     <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
                                     <el-input v-model="input" placeholder="请输入内容"></el-input> -->
                                 </p>
@@ -193,95 +115,17 @@
                     <!-- 计重类 end -->
 
                     <!-- 计件类 begin -->
-                    <div class="porducet-jj">
+                    <div class="porducet-jj" v-if="templateInfoData.poductTypeList.classesType == 2">
                         <div class="title">
                             <span>计件类</span>
                             <el-button type="primary" size="mini" @click="jjsetting">批量设置</el-button>
                         </div>
                         <div class="content">
-                            <div class="item">
+                            <div class="item" v-for="(item,index) in templateInfoData.poductTypeList.typeList" :key="index">
                                 <p class="item-title">黄金(克)</p>
                                 <p class="item-input">
-                                    <input type="text" v-model="num8">
-                                    <input type="text" v-model="num9">
-                                    <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
-                                    <el-input v-model="input" placeholder="请输入内容"></el-input> -->
-                                </p>
-                                <p class="item-message">
-                                    <span>消费（元）</span>
-                                    <span>可积（分）</span>
-                                </p>
-                            </div>
-                            <div class="item">
-                                <p class="item-title">黄金(克)</p>
-                                <p class="item-input">
-                                    <input type="text" v-model="num8">
-                                    <input type="text" v-model="num9">
-                                    <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
-                                    <el-input v-model="input" placeholder="请输入内容"></el-input> -->
-                                </p>
-                                <p class="item-message">
-                                    <span>消费（元）</span>
-                                    <span>可积（分）</span>
-                                </p>
-                            </div>
-                            <div class="item">
-                                <p class="item-title">黄金(克)</p>
-                                <p class="item-input">
-                                    <input type="text" v-model="num8">
-                                    <input type="text" v-model="num9">
-                                    <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
-                                    <el-input v-model="input" placeholder="请输入内容"></el-input> -->
-                                </p>
-                                <p class="item-message">
-                                    <span>消费（元）</span>
-                                    <span>可积（分）</span>
-                                </p>
-                            </div>
-                            <div class="item">
-                                <p class="item-title">黄金(克)</p>
-                                <p class="item-input">
-                                    <input type="text" v-model="num8">
-                                    <input type="text" v-model="num9">
-                                    <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
-                                    <el-input v-model="input" placeholder="请输入内容"></el-input> -->
-                                </p>
-                                <p class="item-message">
-                                    <span>消费（元）</span>
-                                    <span>可积（分）</span>
-                                </p>
-                            </div>
-                            <div class="item">
-                                <p class="item-title">黄金(克)</p>
-                                <p class="item-input">
-                                    <input type="text" v-model="num8">
-                                    <input type="text" v-model="num9">
-                                    <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
-                                    <el-input v-model="input" placeholder="请输入内容"></el-input> -->
-                                </p>
-                                <p class="item-message">
-                                    <span>消费（元）</span>
-                                    <span>可积（分）</span>
-                                </p>
-                            </div>
-                            <div class="item">
-                                <p class="item-title">黄金(克)</p>
-                                <p class="item-input">
-                                    <input type="text" v-model="num8">
-                                    <input type="text" v-model="num9">
-                                    <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
-                                    <el-input v-model="input" placeholder="请输入内容"></el-input> -->
-                                </p>
-                                <p class="item-message">
-                                    <span>消费（元）</span>
-                                    <span>可积（分）</span>
-                                </p>
-                            </div>
-                            <div class="item">
-                                <p class="item-title">黄金(克)</p>
-                                <p class="item-input">
-                                    <input type="text" v-model="num8">
-                                    <input type="text" v-model="num9">
+                                    <input type="number" @blur="setConsumeTemplateUpdate" v-model="item.yuan" :disabled="isDisabled">
+                                    <input type="number" @blur="setConsumeTemplateUpdate" v-model="item.score" :disabled="isDisabled">
                                     <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
                                     <el-input v-model="input" placeholder="请输入内容"></el-input> -->
                                 </p>
@@ -301,8 +145,8 @@
             <div class="issue">
                 <div class="all-title">
                     <p>积分发放配置
-                        <swichs></swichs>
-                        <el-button class="fr" type="primary" size="small">+ 配置条件</el-button>
+                        <swichs :type="'productTypeConfig'" :status="templateInfoData.othenConfig" @switchChange="switchChange"></swichs>
+                        <el-button class="fr" type="primary" size="small" @click="dialogVisible = true">+ 配置条件</el-button>
                     </p>
                 </div>
                 <div class="issue-content">
@@ -312,9 +156,10 @@
                         <span class="item-title">注册福利：</span>
                         <span>注册成为会员，赠送</span>
                         <span class="input-box">
-                            <el-input class="item-input"></el-input>
+                            <el-input class="item-input" :disabled="isDisabled"></el-input>
                         </span>
                         <span>分</span>
+                        <i class="el-icon-delete" @click="delConfiguration(1)"></i>
                     </div>
                     <!-- 生日 -->
                     <div class="item">
@@ -322,9 +167,11 @@
                         <span class="item-title">生日福利：</span>
                         <span>会员生日当天，赠送</span>
                         <span class="input-box">
-                            <el-input class="item-input"></el-input>
+                            <el-input class="item-input" :disabled="isDisabled"></el-input>
                         </span>
                         <span>分</span>
+                        <i class="el-icon-delete" @click="delConfiguration(2)"></i>
+                        
                     </div>
                     <!-- 签到 -->
                     <div class="item">
@@ -332,14 +179,15 @@
                         <span class="item-title">签到福利：</span>
                         <span>会员单次签到，赠送</span>
                         <span class="input-box">
-                            <el-input class="item-input"></el-input>
+                            <el-input class="item-input" :disabled="isDisabled"></el-input>
                         </span>
                         <span class="fg-fen">分；</span>
                         <span>会员连续签到，赠送</span>
                         <span class="input-box">
-                            <el-input class="item-input"></el-input>
+                            <el-input class="item-input" :disabled="isDisabled"></el-input>
                         </span>
                         <span>分</span>
+                        <i class="el-icon-delete" @click="delConfiguration(3)"></i>
                     </div>
                 </div>
             </div>
@@ -349,7 +197,7 @@
             <div class="consumption">
                 <div class="all-title">
                     <p>积分消耗配置
-                        <swichs></swichs>
+                        <swichs :type="'consumeConfig'" :status="templateInfoData.consumeConfig" @switchChange="switchChange"></swichs>
                     </p>
                 </div>
                 <div class="consumption-content">
@@ -359,12 +207,12 @@
                         <span class="item-title">积分抵现：</span>
                         <span>每次使用</span>
                         <span class="input-box">
-                            <el-input class="item-input"></el-input>
+                            <el-input class="item-input" v-model="templateInfoData.consumeScore"></el-input>
                         </span>
                         <span>分，</span>
                         <span>可抵</span>
                         <span class="input-box">
-                            <el-input class="item-input"></el-input>
+                            <el-input class="item-input" v-model="templateInfoData.consumeYuan"></el-input>
                         </span>
                         <span>元</span>
                     </div>
@@ -374,7 +222,7 @@
                         <span class="item-title">计重抵扣上限：</span>
                         <span>最多可抵扣单价实售价</span>
                         <span class="input-box">
-                            <el-input class="item-input"></el-input>
+                            <el-input class="item-input" v-model="templateInfoData.weightConfig"></el-input>
                         </span>
                         <span>%</span>
                     </div>
@@ -384,7 +232,7 @@
                         <span class="item-title">计件抵扣上限：</span>
                         <span>最多可抵扣单价实售价</span>
                         <span class="input-box">
-                            <el-input class="item-input"></el-input>
+                            <el-input class="item-input" v-model="templateInfoData.pieceConfig"></el-input>
                         </span>
                         <span>%</span>
                     </div>
@@ -392,16 +240,16 @@
                     <div class="item">
                         <div class="item-circle"></div>
                         <span class="item-title">计重计件是否相互抵扣：</span>
-                        <el-radio v-model="radio" label="1">抵扣</el-radio>
-                        <el-radio v-model="radio" label="2">不抵扣</el-radio>
+                        <el-radio v-model="templateInfoData.deductible" label="N">抵扣</el-radio>
+                        <el-radio v-model="templateInfoData.deductible" label="D">不抵扣</el-radio>
                     </div>
                     <!-- 消耗匹配类型 -->
                     <div class="item">
                         <div class="item-circle"></div>
                         <span class="item-title">消耗匹配类型：</span>
-                        <el-radio v-model="radio" label="1">销售</el-radio>
-                        <el-radio v-model="radio" label="2">购买</el-radio>
-                        <el-radio v-model="radio" label="3">实收</el-radio>
+                        <el-radio v-model="templateInfoData.matchingType" label="1">销售</el-radio>
+                        <el-radio v-model="templateInfoData.matchingType" label="2">购买</el-radio>
+                        <el-radio v-model="templateInfoData.matchingType" label="3">实收</el-radio>
                     </div>
                 </div>
             </div>
@@ -410,7 +258,29 @@
         <!-- 内容主体 end-->
 
         <!-- 批量设置 配置条件弹框  -->
-        <memberDialog :dialog="dialog" @closeDialog="closeDialog" ></memberDialog>
+        <memberDialog 
+            :dialog="dialog"
+            @closeDialog="closeDialog"
+            @dialogType = "dialogType"
+        ></memberDialog>
+
+        <!-- 积分发放配置 -->
+        <el-dialog :visible.sync="dialogVisible" custom-class="dialogDom" element-loading-text="拼命加载中">
+			<div class="sell-type-one-main">
+				<div class="dia-title" slot="title">
+					<img src="~static/img/smartimport.png">
+					<h3>添加配置条件</h3>
+				</div>
+				<div class="list-wrap first-wrap">
+					<div id="btn-wrap" class="btn-wrap">
+						<li class="disabledActive" @click="addConfiguration(1)">注册福利</li>
+						<li class="disabledActive" @click="addConfiguration(2)">生日福利</li>
+						<li class="disabledActive" @click="addConfiguration(3)">签到福利</li>
+					</div>
+				</div>
+  			</div>
+		</el-dialog>
+
     </div>
 </template>
 
@@ -579,7 +449,8 @@ $fontColor:#47a3fb;
             }
         }
         .product-setting{
-            height: 900px;
+            // height: 900px;
+            margin-bottom: 30px;
             padding: 0 40px;
             .product-setting-content{
                 background: #f6f7f8;
@@ -688,6 +559,13 @@ $fontColor:#47a3fb;
                     .fg-fen {
                         margin-right: 50px;
                     }
+                    i{
+                        margin-left: 20px;
+                        &:hover {
+                            color: #2993f8;
+                            cursor: pointer;
+                        }
+                    }
                 }
             }     
         }
@@ -759,11 +637,176 @@ $fontColor:#47a3fb;
     }
 
 }
+.sell-type-one-main {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    // width: 100%;
+    // height: 100%;
+	transform:translate(-50%,-50%);
+    background: #fff;
+    z-index: 10;
+    .dia-title {
+        // width: 78px;
+        position: absolute;
+        top:24px;
+        left: 50%;
+        margin-left: -28px;
+        img {
+            display: block;
+            margin: 0 auto;
+            width: 46px;
+            height: 46px;
+            margin-bottom: 12px;
+        }
+        h3 {
+            font-size: 12px;
+            color:#333;
+            text-align: center;
+        }
+    }
+    .list-wrap {
+        width: 320px;
+        height: 271px;
+        padding-top: 180px;
+        margin-bottom: 130px;
+        .btn-wrap {
+            width: 180px;
+            // height: 70px;
+            margin: 0 auto;
+			.disabledActive {
+				cursor: not-allowed;
+			}
+            li {
+                display: block;
+                height: 40px;
+                font-style: normal;
+                text-align:center;
+                background-color: rgb(244, 244, 244);
+                color: #2993f8;
+                // background: #2993f8;
+                // color:#fff;
+                font-size: 14px;
+                line-height: 40px;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: all 0.6s;
+                &:hover{
+                    background: #2993f8;
+                    color: #fff;
+                }
+            }
+            li:nth-child(2) {
+                margin-top: 40px;
+                // color: #2993f8;
+               // background-color: rgb(244, 244, 244);
+            }
+			li:nth-child(3){
+				margin-top: 40px;
+			}
+        }
+        .left-list {
+            width: 108px;
+            height: 100%;
+            border-right: 1px solid #f1f2f3;
+            float: left;
+            overflow-x: hidden;
+            overflow-y: auto;
+            li {
+                width: 108px;
+                height: 41px;
+                border-bottom: 1px solid #f1f2f3;
+                line-height: 41px;
+                font-size: 14px;
+                color:#333;
+                text-align: center;
+                cursor: pointer;
+                .active-block {
+                    display: none;
+                }
+            }
+            li:hover {
+                background:#f6f7f8;
+                color: #2993f8;
+            }
+            li.active {
+                .active-block {
+                    display: block;
+                    height: 100%;
+                    float: left;
+                    width: 3px;
+                    background:#2993f8;
+                }
+            }
+        }
+        .right-list {
+            width: 211px;
+            height: 100%;
+            float: left;
+            overflow-x: hidden;
+            overflow-y: auto;
+            li {
+                width: 192px;
+                height: 41px;
+                line-height: 41px;
+                font-size: 14px;
+                color:#333;
+                cursor: pointer;
+                margin-left: 19px;
+            }
+            li:hover {
+                background:#f6f7f8;
+                color: #2993f8;
+            }
+            li.active {
+                color:#2993f8;
+            }
+        }
+    }
+    .footer {
+        height: 50px;
+        width: 100%;
+        float: left;
+        border-top: 1px solid #f1f2f3;
+        padding-left: 22px;
+        padding-right: 22px;
+        line-height: 50px;
+        padding-top: 0;
+        background:#fff;
+        .footer-left {
+            height: 100%;
+            float: left;
+            font-size: 14px;
+            color:#999999;
+            cursor: pointer;
+        }
+        .footer-right {
+            height: 100%;
+            float: right;
+            span {
+                float: left;
+                font-size: 14px;
+                cursor: pointer;
+                color: #333;
+            }
+            span:nth-child(1) {
+                margin-right: 15px;
+                color: #999;
+            }
+        }
+    }
+}
 </style>
 
 <script>
 import Swichs from './Swichs'
-import memberDialog from '../ShopSetting/dialog/memberPointsDialog'
+import memberDialog from '../ShopSetting/dialog/tplGoldDialog'
+
+// 获取模板内容
+import { templateIntegralDetails,consumeTemplateUpdate } from 'Api/member'
+
+// 获取用户权限
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
     data () {
@@ -774,22 +817,78 @@ export default {
             num8:100,
             num9:1,
             radio:'',
+            dialogVisible:false,
             // 弹框数据
             dialog: {
                 dialogVisible: false,
                 dialogSize: 'counter_x_small',
-                dialogType: 'settingAll'
+                dialogSlot : '' ,
+                addCounterName : '',
+                smallDataList :[]
             },
+            templateInfoData:{
+                templateName:'',
+                templateId:'',
+                addOrSubConfig:'N',
+                productTypeConfig:'',
+                sellConfig:'',
+                refundConfig:'',
+                exchangeConfig:'',
+                recoveryConfig:'',
+                poductTypeList:{
+                    classesType:'1',
+                    typeList:[
+                        {
+                            classesId:'1',
+                            classesName:'黄金（克）',
+                            yuan:'100',
+                            score:'1',
+                        },
+                        {
+                            classesId:'1',
+                            classesName:'黄金（克）',
+                            yuan:'100',
+                            score:'1',
+                        }
+                    ]
+                },
+                othenConfig:'',
+                othenList:[],
+                consumeConfig:'',
+                consumeYuan:'',
+                consumeScore:'',
+                weightConfig:'',
+                pieceConfig:'',
+                deductible:'',
+                matchingType:''
+            }
         }
     },
     components:{
         Swichs,
         memberDialog
     },
+    computed:{
+        ...mapGetters([
+            "userPositionInfo"
+        ]),
+        isDisabled(){
+            if(this.userPositionInfo.roleList.length === 1){
+                if(this.userPositionInfo.roleList[0].role > 3){
+                    return true
+                } else {
+                    return false
+                }
+            } else {
+                return false
+            }
+        }
+    },
     methods: {
         // 计重批量设置
         jzSetting(){
-            this.dialog.dialogVisible = true
+            // this.dialog.dialogVisible = true
+            this.add({smallDataList:this.templateInfoData.poductTypeList.typeList,setjz:1})
         },
         jjsetting(){
             this.dialog.dialogVisible = true            
@@ -797,12 +896,130 @@ export default {
         closeDialog(parm){
             this.dialog.dialogVisible = parm
         },
+
+        // 模板详情
+        getIntegralDetails(){
+            console.log(this.$route.params.templateId)
+            let options = {
+                templateId: this.$route.params.templateId
+            }
+            templateIntegralDetails(options).then(res => {
+                this.templateInfoData = res.data.data
+            })
+        },
+        // 删除
+        delConfiguration(type) {
+            switch (type) {
+                case 1:
+                    
+                    break;
+                case 2:
+                    
+                    break;
+                case 3:
+                    
+                    break;
+            
+                default:
+                    break;
+            }
+        },
+        addConfiguration(type){
+            switch (type) {
+                case 1:
+                    
+                    break;
+                case 2:
+                    
+                    break;
+                case 3:
+                    
+                    break;
+                default:
+                    break;
+            }
+        },
+        // 修改消费发放
+        setConsumeTemplateUpdate(){
+            let options = {
+                templateId: this.templateInfoData.templateId,
+                switch: this.templateInfoData.productTypeConfig,
+                dataList: this.templateInfoData.poductTypeList.typeList
+            }
+            consumeTemplateUpdate(options).then(res => {
+                if(res.data.state === 200) {
+                    this.$message({
+                        type:'success',
+                        message:'修改成功'
+                    })
+                } else {
+                    this.$message({
+                        type:'error',
+                        message:res.data.msg
+                    })
+                }
+            })
+        },
+        switchChange(type,config){
+             switch (type) {
+                case 'addOrSubConfig':
+                    if(config) {
+                        this.templateInfoData.addOrSubConfig = 'N'
+                    } else{
+                        this.templateInfoData.addOrSubConfig = 'D'
+                    }
+                    break;
+                case 'productTypeConfig':
+                    if(config) {
+                        this.templateInfoData.productTypeConfig = 'N'
+                    } else{
+                        this.templateInfoData.productTypeConfig = 'D'
+                    }
+                    break;
+                case 'consumeConfig':
+                    if(config) {
+                        this.templateInfoData.consumeConfig = 'N'
+                    } else{
+                        this.templateInfoData.consumeConfig = 'D'
+                    }
+                    break;
+                case 'consumeConfig':
+                    if(config) {
+                        this.templateInfoData.consumeConfig = 'N'
+                    } else{
+                        this.templateInfoData.consumeConfig = 'D'
+                    }
+                    break;
+            
+                default:
+                    break;
+            }
+        },
+
+
+        // 弹框哇
+        dialogType(type){
+          this.dialog.dialogVisible = type 
+        },
+        add(item){
+         this.dialogType(true)
+         Object.assign(this.dialog,{
+            dialogSlot : 'goldAdd',
+            addCounterName : '计重类批量设置'
+         },item)
+       },
+
+    },
+    watch:{
+        templateInfoData(val) {
+
+        }
     },
     created(){
-
+        // this.getIntegralDetails()
     },
     mounted(){
-
+        console.log('用户信息',this.userPositionInfo)
     },
 
 }

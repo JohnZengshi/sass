@@ -148,7 +148,6 @@
             <!-- v-on:memberAllList="memberAllList" -->
             </addLeaguerDia>
             <!-- 编辑弹窗 -->
-           <!--       -->
             <!-- <editLeaguerDia
                 v-if="editLeaguer"
                 :editLeaguer="editLeaguer"

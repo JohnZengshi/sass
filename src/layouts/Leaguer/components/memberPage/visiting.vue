@@ -2,11 +2,11 @@
     <div class="memberinfo-content">
         <div class="trading-top-num">
             <div class="num-item num-item-lf">
-                <p class="num">8500</p>
+                <p class="num">{{ visitData.totalNum || 0 }}</p>
                 <p class="label">来访总数（次）</p>
             </div>
             <div class="num-item num-item-jd">
-                <p class="num">12</p>
+                <p class="num">{{ 0 }}</p>
                 <p class="label">接待总数（次）</p>
             </div>
         </div>
@@ -18,17 +18,11 @@
                 <span>来访目的</span>
             </div>
             <div class="visiting-item-list">
-                <div class="visiting-item">
-                    <span>2018年11月12日</span>
-                    <span>打酱油</span>
-                    <span>200</span>
-                    <span>无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无</span>
-                </div>
-                <div class="visiting-item">
-                    <span>2018年11月12日</span>
-                    <span>打酱油</span>
-                    <span>200</span>
-                    <span>无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无无</span>
+                <div class="visiting-item" v-for="(item,index) in visitData.dataList" :key="index">
+                    <span>{{_GetSF(item.imageTime)}}</span>
+                    <span>{{ item.receiver || '无' }}</span>
+                    <span>{{ item.amount }}</span>
+                    <span>{{ item.intention || '无' }}</span>
                 </div>
             </div>
         </div>
@@ -117,16 +111,25 @@
 </style>
 
 <script>
+import {GetSF} from 'assets/js/getTime'
+
 export default {
     data () {
         return {
             
         }
     },
+    props:['visitData'],
     methods: {
         goBack() {
             this.$emit('goBack',true)                        
+        },
+        _GetSF(parm){
+            return GetSF(parm)
         }
+    },
+    created () {
+
     }
 }
 </script>

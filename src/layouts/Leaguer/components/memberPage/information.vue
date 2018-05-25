@@ -31,8 +31,8 @@
 
                 <div class="item" @mouseover="showBtn" @mouseout="hiddenBtn">
                     <span class="item-label">负责人</span>
-                    <i @click="isChoseLeader = true" id="iconjia" class="iconfont icon-jia jia"></i>
-                    <span>{{ leaderStr }}</span>
+                    <i @click="isChoseLeader=true" id="iconjia" class="iconfont icon-jia jia"></i>
+                    <span>{{ leaderStr || '指派' }}</span>
                 </div>
             </div>
         </div>
@@ -45,7 +45,7 @@
                 </div>
                 <div class="item">
                     <span class="item-label">性别</span>
-                    <el-radio-group v-model="dataInfo.sex" @change="setSex">
+                    <el-radio-group v-model="dataInfo.sex" @change="setSex" :disabled="!isShopMan">
                         <el-radio :label="1">男</el-radio>
                         <el-radio :label="2">女</el-radio>
                     </el-radio-group>
@@ -56,11 +56,11 @@
                 </div>
                 <div class="item">
                     <span class="item-label">微信号</span>
-                    <input type="text" v-model="dataInfo.weixin" @blur="setWeixin">
+                    <input type="text" :disabled="!isShopMan" maxlength="20" v-model="dataInfo.weixin" @blur="setWeixin">
                 </div>
                 <div class="item">
                     <span class="item-label">邮箱</span>
-                    <input type="text" v-model="dataInfo.email" @blur="setEmail">
+                    <input type="email" :disabled="!isShopMan" v-model="dataInfo.email" @blur="setEmail">
                 </div>
             </div>
             <div class="member-edit-bottom">
@@ -70,6 +70,7 @@
                         type="textarea"
                         :rows="4"
                         :maxlength="50"
+                        :disabled="!isShopMan"
                         placeholder="请输入备注"
                         v-model="dataInfo.remark"
                         @blur="setRemark">
@@ -78,10 +79,10 @@
                 <div class="member-edit-bq">
                     <div class="title fl">标签</div>
                     <div class="bq-item fl" v-for="(item,index) in dataInfo.signList" :key="index">
-                        <i @click.stop="delLabel(item, index)" class="iconfont icon-guanbi-copy"></i>
+                        <i v-if="isShopMan" @click.stop="delLabel(item, index)" class="iconfont icon-guanbi-copy"></i>
                         {{item.signName}}
                     </div>
-                    <input @blur="followCreateSign" v-model="signName" type="text" placeholder="添加标签" maxlength="6" class="bq-add fl" />
+                    <input @blur="followCreateSign" :disabled="!isShopMan" v-model="signName" type="text" placeholder="添加标签" maxlength="6" class="bq-add fl" />
                 </div>
             </div>
         </div>
@@ -278,6 +279,9 @@
     display:flex;
     justify-content: center;
 }
+.menu-list {
+    padding-left: 20px;
+}
 </style>
 
 <script>
@@ -286,6 +290,7 @@ import ChoseLeader from '../choseLeader'
 import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
 import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention} from 'Api/commonality/operate'
 
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
     data () {
@@ -343,7 +348,22 @@ export default {
     components:{
         FormatImg,
         ChoseLeader,
-
+    },
+    computed:{
+        ...mapGetters([
+            "userPositionInfo"
+        ]),
+        isShopMan(){
+            if(this.userPositionInfo.roleList.length === 1){
+                if(this.userPositionInfo.roleList[0].role > 3){
+                    return true
+                } else {
+                    return false
+                }
+            } else {
+                return true
+            }
+        }
     },
     methods:{
         showBtn(){
@@ -354,6 +374,9 @@ export default {
         },
         // 修改会员等级
         getLevel(type){
+            if(!isShopMan){
+                return
+            }
             this.actionType = type
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
@@ -377,6 +400,7 @@ export default {
         },
         goBack(){
             this.$emit('goBack',true)
+
         },
         // 负责人
         getHead(list) {
@@ -591,6 +615,9 @@ export default {
                             })
                         }
                     })
+        },
+        isChoseLeaderbymember(){
+            this.$emit("isChoseLeaderbymember",true)
         }
     },
     watch:{

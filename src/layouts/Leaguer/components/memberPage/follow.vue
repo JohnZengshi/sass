@@ -2,44 +2,41 @@
     <div class="memberinfo-content">
         <div class="trading-top-num">
             <div class="num-item num-item-lf">
-                <p class="num">520</p>
+                <p class="num">{{ followData.totalFollow }}</p>
                 <p class="label">跟进记录（次）</p>
             </div>
         </div>
         <div class="follow-list">
-            <div class="list-item clearfix">
+            <div class="list-item clearfix" v-for="(item,index) in followData.dataList" :key="index">
                 <div class="item-line fl">
                     <span class="fl">跟进人</span>
-                    <span class="fr">他是谁</span>
+                    <span class="fr">{{item.followName}}</span>
                 </div>
                 <div class="item-line fr">
                     <span class="fl">跟进状态</span>
-                    <span class="fr">他是谁</span>
+                    <span class="fr">{{getFollowStatus(item.followStatus)}}</span>
                 </div>
                 <div class="item-line fl">
                     <span class="fl">跟进目的</span>
-                    <span class="fr">他是谁</span>
+                    <span class="fr">{{getFollowPurpose(item.visitAim)}}</span>
                 </div>
                 <div class="item-line fr">
                     <span class="fl">跟进时间</span>
-                    <span class="fr">他是谁</span>
+                    <span class="fr">{{_GetNYR(item.followTime)}}</span>
                 </div>
                 <div class="item-line fl">
                     <span class="fl">跟进方式</span>
-                    <span class="fr">他是谁</span>
+                    <span class="fr">{{getFollowType(item.followType)}}</span>
                 </div>
                 <div class="item-results fl">
                     <span class="label">跟进结果</span>
-                    <span class="info">他是谁是谁是谁是谁是谁是谁是谁是谁是谁是谁是谁是谁是谁是谁是谁是是谁是谁是谁是谁是谁是谁是谁是谁是谁是谁是谁是谁是谁</span>
+                    <span class="info">{{item.followResult}}</span>
                 </div>
                 <div class="item-img fl">
-                    <img src="../../../../../static/img/background/Christmas.png" alt="">
-                    <img src="../../../../../static/img/background/Christmas.png" alt="">
-                    <img src="../../../../../static/img/background/Christmas.png" alt="">
-                    <img src="../../../../../static/img/background/Christmas.png" alt="">
+                    <img :src="f.picUrl" v-for="(f, i) in item.followPicList" :key="i" />
                 </div>
                 <div class="create-time">
-                    <div class="font-wrap">2018</div>
+                    <div class="font-wrap">{{_GetNYR(item.followCreateTime)}}</div>
                 </div>
             </div>
         </div>
@@ -113,15 +110,81 @@
 </style>
 
 <script>
+import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
+
 export default {
     data () {
         return {
             
         }
     },
+    props:['followData'],
     methods: {
         goBack() {
             this.$emit('goBack',true)
+        },
+        getFollowStatus(parm) {
+            switch (parm) {
+                case '1':
+                    return '未完成'
+                    break;
+                case '2':
+                    return '已超时'
+                    break;
+                case '3':
+                    return '已完成'
+                    break;
+                case '4':
+                    return '已暂停'
+                    break;
+                default:
+                    break;
+            }
+        },
+        getFollowPurpose(parm) {
+            switch (parm) {
+                case "1":
+                    return '日常拜访'
+                    break;
+                case "2":
+                    return '促销执行'
+                    break;
+                case "3":
+                    return '临时拜访'
+                    break;
+                case "4":
+                    return '其它目的'
+                    break;
+                case "5":
+                    return '售后跟进'
+                    break;
+                case "6":
+                    return '生日跟进'
+                    break;
+                default:
+                    break;
+            }
+        },
+        _GetNYR(parm){
+            return GetNYR(parm)
+        },
+        getFollowType(type) {
+            switch (type) {
+                case "1":
+                    return '面谈'
+                    break;
+                case "2":
+                    return '电话'
+                    break;
+                case "3":
+                    return '聊天软件'
+                    break;
+                case "4":
+                    return '其它'
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
