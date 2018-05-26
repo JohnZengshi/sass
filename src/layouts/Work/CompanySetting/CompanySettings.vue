@@ -537,8 +537,7 @@ export default {
             }
         },
         openMenberPoint(index){
-            if(index===1)
-            this.$router.push({path:'/work/memberSettingIndex',params:{templateId:1110}})
+            this.$router.push({ path: '/work/memberSettingIndex', query: { templateId:1234 }})
             // this.$router.push({path:'/work/memberSettingIndex',params:{templateId:this.templateDataList[index].templateId}})
         },
         // 积分模板的添加
@@ -558,7 +557,7 @@ export default {
                         type: 'success',
                         message: '添加成功!'
                     })
-                    this.getTemplateIntegralList()
+                    this.getTemplateList()
                 } else {
                     this.$message({
                         type: 'warning',

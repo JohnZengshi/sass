@@ -8,22 +8,22 @@
         @close="close"
         >
         <!-- 主页面 -->
-        <member-info-home v-show="homePage" :memberInfo="memberInfo" @infomationShow="infomationShow" @tradingShow="tradingShow" @visitingShow="visitingShow" @integralShow="integralShow" @followShow="followShow"></member-info-home>
+        <member-info-home v-show="homePage" :oldMemberInfo="oldMemberInfo" :memberInfo="memberInfo" :shopId="shopId" :memberId="memberId" @infomationShow="infomationShow" @tradingShow="tradingShow" @visitingShow="visitingShow" @integralShow="integralShow" @followShow="followShow" @goBack="goBack"></member-info-home>
 
         <!-- 信息编辑页面 -->
-        <information-edit v-show="informationPage" :oldMemberInfo="oldMemberInfo" :shopId="shopId" :memberId="memberId" @goBack="goBack"></information-edit>
+        <information-edit v-show="informationPage" :oldMemberInfo="oldMemberInfo" :shopId="shopId" :memberId="memberId" @goBack="goBack" @getData="getData"></information-edit>
 
         <!-- 交易记录页面 -->
-        <trading v-show="tradingPage" :buyRecordInfo="buyRecordInfo" @goBack="goBack"></trading>
+        <trading v-show="tradingPage" :buyRecordInfo="buyRecordInfo" :oldMemberInfo="oldMemberInfo" :memberInfo="memberInfo" :shopId="shopId" :memberId="memberId"  @goBack="goBack" @getData="getData"></trading>
 
         <!-- 来访记录页面 -->
-        <visiting v-show="visitingPage" :visitData="visitData" @goBack="goBack"></visiting>
+        <visiting v-show="visitingPage" :visitData="visitData" @goBack="goBack" @getData="getData"></visiting>
 
         <!-- 跟进页面 -->
-        <follow v-show="followPage" :followData="followData" @goBack="goBack"></follow>
+        <follow v-show="followPage" :followData="followData" @goBack="goBack" @getData="getData"></follow>
 
         <!-- 积分记录页面 -->
-        <integral v-show="integralPage" :integralData="integralData" @goBack="goBack"></integral>
+        <integral v-show="integralPage" :integralData="integralData" :oldMemberInfo="oldMemberInfo" :memberInfo="memberInfo" :shopId="shopId" :memberId="memberId" @goBack="goBack" @getData="getData"></integral>
 
     </el-dialog>
 </template>
@@ -263,6 +263,7 @@ export default {
             visitingPage:false,
             followPage:false,
             integralPage:false,
+
         }
     },
     components:{
@@ -278,6 +279,7 @@ export default {
         
         // 获取会员信息
         getMemberInfo(){
+            console.log('哈喽')
             let options = {
                 shopId: this.shopId,
                 memberId: this.memberId
@@ -451,8 +453,18 @@ export default {
             this.visitingPage = false
             this.followPage = false
             this.integralPage = false
+
             this.getMemberInfo()
             this.getOldMemberInfo()
+        },
+        getData(){
+            this.getMemberInfo()
+            this.getOldMemberInfo()
+            this.getIntegralLog()     
+            this.getBuyRecord()   
+            this.newClient()  
+            this.getFlowData()                                      
+
         },
         infomationShow(parm) {
             this.informationPage = parm
@@ -481,6 +493,8 @@ export default {
             if(val){
                 // 获取会员信息
                 this.getMemberInfo()
+                this.getOldMemberInfo()
+                
             }
         },
         homePage(val) {
@@ -526,7 +540,7 @@ export default {
         },
         integralPage(val) {
             if(val) {
-                // this.getIntegralLog()
+                this.getIntegralLog()
             }
         }
     },

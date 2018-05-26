@@ -29,6 +29,9 @@
                     <el-checkbox class="checkbox-item" label="复选框 A"><span>周大福龙华清湖店</span></el-checkbox>
                     <el-checkbox class="checkbox-item" label="复选框 A"><span>周大福龙华清湖店</span></el-checkbox>
                     <el-checkbox class="checkbox-item" label="复选框 A"><span>周大福龙华清湖店</span></el-checkbox>
+
+                    <el-checkbox class="checkbox-item" label="复选框 A" v-for="(item,index) in shopList" :key="index"><span>{{item.shopName}}</span></el-checkbox>
+
                 </el-checkbox-group>
             </div>
             <!-- 积分模板应用店铺 0.2 end -->
@@ -145,13 +148,13 @@
             <div class="issue">
                 <div class="all-title">
                     <p>积分发放配置
-                        <swichs :type="'productTypeConfig'" :status="templateInfoData.othenConfig" @switchChange="switchChange"></swichs>
+                        <swichs :type="'othenConfig'" :status="templateInfoData.othenConfig" @switchChange="switchChange"></swichs>
                         <el-button class="fr" type="primary" size="small" @click="dialogVisible = true">+ 配置条件</el-button>
                     </p>
                 </div>
                 <div class="issue-content">
                     <!-- 注册 -->
-                    <div class="item">
+                    <div class="item" v-show="zcitem">
                         <div class="item-circle"></div>
                         <span class="item-title">注册福利：</span>
                         <span>注册成为会员，赠送</span>
@@ -162,7 +165,7 @@
                         <i class="el-icon-delete" @click="delConfiguration(1)"></i>
                     </div>
                     <!-- 生日 -->
-                    <div class="item">
+                    <div class="item" v-show="sritem">
                         <div class="item-circle"></div>
                         <span class="item-title">生日福利：</span>
                         <span>会员生日当天，赠送</span>
@@ -174,7 +177,7 @@
                         
                     </div>
                     <!-- 签到 -->
-                    <div class="item">
+                    <div class="item" v-show="qditem">
                         <div class="item-circle"></div>
                         <span class="item-title">签到福利：</span>
                         <span>会员单次签到，赠送</span>
@@ -273,9 +276,9 @@
 				</div>
 				<div class="list-wrap first-wrap">
 					<div id="btn-wrap" class="btn-wrap">
-						<li class="disabledActive" @click="addConfiguration(1)">注册福利</li>
-						<li class="disabledActive" @click="addConfiguration(2)">生日福利</li>
-						<li class="disabledActive" @click="addConfiguration(3)">签到福利</li>
+						<li :class="zcitem ? 'disabledActive' : ''" @click="addConfiguration(1)">注册福利</li>
+						<li :class="sritem ? 'disabledActive' : ''" @click="addConfiguration(2)">生日福利</li>
+						<li :class="qditem ? 'disabledActive' : ''" @click="addConfiguration(3)">签到福利</li>
 					</div>
 				</div>
   			</div>
@@ -803,10 +806,11 @@ import Swichs from './Swichs'
 import memberDialog from '../ShopSetting/dialog/tplGoldDialog'
 
 // 获取模板内容
-import { templateIntegralDetails,consumeTemplateUpdate } from 'Api/member'
+import { templateIntegralDetails,consumeTemplateUpdate,getShopReTemplateList } from 'Api/member'
 
 // 获取用户权限
 import {mapActions, mapGetters} from 'vuex'
+import tradingVue from '../../Leaguer/components/memberPage/trading.vue';
 
 export default {
     data () {
@@ -861,7 +865,20 @@ export default {
                 pieceConfig:'',
                 deductible:'',
                 matchingType:''
-            }
+            },
+            shopList:[{
+                shopId:'',
+                shopName:'随便',
+                templateId:'',
+                templateName:'',
+                binding:'Y',
+                existence:'Y'
+            }],
+            otherList:[],
+
+            zcitem:true,
+            sritem:true,
+            qditem:true,
         }
     },
     components:{
@@ -899,9 +916,9 @@ export default {
 
         // 模板详情
         getIntegralDetails(){
-            console.log(this.$route.params.templateId)
+            console.log(this.$route.query)
             let options = {
-                templateId: this.$route.params.templateId
+                templateId: this.$route.query.templateId
             }
             templateIntegralDetails(options).then(res => {
                 this.templateInfoData = res.data.data
@@ -909,15 +926,17 @@ export default {
         },
         // 删除
         delConfiguration(type) {
+            console.log('点点点点')
             switch (type) {
                 case 1:
-                    
+                    this.zcitem = false
+                    console.log(this.zcitem)
                     break;
                 case 2:
-                    
+                    this.sritem = false
                     break;
                 case 3:
-                    
+                    this.qditem = false
                     break;
             
                 default:
@@ -927,13 +946,25 @@ export default {
         addConfiguration(type){
             switch (type) {
                 case 1:
-                    
+                    if(this.zcitem){
+                        return
+                    } else {
+                        this.zcitem = true
+                    }
                     break;
                 case 2:
-                    
+                    if(this.sritem){
+                        return
+                    } else {
+                        this.sritem = true
+                    }
                     break;
                 case 3:
-                    
+                    if(this.qditem){
+                        return
+                    } else {
+                        this.qditem = true
+                    }
                     break;
                 default:
                     break;
@@ -976,11 +1007,11 @@ export default {
                         this.templateInfoData.productTypeConfig = 'D'
                     }
                     break;
-                case 'consumeConfig':
+                case 'othenConfig':
                     if(config) {
-                        this.templateInfoData.consumeConfig = 'N'
+                        this.templateInfoData.othenConfig = 'N'
                     } else{
-                        this.templateInfoData.consumeConfig = 'D'
+                        this.templateInfoData.othenConfig = 'D'
                     }
                     break;
                 case 'consumeConfig':
@@ -995,8 +1026,6 @@ export default {
                     break;
             }
         },
-
-
         // 弹框哇
         dialogType(type){
           this.dialog.dialogVisible = type 
@@ -1007,7 +1036,32 @@ export default {
             dialogSlot : 'goldAdd',
             addCounterName : '计重类批量设置'
          },item)
-       },
+        },
+
+        // 获取店铺列表
+        getShopList() {
+            let options = {
+                templateId : this.$route.query.templateId
+            }
+            getShopReTemplateList(options).then(res => {
+                this.shopList = res.data.dataList
+            })
+        },
+
+        // 获取其他配置
+        getOtherList() {
+            this.templateInfoData.othenList.forEach(item => {
+                if(item.othenName == 1){
+                    this.zcitem = true
+                }
+                if(item.othenName == 2){
+                    this.sritem = true
+                }
+                if(item.othenName == 3){
+                    this.qditem = true
+                }
+            });
+        }
 
     },
     watch:{
@@ -1019,7 +1073,7 @@ export default {
         // this.getIntegralDetails()
     },
     mounted(){
-        console.log('用户信息',this.userPositionInfo)
+        console.log('用户信息',this.templateInfoData)
     },
 
 }

@@ -12,31 +12,31 @@
                     <span class="fl">跟进人</span>
                     <span class="fr">{{item.followName}}</span>
                 </div>
-                <div class="item-line fr">
+                <div class="item-line fr" v-if="item.followStatus">
                     <span class="fl">跟进状态</span>
                     <span class="fr">{{getFollowStatus(item.followStatus)}}</span>
                 </div>
-                <div class="item-line fl">
+                <div class="item-line fl" v-if="item.visitAim">
                     <span class="fl">跟进目的</span>
                     <span class="fr">{{getFollowPurpose(item.visitAim)}}</span>
                 </div>
-                <div class="item-line fr">
+                <div class="item-line fr" v-if="item.followTime">
                     <span class="fl">跟进时间</span>
                     <span class="fr">{{_GetNYR(item.followTime)}}</span>
                 </div>
-                <div class="item-line fl">
+                <div class="item-line fl" v-if="item.followType">
                     <span class="fl">跟进方式</span>
                     <span class="fr">{{getFollowType(item.followType)}}</span>
                 </div>
-                <div class="item-results fl">
+                <div class="item-results fl" v-if="item.followResult">
                     <span class="label">跟进结果</span>
                     <span class="info">{{item.followResult}}</span>
                 </div>
-                <div class="item-img fl">
+                <div class="item-img fl" v-if="item.followPicList.length != 0">
                     <img :src="f.picUrl" v-for="(f, i) in item.followPicList" :key="i" />
                 </div>
                 <div class="create-time">
-                    <div class="font-wrap">{{_GetNYR(item.followCreateTime)}}</div>
+                    <div class="font-wrap">创建时间{{_GetNYR(item.followCreateTime)}}</div>
                 </div>
             </div>
         </div>
@@ -44,6 +44,7 @@
             <div class="btn" @click="goBack">返回</div>
             <div class="btn">创建跟进</div>
         </div>
+        
     </div>
 </template>
 

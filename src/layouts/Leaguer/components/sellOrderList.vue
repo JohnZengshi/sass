@@ -96,7 +96,7 @@
             </div>
             <div class="batch-footer">
                 <div class="btn-wrap">
-                    <div class="cenl-btn btn" @click="closeOnly">取消</div>
+                    <div class="cenl-btn btn" @click="closeBtn">取消</div>
                     <div class="add-btn btn" @click="close">添加</div>
                 </div>
                 <div class="checkAll">
@@ -263,7 +263,6 @@ export default {
         }
     },
     created () {
-        //console.log(111111111)
         this.getDate(0)
         this.goodsSellOrder()
         this.getShopUserList()
@@ -563,7 +562,7 @@ export default {
         getModuleType (parm) {
             return statusModuleType(parm);
         },
-        closeOnly () {//取消按钮
+        closeBtn () {//取消按钮
             this.checkList = [];
             this.$emit("closeOnly")
         },

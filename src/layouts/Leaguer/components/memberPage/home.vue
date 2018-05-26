@@ -50,8 +50,8 @@
                     <p class="item-card-info"><i class="color2">●</i><span class="card-info-label">交易总额：</span><span>{{ memberInfo.totalPrice ? memberInfo.totalPrice+'元' : '-' }}</span></p>
                     <p class="item-card-info"><i class="color2">●</i><span class="card-info-label">交易次数：</span><span>{{ memberInfo.totalNum != 0 ? memberInfo.totalNum+'次' : '-' }}</span></p>
                     <div class="btn-group-jy">
-                        <div v-if="isShopMan" class="btn-kj">快捷开单</div>
-                        <div v-if="isShopMan" class="btn-kj">关联销售单</div>
+                        <div v-if="isShopMan" class="btn-kj" @click="openSales">快捷开单</div>
+                        <div v-if="isShopMan" class="btn-kj" @click.stop="relevanceSales">关联销售单</div>
                     </div>
                 </div>
                 <!-- 来访 -->
@@ -81,11 +81,60 @@
                     <p class="item-card-info"><i class="color5">●</i><span class="card-info-label">积分总数：</span><span>{{ memberInfo.score ? memberInfo.score+'分' : '-'}}</span></p>
                     <p class="item-card-info"></p>
                     <div class="btn-group-jf">
-                        <div v-if="isShopMan" class="btn-jf">积分修改</div>
+                        <div v-if="isShopMan" class="btn-jf" @click.stop="Integral = true">积分修改</div>
                     </div>
                 </div>
                 
         </div>
+
+        <!-- 关联销售单 -->
+        <sellOrderList
+            :shopId="shopId"
+            :saveSuccess="saveSuccess"
+            @closeOrderList="closeOrderList"
+            @closeOnly="closeOnly"
+            isEdit="1"
+        ></sellOrderList>
+        <!-- 积分修改弹窗 -->
+        <el-dialog
+            :visible.sync="Integral"
+            customClass="visitAimDig modify"
+            top="10%"
+            :modal="false"
+            @close="handleClose"
+            :close-on-click-modal="false">
+            <!-- 头部 -->
+            <div class="aim-wrap">
+                <div class="title">
+                    <img src="../../../../../static/img/piliang.png" />
+                    <div class="name">修改积分</div>
+                </div>
+                <!-- 目前积分 -->
+                <p class="line1">目前积分  <span>{{score}}</span></p>
+                <!-- 选择规则 -->
+                <p style="margin-bottom: 10px;">选择规则</p>
+                <el-radio-group class="line1" v-model="incordec">
+                    <el-radio :label="1">增加积分</el-radio>
+                    <el-radio :label="2">减少积分</el-radio>
+                </el-radio-group>
+                <!-- 变动积分数 -->
+                <p style="margin-bottom: 10px;">变动积分数</p>
+                <el-input type="number" @blur="showJF" v-model="bs" placeholder="请输入内容" class="line1"></el-input>
+                <!-- 备注信息 -->
+                <p style="margin-bottom: 10px;">备注信息</p>
+                <el-input
+                    class="line1"
+                    type="textarea"
+                    :rows="2"
+                    :maxlength="50"
+                    placeholder="请输入内容"
+                    v-model="remark">
+                </el-input>
+                <p class="btn-line">
+                    <el-button class="btn-wrap" type="primary" @click="modifyBtn">确定</el-button>
+                </p>
+            </div>
+        </el-dialog>
     </div>
 </template>
 
@@ -96,12 +145,80 @@
 #color-zy{
     background: #ed7000;
 }
+.modify {
+    height: 600px;
+   .aim-wrap {
+        padding-top: 24px;
+        .title {
+            width: 66px;
+            margin: 0 auto;
+            margin-bottom: 30px;
+            padding: 0;
+            img {
+                width: 46px;
+                height: 46px;
+                margin: 10px 0 10px 10px;
+                // margin-bottom: 10px;
+            }
+            .name {
+                width: 100%;
+                text-align: center;
+                color:#333;
+                font-weight: bold;
+            }
+        }
+        .list {
+            
+            li {
+                height: 42px;
+                color:#666666;
+                line-height: 42px;
+                padding-left: 50px;
+                cursor: pointer;
+                .label {
+                    width: 30px;
+                    height: 14px;
+                    display: inline-block;
+                    background:#2993f8;
+                    color:#fff;
+                    border-radius: 4px;
+                    font-size: 12px;
+                    text-align: center;
+                    line-height: 14px;
+                    margin-top: 10px;
+                    margin-left: 15px;
+                }
+            }
+            li.active {
+                color:#2993f8;
+            }
+        }
+        .line1{
+            width: 100%;   
+            height: 50px;
+            line-height: 50px;
+            color: #666666;
+            font-size: 14px;
+            margin-bottom: 20px;
+            span {
+                color: #2993f8
+            }
+        }
+        .btn-line {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
 </style>
 
 
 <script>
 import FormatImg from "components/template/DefaultHeadFormat.vue"
 import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
+import SellOrderList from '../sellOrderList'
+import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention} from 'Api/commonality/operate'
+import { memberIntegralUpdate } from 'Api/member'
 
 import {mapActions, mapGetters} from 'vuex'
 
@@ -109,12 +226,20 @@ export default {
   data() {
     return {
         informationFlag:false,
+        saveSuccess:false,
+        Integral:false,
+        incordec:1,
+        remark:'',
+        score:0,
+        bs:'',
+        
     };
   },
   components: {
     FormatImg,
+    SellOrderList
   },
-  props: ["memberInfo"],
+  props: ["memberInfo",'shopId','memberId','oldMemberInfo'],
   computed:{
     ...mapGetters([
         "userPositionInfo"
@@ -132,6 +257,107 @@ export default {
     }
   },
   methods: {
+    handleClose(){
+        this.Integral = false
+        this.score = this.memberInfo.score
+        this.bs = ''
+        this.remark = '' 
+    },
+    showJF() {
+        this.score = this.memberInfo.score || 0
+        let score = parseInt(this.score) || 0
+        let bs = parseInt(this.bs) || 0
+
+        switch (this.incordec) {
+            case 1:
+                this.score=score+bs
+                break;
+            case 2:
+                this.score=score-bs
+                if(this.score<0){
+                    this.score = 0
+                }
+                break;
+            default:
+                break;
+        }
+    },
+    modifyBtn(){
+
+        if(!this.remark) {
+            this.$message({
+                type:'error',
+                message:'请输入备注内容'
+            })
+            return
+        }
+        
+        // 计算会员积分
+        let options = {
+            remark: this.remark,
+            shopId: this.shopId,
+            memberId: this.memberId,
+            score: this.score
+        }
+        // 修改会员积分
+        memberIntegralUpdate(options).then(res => {
+            console.log(res)
+            if(res.data.state == 200){
+                this.$message({
+                    type:'success',
+                    message:'修改成功'
+                })
+                this.$emit("goback",true)
+                this.Integral = false
+            }else {
+                this.$message({
+                    type:'error',
+                    message: res.data.msg
+                })
+                this.$emit("goback",true)
+                
+            }
+        })
+    },
+    closeOrderList (val) { // 选择单据结束的回调
+        this.saveSuccess = false
+        if(val.length == 0){
+            return
+        }
+        // 关联销售单
+        let orderList = []
+        orderList = this.oldMemberInfo.orderList || []
+        val.forEach((item, index) => {
+            orderList[index] = {orderNo: item}
+        })
+        let options = Object.assign({},this.oldMemberInfo,{
+            memberId:this.memberId,
+            shopId:this.shopId,
+            orderList
+        })
+        operateMemberUpdateBy(options).then(res => {
+            if(res.data.state === 200) {
+                this.$emit("goBack",true)                
+                this.$message({
+                    type: 'success',
+                    message: '关联销售单成功'
+                })
+            } else {
+                this.$message({
+                    type: 'error',
+                    message: '关联销售单失败'
+                })
+            }
+        })
+
+    },
+    closeOnly () {
+        this.saveSuccess = false
+        console.log('我擦')
+    },
+    relevanceSales() {
+        this.saveSuccess = true
+    },
     // 显示按钮
     showBtn() {
       $(".btn-group-jy").addClass("btn-show");
@@ -195,6 +421,13 @@ export default {
     _formDataTimeYND(parm){
         return GetNYR(parm)
     },
+    // 快捷开单
+    openSales(){
+        this.$router.push({path:'/work/sell'})        
+    },
+  },
+  created() {
+      this.score = this.memberInfo.score || 0
   }
 };
 </script>

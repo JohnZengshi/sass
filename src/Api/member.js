@@ -35,3 +35,13 @@ export const getFollowRecord = function(data) {
     let URL = "/v1/member/getMemberFollowList"
     return apiCall(data, URL)
 }
+// 修改会员积分
+export const memberIntegralUpdate = function(data) {
+    let URL = "/v1/member/memberIntegralUpdate"
+    return apiCall(data, URL)
+}
+// 关联模板的店铺列表
+export const getShopReTemplateList = function(data) {
+    let URL = "/v1/member/shopReTemplateList"
+    return apiCall(data, URL)
+}

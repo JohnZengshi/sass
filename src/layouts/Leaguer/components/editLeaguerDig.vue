@@ -253,6 +253,7 @@
                 :memberId="memberId"
             ></buyRecord>
         </el-dialog>
+
         <sellOrderList
             :shopId="shopId"
             :saveSuccess="saveSuccess"
@@ -260,6 +261,7 @@
             @closeOnly="closeOnly"
             isEdit="1"
         ></sellOrderList>
+        
         <!-- 选择负责人 -->
         <el-dialog :modal="false" :visible.sync="isChoseLeader" top="0%" customClass="choseLeaderDig" :close-on-click-modal="false">
             <ChoseLeader
@@ -594,7 +596,6 @@ export default {
         },
         closeOrderList (val) { // 选择单据结束的回调
             this.saveSuccess = false
-            console.log(val)
             //this.dataInfo.orderList = val
             this.orderListData = val.join(',')
             val.forEach((item, index) => {
@@ -603,7 +604,6 @@ export default {
                 // })
                 this.dataInfo.orderList[index] = {orderNo: item}
             })
-            console.log(this.dataInfo.orderList)
         },
         closeChoLeader (val) {
             console.log(val)

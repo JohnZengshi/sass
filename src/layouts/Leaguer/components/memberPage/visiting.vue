@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="visiting-list">
-            <div class="visiting-header">
+            <div class="visiting-header" v-if="visitData.totalNum != 0">
                 <span>到店时间</span>
                 <span>接待人</span>
                 <span>消费金额（元）</span>

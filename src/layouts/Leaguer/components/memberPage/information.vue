@@ -46,8 +46,8 @@
                 <div class="item">
                     <span class="item-label">性别</span>
                     <el-radio-group v-model="dataInfo.sex" @change="setSex" :disabled="!isShopMan">
-                        <el-radio :label="1">男</el-radio>
-                        <el-radio :label="2">女</el-radio>
+                        <el-radio :label="'1'">男</el-radio>
+                        <el-radio :label="'2'">女</el-radio>
                     </el-radio-group>
                 </div>
                 <div class="item">
@@ -337,9 +337,7 @@ export default {
                 remark: '',
                 createTime: '',
                 totalMoney: '',
-                signList: [
-
-                ]
+                signList: [],
             },
 
         }
@@ -374,7 +372,7 @@ export default {
         },
         // 修改会员等级
         getLevel(type){
-            if(!isShopMan){
+            if(!this.isShopMan){
                 return
             }
             this.actionType = type
@@ -404,14 +402,13 @@ export default {
         },
         // 负责人
         getHead(list) {
-            console.log('我里个去',list)
             if(list){
                 if(list.length === 0) {
                     return '指派'
                 } else {
                     let newArrr = []
                     list.forEach(item => {
-                        newArrr.push(item.userName)
+                        newArrr.push(item.username)
                     })
                     if(newArrr.length == 1) {
                         return newArrr[0]
@@ -498,20 +495,21 @@ export default {
                 memberId: this.memberId,
                 shopId: this.shopId,
             })
-                operateMemberUpdateBy(options).then(res => {
-                    console.log(res.data.state)
-                    if(res.data.state === 200) {
-                        this.$message({
-                            type: 'success',
-                            message: '修改性别成功'
-                        })
-                    } else {
-                        this.$message({
-                            type: 'error',
-                            message: '修改性别失败'
-                        })
-                    }
-                })
+            console.log(options)
+            operateMemberUpdateBy(options).then(res => {
+                console.log(res.data.state)
+                if(res.data.state === 200) {
+                    this.$message({
+                        type: 'success',
+                        message: '修改性别成功'
+                   })
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: '修改性别失败'
+                    })
+               }
+            })
         },
         // 修改邮箱
         setEmail(){
