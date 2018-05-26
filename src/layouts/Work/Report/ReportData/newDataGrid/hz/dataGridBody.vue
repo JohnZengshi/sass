@@ -202,6 +202,22 @@ export default {
       _this.$emit('lazyloadSend',123 )
     })
     
+    $(".ui-table-container").mCustomScrollbar({
+      theme: "minimal-dark",
+      axis: 'y',
+      mouseWheel: {
+        scrollAmount: 200,
+        preventDefault: false,
+        normalizeDelta: true,
+        scrollInertia: 50
+      },
+      callbacks: {
+        onTotalScroll: function() {
+          // console.log('滚轮到底了')
+        },
+      }
+    });
+
     // $(".ui-table-container").mCustomScrollbar({
         //     theme: "minimal-dark",
         //     axis: 'y',
@@ -371,8 +387,8 @@ export default {
 </style>
 <style scoped lang="scss">
 .ui-table-container{
-    height: 556px;
-    overflow-y: auto;
+    // height: 556px;
+    // overflow-y: auto;
     .hz-tb-category-two{
       margin-bottom: 2px;
     }

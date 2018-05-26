@@ -20,7 +20,7 @@ function apiCall (parm, URL) {
     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8082/yunzhubao' : ''
     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:9092/yunzhubao' : ''
     // 内网
-  let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8083/yunzhubao' : ''
+  // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8083/yunzhubao' : ''
      // 测试
     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://www.yunzhubao.com:9001' : ''
     //let serverHost = process.env.NODE_ENV === 'development' ? 'https://program.yunzhubao.com/yunzhubao/' : ''
@@ -34,7 +34,7 @@ function apiCall (parm, URL) {
 
     // let serverHost = 'http://www.jzmsoft.com'
     // 正式
-    // let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
+    let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
     let url = serverHost + URL
     //console.log(url)
     let foo = function* (data) {

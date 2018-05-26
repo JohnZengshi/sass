@@ -1,46 +1,28 @@
 <template>
   <div class="print-box breakable" id="page1">
-    <div class="print-header">
-      <h1 class="title center">{{title}}报表</h1>
-      <div class="head-option">
-      </div>
-    </div>
-    <div>
-      <table class="table-box" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td>序号</td>
-          <td>条码号</td>
-          <td>首饰名称</td>
-          <td>件重(g)</td>
-          <td>金重(g)</td>
-          <td>主石(ct,g)</td>
-          <td>副石(ct,g)</td>
-          <td>售价(元)</td>
-          <td>成本(元)</td>
-        </tr>
-        <tr v-for="(item,index) in sellList.detailList" :key="index">
-          <td>{{index+1}}</td>
-          <td>{{item.barcode}}</td>
-          <td>{{item.jewelryName}}</td>
-          <td>{{item.weight}}</td>
-          <td>{{item.goldWeight}}</td>
-          <td>{{item.main}}</td>
-          <td>{{item.deputy}}</td>
-          <td>{{item.price}}</td>
-          <td>{{item.cost}}</td>
-        </tr>
-        <tr>
-          <td colspan="2">合计</td>
-          <td>{{sellList.totalNum}}件</td>
-          <td>{{sellList.totalWeight}}g</td>
-          <td>{{sellList.totalGoldWeight}}g</td>
-          <td>{{sellList.totalMain}}</td>
-          <td>{{sellList.totalDeputy}}</td>
-          <td>{{sellList.totalPrice}}元</td>
-          <td>{{sellList.totalCost}}元</td>
-        </tr>
-      </table>
-    </div>
+    <table class="table-box">
+      <tr v-if="index > 50" v-for="(item,index) in sellList.detailList" :key="index">
+        <td>{{index+1}}</td>
+        <td>{{item.barcode}}</td>
+        <td>{{item.jewelryName}}</td>
+        <td>{{item.weight}}</td>
+        <td>{{item.goldWeight}}</td>
+        <td>{{item.main}}</td>
+        <td>{{item.deputy}}</td>
+        <td>{{item.price}}</td>
+        <td>{{item.cost}}</td>
+      </tr>
+      <tr>
+        <td colspan="2">合计</td>
+        <td>{{sellList.totalNum}}件</td>
+        <td>{{sellList.totalWeight}}g</td>
+        <td>{{sellList.totalGoldWeight}}g</td>
+        <td>{{sellList.totalMain}}</td>
+        <td>{{sellList.totalDeputy}}</td>
+        <td>{{sellList.totalPrice}}元</td>
+        <td>{{sellList.totalCost}}元</td>
+      </tr>
+    </table>
     <div class="printDate">
       打印时间：{{printDate}}
     </div>
@@ -73,6 +55,7 @@
         }
       }
     },
+    // http://jzm-1252389350.cosgz.myqcloud.com/iconCompany/Vue1527317987926.js%20教程%20-%20v1
     data() {
       return {
         printDate:""
@@ -118,7 +101,7 @@
             // }
           }
         };
-        // getJCP().print(myDoc, true);
+        getJCP().print(myDoc, false);
       }
     }
   }

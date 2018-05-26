@@ -6,7 +6,7 @@
       </div>
     </div>
     <div>
-      <table class="table-box" border="0" cellspacing="0" cellpadding="0">
+      <table class="table-box">
         <tr>
           <td>序号</td>
           <td>条码号</td>
@@ -118,7 +118,7 @@
             // }
           }
         };
-        // getJCP().print(myDoc, true);
+        getJCP().print(myDoc, true);
       }
     }
   }

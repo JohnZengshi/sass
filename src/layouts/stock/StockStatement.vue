@@ -1,5 +1,6 @@
 <template>
 <transition name="tp-ani">
+<!--   <printChange></printChange> -->
   <div class="stock-statement-main">
     <div class="stock-header-wrap">
       <div class="headervisi"></div>
@@ -99,6 +100,7 @@
   import Charts from './Charts'
   import StatisticsNumber from './StatisticsNumber'
   import {GetDateStr, GetMonth} from 'assets/js/getTime'
+    import printChange from "./base/printChange";
   import {seekRepositoryList, seekGetShopListByCo, seekShowCounterList, seekStatisticalIndex} from 'Api/commonality/seek'
   import DropDownMenu from 'components/template/DropDownMenu'
   export default {
@@ -108,7 +110,8 @@
       Charts,
       StatisticsNumber,
       StockTable,
-      DropDownMenu
+      DropDownMenu,
+      printChange
     },
     data () {
       return {

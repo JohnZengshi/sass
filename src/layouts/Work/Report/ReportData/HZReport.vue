@@ -238,7 +238,8 @@
     </div>
     
     <div class="rp_dataGridTemp" :class="tabShow" v-loading = "loading" element-loading-text="数据查询中">
-        <report-detail 
+        <report-detail
+            ref="reportDetailWrap"
             :dataGridStorage="dataGridStorage" 
             :tabSwitch = "tabSwitch"
             :positionSwitch="positionSwitch"
@@ -1246,6 +1247,9 @@ export default {
           seekGetReportsComprehensive(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
               this.dataGridStorage = res.data.data
+              setTimeout(() => {
+                this.$refs.reportDetailWrap._setMCustomScrollbar()
+              }, 800)
                 // this.dataGridStorage = {
                 //     dataList:[{
                 //         "typeName": "销售",
@@ -1506,6 +1510,9 @@ export default {
         seekGetReportsComprehensive(this.dataGridOptions).then((res) => {
           if(res.data.state == 200) {
             this.dataGridStorage = res.data.data
+            setTimeout(() => {
+                this.$refs.reportDetailWrap._setMCustomScrollbar()
+            }, 800)
             // this.dataGridStorage = {
             //     dataList:[{
             //         "typeName": "销售",

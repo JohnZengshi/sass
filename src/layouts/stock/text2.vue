@@ -2,8 +2,15 @@
   <transition name="tp-ani">
 
     
+<div>
+  <!-- 明细打印 -->
+  <div class="xj-kc-print-main" ref="detailTemplateWrap">
+    <detailTemplate title="库存-明细" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
+  </div>
 
-    <div class="RP_report_wrapper ui-page-max-width xj-stock-print-table-main" v-loading="loading" element-loading-text="数据查询中">
+
+
+  <div class="RP_report_wrapper ui-page-max-width xj-print-none" v-loading="loading" element-loading-text="数据查询中">
       <!-- v-loading = "loading" -->
 
       <div class="Rp_dataGrid_container">
@@ -21,13 +28,7 @@
           <div class="right-wrap">
             <div class="search-wrap">
               <input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" />
-              <!--<i class="iconfont icon-sousuo" @click="send"></i>-->
             </div>
-            <!-- <div @click="toggleAttribute" class="iconfont-wrap">
-              <span v-if="dataGridOptions.productClass == 1">成品</span>
-              <span v-if="dataGridOptions.productClass == 2">旧料</span>
-              <i class="iconfont icon-qiehuan"></i>
-            </div> 修改样式位置-->
             <div class="iconfont-wrap">
               <span style="margin-right:25px;" :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)" >成品</span>
               <span style="margin-right:25px;" :class="inconspanactive2 == true ? 'myspanactive' : ''"  @click="toggleAttribute(2)" >旧料</span>
@@ -156,12 +157,6 @@
         </table-print>
       </div>
       
-      <!-- 明细0 -->
-<!--       <detailTemplate v-if="this.tabClassActive.index==0" title="库存-明细" ref="detailTemplate" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
- -->
-          <div class="xj-kc-print-main" ref="detailTemplateWrap">
-            <detailTemplate title="库存-明细" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
-          </div>
         <!--打印模块-->
         <div style="display: none;">
             
@@ -179,13 +174,11 @@
             <!-- 自定义3 -->
             <intelligence-type-template v-if="tabClassActive.index==3" title="库存-自定义" ref="customTemplate" :sellList="printData" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
 
-<!-- 
-            <project-type-template v-if="tabClassActive.index==2" title="库存" ref="projectTypeTemplate" :sellList="printData" :headerData="printSelectDate"></project-type-template>
-
-            <custom-template v-if="tabClassActive.index==3" title="库存" ref="customTemplate" :sellList="printData" :headerData="printSelectDate"></custom-template>
- -->
         </div>
     </div>
+
+
+</div>
   </transition>
 </template>
 
@@ -529,36 +522,42 @@
       },
       // 用原生打印
       defaultPrint () {
-          let print = null;
+        this.loading = true
+        setTimeout(() => {
+          window.print()
+          this.loading = false
+        }, 2000)
+        
+          // let print = null;
 
-          this.appPrint = document.getElementById('appPrint')
+          // this.appPrint = document.getElementById('appPrint')
 
-          if(this.IntervalOut) clearInterval(this.IntervalOut)
-          document.getElementById('app').style.display = 'none';
+          // if(this.IntervalOut) clearInterval(this.IntervalOut)
+          // document.getElementById('app').style.display = 'none';
 
-          setTimeout(() => {
-            this.appPrint.innerHTML = this.$refs.detailTemplateWrap.innerHTML
-          }, 1000)
+          // setTimeout(() => {
+          //   this.appPrint.innerHTML = this.$refs.detailTemplateWrap.innerHTML
+          // }, 1000)
 
-          setTimeout(() => {
-            print = document.execCommand('print');
-          }, 1500)
+          // setTimeout(() => {
+          //   print = document.execCommand('print');
+          // }, 1500)
 
-          this.IntervalOut = setInterval(() => {
-            if(print) {
-              document.getElementById('app').style.display = 'block';
-              if(this.IntervalOut) clearInterval(this.IntervalOut)
-              this.IntervalOut = null;
-              this.appPrint.innerHTML = '';
-            } else if(print == false) {
-              if(this.IntervalOut) clearInterval(this.IntervalOut)
-              if(!window.print()) {
-                document.getElementById('app').style.display = 'block';
-                this.IntervalOut = null;
-                this.appPrint.innerHTML = '';
-              }
-            }
-          }, 10)
+          // this.IntervalOut = setInterval(() => {
+          //   if(print) {
+          //     document.getElementById('app').style.display = 'block';
+          //     if(this.IntervalOut) clearInterval(this.IntervalOut)
+          //     this.IntervalOut = null;
+          //     this.appPrint.innerHTML = '';
+          //   } else if(print == false) {
+          //     if(this.IntervalOut) clearInterval(this.IntervalOut)
+          //     if(!window.print()) {
+          //       document.getElementById('app').style.display = 'block';
+          //       this.IntervalOut = null;
+          //       this.appPrint.innerHTML = '';
+          //     }
+          //   }
+          // }, 10)
       },
 
       // currentPrint () {
@@ -965,7 +964,6 @@
 
 <style lang="scss">
   /* 公用样式  */
-  
   @import "~assets/css/webReport/index";
   .xj-switch,
   .position-group {
@@ -1004,19 +1002,20 @@
   }
 
   // 打印
-  .xj-kc-print-main{
-      display: none;
-  }
+  // .xj-kc-print-main{
+  //     display: none;
+  // }
   @media print{
     .xj-kc-print-main{
       display: block;
     }
-    .xj-stock-print-table-main{
-      table{
-        border-collapse: collapse;
-      }
-      tr { page-break-inside: avoid; }
+    .app-header, .system-nav, .xj-print-none{
+      display: none;
     }
+    table{
+      border-collapse: collapse;
+    }
+    tr { page-break-inside: avoid; }
   }
 </style>
 <style lang="scss" src="./../../assets/css/customDialog/customDialog.scss"></style>
