@@ -1008,6 +1008,7 @@
       display: none;
   }
   @media print{
+    tr { page-break-inside: avoid; }
     .xj-kc-print-main{
       display: block;
     }
