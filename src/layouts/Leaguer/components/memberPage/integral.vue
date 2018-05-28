@@ -20,7 +20,7 @@
         </div>
         <div class="return-btn-group">
             <div class="btn" @click="goBack">返回</div>
-            <div class="btn" @click="Integral = true">修改积分</div>
+            <div class="btn" v-if="isShopMan" @click="Integral = true">修改积分</div>
         </div>
 
         <!-- 积分修改弹窗 -->
@@ -165,6 +165,8 @@
 import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
 import { memberIntegralUpdate } from 'Api/member'
 
+import {mapActions, mapGetters} from 'vuex'
+
 
 export default {
     data () {
@@ -175,6 +177,22 @@ export default {
             remark:'',
             score:0,
             bs:'',
+        }
+    },
+    computed:{
+        ...mapGetters([
+            "userPositionInfo"
+        ]),
+        isShopMan(){
+            if(this.userPositionInfo.roleList.length === 1){
+                if(this.userPositionInfo.roleList[0].role > 3){
+                    return true
+                } else {
+                    return false
+                }
+            } else {
+                return true
+            }
         }
     },
     props:['integralData','oldMemberInfo','memberInfo','shopId','memberId'],

@@ -201,10 +201,12 @@
 								<div class="row4-tittle">
 									<div class="tittle-left">商品</div>
 									<div class="tittle-right">
+										<span>积分抵扣</span>
+										<input v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="本次对多80积分" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
+										<span>(总积分334)</span>
 										<span>详情说明</span>
 										<input v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
 										<span class="tooltip" v-if="isShowTooltip">输入/扫描条码号</span>
-
 									</div>
 								</div>
 								<div class="row4-data-main">

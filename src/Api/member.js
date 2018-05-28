@@ -10,6 +10,11 @@ export const templateCreate = function(data) {
     let URL = "/v1/member/templateCreate"
     return apiCall(data, URL)
 }
+// 积分模板删除
+export const templateIntegralUpdate = function(data) {
+    let URL = "/v1/member/templateIntegralUpdate"
+    return apiCall(data, URL)
+}
 // 会员积分模板内容
 export const templateIntegralDetails = function(data) {
     let URL = "/v1/member/templateIntegralDetails"
@@ -43,5 +48,26 @@ export const memberIntegralUpdate = function(data) {
 // 关联模板的店铺列表
 export const getShopReTemplateList = function(data) {
     let URL = "/v1/member/shopReTemplateList"
+    return apiCall(data, URL)
+}
+
+// 积分加减法配置
+export const addOrSubTemplateUpdate = function(data) {
+    let URL = "/v1/member/addOrSubTemplateUpdate"
+    return apiCall(data, URL)
+}
+// 积分消耗配置修改
+export const consumeIntegralUpdate = function(data) {
+    let URL = "/v1/member/consumeIntegralUpdate"
+    return apiCall(data, URL)
+}
+// 其他发放配置
+export const othenTemplateUpdate = function(data) {
+    let URL = "/v1/member/othenTemplateUpdate"
+    return apiCall(data, URL)
+}
+// 店铺关联模板
+export const shopReTemplateById = function(data) {
+    let URL = "/v1/member/shopReTemplateById"
     return apiCall(data, URL)
 }

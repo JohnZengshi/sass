@@ -21,18 +21,9 @@
                 </div>
                 <!-- 店铺复选框 -->
                 <el-checkbox-group class="shop-setting-content" v-model="checkList">
-                    <el-checkbox class="checkbox-item" label="复选框 A"><span>周大福龙华清湖店</span></el-checkbox>
-                    <el-checkbox class="checkbox-item" label="复选框 A"><span>周大福龙华清湖店</span></el-checkbox>
-                    <el-checkbox class="checkbox-item" label="复选框 A"><span>周大福龙华清湖店</span></el-checkbox>
-                    <el-checkbox class="checkbox-item" label="选中且禁用" disabled><span>周大福龙华清湖店</span></el-checkbox>
-                    <el-checkbox class="checkbox-item" label="复选框 A"><span>周大福龙华清湖店</span></el-checkbox>
-                    <el-checkbox class="checkbox-item" label="复选框 A"><span>周大福龙华清湖店</span></el-checkbox>
-                    <el-checkbox class="checkbox-item" label="复选框 A"><span>周大福龙华清湖店</span></el-checkbox>
-                    <el-checkbox class="checkbox-item" label="复选框 A"><span>周大福龙华清湖店</span></el-checkbox>
-
-                    <el-checkbox class="checkbox-item" label="复选框 A" v-for="(item,index) in shopList" :key="index"><span>{{item.shopName}}</span></el-checkbox>
-
+                    <el-checkbox class="checkbox-item" @change="setShopTemplat(item)" :disabled="item.binding === 'Y'" :label="item.shopId" v-for="(item,index) in shopList" :key="index"><span>{{item.shopName}}</span></el-checkbox>
                 </el-checkbox-group>
+
             </div>
             <!-- 积分模板应用店铺 0.2 end -->
 
@@ -40,44 +31,44 @@
             <div class="integral-add-subtract">
                 <div class="integral-setting-title">
                     <p>积分加减法规则
-                       <swichs :type="'addOrSubConfig'" :status="templateInfoData.addOrSubConfig"></swichs>
+                       <swichs :type="'addOrSubConfig'" :status="templateInfoData.addOrSubConfig" @switchChange="switchChange"></swichs>
                     </p>
                 </div>
                 <div class="integral-content">
                     <!-- 销售 -->
                     <div class="integral-xs">
                         <div class="integral-left xs">销售</div>
-                            <el-radio-group class="integral-right" v-model="templateInfoData.sellConfig" :disabled="isDisabled">
-                                <el-radio class="intergral-item" :label="1">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="2">返还积分</el-radio>
-                                <el-radio class="intergral-item" :label="3">无</el-radio>
+                            <el-radio-group class="integral-right" v-model="templateInfoData.sellConfig" :disabled="isDisabled" @change="addOrSubTemplate('1',templateInfoData.sellConfig)">
+                                <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
+                                <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="'3'">无</el-radio>
                             </el-radio-group>
                     </div>
                     <!-- 退货 -->
                     <div class="integral-th">
                         <div class="integral-left th">退货</div>
-                            <el-radio-group class="integral-right" v-model="templateInfoData.refundConfig" :disabled="isDisabled">
-                                <el-radio class="intergral-item" :label="1">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="2">返还积分</el-radio>
-                                <el-radio class="intergral-item" :label="3">无</el-radio>
+                            <el-radio-group class="integral-right" v-model="templateInfoData.refundConfig" :disabled="isDisabled" @change="addOrSubTemplate('2',templateInfoData.refundConfig)">
+                                <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
+                                <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="'3'">无</el-radio>
                             </el-radio-group>
                     </div>
                     <!-- 换货 -->
                     <div class="integral-hh">
                         <div class="integral-left hh">换货</div>
-                            <el-radio-group class="integral-right" v-model="templateInfoData.exchangeConfig" :disabled="isDisabled">
-                                <el-radio class="intergral-item" :label="1">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="2">返还积分</el-radio>
-                                <el-radio class="intergral-item" :label="3">无</el-radio>
+                            <el-radio-group class="integral-right" v-model="templateInfoData.exchangeConfig" :disabled="isDisabled" @change="addOrSubTemplate('3',templateInfoData.exchangeConfig)">
+                                <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
+                                <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="'3'">无</el-radio>
                             </el-radio-group>
                     </div>
                     <!-- 回收 -->
                     <div class="integral-hs">
                         <div class="integral-left hs">回收</div>
-                            <el-radio-group class="integral-right" v-model="templateInfoData.recoveryConfig" :disabled="isDisabled">
-                                <el-radio class="intergral-item" :label="1">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="2">返还积分</el-radio>
-                                <el-radio class="intergral-item" :label="3">无</el-radio>
+                            <el-radio-group class="integral-right" v-model="templateInfoData.recoveryConfig" :disabled="isDisabled" @change="addOrSubTemplate('4',templateInfoData.recoveryConfig)">
+                                <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
+                                <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="'3'">无</el-radio>
                             </el-radio-group>
                     </div>
                 </div>
@@ -94,17 +85,17 @@
                 </div>
                 <div class="product-setting-content">
                     <!-- 计重类 begin -->
-                    <div class="producet-jz" v-if="templateInfoData.poductTypeList.classesType == 1">
+                    <div class="producet-jz" v-if="templateInfoData.poductTypeList[0].classesType == 1">
                         <div class="title">
                             <span>计重类</span>
                             <el-button type="primary" size="mini" @click="jzSetting">批量设置</el-button>
                         </div>
                         <div class="content">
-                            <div class="item" v-for="(item,index) in templateInfoData.poductTypeList.typeList" :key="index">
+                            <div class="item" v-for="(item,index) in templateInfoData.poductTypeList[0].typeList" :key="index">
                                 <p class="item-title">{{ item.classesName }}</p>
                                 <p class="item-input">
-                                    <input type="number" @blur="setConsumeTemplateUpdate" v-model="item.yuan" :disabled="isDisabled">
-                                    <input type="number" @blur="setConsumeTemplateUpdate" v-model="item.score" :disabled="isDisabled">
+                                    <input type="number" @blur="setConsumeTemplateUpdate(item)" v-model="item.yuan" :disabled="isDisabled">
+                                    <input type="number" @blur="setConsumeTemplateUpdate(item)" v-model="item.score" :disabled="isDisabled">
                                     <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
                                     <el-input v-model="input" placeholder="请输入内容"></el-input> -->
                                 </p>
@@ -118,17 +109,17 @@
                     <!-- 计重类 end -->
 
                     <!-- 计件类 begin -->
-                    <div class="porducet-jj" v-if="templateInfoData.poductTypeList.classesType == 2">
+                    <div class="porducet-jj" v-if="templateInfoData.poductTypeList[1].classesType == 2">
                         <div class="title">
                             <span>计件类</span>
                             <el-button type="primary" size="mini" @click="jjsetting">批量设置</el-button>
                         </div>
                         <div class="content">
-                            <div class="item" v-for="(item,index) in templateInfoData.poductTypeList.typeList" :key="index">
+                            <div class="item" v-for="(item,index) in templateInfoData.poductTypeList[1].typeList" :key="index">
                                 <p class="item-title">黄金(克)</p>
                                 <p class="item-input">
-                                    <input type="number" @blur="setConsumeTemplateUpdate" v-model="item.yuan" :disabled="isDisabled">
-                                    <input type="number" @blur="setConsumeTemplateUpdate" v-model="item.score" :disabled="isDisabled">
+                                    <input type="number" @blur="setConsumeTemplateUpdate(item)" v-model="item.yuan" :disabled="isDisabled">
+                                    <input type="number" @blur="setConsumeTemplateUpdate(item)" v-model="item.score" :disabled="isDisabled">
                                     <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
                                     <el-input v-model="input" placeholder="请输入内容"></el-input> -->
                                 </p>
@@ -153,44 +144,46 @@
                     </p>
                 </div>
                 <div class="issue-content">
-                    <!-- 注册 -->
-                    <div class="item" v-show="zcitem">
-                        <div class="item-circle"></div>
-                        <span class="item-title">注册福利：</span>
-                        <span>注册成为会员，赠送</span>
-                        <span class="input-box">
-                            <el-input class="item-input" :disabled="isDisabled"></el-input>
-                        </span>
-                        <span>分</span>
-                        <i class="el-icon-delete" @click="delConfiguration(1)"></i>
-                    </div>
-                    <!-- 生日 -->
-                    <div class="item" v-show="sritem">
-                        <div class="item-circle"></div>
-                        <span class="item-title">生日福利：</span>
-                        <span>会员生日当天，赠送</span>
-                        <span class="input-box">
-                            <el-input class="item-input" :disabled="isDisabled"></el-input>
-                        </span>
-                        <span>分</span>
-                        <i class="el-icon-delete" @click="delConfiguration(2)"></i>
-                        
-                    </div>
-                    <!-- 签到 -->
-                    <div class="item" v-show="qditem">
-                        <div class="item-circle"></div>
-                        <span class="item-title">签到福利：</span>
-                        <span>会员单次签到，赠送</span>
-                        <span class="input-box">
-                            <el-input class="item-input" :disabled="isDisabled"></el-input>
-                        </span>
-                        <span class="fg-fen">分；</span>
-                        <span>会员连续签到，赠送</span>
-                        <span class="input-box">
-                            <el-input class="item-input" :disabled="isDisabled"></el-input>
-                        </span>
-                        <span>分</span>
-                        <i class="el-icon-delete" @click="delConfiguration(3)"></i>
+                    <div v-for="(item,index) in templateInfoData.othenList" :key="index">
+                        <!-- 注册 -->
+                        <div class="item" v-show="item.othenName == '1'" >
+                            <div class="item-circle"></div>
+                            <span class="item-title">注册福利：</span>
+                            <span>注册成为会员，赠送</span>
+                            <span class="input-box">
+                                <el-input v-model="item.score" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('2','1',item.score)"></el-input>
+                            </span>
+                            <span>分</span>
+                            <i class="el-icon-delete" v-if="!isDisabled" @click="delConfiguration(1)"></i>
+                        </div>
+                        <!-- 生日 -->
+                        <div class="item" v-show="item.othenName == '2'">
+                            <div class="item-circle"></div>
+                            <span class="item-title">生日福利：</span>
+                            <span>会员生日当天，赠送</span>
+                            <span class="input-box">
+                                <el-input v-model="item.score" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('2','2',item.score)"></el-input>
+                            </span>
+                            <span>分</span>
+                            <i class="el-icon-delete" v-if="!isDisabled" @click="delConfiguration(2)"></i>
+                            
+                        </div>
+                        <!-- 签到 -->
+                        <div class="item" v-show="item.othenName == '3'">
+                            <div class="item-circle"></div>
+                            <span class="item-title">签到福利：</span>
+                            <span>会员单次签到，赠送</span>
+                            <span class="input-box">
+                                <el-input v-model="item.score" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('2','3',item.score)"></el-input>
+                            </span>
+                            <span class="fg-fen">分；</span>
+                            <span>会员连续签到，赠送</span>
+                            <span class="input-box">
+                                <el-input v-model="item.continuousSign" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('2','3',item.continuousSign)"></el-input>
+                            </span>
+                            <span>分</span>
+                            <i class="el-icon-delete" v-if="!isDisabled" @click="delConfiguration(3)"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -200,7 +193,7 @@
             <div class="consumption">
                 <div class="all-title">
                     <p>积分消耗配置
-                        <swichs :type="'consumeConfig'" :status="templateInfoData.consumeConfig" @switchChange="switchChange"></swichs>
+                        <swichs :type="'consumeConfig'" :status="templateInfoData.consumeConfig" :templateInfoData="templateInfoData" @switchChange="switchChange"></swichs>
                     </p>
                 </div>
                 <div class="consumption-content">
@@ -210,12 +203,12 @@
                         <span class="item-title">积分抵现：</span>
                         <span>每次使用</span>
                         <span class="input-box">
-                            <el-input class="item-input" v-model="templateInfoData.consumeScore"></el-input>
+                            <el-input class="item-input" v-model="templateInfoData.consumeScore" @blur="consumeIntegralTemplate('4',templateInfoData.consumeScore)"></el-input>
                         </span>
                         <span>分，</span>
                         <span>可抵</span>
                         <span class="input-box">
-                            <el-input class="item-input" v-model="templateInfoData.consumeYuan"></el-input>
+                            <el-input class="item-input" v-model="templateInfoData.consumeYuan" @blur="consumeIntegralTemplate('3',templateInfoData.consumeYuan)"></el-input>
                         </span>
                         <span>元</span>
                     </div>
@@ -225,7 +218,7 @@
                         <span class="item-title">计重抵扣上限：</span>
                         <span>最多可抵扣单价实售价</span>
                         <span class="input-box">
-                            <el-input class="item-input" v-model="templateInfoData.weightConfig"></el-input>
+                            <el-input class="item-input" v-model="templateInfoData.weightConfig" @blur="consumeIntegralTemplate('6',templateInfoData.weightConfig)"></el-input>
                         </span>
                         <span>%</span>
                     </div>
@@ -235,7 +228,7 @@
                         <span class="item-title">计件抵扣上限：</span>
                         <span>最多可抵扣单价实售价</span>
                         <span class="input-box">
-                            <el-input class="item-input" v-model="templateInfoData.pieceConfig"></el-input>
+                            <el-input class="item-input" v-model="templateInfoData.pieceConfig" @blur="consumeIntegralTemplate('5',templateInfoData.pieceConfig)"></el-input>
                         </span>
                         <span>%</span>
                     </div>
@@ -243,16 +236,20 @@
                     <div class="item">
                         <div class="item-circle"></div>
                         <span class="item-title">计重计件是否相互抵扣：</span>
-                        <el-radio v-model="templateInfoData.deductible" label="N">抵扣</el-radio>
-                        <el-radio v-model="templateInfoData.deductible" label="D">不抵扣</el-radio>
+                        <el-radio-group v-model="templateInfoData.deductible" :disabled="isDisabled" @change="consumeIntegralTemplate('7',templateInfoData.deductible)">
+                            <el-radio :label="'N'">抵扣</el-radio>
+                            <el-radio :label="'D'">不抵扣</el-radio>
+                        </el-radio-group>
                     </div>
                     <!-- 消耗匹配类型 -->
                     <div class="item">
                         <div class="item-circle"></div>
                         <span class="item-title">消耗匹配类型：</span>
-                        <el-radio v-model="templateInfoData.matchingType" label="1">销售</el-radio>
-                        <el-radio v-model="templateInfoData.matchingType" label="2">购买</el-radio>
-                        <el-radio v-model="templateInfoData.matchingType" label="3">实收</el-radio>
+                        <el-radio-group v-model="templateInfoData.matchingType" :disabled="isDisabled" @change="consumeIntegralTemplate('8',templateInfoData.matchingType)">
+                            <el-radio :label="'1'">销售</el-radio>
+                            <el-radio :label="'2'">购买</el-radio>
+                            <el-radio :label="'3'">实收</el-radio>
+                        </el-radio-group>
                     </div>
                 </div>
             </div>
@@ -265,6 +262,7 @@
             :dialog="dialog"
             @closeDialog="closeDialog"
             @dialogType = "dialogType"
+            @dialogCallback="dialogCallback"
         ></memberDialog>
 
         <!-- 积分发放配置 -->
@@ -458,9 +456,8 @@ $fontColor:#47a3fb;
             .product-setting-content{
                 background: #f6f7f8;
                 padding: 26px 30px;
-                border-radius: 10px;                
+                border-radius: 10px;    
                 .producet-jz{
-                    // height: 500px;
                     margin-bottom: 30px;
                 }
                 .producet-jj{
@@ -806,7 +803,7 @@ import Swichs from './Swichs'
 import memberDialog from '../ShopSetting/dialog/tplGoldDialog'
 
 // 获取模板内容
-import { templateIntegralDetails,consumeTemplateUpdate,getShopReTemplateList } from 'Api/member'
+import { templateIntegralDetails,consumeTemplateUpdate,getShopReTemplateList,addOrSubTemplateUpdate,consumeIntegralUpdate,othenTemplateUpdate,shopReTemplateById } from 'Api/member'
 
 // 获取用户权限
 import {mapActions, mapGetters} from 'vuex'
@@ -815,7 +812,7 @@ import tradingVue from '../../Leaguer/components/memberPage/trading.vue';
 export default {
     data () {
         return {
-            checkList: ['选中且禁用','复选框 A'],
+            checkList: [],
             value2: true,
             radio2: 3,
             num8:100,
@@ -833,29 +830,49 @@ export default {
             templateInfoData:{
                 templateName:'',
                 templateId:'',
-                addOrSubConfig:'N',
+                addOrSubConfig:'',
                 productTypeConfig:'',
                 sellConfig:'',
                 refundConfig:'',
                 exchangeConfig:'',
                 recoveryConfig:'',
-                poductTypeList:{
-                    classesType:'1',
-                    typeList:[
-                        {
-                            classesId:'1',
-                            classesName:'黄金（克）',
-                            yuan:'100',
-                            score:'1',
-                        },
-                        {
-                            classesId:'1',
-                            classesName:'黄金（克）',
-                            yuan:'100',
-                            score:'1',
-                        }
-                    ]
-                },
+                poductTypeList:[
+                    {
+                        classesType:'1',
+                        typeList:[
+                            {
+                                classesId:'1',
+                                classesName:'黄金（克）',
+                                yuan:'100',
+                                score:'1',
+                            },
+                            {
+                                classesId:'1',
+                                classesName:'黄金（克）',
+                                yuan:'100',
+                                score:'1',
+                            }
+                        ]
+
+                    },
+                    {
+                        classesType:'2',
+                        typeList:[
+                            {
+                                classesId:'1',
+                                classesName:'黄金（克）',
+                                yuan:'100',
+                                score:'1',
+                            },
+                            {
+                                classesId:'1',
+                                classesName:'黄金（克）',
+                                yuan:'100',
+                                score:'1',
+                            }
+                        ]
+                    }
+                ],
                 othenConfig:'',
                 othenList:[],
                 consumeConfig:'',
@@ -876,9 +893,15 @@ export default {
             }],
             otherList:[],
 
-            zcitem:true,
-            sritem:true,
-            qditem:true,
+            zcitem:false,
+            sritem:false,
+            qditem:false,
+
+            zcscore:'',
+            srscore:'',
+            dczcscore:'',
+            lxzcscore:''
+
         }
     },
     components:{
@@ -904,11 +927,12 @@ export default {
     methods: {
         // 计重批量设置
         jzSetting(){
-            // this.dialog.dialogVisible = true
-            this.add({smallDataList:this.templateInfoData.poductTypeList.typeList,setjz:1})
+            this.dialog.dialogVisible = true
+            this.add({smallDataList:this.templateInfoData.poductTypeList[0].typeList,setjz:1})
         },
         jjsetting(){
-            this.dialog.dialogVisible = true            
+            this.dialog.dialogVisible = true          
+            this.addjj({smallDataList:this.templateInfoData.poductTypeList[1].typeList,setjz:1})
         },
         closeDialog(parm){
             this.dialog.dialogVisible = parm
@@ -916,27 +940,96 @@ export default {
 
         // 模板详情
         getIntegralDetails(){
-            console.log(this.$route.query)
             let options = {
                 templateId: this.$route.query.templateId
             }
             templateIntegralDetails(options).then(res => {
-                this.templateInfoData = res.data.data
+                console.log('模板详情',res)
+                this.templateInfoData = Object.assign(this.templateInfoData,res.data.data)
+
+                // 处理其他配置
+                this.templateInfoData.othenList.forEach(item => {
+                    if(item.othenName === '1'){
+                        this.zcitem = true
+                    } else if(item.othenName === '2') {
+                        this.sritem = true
+                    } else if(item.othenName === '3') {
+                        this.qditem = true
+                    }
+                })
+
+                this.getOtherList()
             })
         },
         // 删除
         delConfiguration(type) {
-            console.log('点点点点')
+            let options = {}
             switch (type) {
                 case 1:
                     this.zcitem = false
-                    console.log(this.zcitem)
+                    this.templateInfoData.othenList.forEach((item,index) => {
+                        if(item.othenName == '1') {
+                            this.templateInfoData.othenList.splice(index,1)
+                        }
+                    })
+                    options = {
+                        templateId: this.$route.query.templateId,
+                        operateType: '1',
+                        updateData:'1'
+                    }
+                    othenTemplateUpdate(options).then(res => {
+                        console.log(res)
+                        if(res.data.state != 200){
+                            this.$message({
+                                type:'error',
+                                message:res.data.msg
+                            })
+                        }
+                    })
                     break;
                 case 2:
                     this.sritem = false
+                    this.templateInfoData.othenList.forEach((item,index) => {
+                        if(item.othenName == '1') {
+                            this.templateInfoData.othenList.splice(index,1)
+                        }
+                    })
+                    options = {
+                        templateId: this.$route.query.templateId,
+                        operateType: '2',
+                        updateData:'1'
+                    }
+                    othenTemplateUpdate(options).then(res => {
+                        console.log(res)
+                        if(res.data.state != 200){
+                            this.$message({
+                                type:'error',
+                                message:res.data.msg
+                            })
+                        }
+                    })
                     break;
                 case 3:
                     this.qditem = false
+                    this.templateInfoData.othenList.forEach((item,index) => {
+                        if(item.othenName == '1') {
+                            this.templateInfoData.othenList.splice(index,1)
+                        }
+                    })
+                    options = {
+                        templateId: this.$route.query.templateId,
+                        operateType: '3',
+                        updateData:'1'
+                    }
+                    othenTemplateUpdate(options).then(res => {
+                        console.log(res)
+                        if(res.data.state != 200){
+                            this.$message({
+                                type:'error',
+                                message:res.data.msg
+                            })
+                        }
+                    })
                     break;
             
                 default:
@@ -944,12 +1037,28 @@ export default {
             }
         },
         addConfiguration(type){
+            let options = {}
             switch (type) {
                 case 1:
                     if(this.zcitem){
                         return
                     } else {
-                        this.zcitem = true
+                        options = {
+                            templateId: this.$route.query.templateId,
+                            operateType: '2',
+                            updateData:'1'
+                        }
+                        othenTemplateUpdate(options).then(res => {
+                            console.log(res)
+                            if(res.data.state != 200){
+                                this.$message({
+                                    type:'error',
+                                    message:res.data.msg
+                                })
+                            }
+                            this.zcitem = true
+                            
+                        })
                     }
                     break;
                 case 2:
@@ -957,6 +1066,20 @@ export default {
                         return
                     } else {
                         this.sritem = true
+                        options = {
+                            templateId: this.$route.query.templateId,
+                            operateType: '2',
+                            updateData:'2'
+                        }
+                        othenTemplateUpdate(options).then(res => {
+                            console.log(res)
+                            if(res.data.state != 200){
+                                this.$message({
+                                    type:'error',
+                                    message:res.data.msg
+                                })
+                            }
+                        })
                     }
                     break;
                 case 3:
@@ -964,6 +1087,20 @@ export default {
                         return
                     } else {
                         this.qditem = true
+                        options = {
+                            templateId: this.$route.query.templateId,
+                            operateType: '2',
+                            updateData:'3'
+                        }
+                        othenTemplateUpdate(options).then(res => {
+                            console.log(res)
+                            if(res.data.state != 200){
+                                this.$message({
+                                    type:'error',
+                                    message:res.data.msg
+                                })
+                            }
+                        })
                     }
                     break;
                 default:
@@ -971,11 +1108,25 @@ export default {
             }
         },
         // 修改消费发放
-        setConsumeTemplateUpdate(){
-            let options = {
-                templateId: this.templateInfoData.templateId,
-                switch: this.templateInfoData.productTypeConfig,
-                dataList: this.templateInfoData.poductTypeList.typeList
+        setConsumeTemplateUpdate(item){
+            let options = {}
+            if(this.templateInfoData.productTypeConfig === 'N'){
+                if(item){
+                    options = {
+                        templateId: this.templateInfoData.templateId,
+                        dataList: [item],                
+                    }
+                } else {
+                    options = {
+                        templateId: this.templateInfoData.templateId,
+                        switch: this.templateInfoData.productTypeConfig
+                    }
+                }
+            } else {
+                options = {
+                    templateId: this.templateInfoData.templateId,
+                    switch: this.templateInfoData.productTypeConfig
+                }
             }
             consumeTemplateUpdate(options).then(res => {
                 if(res.data.state === 200) {
@@ -996,29 +1147,37 @@ export default {
                 case 'addOrSubConfig':
                     if(config) {
                         this.templateInfoData.addOrSubConfig = 'N'
+                        this.addOrSubTemplate()                        
                     } else{
                         this.templateInfoData.addOrSubConfig = 'D'
+                        this.addOrSubTemplate()
                     }
                     break;
                 case 'productTypeConfig':
                     if(config) {
                         this.templateInfoData.productTypeConfig = 'N'
+                        this.setConsumeTemplateUpdate()
                     } else{
                         this.templateInfoData.productTypeConfig = 'D'
+                        this.setConsumeTemplateUpdate()
                     }
                     break;
                 case 'othenConfig':
                     if(config) {
                         this.templateInfoData.othenConfig = 'N'
+                        this.othenTemplateTemplate()
                     } else{
                         this.templateInfoData.othenConfig = 'D'
+                        this.othenTemplateTemplate()
                     }
                     break;
                 case 'consumeConfig':
                     if(config) {
                         this.templateInfoData.consumeConfig = 'N'
+                        this.consumeIntegralTemplate()
                     } else{
                         this.templateInfoData.consumeConfig = 'D'
+                        this.consumeIntegralTemplate()
                     }
                     break;
             
@@ -1031,23 +1190,34 @@ export default {
           this.dialog.dialogVisible = type 
         },
         add(item){
-         this.dialogType(true)
-         Object.assign(this.dialog,{
-            dialogSlot : 'goldAdd',
-            addCounterName : '计重类批量设置'
-         },item)
+            this.dialogType(true)
+            Object.assign(this.dialog,{
+                dialogSlot : 'goldAdd',
+                addCounterName : '计重类批量设置'
+            },item)
         },
-
+        addjj(item) {
+            this.dialogType(true)
+            Object.assign(this.dialog,{
+                dialogSlot : 'goldAdd',
+                addCounterName : '计件类批量设置'
+            },item)
+        },
         // 获取店铺列表
         getShopList() {
             let options = {
-                templateId : this.$route.query.templateId
+                // templateId : this.$route.query.templateId
             }
             getShopReTemplateList(options).then(res => {
-                this.shopList = res.data.dataList
+                console.log('店铺列表',res)
+                this.shopList = res.data.data.dataList
+                this.shopList.forEach(item => {
+                    if(item.binding === 'Y' || item.existence === 'Y'){
+                        this.checkList.push(item.shopId)
+                    }
+                })
             })
         },
-
         // 获取其他配置
         getOtherList() {
             this.templateInfoData.othenList.forEach(item => {
@@ -1061,19 +1231,197 @@ export default {
                     this.qditem = true
                 }
             });
+        },
+        // 积分加减法配置
+        addOrSubTemplate (operateType,updateData) {
+            
+            if(this.templateInfoData.addOrSubConfig === 'N') {
+                if(operateType){
+                    options = {
+                        operateType,
+                        updateData,
+                        templateId:this.$route.query.templateId,
+                    }
+                } else {
+                    options = {
+                        operateType: '5',
+                        templateId:this.$route.query.templateId,
+                    }
+                }
+            } else {
+                options = {
+                    operateType: '6',
+                    templateId:this.$route.query.templateId
+                }
+            }
+            addOrSubTemplateUpdate(options).then(res => {
+                if(res.data.state == 200) {
+                            
+                } else {
+                    this.$message({
+                        type:'error',
+                        message: res.data.msg
+                        })
+                    }
+                })
+        },
+        // 积分发放配置
+        consumeIntegralTemplate(operateType,updateData) {
+            let options = {}
+            if(this.templateInfoData.consumeConfig === 'N'){
+                if(operateType){
+                    options = {
+                        operateType,
+                        updateData,
+                        templateId:this.$route.query.templateId,
+                    }
+                } else {
+                    options = {
+                        templateId:this.$route.query.templateId,
+                        operateType: '1'
+                    }
+                }
+            } else {
+                options = {
+                    templateId: this.$route.query.templateId,
+                    operateType: '2'
+                }
+            }
+            consumeIntegralUpdate(options).then(res => {
+                console.log(res)
+                if(res.data.state != 200) {
+                    this.$message({
+                        type:'error',
+                        message:res.data.msg,
+                    })
+                }
+            })
+        },
+        // 其他发放配置
+        othenTemplateTemplate(operateType,updateData,score) {
+            let options = {}
+            if(this.templateInfoData.othenConfig === 'N'){
+                if(operateType){
+                    options = {
+                        templateId: this.$route.query.templateId,
+                        operateType,
+                        updateData,
+                        score,
+                    }
+                }else {
+                    options = {
+                        templateId: this.$route.query.templateId,
+                        operateType: '4'
+                    }
+                }
+            } else {
+                options = {
+                        templateId: this.$route.query.templateId,
+                        operateType: '5'
+                    }
+            }
+            othenTemplateUpdate(options).then(res => {
+                if(res.data.state != 200){
+                    this.$message({
+                        type:'error',
+                        message: res.data.msg
+                    })
+                }
+            })
+        },
+        // 批量
+        dialogCallback(data) {
+            let options = {
+                templateId: this.templateInfoData.templateId,
+                dataList: data,
+            }
+            consumeTemplateUpdate(options).then(res => {
+                if(res.data.state === 200) {
+                    this.getIntegralDetails()
+                    this.$message({
+                        type:'success',
+                        message:'修改成功'
+                    })
+                } else {
+                    this.$message({
+                        type:'error',
+                        message:res.data.msg
+                    })
+                }
+            })
+        },
+        // 店铺关联模板
+        setShopTemplat(data) {
+            let flag = false
+            let options = {}
+            this.checkList.forEach(item => {
+                if(item === data.shopId){
+                    flag = true
+                }
+            })
+            if(flag){
+                options = {
+                    templateId: this.$route.query.templateId,
+                    operateType:'1',
+                    shopId:data.shopId
+                }
+            } else {
+                options = {
+                    templateId: this.$route.query.templateId,
+                    operateType:'2',
+                    shopId:data.shopId
+                }
+            }
+            shopReTemplateById(options).then(res => {
+                if(res.data.state != 200){
+                    this.$message({
+                        type:'error',
+                        message: res.data.msg
+                    })
+                }
+            })
         }
-
     },
     watch:{
         templateInfoData(val) {
 
-        }
+        },
+        'zcscore': function (curVal, oldVal) {
+            if (!curVal) {
+                this.zcscore = ''
+                return false
+            }
+                this.zcscore = curVal.match(/\d/ig) ? curVal.match(/\d/ig).join('') : ''
+        },
+        'srscore': function (curVal, oldVal) {
+            if (!curVal) {
+                this.srscore = ''
+                return false
+            }
+                this.srscore = curVal.match(/\d/ig) ? curVal.match(/\d/ig).join('') : ''
+        },
+        'dczcscore': function (curVal, oldVal) {
+            if (!curVal) {
+                this.dczcscore = ''
+                return false
+            }
+                this.dczcscore = curVal.match(/\d/ig) ? curVal.match(/\d/ig).join('') : ''
+        },
+        'lxzcscore': function (curVal, oldVal) {
+            if (!curVal) {
+                this.lxzcscore = ''
+                return false
+            }
+            this.lxzcscore = curVal.match(/\d/ig) ? curVal.match(/\d/ig).join('') : ''
+        },
+        
     },
     created(){
-        // this.getIntegralDetails()
+        this.getIntegralDetails()
+        this.getShopList()
     },
     mounted(){
-        console.log('用户信息',this.templateInfoData)
+        // console.log('用户信息',this.templateInfoData)
     },
 
 }

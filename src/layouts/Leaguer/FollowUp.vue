@@ -181,6 +181,7 @@
                     @returnBack="returnBack"
                 ></ChoseLeader>
             </el-dialog>
+            
             <!-- 选择会员 -->
             <el-dialog :visible.sync="isChoseMember" top="12%" customClass="choseMemberDig" :close-on-click-modal="false">
                 <ChoseMember

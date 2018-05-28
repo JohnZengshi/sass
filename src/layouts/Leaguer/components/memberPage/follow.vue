@@ -10,7 +10,7 @@
             <div class="list-item clearfix" v-for="(item,index) in followData.dataList" :key="index">
                 <div class="item-line fl">
                     <span class="fl">跟进人</span>
-                    <span class="fr">{{item.followName}}</span>
+                    <span class="fr">{{item.followName || '指派'}}</span>
                 </div>
                 <div class="item-line fr" v-if="item.followStatus">
                     <span class="fl">跟进状态</span>
@@ -42,9 +42,21 @@
         </div>
         <div class="return-btn-group">
             <div class="btn" @click="goBack">返回</div>
-            <div class="btn">创建跟进</div>
+            <div class="btn" @click="isChoseLeader = true">创建跟进</div>
         </div>
         
+        <!-- 创建跟进 -->
+        <el-dialog :visible.sync="isChoseLeader" top="0" customClass="choseLeaderDig" :modal="false" :close-on-click-modal="false">
+            <ChoseLeader
+                :shopId="shopId"
+                :isFollowPage="true"
+                :isFollowClear="true"
+                :isChoseLeader="isChoseLeader"
+                @closeChoMember="closeChoLeader"                
+                @returnBack="returnBack"
+            ></ChoseLeader>
+        </el-dialog>
+
     </div>
 </template>
 
@@ -112,14 +124,27 @@
 
 <script>
 import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
+import ChoseLeader from '../choseLeader'
+import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention,operateFollowCreate} from 'Api/commonality/operate'
+
 
 export default {
     data () {
         return {
-            
+            isChoseLeader:false,
+            isChoseMember:'',
+
+            leaderIdList:[],
+            followAim:[],
+            today:'',
+            memberIdList:[],
+            leaderIdList:[],
         }
     },
-    props:['followData'],
+    props:['followData','oldMemberInfo','shopId','memberId'],
+    components:{
+        ChoseLeader
+    },
     methods: {
         goBack() {
             this.$emit('goBack',true)
@@ -186,7 +211,118 @@ export default {
                 default:
                     break;
             }
-        }
+        },
+        // 创建跟进
+        returnBack () {
+            this.isChoseLeader = false
+        },
+        createdGJ () {
+            this.isChoseLeader = true
+        },
+        closeChoLeader (val) {
+
+            this.leaderIdList = val.list
+            this.followAim = val.followAim
+
+            this.isChoseLeader = false
+
+            this.getDate1(0, 1)
+        },
+        getDate1( day, type  ){
+                let _date = new Date()
+                _date.setDate( _date.getDate() + day )
+                //年
+                let Year = _date.getFullYear()
+                //月
+                let month = this.formatDate(_date.getMonth()+1)
+
+                let month1 = this.formatDate(_date.getMonth())
+                //天
+                let Day = this.formatDate(_date.getDate())
+                //天
+                let Day1 = this.formatDate(_date.getDate()-1)
+                //时
+                let hours = this.formatDate(_date.getHours())
+                //分
+                let mins = this.formatDate(_date.getMinutes())
+                //秒
+                let seconds = this.formatDate(_date.getSeconds())
+
+                let timestamp = Year + month +  Day
+                let currentData = new Date()
+
+                if (month1 == '01' || month1 == '03' ||month1 == '05' || month1 == '07' || month1 == '08' || month1 ==  '10' || month1 == '12') {
+                    if (Day1 == '00') {
+                        Day1 = '31'
+                    }
+                } else if (month1 == '02') {
+                    if (((Year % 4)==0) && ((Year % 100)!=0) || ((Year % 400)==0)) {
+                        if (Day1 == '00') {
+                            Day1 = '29'
+                        }
+                    } else {
+                        if (Day1 == '00') {
+                            Day1 = '28'
+                        }
+                    }
+                } else {
+                    if (Day1 == '00') {
+                        Day1 = '30'
+                    }
+                }
+                if( type == 'end' ){
+                    if( Year < currentData.getFullYear() ||
+                    month < currentData.getMonth()+1 ||
+                    Day < currentData.getDate()
+                    ){
+                    hours = '23'
+                    mins = seconds = '59'
+                    }
+                }else if( type == 'start'){
+                hours = mins = seconds = '00'
+                }
+                //console.log(Day)
+                //this.endTime = Year +'-'+ month +'-'+ Day
+                //this.startTime = Year +'-'+ month +'-'+ (Day- (Day-1))
+                //console.log(Year +'-'+ month +'-'+ Day)
+                this.today = Year + month + Day + '000000'
+                //console.log('日期',this.today)
+                this.followCreate()
+        },
+        formatDate( d ){
+        return d < 10 ? ('0' + d ) : d + ''
+        },
+        followCreate () {
+            let mebList = []
+            let leaList = []
+            mebList.push({memberId: this.memberId})
+            this.leaderIdList.forEach((item) => {
+                leaList.push({principalId: item})
+            })
+            let options = {
+            shopId: this.shopId,
+            visitAim: this.followAim,
+            followTime: this.today,
+            memberList: mebList,
+            status: 1,
+            principalList: leaList
+            }
+            operateFollowCreate(options).then((res) => {
+            if (res.data.state == 200) {
+                this.$emit("getData",true)
+            } else {
+                this.$message({
+                        type: 'warning',
+                        message: res.data.msg
+                    })
+            }
+            }, (res) => {
+            this.$message({
+                    type: 'warning',
+                    message: res.data.msg
+                })
+            })
+        },
     }
 }
 </script>

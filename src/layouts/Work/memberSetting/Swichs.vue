@@ -24,41 +24,45 @@
       }
     },
     created () {
-      switch (this.type) {
-        case 'addOrSubConfig':
-          if(this.status == 'N') {
-            this.switchs = true
-          } else{
-            this.switchs = false
-          }
-          break;
-        case 'productTypeConfig':
-          if(this.status == 'N') {
-            this.switchs = true
-          } else{
-            this.switchs = false
-          }
-          break;
-        case 'consumeConfig':
-          if(this.status == 'N') {
-            this.switchs = true
-          } else{
-            this.switchs = false
-          }
-          break;
-        case 'consumeConfig':
-          if(this.status == 'N') {
-            this.switchs = true
-          } else{
-            this.switchs = false
-          }
-          break;
-      
-        default:
-          break;
+    },
+    watch:{
+      'status'(val){
+        console.log(val)
+        switch (this.type) {
+          case 'addOrSubConfig':
+            if(this.status == 'N') {
+              this.switchs = true
+            } else{
+              this.switchs = false
+            }
+            break;
+          case 'productTypeConfig':
+            if(this.status == 'N') {
+              this.switchs = true
+            } else{
+              this.switchs = false
+            }
+            break;
+          case 'othenConfig':
+            if(this.status == 'N') {
+              this.switchs = true
+            } else{
+              this.switchs = false
+            }
+            break;
+          case 'consumeConfig':
+            if(this.status == 'N') {
+              this.switchs = true
+            } else{
+              this.switchs = false
+            }
+            break;
+        
+          default:
+            break;
+        }
       }
-      
-    },  
+    },
     methods: {
       getState (parm) {
         return parm
@@ -67,6 +71,11 @@
         this.switchs = !this.switchs
         this.$emit("switchChange",this.type,this.switchs)
       }
+    },
+    mounted() {
+      console.log('修改器',this.status)
+      
+      
     }
   }
 </script>

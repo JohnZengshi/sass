@@ -32,7 +32,7 @@
             </ul>
         </div>
         <div class="btn-wrap" v-if="isFollowPage">
-            <div class="click-btn" @click="returnBack">上一步</div>
+            <div class="click-btn" @click="returnBack">{{ isFollowClear ? '取消' : '上一步' }}</div>
             <div class="click-btn" @click="closeDia">确定</div>
         </div>
         <div v-else class="chose-btn" @click="closeDia">确定</div>
@@ -61,7 +61,8 @@ export default {
         'isChoseLeader',
         'followData',
         'addModel',
-        "isFollowPage"
+        "isFollowPage",
+        'isFollowClear'
     ],
     watch: {
         'isChoseLeader': function () {

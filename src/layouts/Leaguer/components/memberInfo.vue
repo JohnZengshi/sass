@@ -20,7 +20,7 @@
         <visiting v-show="visitingPage" :visitData="visitData" @goBack="goBack" @getData="getData"></visiting>
 
         <!-- 跟进页面 -->
-        <follow v-show="followPage" :followData="followData" @goBack="goBack" @getData="getData"></follow>
+        <follow v-show="followPage" :followData="followData" :oldMemberInfo="oldMemberInfo" :shopId="shopId" :memberId="memberId" @goBack="goBack" @getData="getData"></follow>
 
         <!-- 积分记录页面 -->
         <integral v-show="integralPage" :integralData="integralData" :oldMemberInfo="oldMemberInfo" :memberInfo="memberInfo" :shopId="shopId" :memberId="memberId" @goBack="goBack" @getData="getData"></integral>

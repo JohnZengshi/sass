@@ -91,6 +91,13 @@
 				<div><span>{{discontGoldWeight}}</span></div>
 				<i>g</i>
 			</div>
+			<div class="discount-weight" v-if="goodType != 1 && item.productType == 1">
+				<span>积分抵扣
+					<i></i>
+				</span>
+				<div><span>{{discontGoldWeight}}</span></div>
+				<i>元</i>
+			</div>
 			<!--*******************************重量***********************************-->
 			<!-- goodType:销售... productType: 素金... -->
 
@@ -137,6 +144,7 @@
 				<div><span v-if="status == 1 || multipleIdentities == 'N' && isOrderMan == false && status == 1 || companyPosition != 4 && companyPosition != 5 && multipleIdentities == 'N' || multipleIdentities == 'Y' &&  isOrderMan == false && status == 1 && companyPosition != 4 && companyPosition != 5">{{item.price}}</span><input v-else type="text" v-model="item.price" @keyup="computeFun(item, '实售价')" @keyup.enter="sendData(item, '实售价', item.calcMethod)" @blur="sendData(item, '实售价', item.calcMethod)"></div> <!--  :placeholder="unit4(item.newPrice)" -->
 				<i>元</i>
 			</div>
+
 			<!-- 换货 -->
 			
 			<div class="price" v-if="goodType != 1">

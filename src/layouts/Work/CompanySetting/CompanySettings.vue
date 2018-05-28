@@ -51,8 +51,7 @@
                     </div>
                     <div class="member-list">
                         <ul>
-                            <li v-for="(item,index) in templateDataList" :key="index" @click.stop="openMenberPoint(index)" ><i>●</i>{{item.templateName}}</li>
-                            <li @click.stop="openMenberPoint(1)" ><i>●</i>默认模板</li>
+                            <li v-for="(item,index) in templateDataList" :key="index" @click.stop="openMenberPoint(index)" ><i>●</i>{{item.templateName}}<i v-if="userType<4" class="el-icon-delete iDel" @click.stop="delTemplat(index)"></i></li>
                         </ul>
                     </div>
                 </div>
@@ -106,7 +105,7 @@
 import {mapActions, mapGetters} from 'vuex'
 import {seekShowProviderList} from './../../../Api/commonality/seek'
 
-import { getTemplateIntegralList, templateCreate } from 'Api/member'
+import { getTemplateIntegralList, templateCreate, templateIntegralUpdate } from 'Api/member'
 
 import {operateAddProvIder, operateDelProvIder, addRepository, operateStockInfoUpdate, operateDelRepository, operateSupplierInfoUpdate} from './../../../Api/commonality/operate'
 import ProductName from "./settings/ProductName"
@@ -480,8 +479,10 @@ export default {
             this.addDialog = true
             if (type == 1) {
                 this.newPopupType = 1
-            } else {
+            } else if(type == 2){
                 this.newPopupType = 2
+            } else if(type == 3) {
+                this.newPopupType = 3
             }
         },
         showProviderList () {
@@ -537,21 +538,24 @@ export default {
             }
         },
         openMenberPoint(index){
-            this.$router.push({ path: '/work/memberSettingIndex', query: { templateId:1234 }})
-            // this.$router.push({path:'/work/memberSettingIndex',params:{templateId:this.templateDataList[index].templateId}})
+            // this.$router.push({ path: '/work/memberSettingIndex', query: { templateId:1234 }})
+            this.$router.push({path:'/work/memberSettingIndex',query:{templateId:this.templateDataList[index].templateId}})
         },
         // 积分模板的添加
         getTemplateList(){
-            getTemplateIntegralList().then(res => {
+            getTemplateIntegralList({}).then(res => {
+                console.log('会员模板列表',res)
                 this.templateDataList = res.data.data.dataList
             })
         },
+        // 添加模板
         addTemplat(){
             let options = {
                 templateName: this.templateName
             }
             templateCreate(options).then(res => {
                 if(res.data.state == 200) {
+                    this.addDialog = false                    
                     this.supplierName = ''                    
                     this.$message({
                         type: 'success',
@@ -563,6 +567,18 @@ export default {
                         type: 'warning',
                         message: res.data.msg
                     })
+                }
+            })
+        },
+        // 删除模板
+        delTemplat(index) {
+            let options = {
+                templateId:this.templateDataList[index].templateId,
+                operateType:'1'
+            }
+            templateIntegralUpdate(options).then(res => {
+                if(res.data.state == 200){
+                    this.getTemplateList()
                 }
             })
         }
@@ -835,6 +851,7 @@ export default {
                 .member-list{
                     height: 188px;
                     width: 100%;
+                    overflow-y: scroll;
                     ul {
                         width: 100%;
                         li {
@@ -873,6 +890,10 @@ export default {
             }
         }
     }
+}
+.iDel {
+    float: right;
+    line-height: 42px;
 }
 </style>
 

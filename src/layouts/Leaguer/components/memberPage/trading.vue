@@ -234,8 +234,8 @@
         </div>
         <div class="return-btn-group">
             <div class="btn" @click="goBack">返回</div>
-            <div class="btn" @click="openSales">快捷开单</div>
-            <div class="btn" @click="relevanceSales">关联销售单</div>
+            <div class="btn" v-if="isShopMan" @click="openSales">快捷开单</div>
+            <div class="btn" v-if="isShopMan" @click="relevanceSales">关联销售单</div>
         </div>
 
         <!-- 关联销售单 -->
@@ -377,6 +377,7 @@ import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
 import SellOrderList from '../sellOrderList'
 import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention} from 'Api/commonality/operate'
 
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
     data () {
@@ -387,6 +388,22 @@ export default {
     },
     components: {
         SellOrderList
+    },
+    computed:{
+        ...mapGetters([
+            "userPositionInfo"
+        ]),
+        isShopMan(){
+            if(this.userPositionInfo.roleList.length === 1){
+                if(this.userPositionInfo.roleList[0].role > 3){
+                    return true
+                } else {
+                    return false
+                }
+            } else {
+                return true
+            }
+        }
     },
     props:['buyRecordInfo','shopId','memberId','oldMemberInfo'],
     methods: {

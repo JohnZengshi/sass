@@ -132,7 +132,7 @@
 
 <script>
 import memberPointsDialog from  '../dialog/memberPointsDialog'
-import { templateIntegralDetails,consumeTemplateUpdate } from 'Api/member'
+import { templateIntegralDetails,consumeTemplateUpdate,getTemplateIntegralList } from 'Api/member'
 
 export default {
     data () {
@@ -164,13 +164,13 @@ export default {
         },
         // 获取会员列表
         getTemplateList(){
-            getTemplateIntegralList().then(res => {
+            getTemplateIntegralList({}).then(res => {
                 this.templateDataList = res.data.data.dataList
             })
         },
         // 会员模板跳转
-        goMemberSettingIndex(){
-            this.$router.push({path:'/work/memberSettingIndex',params:{templateId:this.templateDataList[index].templateId}})
+        goMemberSettingIndex(index){
+            this.$router.push({path:'/work/memberSettingIndex',query:{templateId:this.templateDataList[index].templateId}})
         }
     },
     created(){
