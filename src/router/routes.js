@@ -3,6 +3,7 @@ const Main = resolve => require(['../layouts/Main'], resolve) // 首页
 const OrganizationChart = resolve => require(['../layouts/organizationChart/OrganizationChart'], resolve) // 组织架构
 const StockStatement = resolve => require(['../layouts/stock/StockStatement'], resolve)
 const jinbaifu = resolve => require(['../layouts/jinbaifu/index'], resolve)
+const text = resolve => require(['../layouts/text/text'], resolve)
 
 
 import member from './member' // 登录注册
@@ -82,6 +83,11 @@ const routes = [{
     path: 'jinbaifu',
     component: jinbaifu,
     name: '金百福'
+  },
+  {
+    path: 'text',
+    component: text,
+    name: 'text'
   },
   {
     path: 'stockStatement',
