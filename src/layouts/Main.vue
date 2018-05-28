@@ -146,9 +146,10 @@ import {
     createCompany,
     seekGetAddress,
     seekUserRoleList,
-    seekFaceUserImageList
-} from '../../src/Api/commonality/seek'
-import {operateSwitchCompany, operateUpdateUser, operateUpdateFaceUserImage} from '../../src/Api/commonality/operate'
+    seekFaceUserImageList,
+    downloadTable
+} from 'Api/commonality/seek'
+import {operateSwitchCompany, operateUpdateUser, operateUpdateFaceUserImage, operateLogout} from 'Api/commonality/operate'
 
 import ComponentHeader from './header'
 import ComMenu from './menu'
@@ -260,6 +261,7 @@ export default {
     },
     beforeDestroy () {
         this.closeWebSocket()
+        this.closeCreatedWebSocket()
     },
     mounted () {
         this.routerActive()
@@ -274,6 +276,8 @@ export default {
                 }
             }, 1000)
         })
+        // 新增推行
+        this._downloadTable()
     },
     watch: {
         'personalInfo': function () {
@@ -327,28 +331,28 @@ export default {
           }
           // 有新消息来
           ws.onmessage = function(evt) {
-            console.log('新消息', evt.data)
+            console.log('新消息--===', evt.data)
             let datas = JSON.parse(evt.data)
             if (datas.msgType == '09') { // 登出
               if (datas.os == 'app') {
                 if (datas.opType == 'qry') {
                   ws.send(JSON.stringify({"os":"web","fs":"xiaohua","msgType":"09","status":"1"}))
                 } else if (datas.opType == 'out') {
-                  operateLogout()
-                    .then(res => {
-                      debugger
-                        if (res.data.state == 200) {
-                            ws.close()
-                            _seft.$router.push({path: '/member/login'})
-                            let body = document.getElementById('body')
-                            body.style.background = '#f5f8f7'
-                        } else {
-                            this.$message({
-                                message: res.data.msg,
-                                type: 'warning'
-                            });
-                        }
-                    })
+                    operateLogout()
+                        .then(res => {
+                          debugger
+                            if (res.data.state == 200) {
+                                ws.close()
+                                _seft.$router.push({path: '/member/login'})
+                                let body = document.getElementById('body')
+                                body.style.background = '#f5f8f7'
+                            } else {
+                                this.$message({
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                            }
+                        })
                 }
               }
             } else if (datas.msgType == '09') { // 人脸识别
@@ -358,9 +362,12 @@ export default {
           ws.error = function(evt) {
             console.log('测试连接失败', evt)
           }
-          _self.toSend = () => {
-            ws.send(JSON.stringify({"os":"web","fs":"xiaohua","status":"1"}))
+          _self.closeCreatedWebSocket = () => {
+            ws.close()
           }
+          // _self.toSend = () => {
+          //   ws.send(JSON.stringify({"os":"web","fs":"xiaohua","status":"1"}))
+          // }
           // ws.send({"companyId":"a0f6f89348b54","msgType":"测试浏览器关闭","os":"app","userId":"111233","status":"0"})
           window.onbeforeunload = function() {
             ws.send({"companyId":sessionStorage.getItem('companyId'),"msgType":"09","os":"web","userId":sessionStorage.getItem('id'),"status":"1000"})
