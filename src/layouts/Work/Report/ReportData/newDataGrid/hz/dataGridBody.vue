@@ -387,7 +387,7 @@ export default {
 </style>
 <style scoped lang="scss">
 .ui-table-container{
-    // height: 556px;
+    height: 556px;
     // overflow-y: auto;
     .hz-tb-category-two{
       margin-bottom: 2px;
