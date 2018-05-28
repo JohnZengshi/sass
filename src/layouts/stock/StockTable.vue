@@ -6,37 +6,38 @@
     <div class="RP_report_wrapper ui-page-max-width xj-stock-print-table-main" v-loading="loading" element-loading-text="数据查询中">
       <!-- v-loading = "loading" -->
 
-      <div class="Rp_dataGrid_container">
-        <div class="rp_gridState">
-          <p class="side-nav"><i class="iconfont icon-baobiao"></i>商品列表</p>
-          <div class="sort-wrap">
-            <label>排序:</label>
-            <div class="sortwrap-text" v-for="(item, index) in sortList" :key="index">
-              {{item.name}}
-              <img class="sortwrap-img" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
-              <img class="sortwrap-img" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
-              <i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
-            </div>
-          </div>
-          <div class="right-wrap">
-            <div class="search-wrap">
-              <input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" />
-              <!--<i class="iconfont icon-sousuo" @click="send"></i>-->
-            </div>
-            <!-- <div @click="toggleAttribute" class="iconfont-wrap">
-              <span v-if="dataGridOptions.productClass == 1">成品</span>
-              <span v-if="dataGridOptions.productClass == 2">旧料</span>
-              <i class="iconfont icon-qiehuan"></i>
-            </div> 修改样式位置-->
-            <div class="iconfont-wrap">
-              <span style="margin-right:25px;" :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)" >成品</span>
-              <span style="margin-right:25px;" :class="inconspanactive2 == true ? 'myspanactive' : ''"  @click="toggleAttribute(2)" >旧料</span>
-            </div>
-            <div class="tab">
-              <span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span>
-              <span :class="1 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(1, 2)">智能分类</span>
-              <span :class="2 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(2, 3)">产品分类</span>
-              <span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(3, 4)" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义
+			<div class="Rp_dataGrid_container">
+				<div class="rp_gridState">
+					<p class="side-nav"><i class="iconfont icon-baobiao"></i>商品列表</p>
+					<div class="sort-wrap">
+						<label>排序:</label>
+						<div class="sortwrap-text" v-for="(item, index) in sortList" :key="index">
+							{{item.name}}
+							<img class="sortwrap-img" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
+							<img class="sortwrap-img" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
+							<i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
+						</div>
+					</div>
+					<div class="right-wrap">
+						<div class="search-wrap">
+							<input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" />
+							<!--<i class="iconfont icon-sousuo" @click="send"></i>-->
+						</div>
+						<!-- <div @click="toggleAttribute" class="iconfont-wrap">
+							<span v-if="dataGridOptions.productClass == 1">成品</span>
+							<span v-if="dataGridOptions.productClass == 2">旧料</span>
+							<i class="iconfont icon-qiehuan"></i>
+						</div> 修改样式位置-->
+						<div class="iconfont-wrap">
+							<span style="margin-right:25px;" :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)" >成品</span>
+							<span style="margin-right:25px;" :class="inconspanactive2 == true ? 'myspanactive' : ''"  @click="toggleAttribute(2)" >旧料</span>
+						</div>
+						<div class="tab">
+							<span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span>
+							<span :class="1 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(1, 2)">智能分类</span>
+							<span :class="2 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(2, 3)">产品分类</span>
+							<!--自定原点击事件：@click="tabs(3, 4)"-->
+							<span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义
                                 <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
                                 <div class="customDia" ref="customDia" style="display: none;">
                                     <div class="body">

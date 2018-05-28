@@ -186,10 +186,10 @@ export const workApplyUser = ({commit}, parm) => {
 }
 // 产品类别（商品类型列表）
 export const workProductClass = ({commit}, parm) => {
-    debugger
+//  debugger
     seeks.getProductTypeList().then((response) => {
         if (response.data.state === 200) {
-            debugger
+//          debugger
             commit(types.WORK_PRODUCT_CLASS, response.data.data.list)
         } else {
             this.$store.dispatch('workPopupError', response.data.msg);
