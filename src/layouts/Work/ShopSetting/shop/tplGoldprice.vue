@@ -126,7 +126,8 @@ export default {
        fatchGold(){
           this.loading = true
           seekGoldPrice({
-              search : ''
+              search : '',
+              shopId: this.shopId,
           }).then((res)=>{
               setTimeout(()=>{
                 this.loading = false

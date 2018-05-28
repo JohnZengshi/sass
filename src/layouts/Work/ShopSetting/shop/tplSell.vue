@@ -61,7 +61,7 @@ export default {
        }
     },
     
-    props : ['storePrivilege'],
+    props : ['shopId', 'storePrivilege'],
     created(){
        this.fatchDiscount()    
     },
@@ -75,7 +75,8 @@ export default {
     methods:{
        fatchDiscount(){
           seekGetDiscount({
-              searchType : 1
+              searchType : 1,
+              shopId: this.shopId,
           }).then((res)=>{
               console.log(res.data.data)
               this.discountlist = res.data.data.bigDataList
