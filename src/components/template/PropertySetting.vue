@@ -88,6 +88,11 @@
                         <i class="icon text-align-right-icon" :class="{active: data.textAlign == 'right'}" @click="data.textAlign = 'right'"></i>
                     </el-tooltip>
                 </div>
+                <div class="text-align">
+                    <el-tooltip effect="dark" content="测试">
+                        <i class="icon text-align-left-icon" @click="showData"></i>
+                    </el-tooltip>
+                </div>
                 <div class="vertical-align">
                     <el-tooltip effect="dark" content="垂直顶部对齐">
                         <i class="icon vertical-align-top-icon" :class="{active: data.verticalAlign == 'top'}" @click="data.verticalAlign = 'top'"></i>
@@ -316,7 +321,15 @@ export default {
                this.data.sample = /[a-zA-Z0-9]+/.test(value) ? value.match(/[a-zA-Z0-9]+/)[0] : ''
            }
         },
+        showData(){
+        	console.log(this.canvas)
+        	console.log(this.data)
+        	let offsetLeft = this.canvas.width - this.data.width
+        	this.data.left = offsetLeft + 7
+        	this.style.textAlign = 'right'
+        }
     },
+    props: ['canvas'],
     watch: {
         data: {
             handler(data) {
