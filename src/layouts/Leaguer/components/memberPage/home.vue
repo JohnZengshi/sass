@@ -263,6 +263,13 @@ export default {
     ChoseLeader,
   },
   props: ["memberInfo",'shopId','memberId','oldMemberInfo'],
+  watch:{
+    'memberInfo'(val) {
+        if(val) {
+            this.score = this.memberInfo.score || 0
+        }
+    }
+  },
   computed:{
     ...mapGetters([
         "userPositionInfo"
@@ -277,7 +284,7 @@ export default {
         } else {
             return true
         }
-    }
+    },
   },
   methods: {
     handleClose(){
@@ -326,18 +333,18 @@ export default {
         memberIntegralUpdate(options).then(res => {
             console.log(res)
             if(res.data.state == 200){
+                this.$emit("goBack",true)                
                 this.$message({
                     type:'success',
                     message:'修改成功'
                 })
-                this.$emit("goback",true)
                 this.Integral = false
             }else {
                 this.$message({
                     type:'error',
                     message: res.data.msg
                 })
-                this.$emit("goback",true)
+                this.$emit("goBack",true)
                 
             }
         })

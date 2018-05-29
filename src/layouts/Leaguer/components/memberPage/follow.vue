@@ -42,7 +42,7 @@
         </div>
         <div class="return-btn-group">
             <div class="btn" @click="goBack">返回</div>
-            <div class="btn" @click="isChoseLeader = true">创建跟进</div>
+            <div v-if="isShopMan" class="btn" @click="isChoseLeader = true">创建跟进</div>
         </div>
         
         <!-- 创建跟进 -->
@@ -126,6 +126,7 @@
 import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
 import ChoseLeader from '../choseLeader'
 import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention,operateFollowCreate} from 'Api/commonality/operate'
+import {mapActions, mapGetters} from 'vuex'
 
 
 export default {
@@ -144,6 +145,22 @@ export default {
     props:['followData','oldMemberInfo','shopId','memberId'],
     components:{
         ChoseLeader
+    },
+    computed:{
+        ...mapGetters([
+            "userPositionInfo"
+        ]),
+        isShopMan(){
+            if(this.userPositionInfo.roleList.length === 1){
+                if(this.userPositionInfo.roleList[0].role > 3){
+                    return true
+                } else {
+                    return false
+                }
+            } else {
+                return true
+            }
+        }
     },
     methods: {
         goBack() {

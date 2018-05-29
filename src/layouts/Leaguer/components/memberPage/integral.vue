@@ -2,7 +2,7 @@
     <div class="memberinfo-content">
         <div class="trading-top-num">
             <div class="num-item num-item-lf">
-                <p class="num">520</p>
+                <p class="num">{{integralData.score}}</p>
                 <p class="label">积分总数</p>
             </div>
         </div>
@@ -13,9 +13,10 @@
                 <span>时间</span>
             </div>
             <div class="integral-item" v-for="(item,index) in integralData.dataList" :key="index">
+                <i v-if="item.remark" class="el-icon-edit icon-color" :title="item.remark"></i>
                 <span>{{getLabel(item.type)}}</span>
-                <span>+{{item.score}}</span>
-                <span>{{item.date}}</span>
+                <span>{{item.score}}</span>
+                <span>{{_GetNYR(item.date)}}</span>
             </div>
         </div>
         <div class="return-btn-group">
@@ -38,7 +39,7 @@
                     <div class="name">修改积分</div>
                 </div>
                 <!-- 目前积分 -->
-                <p class="line1">目前积分  <span>{{score}}</span></p>
+                <p class="line1">目前积分  <span>{{integralData.score}}</span></p>
                 <!-- 选择规则 -->
                 <p style="margin-bottom: 10px;">选择规则</p>
                 <el-radio-group class="line1" v-model="incordec">
@@ -79,6 +80,7 @@
         justify-content: space-between;
         text-align: center;
         line-height: 50px;
+        position: relative;
         span {
             display: inline-block;
             width: 30%;
@@ -92,6 +94,15 @@
     }
     .item-header {
         color: #999;
+    }
+    .icon-color {
+        position: absolute;
+        left: 52px;
+        color: #666;
+        line-height: 50px;
+        &:hover {
+            color: #2993f8;
+        }
     }
 }
 .modify {

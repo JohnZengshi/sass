@@ -201,9 +201,11 @@
 								<div class="row4-tittle">
 									<div class="tittle-left">商品</div>
 									<div class="tittle-right">
-										<span>积分抵扣</span>
-										<input v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="本次对多80积分" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
-										<span>(总积分334)</span>
+										<!-- 会员积分 -->
+										<span v-show="memberDataInfo.phone">积分抵扣</span>
+										<input v-show="memberDataInfo.phone" v-model="daiding" type="text" :placeholder="'本次对多使用'+integralNow.offsetScore+'积分'" @keyup.enter="shiyongjifen">
+										<span v-show="memberDataInfo.phone">(总积分{{ integralNow.totalScore || 0 }})</span>
+
 										<span>详情说明</span>
 										<input v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
 										<span class="tooltip" v-if="isShowTooltip">输入/扫描条码号</span>
@@ -221,13 +223,13 @@
 									</div>
 									<div class="row4-main-wrap" v-else>
 
-										<sell-detail-list :item="item" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :shopRole="shopRole" :goodType="1" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" v-for="(item, index) in goodsTypeList.saleList" :key="index">
+										<sell-detail-list :memberDataInfo="memberDataInfo" :item="item" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :shopRole="shopRole" :goodType="1" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" v-for="(item, index) in goodsTypeList.saleList" :key="index">
 										</sell-detail-list>
 
-										<sell-detail-list v-for="(item, index) in goodsTypeList.exchangeList" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :item="item" :goodType="2" :shopRole="shopRole" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" :key="index">
+										<sell-detail-list :memberDataInfo="memberDataInfo" v-for="(item, index) in goodsTypeList.exchangeList" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :item="item" :goodType="2" :shopRole="shopRole" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" :key="index">
 										</sell-detail-list>
 
-										<sell-detail-list :item="item" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :goodType="3" :shopRole="shopRole" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" v-for="(item, index) in goodsTypeList.recycleList" :key="index">
+										<sell-detail-list :memberDataInfo="memberDataInfo" :item="item" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :goodType="3" :shopRole="shopRole" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" v-for="(item, index) in goodsTypeList.recycleList" :key="index">
 										</sell-detail-list>
 
 									</div>
@@ -595,6 +597,9 @@
 
 	// 导出表格
 	import {downLoaderFile} from 'Api/downLoaderFile'
+
+	// 最多积分
+	import { getTotalDoIntegral,integralOffset } from 'Api/member'
 	
 	Vue.use(Dialog)
 	Vue.use(Select)
@@ -995,7 +1000,13 @@
 					left: 0,
 					top: 0,
 					display: 'none'
-				}
+				},
+
+				integralNow:{
+					offsetScore:'80',
+					totalScore:'300',
+				},
+				daiding:''
 			}
 		},
 		directives: {
@@ -1024,8 +1035,13 @@
 			this.companyPosition = sessionStorage.getItem('companyPosition')
 			this.multipleIdentities = sessionStorage.getItem('multipleIdentities')
 			this.isFocus = true
+
+			// 获取抵限积分
+			console.log('单据简介',this.receiptsIntroList)
+			
 		},
 		mounted() {
+			
 			let self = this
 			printAPI.getTemplateList({
 				type: 1,
@@ -1358,6 +1374,20 @@
 				})
 				if(defaultTemplate) {
 					this.templateId = defaultTemplate.templateId
+				}
+			},
+			receiptsIntroList(val) {
+				console.log('单据简介',val)
+				if(val) {
+					let options = {
+						orderNum:val.orderNum,
+						shopId:val.shopId
+					}
+					getTotalDoIntegral(options).then(res => {
+						console.log('积分抵现数据',res)
+						this.integralNow = res.data.data
+						this.integralNow.offsetScore = this.integralNow.offsetScore || 0
+					})
 				}
 			}
 		},
@@ -2640,7 +2670,7 @@
 				}
 				seekSellReceiptsIntro(options).then((response) => {
 					if(response.data.state === 200) {
-						this.receiptsIntroList = response.data.data;
+						this.receiptsIntroList = response.data.data;						
 						// this.cashStatus = res.data.data.cashStatus
 						this.getShopUserList(response.data.data.shopId)
 						if(response.data.data.makeOrderManId == sessionStorage.getItem('id')) {
@@ -2664,6 +2694,7 @@
 				}
 				seekGetMemberInfo(options).then((res) => {
 					if(res.data.state == 200) {
+						this.memberDataInfo.memberId = memberId
 						this.memberDataInfo.memberNum = res.data.data.memberNum
 						this.memberDataInfo.memberName = res.data.data.username
 						this.memberDataInfo.phone = res.data.data.phone
@@ -2679,7 +2710,8 @@
 						this.memberDataInfo.logo = res.data.data.memberLogo
 						this.memberDataInfo.createTime = res.data.data.createTime
 						this.memberDataInfo.totalMoney = res.data.data.totalMoney
-						this.leamemberDataInfo.level = res.data.data.type
+						this.memberDataInfo.level = res.data.data.type
+						// this.leamemberDataInfo.level = res.data.data.type
 					} else {
 
 					}
@@ -2696,7 +2728,34 @@
             	exportTabData['exportType'] = 'XS'
             	console.log(exportTabData)
             	downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
-        	},
+			},
+			// 积分操作
+			shiyongjifen() {
+				if(this.daiding > this.integralNow.offsetScore){
+					this.daiding = ''
+					return
+				}
+				if(this.daiding < 0){
+					this.daiding = ''
+					return
+				}
+				let options = {
+					shopId:this.receiptsIntroList.shopId,
+					orderNum:this.receiptsIntroList.orderNum,
+					memberId:this.memberDataInfo.memberId,
+					score:this.daiding
+				}
+				integralOffset(options).then(res => {
+					if(res.data.state != 200) {
+						this.$message({
+							type:'error',
+							message:res.data.msg
+						})
+					}
+					console.log('积分抵扣回调',res)
+					this.send()
+				})
+			}
 		}
 	}
 </script>

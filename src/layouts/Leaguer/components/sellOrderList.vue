@@ -391,9 +391,10 @@ export default {
                 this.orderOptions.Seller = sessionStorage.id
             }
             seekGoodsSellOrder(this.orderOptions).then((res) => {
-                console.log(res)
+                console.log('看看这里的数据',res)
                 if (res.data.state == 200) {
                     this.dataList = res.data.data.orderList
+
                     this.totalNum = res.data.data.totalNum
                 }
             }, (res) => {
@@ -803,7 +804,7 @@ export default {
         .table-main {
             width: 100%;
             height: 440px;
-            overflow-y: auto;
+            overflow-y: scroll;
             ul {
                 li {
                     width: 99%;

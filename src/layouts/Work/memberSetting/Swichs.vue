@@ -17,7 +17,7 @@
 </template>
 <script>
   export default {
-    props: ['type','status'],
+    props: ['type','status','isDisabled'],
     data () {
       return {
         switchs: false,
@@ -68,6 +68,9 @@
         return parm
       },
       switchMove () {
+        if(this.isDisabled) {
+          return
+        }
         this.switchs = !this.switchs
         this.$emit("switchChange",this.type,this.switchs)
       }

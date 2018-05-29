@@ -21,7 +21,7 @@
                 </div>
                 <!-- 店铺复选框 -->
                 <el-checkbox-group class="shop-setting-content" v-model="checkList">
-                    <el-checkbox class="checkbox-item" @change="setShopTemplat(item)" :disabled="item.binding === 'Y'" :label="item.shopId" v-for="(item,index) in shopList" :key="index"><span>{{item.shopName}}</span></el-checkbox>
+                    <el-checkbox class="checkbox-item" @change="setShopTemplat(item)" :disabled="item.binding === 'Y' || isDisabled" :label="item.shopId" v-for="(item,index) in shopList" :key="index"><span>{{item.shopName}}</span></el-checkbox>
                 </el-checkbox-group>
 
             </div>
@@ -31,7 +31,7 @@
             <div class="integral-add-subtract">
                 <div class="integral-setting-title">
                     <p>积分加减法规则
-                       <swichs :type="'addOrSubConfig'" :status="templateInfoData.addOrSubConfig" @switchChange="switchChange"></swichs>
+                       <swichs :isDisabled="isDisabled" :type="'addOrSubConfig'" :status="templateInfoData.addOrSubConfig" @switchChange="switchChange"></swichs>
                     </p>
                 </div>
                 <div class="integral-content">
@@ -80,7 +80,7 @@
             <div class="product-setting">
                 <div class="all-title">
                     <p>产品类别-消费发放配置
-                        <swichs :type="'productTypeConfig'" :status="templateInfoData.productTypeConfig" @switchChange="switchChange"></swichs>
+                        <swichs :isDisabled="isDisabled" :type="'productTypeConfig'" :status="templateInfoData.productTypeConfig" @switchChange="switchChange"></swichs>
                     </p>
                 </div>
                 <div class="product-setting-content">
@@ -88,7 +88,7 @@
                     <div class="producet-jz" v-if="templateInfoData.poductTypeList[0].classesType == 1">
                         <div class="title">
                             <span>计重类</span>
-                            <el-button type="primary" size="mini" @click="jzSetting">批量设置</el-button>
+                            <el-button v-if="!isDisabled" type="primary" size="mini" @click="jzSetting">批量设置</el-button>
                         </div>
                         <div class="content">
                             <div class="item" v-for="(item,index) in templateInfoData.poductTypeList[0].typeList" :key="index">
@@ -112,7 +112,7 @@
                     <div class="porducet-jj" v-if="templateInfoData.poductTypeList[1].classesType == 2">
                         <div class="title">
                             <span>计件类</span>
-                            <el-button type="primary" size="mini" @click="jjsetting">批量设置</el-button>
+                            <el-button v-if="!isDisabled" type="primary" size="mini" @click="jjsetting">批量设置</el-button>
                         </div>
                         <div class="content">
                             <div class="item" v-for="(item,index) in templateInfoData.poductTypeList[1].typeList" :key="index">
@@ -139,8 +139,8 @@
             <div class="issue">
                 <div class="all-title">
                     <p>积分发放配置
-                        <swichs :type="'othenConfig'" :status="templateInfoData.othenConfig" @switchChange="switchChange"></swichs>
-                        <el-button class="fr" type="primary" size="small" @click="dialogVisible = true">+ 配置条件</el-button>
+                        <swichs :isDisabled="isDisabled" :type="'othenConfig'" :status="templateInfoData.othenConfig" @switchChange="switchChange"></swichs>
+                        <el-button v-if="!isDisabled" class="fr" type="primary" size="small" @click="dialogVisible = true">+ 配置条件</el-button>
                     </p>
                 </div>
                 <div class="issue-content">
@@ -193,7 +193,7 @@
             <div class="consumption">
                 <div class="all-title">
                     <p>积分消耗配置
-                        <swichs :type="'consumeConfig'" :status="templateInfoData.consumeConfig" :templateInfoData="templateInfoData" @switchChange="switchChange"></swichs>
+                        <swichs :isDisabled="isDisabled" :type="'consumeConfig'" :status="templateInfoData.consumeConfig" :templateInfoData="templateInfoData" @switchChange="switchChange"></swichs>
                     </p>
                 </div>
                 <div class="consumption-content">
@@ -203,12 +203,12 @@
                         <span class="item-title">积分抵现：</span>
                         <span>每次使用</span>
                         <span class="input-box">
-                            <el-input class="item-input" v-model="templateInfoData.consumeScore" @blur="consumeIntegralTemplate('4',templateInfoData.consumeScore)"></el-input>
+                            <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.consumeScore" @blur="consumeIntegralTemplate('4',templateInfoData.consumeScore)"></el-input>
                         </span>
                         <span>分，</span>
                         <span>可抵</span>
                         <span class="input-box">
-                            <el-input class="item-input" v-model="templateInfoData.consumeYuan" @blur="consumeIntegralTemplate('3',templateInfoData.consumeYuan)"></el-input>
+                            <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.consumeYuan" @blur="consumeIntegralTemplate('3',templateInfoData.consumeYuan)"></el-input>
                         </span>
                         <span>元</span>
                     </div>
@@ -218,7 +218,7 @@
                         <span class="item-title">计重抵扣上限：</span>
                         <span>最多可抵扣单价实售价</span>
                         <span class="input-box">
-                            <el-input class="item-input" v-model="templateInfoData.weightConfig" @blur="consumeIntegralTemplate('6',templateInfoData.weightConfig)"></el-input>
+                            <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.weightConfig" @blur="consumeIntegralTemplate('6',templateInfoData.weightConfig)"></el-input>
                         </span>
                         <span>%</span>
                     </div>
@@ -228,7 +228,7 @@
                         <span class="item-title">计件抵扣上限：</span>
                         <span>最多可抵扣单价实售价</span>
                         <span class="input-box">
-                            <el-input class="item-input" v-model="templateInfoData.pieceConfig" @blur="consumeIntegralTemplate('5',templateInfoData.pieceConfig)"></el-input>
+                            <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.pieceConfig" @blur="consumeIntegralTemplate('5',templateInfoData.pieceConfig)"></el-input>
                         </span>
                         <span>%</span>
                     </div>
@@ -796,6 +796,12 @@ $fontColor:#47a3fb;
         }
     }
 }
+.el-icon-delete {
+    opacity: 0;
+    &:hover {
+        opacity: 1;
+    }
+}
 </style>
 
 <script>
@@ -830,12 +836,12 @@ export default {
             templateInfoData:{
                 templateName:'',
                 templateId:'',
-                addOrSubConfig:'',
+                addOrSubConfig:'D',
                 productTypeConfig:'',
-                sellConfig:'',
+                sellConfig:'D',
                 refundConfig:'',
-                exchangeConfig:'',
-                recoveryConfig:'',
+                exchangeConfig:'D',
+                recoveryConfig:'D',
                 poductTypeList:[
                     {
                         classesType:'1',
@@ -878,8 +884,8 @@ export default {
                 consumeConfig:'',
                 consumeYuan:'',
                 consumeScore:'',
-                weightConfig:'',
-                pieceConfig:'',
+                weightConfig:'D',
+                pieceConfig:'D',
                 deductible:'',
                 matchingType:''
             },
@@ -990,7 +996,7 @@ export default {
                 case 2:
                     this.sritem = false
                     this.templateInfoData.othenList.forEach((item,index) => {
-                        if(item.othenName == '1') {
+                        if(item.othenName == '2') {
                             this.templateInfoData.othenList.splice(index,1)
                         }
                     })
@@ -1012,7 +1018,7 @@ export default {
                 case 3:
                     this.qditem = false
                     this.templateInfoData.othenList.forEach((item,index) => {
-                        if(item.othenName == '1') {
+                        if(item.othenName == '3') {
                             this.templateInfoData.othenList.splice(index,1)
                         }
                     })
@@ -1055,9 +1061,10 @@ export default {
                                     type:'error',
                                     message:res.data.msg
                                 })
+                                return
                             }
                             this.zcitem = true
-                            
+                            this.getIntegralDetails()
                         })
                     }
                     break;
@@ -1078,7 +1085,11 @@ export default {
                                     type:'error',
                                     message:res.data.msg
                                 })
+                                return
                             }
+                            this.sritem = true
+                            this.getIntegralDetails()
+                            
                         })
                     }
                     break;
@@ -1099,7 +1110,11 @@ export default {
                                     type:'error',
                                     message:res.data.msg
                                 })
+                                return
                             }
+                            this.qditem = true     
+                            this.getIntegralDetails()
+                                                       
                         })
                     }
                     break;
@@ -1220,6 +1235,10 @@ export default {
         },
         // 获取其他配置
         getOtherList() {
+            if(this.isDisabled) {
+                return;
+            }
+
             this.templateInfoData.othenList.forEach(item => {
                 if(item.othenName == 1){
                     this.zcitem = true
@@ -1234,7 +1253,10 @@ export default {
         },
         // 积分加减法配置
         addOrSubTemplate (operateType,updateData) {
-            
+            if(this.isDisabled) {
+                return;
+            }
+
             if(this.templateInfoData.addOrSubConfig === 'N') {
                 if(operateType){
                     options = {
@@ -1254,6 +1276,7 @@ export default {
                     templateId:this.$route.query.templateId
                 }
             }
+
             addOrSubTemplateUpdate(options).then(res => {
                 if(res.data.state == 200) {
                             
@@ -1267,12 +1290,69 @@ export default {
         },
         // 积分发放配置
         consumeIntegralTemplate(operateType,updateData) {
+            if(this.isDisabled) {
+                return
+            }
+            console.log('积分发放配置',operateType,updateData)
+            switch (operateType) {
+                case '3':
+                    if(isNaN(Number(updateData))){
+                        this.templateInfoData.consumeYuan = ''
+                        this.$message({
+                            type:'warning',
+                            message:'请输入整数'
+                        })
+                        return
+                    } else {
+                        this.templateInfoData.consumeYuan = parseInt(this.templateInfoData.consumeYuan)
+                    }
+                    break;
+                case '4':
+                    if(isNaN(Number(updateData))){
+                        this.templateInfoData.consumeScore = ''
+                        this.$message({
+                            type:'warning',
+                            message:'请输入整数'
+                        })
+                        return
+                    } else {
+                        this.templateInfoData.consumeScore = parseInt(this.templateInfoData.consumeScore)
+                    }
+                    break;
+                case '5':
+                    if(isNaN(Number(updateData))){
+                        this.templateInfoData.pieceConfig = ''
+                        this.$message({
+                            type:'warning',
+                            message:'请输入整数'
+                        })
+                        return
+                    } else {
+                        this.templateInfoData.pieceConfig = parseInt(this.templateInfoData.pieceConfig)                        
+                    }
+                    break;
+                case '6':
+                    if(isNaN(Number(updateData))){
+                        this.templateInfoData.weightConfig = ''
+                        this.$message({
+                            type:'warning',
+                            message:'请输入整数'
+                        })
+                        return
+                    } else {
+                        this.templateInfoData.weightConfig = parseInt(this.templateInfoData.weightConfig)                        
+                    }
+                    break;
+                default:
+                    break;
+            }
+            
             let options = {}
             if(this.templateInfoData.consumeConfig === 'N'){
                 if(operateType){
                     options = {
                         operateType,
-                        updateData,
+                        updateData:parseInt(updateData) || updateData,
                         templateId:this.$route.query.templateId,
                     }
                 } else {
@@ -1299,6 +1379,42 @@ export default {
         },
         // 其他发放配置
         othenTemplateTemplate(operateType,updateData,score) {
+            if(this.isDisabled) {
+                return;
+            }
+            switch (updateData) {
+                case '1':
+                    if(isNaN(Number(score))){
+                        this.$message({
+                            type:'warning',
+                            message:'请输入整数'
+                        })
+                        return
+                    } else {
+
+                    }
+                    break;
+                case '2':
+                    if(isNaN(Number(score))){
+                        this.$message({
+                            type:'warning',
+                            message:'请输入整数'
+                        })
+                        return
+                    } else {
+                    }
+                    break;
+                case '3':
+                    if(isNaN(Number(score))){
+                        this.$message({
+                            type:'warning',
+                            message:'请输入整数'
+                        })
+                        return
+                    } else {
+                    }
+                    break;
+            }
             let options = {}
             if(this.templateInfoData.othenConfig === 'N'){
                 if(operateType){
@@ -1352,6 +1468,10 @@ export default {
         },
         // 店铺关联模板
         setShopTemplat(data) {
+            if(this.isDisabled) {
+                return;
+            }
+            
             let flag = false
             let options = {}
             this.checkList.forEach(item => {
@@ -1383,8 +1503,8 @@ export default {
         }
     },
     watch:{
-        templateInfoData(val) {
-
+        'templateInfoData.addOrSubConfig'(val) {
+            console.log('改变值',val)
         },
         'zcscore': function (curVal, oldVal) {
             if (!curVal) {

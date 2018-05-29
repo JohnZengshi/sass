@@ -71,3 +71,13 @@ export const shopReTemplateById = function(data) {
     let URL = "/v1/member/shopReTemplateById"
     return apiCall(data, URL)
 }
+// 积分抵现
+export const getTotalDoIntegral = function(data) {
+    let URL = "/v1/member/getTotalDoIntegral"
+    return apiCall(data, URL)
+}
+// 使用积分
+export const integralOffset = function(data) {
+    let URL = "/v1/member/integralOffset"
+    return apiCall(data, URL)
+}

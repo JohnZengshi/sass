@@ -45,10 +45,11 @@
                 </div>
                 <div class="item">
                     <span class="item-label">性别</span>
-                    <el-radio-group v-model="dataInfo.sex" @change="setSex" :disabled="!isShopMan">
+                    <span>{{ dataInfo.sex == '3' ? '无': dataInfo.sex == '1'? '男':'女' }}</span>
+                    <!-- <el-radio-group v-model="dataInfo.sex" @change="setSex" :disabled="!isShopMan">
                         <el-radio :label="'1'">男</el-radio>
                         <el-radio :label="'2'">女</el-radio>
-                    </el-radio-group>
+                    </el-radio-group> -->
                 </div>
                 <div class="item">
                     <span class="item-label">生日</span>
@@ -456,14 +457,14 @@ export default {
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
-                    this.$message({
-                        type: 'success',
-                        message: '修改负责人成功'
-                    })
+                    // this.$message({
+                    //     type: 'success',
+                    //     message: '修改负责人成功'
+                    // })
                 } else {
                     this.$message({
                         type: 'error',
-                        message: '修改负责人失败'
+                        message: res.data.msg
                     })
                 }
             })
@@ -477,14 +478,11 @@ export default {
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
-                    this.$message({
-                        type: 'success',
-                        message: '修改微信号成功'
-                    })
+
                 } else {
                     this.$message({
                         type: 'error',
-                        message: '修改微信号失败'
+                        message: res.data.msg
                     })
                 }
             })
@@ -499,14 +497,11 @@ export default {
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
-                    this.$message({
-                        type: 'success',
-                        message: '修改性别成功'
-                   })
+
                 } else {
                     this.$message({
                         type: 'error',
-                        message: '修改性别失败'
+                        message: res.data.msg
                     })
                }
             })
@@ -521,14 +516,14 @@ export default {
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
-                    this.$message({
-                        type: 'success',
-                        message: '修改邮箱成功'
-                    })
+                    // this.$message({
+                    //     type: 'success',
+                    //     message: '修改邮箱成功'
+                    // })
                 } else {
                     this.$message({
                         type: 'error',
-                        message: '修改邮箱失败'
+                        message: res.data.msg
                     })
                 }
             })
@@ -542,14 +537,14 @@ export default {
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
-                    this.$message({
-                        type: 'success',
-                        message: '修改备注成功'
-                    })
+                    // this.$message({
+                    //     type: 'success',
+                    //     message: '修改备注成功'
+                    // })
                 } else {
                     this.$message({
                         type: 'error',
-                        message: '修改备注失败'
+                        message: res.data.msg
                     })
                 }
             })
@@ -575,14 +570,14 @@ export default {
 
                     operateMemberUpdateBy(optionsdata).then(res => {
                         if(res.data.state === 200) {
-                            this.$message({
-                                type: 'success',
-                                message: '添加标签成功'
-                            })
+                            // this.$message({
+                            //     type: 'success',
+                            //     message: '添加标签成功'
+                            // })
                         } else {
                             this.$message({
                                 type: 'error',
-                                message: '添加标签失败'
+                                message: res.data.msg
                             })
                         }
                     })
@@ -629,6 +624,7 @@ export default {
         this.dataInfo = Object.assign(this.dataInfo,this.oldMemberInfo)
         // 等级标签
         this.actionType = this.oldMemberInfo.type
+        
     },
     mounted() {
         // 初始化的负责人显示

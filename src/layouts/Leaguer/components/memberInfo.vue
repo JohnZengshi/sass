@@ -426,6 +426,8 @@ export default {
             let options = {
                 memberId: this.memberId,
                 shopId: this.shopId,
+                page:'1',
+                pageSize:'100'
             }
             memberIntegralLog(options).then(res => {
                 this.integralData = res.data.data
