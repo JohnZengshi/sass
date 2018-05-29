@@ -16,7 +16,7 @@
           <td>主石(ct,g)</td>
           <td>副石(ct,g)</td>
           <td>售价(元)</td>
-          <td>成本(元)</td>
+          <td v-if="tabSwitch">成本(元)</td>
         </tr>
         <tr v-for="(item,index) in sellList.detailList" :key="index">
           <td>{{index+1}}</td>
@@ -27,7 +27,7 @@
           <td>{{item.main}}</td>
           <td>{{item.deputy}}</td>
           <td>{{item.price}}</td>
-          <td>{{item.cost}}</td>
+          <td v-if="tabSwitch">{{item.cost}}</td>
         </tr>
         <tr>
           <td colspan="2">合计</td>
@@ -37,7 +37,7 @@
           <td>{{sellList.totalMain}}</td>
           <td>{{sellList.totalDeputy}}</td>
           <td>{{sellList.totalPrice}}元</td>
-          <td>{{sellList.totalCost}}元</td>
+          <td v-if="tabSwitch">{{sellList.totalCost}}元</td>
         </tr>
       </table>
     </div>
@@ -65,6 +65,9 @@
       reportType: {
         type: Number
       },
+      tabSwitch: { // 成本
+        type: Boolean
+      }
     },
     filters:{
       DATA_FORMAT:(date)=>{

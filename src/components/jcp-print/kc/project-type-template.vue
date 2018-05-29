@@ -101,11 +101,11 @@
           <td>主石(ct,g)</td>
           <td>副石(ct,g)</td>
           <td>售价(元)</td>
-          <td>成本(元)</td>
+          <td v-if="tabSwitch">成本(元)</td>
         </tr>
         <template v-for="dataList in sellList.dataList">
           <tr v-if="positionSwitch">
-            <td :rowspan="filterLength(dataList)">9999{{dataList.whereName}}</td>
+            <td :rowspan="filterLength(dataList)">{{dataList.whereName}}</td>
           </tr>
           <tr v-for="(item, index) in dataList.productTypeList" :key="index">
             <td>{{index+1}}</td>
@@ -116,7 +116,7 @@
             <td>{{item.totalMain1}}</td>
             <td>{{item.totalDeputy1}}</td>
             <td>{{item.totalPrice1|NOUNIT}}</td>
-            <td>{{item.totalCost1|NOUNIT}}</td>
+            <td v-if="tabSwitch">{{item.totalCost1|NOUNIT}}</td>
           </tr>
           <tr>
             <td :colspan="positionSwitch ? 3 : 2">合计</td>
@@ -126,7 +126,7 @@
             <td>{{dataList.totalMain0}}</td>
             <td>{{dataList.totalDeputy0}}</td>
             <td>{{dataList.totalPrice0|RMBUNIT}}</td>
-            <td>{{dataList.totalCost0|RMBUNIT}}</td>
+            <td v-if="tabSwitch">{{dataList.totalCost0|RMBUNIT}}</td>
           </tr>
         </template>
       </table>
@@ -157,6 +157,9 @@
       },
       positionSwitch: {
         type:Boolean
+      },
+      tabSwitch: { // 成本
+        type: Boolean
       }
     },
     filters:{

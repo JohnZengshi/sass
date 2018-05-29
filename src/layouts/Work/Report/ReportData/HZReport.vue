@@ -560,7 +560,7 @@ export default {
         this.getShopListByCo() //店铺
         this.getUserList(); //制单人
         this.getGetUserList() //审核人
-        this.send()
+        // this.send()
         this.$store.dispatch('checkBrowser',(type)=>{
            this.reportPrint_fixed = type
         })
@@ -1244,169 +1244,15 @@ export default {
         //打印表格
         send () {
           this.loading = true;
+          // if (this.userPositionInfo.roleList) {
+
+          // }
           seekGetReportsComprehensive(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
-              this.dataGridStorage = res.data.data
-              setTimeout(() => {
-                this.$refs.reportDetailWrap._setMCustomScrollbar()
-              }, 800)
-                // this.dataGridStorage = {
-                //     dataList:[{
-                //         "typeName": "销售",
-                //         "totalNum": 0,
-                //         totalWeight: '100',
-                //         totalGoldWeight: '100',
-                //         totalPrice: '100',
-                //         totalCost: '100',
-                //         "productTypeList": [
-                //             {
-                //                 "margin": 0,
-                //                 "totaldepreciationDiscount": "100.00",
-                //                 "className": "铂金(克)",
-                //                 "totalExchange": "0.00",
-                //                 "totalActualPrice": "0.00",
-                //                 "totalRecycle": "0.00",
-                //                 "totalestimatePrice": "0.00",
-                //                 "classId": "f05eb7881ad611e895a0f48e3888bbef",
-                //                 "totalGoldWeight": "0.000",
-                //                 "totalGoldPrice": "-",
-                //                 "totalWage": "0.00",
-                //                 "totalNum": "3",
-                //                 "totalBuy": "0.00",
-                //                 "totalSoldPrice": "0.00",
-                //                 "totalWeight": "0.000",
-                //                 "detailList": [{
-                //                     "margin": 0,
-                //                     "cost": "-",
-                //                     "goldPrice": "0.00",
-                //                     "goldWeight": "0.000",
-                //                     "actualPrice": "0.00",
-                //                     "num": "3",
-                //                     "buy": "0.00",
-                //                     "weight": "0.000",
-                //                     "discount": "100.00",
-                //                     "className": "黄金戒指",
-                //                     "depreciationDiscount": "100.00",
-                //                     "sell_type": "2",
-                //                     "soldPrice": "0.00",
-                //                     "recycle": "0.00",
-                //                     "exchange": "0.00",
-                //                     "estimatePrice": "0.00",
-                //                     "realPrice": "0.00",
-                //                     "wage": "0.00"
-                //                 }],
-                //                 "totalDiscount": "100.00",
-                //                 "sellType0": null,
-                //                 "totalCost": "-",
-                //                 "totalRealPrice": "0.00"
-                //             },
-                //             {
-                //                 "margin": 0,
-                //                 "totaldepreciationDiscount": "100.00",
-                //                 "className": "黄金(克)",
-                //                 "totalExchange": "0.00",
-                //                 "totalActualPrice": "0.00",
-                //                 "totalRecycle": "0.00",
-                //                 "totalestimatePrice": "0.00",
-                //                 "classId": "f05eb5bc1ad611e895a0f48e3888bbef",
-                //                 "totalGoldWeight": "0.000",
-                //                 "totalGoldPrice": "-",
-                //                 "totalWage": "0.00",
-                //                 "totalNum": "2",
-                //                 "totalBuy": "0.00",
-                //                 "totalSoldPrice": "0.00",
-                //                 "totalWeight": "0.000",
-                //                 "detailList": [{
-                //                     "margin": 0,
-                //                     "cost": "-",
-                //                     "goldPrice": "0.00",
-                //                     "goldWeight": "0.000",
-                //                     "actualPrice": "0.00",
-                //                     "num": "2",
-                //                     "buy": "0.00",
-                //                     "weight": "0.000",
-                //                     "discount": "100.00",
-                //                     "className": "黄金戒指",
-                //                     "depreciationDiscount": "100.00",
-                //                     "sell_type": "4",
-                //                     "soldPrice": "0.00",
-                //                     "recycle": "0.00",
-                //                     "exchange": "0.00",
-                //                     "estimatePrice": "0.00",
-                //                     "realPrice": "0.00",
-                //                     "wage": "0.00"
-                //                 }],
-                //                 "totalDiscount": "100.00",
-                //                 "sellType0": null,
-                //                 "totalCost": "-",
-                //                 "totalRealPrice": "0.00"
-                //             },
-                //             {
-                //                 "margin": 5861,
-                //                 "totaldepreciationDiscount": "100.00",
-                //                 "className": "黄金镶嵌类",
-                //                 "totalExchange": "0.00",
-                //                 "totalActualPrice": "5861.00",
-                //                 "totalRecycle": "0.00",
-                //                 "totalestimatePrice": "5861.00",
-                //                 "classId": "f05ebb821ad611e895a0f48e3888bbef",
-                //                 "totalGoldWeight": "5.130",
-                //                 "totalGoldPrice": "-",
-                //                 "totalWage": "0.00",
-                //                 "totalNum": "2",
-                //                 "totalBuy": "5861.00",
-                //                 "totalSoldPrice": "5861.00",
-                //                 "totalWeight": "5.290",
-                //                 "detailList": [{
-                //                         "margin": 2774,
-                //                         "cost": "-",
-                //                         "goldPrice": "0.00",
-                //                         "goldWeight": "3.120",
-                //                         "actualPrice": "2774.00",
-                //                         "num": "1",
-                //                         "buy": "2774.00",
-                //                         "weight": "3.280",
-                //                         "discount": "100.00",
-                //                         "className": "彩宝戒指",
-                //                         "depreciationDiscount": "100.00",
-                //                         "sell_type": "1",
-                //                         "soldPrice": "2774.00",
-                //                         "recycle": "0.00",
-                //                         "exchange": "0.00",
-                //                         "estimatePrice": "2774.00",
-                //                         "realPrice": "2774.00",
-                //                         "wage": "0.00"
-                //                     },
-                //                     {
-                //                         "margin": 3087,
-                //                         "cost": "-",
-                //                         "goldPrice": "0.00",
-                //                         "goldWeight": "2.010",
-                //                         "actualPrice": "3087.00",
-                //                         "num": "1",
-                //                         "buy": "3087.00",
-                //                         "weight": "2.010",
-                //                         "discount": "100.00",
-                //                         "className": "玉器挂件",
-                //                         "depreciationDiscount": "100.00",
-                //                         "sell_type": "1",
-                //                         "soldPrice": "3087.00",
-                //                         "recycle": "0.00",
-                //                         "exchange": "0.00",
-                //                         "estimatePrice": "3087.00",
-                //                         "realPrice": "3087.00",
-                //                         "wage": "0.00"
-                //                     }
-                //                 ],
-                //                 "totalDiscount": "100.00",
-                //                 "sellType0": null,
-                //                 "totalCost": "-",
-                //                 "totalRealPrice": "5861.00"
-                //             }
-                //         ],
-                //         "type": "sellReport"
-                //     }]
-                // }
+                this.dataGridStorage = res.data.data
+                setTimeout(() => {
+                    this.$refs.reportDetailWrap._setMCustomScrollbar()
+                }, 800)
                 this.loading = false
             }  else {
                 this.$message({
@@ -1687,7 +1533,12 @@ export default {
     mounted(){
         
         this.$nextTick(()=>{
-            
+            if (this.userPositionInfo.roleList) {
+                if (!this.computedRole) {
+                    this.dataGridOptions.receiveObject = 3
+                }
+                this.send()
+            }
             //获取公司信息
             let companyName = JSON.parse(localStorage.getItem('companyInfo'))
             if(companyName){
