@@ -326,7 +326,7 @@ export default {
           // 连接成功
           ws.onopen = function(evt) {
             // 通知APP，这边在登录了
-            ws.send(JSON.stringify({"os":"web","fs":"xiaohua","status":"1"}))
+            // ws.send(JSON.stringify({"os":"web","fs":"xiaohua","status":"1"}))
             console.log('测试连接成功', evt)
           }
           // 有新消息来
@@ -340,10 +340,11 @@ export default {
                 } else if (datas.opType == 'out') {
                     operateLogout()
                         .then(res => {
-                          debugger
                             if (res.data.state == 200) {
                                 ws.close()
-                                _seft.$router.push({path: '/member/login'})
+                                sessionStorage.clear()
+                                localStorage.clear()
+                                _self.$router.push({path: '/member/login'})
                                 let body = document.getElementById('body')
                                 body.style.background = '#f5f8f7'
                             } else {
@@ -364,6 +365,9 @@ export default {
           }
           _self.closeCreatedWebSocket = () => {
             ws.close()
+            sessionStorage.clear()
+            localStorage.clear()
+            console.log('关闭退出链接')
           }
           // _self.toSend = () => {
           //   ws.send(JSON.stringify({"os":"web","fs":"xiaohua","status":"1"}))
