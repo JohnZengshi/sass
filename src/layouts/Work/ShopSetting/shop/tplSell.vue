@@ -128,6 +128,7 @@ export default {
        
        editDiscount(item){
           modifyDiscount({
+            shopId: this.shopId,
               updateList : [item]
           }).then((res)=>{
               if( res.body.state == 200){

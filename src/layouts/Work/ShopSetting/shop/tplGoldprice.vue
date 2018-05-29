@@ -204,6 +204,7 @@ export default {
        //弹出框回调
        dialogCallback( updateList ){
           modifyGoldPrice({
+              shopId: this.shopId,
               updateList : updateList
           }).then((res)=>{
               
