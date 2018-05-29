@@ -147,6 +147,10 @@
           <report-detail v-if="dataGridStorage" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :isOld="isOld" :newList="newList" @lazyloadSend="sendlayLoad" @scrollClass="tabScrollShow" @sortList="sortListAct" :reportType="getReportType()">
           </report-detail>
         </div>
+        <div class="exportTab" @click="exportTab()">
+          <i class="iconfont icon-daochu"></i>
+          <span>导出表格</span>
+        </div>
         <div class="printBtn" @click="tabPrin()">
           <i class="iconfont icon-dayin1"></i>
           <span>打印库存</span>
@@ -198,7 +202,8 @@
     seekStockProductListFinished,
     seekStockProductListOld,
     seekStockProductList,
-    seekSettingUserRole
+    seekSettingUserRole,
+    seekStockExport
   } from 'Api/commonality/seek.js'
   import DropDownMenu from 'components/template/DropDownMenu1'
   import ReportDetail from './newDataGrid/reportDetailTab'
@@ -210,6 +215,8 @@
   import intelligenceTypeTemplate from "@/components/jcp-print/kc/intelligence-type-template";
   import customTemplate from "@/components/jcp-print/kc/intelligence-type-template";
 
+	// 导出按钮
+	import {downLoaderFile} from 'Api/downLoaderFile'
 
 
   export default {
@@ -392,6 +399,19 @@
       this.settingUserRole()
     },
     methods: {
+    	exportTab(){
+    		console.log(this.dataGridOptions)
+    		console.log(this.dataGridStorage)
+    		this.dataGridOptions.weight = this.dataGridStorage.totalWeight
+    		this.dataGridOptions.goldWeight = this.dataGridStorage.totalGoldWeight
+    		this.dataGridOptions.price = this.dataGridStorage.totalPrice
+    		this.dataGridOptions.cost = this.dataGridStorage.totalCost
+    		this.dataGridOptions.num = this.dataGridStorage.totalNum
+    		this.dataGridOptions.className = ''
+    		this.dataGridOptions.classTypeName = ''
+    		console.log(this.dataGridOptions)
+    		downLoaderFile('/v1/export/exportExcelByInventory',this.dataGridOptions)
+    	},
       choseMenu(type) {
         if(type == 1) {
           this.positionSwitch = !this.positionSwitch
@@ -1082,6 +1102,43 @@
         color: #fff;
       }
     }
+    .exportTab {
+      width: 52px;
+      height: 52px;
+      position: absolute;
+      bottom: 53px;
+      right: -70px;
+      background: #fff;
+      border-radius: 4px;
+      z-index: 10;
+      text-align: center;
+      cursor: pointer;
+      overflow: hidden;
+      i {
+        line-height: 52px;
+        font-size: 24px;
+        color: #999;
+      }
+      span {
+        display: none;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #fff;
+        padding: 6px 11px;
+        font-size: 14px;
+      }
+    }
+    .exportTab:hover {
+      span {
+        display: block;
+        background: #2993f8;
+        color: #fff;
+      }
+    }
+    
     >.rp_gridState {
       height: 50px;
       padding-left: 20px;

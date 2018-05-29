@@ -1,7 +1,7 @@
 <template>
 	<!--表尾-->
 	<div class="dg-footer">
-		<span v-for="k in footerData" :style="'width:'+k.width+'px'">{{allSynopsiData[k.total]}}</span>
+		<span v-for="k in footerData" :style="'width:'+k.width+'px'">{{newSynopsiData[k.total]}}</span>
 	</div>
 </template>
 
@@ -13,7 +13,8 @@
 		data() {
 			return {
 				footerData: fixedData,
-				synopsiData: {}
+				synopsiData: {},
+				newSynopsiData:{}
 			}
 		},
 		props: ['smallDataList', 'orderNum', 'isRefreshFooter', 'allSynopsiData'],
@@ -29,6 +30,8 @@
 			},
 			isRefreshFooter(o, n) {
 				this.fetchFootData()
+				this.fetchNewFootData()
+				console.log(this.allSynopsiData)
 				// this.fetchNewFootData()
 			}
 		},
@@ -43,17 +46,17 @@
 				})
 			},
 			fetchNewFootData() {
-				// seekNewGoodsInfoList({
-				// 	orderNum: this.orderNum,
-				// 	page: 1,
-				// 	pageSize: 1
-				// }).then((res) => {
-				// 	if(res.data && res.data.data) {
-				// 		this.synopsiData1 = res.data.data;
-				// 	}
-				// }, (res) => {
+				seekNewGoodsInfoList({
+				 	orderNum: this.orderNum,
+				 	page: 1,
+				 	pageSize: 1
+				 }).then((res) => {
+				 	if(res.data && res.data.data) {
+				 		this.newSynopsiData = res.data.data;
+				 	}
+				 }, (res) => {
 
-				// })
+				 })
 			}
 		},
 
