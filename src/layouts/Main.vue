@@ -314,10 +314,8 @@ export default {
             seekGetShopListByCo(options)
                 .then(res => {
                     if (res.data.state == 200) {
-                        console.log('店铺数据', res.data.data)
                         this.filterFaceShopList = res.data.data.shopList
                         this._downloadTable()
-                        // this.productCategory[1].children = res.data.data.repositoryList
                     } else {
                         this.$message({
                            message: res.data.msg,
@@ -398,7 +396,6 @@ export default {
           }
         },
         faceWebsocked (datas) {
-            console.log('this.filterFaceShopList', this.filterFaceShopList)
             if (this.currentFaceShop) {
                 if (datas.shopId != this.currentFaceShop) {
                     return

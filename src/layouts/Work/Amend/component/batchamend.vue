@@ -179,6 +179,7 @@
 				}
 			},
 			getAmendData(amendData) { // 自定义过滤器  得到修改的内容 小类别
+				debugger
 				for(let i in this.configPullDownData) {
 					if(i === amendData) {
 						return this.configPullDownData[i]
