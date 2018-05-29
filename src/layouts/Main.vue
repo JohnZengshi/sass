@@ -147,7 +147,8 @@ import {
     seekGetAddress,
     seekUserRoleList,
     seekFaceUserImageList,
-    downloadTable
+    downloadTable,
+    seekGetShopListByCo
 } from 'Api/commonality/seek'
 import {operateSwitchCompany, operateUpdateUser, operateUpdateFaceUserImage, operateLogout} from 'Api/commonality/operate'
 
@@ -222,7 +223,9 @@ export default {
             isImg: false,
             createType: null, // 创建公司类型 1 第一次  2 非第一次
             isAllowCreate: true,
-            pcaValue: ''
+            pcaValue: '',
+            filterFaceShopList: [], // 当前过滤人脸的店铺列表
+            currentFaceShop: '' // 当前要过滤的店铺
         }
     },
     computed: {
@@ -260,24 +263,25 @@ export default {
         this._seekFaceUserImageList()
     },
     beforeDestroy () {
-        this.closeWebSocket()
+        // this.closeWebSocket()
         this.closeCreatedWebSocket()
     },
     mounted () {
-        this.routerActive()
+        // this.routerActive()
         eventBus.$on('cut-web-socket', (parm) => {
-            this.closeWebSocket()
-            this.establishWebSocket(parm)
+            this.currentFaceShop = parm
+            console.log('收到的店铺id', parm)
+            // this.closeWebSocket()
+            // this.establishWebSocket(parm)
         });
         this.$nextTick(() => {
+            this._seekGetShopListByCo()
             setTimeout(() => {
                 if (!this.userInfo.userName) {
                    this.getSeekUserInfo() 
                 }
             }, 1000)
         })
-        // 新增推行
-        this._downloadTable()
     },
     watch: {
         'personalInfo': function () {
@@ -285,10 +289,10 @@ export default {
         },
         'shopListByCo' () {
             if (this.shopListByCo[0]) {
-                if (this.closeWebSocket) {
-                    this.closeWebSocket()
-                }
-                this.establishWebSocket(this.shopListByCo[0].shopId)
+                // if (this.closeWebSocket) {
+                //     this.closeWebSocket()
+                // }
+                // this.establishWebSocket(this.shopListByCo[0].shopId)
             }
         }
     },
@@ -299,6 +303,29 @@ export default {
             'getSeekCompanyInfo',
             "getShopListByCo", // 店铺列表
         ]),
+        // 新店铺列表
+        _seekGetShopListByCo () {
+            let options = {
+                page: '1',
+                pageSize: 9999,
+                type: 1 // 1.可查看 2.所属 3.全部
+            }
+
+            seekGetShopListByCo(options)
+                .then(res => {
+                    if (res.data.state == 200) {
+                        console.log('店铺数据', res.data.data)
+                        this.filterFaceShopList = res.data.data.shopList
+                        this._downloadTable()
+                        // this.productCategory[1].children = res.data.data.repositoryList
+                    } else {
+                        this.$message({
+                           message: res.data.msg,
+                           type: 'warning'
+                        })
+                    }
+                })
+        },
         // 获取推送地址
         _downloadTable () {
           let options = {
@@ -325,8 +352,6 @@ export default {
           let ws = new WebSocket(parm)
           // 连接成功
           ws.onopen = function(evt) {
-            // 通知APP，这边在登录了
-            // ws.send(JSON.stringify({"os":"web","fs":"xiaohua","status":"1"}))
             console.log('测试连接成功', evt)
           }
           // 有新消息来
@@ -356,8 +381,9 @@ export default {
                         })
                 }
               }
-            } else if (datas.msgType == '09') { // 人脸识别
-                console.log('人脸识别信息')
+            } else if (datas.msgType == '08') { // 人脸识别
+                console.log('收到人脸的数据', evt)
+                this.faceWebsocked(datas)
             }
           }
           ws.error = function(evt) {
@@ -365,18 +391,62 @@ export default {
           }
           _self.closeCreatedWebSocket = () => {
             ws.close()
-            sessionStorage.clear()
-            localStorage.clear()
-            console.log('关闭退出链接')
           }
-          // _self.toSend = () => {
-          //   ws.send(JSON.stringify({"os":"web","fs":"xiaohua","status":"1"}))
-          // }
-          // ws.send({"companyId":"a0f6f89348b54","msgType":"测试浏览器关闭","os":"app","userId":"111233","status":"0"})
           window.onbeforeunload = function() {
             ws.send({"companyId":sessionStorage.getItem('companyId'),"msgType":"09","os":"web","userId":sessionStorage.getItem('id'),"status":"1000"})
             ws.close()
           }
+        },
+        faceWebsocked (datas) {
+            console.log('this.filterFaceShopList', this.filterFaceShopList)
+            if (this.currentFaceShop) {
+                if (datas.shopId != this.currentFaceShop) {
+                    return
+                }
+            } else {
+                let shopList = []
+                for (let i of this.filterFaceShopList) {
+                    shopList.push(i.shopId)
+                }
+                if (!shopList.includes(datas.shopId)) {
+                    return
+                }
+            }
+            let _self = this
+            let hintTit = '有新访客到店，请及时接待'
+            if (datas.vipFlag == 1) {
+                switch (datas.grade) {
+                    case '1':
+                        hintTit = '普通会员'
+                        break
+                    case '2':
+                        hintTit = '中级会员'
+                        break
+                    case '3':
+                        hintTit = '高级会员'
+                        break
+                }
+                hintTit = hintTit + datas.userName + '到店，请及时接待'
+            }
+            const h = _self.$createElement;
+            _self.$notify({
+                duration: 2000,
+                title: '新消息',
+                message: hintTit,
+                type: 'success',
+                onClick: () => {
+                    _self.$router.push(
+                        {
+                            path: '/faceRecognition/visitList',
+                            query: {
+                                id: datas.id
+                            }
+                        }
+                    )
+                }
+            })
+
+            eventBus.$emit('new-client-come-on')
         },
         establishWebSocket (parm) {
             let _self = this;
@@ -405,12 +475,6 @@ export default {
                     hintTit = hintTit + datas.userName + '到店，请及时接待'
                 }
                 const h = _self.$createElement;
-                // _self.$notify({
-                //     duration: 2000,
-                //     title: '新消息',
-                //     message: hintTit,
-                //     type: 'success'
-                // })
                 _self.$notify({
                     duration: 2000,
                     title: '新消息',
@@ -433,9 +497,9 @@ export default {
             ws.error = function(evt) {
                 console.log('访客连接失败', evt)
             }
-            _self.closeWebSocket = () => {
-                ws.close()
-            }
+            // _self.closeWebSocket = () => {
+            //     ws.close()
+            // }
                 //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
             // window.onbeforeunload = function() {
             //     localStorage.setItem('浏览器执行了关闭', '浏览器执行了关闭')

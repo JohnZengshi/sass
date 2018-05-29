@@ -10,16 +10,6 @@
       <router-link tag="span" to="/work/report/" class="path_crumbs">报表</router-link> > <span class="txt">进销存汇总表</span>
     </div>
     <div class="Rp_selected_container">
-<!--             <DropDownMenu
-                class="selected_dropdown"
-                titleName="发货库位"
-                dataType="库位"
-                :propList="repositoryList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </DropDownMenu>
-            <span class="spaceMark">|</span>   -->
             <Cascade
                 v-if="computedRole"
                 :computedRole="computedRole"
@@ -38,55 +28,6 @@
               @changeData="changeShopData"
               @clearInfo="clearShop"
             ></DownMenu>
-<!--         <span class="spaceMark">|</span>
-        
-             <DropDownMenu
-                class="selected_dropdown"
-                titleName="收货店铺"
-                dataType="店铺"
-                :propList="distributorList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </DropDownMenu>
-            <span class="spaceMark">|</span>
-            
-            <DropDownMenu
-                class="selected_dropdown"
-                titleName="制单人"
-                dataType="制单人"
-                :propList="shopUserList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </DropDownMenu>
-            <span class="spaceMark">|</span>
-            
-            <DropDownMenu
-                class="selected_dropdown"
-                titleName="审核人"
-                dataType="审核人"
-                :propList="auditorUserList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </DropDownMenu>
-            <span class="spaceMark">|</span>
-            
-            <DropDownMenu
-                v-if="!takeUserDisabled"
-                class="selected_dropdown"
-                titleName="收货人"
-                dataType="收货人"
-                :propList="GetUserInfoList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </DropDownMenu>
-            <div v-else class="selected_dropdown el-dropdown placeholder disabled">
-               <span class="el-dropdown-link">收货人</span>
-               <i class="iconfont icon-arrow-down"></i>
-            </div> -->
             
         <div class="report-data">
                 <div class="block until" data-txt="至">
@@ -308,7 +249,7 @@ import find from 'lodash/find'
     seekGetUserInfo,
     seekMemberList,
     seekSettingUserRole
- } from './../../../../Api/commonality/seek.js'
+ } from 'Api/commonality/seek.js'
 import Cascade from './base/Cascade'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DownMenu from 'base/menu/DownMenu'
@@ -542,9 +483,6 @@ export default {
       };
     },
     created() {
-        //后台请求时间
-        // this.propOptons.beginTime = this.getDate(-((new Date()).getDate()-1),'start').fullData
-        // this.propOptons.endTime = this.getDate(0,'end').fullData
         this.dataGridOptions.beginTime = this.getDate(-((new Date()).getDate()-1),'start').fullData
         this.dataGridOptions.endTime = this.getDate(0,'end').fullData
         
@@ -635,26 +573,6 @@ export default {
                 return jurisdictions.jurisdictionJCY(this.userPositionInfo.roleList);
             }
         }
-        // productCategory () {
-        //     return [
-        //         {
-        //             classesName: '全公司',
-        //             classesType: '1',
-        //             childen: []
-        //         },
-        //         {
-        //             classesName: '全仓库',
-        //             classesType: '2',
-        //             childen: this.repositoryList
-        //         },
-        //         {
-        //             classesName: '全店铺',
-        //             classesType: '3',
-        //             childen: this.shopListByCo
-                    
-        //         }
-        //     ]
-        // }
     },
     methods: {
         // 提取有数据的值
@@ -723,18 +641,18 @@ export default {
                 let options = {
                     page: '1',
                     pageSize: 9999,
-                    type: 1 // 1.可查看 2.所属 3.全部
+                    // type: 1 // 1.可查看 2.所属 3.全部
                 }
 
-                if (this.computedManageRole || this.officeClerk) { // 管理员 // 职员
-                    options.type = 3
-                } else if (this.shopManageRole) { // 店长
-                    options.type = 2
-                } else if (this.shopRole) { // 店员
-                    options.type = 1
-                } else if (this.isJrole) { // 监察员
-                    options.type = 2
-                }
+                // if (this.computedManageRole || this.officeClerk) { // 管理员 // 职员
+                //     options.type = 3
+                // } else if (this.shopManageRole) { // 店长
+                //     options.type = 2
+                // } else if (this.shopRole) { // 店员
+                //     options.type = 1
+                // } else if (this.isJrole) { // 监察员
+                //     options.type = 2
+                // }
 
                 seekRepositoryList(options)
                     .then(res => {
@@ -784,7 +702,6 @@ export default {
             this.customDialog = false
         },
         setReportType( port ){
-            // if( port ) this.dataGridOptions.type = port
           if( port )  { 
             if (port == 1) {
               Object.assign(this.dataGridOptions, {
@@ -1118,12 +1035,27 @@ export default {
 
         },
         
-        //收货店铺
+        //店铺
         getShopListByCo(){
-          let options = {
-                page: "1",
-                pageSize: '100'
+            let options = {
+                page: '1',
+                pageSize: 9999,
+                type: 1 // 1.可查看 2.所属 3.全部
             }
+
+            if (this.computedManageRole || this.officeClerk) { // 管理员 // 职员
+                options.type = 3
+            } else if (this.shopManageRole) { // 店长
+                options.type = 2
+            } else if (this.shopRole) { // 店员
+                options.type = 1
+            } else if (this.isJrole) { // 监察员
+                options.type = 2
+            }
+          // let options = {
+          //       page: "1",
+          //       pageSize: '100'
+          //   }
             seekGetShopListByCo(options).then((res) => {
                 this.productCategory[2].children = res.body.data.shopList
                 this.distributorList = res.body.data.shopList
@@ -1251,7 +1183,9 @@ export default {
             if (res.data.state == 200) {
                 this.dataGridStorage = res.data.data
                 setTimeout(() => {
-                    this.$refs.reportDetailWrap._setMCustomScrollbar()
+                    if (this.$refs.reportDetailWrap) {
+                        this.$refs.reportDetailWrap._setMCustomScrollbar()
+                    }
                 }, 800)
                 this.loading = false
             }  else {
@@ -1270,6 +1204,18 @@ export default {
         lazyloadSend(){
            this.currentPage++
            this.send()
+        },
+        seekSend () {
+            if (this.userPositionInfo.roleList) {
+                if (!this.computedRole) {
+                    this.dataGridOptions.receiveObject = 3
+                }
+                this.send()
+            } else {
+                setTimeout(() => {
+                    this.seekSend()
+                }, 800)
+            }
         },
         tabPrin(){
           switch (this.tabClassActive.index){
@@ -1326,23 +1272,6 @@ export default {
             break;
         }
 
-        // console.log('啦啦啦啦啦啦啦',this.dataGridOptions)
-        // //this.dataGridOptions.pageSize += 50;
-        // seekEntryStorage(this.dataGridOptions).then((res) => {
-        //   if(res.data.state == 200) {
-        //     this.dataGridStorage = res.data.data
-        //     console.log(this.dataGridStorage)
-        //   }
-        //   if(res.data.state == 200101) {
-        //     this.$message({
-        //       type: 'error',
-        //       message: res.data.msg
-        //     })
-        //   }
-        //   this.loading = false
-        // }, (res) => {
-
-        // })
 
         }, 
         LoadOptionsDefault(pageSize){
@@ -1357,165 +1286,10 @@ export default {
           if(res.data.state == 200) {
             this.dataGridStorage = res.data.data
             setTimeout(() => {
-                this.$refs.reportDetailWrap._setMCustomScrollbar()
+                if (this.$refs.reportDetailWrap) {
+                    this.$refs.reportDetailWrap._setMCustomScrollbar()
+                }
             }, 800)
-            // this.dataGridStorage = {
-            //     dataList:[{
-            //         "typeName": "销售",
-            //         "totalNum": 0,
-            //         totalWeight: '100',
-            //         totalGoldWeight: '100',
-            //         totalPrice: '100',
-            //         totalCost: '100',
-            //         "productTypeList": [
-            //             {
-            //                 "margin": 0,
-            //                 "totaldepreciationDiscount": "100.00",
-            //                 "className": "铂金(克)",
-            //                 "totalExchange": "0.00",
-            //                 "totalActualPrice": "0.00",
-            //                 "totalRecycle": "0.00",
-            //                 "totalestimatePrice": "0.00",
-            //                 "classId": "f05eb7881ad611e895a0f48e3888bbef",
-            //                 "totalGoldWeight": "0.000",
-            //                 "totalGoldPrice": "-",
-            //                 "totalWage": "0.00",
-            //                 "totalNum": "3",
-            //                 "totalBuy": "0.00",
-            //                 "totalSoldPrice": "0.00",
-            //                 "totalWeight": "0.000",
-            //                 "detailList": [{
-            //                     "margin": 0,
-            //                     "cost": "-",
-            //                     "goldPrice": "0.00",
-            //                     "goldWeight": "0.000",
-            //                     "actualPrice": "0.00",
-            //                     "num": "3",
-            //                     "buy": "0.00",
-            //                     "weight": "0.000",
-            //                     "discount": "100.00",
-            //                     "className": "黄金戒指",
-            //                     "depreciationDiscount": "100.00",
-            //                     "sell_type": "2",
-            //                     "soldPrice": "0.00",
-            //                     "recycle": "0.00",
-            //                     "exchange": "0.00",
-            //                     "estimatePrice": "0.00",
-            //                     "realPrice": "0.00",
-            //                     "wage": "0.00"
-            //                 }],
-            //                 "totalDiscount": "100.00",
-            //                 "sellType0": null,
-            //                 "totalCost": "-",
-            //                 "totalRealPrice": "0.00"
-            //             },
-            //             {
-            //                 "margin": 0,
-            //                 "totaldepreciationDiscount": "100.00",
-            //                 "className": "黄金(克)",
-            //                 "totalExchange": "0.00",
-            //                 "totalActualPrice": "0.00",
-            //                 "totalRecycle": "0.00",
-            //                 "totalestimatePrice": "0.00",
-            //                 "classId": "f05eb5bc1ad611e895a0f48e3888bbef",
-            //                 "totalGoldWeight": "0.000",
-            //                 "totalGoldPrice": "-",
-            //                 "totalWage": "0.00",
-            //                 "totalNum": "2",
-            //                 "totalBuy": "0.00",
-            //                 "totalSoldPrice": "0.00",
-            //                 "totalWeight": "0.000",
-            //                 "detailList": [{
-            //                     "margin": 0,
-            //                     "cost": "-",
-            //                     "goldPrice": "0.00",
-            //                     "goldWeight": "0.000",
-            //                     "actualPrice": "0.00",
-            //                     "num": "2",
-            //                     "buy": "0.00",
-            //                     "weight": "0.000",
-            //                     "discount": "100.00",
-            //                     "className": "黄金戒指",
-            //                     "depreciationDiscount": "100.00",
-            //                     "sell_type": "4",
-            //                     "soldPrice": "0.00",
-            //                     "recycle": "0.00",
-            //                     "exchange": "0.00",
-            //                     "estimatePrice": "0.00",
-            //                     "realPrice": "0.00",
-            //                     "wage": "0.00"
-            //                 }],
-            //                 "totalDiscount": "100.00",
-            //                 "sellType0": null,
-            //                 "totalCost": "-",
-            //                 "totalRealPrice": "0.00"
-            //             },
-            //             {
-            //                 "margin": 5861,
-            //                 "totaldepreciationDiscount": "100.00",
-            //                 "className": "黄金镶嵌类",
-            //                 "totalExchange": "0.00",
-            //                 "totalActualPrice": "5861.00",
-            //                 "totalRecycle": "0.00",
-            //                 "totalestimatePrice": "5861.00",
-            //                 "classId": "f05ebb821ad611e895a0f48e3888bbef",
-            //                 "totalGoldWeight": "5.130",
-            //                 "totalGoldPrice": "-",
-            //                 "totalWage": "0.00",
-            //                 "totalNum": "2",
-            //                 "totalBuy": "5861.00",
-            //                 "totalSoldPrice": "5861.00",
-            //                 "totalWeight": "5.290",
-            //                 "detailList": [{
-            //                         "margin": 2774,
-            //                         "cost": "-",
-            //                         "goldPrice": "0.00",
-            //                         "goldWeight": "3.120",
-            //                         "actualPrice": "2774.00",
-            //                         "num": "1",
-            //                         "buy": "2774.00",
-            //                         "weight": "3.280",
-            //                         "discount": "100.00",
-            //                         "className": "彩宝戒指",
-            //                         "depreciationDiscount": "100.00",
-            //                         "sell_type": "1",
-            //                         "soldPrice": "2774.00",
-            //                         "recycle": "0.00",
-            //                         "exchange": "0.00",
-            //                         "estimatePrice": "2774.00",
-            //                         "realPrice": "2774.00",
-            //                         "wage": "0.00"
-            //                     },
-            //                     {
-            //                         "margin": 3087,
-            //                         "cost": "-",
-            //                         "goldPrice": "0.00",
-            //                         "goldWeight": "2.010",
-            //                         "actualPrice": "3087.00",
-            //                         "num": "1",
-            //                         "buy": "3087.00",
-            //                         "weight": "2.010",
-            //                         "discount": "100.00",
-            //                         "className": "玉器挂件",
-            //                         "depreciationDiscount": "100.00",
-            //                         "sell_type": "1",
-            //                         "soldPrice": "3087.00",
-            //                         "recycle": "0.00",
-            //                         "exchange": "0.00",
-            //                         "estimatePrice": "3087.00",
-            //                         "realPrice": "3087.00",
-            //                         "wage": "0.00"
-            //                     }
-            //                 ],
-            //                 "totalDiscount": "100.00",
-            //                 "sellType0": null,
-            //                 "totalCost": "-",
-            //                 "totalRealPrice": "5861.00"
-            //             }
-            //         ],
-            //         "type": "sellReport"
-            //     }]
-            // }
             this.loading = false
           } else {
             this.$message({
@@ -1533,12 +1307,7 @@ export default {
     mounted(){
         
         this.$nextTick(()=>{
-            if (this.userPositionInfo.roleList) {
-                if (!this.computedRole) {
-                    this.dataGridOptions.receiveObject = 3
-                }
-                this.send()
-            }
+            this.seekSend()
             //获取公司信息
             let companyName = JSON.parse(localStorage.getItem('companyInfo'))
             if(companyName){
