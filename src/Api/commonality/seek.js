@@ -173,6 +173,10 @@ export const seekStockData = function (parm) { // 21.7库存数据
     let URL = "/v1/stock/stockData";
     return apiCall(parm, URL);
 }
+export const seekStockExport = function (parm) { // 2018-05-29库存导出
+    let URL = "/v1/export/exportExcelByInventory";
+    return apiCall(parm, URL);
+}
 export const seekProductClassList = function (parm) { // 获取商品大小类的下拉列表
     let URL = "/v1/headquarter/showProductClassesList";
     return apiCall(parm, URL);
