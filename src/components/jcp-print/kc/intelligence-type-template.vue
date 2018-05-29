@@ -31,10 +31,10 @@
           <td>件数(件)</td>
           <td>件重(g)</td>
           <td>金重(g)</td>
-          <td>主石(g)</td>
-          <td>副石(g)</td>
+          <td>主石(ct、g)</td>
+          <td>副石(ct、g)</td>
           <td>售价(元)</td>
-          <td>成本(元)</td>
+          <td v-if="tabSwitch">成本(元)</td>
         </tr>
         <template v-if="dataList.productTypeList.length" v-for="(dataList, ind) in sellList.dataList">
           <tr v-if="positionSwitch">
@@ -49,10 +49,10 @@
                   <td>{{item.num|NOUNIT}}</td>
                   <td>{{item.weight|NOUNIT}}</td>
                   <td>{{item.goldWeight|NOUNIT}}</td>
-                  <td>{{item.main|NOUNIT}}</td>
-                  <td>{{item.deputy|NOUNIT}}</td>
+                  <td>{{item.main}}</td>
+                  <td>{{item.deputy}}</td>
                   <td>{{item.price|NOUNIT}}</td>
-                  <td>{{item.cost|NOUNIT}}</td>
+                  <td v-if="tabSwitch">{{item.cost|NOUNIT}}</td>
               </tr>
 
           </template>
@@ -61,10 +61,10 @@
             <td>{{dataList.totalNum0}}件</td>
             <td>{{dataList.totalWeight0|GRAMUNIT}}</td>
             <td>{{dataList.totalGoldWeight0|GRAMUNIT}}</td>
-            <td>{{dataList.totalMain0|GRAMUNIT}}</td>
-            <td>{{dataList.totalDeputy0|GRAMUNIT}}</td>
+            <td>{{dataList.totalMain0}}</td>
+            <td>{{dataList.totalDeputy0}}</td>
             <td>{{dataList.totalPrice0|RMBUNIT}}</td>
-            <td>{{dataList.totalCost0|RMBUNIT}}</td>
+            <td v-if="tabSwitch">{{dataList.totalCost0|RMBUNIT}}</td>
           </tr>
         </template>
       </table>
@@ -92,6 +92,9 @@
       },
       positionSwitch: {
         type:Boolean
+      },
+      tabSwitch: { // 成本
+        type: Boolean
       }
     },
     filters:{

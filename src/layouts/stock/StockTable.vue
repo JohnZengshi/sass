@@ -160,8 +160,8 @@
       <!-- 明细0 -->
 <!--       <detailTemplate v-if="this.tabClassActive.index==0" title="库存-明细" ref="detailTemplate" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
  -->
-          <div class="xj-kc-print-main" ref="detailTemplateWrap">
-            <detailTemplate title="库存-明细" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
+          <div v-if="this.tabClassActive.index==0" class="xj-kc-print-main" ref="detailTemplateWrap">
+            <detailTemplate title="库存-明细" :tabSwitch="tabSwitch" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
           </div>
         <!--打印模块-->
         <div style="display: none;">
@@ -171,14 +171,14 @@
 
 
             <!-- 智能1 -->
-            <intelligence-type-template v-if="tabClassActive.index==1" title="库存-智能分类" ref="intelligenceTypeTemplate" :sellList="printData" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
+            <intelligence-type-template v-if="tabClassActive.index==1" title="库存-智能分类" ref="intelligenceTypeTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
 
             <!-- 产品分类 -->
-            <project-type-template v-if="this.tabClassActive.index==2" title="库存-产品分类" ref="projectTypeTemplate" :sellList="printData" :headerData="printSelectDate" :positionSwitch="positionSwitch"></project-type-template>
+            <project-type-template v-if="this.tabClassActive.index==2" title="库存-产品分类" ref="projectTypeTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></project-type-template>
 
 
             <!-- 自定义3 -->
-            <intelligence-type-template v-if="tabClassActive.index==3" title="库存-自定义" ref="customTemplate" :sellList="printData" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
+            <intelligence-type-template v-if="tabClassActive.index==3" title="库存-自定义" ref="customTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
 
 <!-- 
             <project-type-template v-if="tabClassActive.index==2" title="库存" ref="projectTypeTemplate" :sellList="printData" :headerData="printSelectDate"></project-type-template>
@@ -620,6 +620,7 @@
         this.send()
       },
       compOption() {
+        this.tabClassActive.index = 3
         if(this.dataGridOptions.type != 4) {
           this.dataGridOptions.type == 4
           this.setReportType(4)
