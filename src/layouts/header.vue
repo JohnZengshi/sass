@@ -85,7 +85,7 @@ import {
     seekCompanyList,
     seekUnreadCount
 } from '../../src/Api/commonality/seek'
-import {operateSwitchCompany} from '../../src/Api/commonality/operate'
+import {operateSwitchCompany, operateLogout} from '../../src/Api/commonality/operate'
 import FormatImg from 'components/template/DefaultHeadFormat.vue'
 let skinConfig = require('./skinConfig')
 export default {
@@ -212,9 +212,19 @@ export default {
             } else if (command == "d") {
                 this.$router.push({path: '/admin/pawdSetting'})
             } else if (command == "e") {
-                this.$router.push({path: '/member/login'})
-                let body = document.getElementById('body')
-                body.style.background = '#f5f8f7'
+                operateLogout()
+                    .then(res => {
+                        if (res.data.state == 200) {
+                            this.$router.push({path: '/member/login'})
+                            let body = document.getElementById('body')
+                            body.style.background = '#f5f8f7'
+                        } else {
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'warning'
+                            });
+                        }
+                    })
             }
         },
         

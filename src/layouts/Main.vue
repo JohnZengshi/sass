@@ -146,9 +146,10 @@ import {
     createCompany,
     seekGetAddress,
     seekUserRoleList,
-    seekFaceUserImageList
-} from '../../src/Api/commonality/seek'
-import {operateSwitchCompany, operateUpdateUser, operateUpdateFaceUserImage} from '../../src/Api/commonality/operate'
+    seekFaceUserImageList,
+    downloadTable
+} from 'Api/commonality/seek'
+import {operateSwitchCompany, operateUpdateUser, operateUpdateFaceUserImage, operateLogout} from 'Api/commonality/operate'
 
 import ComponentHeader from './header'
 import ComMenu from './menu'
@@ -258,6 +259,10 @@ export default {
         this.getShopListByCo()
         this._seekFaceUserImageList()
     },
+    beforeDestroy () {
+        this.closeWebSocket()
+        this.closeCreatedWebSocket()
+    },
     mounted () {
         this.routerActive()
         eventBus.$on('cut-web-socket', (parm) => {
@@ -271,6 +276,8 @@ export default {
                 }
             }, 1000)
         })
+        // 新增推行
+        this._downloadTable()
     },
     watch: {
         'personalInfo': function () {
@@ -292,6 +299,85 @@ export default {
             'getSeekCompanyInfo',
             "getShopListByCo", // 店铺列表
         ]),
+        // 获取推送地址
+        _downloadTable () {
+          let options = {
+            "type":"1",
+            "infoType":"003"
+          }
+          downloadTable(options)
+            .then(res => {
+              // ws://192.168.100.110:9097/yunzhubao-bat/ws/{companyId}/1?msgType=09&os={client}&userId={userId}&env=test
+              if (res.data.state == 200) {
+                let url = res.data.data.url
+                url = url.replace('{companyId}', sessionStorage.getItem('companyId'))
+                url = url.replace('{client}', 'web')
+                url = url.replace('{userId}', sessionStorage.getItem('id'))
+                this.createdWebSocket(url)
+                // this.url = url
+                console.log('组装好的地址', url)
+              }
+            })
+        },
+        // 创建连接
+        createdWebSocket (parm) {
+          let _self = this
+          let ws = new WebSocket(parm)
+          // 连接成功
+          ws.onopen = function(evt) {
+            // 通知APP，这边在登录了
+            // ws.send(JSON.stringify({"os":"web","fs":"xiaohua","status":"1"}))
+            console.log('测试连接成功', evt)
+          }
+          // 有新消息来
+          ws.onmessage = function(evt) {
+            console.log('新消息--===', evt.data)
+            let datas = JSON.parse(evt.data)
+            if (datas.msgType == '09') { // 登出
+              if (datas.os == 'app') {
+                if (datas.opType == 'qry') {
+                  ws.send(JSON.stringify({"os":"web","fs":"xiaohua","msgType":"09","status":"1"}))
+                } else if (datas.opType == 'out') {
+                    operateLogout()
+                        .then(res => {
+                            if (res.data.state == 200) {
+                                ws.close()
+                                sessionStorage.clear()
+                                localStorage.clear()
+                                _self.$router.push({path: '/member/login'})
+                                let body = document.getElementById('body')
+                                body.style.background = '#f5f8f7'
+                            } else {
+                                this.$message({
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                            }
+                        })
+                }
+              }
+            } else if (datas.msgType == '09') { // 人脸识别
+                console.log('人脸识别信息')
+            }
+          }
+          ws.error = function(evt) {
+            console.log('测试连接失败', evt)
+          }
+          _self.closeCreatedWebSocket = () => {
+            ws.close()
+            sessionStorage.clear()
+            localStorage.clear()
+            console.log('关闭退出链接')
+          }
+          // _self.toSend = () => {
+          //   ws.send(JSON.stringify({"os":"web","fs":"xiaohua","status":"1"}))
+          // }
+          // ws.send({"companyId":"a0f6f89348b54","msgType":"测试浏览器关闭","os":"app","userId":"111233","status":"0"})
+          window.onbeforeunload = function() {
+            ws.send({"companyId":sessionStorage.getItem('companyId'),"msgType":"09","os":"web","userId":sessionStorage.getItem('id'),"status":"1000"})
+            ws.close()
+          }
+        },
         establishWebSocket (parm) {
             let _self = this;
             let socketUrl = process.env.NODE_ENV === 'development' ? 'ws://uat.yunzhubao.com:8080/yunzhubao/ws/facepass/' : 'wss://app.yunzhubao.com:9092/yunzhubao/ws/facepass/'
@@ -350,6 +436,12 @@ export default {
             _self.closeWebSocket = () => {
                 ws.close()
             }
+                //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+            // window.onbeforeunload = function() {
+            //     localStorage.setItem('浏览器执行了关闭', '浏览器执行了关闭')
+            //     alert('关闭窗口')
+            // }
+
         },
         filterFaceFlag (parm) {
             switch (parm) {
