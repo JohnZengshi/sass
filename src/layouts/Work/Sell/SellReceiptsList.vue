@@ -1100,7 +1100,7 @@
 			...mapGetters([
 				"userInfo", // 用户基本信息
 				"saveSuccess", // 保存弹窗
-				"saveSuccessData", // 保存弹窗数据
+//				"saveSuccessData", // 保存弹窗数据
 				// "userPositionInfo" // 职位信息
 			]),
 			filterUserType () {
@@ -2134,6 +2134,10 @@
 					this.operateType = '销售'
 					this.isShowTooltip = true
 					this.isMaskShow = true
+				}else if(type == 2){
+					//回购操作去掉默认选择
+					this.entry.tep1List.productStep = 1
+					this.isShowDio = !this.isShowDio
 				} else {
 					// this.dropdownEvents()
 					this.isShowDio = !this.isShowDio

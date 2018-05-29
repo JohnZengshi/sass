@@ -8,7 +8,7 @@
                     <el-option :label="labelTemplate.templateName" :value="labelTemplate.templateId" v-for="labelTemplate in labelTemplateList">
                     </el-option>
                 </el-select>
-                <el-button class="preview-btn" @click="preview(false)">预览</el-button>
+                <el-button class="preview-btn" @click="preview(true)">预览</el-button>
             </div>
             <div class="product-list-table-wrap">
                 <table class="product-list-table" cellpadding="0" cellspacing="0">

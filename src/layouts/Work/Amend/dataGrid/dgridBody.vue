@@ -150,6 +150,7 @@ let applyIndex = 0
 import * as configData from './config'
 import * as fetch from './fetchData'
 import {fixedData} from './config'
+import {seekProductClassList} from 'Api/commonality/seek'
 export default{
   data(){
     return{
@@ -877,6 +878,16 @@ export default{
     selecChange(fg) {     
       fg.event.stopPropagation()
       this.clearTime()
+      let options = {
+          type: 4
+      }
+      //获取主石规格
+      seekProductClassList(options).then((response) => {
+            let stand = response.data.data.list[0].childrenList
+            this.datagridSelectData.stand = stand
+      }, (response) => {
+          console.log(response)
+      })
       let tpData = this.datagridSelectData[fg.td.type]
       let coord = fg.event.target.getBoundingClientRect()
       

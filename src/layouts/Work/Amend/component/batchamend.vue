@@ -203,7 +203,7 @@ export default{
         }
     },
     getAmendData (amendData) { // 自定义过滤器  得到修改的内容 小类别
-      //console.log(99,amendData, this.configPullDownData)
+//      console.log(99,amendData, this.configPullDownData)
         for (let i in this.configPullDownData) {
             if (i === amendData) {
               return this.configPullDownData[i]
