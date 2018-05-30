@@ -471,12 +471,19 @@ export default {
         },
         // 修改微信号
         setWeixin(){
+            // 判断微信号
+            if(this.dataInfo.weixin && this.dataInfo.weixin.search(/^[a-zA-Z][a-zA-Z0-9_-]{5,19}$/) == -1) {
+                this.$message({
+                    type: 'warning',
+                    message: '请输入正确的微信号'
+                })
+                return
+            }
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
             })
             operateMemberUpdateBy(options).then(res => {
-                console.log(res.data.state)
                 if(res.data.state === 200) {
 
                 } else {
@@ -508,6 +515,14 @@ export default {
         },
         // 修改邮箱
         setEmail(){
+            // 判断邮箱
+            if(this.dataInfo.email && this.dataInfo.email.search(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/) == -1){
+                this.$message({
+                    type: 'warning',
+                    message: '请输入正确的邮箱'
+                })
+                return
+            }
             
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
@@ -516,10 +531,7 @@ export default {
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
-                    // this.$message({
-                    //     type: 'success',
-                    //     message: '修改邮箱成功'
-                    // })
+                    
                 } else {
                     this.$message({
                         type: 'error',
@@ -551,6 +563,14 @@ export default {
         },
         // 修改标签
         followCreateSign () { // 创建标签
+            // 创建标签判断
+            if(this.dataInfo.signList.length > 7) {
+                this.$message({
+                    type:'warning',
+                    message:'标签上限为八个'
+                })
+                return
+            }
             let options = {
                 shopId: this.shopId,
                 signName: this.signName

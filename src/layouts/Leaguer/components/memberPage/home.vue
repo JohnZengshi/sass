@@ -383,7 +383,6 @@ export default {
     },
     closeOnly () {
         this.saveSuccess = false
-        console.log('我擦')
     },
     relevanceSales() {
         this.saveSuccess = true

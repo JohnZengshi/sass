@@ -38,7 +38,7 @@
                     <!-- 销售 -->
                     <div class="integral-xs">
                         <div class="integral-left xs">销售</div>
-                            <el-radio-group class="integral-right" v-model="templateInfoData.sellConfig" :disabled="isDisabled" @change="addOrSubTemplate('1',templateInfoData.sellConfig)">
+                            <el-radio-group class="integral-right" v-model="templateInfoData.sellConfig" @change="addOrSubTemplate('1',templateInfoData.sellConfig)">
                                 <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
                                 <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
                                 <el-radio class="intergral-item" :label="'3'">无</el-radio>
@@ -47,7 +47,7 @@
                     <!-- 退货 -->
                     <div class="integral-th">
                         <div class="integral-left th">退货</div>
-                            <el-radio-group class="integral-right" v-model="templateInfoData.refundConfig" :disabled="isDisabled" @change="addOrSubTemplate('2',templateInfoData.refundConfig)">
+                            <el-radio-group class="integral-right" v-model="templateInfoData.refundConfig" @change="addOrSubTemplate('2',templateInfoData.refundConfig)">
                                 <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
                                 <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
                                 <el-radio class="intergral-item" :label="'3'">无</el-radio>
@@ -56,7 +56,7 @@
                     <!-- 换货 -->
                     <div class="integral-hh">
                         <div class="integral-left hh">换货</div>
-                            <el-radio-group class="integral-right" v-model="templateInfoData.exchangeConfig" :disabled="isDisabled" @change="addOrSubTemplate('3',templateInfoData.exchangeConfig)">
+                            <el-radio-group class="integral-right" v-model="templateInfoData.exchangeConfig" @change="addOrSubTemplate('3',templateInfoData.exchangeConfig)">
                                 <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
                                 <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
                                 <el-radio class="intergral-item" :label="'3'">无</el-radio>
@@ -65,14 +65,14 @@
                     <!-- 回收 -->
                     <div class="integral-hs">
                         <div class="integral-left hs">回收</div>
-                            <el-radio-group class="integral-right" v-model="templateInfoData.recoveryConfig" :disabled="isDisabled" @change="addOrSubTemplate('4',templateInfoData.recoveryConfig)">
+                            <el-radio-group class="integral-right" v-model="templateInfoData.recoveryConfig" @change="addOrSubTemplate('4',templateInfoData.recoveryConfig)">
                                 <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
                                 <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
                                 <el-radio class="intergral-item" :label="'3'">无</el-radio>
                             </el-radio-group>
                     </div>
+                    <div v-if="isDisabled" class="modalBox"></div>
                 </div>
-                
             </div>
             <!-- 积分加减规则 0.3 end-->
 
@@ -151,7 +151,8 @@
                             <span class="item-title">注册福利：</span>
                             <span>注册成为会员，赠送</span>
                             <span class="input-box">
-                                <el-input v-model="item.score" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('2','1',item.score)"></el-input>
+                                <!-- <el-input v-model="item.score" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('1','1',item.score)"></el-input>                                 -->
+                                <input type="number" @blur="othenTemplateTemplate('3','1',item.score)" v-model="item.score" :disabled="isDisabled">
                             </span>
                             <span>分</span>
                             <i class="el-icon-delete" v-if="!isDisabled" @click="delConfiguration(1)"></i>
@@ -162,7 +163,8 @@
                             <span class="item-title">生日福利：</span>
                             <span>会员生日当天，赠送</span>
                             <span class="input-box">
-                                <el-input v-model="item.score" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('2','2',item.score)"></el-input>
+                                <!-- <el-input v-model="item.score" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('1','2',item.score)"></el-input> -->
+                                <input type="number" @blur="othenTemplateTemplate('3','2',item.score)" v-model="item.score" :disabled="isDisabled">
                             </span>
                             <span>分</span>
                             <i class="el-icon-delete" v-if="!isDisabled" @click="delConfiguration(2)"></i>
@@ -174,12 +176,14 @@
                             <span class="item-title">签到福利：</span>
                             <span>会员单次签到，赠送</span>
                             <span class="input-box">
-                                <el-input v-model="item.score" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('2','3',item.score)"></el-input>
+                                <!-- <el-input v-model="item.score" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('1','3',item.score)"></el-input> -->
+                                <input type="number" @blur="othenTemplateTemplate('3','3',item.score)" v-model="item.score" :disabled="isDisabled">
                             </span>
                             <span class="fg-fen">分；</span>
                             <span>会员连续签到，赠送</span>
                             <span class="input-box">
-                                <el-input v-model="item.continuousSign" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('2','3',item.continuousSign)"></el-input>
+                                <!-- <el-input v-model="item.continuousSign" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('2','3',item.continuousSign)"></el-input> -->
+                                <input type="number" @blur="othenTemplateTemplate('3','4',item.continuousSign)" v-model="item.continuousSign" :disabled="isDisabled">
                             </span>
                             <span>分</span>
                             <i class="el-icon-delete" v-if="!isDisabled" @click="delConfiguration(3)"></i>
@@ -203,12 +207,15 @@
                         <span class="item-title">积分抵现：</span>
                         <span>每次使用</span>
                         <span class="input-box">
-                            <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.consumeScore" @blur="consumeIntegralTemplate('4',templateInfoData.consumeScore)"></el-input>
+                            <!-- <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.consumeScore" @blur="consumeIntegralTemplate('4',templateInfoData.consumeScore)"></el-input> -->
+                                <input type="number" v-model="templateInfoData.consumeScore" @blur="consumeIntegralTemplate('4',templateInfoData.consumeScore)" :disabled="isDisabled">
+                            
                         </span>
                         <span>分，</span>
                         <span>可抵</span>
                         <span class="input-box">
-                            <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.consumeYuan" @blur="consumeIntegralTemplate('3',templateInfoData.consumeYuan)"></el-input>
+                            <!-- <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.consumeYuan" @blur="consumeIntegralTemplate('3',templateInfoData.consumeYuan)"></el-input> -->
+                            <input type="number" v-model="templateInfoData.consumeYuan" @blur="consumeIntegralTemplate('3',templateInfoData.consumeYuan)" :disabled="isDisabled">
                         </span>
                         <span>元</span>
                     </div>
@@ -218,7 +225,8 @@
                         <span class="item-title">计重抵扣上限：</span>
                         <span>最多可抵扣单价实售价</span>
                         <span class="input-box">
-                            <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.weightConfig" @blur="consumeIntegralTemplate('6',templateInfoData.weightConfig)"></el-input>
+                            <!-- <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.weightConfig" @blur="consumeIntegralTemplate('6',templateInfoData.weightConfig)"></el-input> -->
+                            <input type="number" v-model="templateInfoData.weightConfig" @blur="consumeIntegralTemplate('6',templateInfoData.weightConfig)" :disabled="isDisabled">                            
                         </span>
                         <span>%</span>
                     </div>
@@ -228,7 +236,8 @@
                         <span class="item-title">计件抵扣上限：</span>
                         <span>最多可抵扣单价实售价</span>
                         <span class="input-box">
-                            <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.pieceConfig" @blur="consumeIntegralTemplate('5',templateInfoData.pieceConfig)"></el-input>
+                            <!-- <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.pieceConfig" @blur="consumeIntegralTemplate('5',templateInfoData.pieceConfig)"></el-input> -->
+                            <input type="number" v-model="templateInfoData.pieceConfig" @blur="consumeIntegralTemplate('5',templateInfoData.pieceConfig)" :disabled="isDisabled"> 
                         </span>
                         <span>%</span>
                     </div>
@@ -236,7 +245,7 @@
                     <div class="item">
                         <div class="item-circle"></div>
                         <span class="item-title">计重计件是否相互抵扣：</span>
-                        <el-radio-group v-model="templateInfoData.deductible" :disabled="isDisabled" @change="consumeIntegralTemplate('7',templateInfoData.deductible)">
+                        <el-radio-group v-model="templateInfoData.deductible" @change="consumeIntegralTemplate('7',templateInfoData.deductible)">
                             <el-radio :label="'N'">抵扣</el-radio>
                             <el-radio :label="'D'">不抵扣</el-radio>
                         </el-radio-group>
@@ -245,12 +254,14 @@
                     <div class="item">
                         <div class="item-circle"></div>
                         <span class="item-title">消耗匹配类型：</span>
-                        <el-radio-group v-model="templateInfoData.matchingType" :disabled="isDisabled" @change="consumeIntegralTemplate('8',templateInfoData.matchingType)">
+                        <el-radio-group v-model="templateInfoData.matchingType" @change="consumeIntegralTemplate('8',templateInfoData.matchingType)">
                             <el-radio :label="'1'">销售</el-radio>
                             <el-radio :label="'2'">购买</el-radio>
                             <el-radio :label="'3'">实收</el-radio>
                         </el-radio-group>
                     </div>
+                    <div v-if="isDisabled" class="modalBox"></div>
+                    
                 </div>
             </div>
             <!-- 积分消耗配置 .6 end -->
@@ -388,6 +399,7 @@ $fontColor:#47a3fb;
                 justify-content: space-between;
                 border-radius: 10px;                
                 // padding: 0 50px;
+                position: relative;
                 .integral-xs{
                     width: 25%;
                     display: flex;
@@ -446,6 +458,13 @@ $fontColor:#47a3fb;
                         margin: 0;
                         color: #666;
                     }
+                }
+                .modalBox {
+                    width: 100%; 
+                    height: 100%;
+                    background: transparent;
+                    position: absolute;
+                    
                 }
             }
         }
@@ -544,10 +563,22 @@ $fontColor:#47a3fb;
                     }
                     .input-box {
                         display: inline-block;
-                        // width: 100px;
-                        height: 38px;
-                        border: 1px solid #ccc;
-                        border-radius: 4px;
+                        
+                        input{
+                                width: 60px;
+                                height: 28px;
+                                background-color:transparent;
+                                text-align: left;
+                                font-size: 14px;
+                                border-radius: 3px;
+                                border: 1px solid #2993f8;                                
+                                &:active,
+                                &:hover,
+                                &:focus{
+                                    border: 1px solid #2993f8;
+                                    background-color: #f4f9ff;
+                                }
+                        }
                     }
                     .item-input{
                         width: 100px;
@@ -578,6 +609,7 @@ $fontColor:#47a3fb;
                 padding: 40px 30px;
                 background: #f6f7f8;
                 border-radius: 10px;
+                position: relative;
                 .item {
                     height: 38px;
                     margin-bottom: 24px;
@@ -596,10 +628,22 @@ $fontColor:#47a3fb;
                     }
                     .input-box {
                         display: inline-block;
-                        // width: 100px;
-                        height: 38px;
-                        border: 1px solid #ccc;
-                        border-radius: 4px;
+                        
+                        input{
+                                width: 60px;
+                                height: 28px;
+                                background-color:transparent;
+                                text-align: left;
+                                font-size: 14px;
+                                border-radius: 3px;
+                                border: 1px solid #2993f8;
+                                &:active,
+                                &:hover,
+                                &:focus{
+                                    border: 1px solid #2993f8;
+                                    background-color: #f4f9ff;
+                                }
+                        }
                     }
                     .item-input{
                         width: 100px;
@@ -611,6 +655,14 @@ $fontColor:#47a3fb;
                     .fg-fen {
                         margin-right: 50px;
                     }
+                }
+                .modalBox {
+                    width: 100%; 
+                    height: 100%;
+                    background: transparent;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
                 }
             }
         }
@@ -814,6 +866,7 @@ import { templateIntegralDetails,consumeTemplateUpdate,getShopReTemplateList,add
 // 获取用户权限
 import {mapActions, mapGetters} from 'vuex'
 import tradingVue from '../../Leaguer/components/memberPage/trading.vue';
+import { isMoment } from 'moment';
 
 export default {
     data () {
@@ -969,19 +1022,23 @@ export default {
         },
         // 删除
         delConfiguration(type) {
+            console.log('删除',type)
             let options = {}
+            let othenId = ''
             switch (type) {
                 case 1:
                     this.zcitem = false
                     this.templateInfoData.othenList.forEach((item,index) => {
                         if(item.othenName == '1') {
                             this.templateInfoData.othenList.splice(index,1)
+                            othenId = item.othenId
                         }
                     })
                     options = {
                         templateId: this.$route.query.templateId,
                         operateType: '1',
-                        updateData:'1'
+                        updateData:'1',
+                        othenId
                     }
                     othenTemplateUpdate(options).then(res => {
                         console.log(res)
@@ -998,12 +1055,14 @@ export default {
                     this.templateInfoData.othenList.forEach((item,index) => {
                         if(item.othenName == '2') {
                             this.templateInfoData.othenList.splice(index,1)
+                            othenId = item.othenId                            
                         }
                     })
                     options = {
                         templateId: this.$route.query.templateId,
-                        operateType: '2',
-                        updateData:'1'
+                        operateType: '1',
+                        updateData:'2',
+                        othenId
                     }
                     othenTemplateUpdate(options).then(res => {
                         console.log(res)
@@ -1020,12 +1079,14 @@ export default {
                     this.templateInfoData.othenList.forEach((item,index) => {
                         if(item.othenName == '3') {
                             this.templateInfoData.othenList.splice(index,1)
+                            othenId = item.othenId                            
                         }
                     })
                     options = {
                         templateId: this.$route.query.templateId,
-                        operateType: '3',
-                        updateData:'1'
+                        operateType: '1',
+                        updateData:'3',
+                        othenId
                     }
                     othenTemplateUpdate(options).then(res => {
                         console.log(res)
@@ -1220,8 +1281,11 @@ export default {
         },
         // 获取店铺列表
         getShopList() {
-            let options = {
-                // templateId : this.$route.query.templateId
+            let options = {}
+            if(this.isDisabled){
+                options = {
+                    templateId : this.$route.query.templateId
+                }
             }
             getShopReTemplateList(options).then(res => {
                 console.log('店铺列表',res)
