@@ -152,7 +152,7 @@
                             <span>注册成为会员，赠送</span>
                             <span class="input-box">
                                 <!-- <el-input v-model="item.score" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('1','1',item.score)"></el-input>                                 -->
-                                <input type="number" @blur="othenTemplateTemplate('3','1',item.score)" v-model="item.score" :disabled="isDisabled">
+                                <input type="number" @blur="othenTemplateTemplate('3','1',item.score,item.othenId)" v-model="item.score" :disabled="isDisabled">
                             </span>
                             <span>分</span>
                             <i class="el-icon-delete" v-if="!isDisabled" @click="delConfiguration(1)"></i>
@@ -164,7 +164,7 @@
                             <span>会员生日当天，赠送</span>
                             <span class="input-box">
                                 <!-- <el-input v-model="item.score" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('1','2',item.score)"></el-input> -->
-                                <input type="number" @blur="othenTemplateTemplate('3','2',item.score)" v-model="item.score" :disabled="isDisabled">
+                                <input type="number" @blur="othenTemplateTemplate('3','2',item.score,item.othenId)" v-model="item.score" :disabled="isDisabled">
                             </span>
                             <span>分</span>
                             <i class="el-icon-delete" v-if="!isDisabled" @click="delConfiguration(2)"></i>
@@ -177,13 +177,13 @@
                             <span>会员单次签到，赠送</span>
                             <span class="input-box">
                                 <!-- <el-input v-model="item.score" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('1','3',item.score)"></el-input> -->
-                                <input type="number" @blur="othenTemplateTemplate('3','3',item.score)" v-model="item.score" :disabled="isDisabled">
+                                <input type="number" @blur="othenTemplateTemplate('3','3',item.score,item.othenId,item.continuousSign)" v-model="item.score" :disabled="isDisabled">
                             </span>
                             <span class="fg-fen">分；</span>
                             <span>会员连续签到，赠送</span>
                             <span class="input-box">
                                 <!-- <el-input v-model="item.continuousSign" class="item-input" :disabled="isDisabled" @blur="othenTemplateTemplate('2','3',item.continuousSign)"></el-input> -->
-                                <input type="number" @blur="othenTemplateTemplate('3','4',item.continuousSign)" v-model="item.continuousSign" :disabled="isDisabled">
+                                <input type="number" @blur="othenTemplateTemplate('3','3',item.score,item.othenId,item.continuousSign)" v-model="item.continuousSign" :disabled="isDisabled">
                             </span>
                             <span>分</span>
                             <i class="el-icon-delete" v-if="!isDisabled" @click="delConfiguration(3)"></i>
@@ -597,6 +597,14 @@ $fontColor:#47a3fb;
                             cursor: pointer;
                         }
                     }
+                    .el-icon-delete {
+                        opacity: 0;
+                    }
+                    &:hover {
+                        .el-icon-delete {
+                            opacity: 1;
+                        }
+                    }
                 }
             }     
         }
@@ -655,6 +663,7 @@ $fontColor:#47a3fb;
                     .fg-fen {
                         margin-right: 50px;
                     }
+                    
                 }
                 .modalBox {
                     width: 100%; 
@@ -848,12 +857,7 @@ $fontColor:#47a3fb;
         }
     }
 }
-.el-icon-delete {
-    opacity: 0;
-    &:hover {
-        opacity: 1;
-    }
-}
+
 </style>
 
 <script>
@@ -865,6 +869,8 @@ import { templateIntegralDetails,consumeTemplateUpdate,getShopReTemplateList,add
 
 // 获取用户权限
 import {mapActions, mapGetters} from 'vuex'
+import {seekGetUserInfo} from 'Api/commonality/seek'
+
 import tradingVue from '../../Leaguer/components/memberPage/trading.vue';
 import { isMoment } from 'moment';
 
@@ -959,7 +965,8 @@ export default {
             zcscore:'',
             srscore:'',
             dczcscore:'',
-            lxzcscore:''
+            lxzcscore:'',
+            isDisabled:false
 
         }
     },
@@ -971,19 +978,22 @@ export default {
         ...mapGetters([
             "userPositionInfo"
         ]),
-        isDisabled(){
-            if(this.userPositionInfo.roleList.length === 1){
-                if(this.userPositionInfo.roleList[0].role > 3){
-                    return true
-                } else {
-                    return false
-                }
-            } else {
-                return false
-            }
-        }
+        // isDisabled(){
+        //     if(this.userPositionInfo.roleList.length === 1){
+        //         if(this.userPositionInfo.roleList[0].role > 3){
+        //             return true
+        //         } else {
+        //             return false
+        //         }
+        //     } else {
+        //         return false
+        //     }
+        // }
     },
     methods: {
+        ...mapActions([
+            'getSeekGetUserInfo'
+        ]),
         // 计重批量设置
         jzSetting(){
             this.dialog.dialogVisible = true
@@ -1185,6 +1195,12 @@ export default {
         },
         // 修改消费发放
         setConsumeTemplateUpdate(item){
+            if(item.yuan < 0) {
+                item.yuan = 0
+            }
+            if(item.score < 0) {
+                item.score = 0
+            }
             let options = {}
             if(this.templateInfoData.productTypeConfig === 'N'){
                 if(item){
@@ -1199,10 +1215,18 @@ export default {
                     }
                 }
             } else {
-                options = {
-                    templateId: this.templateInfoData.templateId,
-                    switch: this.templateInfoData.productTypeConfig
+                if(item){
+                    options = {
+                        templateId: this.templateInfoData.templateId,
+                        dataList: [item],                
+                    }
+                } else {
+                    options = {
+                        templateId: this.templateInfoData.templateId,
+                        switch: this.templateInfoData.productTypeConfig
+                    }
                 }
+                
             }
             consumeTemplateUpdate(options).then(res => {
                 if(res.data.state === 200) {
@@ -1284,7 +1308,13 @@ export default {
             let options = {}
             if(this.isDisabled){
                 options = {
-                    templateId : this.$route.query.templateId
+                    templateId : this.$route.query.templateId,
+                }
+            }
+            if(this.$route.query.shopId) {
+                options = {
+                    templateId : this.$route.query.templateId,
+                    shopId : this.$route.query.shopId,
                 }
             }
             getShopReTemplateList(options).then(res => {
@@ -1335,10 +1365,19 @@ export default {
                     }
                 }
             } else {
-                options = {
-                    operateType: '6',
-                    templateId:this.$route.query.templateId
+                if(operateType){
+                    options = {
+                        operateType,
+                        updateData,
+                        templateId:this.$route.query.templateId,
+                    }
+                } else {
+                    options = {
+                        operateType: '6',
+                        templateId:this.$route.query.templateId
+                    }
                 }
+                
             }
 
             addOrSubTemplateUpdate(options).then(res => {
@@ -1355,6 +1394,9 @@ export default {
         // 积分发放配置
         consumeIntegralTemplate(operateType,updateData) {
             if(this.isDisabled) {
+                return
+            }
+            if(!this.templateInfoData.consumeConfig) {
                 return
             }
             console.log('积分发放配置',operateType,updateData)
@@ -1430,9 +1472,27 @@ export default {
                     templateId: this.$route.query.templateId,
                     operateType: '2'
                 }
+                if(operateType){
+                    options = {
+                        operateType,
+                        updateData:parseInt(updateData) || updateData,
+                        templateId:this.$route.query.templateId,
+                    }
+                } else {
+                    options = {
+                        templateId:this.$route.query.templateId,
+                        operateType: '1'
+                    }
+                }
             }
             consumeIntegralUpdate(options).then(res => {
                 console.log(res)
+                if(res.data.state == 200 && options.operateType != 7 && options.operateType != 8){
+                    this.$message({
+                        type:'success',
+                        message:'修改成功',
+                    })
+                }
                 if(res.data.state != 200) {
                     this.$message({
                         type:'error',
@@ -1442,7 +1502,7 @@ export default {
             })
         },
         // 其他发放配置
-        othenTemplateTemplate(operateType,updateData,score) {
+        othenTemplateTemplate(operateType,updateData,score,othenId,continuousSign) {
             if(this.isDisabled) {
                 return;
             }
@@ -1469,7 +1529,7 @@ export default {
                     }
                     break;
                 case '3':
-                    if(isNaN(Number(score))){
+                    if(isNaN(Number(score)) || isNaN(Number(continuousSign))){
                         this.$message({
                             type:'warning',
                             message:'请输入整数'
@@ -1479,14 +1539,34 @@ export default {
                     }
                     break;
             }
+            // 当用户输入负数的时候
+            if(score<0) {
+                score = 0
+            }
+            
             let options = {}
             if(this.templateInfoData.othenConfig === 'N'){
                 if(operateType){
-                    options = {
-                        templateId: this.$route.query.templateId,
-                        operateType,
-                        updateData,
-                        score,
+                    if(continuousSign){
+                        if(continuousSign<0) {
+                            continuousSign = 0
+                        }
+                        options = {
+                            templateId: this.$route.query.templateId,
+                            operateType,
+                            updateData,
+                            score,
+                            othenId,
+                            continuousSign
+                        }
+                    } else {
+                        options = {
+                            templateId: this.$route.query.templateId,
+                            operateType,
+                            updateData,
+                            score,
+                            othenId
+                        }
                     }
                 }else {
                     options = {
@@ -1495,18 +1575,51 @@ export default {
                     }
                 }
             } else {
-                options = {
+                if(operateType){
+                    if(continuousSign){
+                        if(continuousSign<0) {
+                            continuousSign = 0
+                        }
+                        options = {
+                            templateId: this.$route.query.templateId,
+                            operateType,
+                            updateData,
+                            score,
+                            othenId,
+                            continuousSign
+                        }
+                    } else {
+                        options = {
+                            templateId: this.$route.query.templateId,
+                            operateType,
+                            updateData,
+                            score,
+                            othenId
+                        }
+                    }
+                }else {
+                    options = {
                         templateId: this.$route.query.templateId,
                         operateType: '5'
                     }
+                }
+                
             }
+
             othenTemplateUpdate(options).then(res => {
+                if(res.data.state == 200){
+                    this.$message({
+                        type: 'success',
+                        message: '修改成功'
+                    })
+                }
                 if(res.data.state != 200){
                     this.$message({
                         type:'error',
                         message: res.data.msg
                     })
                 }
+                this.getIntegralDetails()
             })
         },
         // 批量
@@ -1601,6 +1714,22 @@ export default {
         
     },
     created(){
+        // 获取用户权限
+        let options = {
+            userId: sessionStorage.getItem('id')
+        }
+        seekGetUserInfo(options).then(res => {
+            console.log('刷新后的用户权限',res)
+            if(res.data.roleList.length === 1){
+                if(res.data.roleList[0].role > 3){
+                    this.isDisabled = true
+                } else {
+                    this.isDisabled = false
+                }
+            } else {
+                this.isDisabled = false
+            }
+        })
         this.getIntegralDetails()
         this.getShopList()
     },

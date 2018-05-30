@@ -37,7 +37,7 @@
         <!--右侧柜组设-->
         <tpl-slider :shopId="shopDefaultData.shopId" :storePrivilege="storePrivilege"></tpl-slider>
         <!-- 右侧会员模板设置 -->
-        <member-points></member-points>
+        <member-points :shopId="shopDefaultData.shopId" :storePrivilege="storePrivilege"></member-points>
     </div>
 </div>
 </template>

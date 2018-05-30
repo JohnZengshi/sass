@@ -201,7 +201,7 @@ export default {
                 return
             }
             // 提交
-            this.$emit('getMemberPointsList')
+            this.$emit('getMemberPointsList',this.templateName)
         }
     },
     created() {

@@ -595,6 +595,8 @@
 
 	import FormatImg from 'components/template/DefaultHeadFormat.vue'
 
+	import { memberBuyIntegral } from 'Api/member'
+
 	//打印模块
 	import TablePrint from './components/print/dataGridPrint'
 
@@ -1370,15 +1372,18 @@
 			},
 			receiptsIntroList(val) {
 				console.log('单据简介',val)
-				if(val) {
+				if(val.orderNum) {
 					let options = {
 						orderNum:val.orderNum,
 						shopId:val.shopId
 					}
+					console.log(options)
 					getTotalDoIntegral(options).then(res => {
-						console.log('积分抵现数据',res)
-						this.integralNow = res.data.data
-						this.integralNow.offsetScore = this.integralNow.offsetScore || 0
+						console.log('积分抵现数据',res.data.data)
+						if(res.data.state == 200){
+							this.integralNow = res.data.data
+							this.integralNow.offsetScore = this.integralNow.offsetScore || 0
+						}
 					})
 				}
 			}
@@ -1477,6 +1482,7 @@
 								message: '删除关联成功!'
 							});
 							this.getSeekSellReceiptsIntro()
+							this.memberDataInfo = {}
 						} else {
 							this.$message({
 								type: 'warning',
@@ -1576,7 +1582,6 @@
 				}
 			},
 			operateCashierAct() { 
-				debugger
 				// 打单操作
 				if(this.isPrintOnly && this.templateId == '') {
 					this.$message({
@@ -1641,6 +1646,7 @@
 					}
 					this.cashierTime = ''
 				}, (res) => {})
+				this.setMemberBuyIntegral('2')
 			},
 			mathAdd(...param){
 				let result = 0;
@@ -1693,6 +1699,7 @@
 						},
 					]
 				}
+							
 				this.$confirm('确定要执行收银操作吗?', '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
@@ -1709,6 +1716,7 @@
 						this.statusREfresh = true
 						this.sellcollectMoney(); // 收银信息
 						this.print();
+						this.setMemberBuyIntegral('1') // 收银积分	
 					}, (res) => {
 						this.isShowFooter = true
 					})
@@ -1722,6 +1730,7 @@
 				})
 				this.$emit('printOrder', this.orderNum, selectedTemplate && JSON.parse(selectedTemplate.content))
 				this.printOrder(this.$route.query.orderNumber, selectedTemplate && JSON.parse(selectedTemplate.content))
+				
 			},
 			orderPay() { // 单据操作收银
 				if(this.receiptsIntroList.cashStatus != 2){
@@ -1773,6 +1782,8 @@
 						this.sellData()
 						this.statusREfresh = true
 						this.sellcollectMoney(); // 收银信息
+						this.setMemberBuyIntegral('1') // 收银积分	
+						
 					}, (res) => {
 						this.isShowFooter = true
 					})
@@ -1792,6 +1803,8 @@
 							this.sellData()
 							this.statusREfresh = true
 							this.sellcollectMoney(); // 收银信息
+							this.setMemberBuyIntegral('1') // 收银积分	
+							
 						}, (res) => {
 							this.isShowFooter = true
 						})
@@ -2669,6 +2682,23 @@
 					} else {}
 
 				})
+
+				if(!this.receiptsIntroList.orderNum) {
+					return
+				}
+
+				let datas = {
+					orderNum:this.receiptsIntroList.orderNum,
+					shopId:this.receiptsIntroList.shopId
+				}
+				getTotalDoIntegral(datas).then(res => {
+					console.log('积分抵现数据',res)
+					if(res.data.state == 200){
+						this.integralNow = res.data.data
+						this.integralNow.offsetScore = this.integralNow.offsetScore || 0
+						this.daiding = ''
+					}
+				})
 			},
 			complate() {
 				this.orderPay()
@@ -2747,6 +2777,10 @@
 			},
 			// 积分操作
 			shiyongjifen() {
+				if(this.integralNow.offsetScore <= 0){
+					this.daiding = ''
+					return
+				}
 				if(this.daiding > this.integralNow.offsetScore){
 					this.daiding = ''
 					return
@@ -2770,6 +2804,35 @@
 					}
 					console.log('积分抵扣回调',res)
 					this.send()
+				})
+			},
+			// 收银积分操作
+			setMemberBuyIntegral(type) {
+				if(this.memberDataInfo.memberId) {
+					return
+				}
+				if(this.receiptsIntroList.orderNum) {
+					return
+				}
+				if(this.receiptsIntroList.shopId) {
+					return
+				}
+				console.log('调用了',type)
+				let options = {
+					memberId:this.memberDataInfo.memberId,
+					orderNum:this.receiptsIntroList.orderNum,
+					shopId:this.receiptsIntroList.shopId,
+					operateType:type
+				}
+				memberBuyIntegral(options).then(res => {
+					if(res.data.state == 200){
+
+					} else {
+						this.$message({
+							type:'error',
+							message:res.data.msg
+						})
+					}
 				})
 			}
 		}
@@ -4030,7 +4093,7 @@
 				}
 				.row4-data-main {
 					width: 1215px;
-					height: 496px;
+					height: 540px;
 					white-space: nowrap;
 					.row4-main-wrap {
 						padding: 10px 10px;

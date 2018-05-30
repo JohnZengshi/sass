@@ -4,7 +4,7 @@
       'left-bg-move': getState(switchs),
       'right-bg-move': getState(!switchs)
     }"
-    @click="switchMove">
+    @click.stop="switchMove">
     
     <i
     class="move-icon"

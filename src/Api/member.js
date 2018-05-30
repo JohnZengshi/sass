@@ -81,3 +81,8 @@ export const integralOffset = function(data) {
     let URL = "/v1/member/integralOffset"
     return apiCall(data, URL)
 }
+// 收银加减积分
+export const memberBuyIntegral = function(data) {
+    let URL = "/v1/member/memberBuyIntegral"
+    return apiCall(data, URL)
+}

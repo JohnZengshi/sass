@@ -224,6 +224,11 @@ export default {
 	watch: {
 		item: function() {
 			this.discontGoldWeight = ((Number(this.item.abrasion) / 100) * Number(this.item.goldWeight)).toFixed(3)
+		},
+		memberDataInfo(val) {
+			if(val.phone) {
+				
+			}
 		}
 	},
 	computed: {
@@ -698,7 +703,7 @@ export default {
 <style lang="scss" scoped>
 .detail-wrap {
 	width: 250px;
-	height: 476px;
+	height: 508px;
 	background: #fff;
 	border-radius: 10px;
 	box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);

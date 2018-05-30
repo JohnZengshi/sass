@@ -3,7 +3,7 @@
         <!-- 标题 -->
         <div class="title">
             <i class="iconfont icon-liebiao"></i>会员积分模板
-            <!-- <a href="javascript:;" class="add" @click="addPoints">+ 模板</a> -->
+            <!-- <a v-if="storePrivilege" href="javascript:;" class="add" @click="addPoints">+ 模板</a> -->
         </div>
         <!-- 列表内容 -->
         <div class="counter-container" v-loading="loading">
@@ -19,7 +19,7 @@
             </div> -->
         </div>
     <!-- 添加模板弹框 -->
-    <!-- <member-points-dialog :dialog="dialog" @closeDialog="closeDialog" @getMemberPointsList="getMemberPointsList"></member-points-dialog> -->
+    <member-points-dialog :dialog="dialog" @closeDialog="closeDialog" @getMemberPointsList="getMemberPointsList"></member-points-dialog>
 
     </div>
 </template>
@@ -132,7 +132,9 @@
 
 <script>
 import memberPointsDialog from  '../dialog/memberPointsDialog'
-import { templateIntegralDetails,consumeTemplateUpdate,getTemplateIntegralList } from 'Api/member'
+import { templateIntegralDetails,consumeTemplateUpdate,getTemplateIntegralList,templateCreate } from 'Api/member'
+// import { getTemplateIntegralList, templateCreate, templateIntegralUpdate } from 'Api/member'
+
 
 export default {
     data () {
@@ -153,6 +155,7 @@ export default {
     components:{
         memberPointsDialog,
     },
+    props:['shopId','storePrivilege'],
     methods:{
         // 关闭回调
         closeDialog(parm) {
@@ -164,13 +167,36 @@ export default {
         },
         // 获取会员列表
         getTemplateList(){
-            getTemplateIntegralList({}).then(res => {
+            getTemplateIntegralList({shopId:this.shopId}).then(res => {
                 this.templateDataList = res.data.data.dataList
             })
         },
         // 会员模板跳转
         goMemberSettingIndex(index){
-            this.$router.push({path:'/work/memberSettingIndex',query:{templateId:this.templateDataList[index].templateId}})
+            this.$router.push({path:'/work/memberSettingIndex',query:{templateId:this.templateDataList[index].templateId,shopId:this.shopId}})
+        },
+        getMemberPointsList(val){
+            console.log('回调')
+            let options = {
+                templateName: val
+            }
+            templateCreate(options).then(res => {
+                if(res.data.state == 200) {
+                    this.addDialog = false                    
+                    this.supplierName = ''                    
+                    this.$message({
+                        type: 'success',
+                        message: '添加成功!'
+                    })
+                    this.dialog.dialogVisible = false
+                    this.getTemplateList()
+                } else {
+                    this.$message({
+                        type: 'warning',
+                        message: res.data.msg
+                    })
+                }
+            })
         }
     },
     created(){
@@ -178,6 +204,13 @@ export default {
     },
     mounted () {
         
+    },
+    watch:{
+        shopId(val){
+            if(val) {
+                this.getTemplateList()
+            }
+        }
     }
 }
 </script>
