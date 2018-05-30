@@ -21,15 +21,16 @@
   <div>
 <!--   {{dataGridStorage.dataList}} -->
    <!--  <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind"> -->
-    <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind">
+    <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in filterHasData(dataGridStorage.dataList)" :index="resetIndex(ind)" :key="ind">
       <div class="left-type-name-wrap" :style="getRightH(caty)">
-        <p>{{caty.typeName}}</p>
+        <p>{{caty.typeName}}<span v-if="caty.typeName != '期初' && caty.typeName != '期末'">({{caty.totalReceiptNum0}})</span></p>
       </div>
       <div class="right-type-inner-wrap">
 
         <div style="margin-bottom: 2px;" v-for="(tb, index) in caty.productTypeList" :key="index">
           <template v-for="(tb1, index1) in tb.detailList">
-            <div class="tb-tr hz-td-tr" :index="addIndex()" :key="index1">
+           <!-- :class="{'hz-td-tr': index1%2 == 0}" -->
+            <div class="tb-tr" :class="{'hz-td-tr': filterEvent(index, index1, caty.productTypeList)}" :index="addIndex()" :key="index1">
               <template v-for="(tab,index2) in detailDataGridColumn">
                 <div class="tb-td category-td"
                   :key="index2"
@@ -85,7 +86,7 @@
           <li>{{caty.totalWeight0}}</li>
           <li>{{caty.totalGoldWeight0}}</li>
           <li>{{caty.totalPrice0}}</li>
-          <li>{{caty.totalCost0}}</li>
+          <li v-if="tabSwitch">{{caty.totalCost0}}</li>
         </ul>
 <!--         <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch">
           <div class="tb-td"
@@ -119,45 +120,41 @@
 <!--产品分类-->
 <div class="ui-table-container produc-line" ref="tableContainer" v-else-if="reportType == 3">
   <div>
-    <div class="tb-category" v-for="(caty,index) in dataGridStorage.dataList" :key="index">
-      <template v-for="(tb, index) in caty.productTypeList">
-        <div class="tb-tr" :key="index">
-          <template v-for="(tab,index4) in detailDataGridColumn">
-            <div class="tb-td category-td"
+    <div class="tb-category hz-tb-category hz-tb-category-two" v-if="caty.productTypeList.length" v-for="(caty,index) in dataGridStorage.dataList" :key="index">
+      <div class="left-type-name-wrap left-y" :style="getClassRightH(caty)">
+        <p>{{caty.typeName}}<span>({{caty.totalReceiptNum0}})</span></p>
+      </div>
+      <div class="right-type-inner-wrap">
+        <template v-for="(tb, index) in caty.productTypeList">
+          <div class="tb-tr" :key="index">
+            <template v-for="(tab,index4) in detailDataGridColumn">
+              <div class="tb-td category-td"
+                :key="index4"
+                v-if="tab.text == '产品类别' && index == 0" 
+                :style="tableCell(tab.width)"
+                v-text="tb[tab.childType]"
+                >
+              </div>
+              <div class="tb-td category-td"
+                :key="index4"
+                v-else-if="tab.text == '位置名称' && index == 0"
+                :style="tableCell(tab.width)"
+              > 
+                <i :style="'height:'+ caty.productTypeList.length * 50 +'px;  color: #2993f8; background:#fff;'">{{caty[tab.childType]}}</i>
+              </div>
+              <div class="tb-td"
+                v-else
               :key="index4"
-              v-if="tab.text == '产品类别' && index == 0" 
-              :style="tableCell(tab.width)"
-              v-text="tb[tab.childType]"
-              >
-              <!-- <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i> -->
-            </div>
-            <div class="tb-td category-td"
-              :key="index4"
-              v-else-if="tab.text == '位置名称' && index == 0"
-              :style="tableCell(tab.width)"
-            > 
-              <i :style="'height:'+ caty.productTypeList.length * 50 +'px;  color: #2993f8; background:#fff;'">{{caty[tab.childType]}}</i>
-            </div>
-<!--             <div class="tb-td"
-              v-else
-            :key="index4"
-              :style="tableCell(tab.width)" 
-              v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
-            </div> -->
-            <div class="tb-td"
-              v-else
-            :key="index4"
-              :style="tableCell(tab.width)"
-              v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
-              >
-<!--               {{tab}} -->
-            </div>
-          </template>
-        </div>
-        
-        
-      </template>
-      
+                :style="tableCell(tab.width)"
+                v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
+                >
+              </div>
+            </template>
+          </div>
+          
+          
+        </template>
+      </div>
     </div>
     <div v-if="isDate" class="no-data"></div>
   </div>
@@ -174,7 +171,7 @@ export default {
       heightArr: [],
     }
   },
-  props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch'],
+  props : ['detailDataGridColumn','dataGridStorage','tabCell', 'tabSwitch','reportType', 'positionSwitch'],
   
   watch:{
     'dataGridStorage' () {
@@ -183,12 +180,6 @@ export default {
       this.storageFormatDate()
       //console.log(1111)
       this.tabCellHeight()
-
-      console.log(this.tempArray)
-      console.log(this.detailDataGridColumn)
-      console.log(this.dataGridStorage)
-      console.log(this.tabCell)
-      console.log(this.reportType)
     },
     // 'reportType': function (val) {
     //  //console.log(this.positionSwitch)
@@ -211,6 +202,22 @@ export default {
       _this.$emit('lazyloadSend',123 )
     })
     
+    $(".ui-table-container").mCustomScrollbar({
+      theme: "minimal-dark",
+      axis: 'y',
+      mouseWheel: {
+        scrollAmount: 200,
+        preventDefault: false,
+        normalizeDelta: true,
+        scrollInertia: 50
+      },
+      callbacks: {
+        onTotalScroll: function() {
+          // console.log('滚轮到底了')
+        },
+      }
+    });
+
     // $(".ui-table-container").mCustomScrollbar({
         //     theme: "minimal-dark",
         //     axis: 'y',
@@ -233,6 +240,32 @@ export default {
     this.tabCellHeight()
   },
   methods:{
+    // 提取有数据的值
+    filterHasData (parm) {
+      let datas = []
+      for (let i of parm) {
+        if (i.productTypeList.length) {
+          let isTrue = false
+          for (let j of i.productTypeList) {
+            if (j.detailList.length) {
+              // datas.push(i)
+              isTrue = true
+            }
+          }
+          if (isTrue) {
+            datas.push(i)
+          }
+          // if (i.productTypeList[0].detailList.length) {
+          //   datas.push(i)
+          // }
+        }
+      }
+      return datas
+    },
+    // 提取奇数偶数
+    filterEvent () {
+      return false
+    },
     //重置index
       resetIndex( index ){
          if( index == 0 ) applyIndex = 0
@@ -269,6 +302,20 @@ export default {
             for (let j of i.detailList) {
               Num += 50
             }
+          }
+        }
+      }
+
+      return {
+        'height': Num + 'px'
+      }
+    },
+    getClassRightH (parm) {
+      let Num = 0
+      if (parm) {
+        for (let i of parm.productTypeList) {
+          if (i) {
+            Num += 50
           }
         }
       }
@@ -341,10 +388,13 @@ export default {
 <style scoped lang="scss">
 .ui-table-container{
     height: 556px;
-    overflow-y: auto;
-    // .hz-td-tr:nth-child(2n+1){
-    //   background-color: red!important;
-    // }
+    // overflow-y: auto;
+    .hz-tb-category-two{
+      margin-bottom: 2px;
+    }
+    .hz-td-tr{
+      background-color: red!important;
+    }
     .hz-tb-category{
       overflow: hidden;
       font-size: 0;
@@ -377,6 +427,9 @@ export default {
         text-align: center;
         margin: auto;
       }
+    }
+    .left-y{
+      background-color: rgb(249, 248, 231);
     }
     .right-type-inner-wrap{
       // flex: 1;

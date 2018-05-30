@@ -577,3 +577,7 @@ export const setShopSee = function(parm) {
     let URL = "/v1/auth/settingShopSeeById";
     return apiCall(parm, URL);
 }
+export const operateLogout = function(parm) {
+    let URL = "/v1/auth/logout";
+    return apiCall(parm, URL);
+}

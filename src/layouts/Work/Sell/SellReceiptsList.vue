@@ -60,7 +60,7 @@
 												<span v-else>
                                                     {{receiptsIntroList.sellManName}}
                                                 </span>
-												<div class="item-name" style="margin-left: 8px;">店员</div>
+												<div class="item-name" style="margin-left: 8px;">销售员</div>
 											</div>
 										</div>
 									</div>
@@ -207,7 +207,7 @@
 										<span v-show="memberDataInfo.phone">(总积分{{ integralNow.totalScore || 0 }})</span>
 
 										<span>详情说明</span>
-										<input v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
+										<input ref="detailInputWrap" v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
 										<span class="tooltip" v-if="isShowTooltip">输入/扫描条码号</span>
 									</div>
 								</div>
@@ -416,13 +416,16 @@
 									</ul>
 								</div>
 								<div class="footer">
-									<div class="footer-left" @click.stop="goNext" v-if="isSkip == false">
-										跳过
-									</div>
-									<div class="footer-right">
+									
+									<div class="footer-left">
 										<span @click.stop="goPro" v-if="entry.tep2List.isShowBtn">上一步</span>
 										<span @click.stop="goNext" v-if="entry.tep2List.isShowBtn1">下一步</span>
 									</div>
+
+									<div class="footer-right" @click.stop="goNext" v-if="isSkip == false">
+										跳过
+									</div>
+									
 								</div>
 							</div>
 							<!--  珠宝名称 -->
@@ -1043,21 +1046,6 @@
 		mounted() {
 			
 			let self = this
-			printAPI.getTemplateList({
-				type: 1,
-				fieldType: 'full'
-			}).then(json => {
-				this.qualityTemplateList = json.data.qualityList
-				if(this.qualityTemplateList.length > 0) {
-					this.disabled = false
-					this.isPrintOnly = true
-					this.placeText = "请选择"
-				} else {
-					this.disabled = true
-					this.isPrintOnly = false
-					this.placeText = "无打印模板"
-				}
-			})
 			$(".row4-data-main").mCustomScrollbar({
 				axis: 'x',
 				theme: "minimal-dark",
@@ -1120,13 +1108,17 @@
 				eventBus.$on('update-data-sell-List', () => {
 					this.send()
 				})
+				if (this.$refs.detailInputWrap) {
+					this.$refs.detailInputWrap.focus()
+				}
+				
 			})
 		},
 		computed: {
 			...mapGetters([
 				"userInfo", // 用户基本信息
 				"saveSuccess", // 保存弹窗
-				"saveSuccessData", // 保存弹窗数据
+//				"saveSuccessData", // 保存弹窗数据
 				// "userPositionInfo" // 职位信息
 			]),
 			filterUserType () {
@@ -1395,6 +1387,24 @@
 			...mapActions([
 				"workPopupError" // 错误弹窗
 			]),
+			seekGetTemplateList (parm) {
+				printAPI.getTemplateList({
+					type: 1,
+					shopId: parm,
+					fieldType: 'full'
+				}).then(json => {
+					this.qualityTemplateList = json.data.qualityList
+					if(this.qualityTemplateList.length > 0) {
+						this.disabled = false
+						this.isPrintOnly = true
+						this.placeText = "请选择"
+					} else {
+						this.disabled = true
+						this.isPrintOnly = false
+						this.placeText = "无打印模板"
+					}
+				})
+			},
 			setBounding(parm) {
 				this.$refs.remarkTitWrap.open(parm)
 				// this.boundingData = parm
@@ -1566,6 +1576,7 @@
 				}
 			},
 			operateCashierAct() { 
+				debugger
 				// 打单操作
 				if(this.isPrintOnly && this.templateId == '') {
 					this.$message({
@@ -2155,6 +2166,10 @@
 					this.operateType = '销售'
 					this.isShowTooltip = true
 					this.isMaskShow = true
+				}else if(type == 2){
+					//回购操作去掉默认选择
+					this.entry.tep1List.productStep = 1
+					this.isShowDio = !this.isShowDio
 				} else {
 					// this.dropdownEvents()
 					this.isShowDio = !this.isShowDio
@@ -2673,6 +2688,7 @@
 						this.receiptsIntroList = response.data.data;						
 						// this.cashStatus = res.data.data.cashStatus
 						this.getShopUserList(response.data.data.shopId)
+						this.seekGetTemplateList(response.data.data.shopId)
 						if(response.data.data.makeOrderManId == sessionStorage.getItem('id')) {
 							this.isMakeMan = true
 						}
@@ -3455,7 +3471,7 @@
 				width: 1250px;
 				overflow: visible;
 				margin: 0;
-				background: #f5f8f7;
+				// background: #f5f8f7;
 				box-sizing: border-box;
 				margin-bottom: 30px;
 				.member-btn {

@@ -70,8 +70,6 @@
     },
     methods: {
       evt (e) {
-        //console.log(e);
-        //console.log(e.target);
         eventBus.$emit('PscDropBox', this.dropBox)
       },
       getShopList () {
@@ -79,7 +77,6 @@
           "page": 1,
           "pageSize": 5
         }
-        console.log(options)
         //var that = this;
         seekGetShopListByCo(options).then((res) => {
           console.log(res);
@@ -87,12 +84,9 @@
             for (let i = 0; i < res.data.data.shopList.length; i++) {
               this.shopList.push(res.data.data.shopList[i]);
             }
-            console.log(res.data);
-            console.log(res.data.data.shopList[0]);
             sessionStorage.setItem('defaultShopId', res.data.data.shopList[0].shopId);
 //            console.log(this.shopList[0]);
 //            console.log(this.shopList[0].shopName);
-            console.log(this.shopList);
           }
 
         }, (res) => {
@@ -136,13 +130,11 @@
               this.isMask = false;
               this.$router.push('/admin/shopManage');
             }
-//            this.propsShopList();
             break;
           case 3:
             this.isMask = false;
             this.$router.push('/admin/pawdSetting');
             eventBus.$emit('passwordPage', this.sended);
-            //console.log(that.sended);
             break;
           default:
             this.isMask = false;
@@ -154,22 +146,16 @@
       routeAct () {
         if (this.$route.path == '/admin/personalInfo') {
           this.navShowSwitch = 0;
-          //console.log(this.navShowSwitch)
         } else if (this.$route.path == '/admin/myCompany') {
           this.navShowSwitch = 1;
-          //console.log(this.navShowSwitch)
         } else if (this.$route.path == '/admin/shopManage') {
           this.navShowSwitch = 2;
-          //console.log(this.navShowSwitch)
         } else if (this.$route.path == '/admin/pawdSetting') {
           this.navShowSwitch = 3;
-          //console.log(this.navShowSwitch)
         }
-        //this.navShowSwitch = this.$route.query.navNum;
       }
     },
     created () {
-      console.log(this.adminRouter);
       this.getShopList();
 
     },
@@ -178,8 +164,6 @@
 
     },
     mounted () {
-      console.log(this.$router);
-      console.log(this.$route);
       $(".shop_out_side").mCustomScrollbar({
           theme: "minimal-dark",
           axis: 'y',

@@ -28,11 +28,11 @@
     <div class="page-side">
         <div class="user-info">
             <!-- <img @click="goAdmin" v-if="userInfo" class="user-img" :src="userInfo.userLogo"> -->
-            <FormatImg :logo="userInfo.userLogo" @click.native="goAdmin" class="img" :userName="userInfo.userName" :size="40"></FormatImg>
+            <FormatImg :logo="userInfo.userLogo" @click.native="goAdmin" class="img" :userName="userInfo.userName || userInfo.phone" :size="40"></FormatImg>
             <div v-if="userInfo" class="userInfo_silder">欢迎您！
                 <el-dropdown @command="selectMenu">
                     <span class="el-dropdown-link">
-                        {{userInfo.userName}}<i class="el-icon-caret-bottom el-icon--right"></i>
+                        {{userInfo.userName || userInfo.phone}}<i class="el-icon-caret-bottom el-icon--right"></i>
                     </span>
                     <el-dropdown-menu slot="dropdown" class="layout-drop-item">
                         <!--<el-dropdown-item command="a">个人信息</el-dropdown-item>-->
@@ -85,7 +85,7 @@ import {
     seekCompanyList,
     seekUnreadCount
 } from '../../src/Api/commonality/seek'
-import {operateSwitchCompany} from '../../src/Api/commonality/operate'
+import {operateSwitchCompany, operateLogout} from '../../src/Api/commonality/operate'
 import FormatImg from 'components/template/DefaultHeadFormat.vue'
 let skinConfig = require('./skinConfig')
 export default {
@@ -212,9 +212,19 @@ export default {
             } else if (command == "d") {
                 this.$router.push({path: '/admin/pawdSetting'})
             } else if (command == "e") {
-                this.$router.push({path: '/member/login'})
-                let body = document.getElementById('body')
-                body.style.background = '#f5f8f7'
+                operateLogout()
+                    .then(res => {
+                        if (res.data.state == 200) {
+                            this.$router.push({path: '/member/login'})
+                            let body = document.getElementById('body')
+                            body.style.background = '#f5f8f7'
+                        } else {
+                            this.$message({
+                                message: res.data.msg,
+                                type: 'warning'
+                            });
+                        }
+                    })
             }
         },
         

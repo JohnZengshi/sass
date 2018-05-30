@@ -438,7 +438,7 @@ module.exports = {
       unit: '(g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'goldWeight', //单元格类型
+      childType: 'totalGoldWeight1', //单元格类型
       totalType: 'totalGoldWeight0', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数

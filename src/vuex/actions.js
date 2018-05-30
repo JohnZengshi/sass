@@ -186,8 +186,10 @@ export const workApplyUser = ({commit}, parm) => {
 }
 // 产品类别（商品类型列表）
 export const workProductClass = ({commit}, parm) => {
+//  debugger
     seeks.getProductTypeList().then((response) => {
         if (response.data.state === 200) {
+//          debugger
             commit(types.WORK_PRODUCT_CLASS, response.data.data.list)
         } else {
             this.$store.dispatch('workPopupError', response.data.msg);
@@ -377,7 +379,7 @@ export const workShopList = ({commit}, parm) => {
 export const getShopListByCo = ({commit}, parm) => {
     var options = {
       "page": "1",
-      "pageSize": "30"
+      "pageSize": "9999"
     }
     seeks.seekGetShopListByCo(options).then((response) => {
         if (response.data.state === 200) {

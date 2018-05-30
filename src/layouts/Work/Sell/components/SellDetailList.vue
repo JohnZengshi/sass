@@ -157,13 +157,14 @@
 
 		<!-- 				<span v-if="status != 1 || multipleIdentities == 'N' && isOrderMan == false && status == 1 || companyPosition != 4 && companyPosition != 5 && multipleIdentities == 'N' || multipleIdentities == 'Y' && isOrderMan == false && status == 1 && companyPosition != 4 && companyPosition != 5"> -->
                          <!-- v-bind:value="(item.price).indexOf('-')>0?item.price:'-'+item.price"  -->
-						{{item.price?"-":""}}
-						<input v-if="status == 2 && shopRole" type="text" v-model="item.price"  @keyup="computeFun(item, '回购价')" @keyup.enter="sendData(item, '回购价', item.calcMethod)" @blur="sendData(item, '回购价', item.calcMethod)">
-                         <!-- v-model="item.price" -->
-						<span v-else>
-								-{{item.price}}
-								<!-- {{(item.price).indexOf('-')>0?item.price:'-'+item.price}} -->
-						</span>
+          <template v-if="status == 2 && shopRole">
+           	{{item.price?"-":""}}
+           	<input type="text" :data-price="item.price" v-model="item.price"  @keyup="computeFun(item, '回购价')" @keyup.enter="sendData(item, '回购价', item.calcMethod)" @blur="sendData(item, '回购价', item.calcMethod)">
+          </template>
+					<span v-else>
+							-{{item.price}}
+							<!-- {{(item.price).indexOf('-')>0?item.price:'-'+item.price}} -->
+					</span>
 					</div> <!--  :placeholder="unit4(item.price)" -->
 				<i>元</i>
 			</div>
@@ -606,15 +607,19 @@ export default {
 			if (this.mantissa == 1) {
 				this.item.price = Math.round(this.item.price)
 			}
+			console.log(this.mantissa)
+			console.log(this.item.price)
 			if (this.item.productType == 1) {
 				if (this.item.calcMethod == 1) { // 计重
 					this.item.calcMethod = 2
 					this.item.price = (Number(this.item.goldWeight) * (Number(this.item.abrasion) / 100)) * Number(this.item.exchangeGoldPrice) - Number(this.item.paymentPrice)
-					
 				} else { // 计件
 					this.item.calcMethod = 1
 					this.item.price = Number(this.item.goldWeight) * (Number(this.item.abrasion) / 100) * Number(this.item.exchangeGoldPrice) - (Number(this.item.paymentPrice) * Number(this.discontGoldWeight))
-					
+				}
+				//按照店铺设置如否四舍五入价格:mantissa == 1 四舍五入，3 不处理
+				if (this.mantissa == 1) {
+					this.item.price = Math.round(this.item.price)
 				}
 				this.modifyList.push(
 					{

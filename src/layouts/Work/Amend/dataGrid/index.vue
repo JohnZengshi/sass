@@ -214,7 +214,7 @@ export default{
     //编辑、新增功能
     updataEditApi(data){
       //编辑保存商品, 只需判断新增商品list是否为空
-      debugger
+//    debugger
       fetch.updataGoodsList({
         orderNum : this.orderData.orderNum,
         confirmType: '1',

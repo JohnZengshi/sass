@@ -126,7 +126,8 @@
                     ref="propertySettingComponent" 
                     @dialogVisibleFun = "dialogVisibleFun"
                     v-show="setting.isPropertyComponent" 
-                    @changeComponentSetting="changeComponentSetting">
+                    @changeComponentSetting="changeComponentSetting"
+                    :canvas="canvas">
                 </PropertySettingComponent>
                 <ItemListSettingComponent ref="itemListSettingComponent" v-show="setting.isItemListComponent" @changeComponentSetting="changeComponentSetting"></ItemListSettingComponent>
             </div>
@@ -438,7 +439,7 @@ export default {
             },
             
             canvas:function(){
-             // console.log(this.canvas)
+                console.log(this.canvas)
             }
         },
         mounted() {

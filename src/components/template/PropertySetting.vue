@@ -79,13 +79,19 @@
                 </el-form-item>
                 <div class="text-align">
                     <el-tooltip effect="dark" content="水平左对齐">
-                        <i class="icon text-align-left-icon" :class="{active: data.textAlign == 'left'}" @click="data.textAlign = 'left'"></i>
+                        <!--<i class="icon text-align-left-icon" :class="{active: data.textAlign == 'left'}" @click="data.textAlign = 'left'"></i>-->
+                        <i class="icon text-align-left-icon" :class="{active: data.textAlign == 'left'}" @click="textAlignAction('left')"></i>
                     </el-tooltip>
                     <el-tooltip effect="dark" content="水平居中对齐">
-                        <i class="icon text-align-center-icon" :class="{active: data.textAlign == 'center'}" @click="data.textAlign = 'center'"></i>
+                        <i class="icon text-align-center-icon" :class="{active: data.textAlign == 'center'}" @click="textAlignAction('center')"></i>
                     </el-tooltip>
                     <el-tooltip effect="dark" content="水平右对齐">
-                        <i class="icon text-align-right-icon" :class="{active: data.textAlign == 'right'}" @click="data.textAlign = 'right'"></i>
+                        <i class="icon text-align-right-icon" :class="{active: data.textAlign == 'right'}" @click="textAlignAction('right')"></i>
+                    </el-tooltip>
+                </div>
+                <div class="text-align">
+                    <el-tooltip effect="dark" content="测试">
+                        <i class="icon text-align-left-icon" @click="showData"></i>
                     </el-tooltip>
                 </div>
                 <div class="vertical-align">
@@ -316,7 +322,33 @@ export default {
                this.data.sample = /[a-zA-Z0-9]+/.test(value) ? value.match(/[a-zA-Z0-9]+/)[0] : ''
            }
         },
+        showData(){
+        	console.log(this.canvas)
+        	console.log(this.data)
+        	let offsetLeft = this.canvas.width - this.data.width
+        	this.data.left = offsetLeft
+        },
+        textAlignAction(type){
+        	let that = this
+        	switch (type) {
+                case 'left':
+                    that.data.textAlign = type
+        						that.data.left = 0
+        						break
+                case 'center':
+                    that.data.textAlign = type
+                    var offsetLeft = (that.canvas.width / 2) - (that.data.width / 2)
+        						that.data.left = offsetLeft
+        						break
+                case 'right':
+                		this.data.textAlign = type
+                    var offsetLeft = that.canvas.width - that.data.width
+        						that.data.left = offsetLeft
+        						break
+            }
+        }
     },
+    props: ['canvas'],
     watch: {
         data: {
             handler(data) {

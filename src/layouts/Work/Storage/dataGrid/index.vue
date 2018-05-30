@@ -17,7 +17,7 @@
 		</div>
 
 		<!--表尾-->
-		<dgridfooter :isRefreshFooter="isRefreshFooter" :smallDataList="smallDataList" ref="footer" @setSynopsiData="updataSynopsiData" :orderNum="orderNum">
+		<dgridfooter :isRefreshFooter="isRefreshFooter" :allSynopsiData="allSynopsiData" :smallDataList="smallDataList" ref="footer" @setSynopsiData="updataSynopsiData" :orderNum="orderNum">
 		</dgridfooter>
 
 	</div>
@@ -35,6 +35,7 @@
 	export default {
 		data() {
 			return {
+				allSynopsiData: {}, // 总数据
 				dgDataList: [],
 				configData: configData,
 
@@ -162,6 +163,7 @@
 				}).then((res) => {
 					if(res.data.state == 200) {
 						this.dgDataList = _.concat(this.dgDataList, res.data.data.rowDataList)
+						this.allSynopsiData = res.data.data
 						this.$emit('updataData', {
 							key: 'dgDataList',
 							data: this.dgDataList

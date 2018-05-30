@@ -2,9 +2,9 @@
 <transition name="tp-ani">
 <div class="tab_detail_table">
   <!--表头 start-->
-  <data-grid-header-t v-if="reportType == 2 || reportType == 4" :newList="newList" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header-t>
+  <data-grid-header-t :newList="newList" @sortList="sortList" :tabSwitch="tabSwitch" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header-t>
   <!--表头 start-->
-  <data-grid-header v-else :newList="newList" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header>
+<!--   <data-grid-header v-else :newList="newList" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header> -->
   
   
   
@@ -15,6 +15,7 @@
       :dataGridStorage="dataGridStorage" 
       :reportType="reportType"
       :isEditReport="type"
+      :tabSwitch="tabSwitch"
       :positionSwitch="positionSwitch"
       @scrollClass = "scrollClass"
       @lazyloadSend = "lazyloadSend"
@@ -32,15 +33,20 @@
     
   <template v-else>
     <!--表格内容区  -->
-    <data-grid-body 
-      :detailDataGridColumn="detailDataGridColumn" 
-      :dataGridStorage="dataGridStorage" 
-      :reportType="reportType"
-      :positionSwitch="positionSwitch"
-      @scrollClass = "scrollClass"
-      @lazyloadSend = "lazyloadSend"
-      @tabCell="tabCell">
-    </data-grid-body>
+    <div class="hz-report-detail-tab-scroll">
+      <div>
+        <data-grid-body 
+          :detailDataGridColumn="detailDataGridColumn" 
+          :dataGridStorage="dataGridStorage" 
+          :reportType="reportType"
+          :tabSwitch="tabSwitch"
+          :positionSwitch="positionSwitch"
+          @scrollClass = "scrollClass"
+          @lazyloadSend = "lazyloadSend"
+          @tabCell="tabCell">
+        </data-grid-body>
+      </div>
+    </div>
   
     <!--表尾  -->
 <!--     <data-grid-footer 
@@ -106,6 +112,11 @@ export default {
   },
   props : ['dataGridStorage','reportType','tabSwitch','isOld', 'positionSwitch', 'newList','type'],
   methods:{
+    // _setMCustomScrollbar () {
+    //   $(".hz-report-detail-tab-scroll").mCustomScrollbar({
+    //       theme: "minimal-dark"
+    //   });
+    // },
     sortList (val) {
         //console.log(val)
         this.$emit('sortList', val)
@@ -137,7 +148,7 @@ export default {
                 if (!this.positionSwitch) {
                     this.tempDatagrid.forEach((item)=>{
                         let tempwidth, _item = Object.assign({},item)
-                        if( _item.width && _item.width && _item.text !='位置名称'){
+                        if( _item.width && _item.text !='成本' && _item.width && _item.text !='位置名称'){
                             tempwidth = parseInt(_item.width)
                             _item.width = tempwidth + 26
                             temp.push( _item )
@@ -147,7 +158,7 @@ export default {
                 } else {
                     this.tempDatagrid.forEach((item)=>{
                         let tempwidth, _item = Object.assign({},item)
-                        if( _item.width){
+                        if( _item.width && _item.text !='成本'){
                             tempwidth = parseInt(_item.width)
                             _item.width = tempwidth + 13
                             temp.push( _item )
@@ -245,10 +256,14 @@ export default {
   mounted(){
     this.$nextTick(()=>{
       this.tableSwitch()
+      this._setMCustomScrollbar()
     })
   }
 }
 </script>
 
 <style>
+/*.hz-report-detail-tab-scroll{
+  height: 556px;
+}*/
 </style>

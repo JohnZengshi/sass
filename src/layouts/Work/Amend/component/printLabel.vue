@@ -21,7 +21,8 @@
   :productList="print.productList" 
   :totalNum="print.totalNum" 
   @requestProductList="requestProductList" 
-  @printTemplate="printTemplate" 
+  @printTemplate="printTemplate"
+  @getPrintLabelData="getPrintLabelData"
   @previewTemplate="previewTemplate">
 </PrintLabelByOrderDialog>
 
@@ -55,6 +56,7 @@
 </template>
 
 <script>
+import {JaTools} from '@/utils/JaTool.js';
 import {mapActions, mapGetters, mapState} from 'vuex'
 import PrintLabelByOrderDialog from 'components/template/PrintLabelByOrderDialog'
 //import TemplatePreviewDialog from 'components/template/TemplatePreviewDialog'
@@ -69,6 +71,7 @@ export default{
     return{
      print: {
           totalNum: 0,
+          templateList: [],
           productList: [],
           currentOrderNum: null,
           canvas: {
@@ -112,6 +115,11 @@ export default{
   props: ['orderNum', 'orderData'],
   created () {
     this.$store.dispatch('getTemplateList', {type: 2, fieldType: 'simple'})
+  },
+  watch: {
+      labelTemplateList: function() {
+        this.templateList = this.labelTemplateList
+      }
   },
   computed: {
     ...mapGetters([
@@ -258,6 +266,30 @@ export default{
       },10)
       
     },
+    getPrintLabelData(type, orderId, beginNum, endNum, canvas, selectedProducts, isPrint){
+      this.print.canvas = canvas
+      if(type==0){//勾选
+        this.previewTemplate(canvas, selectedProducts, isPrint);
+      }else if(type==1){//全部
+        this.$store.dispatch('getPrintLabelData', {orderId:orderId}).then(json => {
+          if(json.state == 200) {
+            this.$set(this.print, 'templateData', json.data)
+            //this.print.templateData = json.data;
+            this.print.isPreview = true;
+            this.printTemplate(canvas, json.data.productList);
+          }
+        })
+      }else if(type==2){//分页
+        this.$store.dispatch('getPrintLabelData', {orderId:orderId,beginNum:beginNum, endNum:endNum}).then(json => {
+          if(json.state == 200) {
+            this.$set(this.print, 'templateData', json.data)
+            //this.print.templateData = json.data;
+            this.print.isPreview = true;
+            this.printTemplate(canvas, json.data.productList);
+          }
+        })
+      }
+    },
     requestProductList (filter) {
         this.$store.dispatch('getPrintLabelByOrder', filter).then(json => {
             if (json.state == 200) {
@@ -280,7 +312,7 @@ export default{
                     //console.log(json.data);
                     this.print.templateData = json.data;
                     this.print.isPreview = true;
-                    this.printTemplate()
+                    this.printTemplate(canvas, json.data.productList);
                 }
             })
         } else {
@@ -291,14 +323,15 @@ export default{
                 if (json.state == 200) {
                     this.print.templateData.productList = json.data.productList.slice(0, 1)
                     this.print.isPreview = true
-                    this.printTemplate()
+                    this.printTemplate(canvas, json.data.productList);
                 }
             })
         }
     },
     //预览模板
-    printTemplate () {
-      this.$refs.lodop.multipagePrint()
+    printTemplate (templateList, dataList) {
+      JaTools.print(templateList, dataList);
+      // this.$refs.lodop.multipagePrint()
     },
     reportsPrintRK () { // 获取单据打印数据
         let options = {

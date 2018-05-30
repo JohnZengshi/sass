@@ -387,7 +387,7 @@ export default {
         //padding: 5px;
         white-space: nowrap;
         span {
-            display: table-cell;
+            display: inline-block;
             vertical-align: middle;
             line-height: 1;
         }

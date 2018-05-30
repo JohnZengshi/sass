@@ -403,7 +403,8 @@
           wJewelryId: '1',
           nColorId: '',
           nGemId: '',
-          nJewelryId: '1'
+          nJewelryId: '1',
+          specialId:''
         },
         dialogOptions: {
           conditionList: [
@@ -480,6 +481,11 @@
     },
     methods: {
       choseMenu(type) {
+        if(this.tabSwitch) {
+              this.dataGridOptions.specialId = ''
+          } else {
+              this.dataGridOptions.specialId = '1'
+        }
         if(type == 1) {
           this.positionSwitch = !this.positionSwitch
         } else if(type == 2) {

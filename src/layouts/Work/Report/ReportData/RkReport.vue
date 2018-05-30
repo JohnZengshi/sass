@@ -60,7 +60,7 @@
             <span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span>
             <span :class="1 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(1, 2)">智能分类</span>
             <span :class="2 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(2, 3)">产品分类</span>
-            <span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(3, 4)" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义
+            <span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义
                     <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
                     <div class="customDia" ref="customDia">
                     <div class="body">
@@ -399,7 +399,8 @@
           wJewelryId: '1',
           nColorId: '',
           nGemId: '',
-          nJewelryId: '1'
+          nJewelryId: '1',
+          specialId:''
         },
         dialogOptions: {
           conditionList: [
@@ -485,11 +486,17 @@
     },
     methods: {
       choseMenu(type) {
-        if(type == 1) {
-          this.positionSwitch = !this.positionSwitch
-        } else if(type == 2) {
-          this.tabSwitch = !this.tabSwitch
-        }
+          if(this.tabSwitch) {
+              this.dataGridOptions.specialId = ''
+          } else {
+              this.dataGridOptions.specialId = '1'
+          }
+          console.log(this.dataGridOptions)
+          if(type == 1) {
+            this.positionSwitch = !this.positionSwitch
+          } else if(type == 2) {
+            this.tabSwitch = !this.tabSwitch
+          }
       },
       resetOption() {
         // this.openReset = false

@@ -175,6 +175,7 @@
 						return littleData.englishName === currentData; // || littleData.name === currentData
 					})
 					let data = arr[0].open.filter(x => !readOnly(x.englishName));
+					console.log(data)
 					return data;
 				}
 			},
@@ -195,13 +196,20 @@
 				this.$set(this.popup, 'isShowLittleClass', this.popup.amendingLittleClass == '')
 				//选择输入
 				this.$set(this.popup, 'isShowData', this.popup.amendingData == '')
-
+				
+				// 非全选情况要对修改范围进行验证
+         if (!this.switchType){
+           if(!this.selectRange('sel1')){
+             this.selectRange('sel2')
+           }
+         }
+         
+				let _Arry = []
+				
 				if(!this.popup.isShowBigClass &&
 					!this.popup.isShowLittleClass &&
 					!this.popup.isShowData) {
-
-					let _Arry = []
-
+					
 					// 全选
 					if(this.switchType) {
 						this.allFlag = 1
@@ -236,7 +244,26 @@
 			},
 
 			//选择范围错误提示
-			selectRange(sel) {},
+			selectRange (sel) {
+      
+         if (sel == 'sel1') {
+           if (this.popup.amendingStartRow == '' || this.popup.amendingStartRow < 1 || this.popup.amendingStartRow > this.dataList.length ) {
+             this.popup.blurTitle = "调整的范围为 1-"+ this.dataList.length+"行"
+             this.$set(this.popup, 'editRanges', true)
+             return true
+           }else{
+             this.$set(this.popup, 'editRanges', false)
+             return false
+           }
+         } else {
+           if (this.popup.amendingEndRow == '' || this.popup.amendingEndRow > this.dataList.length) {
+             this.popup.blurTitle = "调整的范围为 1- "+this.dataList.length+" 行"
+             this.$set(this.popup, 'editRanges', true)
+           }else{
+             this.$set(this.popup, 'editRanges', false)
+           }
+         }
+    },
 
 			selectInput(val, type) {
 				if(this.popup[type]) {

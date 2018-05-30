@@ -51,7 +51,7 @@ export default {
             this.productTypeList()
         } else {
             this.productClassList()
-        }   
+        }
     },
     mounted () {
         let self = this
@@ -189,7 +189,6 @@ export default {
             })
         },
         productTypeList (val) { // 类型列表
-            console.log(this.classType)
             getProductTypeList().then((res) => {
                 console.log(res)
                 if (res.data.state == 200) {
@@ -200,7 +199,8 @@ export default {
                     }
                     this.dataList = res.data.data.list
                     for (let i = 0; i < res.data.data.list.length; i++) {
-                        if (res.data.data.list[i].classesType == 1) {
+                    		//将默认类别的子数据赋给右侧列表
+                        if (res.data.data.list[i].classesType == this.selType) {
                             //this.proType = 1
                             //this.dataList[i].classesName = '素金'
                             this.rightList = res.data.data.list[i].typeList
@@ -216,7 +216,7 @@ export default {
             }, (res) => {
                 console.log(res)
             })
-        }
+        },
     }
 }
 </script>

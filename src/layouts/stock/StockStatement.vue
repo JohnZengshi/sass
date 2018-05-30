@@ -1,5 +1,6 @@
 <template>
 <transition name="tp-ani">
+<!--   <printChange></printChange> -->
   <div class="stock-statement-main">
     <div class="stock-header-wrap">
       <div class="headervisi"></div>
@@ -52,14 +53,14 @@
           </li>
         </ul>
       </div>
-      <div class="echartdiv">
-      <Charts
+<!--       <div class="echartdiv"> -->
+<!--       <Charts
         :changeRepository="changeRepository"
         :changeShop="changeShop"
         :changeCounter="changeCounter"
-      ></Charts>
-      <StatisticsNumber :statisticalIndexData="statisticalIndexData"></StatisticsNumber>
-      </div>
+      ></Charts> -->
+<!--       <StatisticsNumber :statisticalIndexData="statisticalIndexData"></StatisticsNumber> -->
+<!--       </div> -->
     </div>
     <div class="footer-wrap" v-show="false">
       <!-- 成品 -->
@@ -99,6 +100,7 @@
   import Charts from './Charts'
   import StatisticsNumber from './StatisticsNumber'
   import {GetDateStr, GetMonth} from 'assets/js/getTime'
+    import printChange from "./base/printChange";
   import {seekRepositoryList, seekGetShopListByCo, seekShowCounterList, seekStatisticalIndex} from 'Api/commonality/seek'
   import DropDownMenu from 'components/template/DropDownMenu'
   export default {
@@ -108,7 +110,8 @@
       Charts,
       StatisticsNumber,
       StockTable,
-      DropDownMenu
+      DropDownMenu,
+      printChange
     },
     data () {
       return {
@@ -284,19 +287,26 @@
         seekRepositoryList()
           .then(res => {
             if (res.data.state === 200) {
-              this.repositoryList = res.data.data.repositoryList
+              this.repositoryList = [...res.data.data.repositoryList, {
+                isDefault: "Y",
+                repositoryId: "",
+                repositoryName: "全部仓库"
+              }]
             }
           })
       },
       _seekGetShopListByCo () {
         let options = {
           page: 1,
-          pageSize: 99
+          pageSize: 9999
         }
         seekGetShopListByCo(options)
           .then(res => {
             if (res.data.state === 200) {
-              this.shopList = res.data.data.shopList
+              this.shopList = [...res.data.data.shopList, {
+                shopId: '',
+                shopName: '全部店铺'
+              }]
             }
           })
       },
@@ -389,7 +399,8 @@
   width: 1250px;
   margin: 30px auto;
   .stock-header-wrap{
-    height: 410px;
+    // height: 410px;
+    height: 30px;
     position: relative;
     .headervisi{
       position: fixed;

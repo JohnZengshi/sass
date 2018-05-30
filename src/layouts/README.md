@@ -24,3 +24,9 @@ organizationChart           组织架构
       来访用户列表            VisitList
       设备列表                EquipmentList
       数据报表                DataStatement
+
+
+数据中心
+  data-center
+                          标签打印
+                              lable-print
