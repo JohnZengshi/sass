@@ -89,11 +89,11 @@
                         <i class="icon text-align-right-icon" :class="{active: data.textAlign == 'right'}" @click="textAlignAction('right')"></i>
                     </el-tooltip>
                 </div>
-                <div class="text-align">
+                <!--<div class="text-align">
                     <el-tooltip effect="dark" content="测试">
                         <i class="icon text-align-left-icon" @click="showData"></i>
                     </el-tooltip>
-                </div>
+                </div>-->
                 <div class="vertical-align">
                     <el-tooltip effect="dark" content="垂直顶部对齐">
                         <i class="icon vertical-align-top-icon" :class="{active: data.verticalAlign == 'top'}" @click="data.verticalAlign = 'top'"></i>
@@ -330,22 +330,23 @@ export default {
         },
         textAlignAction(type){
         	let that = this
-        	switch (type) {
-                case 'left':
-                    that.data.textAlign = type
-        						that.data.left = 0
-        						break
-                case 'center':
-                    that.data.textAlign = type
-                    var offsetLeft = (that.canvas.width / 2) - (that.data.width / 2)
-        						that.data.left = offsetLeft
-        						break
-                case 'right':
-                		this.data.textAlign = type
-                    var offsetLeft = that.canvas.width - that.data.width
-        						that.data.left = offsetLeft
-        						break
-            }
+        	that.data.textAlign = type
+//      	switch (type) {
+//              case 'left':
+//                  that.data.textAlign = type
+//      						that.data.left = 0
+//      						break
+//              case 'center':
+//                  that.data.textAlign = type
+//                  var offsetLeft = (that.canvas.width / 2) - (that.data.width / 2)
+//      						that.data.left = offsetLeft
+//      						break
+//              case 'right':
+//              		this.data.textAlign = type
+//                  var offsetLeft = that.canvas.width - that.data.width
+//      						that.data.left = offsetLeft
+//      						break
+//          }
         }
     },
     props: ['canvas'],
