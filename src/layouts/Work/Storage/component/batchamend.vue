@@ -414,7 +414,7 @@
 		// 批量修改
 		padding: 0 24px;
 		width: 320px;
-		height: 500px;
+		height: 520px;
 		background: #fff;
 		border-radius: 10px;
 		position: fixed;
@@ -496,7 +496,7 @@
 				.titleBox1 {
 					position: absolute;
 					left: 70px;
-					bottom: -15px;
+					bottom: -22px;
 					color: red;
 				}
 			}

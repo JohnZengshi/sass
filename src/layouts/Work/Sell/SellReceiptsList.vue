@@ -1048,17 +1048,17 @@
 					}
 				}
 			});
-			$(".new-table-wrap").mCustomScrollbar({
-				theme: "minimal-dark",
-				autoHideScrollbar: true,
-				scrollInertia: 500,
-				mouseWheel: {
-					scrollAmount: 200,
-					preventDefault: false,
-					normalizeDelta: false,
-					//disableOver: [div]
-				},
-			});
+//			$(".new-table-wrap").mCustomScrollbar({
+//				theme: "minimal-dark",
+//				autoHideScrollbar: true,
+//				scrollInertia: 500,
+//				mouseWheel: {
+//					scrollAmount: 200,
+//					preventDefault: false,
+//					normalizeDelta: false,
+//					//disableOver: [div]
+//				},
+//			});
 			$(".total-wrap").mCustomScrollbar({
 				axis: 'x',
 				theme: "minimal-dark",
@@ -3402,7 +3402,6 @@
 			width: 1250px;
 			box-sizing: border-box;
 			padding-right: 10px;
-			padding-bottom: 120px;
 			padding-top: 30px;
 			margin: 0 auto;
 			.body-header {

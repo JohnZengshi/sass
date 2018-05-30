@@ -237,7 +237,7 @@
 					if(tab.type === 'totalWeight') {
 						//四舍五入保留3位小数
 						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
-						console.log(this.dgDataList[fIndex])
+						console.log(this.dgDataList)
 						tempArray.push({
 							netWeight: item['netWeight'],
 							productId: productId
@@ -402,7 +402,6 @@
 					}
 					//修改成本保留2位小数
 					if(tab.type === 'costPrice') {
-						console.log(this.dgDataList[fIndex])
 						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 					}
 					//修改售价保留2位小数

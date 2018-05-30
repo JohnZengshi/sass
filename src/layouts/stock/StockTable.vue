@@ -147,10 +147,10 @@
           <report-detail v-if="dataGridStorage" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :isOld="isOld" :newList="newList" @lazyloadSend="sendlayLoad" @scrollClass="tabScrollShow" @sortList="sortListAct" :reportType="getReportType()">
           </report-detail>
         </div>
-        <!--<div class="exportTab" @click="exportTab()">
+        <div class="exportTab" @click="exportTab()">
           <i class="iconfont icon-daochu"></i>
           <span>导出表格</span>
-        </div>-->
+        </div>
         <div class="printBtn" @click="tabPrin()">
           <i class="iconfont icon-dayin1"></i>
           <span>打印库存</span>
