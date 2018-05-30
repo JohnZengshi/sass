@@ -39,6 +39,14 @@
 				</span>
 				<div>{{item.barcode}}</div>
 			</div>
+			<!-- 会员积分抵扣 -->
+			<div v-if="memberDataInfo.phone || item.offset !=0 " class="barcode">
+				<span>积分抵扣
+					<i></i>
+				</span>
+				<div>{{item.offset || 0}}</div>
+				<i>元</i>
+			</div>
 			<!--*******************************重量***********************************-->
 			<div v-if="item.productType == 1 || goodType == 3 && item.productType == 1" class="weight">
 				<span>金重
@@ -68,6 +76,7 @@
 				<div>{{item.oldPrice}}</div>
 				<i>元</i>
 			</div>
+
 			<div class="price" v-if="goodType == 2 && item.productType != 1 && item.productClass != '2'">
 				<span>原售价
 					<i></i>
@@ -137,6 +146,7 @@
 				<div><span v-if="status == 1 || multipleIdentities == 'N' && isOrderMan == false && status == 1 || companyPosition != 4 && companyPosition != 5 && multipleIdentities == 'N' || multipleIdentities == 'Y' &&  isOrderMan == false && status == 1 && companyPosition != 4 && companyPosition != 5">{{item.price}}</span><input v-else type="text" v-model="item.price" @keyup="computeFun(item, '实售价')" @keyup.enter="sendData(item, '实售价', item.calcMethod)" @blur="sendData(item, '实售价', item.calcMethod)"></div> <!--  :placeholder="unit4(item.newPrice)" -->
 				<i>元</i>
 			</div>
+
 			<!-- 换货 -->
 			
 			<div class="price" v-if="goodType != 1">
@@ -176,7 +186,8 @@ export default {
 		'orderManId', // 制单人
 		'status',
 		"shopRole",
-		'mantissa' // 1.四舍五入 2.抹掉小数 3.不处理
+		'mantissa', // 1.四舍五入 2.抹掉小数 3.不处理
+		'memberDataInfo'
 	],
 	components: {
 		remarkDialog
@@ -246,7 +257,10 @@ export default {
 					val = parseInt(value)
 					break;
 				case '3':
-					val = value.toFixed(2)
+					console.log('报错的参数',value)
+					if(!isNaN(value)){
+						val = value.toFixed(2)
+					}
 					break;
 			}
 			return val

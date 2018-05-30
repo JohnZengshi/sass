@@ -64,8 +64,8 @@
   <!--金价加减操作-->
   <div v-else-if="dialog.dialogSlot == 'goldAdd'" class="addGold">
      <div class="item-container">
-         <div class="item" v-for="item,i in dialog.smallDataList">
-             <span class="txt" v-text="item.smallClassName"></span>
+         <div class="item" v-for="(item,i) in dialog.smallDataList" :key="i">
+             <span class="txt" v-text="item.smallClassName || item.classesName"></span>
              <i 
                 class="iconfont" 
                 :class="item.selected ? 'icon-duigou':'empty'" 
@@ -75,13 +75,20 @@
      </div>
      <div class="addSet" :class="dialog.smallDataList.length > 1 ? '':'small'">
          <div class="selectAll" v-if="dialog.smallDataList.length > 1 ">
-                            全选<i class="iconfont" 
+                 全选<i class="iconfont" 
                  :class="selectClassAll ? 'icon-duigou' :'empty'" 
                  :title="selectClassAll ? '取消全选' :'全选'"
                  @click="selectAll"></i>
          </div>
+
          <div class="operate-model">
-            <div class="input-number">
+            <div class="input-number-pl" v-if="dialog.setjz === 1">
+                <input class="yuan" v-model="yuan" type="text">
+                <input class="score" v-model="score" type="text">
+                <p style="color:#2993f8;font-size:12px;">（消费金额 : 兑换积分）</p>
+            </div>
+
+            <div class="input-number" v-else>
                 <i class="el-icon-minus" title="减" @click="selectMinus"></i>
                 <i class="el-icon-plus" title="加" @click="selectPlus"></i>
                 <input type="text" value="" 
@@ -92,9 +99,10 @@
                     @focus="focusAct($event)"
                     />
             </div>
+
             <el-button type="primary" @click="sure" size="small">确 定</el-button>
          </div>
-     </div>
+      </div>
   </div>
   
   <div slot="footer" class="dialog-footer" v-if="dialog.dialogSlot != 'goldAdd'">
@@ -117,7 +125,9 @@ export default{
       selectClassAll: false,
       editSelectData : [],
       chartloading : false,
-      chartData : {}
+      chartData : {},
+      yuan:'100',
+      score:'1'
     }
   },
   
@@ -135,22 +145,33 @@ export default{
      
      
      'dialog.dialogVisible' : function(val){
-       console.log(val)
+        console.log(this.dialog)       
         //this.editSelectData = []
         this.smallDataList = []
         this.selectClassAll = false
         this.selectNum = 0
         //加减操作的数据
         if( this.dialog.dialogSlot == 'goldAdd' && this.dialog.dialogVisible ){
-         
-          this.dialog.smallDataList.forEach( (f,i) => {
+          console.log('数据',this.dialog.smallDataList)
+          if(this.dialog.setjz === 1){
+             this.dialog.smallDataList.forEach( (f,i) => {
               Object.assign(f,
                 { 
                    selected : false,//i == 0,
-                   classesId : f.smallClassId 
+                   classesId : f.classesId 
                 }
               )
-          })
+            })
+          }else {
+            this.dialog.smallDataList.forEach( (f,i) => {
+                Object.assign(f,
+                  { 
+                     selected : false,//i == 0,
+                     classesId : f.smallClassId 
+                  }
+                )
+            })
+          }
         }else if( this.dialog.dialogSlot == 'edit' && this.dialog.dialogVisible ){
             this.chartData = stocksDatas(this.dialog)
         }  
@@ -207,6 +228,16 @@ export default{
                   message : '请选择要加减的金价列表'
                })  
             }
+
+            if(tempSelected.length > 0 && dialog.setjz === 1) {
+                this.$emit('dialogCallback', tempSelected )
+                this.close()
+            }else {
+                this.$message({
+                  type :'error',
+                  message : '请选择要修改的设置'
+               }) 
+            }
           break;
        }
        
@@ -253,26 +284,40 @@ export default{
     
     dataFormats(){
        let selectedData = []
-       this.dialog.smallDataList.forEach((key)=>{
-         if( key.selected){
+       if(this.dialog.setjz === 1){
+         this.dialog.smallDataList.forEach(item => {
+           if(item.selected){
+             Object.assign(item,{
+               yuan:this.yuan,
+               score:this.score,
+             })
+             selectedData.push(item)
+           }
+         })
+         return selectedData
+       } else {
+         this.dialog.smallDataList.forEach((key)=>{
+           if( key.selected){
+  
+             let dayPrice = parseFloat(key.dayPrice)
+             let exchangePrice = parseFloat(key.exchangePrice)
+             let lowestPrice = parseFloat(key.lowestPrice)
+             let recyclePrice = parseFloat(key.recyclePrice)
+             let num = Math.abs(parseFloat(this.selectNum))
+             let type = this.selectNum >= 0
+             console.log(type,num)
+             Object.assign(key,{
+               dayPrice : type ? (dayPrice + num) : (dayPrice - (num)),
+               exchangePrice : type ? (exchangePrice + num) : (exchangePrice - (num)),
+               lowestPrice : type ? (lowestPrice + num) : (lowestPrice - (num)),
+               recyclePrice : type ? (recyclePrice + num) : (recyclePrice - (num))
+             })
+             
+             selectedData.push(key)
+           }
+        })
 
-           let dayPrice = parseFloat(key.dayPrice)
-           let exchangePrice = parseFloat(key.exchangePrice)
-           let lowestPrice = parseFloat(key.lowestPrice)
-           let recyclePrice = parseFloat(key.recyclePrice)
-           let num = Math.abs(parseFloat(this.selectNum))
-           let type = this.selectNum >= 0
-           console.log(type,num)
-           Object.assign(key,{
-             dayPrice : type ? (dayPrice + num) : (dayPrice - (num)),
-             exchangePrice : type ? (exchangePrice + num) : (exchangePrice - (num)),
-             lowestPrice : type ? (lowestPrice + num) : (lowestPrice - (num)),
-             recyclePrice : type ? (recyclePrice + num) : (recyclePrice - (num))
-           })
-           
-           selectedData.push(key)
-         }
-      })
+       }
        
        return selectedData
     },
@@ -558,6 +603,30 @@ export default{
       }
     }
   }
+}
+.input-number-pl {
+    width: 133px;
+    height: 24px;
+    float: left;
+    .yuan {
+      width: 48%;
+      height: 24px;
+      line-height: 24px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      text-align: center;
+      
+    }
+    .score {
+      width: 48%;
+      height: 24px;
+      line-height: 24px;      
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      text-align: center;
+      
+    }
+
 }
 </style>
 <style lang="scss">

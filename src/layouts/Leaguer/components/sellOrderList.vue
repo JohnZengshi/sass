@@ -4,12 +4,12 @@
             <div class="batch-header">
                 <div class="title">批量添加</div>
                 <div class="operate-bar-top">
-                    <div class="search">
+                    <!-- <div class="search">
                         <input v-model="keyword" type="text" :placeholder="listType == '单据' ? '请输入单据号' : '请输入条码号'">
                         <div class="search-btn">
                             <i class="iconfont icon-sousuo"></i>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="batch-time-wrap">
                         <div class="date-w81">
                             <el-date-picker
@@ -96,7 +96,7 @@
             </div>
             <div class="batch-footer">
                 <div class="btn-wrap">
-                    <div class="cenl-btn btn" @click="closeOnly">取消</div>
+                    <div class="cenl-btn btn" @click="closeBtn">取消</div>
                     <div class="add-btn btn" @click="close">添加</div>
                 </div>
                 <div class="checkAll">
@@ -263,7 +263,6 @@ export default {
         }
     },
     created () {
-        //console.log(111111111)
         this.getDate(0)
         this.goodsSellOrder()
         this.getShopUserList()
@@ -387,14 +386,16 @@ export default {
             console.log(id)
         },
         goodsSellOrder () {
-            console.log(this.orderOptions)
             if (this.shopManRole) { // 店员
                 this.orderOptions.Seller = sessionStorage.id
             }
+            console.log('店员参数有没有',this.orderOptions,this.shopManRole,this.userPositionInfo)
+
             seekGoodsSellOrder(this.orderOptions).then((res) => {
-                console.log(res)
+                console.log('看看这里的数据',res)
                 if (res.data.state == 200) {
                     this.dataList = res.data.data.orderList
+
                     this.totalNum = res.data.data.totalNum
                 }
             }, (res) => {
@@ -563,7 +564,7 @@ export default {
         getModuleType (parm) {
             return statusModuleType(parm);
         },
-        closeOnly () {//取消按钮
+        closeBtn () {//取消按钮
             this.checkList = [];
             this.$emit("closeOnly")
         },
@@ -804,7 +805,7 @@ export default {
         .table-main {
             width: 100%;
             height: 440px;
-            overflow-y: auto;
+            overflow-y: scroll;
             ul {
                 li {
                     width: 99%;
