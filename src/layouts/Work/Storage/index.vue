@@ -500,7 +500,7 @@ export default {
                 message : '添加商品失败'
               })
             }else{
-              this.isRefreshFooter = !this.isRefreshFooter
+//            this.isRefreshFooter = !this.isRefreshFooter
               this.$message({
                 type:'success',
                 message :'添加商品成功'

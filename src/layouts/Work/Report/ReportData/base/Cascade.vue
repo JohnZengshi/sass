@@ -6,7 +6,7 @@
             <i class="el-icon-circle-close" title="清除" @click="clearTitleInfo" v-else></i>
         </span>
         <ul class="drop-list">
-            <li @click.stop="changeDigItem(item)" @mouseover="tabData(item, index)" v-for="(item, index) in propList" >
+            <li v-if="item.classesType != '3' ? computedRole : true" @click.stop="changeDigItem(item)" @mouseover="tabData(item, index)" v-for="(item, index) in propList" >
                 {{getDataType(dataType, item)}}
                 <i class="el-icon-caret-right" v-if="index"></i>
                 <ul class="drop-list-right" v-if="index">
@@ -27,7 +27,8 @@ export default {
         'titleName',
         'propList',
         'dataType',
-        'subclassKey'
+        'subclassKey',
+        'computedRole'
     ],
     data () {
         return {
@@ -69,7 +70,6 @@ export default {
             // this.optionData.titleInfo = item.classesName
             // this.returnData.operateId = item.classesId
             // this.returnData.operateName = item.classesName
-            debugger
             if (classesType == '2') {
                 this.optionData.titleInfo = item.repositoryName
                 this.returnData.operateId = item.repositoryId

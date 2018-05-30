@@ -33,16 +33,20 @@
     
   <template v-else>
     <!--表格内容区  -->
-    <data-grid-body 
-      :detailDataGridColumn="detailDataGridColumn" 
-      :dataGridStorage="dataGridStorage" 
-      :reportType="reportType"
-      :tabSwitch="tabSwitch"
-      :positionSwitch="positionSwitch"
-      @scrollClass = "scrollClass"
-      @lazyloadSend = "lazyloadSend"
-      @tabCell="tabCell">
-    </data-grid-body>
+    <div class="hz-report-detail-tab-scroll">
+      <div>
+        <data-grid-body 
+          :detailDataGridColumn="detailDataGridColumn" 
+          :dataGridStorage="dataGridStorage" 
+          :reportType="reportType"
+          :tabSwitch="tabSwitch"
+          :positionSwitch="positionSwitch"
+          @scrollClass = "scrollClass"
+          @lazyloadSend = "lazyloadSend"
+          @tabCell="tabCell">
+        </data-grid-body>
+      </div>
+    </div>
   
     <!--表尾  -->
 <!--     <data-grid-footer 
@@ -108,6 +112,11 @@ export default {
   },
   props : ['dataGridStorage','reportType','tabSwitch','isOld', 'positionSwitch', 'newList','type'],
   methods:{
+    // _setMCustomScrollbar () {
+    //   $(".hz-report-detail-tab-scroll").mCustomScrollbar({
+    //       theme: "minimal-dark"
+    //   });
+    // },
     sortList (val) {
         //console.log(val)
         this.$emit('sortList', val)
@@ -247,10 +256,14 @@ export default {
   mounted(){
     this.$nextTick(()=>{
       this.tableSwitch()
+      this._setMCustomScrollbar()
     })
   }
 }
 </script>
 
 <style>
+/*.hz-report-detail-tab-scroll{
+  height: 556px;
+}*/
 </style>

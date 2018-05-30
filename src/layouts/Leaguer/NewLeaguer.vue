@@ -57,7 +57,7 @@
                     >
                     </DropDownMenu>
                 </li>
-                <li>
+<!--                 <li>
                     <div class="batch-time-wrap">
                         <div class="date-w81">
                             <el-date-picker
@@ -80,7 +80,7 @@
                             </el-date-picker>
                         </div>
                     </div>
-                </li>
+                </li> -->
                 <!-- <div class="goBack" @click="goBackAct()">返回上一级</div> -->
             </ul>
         </div>
@@ -590,8 +590,8 @@ export default {
             let options = {
                 shopId: this.shopId,
                 keyWord: this.keyWord,
-                startTime: this.adminStartTime,
-                endTime: this.adminEndTime,
+                // startTime: this.adminStartTime,
+                // endTime: this.adminEndTime,
                 memberType: this.memberType,
                 memberGrade: this.memberGrade,
                 followStatus: this.followStatus,

@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import {jcpPrint} from "@/tools/jcp-print";
 import DataGridHeader from './dataGridHeader'
 import DataGridBody from './dataGridBody'
 import DataGridFooter from './dataGridFooter'
@@ -59,6 +60,12 @@ export default {
 	},
 	props : ['dataGridStorage','reportType','tabSwitch','isOld', 'positionSwitch'],
 	methods:{
+        print () {
+            let doc = {
+              documents: document,
+            };
+            jcpPrint.printPreview(doc);
+        },
         lazyloadSend (val) {
             this.$emit('lazyloadSend', val)
         },

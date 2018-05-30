@@ -157,6 +157,12 @@ const systemMenu = [
 				path: '/work/report/sellreport',
 				icon: 'xiaoshou', 
 				children: []
+			},
+			{
+				text: '进销存汇总',
+				path: '/work/report/hzreport',
+				icon: 'jinxiaocunhuizong', 
+				children: []
 			}
 		]
 	},
@@ -256,13 +262,13 @@ const systemMenu = [
 			{
 				text: '来访用户列表',
 				path: '/faceRecognition/visitList',
-				icon: 'huiyuan1', 
+				icon: 'userlist', 
 				children: []
 			},
 			{
 				text: '设备列表',
 				path: '/faceRecognition/equipmentList',
-				icon: 'genjin', 
+				icon: 'devicelist', 
 				children: []
 			},
 			{

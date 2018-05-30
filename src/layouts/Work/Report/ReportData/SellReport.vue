@@ -623,7 +623,6 @@ export default {
     //后台请求时间
     //      this.propOptons.beginTime = this.getDate(0,'start').fullData
     //      this.propOptons.endTime = this.getDate(0,'end').fullData
-
     this.dataGridOptions.beginTime = this.getDate(0, "start").fullData;
     this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
 
@@ -875,18 +874,15 @@ export default {
       // 销售报表
       if (this.modleSwitch.type) {
         //后台请求时间
-        this.dataGridOptions.beginTime = this.getDate(
-          -(new Date().getDate() - 1),
-          "start"
-        ).fullData;
+        this.dataGridOptions.beginTime = this.getDate(0,"start").fullData;
         this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
         this.dataGridOptions.reportType = 3;
         //日期控件默认设置时间
-        this.beginTime = this.getDate(
-          -(new Date().getDate() - 1),
-          "start"
-        ).format;
-        this.endTime = this.getDate(0, "end").format;
+        // this.beginTime = this.getDate(
+        //   -(new Date().getDate() - 1),
+        //   "start"
+        // ).format;
+        // this.endTime = this.getDate(0, "end").format;
 
         this.sellShowId = "sales";
         this.currentReportName = "销售报表";

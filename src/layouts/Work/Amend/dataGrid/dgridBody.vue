@@ -150,6 +150,7 @@ let applyIndex = 0
 import * as configData from './config'
 import * as fetch from './fetchData'
 import {fixedData} from './config'
+import {seekProductClassList} from 'Api/commonality/seek'
 export default{
   data(){
     return{
@@ -170,6 +171,17 @@ export default{
   props:['fixedFullSize','dgDataList','activeClassIndex','synopsiData','selectContainer','smallDataList','orderNum','seekFlag', 'seekBarcode'],
   created(){
     this.selectConfig = fetch.Select
+    let options = {
+          type: 4
+      }
+      //获取主石/副石规格
+      seekProductClassList(options).then((response) => {
+            let stand = response.data.data.list[0].childrenList
+            this.datagridSelectData.stand = stand
+            this.datagridSelectData.deputyStand = stand
+      }, (response) => {
+          console.log(response)
+      })
   },
   watch: {
     seekFlag (val) {
@@ -875,6 +887,7 @@ export default{
     
     //下拉选择 点击事件
     selecChange(fg) {     
+    	console.log(fg)
       fg.event.stopPropagation()
       this.clearTime()
       let tpData = this.datagridSelectData[fg.td.type]
