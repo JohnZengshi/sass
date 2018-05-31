@@ -316,28 +316,33 @@ const store = {
               "admentUrl": "batchUpdatePriceTag",
               "stateOpen": "", // 开和关状态
               "propertyDatas": [],
-              "open": [{
-                  "name": "金料额",
-                  "englishName": ""
-              }, {
-                  "name": "证书费",
-                  "englishName": ""
-              }, {
-                  "name": "主石额",
-                  "englishName": ""
-              }, {
-                  "name": "副石额",
-                  "englishName": ""
-              }, {
-                  "name": "进货工费额（元）",
-                  "englishName": ""
-              }, {
-                  "name": "配件额",
-                  "englishName": ""
-              }, {
-                  "name": "其它费用额",
-                  "englishName": ""
-              }, {
+              "open": [
+              /*
+               * 标价只有成本，倍率，售价三个选项
+               */
+//            {
+//                "name": "金料额",
+//                "englishName": ""
+//            }, {
+//                "name": "证书费",
+//                "englishName": ""
+//            }, {
+//                "name": "主石额",
+//                "englishName": ""
+//            }, {
+//                "name": "副石额",
+//                "englishName": ""
+//            }, {
+//                "name": "进货工费额（元）",
+//                "englishName": ""
+//            }, {
+//                "name": "配件额",
+//                "englishName": ""
+//            }, {
+//                "name": "其它费用额",
+//                "englishName": ""
+//            }, 
+              {
                   "name": "成本",
                   "englishName": "costPrice"
               }, {

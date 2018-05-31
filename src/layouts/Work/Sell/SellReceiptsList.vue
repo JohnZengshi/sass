@@ -415,11 +415,11 @@
 									
 									<div class="footer-left">
 										<span @click.stop="goPro" v-if="entry.tep2List.isShowBtn">上一步</span>
-										<span @click.stop="goNext" v-if="entry.tep2List.isShowBtn1">下一步</span>
 									</div>
 
-									<div class="footer-right" @click.stop="goNext" v-if="isSkip == false">
-										跳过
+									<div class="footer-right" >
+										<span @click.stop="goNext" v-if="entry.tep2List.isShowBtn1">下一步</span>
+										<span @click.stop="goNext" v-if="isSkip == false">跳过</span>
 									</div>
 									
 								</div>
@@ -439,12 +439,12 @@
 									</ul>
 								</div>
 								<div class="footer">
-									<div class="footer-left" @click.stop="goNext" v-if="isSkip == false">
-										跳过
-									</div>
-									<div class="footer-right">
+									<div class="footer-left">
 										<span @click.stop="goPro" v-if="entry.tep3List.isShowBtn">上一步</span>
+									</div>
+									<div class="footer-right" >
 										<span @click.stop="goNext" v-if="entry.tep3List.isShowBtn1">下一步</span>
+										<span @click.stop="goNext" v-if="isSkip == false">跳过</span>
 									</div>
 								</div>
 							</div>

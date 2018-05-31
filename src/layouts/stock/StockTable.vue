@@ -725,6 +725,7 @@
         this.send()
       },
       tabs(index, type, evt) {
+      	console.log(index+','+type+','+evt)
         if(this.dataGridOptions.type == 4 && index == 3) {
           this.customDialog = true
         }
@@ -926,7 +927,10 @@
           }
         }
         this.dataGridOptions.type = port
-        this.send()
+        /*
+         * 20180531 下面的方法会导致请2次接口
+         */
+        //this.send()
       },
       /*
        * 数据请求  输入关键字搜索
@@ -1074,7 +1078,7 @@
       bottom: 0;
       right: -70px;
       background: #fff;
-      border-radius: 4px;
+      border-radius: 0 0 4px 4px;
       z-index: 10;
       text-align: center;
       cursor: pointer;
@@ -1109,7 +1113,7 @@
       bottom: 53px;
       right: -70px;
       background: #fff;
-      border-radius: 4px;
+      border-radius: 4px 4px 0 0;
       z-index: 10;
       text-align: center;
       cursor: pointer;

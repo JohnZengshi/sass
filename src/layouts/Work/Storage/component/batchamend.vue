@@ -175,6 +175,7 @@
 						return littleData.englishName === currentData; // || littleData.name === currentData
 					})
 					let data = arr[0].open.filter(x => !readOnly(x.englishName));
+//					let data = arr[0].open;
 					console.log(data)
 					return data;
 				}

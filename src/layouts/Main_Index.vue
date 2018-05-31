@@ -51,7 +51,7 @@
                         color0: item.orderStatus == '待发货',
                         color01: item.orderStatus == '待锁定'}"
                         >
-                        {{item.orderStatus}}</span>
+                        {{item.orderStatus =='待发货'?'未发货':item.orderStatus}}</span>
                 <span class="list-card2">{{item.orderType}}</span>
                 <span class="list-name">{{item.makeUserName}}</span>
                 <span class="list-time">{{item.createTime}}</span>
