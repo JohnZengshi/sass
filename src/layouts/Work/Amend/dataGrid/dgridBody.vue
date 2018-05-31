@@ -418,6 +418,7 @@ export default{
         */
         if(tab.type === 'goldCost' || tab.type === 'goldPrice'){
         	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
           tempArray.push({
             goldE : item.old['goldE'],
             productId: productId

@@ -1612,6 +1612,7 @@ color: #d6d6d6;
     margin-top: 2px;
     line-height: 16px;
     width: 60px;
+    text-align: center;
     position: relative;
     .sortwrap-img{
         position: absolute;

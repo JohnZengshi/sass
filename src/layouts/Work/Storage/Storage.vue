@@ -319,6 +319,7 @@
 			$(".receipts-list").mCustomScrollbar({
 				theme: "minimal-dark",
 				axis: 'y',
+				scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
 				mouseWheel: {
 					scrollAmount: 200,
 					preventDefault: false,
