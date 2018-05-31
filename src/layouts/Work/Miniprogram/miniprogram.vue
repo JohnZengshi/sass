@@ -43,9 +43,9 @@ import {seekGetShopListByCo,seekGetUserInfo} from 'Api/commonality/seek.js'
 export default{
     data(){
         return{
-           shopname: "",
-           shopListByCo: [],
-           shopId: ""
+            shopname: "",
+            shopListByCo: [],
+            shopId: ""
         }
     },created(){
        this.fixUserPromise();
@@ -55,7 +55,6 @@ export default{
         fixUserPromise(){
             //处理用户权限问题，到底有没有权限干啥
             seekGetUserInfo().then((res)=>{
-                console.log('小程序中--获取用户权限:',res);
                 if(res.data.state == 200){
                     for(let i=0;i<res.data.data.roleList.length;i++){
                         let codeNum = Number(res.data.data.roleList[i].role);
@@ -76,9 +75,6 @@ export default{
                     console.log(sessionStorage.getItem('miniprogramrole'));
                 }
             })
-           
-                 
-           //  console.log('获取用户角色:',sessionStorage.getItem('miniprogramrole'));
         },
         firstclick4(item,index) {
           if (item.dredge == 'N') {
@@ -87,8 +83,10 @@ export default{
           }
           this.shopname = item.shopName;
           this.shopId = item.shopId
+          sessionStorage.setItem('shopId', item.shopId)
+          sessionStorage.setItem('miniprogram',item.shopId)
+          sessionStorage.setItem('shopName', item.shopName)
           eventBus.$emit('xcx-upload-data', item.shopId)
-          sessionStorage.setItem('miniprogram',this.shopId);
         },
         gtShopListByCo () { // 获取店铺列表
             let options = {
@@ -98,14 +96,26 @@ export default{
             seekGetShopListByCo(options).then((res) => {
                 console.log(res.data.data.shopList)
                 this.shopListByCo = res.data.data.shopList
-                if (this.shopListByCo[0].shopId) {
+                if (sessionStorage.getItem('shopId')) {
+                  for (let i of this.shopListByCo) {
+                    if (i.shopId == sessionStorage.getItem('shopId')) {
+                        this.shopId = sessionStorage.getItem('shopId');
+                        this.shopname = sessionStorage.getItem('shopName');
+                    }
+                  }
+                } else if (this.shopListByCo[0].shopId) {
                   this.shopId = this.shopListByCo[0].shopId;
                   this.shopname = this.shopListByCo[0].shopName;
-                  // debugger;
+                  sessionStorage.setItem('miniprogram', this.shopListByCo[0].shopId)
                   eventBus.$emit('xcx-upload-data', this.shopListByCo[0].shopId)
-                  console.log('this.shopListByCo[0].shopId', this.shopListByCo[0].shopId)
-                  sessionStorage.setItem('miniprogram',this.shopId);
                 }
+                // if () {
+                  
+                //   // debugger;
+                  
+                //   console.log('this.shopListByCo[0].shopId', this.shopListByCo[0].shopId)
+                //   sessionStorage.setItem('miniprogram',this.shopId);
+                // }
             }, (res) => {
 
             })

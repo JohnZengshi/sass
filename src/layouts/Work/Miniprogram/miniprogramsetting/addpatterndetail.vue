@@ -136,7 +136,7 @@ import backdialog from "./../backdialog"
 export default{
     data(){
         return{
-          queryshopid:sessionStorage.getItem('miniprogram'),
+          queryshopid:sessionStorage.getItem('shopId'),
           querystyleId:this.$route.query.stid,
           isVisible:false,
           styleId:'',//如果是新增的，那么用这个ID
@@ -150,7 +150,7 @@ export default{
           selltypeArray:['现货','预售','下架'],
           selltype:-1,
           formpattern:{
-              shopId:sessionStorage.getItem('miniprogram'),//店铺ID
+              shopId:sessionStorage.getItem('shopId'),//店铺ID
               styleNo:'',//款号
               styleName:'',//款名
               jewelryId:'',//首饰大类
@@ -248,7 +248,7 @@ export default{
       savePatternitem(){
         //新增款号基本信息 ，不包括图片
          let options = {
-              shopId:sessionStorage.getItem('miniprogram'),//店铺ID
+              shopId:sessionStorage.getItem('shopId'),//店铺ID
               styleNo:this.formpattern.styleNo,//款号
               styleName:this.formpattern.styleName,//款名
               jewelryId:this.formpattern.jewelryId,//首饰大类
@@ -291,7 +291,7 @@ export default{
          }
          PatternList.push(statusObj);
          let options = {
-             shopId:sessionStorage.getItem('miniprogram'),
+             shopId:sessionStorage.getItem('shopId'),
              styleId:this.$route.query.stid,//如果是 编辑进来，这个位置会有值
              dataList:PatternList
          }
@@ -349,7 +349,7 @@ export default{
             patternPicList.push(vediourl);  
         //注：picId  新增的时候是传 url,修改删除的时候是传图片ID，后台这么说的，跟前端没关系，跟后台说了，后台不改
         let options ={
-            shopId:sessionStorage.getItem('miniprogram'),//店铺ID
+            shopId:sessionStorage.getItem('shopId'),//店铺ID
             styleId:this.styleId,//如果是新增。会先拿到款号ID
             dataList:patternPicList
         } 
@@ -385,7 +385,7 @@ export default{
         }
         //注：picId  新增的时候是传 url,修改删除的时候是传图片ID，后台这么说的，跟前端没关系，跟后台说了，后台不改
         let options ={
-             shopId:sessionStorage.getItem('miniprogram'),//店铺ID
+             shopId:sessionStorage.getItem('shopId'),//店铺ID
              styleId:this.$route.query.stid,//如果是删除。会传款号ID过来
              dataList:patternPicList
         }
@@ -599,7 +599,7 @@ export default{
       getPatternDetailList(){
           if(this.$route.query.stid != '' && this.$route.query.stid != null){
             let options = {
-              shopId:sessionStorage.getItem('miniprogram'),
+              shopId:sessionStorage.getItem('shopId'),
               styleId:this.$route.query.stid
             }
             programGirardInfo(options).then((res)=>{
@@ -644,7 +644,7 @@ export default{
                return;
           }
           let options ={
-              shopId:sessionStorage.getItem('miniprogram'),
+              shopId:sessionStorage.getItem('shopId'),
               styleId:'',
               operateType:2,// 1 删除  2新增
               barcode:this.barcode//商品条码号
@@ -679,7 +679,7 @@ export default{
       getprogramProductGirardList(){
           //关联商品列表--请求
           let options = {
-              shopId:sessionStorage.getItem('miniprogram'),//店铺ID
+              shopId:sessionStorage.getItem('shopId'),//店铺ID
               styleId:'',//款号ID
               sellStatus:4,//3全部 2已售 1在售
               page:this.page,//当前页
