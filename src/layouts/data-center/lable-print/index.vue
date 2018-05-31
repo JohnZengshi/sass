@@ -40,6 +40,7 @@
         </div>
       </div>
       <div class="Rp_dataGrid_container">
+
         <div class="rp_gridState">
           <p class="side-nav"><i class="iconfont icon-liebiao"></i>商品列表</p>
           <div class="sort-wrap">
@@ -52,11 +53,9 @@
             </div>
           </div>
 
-          <div class="data-center-header-right-cut">
-            收起<i class="iconfont icon-arrow-down drop-triangle" style="margin-left: 5px;"></i>
-          </div>
-
         </div>
+
+        <filter-header></filter-header>
 
       </div>
       <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
@@ -86,14 +85,15 @@ import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DownMenu from 'base/menu/DownMenu'
 import ReportDetail from './newDataGrid/reportDetailTab'
 import DropDownMenu from '@/components/template/DropDownMenu'
-
+import filterHeader from './base/filter-header'
 
 export default {
   components: {
     ReportDetail,
     Cascade,
     DropDownMenu,
-    DownMenu
+    DownMenu,
+    filterHeader
   },
   data() {
     return {
