@@ -2816,7 +2816,7 @@
 			// 收银积分操作
 			setMemberBuyIntegral(type) {
 				
-				if(!this.memberDataInfo.memberId && !this.receiptsIntroList.orderNum && !this.receiptsIntroList.shopId) {
+				if(!this.memberDataInfo.memberId || !this.receiptsIntroList.orderNum || !this.receiptsIntroList.shopId) {
 					return
 				}
 
