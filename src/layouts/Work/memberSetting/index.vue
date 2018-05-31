@@ -679,6 +679,7 @@ $fontColor:#47a3fb;
                                 text-align: left;
                                 font-size: 14px;
                                 border-radius: 3px;
+                                text-align: center;
                                 border: 1px solid #2993f8;
                                 &:active,
                                 &:hover,
@@ -686,6 +687,15 @@ $fontColor:#47a3fb;
                                     border: 1px solid #2993f8;
                                     background-color: #f4f9ff;
                                 }
+                        }
+
+                        // 移除number的箭头
+                        input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                        }
+                        input[type="number"]{
+                            -moz-appearance: textfield;
                         }
                     }
                     .item-input{
