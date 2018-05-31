@@ -227,7 +227,7 @@ export default {
 		},
 		memberDataInfo(val) {
 			if(val.phone) {
-				
+
 			}
 		}
 	},
@@ -656,6 +656,7 @@ export default {
 			return parm + '元'
 		},
 		getType(type) {
+			// console.log('退货还是回收',this.item.productClass,type)
 			if (type == 1) {
 				this.goodTypeText = "销售"
 			} else if (type == 2) {

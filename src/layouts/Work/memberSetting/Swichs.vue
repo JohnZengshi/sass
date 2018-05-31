@@ -27,7 +27,6 @@
     },
     watch:{
       'status'(val){
-        console.log(val)
         switch (this.type) {
           case 'addOrSubConfig':
             if(this.status == 'N') {

@@ -213,7 +213,7 @@ export default {
                 cashStatus: -1,
                 orderNum: '',
                 page: 1,
-                pageSize: 10,
+                pageSize: 9999,
                 startTime: '',
                 endTime: '',
                 sNumRange: '',
@@ -340,22 +340,22 @@ export default {
             })
         },
         changeCheckList (val) {
-            if (this.isEdit && val.length == 0) {
-                this.$confirm('无负责人时，此会员的所有跟进将被删除！', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                }).then(() => {
-                    // this.$message({
-                    //     type: 'success',
-                    //     message: '删除成功!'
-                    // });
-                }).catch(() => {
-                    // this.$message({
-                    //     type: 'info',
-                    //     message: '已取消删除'
-                    // });          
-                });
-            }
+            // if (this.isEdit && val.length == 0) {
+            //     this.$confirm('无负责人时，此会员的所有跟进将被删除！', '提示', {
+            //         confirmButtonText: '确定',
+            //         cancelButtonText: '取消',
+            //     }).then(() => {
+            //         // this.$message({
+            //         //     type: 'success',
+            //         //     message: '删除成功!'
+            //         // });
+            //     }).catch(() => {
+            //         // this.$message({
+            //         //     type: 'info',
+            //         //     message: '已取消删除'
+            //         // });          
+            //     });
+            // }
         },
         scrollFun (el) {
             if (el.target.scrollTop >= (el.target.scrollHeight - 440)) {
@@ -389,10 +389,10 @@ export default {
             if (this.shopManRole) { // 店员
                 this.orderOptions.Seller = sessionStorage.id
             }
-            console.log('店员参数有没有',this.orderOptions,this.shopManRole,this.userPositionInfo)
 
+            this.orderOptions.shopId = this.shopId
             seekGoodsSellOrder(this.orderOptions).then((res) => {
-                console.log('看看这里的数据',res)
+                console.log('这是关联的列表',res.data.data)
                 if (res.data.state == 200) {
                     this.dataList = res.data.data.orderList
 
@@ -528,7 +528,6 @@ export default {
             }else if( type == 'start'){
               hours = mins = seconds = '00'
             }
-            console.log(Day)
             this.endTime = Year + '-' + month + '-' + Day
             this.startTime = Year + '-' + month + '-' + (Day- (Day-1))
             //this.seekReceipts()

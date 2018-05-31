@@ -20,8 +20,8 @@
                     <p>积分模板应用店铺</p>
                 </div>
                 <!-- 店铺复选框 -->
-                <el-checkbox-group class="shop-setting-content" v-model="checkList">
-                    <el-checkbox class="checkbox-item" @change="setShopTemplat(item)" :disabled="item.binding === 'Y' || isDisabled" :label="item.shopId" v-for="(item,index) in shopList" :key="index"><span>{{item.shopName}}</span></el-checkbox>
+                <el-checkbox-group id="shopList" class="shop-setting-content" v-model="checkList">
+                    <el-checkbox class="checkbox-item" :class="item.existence === 'Y' && item.binding === 'N' ? 'disColor' : ''" @change="setShopTemplat(item)" :disabled="isDisabled" :label="item.shopId" v-for="(item,index) in shopList" :key="index"><span>{{item.shopName}}</span></el-checkbox>
                 </el-checkbox-group>
 
             </div>
@@ -144,7 +144,7 @@
                     </p>
                 </div>
                 <div class="issue-content">
-                    <div v-for="(item,index) in templateInfoData.othenList" :key="index">
+                    <div class="cycle-box" v-for="(item,index) in templateInfoData.othenList" :key="index">
                         <!-- 注册 -->
                         <div class="item" v-show="item.othenName == '1'" >
                             <div class="item-circle"></div>
@@ -278,7 +278,7 @@
 
         <!-- 积分发放配置 -->
         <el-dialog :visible.sync="dialogVisible" custom-class="dialogDom" element-loading-text="拼命加载中">
-			<div class="sell-type-one-main">
+			<div class="sell-type-one-main me-style">
 				<div class="dia-title" slot="title">
 					<img src="~static/img/smartimport.png">
 					<h3>添加配置条件</h3>
@@ -296,7 +296,7 @@
     </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 $fontColor:#47a3fb;
 .member-points-wrap {
     width: 1250px;
@@ -329,7 +329,7 @@ $fontColor:#47a3fb;
             }
         }
         .shop-setting{
-            height: 250px;
+            // height: 250px;
             padding: 0 40px;
             margin-bottom: 40px;
             .shop-setting-title{
@@ -355,12 +355,12 @@ $fontColor:#47a3fb;
                 display: flex;
                 flex-wrap: wrap;
                 width: 100%;
-                height: 200px;
+                // height: 200px;
                 padding: 30px 34px;
                 background: #f6f7f8;
                 border-radius: 10px;
 
-                overflow-y:scroll;
+                // overflow-y:scroll;
                 .checkbox-item {
                     width: 33.33%;
                     margin: 0;
@@ -400,23 +400,32 @@ $fontColor:#47a3fb;
                 border-radius: 10px;                
                 // padding: 0 50px;
                 position: relative;
+                .el-radio__label {
+                    color: #666;
+                }
+                .el-radio__label {
+                    padding-left: 8px;
+                }
                 .integral-xs{
                     width: 25%;
                     display: flex;
                     justify-content: space-around;
-                    color: #47a3fb;
+                    color: #2993f8;
+
                 }
                 .integral-th{
                     width: 25%;
                     display: flex;
                     justify-content: space-around;
-                    color: #ff8c97;
+                    color: #ff6071;
+                    
                 }
                 .integral-hh{
                     width: 25%;
                     display: flex;
                     justify-content: space-around;
                     color: #fd914f;
+                    
                 }
                 .integral-hs{
                     width: 25%;
@@ -426,26 +435,30 @@ $fontColor:#47a3fb;
                 }
                 .xs{
                     border: 2px solid #47a3fb;
-                    background: rgba(41, 147, 248, .1);     
+                    background: rgba(41, 147, 248, .1);
+                    font-weight: bold;                         
                 }
                 .hh{
                     border: 2px solid #fd914f;
                     background: rgba(253, 145, 79, .1);     
+                    font-weight: bold;                    
                 }
                 .th{
                     border: 2px solid #ff8c97;
-                    background: rgba(255, 96, 113, .1);     
+                    background: rgba(255, 96, 113, .1);    
+                    font-weight: bold;                     
                 }
                 .hs{
                     border: 2px solid #c46de8;
                     background: rgba(196, 109, 233, .1);     
+                    font-weight: bold;                    
                 }
                 .integral-left{
-                    width: 60px;
-                    height: 60px;
+                    width: 66px;
+                    height: 66px;
                     border-radius: 50%;
                     text-align: center;
-                    line-height: 56px;
+                    line-height: 64px;
                                    
                 }
                 .integral-right{
@@ -453,8 +466,8 @@ $fontColor:#47a3fb;
                     .intergral-item{
                         display: block;
                         width: 100%;
-                        height: 20px;
-                        line-height: 20px;
+                        height: 22px;
+                        line-height: 22px;
                         margin: 0;
                         color: #666;
                     }
@@ -470,14 +483,14 @@ $fontColor:#47a3fb;
         }
         .product-setting{
             // height: 900px;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
             padding: 0 40px;
             .product-setting-content{
                 background: #f6f7f8;
                 padding: 26px 30px;
                 border-radius: 10px;    
                 .producet-jz{
-                    margin-bottom: 30px;
+                    margin-bottom: 20px;
                 }
                 .producet-jj{
                     // height: 500px;
@@ -499,13 +512,14 @@ $fontColor:#47a3fb;
                         height: 138px;
                         background: #fff;
                         border-radius: 10px;
-                        padding: 24px;
+                        padding: 23px 23px 20px;
                         margin-bottom: 20px;
                         margin-right: 16px;
                         .item-title{
-                            color: #47a3fb;
+                            color: #2993f8;
                             font-size: 16px;
                             margin-bottom: 10px;
+                            font-weight: bold;
                         }
                         .item-input{
                             overflow: hidden;
@@ -526,9 +540,18 @@ $fontColor:#47a3fb;
                                     background-color: #f4f9ff;
                                 }
                             }
+                            // 移除number的箭头
+                            input::-webkit-outer-spin-button,
+                            input::-webkit-inner-spin-button {
+                                -webkit-appearance: none;
+                            }
+                            input[type="number"]{
+                                -moz-appearance: textfield;
+                            }
                         }
                         .item-message{
                             font-size: 12px;
+                            color: #666;
                             display:flex;
                             justify-content: space-between;
                         }
@@ -541,13 +564,15 @@ $fontColor:#47a3fb;
             padding: 0 40px;
             margin-bottom: 40px;      
             .issue-content {
-                height: 220px;
+                // height: 220px;
                 background: #f6f7f8;
-                padding: 40px 30px;
+                padding: 40px 30px 0;
                 border-radius: 10px;
+                .cycle-box {
+                    padding-bottom: 30px;
+                }
                 .item {
                     height: 38px;
-                    margin-bottom: 24px;
                     color: #333;
                     font-size: 14px;
                     .item-circle{
@@ -559,7 +584,7 @@ $fontColor:#47a3fb;
                         margin-right: 20px;
                     }
                     .item-title{
-                        margin-right: 32px;
+                        margin-right: 28px;
                     }
                     .input-box {
                         display: inline-block;
@@ -571,13 +596,23 @@ $fontColor:#47a3fb;
                                 text-align: left;
                                 font-size: 14px;
                                 border-radius: 3px;
-                                border: 1px solid #2993f8;                                
+                                border: 1px solid #2993f8;     
+                                text-align: center;                           
                                 &:active,
                                 &:hover,
                                 &:focus{
                                     border: 1px solid #2993f8;
                                     background-color: #f4f9ff;
                                 }
+                        }
+
+                        // 移除number的箭头
+                        input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                        }
+                        input[type="number"]{
+                            -moz-appearance: textfield;
                         }
                     }
                     .item-input{
@@ -588,7 +623,7 @@ $fontColor:#47a3fb;
                         }
                     }
                     .fg-fen {
-                        margin-right: 50px;
+                        margin-right: 38px;
                     }
                     i{
                         margin-left: 20px;
@@ -698,7 +733,7 @@ $fontColor:#47a3fb;
     }
 
 }
-.sell-type-one-main {
+.sell-type-one-main.me-style{
     position: absolute;
     top: 50%;
     left: 50%;
@@ -857,7 +892,10 @@ $fontColor:#47a3fb;
         }
     }
 }
-
+#shopList .disColor .is-checked .el-checkbox__inner{
+    background-color: #ccc;
+    border-color: #ccc;
+}
 </style>
 
 <script>
@@ -1195,10 +1233,10 @@ export default {
         },
         // 修改消费发放
         setConsumeTemplateUpdate(item){
-            if(item.yuan < 0) {
+            if(item && item.yuan < 0) {
                 item.yuan = 0
             }
-            if(item.score < 0) {
+            if(item && item.score < 0) {
                 item.score = 0
             }
             let options = {}
@@ -1305,7 +1343,9 @@ export default {
         },
         // 获取店铺列表
         getShopList() {
-            let options = {}
+            let options = {
+                templateId : this.$route.query.templateId,                
+            }
             if(this.isDisabled){
                 options = {
                     templateId : this.$route.query.templateId,
@@ -1645,38 +1685,79 @@ export default {
         },
         // 店铺关联模板
         setShopTemplat(data) {
-            if(this.isDisabled) {
-                return;
-            }
-            
-            let flag = false
-            let options = {}
-            this.checkList.forEach(item => {
-                if(item === data.shopId){
-                    flag = true
-                }
-            })
-            if(flag){
-                options = {
-                    templateId: this.$route.query.templateId,
-                    operateType:'1',
-                    shopId:data.shopId
-                }
-            } else {
-                options = {
-                    templateId: this.$route.query.templateId,
-                    operateType:'2',
-                    shopId:data.shopId
-                }
-            }
-            shopReTemplateById(options).then(res => {
-                if(res.data.state != 200){
-                    this.$message({
-                        type:'error',
-                        message: res.data.msg
+            console.log(data)
+
+            // 有模板绑定的店铺
+            if(data.existence === 'Y' && data.binding === 'N'){
+                this.checkList.push(data)
+
+                this.$confirm('是否替换成该模板','提示',{
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(() => {
+
+                    options = {
+                        templateId: this.$route.query.templateId,
+                        operateType:'1',
+                        shopId:data.shopId
+                    }
+
+                    shopReTemplateById(options).then(res => {
+                        if(res.data.state != 200){
+                            this.$message({
+                                type:'error',
+                                message: res.data.msg
+                            })
+                        }
+                        if(res.data.state == 200) {
+                            this.$message({
+                                type:'success',
+                                message: '替换成功'
+                            })
+                            this.getShopList()
+                        }
                     })
+                }).catch(() => {
+                    this.getShopList()                    
+                })
+
+            } else {
+                if(this.isDisabled) {
+                    return;
                 }
-            })
+                
+                let flag = false
+                let options = {}
+    
+                this.checkList.forEach(item => {
+                    if(item === data.shopId){
+                        flag = true
+                    }
+                })
+                if(flag){
+                    options = {
+                        templateId: this.$route.query.templateId,
+                        operateType:'1',
+                        shopId:data.shopId
+                    }
+                } else {
+                    options = {
+                        templateId: this.$route.query.templateId,
+                        operateType:'2',
+                        shopId:data.shopId
+                    }
+                }
+                shopReTemplateById(options).then(res => {
+                    if(res.data.state != 200){
+                        this.$message({
+                            type:'error',
+                            message: res.data.msg
+                        })
+                    }
+                })
+
+            }
+
         }
     },
     watch:{
@@ -1719,8 +1800,8 @@ export default {
             userId: sessionStorage.getItem('id')
         }
         seekGetUserInfo(options).then(res => {
-            console.log('刷新后的用户权限',res)
-            if(res.data.roleList.length === 1){
+            console.log('刷新后的用户权限',res.data.data)
+            if(res.data.data.roleList.length === 1){
                 if(res.data.roleList[0].role > 3){
                     this.isDisabled = true
                 } else {

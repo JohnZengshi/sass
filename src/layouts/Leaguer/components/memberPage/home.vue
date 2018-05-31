@@ -356,16 +356,26 @@ export default {
         }
         // 关联销售单
         let orderList = []
+
         orderList = this.oldMemberInfo.orderList || []
+
+        // 优化 把自己有的销售单给剔除
+
         val.forEach((item, index) => {
             orderList[index] = {orderNo: item}
         })
+
+        console.log('我的orderList',orderList)
+        
         let options = Object.assign({},this.oldMemberInfo,{
             memberId:this.memberId,
             shopId:this.shopId,
-            orderList
+            orderList:orderList
         })
+        console.log('关联的参数',options)
+        // return
         operateMemberUpdateBy(options).then(res => {
+            console.log('关联成功',res)
             if(res.data.state === 200) {
                 this.$emit("goBack",true)                
                 this.$message({
