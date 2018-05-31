@@ -8,8 +8,8 @@
             <ul class="list-left">
                 
                 <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
-                    <li @mouseover="selLeftItem(item, index)" :class="{active: index == leftIndex}" v-for="(item, index) in propsList">
-                       <el-checkbox :label="item.classesType" :style="filterStyle(item.classesType)" :class="{active: true}" style="font-size: 14px;">{{item.classesName}}</el-checkbox>
+                    <li @mouseover="selLeftItem(item, index)" v-for="(item, index) in propsList">
+                       <el-checkbox :indeterminate="false" :label="item.classesType" :style="filterStyle(item.classesType)" :class="{active: true}" style="font-size: 14px;">{{item.classesName}}</el-checkbox>
                     </li>
                 </el-checkbox-group>
 
@@ -73,10 +73,14 @@ export default {
                     }
                 }
             } else if (newValue.length < oldValue.length){ // 删除
+                let amendValue = ''
+                for (let k of oldValue) {
+                    if (!newValue.includes(k)) {
+                        amendValue = k
+                    }
+                }
                 for (let i of this.propsList) {
-                    console.log('玄幻值', i)
-                    if (i.classesType == oldValue.slice(oldValue.length -1, oldValue.length)[0]) {
-                        console.log('进来值', i.classesType, oldValue.slice(oldValue.length -1, oldValue.length)[0])
+                    if (i.classesType == amendValue) {
                         for (let j of i.typeList) {
                             this.smallIdList.forEach((currentValue,index,arr) => {
                                 if (currentValue == j.classesId) {
@@ -87,18 +91,44 @@ export default {
                     }
                 }
             }
-            // else { // 删除
-            //     for (let i of this.propsList) {
-            //         if (i.classesType == oldValue.splice(newValue.length, newValue.length + 1)) {
-            //             for (let j of i.typeList) {
-            //                 let newData = this.smallIdList.filter((currentValue,index,arr) => {
-            //                     return currentValue != j.classesId
-            //                 })
-            //                 this.smallIdList = newData
-            //             }
-            //         }
-            //     }
-            // }
+        },
+        smallIdList (newValue, oldValue) {
+            if (newValue.length < oldValue.length) { // 减小了一个值
+                for (let i of this.propsList) {
+                    for (let j of i.typeList) {
+                        // 删除
+                        if (!newValue.includes(j.classesId)) {
+                            this.checkedCities.forEach((currentValue,index,arr) => {
+                                if (currentValue == j.classesType) {
+                                    this.checkedCities.splice(index, index+1)
+                                    return
+                                }
+                            })
+                            return
+                        }
+                    }
+                } 
+            } else if (newValue.length > oldValue.length) { // 新增一个值
+
+                for (let i of this.propsList) {
+
+                    let isHas = true
+
+                    for (let j of i.typeList) {
+                        // 删除
+                        if (!newValue.includes(j.classesId)) {
+                            isHas = false
+                        }
+                    }
+
+                    if (this.checkedCities.includes(i.classesType)) {
+                        return
+                    } else {
+                        this.checkedCities.push(i.classesType)
+                    }
+                }
+
+            }
         }
     },
     methods: {
@@ -118,6 +148,7 @@ export default {
             console.log('选择的大类', parm)
         },
         changeSmallId (parm) {
+            console.log('大类', this.checkedCities)
             console.log('选择小类', parm)
         },
         selLeftItem (item, index) {
@@ -234,6 +265,10 @@ export default {
                 font-size: 14px;
                 border-bottom: 1px solid #f1f2f3;
                 cursor: pointer;
+                &:hover{
+                    background:#f6f7f8;
+                    color:#3195f5;
+                }
             }
             li.active {
                 color:#2993f8;
@@ -245,14 +280,26 @@ export default {
             float: left;
             overflow-y: auto;
             li {
+                // height: 40px;
+                // width: 100%;
+                // line-height: 40px;
+                // font-size: 14px;
+                // padding-left: 14px;
+                // text-align: left;
+                // border-bottom: 1px solid #f1f2f3;
+                // cursor: pointer
                 height: 40px;
                 width: 100%;
                 line-height: 40px;
-                font-size: 14px;
-                padding-left: 14px;
                 text-align: left;
+                padding-left: 14px;
+                font-size: 14px;
                 border-bottom: 1px solid #f1f2f3;
-                cursor: pointer
+                cursor: pointer;
+                &:hover{
+                    background:#f6f7f8;
+                    color:#3195f5;
+                }
             }
             li.active {
                 color:#2993f8;
