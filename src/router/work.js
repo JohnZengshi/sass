@@ -15,6 +15,7 @@ import shopSetting from "./apply/shopSetting.js"
 import report from "./apply/report"
 import sell from "./apply/sell.js"
 import serve from "./apply/serve.js"
+import memberSetting from './apply/memberSetting.js'
 
 import label from "./apply/label.js"
 import template from './apply/template' // 模板
@@ -42,6 +43,7 @@ const work = {
     {...serve},
     {...report},
     {...label},
-    {...template}]
+    {...template},
+    {...memberSetting}]
 }
 export default work;
