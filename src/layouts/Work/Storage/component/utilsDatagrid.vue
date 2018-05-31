@@ -221,6 +221,14 @@ export default{
     popupSubmit (data){
       switch(this.title){
         case '驳回审核':
+        	console.log(data)
+        	if(!data){
+        		this.$message({
+                message: '请输入驳回理由',
+                type: 'warning'
+            })
+        		return false;
+        	}
           this.rejectAudit(data)
         break;
         case '通过审核':
