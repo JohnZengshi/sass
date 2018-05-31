@@ -217,6 +217,7 @@
 
 					// 修改配件数、计价方式 、单价需要同步更新配件额字段
 					if(tab.type == 'partCount' || tab.type === 'calcMethod' || tab.type === 'partPrice') {
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 						tempArray.push({
 							price: item['price'],
 							productId: productId
@@ -225,6 +226,7 @@
 
 					// 修改配件额  同步更新单价字段
 					if(tab.type == 'price') {
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 						tempArray.push({
 							partPrice: item['partPrice'],
 							productId: productId
@@ -233,6 +235,9 @@
 
 					// 修改总件重 同步更新净金重
 					if(tab.type === 'totalWeight') {
+						//四舍五入保留3位小数
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
+						console.log(this.dgDataList)
 						tempArray.push({
 							netWeight: item['netWeight'],
 							productId: productId
@@ -241,6 +246,8 @@
 
 					// 修改净金重 同步更新含配金重、总件重
 					if(tab.type === 'netWeight') {
+						//四舍五入保留3位小数
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
 						tempArray.push({
 							heavyCode: item['heavyCode'],
 							productId: productId
@@ -253,6 +260,8 @@
 
 					// 修改含配金重 同步更新净金重 
 					if(tab.type === 'heavyCode') {
+						//四舍五入保留3位小数
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
 						tempArray.push({
 							netWeight: item['netWeight'],
 							productId: productId
@@ -265,6 +274,8 @@
 					 * 3、修改净金重同步更新金料额
 					 */
 					if(tab.type === 'goldCost' || tab.type === 'goldPrice' || tab.type === 'netWeight') {
+						//四舍五入保留3位小数
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 //						if(item.goldCost == 0 || item.goldCost == '0.00') {
 //							item.goldCost = 1
 //						}
@@ -276,6 +287,8 @@
 
 					// 修改金料额同步更新金价
 					if(tab.type === 'goldE') {
+						//四舍五入保留3位小数
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 						tempArray.push({
 							goldPrice: item['goldPrice'],
 							productId: productId
@@ -287,6 +300,8 @@
 					 * 2、修改进货工费方式同步更新进货工费额
 					 */
 					if(tab.type === 'inFee' || tab.type === 'inMethod') {
+						console.log(this.dgDataList[fIndex])
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 						tempArray.push({
 							inMoney: item['inMoney'],
 							productId: productId
@@ -295,6 +310,7 @@
 
 					// 修改进货工费额同步更新进货工费
 					if(tab.type === 'inMoney') {
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 						tempArray.push({
 							inFee: item['inFee'],
 							productId: productId
@@ -312,6 +328,7 @@
 						tab.type === 'deputyUnitPrice' ||
 						tab.type === 'deputyCalcMethod'
 					) {
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 						tempArray.push({
 							deputyPrice: item['deputyPrice'],
 							productId: productId
@@ -320,6 +337,7 @@
 
 					// 修改副石重同步更新总件重
 					if(tab.type === 'deputyWeight') {
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
 						tempArray.push({
 							totalWeight: item['totalWeight'],
 							productId: productId
@@ -328,6 +346,7 @@
 
 					// 修改副石重同步更新副石单价
 					if(tab.type === 'deputyPrice') {
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 						tempArray.push({
 							deputyUnitPrice: item['deputyUnitPrice'],
 							productId: productId
@@ -345,6 +364,7 @@
 						tab.type === 'unitPrice' ||
 						tab.type === 'mainCalcMethod'
 					) {
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 						tempArray.push({
 							mainPrice: item['mainPrice'],
 							productId: productId
@@ -353,6 +373,7 @@
 
 					//修改主石重同步更新总件重
 					if(tab.type === 'mainWeight') {
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
 						tempArray.push({
 							totalWeight: item['totalWeight'],
 							productId: productId
@@ -361,11 +382,33 @@
 
 					//修改主石额同步更新主石单价
 					if(tab.type === 'mainPrice') {
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 						tempArray.push({
 							unitPrice: item['unitPrice'],
 							productId: productId
 						})
 					}
+					//修改销售工费保留2位小数
+					if(tab.type === 'soldFee') {
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+					}
+					//修改配件重保留3位小数
+					if(tab.type === 'partWeight') {
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
+					}
+					//修改其他费用保留2位小数
+					if(tab.type === 'otherFee') {
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+					}
+					//修改成本保留2位小数
+					if(tab.type === 'costPrice') {
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+					}
+					//修改售价保留2位小数
+					if(tab.type === 'soldPrice') {
+						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+					}
+					
 					if(_.indexOf(["calcMethod", "partPrice", "certifiFee", "price", "inFee", "inMoney", "deputyCount", "deputyWeight",
 					"deputyUnitPrice", "deputyCalcMethod", "deputyPrice", "count", "mainWeight", "unitPrice", "mainCalcMethod",
 					"mainPrice","totalWeight", "netWeight", "goldCost", "goldPrice", "goldE", "otherFee"], tab.type)) {
@@ -753,7 +796,7 @@
 						heavyCode: (this.toNum(item['netWeight']) + this.toNum(item['partWeight'])).toFixed(3)
 					})
 					Object.assign(item, {
-						goldE: (this.toNum(item['netWeight']) * (1 - (this.toNum(item['goldCost'])?this.toNum(item['goldCost'])/100:0)) * this.toNum(item['goldPrice'])).toFixed(3)
+						goldE: (this.toNum(item['netWeight']) * (1 - (this.toNum(item['goldCost'])?this.toNum(item['goldCost'])/100:0)) * this.toNum(item['goldPrice'])).toFixed(2)
 					})
 					if(item['inMethod'] == "计重"){
 						Object.assign(item, {
@@ -778,7 +821,7 @@
 						totalWeight: (this.toNum(item['netWeight']) + diamondsWeight + this.toNum(item['partWeight'])).toFixed(3)
 					})
 					Object.assign(item, {
-						goldE: (this.toNum(item['netWeight']) * (1 - (this.toNum(item['goldCost'])?this.toNum(item['goldCost'])/100:0)) * this.toNum(item['goldPrice'])).toFixed(3)
+						goldE: (this.toNum(item['netWeight']) * (1 - (this.toNum(item['goldCost'])?this.toNum(item['goldCost'])/100:0)) * this.toNum(item['goldPrice'])).toFixed(2)
 					})
 					if(item['inMethod'] == "计重"){
 						Object.assign(item, {
@@ -801,7 +844,7 @@
 				// 金耗 
 		    if(tab.type === 'goldCost'){
 		      Object.assign(item, {
-		        goldE : (this.toNum(item['netWeight']) * (1 - (this.toNum(item['goldCost'])?this.toNum(item['goldCost'])/100:0)) * this.toNum(item['goldPrice'])).toFixed(3)
+		        goldE : (this.toNum(item['netWeight']) * (1 - (this.toNum(item['goldCost'])?this.toNum(item['goldCost'])/100:0)) * this.toNum(item['goldPrice'])).toFixed(2)
 		      })
 					Object.assign(item, {
 						costPrice: (this.toNum(item['goldE']) + this.toNum(item['mainPrice']) + this.toNum(item['deputyPrice']) + this.toNum(item['inMoney']) + this.toNum(item['otherFee']) + this.toNum(item['price']) + this.toNum(item["certifiFee"])).toFixed(2)
@@ -813,7 +856,7 @@
 				// 金价 
 				if(tab.type === 'goldPrice' || tab.type === 'goldCost') {
 					Object.assign(item, {
-						goldE: (this.toNum(item['netWeight']) * (1 - (this.toNum(item['goldCost'])?this.toNum(item['goldCost'])/100:0)) * this.toNum(item['goldPrice'])).toFixed(3)
+						goldE: (this.toNum(item['netWeight']) * (1 - (this.toNum(item['goldCost'])?this.toNum(item['goldCost'])/100:0)) * this.toNum(item['goldPrice'])).toFixed(2)
 					})
 					Object.assign(item, {
 						costPrice: (this.toNum(item['goldE']) + this.toNum(item['mainPrice']) + this.toNum(item['deputyPrice']) + this.toNum(item['inMoney']) + this.toNum(item['otherFee']) + this.toNum(item['price']) + this.toNum(item["certifiFee"])).toFixed(2)
