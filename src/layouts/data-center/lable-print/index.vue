@@ -27,14 +27,14 @@
             ></DownMenu> -->
           <DownMenu :titleInfo="dataGridOptions.shopName ? dataGridOptions.shopName : '选择模板'" :showList="productCategory[2].children" :nameKey="'shopName'" @changeData="changeShopData" @clearInfo="clearShop"></DownMenu>
           <DownMenu :titleInfo="dataGridOptions.shopName ? dataGridOptions.shopName : '选择打印机'" :showList="productCategory[2].children" :nameKey="'shopName'" @changeData="changeShopData" @clearInfo="clearShop"></DownMenu>
-          <div class="report-data">
+<!--           <div class="report-data">
             <div class="block until" data-txt="至">
               <el-date-picker size="mini" v-model="beginTime" @change="getTimeData" type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
             </div>
             <div class="block">
               <el-date-picker size="mini" v-model="endTime" @change="overTimeDate" type="date" placeholder="选择结束时间" :picker-options="pickerOptions1"></el-date-picker>
             </div>
-          </div>
+          </div> -->
           <el-button size="small" class="ml-10" @click.native="toHome">预览</el-button>
           <el-button type="primary" size="small" class="back-btn" @click.native="toHome">打印标签</el-button>
         </div>
@@ -57,6 +57,7 @@
           </div>
 
         </div>
+
       </div>
       <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
         <report-detail ref="reportDetailWrap" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortList="sortListAct" @scrollClass="tabScrollShow">
@@ -861,16 +862,16 @@ export default {
     },
 
 
-    getTimeData(val) {
-      this.dataGridOptions.beginTime = val.substr(0, 10).split('-').join("") + "000000"
-      this.printSelectDate.startTime = val
-      this.send();
-    },
-    overTimeDate(val) {
-      this.dataGridOptions.endTime = val.substr(0, 10).split('-').join("") + "235959"
-      this.printSelectDate.endTime = val
-      this.send();
-    },
+    // getTimeData(val) {
+    //   this.dataGridOptions.beginTime = val.substr(0, 10).split('-').join("") + "000000"
+    //   this.printSelectDate.startTime = val
+    //   this.send();
+    // },
+    // overTimeDate(val) {
+    //   this.dataGridOptions.endTime = val.substr(0, 10).split('-').join("") + "235959"
+    //   this.printSelectDate.endTime = val
+    //   this.send();
+    // },
 
     getDate(day, type) {
       let _date = new Date()
@@ -1001,19 +1002,5 @@ export default {
 <style lang="scss">
 .ml-10{
   margin-left: 10px;
-}
-.data-center-header-right-cut{
-  position: absolute;
-  right: 10px;
-  top: 12px;
-  color: #2993f8;
-  cursor: pointer;
-  .drop-triangle{
-    font-size: 12px;
-    display: inline-block;
-    transition: all .3s;
-    color: #666;
-    transform-origin: center center;
-  }
 }
 </style>
