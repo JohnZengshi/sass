@@ -231,7 +231,7 @@ export default {
     watch: {
         'saveSuccess': function () {
             if (this.saveSuccess === false) {
-                this.close()
+                // this.close()
             }
         },
         'checkList': function (val) { // 监听全选
@@ -632,6 +632,7 @@ export default {
         }
     }
 }
+
 </style>
 <style lang="scss" scoped>
 @import "~assets/css/template/fonts.scss";
@@ -891,10 +892,13 @@ export default {
                 border: 1px solid #d6d6d6;
                 color:#999999;
                 margin-right: 56px;
+                cursor: pointer;
+                
             }
             .add-btn {
                 background:#2993f8;
                 color:#fff;
+                cursor: pointer;
             }
         }
         .checkAll {

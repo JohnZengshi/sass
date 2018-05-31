@@ -279,7 +279,6 @@ export default {
         
         // 获取会员信息
         getMemberInfo(){
-            console.log('哈喽')
             let options = {
                 shopId: this.shopId,
                 memberId: this.memberId

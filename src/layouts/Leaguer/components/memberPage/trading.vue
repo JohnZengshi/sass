@@ -16,7 +16,7 @@
         </div>
         <div class="trading-bottom-list">
             <!-- 销售 -->
-            <div class="cnm" v-for="(item,index) in buyRecordInfo.dataList" :key="index">
+            <div v-for="(item,index) in buyRecordInfo.dataList" :key="index">
                 <div class="list-item" v-for="(item1,index1) in item.saleList" :key="index1">
                     <div class="item-title">
                         <span class="fl title-djh">{{ item.orderNum }}</span>
@@ -419,28 +419,31 @@ export default {
         },
         closeOrderList (val) { // 选择单据结束的回调
             this.saveSuccess = false
+            
             if(val.length == 0){
                 return
             }
             // 关联销售单
             let orderList = []
-            orderList = this.oldMemberInfo.orderList
             val.forEach((item, index) => {
-                orderList.push({orderNo: item})
+                orderList[index] = {orderNo: item}
             })
+
+            
             let options = Object.assign({},this.oldMemberInfo,{
                 memberId:this.memberId,
                 shopId:this.shopId,
-                orderList
+                orderList:orderList
             })
-            console.log(options)
+
             operateMemberUpdateBy(options).then(res => {
+                console.log('关联成功',res)
                 if(res.data.state === 200) {
+                    this.$emit("getData")                
                     this.$message({
                         type: 'success',
                         message: '关联销售单成功'
                     })
-                    this.$emit("getData")                    
                 } else {
                     this.$message({
                         type: 'error',
@@ -448,7 +451,6 @@ export default {
                     })
                 }
             })
-
         },
         closeOnly () {
             this.saveSuccess = false
