@@ -20,6 +20,7 @@ export default {
     },
     watch: {
         'userName' (val) {
+            console.log(this.logo)
             setTimeout(() => {
                 this.formatFunction()
                 this.customStyle()
