@@ -835,3 +835,7 @@ export const seekGetReportsComprehensive = function(parm) { // 报表-进销存�
     let URL = "/v1/reports/getReportsComprehensive";
     return apiCall(parm, URL);
 }
+export const showCounterList = function (parm) { // 柜组列表
+    let URL = "/v1/headquarter/showCounterList"
+    return apiCall(parm, URL);
+}

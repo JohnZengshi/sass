@@ -95,9 +95,10 @@ export default {
     DownMenu,
     filterHeader
   },
-  data() {
+  data () {
     return {
       openReset: true,
+      shopDataList: [],
       productCategory: [{
           classesName: '全公司',
           classesType: '1',

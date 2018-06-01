@@ -1,7 +1,39 @@
 <template>
   <div class="d-c-filter-header-main">
     <div class="operate-bar-bottom">
-      <div @click="littleBatch = true" class="search-block">单据搜索<i class="iconfont icon-sousuo"></i></div>
+      <div class="search">
+          <input type="text" v-model="keyword" placeholder="请输入单据号" @keyup.enter="batchAddByOrderNum">
+          <div class="search-btn" @click="batchAddByOrderNum">
+              <i class="iconfont icon-sousuo"></i>
+          </div>
+      </div>
+
+      <div class="search-block t-center" @click="openLittleBatch">
+        单据搜索
+      </div>
+
+      <div class="search-block t-center">
+        <alone-drop-down-colums 
+            :propsList="repositoryList"
+            :allName="'全部库位'"
+            dataType="1"
+            titleData="库位名称"
+            @dataBack="dataBackProductTypeId"
+        ></alone-drop-down-colums>
+      </div>
+
+      <div class="search-block">
+          <dropDownColums
+              :propsList="shopDataList"
+              :allName="'全部店铺'"
+              dataType="1"
+              titleData="店铺名称"
+              @dataBack="dataBackProductTypeId"
+          >
+          </dropDownColums>
+      </div>
+
+      <!-- <div @click="littleBatch = true" class="search-block">单据搜索<i class="iconfont icon-sousuo"></i></div> -->
 
       <div class="class-btn-wrap">
 
@@ -9,31 +41,37 @@
               :propsList="proList"
               dataType="1"
               titleData="产品类别"
-              @dataBack="dataBack"
+              @dataBack="dataBackProductTypeId"
           >
           </dropDownColums>
 
           <dropDownColums
               :propsList="conditionList"
+              :bigId="'classesId'"
+              :childrenList="'childrenList'"
               dataType="2"
               titleData="成色名称"
-              @dataBack="dataBack"
+              @dataBack="dataBackColourId"
           >
           </dropDownColums>
 
           <dropDownColums
               :propsList="jewelList"
+              :bigId="'classesId'"
+              :childrenList="'childrenList'"
               dataType="3"
               titleData="宝石名称"
-              @dataBack="dataBack"
+              @dataBack="dataBackJeweId"
           >
           </dropDownColums>
 
           <dropDownColums
               :propsList="jewelryList"
+              :bigId="'classesId'"
+              :childrenList="'childrenList'"
               dataType="4"
               titleData="首饰类别"
-              @dataBack="dataBack"
+              @dataBack="dataBackJewelryId"
           >
           </dropDownColums>
 
@@ -50,25 +88,73 @@
           </DropDownMenu> -->
       </div>
     </div>
+    <little-batch ref="littleBatchWrap" @changeOrderId="changeOrderId" :supplierListData="supplierListData"></little-batch>
   </div>
 </template>
 <script>
-import {getProductTypeList, seekProductClassList} from "Api/commonality/seek"
+import { mapGetters } from 'vuex'
+import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList} from "Api/commonality/seek"
 import dropDownColums from './dropDownColums'
+import aloneDropDownColums from './alone-drop-down-colums'
+import littleBatch from './little-batch'
+import DownMenu from 'base/menu/DownMenu'
+import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
 export default {
   components: {
     dropDownColums,
-    DropDownMenu
+    DropDownMenu,
+    littleBatch,
+    DownMenu,
+    aloneDropDownColums
   },
   data () {
     return {
+      keyword: '',
+      repositoryList: [], // 仓库列表
+      shopDataList: [],
+      filterCondition: {
+        keyWord: '',
+        newOrderId: '',
+        beginPage: '1',
+        pageSize: '9999',
+        storageId: [],
+        shopId: [],
+        productTypeId: [],
+        colourId: [],
+        jeweId: [],
+        jewelryId: [], // 首饰类别
+        productStatus: [], // 产品状态
+        sortList: []
+      },
       littleBatch: false,
       isLoading: false,
       proList: [],
       conditionList: [], // 成色列表
       jewelList: [], // 宝石列表
       jewelryList: [], // 首饰列表
+      "supplierListData": [
+          {
+              name: "全部",
+              type: ""
+          },
+          {
+              name: "入库单",
+              type: "01"
+          },
+          {
+              name: "修改单",
+              type: "10"
+          },
+          {
+              name: "退货单",
+              type: "04"
+          },
+          {
+              name: "调库单",
+              type: "07"
+          }
+      ],
     }
   },
   created () {
@@ -76,16 +162,160 @@ export default {
     this.productClassList(1)
     this.productClassList(2)
     this.productClassList(3)
+    this._seekGetShopListByCo()
+    this._seekRepositoryList()
+  },
+  computed: {
+    ...mapGetters([
+      "userPositionInfo" // 职位信息
+    ]),
+    shopRole: function() { // 店员
+      if (this.userPositionInfo.roleList) {
+        return jurisdictions.jurisdictionShopRole(this.userPositionInfo.roleList);
+      }
+    },
+    computedRole: function() { // 公司
+      if (this.userPositionInfo.roleList) {
+        return jurisdictions.jurisdictionComputedRole(this.userPositionInfo.roleList)
+      }
+    },
+    computedManageRole: function() { // 公司
+      if (this.userPositionInfo.roleList) {
+        return jurisdictions.jurisdictionComputedManageRole(this.userPositionInfo.roleList)
+      }
+    },
+    officeClerk() { // 职员
+      if (this.userPositionInfo.roleList) {
+        return jurisdictions.jurisdictionOfficeClerk(this.userPositionInfo.roleList)
+      }
+    },
+    shopManageRole() { // 店长
+      if (this.userPositionInfo.roleList) {
+        return jurisdictions.jurisdictionShopManageRole(this.userPositionInfo.roleList)
+      }
+    },
+    isJrole: function() { // 判断是不是监察员
+      if (this.userPositionInfo.roleList) {
+        return jurisdictions.jurisdictionJCY(this.userPositionInfo.roleList);
+      }
+    }
   },
   methods: {
-    dataBack () {
+    batchAddByOrderNum () {
+      let options = {
+        keyword: this.keyword
+      }
+      console.log('通过单据号查询商品')
+    },
+    _seekGetShopListByCo() {
+      if (this.userPositionInfo.roleList) {
+        let options = {
+          page: '1',
+          pageSize: 9999,
+          type: 1 // 1.可查看 2.所属 3.全部
+        }
 
+        if (this.computedManageRole || this.officeClerk) { // 管理员 // 职员
+          options.type = 3
+        } else if (this.shopManageRole) { // 店长
+          options.type = 2
+        } else if (this.shopRole) { // 店员
+          options.type = 1
+        } else if (this.isJrole) { // 监察员
+          options.type = 2
+        }
+
+        seekGetShopListByCo(options)
+          .then(res => {
+            if (res.data.state == 200) {
+              for (let i of res.data.data.shopList) {
+                this._showCounterList(i.shopId, i)
+              }
+              // this.shopDataList.childrenList = 
+              // this.productCategory[1].children = res.data.data.repositoryList
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: 'warning'
+              })
+            }
+          })
+      } else {
+        setTimeout(() => {
+          this._seekGetShopListByCo()
+        }, 1500)
+      }
+    },
+    _seekRepositoryList () {
+      seekRepositoryList()
+        .then(res => {
+          if (res.data.state == 200) {
+            let datas = res.data.data.repositoryList
+            for (let i of datas) {
+              i.id = i.repositoryId
+              i.name = i.repositoryName
+            }
+            this.repositoryList = datas
+          } else {
+            this.$message({
+                message: res.data.msg,
+                type: 'warning'
+            })
+          }
+        })
+    },
+    _showCounterList (parm, item) {
+      let options = {
+        shopId: parm
+      }
+      showCounterList(options)
+        .then(res => {
+          item.childrenList = res.data.data.counterList
+          item.id = item.shopId
+          item.name = item.shopName
+          for (let j of item.childrenList) {
+            j.name = j.counterName
+            j.id = j.counterId
+          }
+          this.shopDataList.push(item)
+        })
+    },
+    changeShopData () {
+
+    },
+    changeOrderId (parm) {
+      this.filterCondition.newOrderId = parm
+    },
+    openLittleBatch () {
+      this.$refs.littleBatchWrap.open()
+    },
+    dataBackProductTypeId (parm) { // 产品类别过滤
+      this.filterCondition.productTypeId = parm.samllList
+    },
+    dataBackColourId (parm) { // 成色名称过滤
+      this.filterCondition.colourId = parm.samllList
+    },
+    dataBackJeweId (parm) { // 宝石名称过滤
+      this.filterCondition.jeweId = parm.samllList
+    },
+    dataBackJewelryId (parm) { // 首饰类别过滤
+      this.filterCondition.jewelryId = parm.samllList
     },
     seekProductTypeList () { // 产品类别列表
       getProductTypeList().then((res) => {
         if (res.data.state == 200) {
           this.isLoading = false
-          this.proList = res.data.data.list
+          let datas = res.data.data.list
+          for (let i of datas) {
+            i.id = i.classesType
+            i.name = i.classesName
+            i.childrenList = i.typeList
+            for (let j of i.childrenList) {
+              j.name = j.classesName
+              j.id = j.classesId
+            }
+          }
+          this.proList = datas
         }
       })
     },
@@ -96,12 +326,21 @@ export default {
         seekProductClassList(options).then((res) => {
             if (res.data.state == 200) {
                 this.isLoading = false
+                let datas =  res.data.data.list
+                for (let i of datas) {
+                  i.id = i.classesId
+                  i.name = i.classesName
+                  for (let j of i.childrenList) {
+                    j.name = j.classesName
+                    j.id = j.classesId
+                  }
+                }
                 if (type == 1) {
-                    this.conditionList = res.data.data.list
+                    this.conditionList = datas
                 } else if (type == 2) {
-                    this.jewelList = res.data.data.list
+                    this.jewelList = datas
                 } else {
-                    this.jewelryList = res.data.data.list
+                    this.jewelryList = datas
                 }
             }
         })
@@ -117,35 +356,75 @@ export default {
     border: 1px solid #2993f8 !important;
 }
 .d-c-filter-header-main{
-  border: 1px solid red;
+  border: 1px solid #fff;
   .operate-bar-bottom {
       height: 28px;
-      margin-bottom: 25px;
-      .search-block {
-          width: 118px;
+      margin-bottom: 15px;
+      padding: 0 20px;
+      .search {
+          width: 190px;
           height: 28px;
-          border: 1px solid #2993f8;
           border-radius: 4px;
-          color:#2993f8;
-          padding-left: 16px;
+          float: left;
+          position: relative;
+          overflow: hidden;
+          margin-bottom: 16px;
+         
+          input {
+              border-radius: 4px;
+              width: 188px;
+              height: 28px;
+              border: 1px solid #d6d6d6;
+              padding-left: 10px;
+               &:hover{
+              border:1px solid #2993f8;
+              }
+              &:focus{
+                     border:1px solid #2993f8;
+              }
+              &:blur{
+                     border:1px solid #ededed;
+              }
+          }
+          
+          .search-btn {
+              position: absolute;
+              width: 30px;
+              height: 28px;
+              right: 0;
+              top: 0;
+              background: #2993f8;
+              text-align: center;
+              cursor: pointer;
+              i {
+                  color:#fff;
+                  line-height: 28px;
+              }
+          }
+      }
+      .search-block {
+          width: 85px;
+          height: 28px;
+          margin-left: 20px;
+          border: 1px solid #d6d6d6;
+          border-radius: 4px;
+          color:#333;
           font-size: 12px;
           line-height: 26px;
           float: left;
-          margin-right: 16px;
           cursor: pointer;
-          i {
-              font-size: 12px;
-              float: right;
-              color:#dadada;
-              margin-right: 8px;
-          }
+          text-align: left;
+      }
+      .t-center{
+        text-align: center;
       }
       .class-btn-wrap {
           width: 346px;
           height: 28px;
           border-radius: 4px;
+          border: 1px solid #d6d6d6;
           float: left;
-          margin-right: 16px;
+          margin-left: 20px;
       }
       .drop-block {
           width: 90px;
