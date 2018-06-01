@@ -30,9 +30,8 @@
 			},
 			isRefreshFooter(o, n) {
 				this.fetchFootData()
-				this.fetchNewFootData()
+//				this.fetchNewFootData()
 				console.log(this.allSynopsiData)
-				// this.fetchNewFootData()
 			}
 		},
 		methods: {
@@ -63,7 +62,7 @@
 		mounted() {
 			this.$nextTick(() => {
 				this.fetchFootData()
-				this.fetchNewFootData()
+//				this.fetchNewFootData()
 			})
 		}
 	}
