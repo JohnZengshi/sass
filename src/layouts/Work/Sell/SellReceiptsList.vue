@@ -1718,7 +1718,7 @@
 						this.sellData()
 						this.statusREfresh = true
 						this.sellcollectMoney(); // 收银信息
-						this.print();
+						// this.print();
 					}, (res) => {
 						this.isShowFooter = true
 					})
@@ -1726,6 +1726,7 @@
 				});
 			},
 			print(){
+				debugger
 				this.cashierDialog = false
 				let selectedTemplate = find(this.qualityTemplateList, {
 					templateId: this.templateId
@@ -1807,6 +1808,7 @@
 							this.statusREfresh = true
 							this.sellcollectMoney(); // 收银信息
 							this.setMemberBuyIntegral('1') // 收银积分	
+
 						}, (res) => {
 							this.isShowFooter = true
 						})
@@ -2816,7 +2818,7 @@
 			// 收银积分操作
 			setMemberBuyIntegral(type) {
 				
-				if(!this.memberDataInfo.memberId || !this.receiptsIntroList.orderNum || !this.receiptsIntroList.shopId) {
+				if(!this.integralNow.offsetScore || !this.memberDataInfo.memberId || !this.receiptsIntroList.orderNum || !this.receiptsIntroList.shopId) {
 					return
 				}
 
@@ -2824,7 +2826,8 @@
 
 				let options = {
 					memberId:this.memberDataInfo.memberId,
-					orderNum:this.receiptsIntroList.orderNum,
+					dataList:[{orderNum:this.receiptsIntroList.orderNum}],
+					// orderNum:this.receiptsIntroList.orderNum,
 					shopId:this.receiptsIntroList.shopId,
 					operateType:type
 				}

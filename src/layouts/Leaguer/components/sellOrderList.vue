@@ -126,7 +126,8 @@ export default {
     props: [
         'shopId',
         'saveSuccess',
-        'isEdit'
+        'isEdit',
+        'oldMemberInfo'
     ],
     components: {
         dropDownColums,
@@ -250,6 +251,18 @@ export default {
             } else {
                 this.checked1 = false;
             }
+        },
+        'oldMemberInfo'(val) {
+            // if(this.oldMemberInfo) {
+            //     this.oldMemberInfo.orderList.forEach((item,index) => {
+            //         this.dataList.forEach(i => {
+            //             if(item.orderNum == i.orderNum) {
+            //                 this.checkList[index] = item.orderNum
+            //             }
+            //         })
+            //     })
+            // }
+            // console.log('查看选中的个数',this.checkList)
         }
     },
     computed: {
@@ -392,10 +405,8 @@ export default {
 
             this.orderOptions.shopId = this.shopId
             seekGoodsSellOrder(this.orderOptions).then((res) => {
-                console.log('这是关联的列表',res.data.data)
                 if (res.data.state == 200) {
                     this.dataList = res.data.data.orderList
-
                     this.totalNum = res.data.data.totalNum
                 }
             }, (res) => {
@@ -564,7 +575,7 @@ export default {
             return statusModuleType(parm);
         },
         closeBtn () {//取消按钮
-            this.checkList = [];
+            // this.checkList = [];
             this.$emit("closeOnly")
         },
         close () {//添加按钮

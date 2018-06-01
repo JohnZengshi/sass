@@ -242,6 +242,7 @@
         <sellOrderList
             :shopId="shopId"
             :saveSuccess="saveSuccess"
+            :oldMemberInfo="oldMemberInfo"
             @closeOrderList="closeOrderList"
             @closeOnly="closeOnly"
             isEdit="1"
@@ -376,6 +377,7 @@
 import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
 import SellOrderList from '../sellOrderList'
 import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention} from 'Api/commonality/operate'
+import { memberIntegralUpdate,memberBuyIntegral } from 'Api/member'
 
 import {mapActions, mapGetters} from 'vuex'
 
@@ -425,10 +427,16 @@ export default {
             }
             // 关联销售单
             let orderList = []
+            let dataList = []
+
             val.forEach((item, index) => {
                 orderList[index] = {orderNo: item}
+                orderList[index] = {orderNum: item}
             })
 
+            if(dataList.length !=0 ) {
+                this.setMemberBuyIntegral(dataList)
+            }
             
             let options = Object.assign({},this.oldMemberInfo,{
                 memberId:this.memberId,
@@ -458,11 +466,35 @@ export default {
         relevanceSales() {
             this.saveSuccess = true
         },
+        // 加积分操作
+        setMemberBuyIntegral (dataList) {
+            let options = {
+                memberId:this.memberId,
+                dataList,
+                shopId:this.shopId,
+                operateType:'1'
+            }
+            memberBuyIntegral(options).then(res => {
+                if(res.data.state == 200){
+                    console.log('成功')
+                } else {
+                    this.$message({
+                        type:'error',
+                        message:res.data.msg
+                    })
+                }
+            })
+            
+        }
 
     },
     watch:{
         buyRecordInfo(val) {
             console.log('更新的信息',val)
+            console.log('更新的信息',this.oldMemberInfo)
+        },
+        oldMemberInfo(val) {
+            console.log('更新的信息',val)            
         }
     }
 }
