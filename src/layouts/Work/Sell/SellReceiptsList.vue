@@ -2782,25 +2782,31 @@
 				if(this.daiding == ''){
 					return
 				}
-				console.log(this.daiding)
+
 				if(this.integralNow.offsetScore <= 0){
 					this.daiding = ''
 					return
 				}
+
 				if(this.daiding > this.integralNow.offsetScore){
 					this.daiding = ''
 					return
 				}
+
 				if(this.daiding < 0){
 					this.daiding = ''
 					return
 				}
+
+				console.log('积分里面的数据',this.daiding,this.integralNow.offsetScore)
+				
 				let options = {
 					shopId:this.receiptsIntroList.shopId,
 					orderNum:this.receiptsIntroList.orderNum,
 					memberId:this.memberDataInfo.memberId,
 					score:this.daiding
 				}
+				
 				integralOffset(options).then(res => {
 					if(res.data.state != 200) {
 						this.$message({
