@@ -1110,11 +1110,12 @@ export default {
             console.log('导出报表')
             let exportTabData =Object.assign({},this.dataGridOptions)
             exportTabData['exportType'] = 'FH'
+            console.log(exportTabData.type)
             console.log(exportTabData)
             if(exportTabData.type === 1){
-            downLoaderFile('/v1/export/exportExcelByReport',exportTabData)
+            	downLoaderFile('/v1/export/exportExcelByReport',exportTabData)
             } else {
-            downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)          
+            	downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)          
             }
         },
         // 加载控件
