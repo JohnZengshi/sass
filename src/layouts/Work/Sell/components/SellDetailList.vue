@@ -40,7 +40,7 @@
 				<div>{{item.barcode}}</div>
 			</div>
 			<!-- 会员积分抵扣 -->
-			<div v-if="memberDataInfo.phone || item.offset !=0 " class="barcode">
+			<div v-if="memberDataInfo.phone" class="barcode">
 				<span>积分抵扣
 					<i></i>
 				</span>

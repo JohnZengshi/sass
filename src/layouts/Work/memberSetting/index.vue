@@ -785,6 +785,7 @@ $fontColor:#47a3fb;
             // height: 70px;
             margin: 0 auto;
 			.disabledActive {
+                color: #d6d6d6;
 				cursor: not-allowed;
 			}
             li {
@@ -1401,10 +1402,10 @@ export default {
         },
         // 积分加减法配置
         addOrSubTemplate (operateType,updateData) {
+            
             if(this.isDisabled) {
                 return;
             }
-
             if(this.templateInfoData.addOrSubConfig === 'N') {
                 if(operateType){
                     options = {
@@ -1436,14 +1437,19 @@ export default {
 
             addOrSubTemplateUpdate(options).then(res => {
                 if(res.data.state == 200) {
-                            
+                    if(!operateType){
+                         this.$message({
+                            type:'success',
+                            message: '修改成功'
+                        })
+                    }
                 } else {
                     this.$message({
                         type:'error',
                         message: res.data.msg
-                        })
-                    }
-                })
+                    })
+                }
+            })
         },
         // 积分发放配置
         consumeIntegralTemplate(operateType,updateData) {
