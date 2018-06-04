@@ -1,6 +1,6 @@
 <template>
   <transition name="tp-ani">
-    <div class="RP_report_wrapper ui-page-max-width report_table_fixed" v-if="isPrint==0">
+    <div class="RP_report_wrapper ui-page-max-width report_table_fixed dc-label-print-main" v-if="isPrint==0">
       <div class="Rp_title_container">
         <!--面包屑-->
         <div class="Rp_crumbs">
@@ -8,6 +8,13 @@
           <router-link tag="span" to="/work/report/" class="path_crumbs">标签打印</router-link>
         </div>
         <div class="Rp_selected_container">
+
+            <div title="打印行范围" class="l-p-range-box">
+                <input type="text" placeholder="打印行范围" v-model="beginNum">
+                <span>至</span>
+                <input type="text" placeholder="打印行范围" v-model="endNum">
+            </div>
+
           <!--             <Cascade
                 v-if="computedRole"
                 :computedRole="computedRole"
@@ -1003,5 +1010,33 @@ export default {
 <style lang="scss">
 .ml-10{
   margin-left: 10px;
+}
+.dc-label-print-main{
+  .l-p-range-box {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    vertical-align: top;
+    margin-left: 16px;
+    width: 180px;
+    height: 28px;
+    border-radius: 4px;
+    border: 1px solid #d6d6d6;
+    padding-left: 10px;
+    background-color: #fff;
+    input {
+        width: 68px;
+        height: 100%;
+        float: left;
+        text-align: center;
+    }
+    span {
+        float: left;
+        margin: 0 4px;
+        color: #666;
+        font-size: 14px;
+        line-height: 26px;
+    }
+  }
 }
 </style>
