@@ -147,7 +147,7 @@
 					shopId: this.selectDate.shopId
 				}
 
-				downLoaderFile('/v1/export/exportExcelByCash',exportData)
+				//downLoaderFile('/v1/export/exportExcelByCash',exportData)
 			},
 			//打印表格 
 			tabPrin() {

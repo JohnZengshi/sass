@@ -318,6 +318,7 @@ $fontColor:#47a3fb;
         background-color: #fff;
         box-shadow: 0px 0 15px #ddd;
         border-radius: 10px;
+        padding-bottom: 30px;
         .content-title {
             height: 50px;
             line-height: 50px;
@@ -590,13 +591,13 @@ $fontColor:#47a3fb;
                         display: inline-block;
                         
                         input{
-                                width: 60px;
+                                width: 100px;
                                 height: 28px;
                                 background-color:transparent;
                                 text-align: left;
                                 font-size: 14px;
                                 border-radius: 3px;
-                                border: 1px solid #2993f8;     
+                                border: 1px solid #dcdfe6;     
                                 text-align: center;                           
                                 &:active,
                                 &:hover,
@@ -644,12 +645,12 @@ $fontColor:#47a3fb;
             }     
         }
         .consumption {
-            height: 400px;
+            // height: 400px;
             padding: 0 40px;
             margin-bottom: 40px; 
             .consumption-content {
-                height: 310px;
-                padding: 40px 30px;
+                // height: 310px;
+                padding: 40px 30px 30px;
                 background: #f6f7f8;
                 border-radius: 10px;
                 position: relative;
@@ -658,6 +659,9 @@ $fontColor:#47a3fb;
                     margin-bottom: 24px;
                     color: #333;
                     font-size: 14px;
+                    &:nth-last-of-type(1) {
+                        margin: 0;
+                    }
                     .item-circle{
                         display: inline-block;
                         width: 8px;
@@ -673,19 +677,29 @@ $fontColor:#47a3fb;
                         display: inline-block;
                         
                         input{
-                                width: 60px;
+                                width: 100px;
                                 height: 28px;
                                 background-color:transparent;
                                 text-align: left;
                                 font-size: 14px;
                                 border-radius: 3px;
-                                border: 1px solid #2993f8;
+                                text-align: center;
+                                border: 1px solid #dcdfe6;
                                 &:active,
                                 &:hover,
                                 &:focus{
                                     border: 1px solid #2993f8;
                                     background-color: #f4f9ff;
                                 }
+                        }
+
+                        // 移除number的箭头
+                        input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                        }
+                        input[type="number"]{
+                            -moz-appearance: textfield;
                         }
                     }
                     .item-input{
@@ -771,6 +785,7 @@ $fontColor:#47a3fb;
             // height: 70px;
             margin: 0 auto;
 			.disabledActive {
+                color: #d6d6d6;
 				cursor: not-allowed;
 			}
             li {
@@ -1387,10 +1402,10 @@ export default {
         },
         // 积分加减法配置
         addOrSubTemplate (operateType,updateData) {
+            
             if(this.isDisabled) {
                 return;
             }
-
             if(this.templateInfoData.addOrSubConfig === 'N') {
                 if(operateType){
                     options = {
@@ -1422,14 +1437,19 @@ export default {
 
             addOrSubTemplateUpdate(options).then(res => {
                 if(res.data.state == 200) {
-                            
+                    if(!operateType){
+                         this.$message({
+                            type:'success',
+                            message: '修改成功'
+                        })
+                    }
                 } else {
                     this.$message({
                         type:'error',
                         message: res.data.msg
-                        })
-                    }
-                })
+                    })
+                }
+            })
         },
         // 积分发放配置
         consumeIntegralTemplate(operateType,updateData) {
@@ -1508,10 +1528,6 @@ export default {
                     }
                 }
             } else {
-                options = {
-                    templateId: this.$route.query.templateId,
-                    operateType: '2'
-                }
                 if(operateType){
                     options = {
                         operateType,
@@ -1521,7 +1537,7 @@ export default {
                 } else {
                     options = {
                         templateId:this.$route.query.templateId,
-                        operateType: '1'
+                        operateType: '2'
                     }
                 }
             }
@@ -1652,6 +1668,8 @@ export default {
                         type: 'success',
                         message: '修改成功'
                     })
+                    this.getIntegralDetails()
+                    
                 }
                 if(res.data.state != 200){
                     this.$message({
@@ -1659,7 +1677,6 @@ export default {
                         message: res.data.msg
                     })
                 }
-                this.getIntegralDetails()
             })
         },
         // 批量
@@ -1802,7 +1819,7 @@ export default {
         seekGetUserInfo(options).then(res => {
             console.log('刷新后的用户权限',res.data.data)
             if(res.data.data.roleList.length === 1){
-                if(res.data.roleList[0].role > 3){
+                if(res.data.data.roleList[0].role > 3){
                     this.isDisabled = true
                 } else {
                     this.isDisabled = false

@@ -70,7 +70,7 @@
                         display: inline-block;
                         width: 62px;
                         text-align: right;
-                        margin-right: 30px;
+                        margin-right: 28px;
                         color: #999;
                     }
                     .item-star{
@@ -107,20 +107,24 @@
                 margin-right: 20px;
                 border: 1px solid #dcdfe6;
                 border-radius: 10px;
-                box-shadow: 0 0 8px rgba(0,0,0,.2);
+                // box-shadow: 0 0 8px rgba(0,0,0,.2);
+                
                 &:hover{
-                    box-shadow: 0 0 8px #2993f8;
+                    border: 1px solid #2993f8;
+                    box-shadow: 0 0 8px rgba(0,0,0,.2);
                 }
                 .item-card-message{
+                    font-size: 16px;
                     color: #666;
                     font-weight: bold;
-                    margin-bottom: 30px;
+                    margin-bottom: 25px;
+                    line-height: 26px;
                     img{
                         margin-right: 14px;
                     }
                 }
                 .item-card-info {
-                    margin-bottom: 16px;
+                    margin-bottom: 15px;
                     i{
                         margin-right: 8px;
                     }
@@ -177,7 +181,7 @@
                     justify-content: center;
                     opacity: 0;
                     transition: all .5s;
-                    margin-top: 50px;
+                    margin-top: 48px;
                     .btn-jf{
                         width: 76px;
                         height: 30px;
@@ -279,7 +283,6 @@ export default {
         
         // 获取会员信息
         getMemberInfo(){
-            console.log('哈喽')
             let options = {
                 shopId: this.shopId,
                 memberId: this.memberId

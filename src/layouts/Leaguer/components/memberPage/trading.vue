@@ -16,7 +16,7 @@
         </div>
         <div class="trading-bottom-list">
             <!-- 销售 -->
-            <div class="cnm" v-for="(item,index) in buyRecordInfo.dataList" :key="index">
+            <div v-for="(item,index) in buyRecordInfo.dataList" :key="index">
                 <div class="list-item" v-for="(item1,index1) in item.saleList" :key="index1">
                     <div class="item-title">
                         <span class="fl title-djh">{{ item.orderNum }}</span>
@@ -242,6 +242,7 @@
         <sellOrderList
             :shopId="shopId"
             :saveSuccess="saveSuccess"
+            :oldMemberInfo="oldMemberInfo"
             @closeOrderList="closeOrderList"
             @closeOnly="closeOnly"
             isEdit="1"
@@ -376,6 +377,7 @@
 import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
 import SellOrderList from '../sellOrderList'
 import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention} from 'Api/commonality/operate'
+import { memberIntegralUpdate,memberBuyIntegral } from 'Api/member'
 
 import {mapActions, mapGetters} from 'vuex'
 
@@ -419,28 +421,37 @@ export default {
         },
         closeOrderList (val) { // 选择单据结束的回调
             this.saveSuccess = false
+            
             if(val.length == 0){
                 return
             }
             // 关联销售单
             let orderList = []
-            orderList = this.oldMemberInfo.orderList
+            let dataList = []
+
             val.forEach((item, index) => {
-                orderList.push({orderNo: item})
+                orderList[index] = {orderNo: item}
+                orderList[index] = {orderNum: item}
             })
+
+            if(dataList.length !=0 ) {
+                this.setMemberBuyIntegral(dataList)
+            }
+            
             let options = Object.assign({},this.oldMemberInfo,{
                 memberId:this.memberId,
                 shopId:this.shopId,
-                orderList
+                orderList:orderList
             })
-            console.log(options)
+
             operateMemberUpdateBy(options).then(res => {
+                console.log('关联成功',res)
                 if(res.data.state === 200) {
+                    this.$emit("getData")                
                     this.$message({
                         type: 'success',
                         message: '关联销售单成功'
                     })
-                    this.$emit("getData")                    
                 } else {
                     this.$message({
                         type: 'error',
@@ -448,7 +459,6 @@ export default {
                     })
                 }
             })
-
         },
         closeOnly () {
             this.saveSuccess = false
@@ -456,11 +466,35 @@ export default {
         relevanceSales() {
             this.saveSuccess = true
         },
+        // 加积分操作
+        setMemberBuyIntegral (dataList) {
+            let options = {
+                memberId:this.memberId,
+                dataList,
+                shopId:this.shopId,
+                operateType:'1'
+            }
+            memberBuyIntegral(options).then(res => {
+                if(res.data.state == 200){
+                    console.log('成功')
+                } else {
+                    this.$message({
+                        type:'error',
+                        message:res.data.msg
+                    })
+                }
+            })
+            
+        }
 
     },
     watch:{
         buyRecordInfo(val) {
             console.log('更新的信息',val)
+            console.log('更新的信息',this.oldMemberInfo)
+        },
+        oldMemberInfo(val) {
+            console.log('更新的信息',val)            
         }
     }
 }

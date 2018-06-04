@@ -3,7 +3,7 @@
         <div class="memberinfo-top">
             <!-- 头像 -->
             <div class="member-log">
-                <FormatImg :logo="memberInfo.memberLogo" :userName="memberInfo.memberName" :size="72"></FormatImg>
+                <FormatImg :logo="memberInfo.avatarUrl" :userName="memberInfo.memberName" :size="88"></FormatImg>
             </div>
             <!-- 文字内容 -->
             <div class="member-message">
@@ -91,6 +91,7 @@
         <sellOrderList
             :shopId="shopId"
             :saveSuccess="saveSuccess"
+            :oldMemberInfo="oldMemberInfo"
             @closeOrderList="closeOrderList"
             @closeOnly="closeOnly"
             isEdit="1"
@@ -231,7 +232,7 @@ import FormatImg from "components/template/DefaultHeadFormat.vue"
 import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
 import SellOrderList from '../sellOrderList'
 import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention,operateFollowCreate} from 'Api/commonality/operate'
-import { memberIntegralUpdate } from 'Api/member'
+import { memberIntegralUpdate,memberBuyIntegral } from 'Api/member'
 
 import {mapActions, mapGetters} from 'vuex'
 import ChoseLeader from '../choseLeader'
@@ -356,15 +357,21 @@ export default {
         }
         // 关联销售单
         let orderList = []
+        let dataList = []
 
-        orderList = this.oldMemberInfo.orderList || []
+        // orderList = this.oldMemberInfo.orderList || []
 
         // 优化 把自己有的销售单给剔除
+        console.log('老的关联列表',this.oldMemberInfo.orderList)
+        console.log('老的关联列表',val)
 
         val.forEach((item, index) => {
             orderList[index] = {orderNo: item}
+            dataList[index] = {orderNum: item}
         })
-
+        if(dataList.length !=0 ) {
+            this.setMemberBuyIntegral(dataList)
+        }
         console.log('我的orderList',orderList)
         
         let options = Object.assign({},this.oldMemberInfo,{
@@ -576,6 +583,26 @@ export default {
             })
         })
     },
+    // 加积分操作
+    setMemberBuyIntegral (dataList) {
+        let options = {
+			memberId:this.memberId,
+			dataList,
+			shopId:this.shopId,
+			operateType:'1'
+        }
+        memberBuyIntegral(options).then(res => {
+			if(res.data.state == 200){
+				console.log('成功')
+			} else {
+				this.$message({
+					type:'error',
+					message:res.data.msg
+				})
+			}
+		})
+        
+    }
   },
   created() {
       this.score = this.memberInfo.score || 0

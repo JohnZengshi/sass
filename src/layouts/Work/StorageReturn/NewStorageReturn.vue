@@ -1119,7 +1119,7 @@ export default {
             var rowData = JSON.stringify(this.configData);
             var newRowData = JSON.parse(rowData);
             console.log(newRowData)
-            this.enterOrderNum
+//          this.enterOrderNum
             this.queryBarCode(this.enterOrderNum, 0, 1, el)
             this.getSeekSellReceiptsIntro(); // 单据简介
             this.send();
@@ -1531,7 +1531,7 @@ export default {
                         this.send();
                         this.receiptStatusList();
                         this.enterOrderNum = ''
-                        if (operate === "1") { // 新增
+                        if (operate == 1) { // 新增
                             // this.savaOperateSuccess(response.data.data, index);
                             this.$message({
                                 message: '添加成功',

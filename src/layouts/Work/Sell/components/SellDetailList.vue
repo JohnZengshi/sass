@@ -40,7 +40,7 @@
 				<div>{{item.barcode}}</div>
 			</div>
 			<!-- 会员积分抵扣 -->
-			<div v-if="memberDataInfo.phone || item.offset !=0 " class="barcode">
+			<div v-if="memberDataInfo.phone" class="barcode">
 				<span>积分抵扣
 					<i></i>
 				</span>
@@ -704,7 +704,7 @@ export default {
 <style lang="scss" scoped>
 .detail-wrap {
 	width: 250px;
-	height: 508px;
+	height: 520px;
 	background: #fff;
 	border-radius: 10px;
 	box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.1);
