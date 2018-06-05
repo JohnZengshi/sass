@@ -12,16 +12,16 @@
 
 <script>
 export default {
-	props : ['detailDataGridColumn','tabCell', 'reportType','newList'],
+	props : ['detailDataGridColumn','tabCell','newList'],
 	data () {
         return {
             isOld: '1',
+            reportType: '1',
             sortList: [{classTypeName: '1'}]
         }
     },
     watch: {
         reportType (val) {
-            //console.log(val)
             if (val == 1) {
                 this.sortList = [{barcode: '1'}]
             } else {
@@ -103,6 +103,7 @@ export default {
 			return _size
         },
         headSort (tab) { // 排序点击事件
+            debugger
           if(tab.sort == null || tab.sort == undefined ) return
           
           if (this.reportType == 1) {
@@ -140,7 +141,7 @@ export default {
             
         },
         clickClassUp (tab) { // 点击分类升序
-            //console.log(this.sortList)
+            console.log('点击分类升序', this.sortList)
             if (tab.text == '条码号') {
                 this.$set(this.sortList[0], 'barcode', '1')
             } else if (tab.text == '首饰名称') {

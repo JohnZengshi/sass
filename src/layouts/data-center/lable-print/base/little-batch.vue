@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="batch-select-wrap select-w100">
-                    <el-select filterable v-model="modelType" placeholder="全部">
+                    <el-select filterable v-model="modelType" @change="changeState" placeholder="全部">
                         <el-option
                             v-for="(item,index) in supplierListData" :key="index"
                             :label="item.name"
@@ -40,19 +40,19 @@
                     </el-select>
                 </div>
                 <div class="range-box" style="background:url(~static/img/batch/number.png) no-repeat 5px center;">
-                    <input type="text" placeholder="件数" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
+                    <input type="text" v-model="beginNum" placeholder="件数" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
                     <span>-</span>
-                    <input type="text" placeholder="件数" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
+                    <input type="text" v-model="endNum" placeholder="件数" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
                 </div>
                 <div class="range-box" style="background:url(~static/img/batch/weight.png) no-repeat 5px center;">
-                    <input type="text" placeholder="件重" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
+                    <input type="text" v-model="beginWeight" placeholder="件重" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
                     <span>-</span>
-                    <input type="text" placeholder="件重" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
+                    <input type="text" v-model="endWeight" placeholder="件重" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
                 </div>
                 <div class="range-box" style="background:url(~static/img/batch/price.png) no-repeat 5px center;">
-                    <input type="text" placeholder="售价" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
+                    <input type="text" v-model="beginPrice" placeholder="售价" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
                     <span>-</span>
-                    <input type="text" placeholder="售价" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
+                    <input type="text" v-model="endPrice" placeholder="售价" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
                 </div>
             </div>
             <div class="table-main" @scroll="scrollFun1($event)">
@@ -103,6 +103,12 @@ import {seekBatchAddByOrderNum, seekBatchAddByProductList} from "Api/commonality
                     return time.getTime() < Date.now() - 8.64e7;
                   }
                 },
+                beginNum: "",
+                endNum: "",
+                beginWeight: "",
+                endWeight: "",
+                beginPrice: "",
+                endPrice: "",
                 keyword: "",
                 startTime: "",
                 endTime: "",
@@ -152,7 +158,12 @@ import {seekBatchAddByOrderNum, seekBatchAddByProductList} from "Api/commonality
                     break;
                 }
             },
+            changeState (parm) {
+                console.log('选择状态', parm)
+                this.batchAddByOrderNum()
+            },
             dateChange () {
+                this.batchAddByOrderNum()
                 // if (this.listType == "单据") {
                 //     this.batchAddByOrderNum()
                 // } else {
@@ -179,7 +190,7 @@ import {seekBatchAddByOrderNum, seekBatchAddByProductList} from "Api/commonality
                 }
                 this.isLoading = true
                 let options = {
-                    orderId: 'FH20180601001',
+                    orderId: 'FH20180605001',
                     keyword: this.keyword,
                     beginTime: startTime,
                     endTime: endTime,
@@ -199,6 +210,11 @@ import {seekBatchAddByOrderNum, seekBatchAddByProductList} from "Api/commonality
                         this.isLoading = false
                         this.dataList = res.data.data.dataList
                         this.totalNum = res.data.data.totalNum
+                    } else {
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
                     }
                 })
             },
@@ -232,7 +248,10 @@ import {seekBatchAddByOrderNum, seekBatchAddByProductList} from "Api/commonality
                         this.orderNo = ''
                         this.totalNum1 = res.data.data.totalNum
                     } else {
-
+                        this.$message({
+                            message: res.data.msg,
+                            type: 'warning'
+                        })
                     }
                 })
             },
@@ -293,7 +312,7 @@ import {seekBatchAddByOrderNum, seekBatchAddByProductList} from "Api/commonality
                 this.endTime = Year + '-' + month + '-' + Day
                 this.startTime = Year + '-' + month + '-' + (Day- (Day-1))
                 //this.seekReceipts()
-                this.batchAddByOrderNum()
+                // -----this.batchAddByOrderNum()
                 // return {
                 //     format : Year +'-'+ month +'-'+  Day ,
                 //     timestamp : timestamp,

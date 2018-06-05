@@ -390,6 +390,7 @@
 			previewTemplate(canvas, selectedProducts, isPrint) {
 				this.print.canvas = canvas
 				if(selectedProducts.length) {
+					debugger
 					this.$store.dispatch('getPrintLabelData', {
 						productList: selectedProducts.map(selectedProduct => {
 							return {

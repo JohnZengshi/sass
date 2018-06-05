@@ -3,7 +3,7 @@
 <div class="ui-table-container default-line" ref="tableContainer">
 	<div>
 	  <template v-for="(tb, index) in dataGridStorage">
-			<div class="tb-tr" :key="index">
+			<div class="tb-tr" :key="index" :class="{'print-on': filterChange(index)}">
 				<div class="tb-td"
 					v-for="(tab,num) in detailDataGridColumn" 
 					:style="tableCell(tab.width)" 
@@ -27,7 +27,7 @@ export default {
 			heightArr: [],
 		}
 	},
-	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch'],
+	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch', 'printNum'],
 	
 	watch:{
 		'dataGridStorage':function(){
@@ -79,6 +79,16 @@ export default {
 		// this.tabCellHeight()
 	},
 	methods:{
+    filterChange (Index) {
+      if (this.printNum) {
+        if (this.printNum.allChecked) {
+          return true
+        } else if (this.printNum.beginNum <= Index + 1 && Index + 1 <= this.printNum.endNum) {
+          return true
+        }
+      }
+      return false
+    },
 		//重置index
 	    resetIndex( index ){
          if( index == 0 ) applyIndex = 0
@@ -250,7 +260,9 @@ export default {
       }
   }
 }
-
+.print-on{
+  background-color: #F1F8FE!important;
+}
 .no-data{
 	height: 100%;
 	background: url(~static/img/space-page.png) center center no-repeat;

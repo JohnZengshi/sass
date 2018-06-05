@@ -14,80 +14,88 @@
 
       <div class="search-block t-center">
         <alone-drop-down-colums 
+            ref="storageLocationWrap"
             :propsList="repositoryList"
             :allName="'全部库位'"
-            dataType="1"
             titleData="库位名称"
-            @dataBack="dataBackProductTypeId"
+            @dataBack="storageLocation"
         ></alone-drop-down-colums>
       </div>
 
       <div class="search-block">
           <dropDownColums
+              ref="shopWrap"
               :propsList="shopDataList"
               :allName="'全部店铺'"
-              dataType="1"
+              :keyName="'shopId'"
               titleData="店铺名称"
-              @dataBack="dataBackProductTypeId"
+              @dataBack="dataBack"
           >
           </dropDownColums>
       </div>
-
-      <!-- <div @click="littleBatch = true" class="search-block">单据搜索<i class="iconfont icon-sousuo"></i></div> -->
 
       <div class="class-btn-wrap">
 
           <dropDownColums
+              ref="productTypeIdWrap"
               :propsList="proList"
-              dataType="1"
+              :keyName="'productTypeId'"
               titleData="产品类别"
-              @dataBack="dataBackProductTypeId"
+              @dataBack="dataBack"
           >
           </dropDownColums>
 
           <dropDownColums
+              ref="colourIdWrap"
               :propsList="conditionList"
-              :bigId="'classesId'"
-              :childrenList="'childrenList'"
-              dataType="2"
+              :keyName="'colourId'"
               titleData="成色名称"
-              @dataBack="dataBackColourId"
+              @dataBack="dataBack"
           >
           </dropDownColums>
 
           <dropDownColums
+              ref="jeweIdWrap"
               :propsList="jewelList"
-              :bigId="'classesId'"
-              :childrenList="'childrenList'"
-              dataType="3"
+              :keyName="'jeweId'"
               titleData="宝石名称"
-              @dataBack="dataBackJeweId"
+              @dataBack="dataBack"
           >
           </dropDownColums>
 
           <dropDownColums
+              ref="jewelryIdWrap"
               :propsList="jewelryList"
-              :bigId="'classesId'"
-              :childrenList="'childrenList'"
-              dataType="4"
+              :keyName="'jewelryId'"
               titleData="首饰类别"
-              @dataBack="dataBackJewelryId"
+              @dataBack="dataBack"
           >
           </dropDownColums>
 
       </div>
 
-      <div class="drop-block">
-<!--           <DropDownMenu
-              titleName="商品属性"
-              dataType="属性"
-              :propList="productTypeList"
-              @dropReturn="dropReturn"
-              @clearInfo="clearInfo"
-          >
-          </DropDownMenu> -->
+      <div class="search-block t-center">
+        <alone-drop-down-colums 
+            ref="stateWrap"
+            :propsList="stateList"
+            titleData="当前状态"
+            @dataBack="dataBackProductTypeId"
+        ></alone-drop-down-colums>
       </div>
+
+      <down-input
+        ref="moreWrap"
+        class="ml-20"
+        @filterData="filterData"
+        titleName="更多筛选"
+      ></down-input>
+
     </div>
+
+    <div class="reset-btn" @click="resetData">
+      重置
+    </div>
+
     <little-batch ref="littleBatchWrap" @changeOrderId="changeOrderId" :supplierListData="supplierListData"></little-batch>
   </div>
 </template>
@@ -98,6 +106,7 @@ import dropDownColums from './dropDownColums'
 import aloneDropDownColums from './alone-drop-down-colums'
 import littleBatch from './little-batch'
 import DownMenu from 'base/menu/DownMenu'
+import downInput from 'base/menu/down-input'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
 export default {
@@ -106,6 +115,7 @@ export default {
     DropDownMenu,
     littleBatch,
     DownMenu,
+    downInput,
     aloneDropDownColums
   },
   data () {
@@ -133,6 +143,85 @@ export default {
       conditionList: [], // 成色列表
       jewelList: [], // 宝石列表
       jewelryList: [], // 首饰列表
+      stateList: [
+        {
+          name: "入库中",
+          id: '1'
+        },
+        {
+          name: "已入库",
+          id: '2'
+        },
+        {
+          name: "退库中",
+          id: '3'
+        },
+        {
+          name: "已退库",
+          id: '4'
+        },
+        {
+          name: "修改中",
+          id: '5'
+        },
+         {
+          name: "已修改",
+          id: '6'
+        },
+        {
+          name: "调库中",
+          id: '7'
+        },
+        {
+          name: "已调库",
+          id: '8'
+        },
+        {
+          id: "9",
+
+          name: "发货中"
+        }, {
+          id: "10",
+
+          name: "已发货"
+        }, {
+          id: "11",
+
+          name: "退货中"
+        }, {
+          id: "12",
+
+          name: "已退货"
+        }, {
+          id: "13",
+
+          name: "调柜中"
+        }, {
+          id: "14",
+
+          name: "已调柜"
+        }, {
+          id: "15",
+
+          name: "销售中"
+        }, {
+          id: "16",
+          name: "已销售"
+        }, {
+          id: "17",
+          name: "发货审核"
+        }, {
+          id: "18",
+          name: "退货审核"
+        }, {
+          id: "19",
+          name: "已退换"
+        }, {
+          id: "20",
+          name: "退换中"
+        }
+
+      ],
       "supplierListData": [
           {
               name: "全部",
@@ -201,11 +290,28 @@ export default {
     }
   },
   methods: {
+    resetData () {
+      this.keyword = ''
+      this.$refs.moreWrap.reset()
+      this.$refs.stateWrap.reset()
+      this.$refs.jewelryIdWrap.reset()
+      this.$refs.jeweIdWrap.reset()
+      this.$refs.colourIdWrap.reset()
+      this.$refs.productTypeIdWrap.reset()
+      this.$refs.shopWrap.reset()
+    },
     batchAddByOrderNum () {
       let options = {
         keyword: this.keyword
       }
-      console.log('通过单据号查询商品')
+      this.$emit('seekProduct', options)
+    },
+    storageLocation (parm) {
+      this.filterCondition.storageId = parm.bigList
+      this.$emit('filterData', this.filterCondition)
+    },
+    filterData (parm) {
+      this.$emit('filterData', Object.assign(this.filterCondition, parm))
     },
     _seekGetShopListByCo() {
       if (this.userPositionInfo.roleList) {
@@ -280,26 +386,28 @@ export default {
           this.shopDataList.push(item)
         })
     },
-    changeShopData () {
+    changeStateData () {
+
+    },
+    clearState () {
 
     },
     changeOrderId (parm) {
       this.filterCondition.newOrderId = parm
+      this.$emit('filterData', this.filterCondition)
     },
     openLittleBatch () {
       this.$refs.littleBatchWrap.open()
     },
+    changeShopData () {
+
+    },
+    dataBack (parm) {
+      this.filterCondition[parm.keyName] = parm.samllList
+      this.$emit('filterData', this.filterCondition)
+    },
     dataBackProductTypeId (parm) { // 产品类别过滤
       this.filterCondition.productTypeId = parm.samllList
-    },
-    dataBackColourId (parm) { // 成色名称过滤
-      this.filterCondition.colourId = parm.samllList
-    },
-    dataBackJeweId (parm) { // 宝石名称过滤
-      this.filterCondition.jeweId = parm.samllList
-    },
-    dataBackJewelryId (parm) { // 首饰类别过滤
-      this.filterCondition.jewelryId = parm.samllList
     },
     seekProductTypeList () { // 产品类别列表
       getProductTypeList().then((res) => {
@@ -539,5 +647,9 @@ export default {
           }
       }
   }
+  .ml-20{
+    margin-left: 20px;
+  }
 }
+
 </style>

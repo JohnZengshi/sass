@@ -839,3 +839,7 @@ export const showCounterList = function (parm) { // 柜组列表
     let URL = "/v1/headquarter/showCounterList"
     return apiCall(parm, URL);
 }
+export const seekGetPrintLabelList = function (parm) { // 标签打印
+    let URL = "/v1/print/getPrintLabelList"
+    return apiCall(parm, URL);
+}

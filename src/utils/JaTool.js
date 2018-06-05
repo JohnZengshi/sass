@@ -17,6 +17,18 @@ export const JaTools = {
 		myDoc.documents = {html: html};
 		jcp.printPreview(myDoc, true);
 	},
+	directPrint(template, dataList){
+		let jcp = getJCP();
+		let pageList = JaTools.transformation(template, dataList);
+		let html = [];
+		let myDoc = {copyrights:'西金网络科技拥有版权  www.yunzhubao.com', noMargins:true};
+		for(let page of pageList){
+			html.push(JaTools.transformationDataToHtml(page));
+			myDoc.settings = {paperWidth: page.width, paperHeight: page.height};
+		}
+		myDoc.documents = {html: html};
+		jcp.print(myDoc, false);
+	},
 	/**
 	 * 将对象转换，合并
 	 * template 

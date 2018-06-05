@@ -54,7 +54,8 @@ export default {
     props: [
         'propsList',
         'titleData',
-        'allName'
+        'allName',
+        'keyName'
     ],
     watch: {
         checkedCities (newValue, oldValue) {
@@ -176,7 +177,7 @@ export default {
             this.operateId = item.id
         },
         complate () {
-            this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll})
+            this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll, keyName: this.keyName})
         },
         reset () {
             this.checkedCities = []

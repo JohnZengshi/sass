@@ -5,10 +5,10 @@
       <data-grid-header :newList="newList" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header>
       <template>
         <!--表格内容区  -->
-        <data-grid-body :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="dataGridStorage" :reportType="reportType" :positionSwitch="positionSwitch" @scrollClass="scrollClass" @lazyloadSend="lazyloadSend" @tabCell="tabCell">
+        <data-grid-body :printNum="printNum" :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="dataGridStorage" :reportType="reportType" :positionSwitch="positionSwitch" @scrollClass="scrollClass" @lazyloadSend="lazyloadSend" @tabCell="tabCell">
         </data-grid-body>
         <!--表尾  -->
-        <data-grid-footer :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="dataGridStorage" :reportType="reportType" :configData="configData" @tabCell="tabCell">
+        <data-grid-footer :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="allData" :reportType="reportType" :configData="configData" @tabCell="tabCell">
         </data-grid-footer>
       </template>
     </div>
@@ -44,10 +44,10 @@ export default {
   created() {
     this.setColumn()
   },
-  props: ['dataGridStorage', 'reportType', 'tabSwitch', 'isOld', 'positionSwitch', 'newList', 'type'],
+  props: ['dataGridStorage', 'reportType', 'tabSwitch', 'isOld', 'positionSwitch', 'newList', 'type', 'printNum', 'allData'],
   methods: {
     sortList(val) {
-      this.$emit('sortList', val)
+      this.$emit('sortListAct', val)
     },
     lazyloadSend(val) {
       this.$emit('lazyloadSend', val)
@@ -66,23 +66,23 @@ export default {
         result.res && result.res.call(this, w)
       }
     },
-    // configType() {
-    //   switch (this.reportType) {
-    //     case 1:
-    //       this.setColumn(this.configData.detailConfing)
-    //       break;
-    //     case 2:
-    //       this.setColumn(this.configData.intelligentConfing)
-    //       break;
-    //     case 3:
-    //       this.setColumn(this.configData.produceConfing)
-    //       break;
-    //     case 4:
-    //       this.setColumn(this.configData.customConfing)
-    //       break;
-    //   }
+    configType() {
+      switch (this.reportType) {
+        case 1:
+          this.setColumn(this.configData.detailConfing)
+          break;
+        case 2:
+          this.setColumn(this.configData.intelligentConfing)
+          break;
+        case 3:
+          this.setColumn(this.configData.produceConfing)
+          break;
+        case 4:
+          this.setColumn(this.configData.customConfing)
+          break;
+      }
 
-    // },
+    },
     scrollClass(type) {
       this.$emit('scrollClass', type)
     },

@@ -48,7 +48,7 @@ module.exports = {
     {
       id: '8', //id 
       text: '件重', //头部title文字
-      width: '120', //单元格宽
+      width: '150', //单元格宽
       type: 'totalWeight', //合计类型值
       unit: '(g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -63,7 +63,7 @@ module.exports = {
     {
       id: '8', //id 
       text: '金重', //头部title文字
-      width: '120', //单元格宽
+      width: '150', //单元格宽
       type: 'totalGoldWeight', //合计类型值
       unit: '(g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -78,7 +78,7 @@ module.exports = {
     {
       id: '4', //id 
       text: '主石', //头部title文字
-      width: '120', //单元格宽
+      width: '150', //单元格宽
       type: 'totalMain', //合计类型值
       unit: '(ct、g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -160,5 +160,65 @@ module.exports = {
       sort: '',
       editOldType : 'afCost'
     },
+    {
+      id: '14', //id 
+      text: '单据号', //头部title文字
+      width: '120', //单元格宽
+      type: '', //合计类型值
+      type1: '', //合计类型值
+      unit: '', //头部单位补充文字
+      footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
+      totalName: '', //底部合计 提示文字
+      childType: 'orderNum', //单元格类型
+      totalType: '', //小计
+      toFixed: false, //是否进行小数点精确截取
+      countCut: 0, //小数点截取位数
+      editOldType : ''
+    },
+    {
+      id: '12', //id 
+      text: '商品属性', //头部title文字
+      width: '120', //单元格宽
+      type: '', //合计类型值
+      type1: '', //合计类型值
+      unit: '', //头部单位补充文字
+      footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
+      totalName: '', //底部合计 提示文字
+      childType: 'productClass', //单元格类型
+      totalType: '', //小计
+      toFixed: false, //是否进行小数点精确截取
+      countCut: 0, //小数点截取位数
+      editOldType : ''
+    },
+    {
+      id: '13', //id 
+      text: '商品位置', //头部title文字
+      width: '120', //单元格宽
+      type: '', //合计类型值
+      type1: '', //合计类型值
+      unit: '', //头部单位补充文字
+      footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
+      totalName: '', //底部合计 提示文字
+      childType: 'productClass', //单元格类型
+      totalType: '', //小计
+      toFixed: false, //是否进行小数点精确截取
+      countCut: 0, //小数点截取位数
+      editOldType : ''
+    },
+    {
+      id: '11', //id 
+      text: '当前状态', //头部title文字
+      width: '120', //单元格宽
+      type: '', //合计类型值
+      type1: '', //合计类型值
+      unit: '', //头部单位补充文字
+      footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
+      totalName: '', //底部合计 提示文字
+      childType: 'status', //单元格类型
+      totalType: '', //小计
+      toFixed: false, //是否进行小数点精确截取
+      countCut: 0, //小数点截取位数
+      editOldType : ''
+    }
   ]
 }
