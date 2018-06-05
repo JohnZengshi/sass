@@ -2,7 +2,7 @@
     <div class="member-points-wrap"> 
         <!-- 头部title begin -->
         <h1 class="header-title">
-            <i class="iconfont icon-dianpu"></i>  {{titleShow}} > <span>会员积分</span> 
+            <i class="iconfont icon-dianpu"></i>  <span @click="goBackReturn" class="gobackBtn">{{titleShow}}</span> > <span>会员积分</span> 
         </h1>
         <!-- 头部title end -->
         <!-- 内容主体 begin-->
@@ -310,6 +310,13 @@ $fontColor:#47a3fb;
         }
         span{
             color: $fontColor;            
+        }
+        .gobackBtn {
+            color: #333;
+            &:hover {
+                color: #2993f8;
+                cursor: pointer;
+            }
         }
         margin-bottom: 30px;
     }
@@ -911,6 +918,7 @@ $fontColor:#47a3fb;
     background-color: #ccc;
     border-color: #ccc;
 }
+
 </style>
 
 <script>
@@ -1777,6 +1785,14 @@ export default {
 
             }
 
+        },
+        // 返回
+        goBackReturn() {
+            if(this.$route.query.type === 1) {
+                this.$router.push({path:'/work/companySetting'})
+            } else {
+                this.$router.push({path:'/work/shopSetting'})
+            }
         }
     },
     watch:{
