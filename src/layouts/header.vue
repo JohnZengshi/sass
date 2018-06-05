@@ -109,7 +109,7 @@ export default {
 	},
 	components: {
         FormatImg,
-        menutabs
+//      menutabs
     },
 	props : ['companyInfo','userInfo', 'isAllowCreate'],
 	
