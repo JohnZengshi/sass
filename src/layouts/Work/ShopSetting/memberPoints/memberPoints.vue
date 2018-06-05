@@ -173,7 +173,7 @@ export default {
         },
         // 会员模板跳转
         goMemberSettingIndex(index){
-            this.$router.push({path:'/work/memberSettingIndex',query:{templateId:this.templateDataList[index].templateId,shopId:this.shopId}})
+            this.$router.push({path:'/work/memberSettingIndex',query:{templateId:this.templateDataList[index].templateId,shopId:this.shopId,type:2}})
         },
         getMemberPointsList(val){
             console.log('回调')
