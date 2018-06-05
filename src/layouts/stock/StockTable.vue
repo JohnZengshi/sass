@@ -227,6 +227,8 @@
         inconspanactive1:true,
         inconspanactive2:false,
         customDialog: false, // 自定义列表弹窗
+        tabNum:'',//当前筛选类型 index
+        ajaxStatus:true, //点击筛选类型是否重复请求接口
         page: 1,
         isOld: 1,
         isPrint: 0,
@@ -402,21 +404,34 @@
     	exportTab(){
     		console.log(this.dataGridOptions)
     		console.log(this.dataGridStorage)
-    		this.dataGridOptions.weight = this.dataGridStorage.totalWeight
-    		this.dataGridOptions.goldWeight = this.dataGridStorage.totalGoldWeight
-    		this.dataGridOptions.price = this.dataGridStorage.totalPrice
-    		this.dataGridOptions.cost = this.dataGridStorage.totalCost
-    		this.dataGridOptions.num = this.dataGridStorage.totalNum
-    		this.dataGridOptions.className = ''
-    		this.dataGridOptions.classTypeName = ''
-    		console.log(this.dataGridOptions)
-    		downLoaderFile('/v1/export/exportExcelByInventory',this.dataGridOptions)
+    		let exportData = Object.assign({},this.dataGridOptions)
+    		exportData.weight = this.dataGridStorage.totalWeight
+    		exportData.goldWeight = this.dataGridStorage.totalGoldWeight
+    		exportData.price = this.dataGridStorage.totalPrice
+    		exportData.cost = this.dataGridStorage.totalCost
+    		exportData.num = this.dataGridStorage.totalNum
+    		exportData.className = ''
+    		exportData.classTypeName = ''
+    		console.log(exportData)
+//  		downLoaderFile('/v1/export/exportExcelByInventory',exportData)
     	},
       choseMenu(type) {
+      	console.log(this.positionSwitch)
+      	console.log(this.dataGridOptions)
         if(type == 1) {
           this.positionSwitch = !this.positionSwitch
+          if(this.positionSwitch){
+          	this.dataGridOptions.sortFlag = 1
+          }else{
+          	this.dataGridOptions.sortFlag = ''
+          }
         } else if(type == 2) {
           this.tabSwitch = !this.tabSwitch
+          if(this.tabSwitch){
+          	this.dataGridOptions.specialId = 1
+          }else{
+          	this.dataGridOptions.specialId = ''
+          }
         }
       },
       cancelSort(item, index) { // 取消排序
@@ -726,6 +741,15 @@
       },
       tabs(index, type, evt) {
       	console.log(index+','+type+','+evt)
+      	if(this.tabNum === index){
+      		console.log('重复点击')
+      		this.ajaxStatus = false
+      	}else{
+      		this.tabNum = index
+      		console.log('不重复点击')
+      		this.ajaxStatus = true
+      	}
+      	
         if(this.dataGridOptions.type == 4 && index == 3) {
           this.customDialog = true
         }
@@ -755,6 +779,7 @@
         return this.dataGridOptions.type
       },
       setReportType(port) {
+      	console.log(port)
         if(port) {
           if(port == 1) {
             if(this.inconspanactive1){
@@ -928,9 +953,11 @@
         }
         this.dataGridOptions.type = port
         /*
-         * 20180531 下面的方法会导致请2次接口
+         * 20180601 如果重复点击同一筛选条件不重复请求
          */
-        //this.send()
+        if(!this.ajaxStatus){
+        	this.send()
+        }
       },
       /*
        * 数据请求  输入关键字搜索

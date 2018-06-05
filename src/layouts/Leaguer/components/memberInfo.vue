@@ -327,13 +327,13 @@ export default {
             return year + month + data + timeType
         },
         newClient () {
-            console.log('调用')
             let options = {
                 beginTime: this.timeFormat(moment(this.beginTime).format('YYYY-MM-DD')),
                 endTime: this.timeFormat(moment(this.beginTime).format('YYYY-MM-DD'), '235959'),
                 shopId: this.shopId,
                 page: 1,
-                pageSize: 90
+                pageSize: 9999,
+                memberId:this.memberId
             }
             seekListVisitor(options)
                 .then(res => {
