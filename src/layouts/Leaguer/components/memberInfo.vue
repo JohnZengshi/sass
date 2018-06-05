@@ -11,7 +11,7 @@
         <member-info-home v-show="homePage" :oldMemberInfo="oldMemberInfo" :memberInfo="memberInfo" :shopId="shopId" :memberId="memberId" @infomationShow="infomationShow" @tradingShow="tradingShow" @visitingShow="visitingShow" @integralShow="integralShow" @followShow="followShow" @goBack="goBack"></member-info-home>
 
         <!-- 信息编辑页面 -->
-        <information-edit v-show="informationPage" :oldMemberInfo="oldMemberInfo" :shopId="shopId" :memberId="memberId" @goBack="goBack" @getData="getData"></information-edit>
+        <information-edit v-show="informationPage" :oldMemberInfo="oldMemberInfo" :shopId="shopId" :memberInfo="memberInfo" :memberId="memberId" @goBack="goBack" @getData="getData"></information-edit>
 
         <!-- 交易记录页面 -->
         <trading v-show="tradingPage" :buyRecordInfo="buyRecordInfo" :oldMemberInfo="oldMemberInfo" :memberInfo="memberInfo" :shopId="shopId" :memberId="memberId"  @goBack="goBack" @getData="getData"></trading>
@@ -20,7 +20,7 @@
         <visiting v-show="visitingPage" :visitData="visitData" @goBack="goBack" @getData="getData"></visiting>
 
         <!-- 跟进页面 -->
-        <follow v-show="followPage" :followData="followData" :oldMemberInfo="oldMemberInfo" :shopId="shopId" :memberId="memberId" @goBack="goBack" @getData="getData"></follow>
+        <follow v-show="followPage" :followData="followData" :memberInfo="memberInfo" :oldMemberInfo="oldMemberInfo" :shopId="shopId" :memberId="memberId" @goBack="goBack" @getData="getData"></follow>
 
         <!-- 积分记录页面 -->
         <integral v-show="integralPage" :integralData="integralData" :oldMemberInfo="oldMemberInfo" :memberInfo="memberInfo" :shopId="shopId" :memberId="memberId" @goBack="goBack" @getData="getData"></integral>
