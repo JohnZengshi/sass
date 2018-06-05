@@ -1019,7 +1019,7 @@ export default {
             srscore:'',
             dczcscore:'',
             lxzcscore:'',
-            isDisabled:false,
+            isDisabled:true,
 
             titleShow:'公司设置'
 
@@ -1840,7 +1840,12 @@ export default {
                     this.isDisabled = false
                 }
             } else {
-                this.isDisabled = false
+                // 判断是不是管理
+                res.data.data.roleList.forEach(item => {
+                    if(item.role <= 3) {
+                        this.isDisabled = false
+                    }
+                })
             }
         })
         this.getIntegralDetails()
