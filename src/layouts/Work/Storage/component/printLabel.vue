@@ -207,6 +207,7 @@
 				console.log('导出表格')
 				// console.log('http://192.168.100.110:8083/yunzhubao/v1/export/exportExcelByBusinss?'+objStr)
 				// location.href='http://192.168.100.109:8080/yunzhubao/v1/export/exportExcelByBusinss?'+objStr
+				console.log(this.exportTabData)
 
 				downLoaderFile('/v1/export/exportExcelByBusinss',this.exportTabData)
 

@@ -419,11 +419,11 @@
 									
 									<div class="footer-left">
 										<span @click.stop="goPro" v-if="entry.tep2List.isShowBtn">上一步</span>
-										<span @click.stop="goNext" v-if="entry.tep2List.isShowBtn1">下一步</span>
 									</div>
 
-									<div class="footer-right" @click.stop="goNext" v-if="isSkip == false">
-										跳过
+									<div class="footer-right" >
+										<span @click.stop="goNext" v-if="entry.tep2List.isShowBtn1">下一步</span>
+										<span @click.stop="goNext" v-if="isSkip == false">跳过</span>
 									</div>
 									
 								</div>
@@ -443,12 +443,12 @@
 									</ul>
 								</div>
 								<div class="footer">
-									<div class="footer-left" @click.stop="goNext" v-if="isSkip == false">
-										跳过
-									</div>
-									<div class="footer-right">
+									<div class="footer-left">
 										<span @click.stop="goPro" v-if="entry.tep3List.isShowBtn">上一步</span>
+									</div>
+									<div class="footer-right" >
 										<span @click.stop="goNext" v-if="entry.tep3List.isShowBtn1">下一步</span>
+										<span @click.stop="goNext" v-if="isSkip == false">跳过</span>
 									</div>
 								</div>
 							</div>
@@ -1070,17 +1070,17 @@
 					}
 				}
 			});
-			$(".new-table-wrap").mCustomScrollbar({
-				theme: "minimal-dark",
-				autoHideScrollbar: true,
-				scrollInertia: 500,
-				mouseWheel: {
-					scrollAmount: 200,
-					preventDefault: false,
-					normalizeDelta: false,
-					//disableOver: [div]
-				},
-			});
+//			$(".new-table-wrap").mCustomScrollbar({
+//				theme: "minimal-dark",
+//				autoHideScrollbar: true,
+//				scrollInertia: 500,
+//				mouseWheel: {
+//					scrollAmount: 200,
+//					preventDefault: false,
+//					normalizeDelta: false,
+//					//disableOver: [div]
+//				},
+//			});
 			$(".total-wrap").mCustomScrollbar({
 				axis: 'x',
 				theme: "minimal-dark",
@@ -1519,16 +1519,16 @@
 				operateMemberSalesList(options).then((res) => {
 					if(res.data.state == 200) {
 						this.getSeekSellReceiptsIntro()
-						console.log('关联成功')
-						// 关联已收银的时候加积分 
-						if(this.priceType.cash == 0 && this.priceType.card == 0 && this.priceType.other == 0 && this.priceType.wechat == 0 && this.priceType.alipay == 0) {
-						} else {
-							console.log('关联成功')
-							let self = this
-							setTimeout(function(){
-								self.setMemberBuyIntegral('1')
-							},500)
-						}
+						// console.log('关联成功')
+						// // 关联已收银的时候加积分 
+						// if(this.priceType.cash == 0 && this.priceType.card == 0 && this.priceType.other == 0 && this.priceType.wechat == 0 && this.priceType.alipay == 0) {
+						// } else {
+						// 	console.log('关联成功')
+						// 	let self = this
+						// 	setTimeout(function(){
+						// 		self.setMemberBuyIntegral('1')
+						// 	},500)
+						// }
 
 						this.isSeekMember = false
 					} else {
@@ -1536,14 +1536,16 @@
 							type: 'warning',
 							message: res.data.msg
 						})
+
 					}
+					
 				}, (res) => {
 					this.$message({
 						type: 'warning',
 						message: res.data.msg
 					})
 				})
-
+				// this.setMemberBuyIntegral('1')
 				
 			},
 			closeChoMember(val) {
@@ -3558,7 +3560,6 @@
 			width: 1250px;
 			box-sizing: border-box;
 			padding-right: 10px;
-			padding-bottom: 120px;
 			padding-top: 30px;
 			margin: 0 auto;
 			.body-header {

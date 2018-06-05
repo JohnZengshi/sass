@@ -88,6 +88,8 @@ export const downLoaderFile = (url,data) => {
 //     // let serverHost = 'http://www.jzmsoft.com'
 //     // 正式
 //     // let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
+		var newStr = JSON.stringify(dataStr)
+		console.log(newStr)
     let hrefurl = serverHost + url + '?' + dataStr
     
     let strurl = encodeURI(hrefurl)

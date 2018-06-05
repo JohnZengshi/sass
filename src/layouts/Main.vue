@@ -11,7 +11,6 @@
     <com-menu :rootList="rootList" @setScopeSize="setScopeSize"></com-menu>
     
     <div class="app-main" @click="wholdClick" @scroll="scrollFun($event)">
-        
         <router-view></router-view>
 
         <div class="index-img" v-if="isImg">
@@ -365,13 +364,14 @@ export default {
                         .then(res => {
                             if (res.data.state == 200) {
                                 ws.close()
-                                sessionStorage.clear()
-                                localStorage.clear()
-                                _self.$router.push({path: '/member/login'})
-                                let body = document.getElementById('body')
-                                body.style.background = '#f5f8f7'
+                                _self.loginOut()
+                                // sessionStorage.clear()
+                                // localStorage.clear()
+                                // _self.$router.push({path: '/member/login'})
+                                // let body = document.getElementById('body')
+                                // body.style.background = '#f5f8f7'
                             } else {
-                                this.$message({
+                                _self.$message({
                                     message: res.data.msg,
                                     type: 'warning'
                                 });
@@ -381,7 +381,12 @@ export default {
               }
             } else if (datas.msgType == '08') { // 人脸识别
                 console.log('收到人脸的数据', evt)
-                this.faceWebsocked(datas)
+                _self.faceWebsocked(datas)
+            } else if (datas.msgType == '10' && sessionStorage.getItem("tokenId") != datas.tokenId && datas.os == 'web') { // 退出
+                debugger
+                ws.close()
+                Vue.prototype.loginPopup.show()
+                // _self.loginOut()
             }
           }
           ws.error = function(evt) {
@@ -394,6 +399,13 @@ export default {
             ws.send({"companyId":sessionStorage.getItem('companyId'),"msgType":"09","os":"web","userId":sessionStorage.getItem('id'),"status":"1000"})
             ws.close()
           }
+        },
+        loginOut () {
+            sessionStorage.clear()
+            localStorage.clear()
+            this.$router.push({path: '/member/login'})
+            let body = document.getElementById('body')
+            body.style.background = '#f5f8f7'
         },
         faceWebsocked (datas) {
             if (this.currentFaceShop) {

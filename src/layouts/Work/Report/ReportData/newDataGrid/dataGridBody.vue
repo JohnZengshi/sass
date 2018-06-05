@@ -77,6 +77,7 @@
 
 <!--产品分类-->
 <div class="ui-table-container produc-line" ref="tableContainer" v-else-if="reportType == 3">
+	123123
 	<div>
 		<div class="tb-category" v-for="(caty,index) in dataGridStorage.dataList" :key="index">
 		  <template v-for="(tb, index) in caty.productTypeList">
@@ -105,8 +106,6 @@
   					</div>
   				</template>
   			</div>
-  			
-  			
 			</template>
 			
 		</div>
@@ -165,6 +164,7 @@ export default {
 		$(".ui-table-container").mCustomScrollbar({
             theme: "minimal-dark",
             axis: 'y',
+            scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
             mouseWheel: {
                 scrollAmount: 200,
                 preventDefault: false,

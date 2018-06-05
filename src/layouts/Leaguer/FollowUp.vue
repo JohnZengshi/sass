@@ -71,7 +71,7 @@
                     </DropDownMenu>
                 </li>
                 <li>
-                    <div class="batch-time-wrap">
+                    <div class="batch-time-wrap" style="margin-right: 0;">
                         <div class="date-w81">
                             <el-date-picker
                                 format

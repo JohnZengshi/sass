@@ -1,7 +1,7 @@
 <template>
 <div class="steps-path" :class="{remark: isRemark}">
   <div class="steps-item" :class="item.statusClass"  v-for="item,i in stepItem">
-      <span class="status">{{item.statusName}}</span>
+      <span class="status" @click="showData">{{item.statusName}}</span>
       <div class="user">
           <p class="time" v-text="item.createTime"></p>
           <p class="name"v-text="item.userName"></p>
@@ -49,6 +49,9 @@ export default {
   },
   methods: {
     // 获取当前状态数据
+    showData(){
+    	console.log(this.stepItem)
+    },
     fetchFootData (){
       this.stepItem.forEach((item, index) => {
           if (index == 0) {

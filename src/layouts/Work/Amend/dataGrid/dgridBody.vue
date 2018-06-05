@@ -339,6 +339,7 @@ export default{
     
     // 文本框失去焦点
     inputFocusout (evt, item, tab, fIndex) {
+    	console.log(this.dgDataList)
       let itemData = item.old[tab.type]
       let tempData = evt.target.getAttribute('temp-data')  //拿到原始的数据
       let productId = item.now.productId
@@ -352,171 +353,209 @@ export default{
         }]
         
 //      // 在修改成本跟倍率时 需要把售价传给后台
-//      if (tab.type == 'costPrice' || tab.type == 'ratio') {
-//        tempArray.push({
-//          soldPrice : item.old['soldPrice'],
-//          productId: productId
-//        })
-//      }
+        if (tab.type == 'costPrice' || tab.type == 'ratio') {
+          tempArray.push({
+            soldPrice : item.old['soldPrice'],
+            productId: productId
+          })
+        }
+        
+        // 修改售价 需要把倍率传给后台
+        if (tab.type == 'soldPrice') {
+          tempArray.push({
+            ratio : item.old['ratio'],
+            productId: productId
+          })
+        }
 //      
-//      // 修改售价 需要把倍率传给后台
-//      if (tab.type == 'soldPrice') {
-//        tempArray.push({
-//          ratio : item.old['ratio'],
-//          productId: productId
-//        })
-//      }
-//      
-//      // 修改配件数、计价方式 、单价需要同步更新配件额字段
-//      if (tab.type == 'partCount' || tab.type === 'calcMethod' || tab.type === 'partPrice') {
-//        tempArray.push({
-//          price : item.old['price'],
-//          productId: productId
-//        })
-//      }
-//      
-//      // 修改配件额  同步更新单价字段
-//      if (tab.type == 'price') {
-//        tempArray.push({
-//          partPrice : item.old['partPrice'],
-//          productId: productId
-//        })
-//      }
-//      
-//      // 修改总件重 同步更新净金重
-//      if(tab.type === 'totalWeight'){
-//        tempArray.push({
-//          netWeight : item.old['netWeight'],
-//          productId: productId
-//        })
-//      }
-//      
-//      // 修改净金重 同步更新含配金重、总件重
-//      if(tab.type === 'netWeight'){
-//        tempArray.push({
-//          heavyCode : item.old['heavyCode'],
-//          productId: productId
-//        })
-//        tempArray.push({
-//          totalWeight : item['totalWeight'],
-//          productId: productId
-//        })
-//      }
-//      
-//      // 修改含配金重 同步更新净金重 
-//      if(tab.type === 'heavyCode'){
-//        tempArray.push({
-//          netWeight : item.old['netWeight'],
-//          productId: productId
-//        })
-//      }
-//      
-//      /*
-//      * 1、修改金耗同步更新金料额
-//      * 2、修改金价同步更新金料额
-//      * 3、修改净金重同步更新金料额
-//      */
-//      if(tab.type === 'goldCost' || tab.type === 'goldPrice' || tab.type === 'netWeight'){
-//        tempArray.push({
-//          goldE : item.old['goldE'],
-//          productId: productId
-//        })
-//      }
-//      
-//      // 修改金料额同步更新金价
-//      if(tab.type === 'goldE'){ 
-//        tempArray.push({
-//          goldPrice : item.old['goldPrice'],
-//          productId: productId
-//        })
-//      }
-//      
-//      /*
-//      * 1、修改进货工费同步更新进货工费额
-//      * 2、修改进货工费方式同步更新进货工费额
-//      */
-//      if(tab.type === 'inFee' || tab.type === 'inMethod'){
-//        tempArray.push({
-//          inMoney : item.old['inMoney'],
-//          productId: productId
-//        })
-//      }
-//      
-//      // 修改进货工费额同步更新进货工费
-//      if(tab.type === 'inMoney'){
-//        tempArray.push({
-//          inFee : item.old['inFee'],
-//          productId: productId
-//        })
-//      }
-//      
-//      /*
-//      * 1、修改副石粒数同步更新副石额 
-//      * 2、修改副石重同步更新副石额
-//      * 3、修改副石单价同步更新副石额
-//      * 4、修改副石计价方式同步更新副石额 
-//      */
-//     console.log('tab.type:', tab.type)
-//      if(tab.type === 'deputyCount' 
-//        || tab.type === 'deputyWeight'
-//        || tab.type === 'deputyUnitPrice'
-//        || tab.type === 'deputyCalcMethod'
-//      ){
-//        tempArray.push({
-//          deputyPrice : item.old['deputyPrice'],
-//          productId: productId
-//        })
-//      }
-//      
-//      // 修改副石重同步更新总件重
-//      if(tab.type === 'deputyWeight'){
-//        tempArray.push({
-//          totalWeight : item.old['totalWeight'],
-//          productId: productId
-//        })
-//      }
-//      
-//      // 修改副石重同步更新副石单价
-//      if(tab.type === 'deputyPrice'){
-//        tempArray.push({
-//          deputyUnitPrice : item.old['deputyUnitPrice'],
-//          productId: productId
-//        })
-//      }
-//      
-//      /*
-//      * 1、修改主石粒数同步更新主石额
-//      * 2、修改主石重同步更新主石额
-//      * 3、修改主石单价同步更新主石额
-//      * 4、修改计价方式同步更新主石额
-//      */
-//      if(tab.type === 'count'
-//        || tab.type === 'mainWeight'
-//        || tab.type === 'unitPrice'
-//        || tab.type === 'mainCalcMethod'
-//      ){
-//        tempArray.push({
-//          mainPrice : item.old['mainPrice'],
-//          productId: productId
-//        })
-//      }
-//      
-//      //修改主石重同步更新总件重
-//      if(tab.type === 'mainWeight'){
-//        tempArray.push({
-//          totalWeight : item.old['totalWeight'],
-//          productId: productId
-//        })
-//      }
-//      
-//      //修改主石额同步更新主石单价
-//      if(tab.type === 'mainPrice'){
-//        tempArray.push({
-//          unitPrice : item.old['unitPrice'],
-//          productId: productId
-//        })
-//      }
-
+				/*
+				 * 下面只限制小数位数
+				 */
+        // 修改配件数、计价方式 、单价需要同步更新配件额字段
+        if (tab.type == 'partCount' || tab.type === 'calcMethod' || tab.type === 'partPrice') {
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+          tempArray.push({
+            price : item.old['price'],
+            productId: productId
+          })
+        }
+        
+        // 修改配件额  同步更新单价字段
+        if (tab.type == 'price') {
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+          tempArray.push({
+            partPrice : item.old['partPrice'],
+            productId: productId
+          })
+        }
+        
+        // 修改总件重 同步更新净金重
+        if(tab.type === 'totalWeight'){
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+          tempArray.push({
+            netWeight : item.old['netWeight'],
+            productId: productId
+          })
+        }
+        
+        // 修改含配金重 同步更新净金重 
+        if(tab.type === 'heavyCode'){
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+          tempArray.push({
+            netWeight : item.old['netWeight'],
+            productId: productId
+          })
+        }
+        
+        /*
+        * 1、修改金耗同步更新金料额
+        * 2、修改金价同步更新金料额
+        * 3、修改净金重同步更新金料额
+        */
+        if(tab.type === 'goldCost' || tab.type === 'goldPrice'){
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+          tempArray.push({
+            goldE : item.old['goldE'],
+            productId: productId
+          })
+        }
+        
+        // 修改金料额同步更新金价
+        if(tab.type === 'goldE'){ 
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+          tempArray.push({
+            goldPrice : item.old['goldPrice'],
+            productId: productId
+          })
+        }
+        
+        // 修改净金重 同步更新含配金重、总件重
+        if(tab.type === 'netWeight'){
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+        	console.log(tempArray)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+        	
+          tempArray.push({
+            heavyCode : item.old['heavyCode'],
+            productId: productId
+          })
+          tempArray.push({
+            totalWeight : item['totalWeight'],
+            productId: productId
+          })
+          tempArray.push({
+            goldE : item.old['goldE'],
+            productId: productId
+          })
+        }
+        
+        /*
+        * 1、修改进货工费同步更新进货工费额
+        * 2、修改进货工费方式同步更新进货工费额
+        */
+        if(tab.type === 'inFee' || tab.type === 'inMethod'){
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+          tempArray.push({
+            inMoney : item.old['inMoney'],
+            productId: productId
+          })
+        }
+        
+        // 修改进货工费额同步更新进货工费
+        if(tab.type === 'inMoney'){
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+          tempArray.push({
+            inFee : item.old['inFee'],
+            productId: productId
+          })
+        }
+        
+        /*
+        * 1、修改副石粒数同步更新副石额 
+        * 2、修改副石重同步更新副石额
+        * 3、修改副石单价同步更新副石额
+        * 4、修改副石计价方式同步更新副石额 
+        */
+        if(tab.type === 'deputyCount' 
+          || tab.type === 'deputyWeight'
+          || tab.type === 'deputyUnitPrice'
+          || tab.type === 'deputyCalcMethod'
+        ){
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+          tempArray.push({
+            deputyPrice : item.old['deputyPrice'],
+            productId: productId
+          })
+        }
+        
+        // 修改副石重同步更新总件重
+        if(tab.type === 'deputyWeight'){
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+          tempArray.push({
+            totalWeight : item.old['totalWeight'],
+            productId: productId
+          })
+        }
+        
+        // 修改副石重同步更新副石单价
+        if(tab.type === 'deputyPrice'){
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+          tempArray.push({
+            deputyUnitPrice : item.old['deputyUnitPrice'],
+            productId: productId
+          })
+        }
+        
+        /*
+        * 1、修改主石粒数同步更新主石额
+        * 2、修改主石重同步更新主石额
+        * 3、修改主石单价同步更新主石额
+        * 4、修改计价方式同步更新主石额
+        */
+        if(tab.type === 'count'
+          || tab.type === 'mainWeight'
+          || tab.type === 'unitPrice'
+          || tab.type === 'mainCalcMethod'
+        ){
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+          tempArray.push({
+            mainPrice : item.old['mainPrice'],
+            productId: productId
+          })
+        }
+        
+        //修改主石重同步更新总件重
+        if(tab.type === 'mainWeight'){
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+          tempArray.push({
+            totalWeight : item.old['totalWeight'],
+            productId: productId
+          })
+        }
+        
+        //修改主石额同步更新主石单价
+        if(tab.type === 'mainPrice'){
+        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+          tempArray.push({
+            unitPrice : item.old['unitPrice'],
+            productId: productId
+          })
+        }
+				console.log(tempArray)
         this.$emit('updataEditApi', tempArray)
       }
     },
@@ -744,6 +783,7 @@ export default{
         Object.assign(item, {
           netWeight : ( this.toNum(item['totalWeight']) - (this.toNum(item['mainWeight']) + this.toNum(item['deputyWeight']) + this.toNum(item['partWeight']))).toFixed(3)
         })
+        console.log(this.dgDataList)
       }
       // 净金重 
       if(tab.type === 'netWeight'){

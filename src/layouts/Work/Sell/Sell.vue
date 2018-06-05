@@ -223,6 +223,7 @@ export default {
         $(".receipts-list").mCustomScrollbar({
             theme: "minimal-dark",
             axis: 'y',
+            scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
             mouseWheel: {
                 scrollAmount: 200,
                 preventDefault: false,
@@ -335,11 +336,13 @@ export default {
             var scrollHeight = e.currentTarget.scrollHeight; // 元素可以滚动的高度
             var clientHeight = e.currentTarget.clientHeight; // 元素的高度
             var scrollTop = e.currentTarget.scrollTop; // 滚动了的距离
+            console.log(scrollTop)
             if (clientHeight + scrollTop >= scrollHeight) {
                 this.filterFun(this.cbFun);
             }
         },
         newReceipt (parm) { // 新建单据
+        		console.log(this.shopListByCo)
             if (this.shopListByCo.length <= 1) {
                 this.sureAct(this.shopListByCo[0])
             } else {

@@ -38,7 +38,7 @@
             <!-- 监察员 -->
             <h6 class="little-title-wrap" :class="{'open-class': isOpen[2]}" @click="open('InspectorWrap', inspectorList.length, 2)">
               <i class="triangle-icon" :title="isOpen[2] ?'点击收起':'点击展开'" :class="{'close-triangle-icon': isOpen[2], 'open-triangle-icon': !isOpen[2]}"></i>
-              <span class="little-title-left">监察员（{{inspectorList.length}}人）</span>
+              <span class="little-title-left">观察员（{{inspectorList.length}}人）</span>
               <a @click.stop="addInspector" v-if="isOperate" href="javascript: void(0)" class="add-btn">+添加</a>
             </h6>
 

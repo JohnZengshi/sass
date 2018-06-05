@@ -397,7 +397,7 @@
 .stock-statement-main{
   font-size: 0;
   width: 1250px;
-  margin: 30px auto;
+  margin: 30px auto 0;
   .stock-header-wrap{
     // height: 410px;
     height: 30px;
@@ -412,7 +412,7 @@
       z-index:999;
     }
     .header-select{
-      position: fixed;
+      position: absolute;
       z-index: 999;
       height: 40px;
       width: 1270px;
@@ -479,7 +479,7 @@
     }
   }
   .stock-table-wrap{
-    height: 800px;
+    /*height: 800px;*/
     width: 100%;
   }
 }
