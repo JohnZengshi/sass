@@ -26,25 +26,10 @@
         
     </h1>
     <div class="page-side">
-        <div class="user-info">
-            <!-- <img @click="goAdmin" v-if="userInfo" class="user-img" :src="userInfo.userLogo"> -->
-            <FormatImg :logo="userInfo.userLogo" @click.native="goAdmin" class="img" :userName="userInfo.userName || userInfo.phone" :size="40"></FormatImg>
-            <div v-if="userInfo" class="userInfo_silder">欢迎您！
-                <el-dropdown @command="selectMenu">
-                    <span class="el-dropdown-link">
-                        {{userInfo.userName || userInfo.phone}}<i class="el-icon-caret-bottom el-icon--right"></i>
-                    </span>
-                    <el-dropdown-menu slot="dropdown" class="layout-drop-item">
-                        <!--<el-dropdown-item command="a">个人信息</el-dropdown-item>-->
-                        <!--<el-dropdown-item command="b">我的公司</el-dropdown-item>
-                        <el-dropdown-item command="c">店铺管理</el-dropdown-item>-->
-                        <!--<el-dropdown-item command="d">修改密码</el-dropdown-item>-->
-                        <el-dropdown-item command="e">退出登录</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-            </div>
-        </div>
-        <div class="button">
+    		<div class="menuTabs">
+    				<menutabs></menutabs>
+       	</div>
+    		<div class="button">
             <div class="search" ref="mysearch">
                 <!-- <div class="drop-search">单据<i class="el-icon-caret-bottom"></i></div> -->
                 <el-dropdown class="drop-search" @command="searchType">
@@ -72,7 +57,24 @@
                 </el-badge>
             </div>
         </div>
-        
+        <div class="user-info">
+            <!-- <img @click="goAdmin" v-if="userInfo" class="user-img" :src="userInfo.userLogo"> -->
+            <FormatImg :logo="userInfo.userLogo" @click.native="goAdmin" class="img" :userName="userInfo.userName || userInfo.phone" :size="40"></FormatImg>
+            <div v-if="userInfo" class="userInfo_silder">欢迎您！
+                <el-dropdown @command="selectMenu">
+                    <span class="el-dropdown-link">
+                        {{userInfo.userName || userInfo.phone}}<i class="el-icon-caret-bottom el-icon--right"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown" class="layout-drop-item">
+                        <!--<el-dropdown-item command="a">个人信息</el-dropdown-item>-->
+                        <!--<el-dropdown-item command="b">我的公司</el-dropdown-item>
+                        <el-dropdown-item command="c">店铺管理</el-dropdown-item>-->
+                        <!--<el-dropdown-item command="d">修改密码</el-dropdown-item>-->
+                        <el-dropdown-item command="e">退出登录</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
+            </div>
+        </div>
     </div>
 </header>
 </transition>
@@ -87,6 +89,7 @@ import {
 } from '../../src/Api/commonality/seek'
 import {operateSwitchCompany, operateLogout} from '../../src/Api/commonality/operate'
 import FormatImg from 'components/template/DefaultHeadFormat.vue'
+import menutabs from 'components/menuTab.vue'
 let skinConfig = require('./skinConfig')
 export default {
 	data () {
@@ -105,7 +108,8 @@ export default {
 		}
 	},
 	components: {
-        FormatImg
+        FormatImg,
+        menutabs
     },
 	props : ['companyInfo','userInfo', 'isAllowCreate'],
 	
@@ -260,15 +264,16 @@ export default {
     top:0;
     height: 64px;
     width: 100%;
-    //padding-left: 70px;
+    padding-left: 190px;
     background-color: #fff;
     border-bottom:1px solid #edf0ef;
     z-index: 1002;
     box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    display: flex;
     
     .logo{
         height: 59px;
-        position:absolute;
+        position: absolute;
         left:20px;
         top:5px;
         z-index:10;
@@ -310,10 +315,11 @@ export default {
 	.page-side{
 		position: relative;
 		z-index: 1;
-		width: 1345px;
-        height: 64px;
-        padding-right: 50px;
-		margin: 0 auto;
+    height: 64px;
+    padding-right: 50px;
+    display: flex;
+    justify-content: flex-end;
+    flex: 1;
 		
 		.button {
         	margin-top: 16px;
@@ -562,4 +568,9 @@ export default {
   max-height: 300px;
   //overflow: auto;
 }  
+.menuTabs{
+	flex: 1;
+	padding: 0 40px;
+	position: relative;
+}
 </style>
