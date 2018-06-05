@@ -387,7 +387,7 @@ export default {
     data () {
         return {
             saveSuccess:false,
-            isShopMan:true,
+            isShopMan:false,
         }
     },
     components: {
@@ -521,7 +521,24 @@ export default {
                         }
                     }
                 } else {
-                    this.isShopMan = jurisdictions.jurisdictionShopManageRole(res.data.data.roleList)
+                    this.isShopMan = false
+                    
+                    // 多重身份判断
+                    res.data.data.roleList.forEach(item => {
+                        // 判断是不是店长
+                        if(item.role == 4) {
+                            // 判断是不是这家店
+                            if(item.shopId == this.shopId) {
+                                this.isShopMan = true
+                            }
+                        }
+                        // 判断是不是店员
+                        if(item.role == 5) {
+                            if(item.shopId == this.shopId) {
+                                this.isShopMan = true
+                            }
+                        }
+                    })
                 }
             })
         }
