@@ -272,6 +272,8 @@ export default {
     'memberInfo'(val) {
         if(val) {
             this.score = this.memberInfo.score || 0
+            // 查看负责人列表
+            console.log('我查看一下负责人',val)
             // 获取用户权限
             let options = {
                 userId: sessionStorage.getItem('id')
@@ -308,7 +310,12 @@ export default {
                         // 判断是不是店员
                         if(item.role == 5) {
                             if(item.shopId == this.shopId) {
-                                this.isShopMan = true
+                                // 判断是不是负责人
+                                val.principalList.forEach(fzr => {
+                                    if(fzr.userId == sessionStorage.getItem('id')) {
+                                        this.isShopMan = true
+                                    }
+                                })
                             }
                         }
                     })

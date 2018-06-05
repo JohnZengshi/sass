@@ -2,7 +2,7 @@
     <div class="member-points-wrap"> 
         <!-- 头部title begin -->
         <h1 class="header-title">
-            <i class="iconfont icon-dianpu"></i>  店铺设置 > <span>会员积分</span> 
+            <i class="iconfont icon-dianpu"></i>  {{titleShow}} > <span>会员积分</span> 
         </h1>
         <!-- 头部title end -->
         <!-- 内容主体 begin-->
@@ -1019,7 +1019,9 @@ export default {
             srscore:'',
             dczcscore:'',
             lxzcscore:'',
-            isDisabled:false
+            isDisabled:false,
+
+            titleShow:'公司设置'
 
         }
     },
@@ -1812,6 +1814,19 @@ export default {
         
     },
     created(){
+        // 公司设置还是店铺设置
+        switch (this.$route.query.type) {
+            case 1:
+                this.titleShow = '公司设置'
+                break;
+            case 2:
+                this.titleShow = '店铺设置'
+                break;
+        
+            default:
+                break;
+        }
+
         // 获取用户权限
         let options = {
             userId: sessionStorage.getItem('id')

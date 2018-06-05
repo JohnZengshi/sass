@@ -51,7 +51,7 @@
                     </div>
                     <div class="member-list">
                         <ul>
-                            <li v-for="(item,index) in templateDataList" :key="index" @click.stop="openMenberPoint(index)" ><i>●</i>{{item.templateName}}<i v-if="userType<4" class="el-icon-delete iDel" @click.stop="delTemplat(index)"></i></li>
+                            <li v-for="(item,index) in templateDataList" :key="index" @click.stop="openMenberPoint(index,1)" ><i>●</i>{{item.templateName}}<i v-if="userType<4" class="el-icon-delete iDel" @click.stop="delTemplat(index)"></i></li>
                         </ul>
                     </div>
                 </div>
@@ -537,9 +537,9 @@ export default {
                     break
             }
         },
-        openMenberPoint(index){
+        openMenberPoint(index,type){
             // this.$router.push({ path: '/work/memberSettingIndex', query: { templateId:1234 }})
-            this.$router.push({path:'/work/memberSettingIndex',query:{templateId:this.templateDataList[index].templateId}})
+            this.$router.push({path:'/work/memberSettingIndex',query:{templateId:this.templateDataList[index].templateId,type:type}})
         },
         // 积分模板的添加
         getTemplateList(){
@@ -572,20 +572,57 @@ export default {
         },
         // 删除模板
         delTemplat(index) {
-            let options = {
-                templateId:this.templateDataList[index].templateId,
-                operateType:'1'
-            }
-            templateIntegralUpdate(options).then(res => {
-                if(res.data.state == 200){
-                    this.$message({
-                        type:'success',
-                        message:'删除成功'
+            // 删除模板提示
+            if(this.templateDataList[index].existence == 'Y') {
+                this.$confirm('该模板已应用店铺，是否确认删除模板?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(() => {
+                    let options = {
+                        templateId:this.templateDataList[index].templateId,
+                        operateType:'1'
+                    }
+                    templateIntegralUpdate(options).then(res => {
+                        if(res.data.state == 200){
+                            this.$message({
+                                type:'success',
+                                message:'删除成功'
+                            })
+                            this.getTemplateList()
+                        }
                     })
-                    this.getTemplateList()
-                    
-                }
-            })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            } else {
+                this.$confirm('是否确认删除该模板?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(() => {
+                    let options = {
+                        templateId:this.templateDataList[index].templateId,
+                        operateType:'1'
+                    }
+                    templateIntegralUpdate(options).then(res => {
+                        if(res.data.state == 200){
+                            this.$message({
+                                type:'success',
+                                message:'删除成功'
+                            })
+                            this.getTemplateList()
+                        }
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+
+            }
         }
     }
 }

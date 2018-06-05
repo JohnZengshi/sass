@@ -344,7 +344,12 @@ export default {
                         // 判断是不是店员
                         if(item.role == 5) {
                             if(item.shopId == this.shopId) {
-                                this.isShopMan = true
+                                 // 判断是不是负责人
+                                val.principalList.forEach(fzr => {
+                                    if(fzr.userId == sessionStorage.getItem('id')) {
+                                        this.isShopMan = true
+                                    }
+                                })
                             }
                         }
                     })
