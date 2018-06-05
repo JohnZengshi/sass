@@ -12,7 +12,7 @@
                 <span>积分明细</span>
                 <span>时间</span>
             </div>
-            <div class="integral-item" v-for="(item,index) in integralData.dataList" :key="index">
+            <div class="integral-item" v-for="(item,index) in integralData.dataList" :key="index" v-if="item.score">
                 <i v-if="item.remark" class="el-icon-edit icon-color" :title="item.remark"></i>
                 <span>{{getLabel(item.type)}}</span>
                 <span>{{item.score}}</span>

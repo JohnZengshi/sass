@@ -3,7 +3,7 @@
         <div class="memberinfo-top">
             <!-- 头像 -->
             <div class="member-log">
-                <FormatImg :logo="oldMemberInfo.memberLogo" :userName="oldMemberInfo.username" :size="72"></FormatImg>
+                <FormatImg :logo="oldMemberInfo.memberLogo" :userName="oldMemberInfo.username" :size="88"></FormatImg>
             </div>
             <!-- 文字内容 -->
             <div class="member-message">
