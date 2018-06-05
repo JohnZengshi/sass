@@ -202,9 +202,9 @@
 									<div class="tittle-left">商品</div>
 									<div class="tittle-right">
 										<!-- 会员积分 -->
-										<span v-show="integralNow.offsetScore && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">积分抵扣</span>
-										<input v-show="integralNow.offsetScore && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0" v-model="daiding" type="text" :placeholder="'本次最多使用'+integralNow.offsetScore+'积分'" @keyup.enter="shiyongjifen">
-										<span v-show="integralNow.offsetScore && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">(总积分{{ integralNow.totalScore || 0 }})</span>
+										<span v-show="memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">积分抵扣</span>
+										<input v-show="memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0" v-model="daiding" type="text" :placeholder="'本次最多使用'+integralNow.offsetScore+'积分'" @keyup.enter="shiyongjifen">
+										<span v-show="memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">(总积分{{ integralNow.totalScore || 0 }})</span>
 
 										<span>详情说明</span>
 										<input ref="detailInputWrap" v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @click="closeTooltip" @keyup.enter="addNewGoodOperate">

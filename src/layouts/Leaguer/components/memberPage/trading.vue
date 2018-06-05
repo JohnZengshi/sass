@@ -380,34 +380,35 @@ import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, ope
 import { memberIntegralUpdate,memberBuyIntegral } from 'Api/member'
 
 import {mapActions, mapGetters} from 'vuex'
+import {seekGetUserInfo} from 'Api/commonality/seek'
 
 export default {
     data () {
         return {
             saveSuccess:false,
-            
+            isShopMan:true,
         }
     },
     components: {
         SellOrderList
     },
     computed:{
-        ...mapGetters([
-            "userPositionInfo"
-        ]),
-        isShopMan(){
-            if(this.userPositionInfo.roleList.length === 1){
-                if(this.userPositionInfo.roleList[0].role > 3){
-                    return true
-                } else {
-                    return false
-                }
-            } else {
-                return true
-            }
-        }
+        // ...mapGetters([
+        //     "userPositionInfo"
+        // ]),
+        // isShopMan(){
+        //     if(this.userPositionInfo.roleList.length === 1){
+        //         if(this.userPositionInfo.roleList[0].role > 3){
+        //             return true
+        //         } else {
+        //             return false
+        //         }
+        //     } else {
+        //         return true
+        //     }
+        // }
     },
-    props:['buyRecordInfo','shopId','memberId','oldMemberInfo'],
+    props:['buyRecordInfo','shopId','memberId','oldMemberInfo','memberInfo'],
     methods: {
         goBack() {
             this.$emit('goBack',true)            
@@ -495,6 +496,33 @@ export default {
         },
         oldMemberInfo(val) {
             console.log('更新的信息',val)            
+        },
+        memberInfo(val) {
+            // 获取用户权限
+            let options = {
+                userId: sessionStorage.getItem('id')
+            }
+
+            seekGetUserInfo(options).then(res => {
+                if(res.data.data.roleList.length === 1){
+                    if(res.data.data.roleList[0].role == 4){
+                        this.isShopMan = true
+                    } else if(res.data.data.roleList[0].role == 5){
+                        console.log('现在有没有数据',this.memberInfo.principalList)
+                        if(this.memberInfo.principalList.length != 0) {
+                            this.memberInfo.principalList.forEach(item => {
+                                if(item.userId == sessionStorage.getItem('id')) {
+                                    this.isShopMan = true
+                                }
+                            })
+                        } else {
+                            this.isShopMan = false
+                        }
+                    }
+                } else {
+                    this.isShopMan = false
+                }
+            })
         }
     }
 }
