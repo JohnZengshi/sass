@@ -1500,7 +1500,7 @@
 							message: res.data.msg
 						})
 					})
-					this.setMemberBuyIntegral('2') // 删除关联
+					// this.setMemberBuyIntegral('2') // 删除关联
 				}).catch(() => {
 					this.$message({
 						type: 'info',
