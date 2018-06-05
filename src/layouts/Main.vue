@@ -11,7 +11,6 @@
     <com-menu :rootList="rootList" @setScopeSize="setScopeSize"></com-menu>
     
     <div class="app-main" @click="wholdClick" @scroll="scrollFun($event)">
-        
         <router-view></router-view>
 
         <div class="index-img" v-if="isImg">
