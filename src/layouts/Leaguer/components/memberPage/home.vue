@@ -278,7 +278,7 @@ export default {
             }
 
             seekGetUserInfo(options).then(res => {
-                console.log(res.data.data.roleList)
+                console.log('获取当前用户的数据',res.data.data)
                 if(res.data.data.roleList.length === 1){
                     if(res.data.data.roleList[0].role == 4){
                         this.isShopMan = true

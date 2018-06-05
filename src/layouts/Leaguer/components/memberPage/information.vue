@@ -481,9 +481,17 @@ export default {
                 })
                 return
             }
+            console.log('修改积分时候的参数',this.dataInfo)
+            let orderList = []
+            if(this.dataInfo.orderList.length != 0){
+                this.dataInfo.orderList.forEach((item,index) => {
+                    orderList[index] = {orderNo:item.orderNum}
+                })
+            }
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
+                orderList,
             })
             operateMemberUpdateBy(options).then(res => {
                 if(res.data.state === 200) {
@@ -525,10 +533,16 @@ export default {
                 })
                 return
             }
-            
+            let orderList = []
+            if(this.dataInfo.orderList.length != 0){
+                this.dataInfo.orderList.forEach((item,index) => {
+                    orderList[index] = {orderNo:item.orderNum}
+                })
+            }
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
+                orderList,
             })
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
@@ -544,9 +558,16 @@ export default {
         },
         // 修改备注
         setRemark(){
+            let orderList = []
+            if(this.dataInfo.orderList.length != 0){
+                this.dataInfo.orderList.forEach((item,index) => {
+                    orderList[index] = {orderNo:item.orderNum}
+                })
+            }
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
+                orderList
             })
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
