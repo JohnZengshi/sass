@@ -178,6 +178,7 @@ import { memberIntegralUpdate } from 'Api/member'
 
 import {mapActions, mapGetters} from 'vuex'
 import {seekGetUserInfo} from 'Api/commonality/seek'
+import * as jurisdictions from 'Api/commonality/jurisdiction'
 
 
 export default {
@@ -329,7 +330,7 @@ export default {
                         }
                     }
                 } else {
-                    this.isShopMan = false
+                    this.isShopMan = jurisdictions.jurisdictionShopManageRole(res.data.data.roleList)
                 }
             })
         }
