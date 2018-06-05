@@ -291,7 +291,7 @@ import ChoseLeader from '../choseLeader'
 import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
 import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention} from 'Api/commonality/operate'
 import {seekGetUserInfo} from 'Api/commonality/seek'
-
+import * as jurisdictions from 'Api/commonality/jurisdiction'
 
 import {mapActions, mapGetters} from 'vuex'
 
@@ -664,7 +664,7 @@ export default {
                         }
                     }
                 } else {
-                    this.isShopMan = false
+                    this.isShopMan = jurisdictions.jurisdictionShopManageRole(res.data.data.roleList)
                 }
             })
         }
