@@ -1497,7 +1497,7 @@
 							message: res.data.msg
 						})
 					})
-
+					this.setMemberBuyIntegral('2') // 删除关联
 				}).catch(() => {
 					this.$message({
 						type: 'info',
@@ -1533,6 +1533,7 @@
 				this.isChoseMember = false
 				this.memberNumber = val.list
 				this.memberSalesList()
+				this.send()
 			},
 			closeReturn() {
 				this.addLeaguer = false
@@ -2777,6 +2778,7 @@
             	console.log(exportTabData)
             	downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
 			},
+
 			// 积分操作
 			shiyongjifen() {
 				if(this.daiding == ''){
@@ -2806,7 +2808,7 @@
 					memberId:this.memberDataInfo.memberId,
 					score:this.daiding
 				}
-				
+
 				integralOffset(options).then(res => {
 					if(res.data.state != 200) {
 						this.$message({
@@ -2824,23 +2826,21 @@
 			// 收银积分操作
 			setMemberBuyIntegral(type) {
 				
-				if(!this.integralNow.offsetScore || !this.memberDataInfo.memberId || !this.receiptsIntroList.orderNum || !this.receiptsIntroList.shopId) {
+				if(!this.memberDataInfo.memberId || !this.receiptsIntroList.orderNum || !this.receiptsIntroList.shopId) {
 					return
 				}
-
-				console.log('调用了',this.memberDataInfo,this.receiptsIntroList)
 
 				let options = {
 					memberId:this.memberDataInfo.memberId,
 					dataList:[{orderNum:this.receiptsIntroList.orderNum}],
-					// orderNum:this.receiptsIntroList.orderNum,
 					shopId:this.receiptsIntroList.shopId,
 					operateType:type
 				}
 
 				memberBuyIntegral(options).then(res => {
 					if(res.data.state == 200){
-						console.log('成功')
+					} else if(res.data.state == 1001399){
+						
 					} else {
 						this.$message({
 							type:'error',

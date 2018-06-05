@@ -369,9 +369,11 @@ export default {
             orderList[index] = {orderNo: item}
             dataList[index] = {orderNum: item}
         })
+
         if(dataList.length !=0 ) {
             this.setMemberBuyIntegral(dataList)
         }
+
         console.log('我的orderList',orderList)
         
         let options = Object.assign({},this.oldMemberInfo,{
@@ -585,12 +587,14 @@ export default {
     },
     // 加积分操作
     setMemberBuyIntegral (dataList) {
+        
         let options = {
 			memberId:this.memberId,
 			dataList,
 			shopId:this.shopId,
 			operateType:'1'
         }
+
         memberBuyIntegral(options).then(res => {
 			if(res.data.state == 200){
 				console.log('成功')

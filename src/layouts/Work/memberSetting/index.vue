@@ -40,7 +40,7 @@
                         <div class="integral-left xs">销售</div>
                             <el-radio-group class="integral-right" v-model="templateInfoData.sellConfig" @change="addOrSubTemplate('1',templateInfoData.sellConfig)">
                                 <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="'2'">减少积分</el-radio>
                                 <el-radio class="intergral-item" :label="'3'">无</el-radio>
                             </el-radio-group>
                     </div>
@@ -58,7 +58,7 @@
                         <div class="integral-left hh">换货</div>
                             <el-radio-group class="integral-right" v-model="templateInfoData.exchangeConfig" @change="addOrSubTemplate('3',templateInfoData.exchangeConfig)">
                                 <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="'2'">减少积分</el-radio>
                                 <el-radio class="intergral-item" :label="'3'">无</el-radio>
                             </el-radio-group>
                     </div>
@@ -67,7 +67,7 @@
                         <div class="integral-left hs">回收</div>
                             <el-radio-group class="integral-right" v-model="templateInfoData.recoveryConfig" @change="addOrSubTemplate('4',templateInfoData.recoveryConfig)">
                                 <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="'2'">减少积分</el-radio>
                                 <el-radio class="intergral-item" :label="'3'">无</el-radio>
                             </el-radio-group>
                     </div>
