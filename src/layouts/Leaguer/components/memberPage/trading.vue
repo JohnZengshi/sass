@@ -431,7 +431,7 @@ export default {
 
             val.forEach((item, index) => {
                 orderList[index] = {orderNo: item}
-                orderList[index] = {orderNum: item}
+                dataList[index] = {orderNum: item}
             })
 
             if(dataList.length !=0 ) {
