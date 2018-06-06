@@ -33,8 +33,6 @@ export default {
             this.$emit('sortList', this.sortList)
         },
         newList (val) {
-            //console.log(val)
-            //console.log(val.length)
             if (val.length == 0) {
                 //console.log(111)
                 this.detailDataGridColumn.forEach((item, index) => {
@@ -113,7 +111,6 @@ export default {
 			return _size
         },
         headSort (tab) { // 排序点击事件
-
             if (tab.sort != null) {
                 if (this.reportType == 1) {
                     // let count = 0
@@ -174,7 +171,13 @@ export default {
             for (let i in this.sortList[0]) {
                 copyList.push({[i]: this.sortList[0][i]})
             }
-            //console.log(copyList)
+            // 加上后面的对象
+            this.sortList.forEach((item,index) => {
+                if(index != 0) {
+                    copyList.push(item)
+                }
+            })
+            console.log('点击升序的数组',copyList,this.sortList)
             this.$emit('sortList', copyList)
         },
         clickClassDown (tab) { // 点击分类降序
@@ -202,6 +205,11 @@ export default {
                 console.log(this.sortList[0][i])
                 copyList.push({[i]: this.sortList[0][i]})
             }
+             this.sortList.forEach((item,index) => {
+                if(index != 0) {
+                    copyList.push(item)
+                }
+            })
             //console.log(this.sortList)
             this.$emit('sortList', copyList)
         }
