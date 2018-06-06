@@ -27,7 +27,7 @@
     </h1>
     <div class="page-side">
     		<div class="menuTabs">
-    				<menutabs></menutabs>
+    				<!--<menutabs></menutabs>-->
        	</div>
     		<div class="button">
             <div class="search" ref="mysearch">
@@ -94,22 +94,22 @@ let skinConfig = require('./skinConfig')
 export default {
 	data () {
 		return {
-            skinConf: [],
+      skinConf: [],
 			searchText: '',
 			searchTypeText: '商品',
 			companyList1: [],
-            changeActive: -1,
-            iconShow: true,
-            num: 1,
-            skinIndex: 0,
-            smallUrl: '',
-            unreadSystemMessageNum: '', // 未读系统消息
-            unreadNoticeNum: '', // 未读公告
+      changeActive: -1,
+      iconShow: true,
+      num: 1,
+      skinIndex: 0,
+      smallUrl: '',
+      unreadSystemMessageNum: '', // 未读系统消息
+      unreadNoticeNum: '', // 未读公告
 		}
 	},
 	components: {
         FormatImg,
-//      menutabs
+        menutabs  //加载头部页签组件
     },
 	props : ['companyInfo','userInfo', 'isAllowCreate'],
 	

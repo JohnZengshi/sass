@@ -39,14 +39,7 @@
 				</span>
 				<div>{{item.barcode}}</div>
 			</div>
-			<!-- 会员积分抵扣 -->
-			<div v-if="memberDataInfo.phone && item.offset != 0" class="barcode">
-				<span>积分抵扣
-					<i></i>
-				</span>
-				<div>{{item.offset || 0}}</div>
-				<i>元</i>
-			</div>
+			
 			<!--*******************************重量***********************************-->
 			<div v-if="item.productType == 1 || goodType == 3 && item.productType == 1" class="weight">
 				<span>金重
@@ -139,6 +132,16 @@
 				<i>{{item.calcMethod == 1 ? '元/g' : '元'}}</i>
 				<span v-if="item.productType != 2 && item.productType != 3" class="switch1" :class="{active: goodType == 1 && item.productType == 1}" @click="switchMethods(13)"><img :src="item.calcMethod == 1 ? './../../../../../static/img/switch-zhong.png' : './../../../../../static/img/switch-jian.png'"></span>
 			</div>
+
+			<!-- 会员积分抵扣 -->
+			<div v-if="memberDataInfo.phone && item.offset != 0" class="barcode">
+				<span>积分抵扣
+					<i></i>
+				</span>
+				<div>{{item.offset || 0}}</div>
+				<i>元</i>
+			</div>
+
 			<div class="price" v-if=" goodType == 1 ">
 				<span>实售价
 					<i></i>
