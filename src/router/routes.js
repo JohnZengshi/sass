@@ -32,7 +32,6 @@ const routes = [{
   name: 'Index',
   component: Main,
   children: [
-<<<<<<< HEAD
   {
     path: '',
     redirect: 'mainIndex'
