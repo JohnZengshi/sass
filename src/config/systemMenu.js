@@ -178,6 +178,12 @@ const systemMenu = [
 				children: []
 			},
 			{
+			   text: '标签打印',
+			   path: '/dataCenter/labelPrint',
+			   icon: 'gongsishezhi',
+			   children: []
+			},
+			{
 				text: '店铺设置',
 				path: '/work/shopSetting',
 				icon: 'dianpu', 

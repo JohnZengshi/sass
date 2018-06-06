@@ -1,5 +1,5 @@
-。<template>
-  <div class="down-menu-main">
+<template>
+  <div class="print-down-menu-main">
     <span class="title-name" :class="titleInfo ? '' : 'select'" :style="specialStyle">
       {{titleInfo}}
       <i v-show="!isSolid" class="iconfont icon-arrow-down drop-triangle" v-if="noChange"></i>
@@ -19,16 +19,6 @@ export default {
     return {
       actIndex: null,
       noChange: true // 选中标记
-      // showList: [
-      //   {
-      //     name: 123,
-      //     id: 789
-      //   },
-      //   {
-      //     name: 6666,
-      //     id: 7889
-      //   }
-      // ]
     }
   },
   methods: {
@@ -39,7 +29,6 @@ export default {
     },
     itemClick (item, index) {
       this.noChange = false
-      console.log('选中', item)
       this.actIndex = null,
       this.$emit("changeData", item)
     }
@@ -47,7 +36,7 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.down-menu-main{
+.print-down-menu-main{
     display: inline-block;
     position: relative;
     cursor: pointer;
@@ -138,7 +127,7 @@ export default {
             text-align: center;
             height: 42px;
             line-height: 42px;
-            width: 130px;
+            min-width: 200px;
             font-size: 13px;
             color: #333;
             white-space: nowrap;

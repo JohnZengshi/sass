@@ -14,6 +14,28 @@
 .el-checkbox__input.is-focus .el-checkbox__inner{
     border-color: #bfcbd9;
 }
+.e-border-radio-5{
+    display: inline-block;
+    .el-checkbox-group .el-checkbox__inner{
+        border-radius: 5px!important;
+    }
+    .el-checkbox__input.is-checked .el-checkbox__inner {
+        background-color: #20a0ff;
+        border-color: #0190fe;
+    }
+    .el-checkbox__inner{
+       border-radius: 5px!important; 
+    }
+    .el-checkbox{
+        height: 28px;
+        width: 100%;
+        line-height: 28px;
+    }
+    .el-checkbox__label{
+        font-size: 14px;
+    }
+}
+
 // 选择（单选）
 .radio-20{
     .el-radio-group{

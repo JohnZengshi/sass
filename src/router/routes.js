@@ -7,6 +7,8 @@ const text = resolve => require(['../layouts/text/text'], resolve)
 
 
 import member from './member' // 登录注册
+import additional from './additional' // 数据中心
+
 import IM from './IM' // 通讯录
 import Message from './../layouts/Message/Message' // 通讯录
 import admin from './admin' // 我的(个人中心)
@@ -30,6 +32,7 @@ const routes = [{
   name: 'Index',
   component: Main,
   children: [
+<<<<<<< HEAD
   {
     path: '',
     redirect: 'mainIndex'
@@ -94,6 +97,7 @@ const routes = [{
     component: StockStatement,
     name: '库存'
   },
+  {...additional},
   {...admin},
   {...leaguer},
   {...faceRecognitionRouter},
