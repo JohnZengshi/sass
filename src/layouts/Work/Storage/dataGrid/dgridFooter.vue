@@ -31,6 +31,8 @@
 			isRefreshFooter(o, n) {
 				this.fetchFootData()
 //				this.fetchNewFootData()
+				console.log(this.footerData)
+				console.log(this.newSynopsiData)
 				console.log(this.allSynopsiData)
 			}
 		},
@@ -40,6 +42,7 @@
 				seekReceiptRKSynopsis({
 					orderNum: this.orderNum
 				}).then((res) => {
+					console.log(res)
 					this.synopsiData = res.data.data
 					this.$emit('setSynopsiData', this.synopsiData)
 				})

@@ -413,7 +413,7 @@
     		exportData.className = ''
     		exportData.classTypeName = ''
     		console.log(exportData)
-//  		downLoaderFile('/v1/export/exportExcelByInventory',exportData)
+    		downLoaderFile('/v1/export/exportExcelByInventory',exportData)
     	},
       choseMenu(type) {
       	console.log(this.positionSwitch)

@@ -202,9 +202,9 @@
 									<div class="tittle-left">商品</div>
 									<div class="tittle-right">
 										<!-- 会员积分 -->
-										<span v-show="integralNow.offsetScore && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">积分抵扣</span>
-										<input v-show="integralNow.offsetScore && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0" v-model="daiding" type="text" :placeholder="'本次最多使用'+integralNow.offsetScore+'积分'" @keyup.enter="shiyongjifen">
-										<span v-show="integralNow.offsetScore && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">(总积分{{ integralNow.totalScore || 0 }})</span>
+										<span v-show="haveTem && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">积分抵扣</span>
+										<input v-show="haveTem && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0" v-model="daiding" type="text" :placeholder="'本次最多使用'+integralNow.offsetScore+'积分'" @keyup.enter="shiyongjifen">
+										<span v-show="haveTem && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">(总积分{{ integralNow.totalScore || 0 }})</span>
 
 										<span>详情说明</span>
 										<input ref="detailInputWrap" v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
@@ -1013,6 +1013,7 @@
 				},
 				daiding:'',
 				isShouyin: false,
+				haveTem: true,
 			}
 		},
 		directives: {
@@ -1372,7 +1373,6 @@
 				}
 			},
 			receiptsIntroList(val) {
-				// console.log('单据简介',val)
 				console.log('单据简介',this.receiptsIntroList,this.receiptsIntroList.cashStatus,this.nowStatus)				
 				if(val.orderNum) {
 					let options = {
@@ -1381,10 +1381,13 @@
 					}
 					console.log(options)
 					getTotalDoIntegral(options).then(res => {
-						console.log('积分抵现数据',res.data.data)
 						if(res.data.state == 200){
 							this.integralNow = res.data.data
 							this.integralNow.offsetScore = this.integralNow.offsetScore || 0
+						}
+						if(res.data.state == 1001399) {
+							// 没有店铺的情况
+							this.haveTem = false
 						}
 					})
 				}
@@ -1497,7 +1500,7 @@
 							message: res.data.msg
 						})
 					})
-
+					// this.setMemberBuyIntegral('2') // 删除关联
 				}).catch(() => {
 					this.$message({
 						type: 'info',
@@ -1512,27 +1515,44 @@
 					memberOrPhone: this.memberNumber,
 					sellOrderId: this.receiptsIntroList.id
 				}
+
 				operateMemberSalesList(options).then((res) => {
 					if(res.data.state == 200) {
 						this.getSeekSellReceiptsIntro()
+						// console.log('关联成功')
+						// // 关联已收银的时候加积分 
+						// if(this.priceType.cash == 0 && this.priceType.card == 0 && this.priceType.other == 0 && this.priceType.wechat == 0 && this.priceType.alipay == 0) {
+						// } else {
+						// 	console.log('关联成功')
+						// 	let self = this
+						// 	setTimeout(function(){
+						// 		self.setMemberBuyIntegral('1')
+						// 	},500)
+						// }
+
 						this.isSeekMember = false
 					} else {
 						this.$message({
 							type: 'warning',
 							message: res.data.msg
 						})
+
 					}
+					
 				}, (res) => {
 					this.$message({
 						type: 'warning',
 						message: res.data.msg
 					})
 				})
+				// this.setMemberBuyIntegral('1')
+				
 			},
 			closeChoMember(val) {
 				this.isChoseMember = false
 				this.memberNumber = val.list
 				this.memberSalesList()
+				this.send()
 			},
 			closeReturn() {
 				this.addLeaguer = false
@@ -2777,30 +2797,37 @@
             	console.log(exportTabData)
             	downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
 			},
+
 			// 积分操作
 			shiyongjifen() {
 				if(this.daiding == ''){
 					return
 				}
-				console.log(this.daiding)
+
 				if(this.integralNow.offsetScore <= 0){
 					this.daiding = ''
 					return
 				}
+
 				if(this.daiding > this.integralNow.offsetScore){
 					this.daiding = ''
 					return
 				}
+
 				if(this.daiding < 0){
 					this.daiding = ''
 					return
 				}
+
+				console.log('积分里面的数据',this.daiding,this.integralNow.offsetScore)
+				
 				let options = {
 					shopId:this.receiptsIntroList.shopId,
 					orderNum:this.receiptsIntroList.orderNum,
 					memberId:this.memberDataInfo.memberId,
 					score:this.daiding
 				}
+
 				integralOffset(options).then(res => {
 					if(res.data.state != 200) {
 						this.$message({
@@ -2811,30 +2838,29 @@
 					if(res.data.state == 200) {
 						this.daiding = ''
 					}
+					
 					console.log('积分抵扣回调',res)
 					this.send()
 				})
 			},
 			// 收银积分操作
 			setMemberBuyIntegral(type) {
-				
-				if(!this.integralNow.offsetScore || !this.memberDataInfo.memberId || !this.receiptsIntroList.orderNum || !this.receiptsIntroList.shopId) {
+				console.log('我要的参数',this.memberDataInfo.memberId)
+				if(!this.memberDataInfo.memberId || !this.receiptsIntroList.orderNum || !this.receiptsIntroList.shopId) {
 					return
 				}
-
-				console.log('调用了',this.memberDataInfo,this.receiptsIntroList)
 
 				let options = {
 					memberId:this.memberDataInfo.memberId,
 					dataList:[{orderNum:this.receiptsIntroList.orderNum}],
-					// orderNum:this.receiptsIntroList.orderNum,
 					shopId:this.receiptsIntroList.shopId,
 					operateType:type
 				}
 
 				memberBuyIntegral(options).then(res => {
 					if(res.data.state == 200){
-						console.log('成功')
+					} else if(res.data.state == 1001399){
+						
 					} else {
 						this.$message({
 							type:'error',

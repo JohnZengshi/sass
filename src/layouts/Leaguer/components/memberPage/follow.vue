@@ -127,7 +127,8 @@ import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
 import ChoseLeader from '../choseLeader'
 import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention,operateFollowCreate} from 'Api/commonality/operate'
 import {mapActions, mapGetters} from 'vuex'
-
+import {seekGetUserInfo} from 'Api/commonality/seek'
+import * as jurisdictions from 'Api/commonality/jurisdiction'
 
 export default {
     data () {
@@ -140,27 +141,28 @@ export default {
             today:'',
             memberIdList:[],
             leaderIdList:[],
+            isShopMan:false,
         }
     },
-    props:['followData','oldMemberInfo','shopId','memberId'],
+    props:['followData','oldMemberInfo','shopId','memberId','memberInfo'],
     components:{
         ChoseLeader
     },
     computed:{
-        ...mapGetters([
-            "userPositionInfo"
-        ]),
-        isShopMan(){
-            if(this.userPositionInfo.roleList.length === 1){
-                if(this.userPositionInfo.roleList[0].role > 3){
-                    return true
-                } else {
-                    return false
-                }
-            } else {
-                return true
-            }
-        }
+        // ...mapGetters([
+        //     "userPositionInfo"
+        // ]),
+        // isShopMan(){
+        //     if(this.userPositionInfo.roleList.length === 1){
+        //         if(this.userPositionInfo.roleList[0].role > 3){
+        //             return true
+        //         } else {
+        //             return false
+        //         }
+        //     } else {
+        //         return true
+        //     }
+        // }
     },
     methods: {
         goBack() {
@@ -340,6 +342,57 @@ export default {
                 })
             })
         },
+    },
+    watch:{
+        memberInfo(val) {
+            // 获取用户权限
+            let options = {
+                userId: sessionStorage.getItem('id')
+            }
+
+            seekGetUserInfo(options).then(res => {
+                if(res.data.data.roleList.length === 1){
+                    if(res.data.data.roleList[0].role == 4){
+                        this.isShopMan = true
+                    } else if(res.data.data.roleList[0].role == 5){
+                        console.log('现在有没有数据',this.memberInfo.principalList)
+                        if(this.memberInfo.principalList.length != 0) {
+                            this.memberInfo.principalList.forEach(item => {
+                                if(item.userId == sessionStorage.getItem('id')) {
+                                    this.isShopMan = true
+                                }
+                            })
+                        } else {
+                            this.isShopMan = false
+                        }
+                    }
+                } else {
+                    this.isShopMan = false
+                    
+                    // 多重身份判断
+                    res.data.data.roleList.forEach(item => {
+                        // 判断是不是店长
+                        if(item.role == 4) {
+                            // 判断是不是这家店
+                            if(item.shopId == this.shopId) {
+                                this.isShopMan = true
+                            }
+                        }
+                        // 判断是不是店员
+                        if(item.role == 5) {
+                            if(item.shopId == this.shopId) {
+                                 // 判断是不是负责人
+                                val.principalList.forEach(fzr => {
+                                    if(fzr.userId == sessionStorage.getItem('id')) {
+                                        this.isShopMan = true
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
+            })
+        }
     }
 }
 </script>

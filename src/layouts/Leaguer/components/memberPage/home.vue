@@ -233,6 +233,9 @@ import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
 import SellOrderList from '../sellOrderList'
 import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention,operateFollowCreate} from 'Api/commonality/operate'
 import { memberIntegralUpdate,memberBuyIntegral } from 'Api/member'
+import {seekGetUserInfo} from 'Api/commonality/seek'
+import * as jurisdictions from 'Api/commonality/jurisdiction'
+
 
 import {mapActions, mapGetters} from 'vuex'
 import ChoseLeader from '../choseLeader'
@@ -256,6 +259,7 @@ export default {
         memberIdList:[],
         leaderIdList:[],
 
+        isShopMan:false,
     };
   },
   components: {
@@ -268,24 +272,73 @@ export default {
     'memberInfo'(val) {
         if(val) {
             this.score = this.memberInfo.score || 0
+            // 查看负责人列表
+            console.log('我查看一下负责人',val)
+            // 获取用户权限
+            let options = {
+                userId: sessionStorage.getItem('id')
+            }
+
+            seekGetUserInfo(options).then(res => {
+                console.log('获取当前用户的数据',res.data.data)
+                if(res.data.data.roleList.length === 1){
+                    if(res.data.data.roleList[0].role == 4){
+                        this.isShopMan = true
+                    } else if(res.data.data.roleList[0].role == 5){
+                        console.log('现在有没有数据',this.memberInfo.principalList)
+                        if(this.memberInfo.principalList.length != 0) {
+                            this.memberInfo.principalList.forEach(item => {
+                                if(item.userId == sessionStorage.getItem('id')) {
+                                    this.isShopMan = true
+                                }
+                            })
+                        } else {
+                            this.isShopMan = false
+                        }
+                    }
+                } else {
+                    this.isShopMan = false
+                    // 多重身份判断
+                    res.data.data.roleList.forEach(item => {
+                        // 判断是不是店长
+                        if(item.role == 4) {
+                            // 判断是不是这家店
+                            if(item.shopId == this.shopId) {
+                                this.isShopMan = true
+                            }
+                        }
+                        // 判断是不是店员
+                        if(item.role == 5) {
+                            if(item.shopId == this.shopId) {
+                                // 判断是不是负责人
+                                val.principalList.forEach(fzr => {
+                                    if(fzr.userId == sessionStorage.getItem('id')) {
+                                        this.isShopMan = true
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
+            })
         }
     }
   },
   computed:{
-    ...mapGetters([
-        "userPositionInfo"
-    ]),
-    isShopMan(){
-        if(this.userPositionInfo.roleList.length === 1){
-            if(this.userPositionInfo.roleList[0].role > 3){
-                return true
-            } else {
-                return false
-            }
-        } else {
-            return true
-        }
-    },
+    // ...mapGetters([
+    //     "userPositionInfo"
+    // ]),
+    // isShopMan(){
+    //     if(this.userPositionInfo.roleList.length === 1){
+    //         if(this.userPositionInfo.roleList[0].role > 3){
+    //             return true
+    //         } else {
+    //             return false
+    //         }
+    //     } else {
+    //         return true
+    //     }
+    // },
   },
   methods: {
     handleClose(){
@@ -369,9 +422,11 @@ export default {
             orderList[index] = {orderNo: item}
             dataList[index] = {orderNum: item}
         })
+
         if(dataList.length !=0 ) {
             this.setMemberBuyIntegral(dataList)
         }
+
         console.log('我的orderList',orderList)
         
         let options = Object.assign({},this.oldMemberInfo,{
@@ -585,12 +640,14 @@ export default {
     },
     // 加积分操作
     setMemberBuyIntegral (dataList) {
+        
         let options = {
 			memberId:this.memberId,
 			dataList,
 			shopId:this.shopId,
 			operateType:'1'
         }
+
         memberBuyIntegral(options).then(res => {
 			if(res.data.state == 200){
 				console.log('成功')
@@ -605,7 +662,7 @@ export default {
     }
   },
   created() {
-      this.score = this.memberInfo.score || 0
+        this.score = this.memberInfo.score || 0
   }
 };
 </script>

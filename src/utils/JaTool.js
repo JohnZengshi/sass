@@ -84,7 +84,7 @@ export const JaTools = {
 				"font-smoothing": "antialiased",
 				"position": "absolute",
 				"white-space":"nowrap",
-				"border": (data.border ? '1px solid #000;' : 'none'),
+				"border": (data.border ? '1px solid #000000;' : 'none'),
 				"top": data.top + "mm",
 				"left": data.left + "mm",
 			});

@@ -2,7 +2,7 @@
     <div class="member-points-wrap"> 
         <!-- 头部title begin -->
         <h1 class="header-title">
-            <i class="iconfont icon-dianpu"></i>  店铺设置 > <span>会员积分</span> 
+            <i class="iconfont icon-dianpu"></i>  <span @click="goBackReturn" class="gobackBtn">{{titleShow}}</span> > <span>会员积分</span> 
         </h1>
         <!-- 头部title end -->
         <!-- 内容主体 begin-->
@@ -40,7 +40,7 @@
                         <div class="integral-left xs">销售</div>
                             <el-radio-group class="integral-right" v-model="templateInfoData.sellConfig" @change="addOrSubTemplate('1',templateInfoData.sellConfig)">
                                 <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="'2'">减少积分</el-radio>
                                 <el-radio class="intergral-item" :label="'3'">无</el-radio>
                             </el-radio-group>
                     </div>
@@ -58,7 +58,7 @@
                         <div class="integral-left hh">换货</div>
                             <el-radio-group class="integral-right" v-model="templateInfoData.exchangeConfig" @change="addOrSubTemplate('3',templateInfoData.exchangeConfig)">
                                 <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="'2'">减少积分</el-radio>
                                 <el-radio class="intergral-item" :label="'3'">无</el-radio>
                             </el-radio-group>
                     </div>
@@ -67,7 +67,7 @@
                         <div class="integral-left hs">回收</div>
                             <el-radio-group class="integral-right" v-model="templateInfoData.recoveryConfig" @change="addOrSubTemplate('4',templateInfoData.recoveryConfig)">
                                 <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="'2'">减少积分</el-radio>
                                 <el-radio class="intergral-item" :label="'3'">无</el-radio>
                             </el-radio-group>
                     </div>
@@ -310,6 +310,13 @@ $fontColor:#47a3fb;
         }
         span{
             color: $fontColor;            
+        }
+        .gobackBtn {
+            color: #333;
+            &:hover {
+                color: #2993f8;
+                cursor: pointer;
+            }
         }
         margin-bottom: 30px;
     }
@@ -911,6 +918,7 @@ $fontColor:#47a3fb;
     background-color: #ccc;
     border-color: #ccc;
 }
+
 </style>
 
 <script>
@@ -1019,7 +1027,9 @@ export default {
             srscore:'',
             dczcscore:'',
             lxzcscore:'',
-            isDisabled:false
+            isDisabled:true,
+
+            titleShow:'公司设置'
 
         }
     },
@@ -1775,6 +1785,14 @@ export default {
 
             }
 
+        },
+        // 返回
+        goBackReturn() {
+            if(this.$route.query.type === 1) {
+                this.$router.push({path:'/work/companySetting'})
+            } else {
+                this.$router.push({path:'/work/shopSetting'})
+            }
         }
     },
     watch:{
@@ -1812,6 +1830,19 @@ export default {
         
     },
     created(){
+        // 公司设置还是店铺设置
+        switch (this.$route.query.type) {
+            case 1:
+                this.titleShow = '公司设置'
+                break;
+            case 2:
+                this.titleShow = '店铺设置'
+                break;
+        
+            default:
+                break;
+        }
+
         // 获取用户权限
         let options = {
             userId: sessionStorage.getItem('id')
@@ -1825,7 +1856,12 @@ export default {
                     this.isDisabled = false
                 }
             } else {
-                this.isDisabled = false
+                // 判断是不是管理
+                res.data.data.roleList.forEach(item => {
+                    if(item.role <= 3) {
+                        this.isDisabled = false
+                    }
+                })
             }
         })
         this.getIntegralDetails()
