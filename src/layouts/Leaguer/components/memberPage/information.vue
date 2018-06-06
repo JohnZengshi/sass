@@ -31,7 +31,7 @@
 
                 <div class="item" @mouseover="showBtn" @mouseout="hiddenBtn">
                     <span class="item-label">负责人</span>
-                    <i @click="isChoseLeader=true" id="iconjia" class="iconfont icon-jia jia"></i>
+                    <i v-if="isShopMan" @click="isChoseLeader=true" id="iconjia" class="iconfont icon-jia jia"></i>
                     <span>{{ leaderStr || '指派' }}</span>
                 </div>
             </div>
@@ -699,7 +699,12 @@ export default {
                         // 判断是不是店员
                         if(item.role == 5) {
                             if(item.shopId == this.shopId) {
-                                this.isShopMan = true
+                                 // 判断是不是负责人
+                                val.principalList.forEach(fzr => {
+                                    if(fzr.userId == sessionStorage.getItem('id')) {
+                                        this.isShopMan = true
+                                    }
+                                })
                             }
                         }
                     })

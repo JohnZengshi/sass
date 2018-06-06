@@ -382,8 +382,7 @@ export default {
             } else if (datas.msgType == '08') { // 人脸识别
                 console.log('收到人脸的数据', evt)
                 _self.faceWebsocked(datas)
-            } else if (datas.msgType == '10' && sessionStorage.getItem("tokenId") != datas.tokenId && datas.os == 'web') { // 退出
-                debugger
+            } else if (datas.msgType == '10' && sessionStorage.getItem("tokenId") != datas.tokenId && datas.os == 'web' && sessionStorage.getItem("id") == datas.userId) { // 退出
                 ws.close()
                 Vue.prototype.loginPopup.show()
                 // _self.loginOut()

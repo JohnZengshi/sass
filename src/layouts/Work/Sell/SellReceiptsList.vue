@@ -1500,7 +1500,7 @@
 							message: res.data.msg
 						})
 					})
-					this.setMemberBuyIntegral('2') // 删除关联
+					// this.setMemberBuyIntegral('2') // 删除关联
 				}).catch(() => {
 					this.$message({
 						type: 'info',
@@ -1519,16 +1519,16 @@
 				operateMemberSalesList(options).then((res) => {
 					if(res.data.state == 200) {
 						this.getSeekSellReceiptsIntro()
-						console.log('关联成功')
-						// 关联已收银的时候加积分 
-						if(this.priceType.cash == 0 && this.priceType.card == 0 && this.priceType.other == 0 && this.priceType.wechat == 0 && this.priceType.alipay == 0) {
-						} else {
-							console.log('关联成功')
-							let self = this
-							setTimeout(function(){
-								self.setMemberBuyIntegral('1')
-							},500)
-						}
+						// console.log('关联成功')
+						// // 关联已收银的时候加积分 
+						// if(this.priceType.cash == 0 && this.priceType.card == 0 && this.priceType.other == 0 && this.priceType.wechat == 0 && this.priceType.alipay == 0) {
+						// } else {
+						// 	console.log('关联成功')
+						// 	let self = this
+						// 	setTimeout(function(){
+						// 		self.setMemberBuyIntegral('1')
+						// 	},500)
+						// }
 
 						this.isSeekMember = false
 					} else {
@@ -1536,14 +1536,16 @@
 							type: 'warning',
 							message: res.data.msg
 						})
+
 					}
+					
 				}, (res) => {
 					this.$message({
 						type: 'warning',
 						message: res.data.msg
 					})
 				})
-
+				// this.setMemberBuyIntegral('1')
 				
 			},
 			closeChoMember(val) {
