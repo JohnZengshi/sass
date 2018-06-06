@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import Vue from 'vue'
+import bus from '../vuex/event' //引入一个中央事件总线
 const systemMenu = require('../config/systemMenu')
 import {mapGetters} from 'vuex'
 import { seekMySelfWorkApplyList, seekGetFaceByShop, seekSmallProgramShopList} from 'Api/commonality/seek'
@@ -198,7 +198,7 @@ export default{
       	this.myMenuTab.push(menu)
       }else{
       	for(let i=0;i<this.myMenuTab.length;i++){
-	      	if(this.myMenuTab[i].text == menu.text){
+	      	if(this.myMenuTab[i].path == menu.path || menu.path==''){
 	      		pushStatus = false
 	      	}
 	      }
@@ -208,8 +208,11 @@ export default{
       }
       
       console.log(this.myMenuTab)
+      console.log(menu.path)
       //将已经打开的页签数据绑定到Vue实例
-      Object.assign( Vue.prototype, { menuTabData : this.menuTab})
+//    Object.assign( Vue.prototype, { menuTabData : this.myMenuTab})
+			bus.$emit('menuTabDataChange',this.myMenuTab)  //发送事件
+			bus.$emit('menuTabPath',menu.path)
     },
         
         //菜单显示
@@ -309,6 +312,32 @@ export default{
           this.systemItemClass.childIndex = childIndex
           sessionStorage.setItem('rootIndex', rootIndex)
           sessionStorage.setItem('childIndex', childIndex)
+          
+          //去掉定义数组的undefined
+		      if (typeof(this.myMenuTab[0]) === "undefined" ){
+		      	this.myMenuTab = []
+		      }
+		      let pushStatus = true
+		      //如果没打开任何页签就把当前页签数据加入数组
+		      if(this.myMenuTab.length == 0){
+		      	this.myMenuTab.push(menu.children[childIndex])
+		      }else{
+		      	for(let i=0;i<this.myMenuTab.length;i++){
+			      	if(this.myMenuTab[i].path == menu.children[childIndex].path || menu.children[childIndex].path == ''){
+			      		pushStatus = false
+			      	}
+			      }
+		      	if(pushStatus){
+		      		this.myMenuTab.push(menu.children[childIndex])
+		      	}
+		      }
+		      
+		      console.log(this.myMenuTab)
+		      console.log(menu.path)
+		      //将已经打开的页签数据绑定到Vue实例
+//		      Object.assign( Vue.prototype, { menuTabData : this.myMenuTab})
+					bus.$emit('menuTabDataChange',this.myMenuTab)	//发送事件
+					bus.$emit('menuTabPath',menu.path)
         },
 
         _seekGetFaceByShop () {
