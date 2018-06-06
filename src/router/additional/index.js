@@ -1,9 +1,9 @@
 import dataCenter from './../../layouts/data-center'
-import lablePrint from './label_print.js'
+import labelPrint from './label_print.js'
 const additionalRouter = {
   path: '/dataCenter',
   component: dataCenter,
   name: "数据中心",
-  children: [...lablePrint]
+  children: [...labelPrint]
 }
 export default additionalRouter

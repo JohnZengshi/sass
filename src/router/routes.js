@@ -32,75 +32,71 @@ const routes = [{
   name: 'Index',
   component: Main,
   children: [
-  {
-    path: '',
-    redirect: 'mainIndex'
-  },
-  {
-    path: 'message',
-    component: Message,
-    name: 'Message'
-  },
-  {
-    path: 'notice',
-    component: Notice,
-    name: 'Notice'
-  },
-  {
-    path: 'mainIndex',
-    component: MainIndex,
-    name: 'MainIndex'
-  },
-  {
-    path: 'goodsSearch',
-    component: GoodsSearch,
-    name: 'GoodsSearch'
-  },
-  {
-    path: 'inventory',
-    component: Inventory,
-    name: 'Inventory'
-  },
-  {
-    path: 'billSearch',
-    component: BillSearch,
-    name: 'BillSearch'
-  },
-  {
-    path: 'helpCenter',
-    component: HelpCenter,
-    name: 'HelpCenter'
-  },
-  {
-    path: 'dataCenter',
-    component: DataCenter,
-    name: 'DataCenter'
-  },
-  {
-    path: 'organizationChart',
-    component: OrganizationChart,
-    name: '组织架构'
-  },
-  {
-    path: 'jinbaifu',
-    component: jinbaifu,
-    name: '金百福'
-  },
-  {
-    path: 'text',
-    component: text,
-    name: 'text'
-  },
-  {
-    path: 'stockStatement',
-    component: StockStatement,
-    name: '库存'
-  },
-  {...additional},
-  {...admin},
-  {...leaguer},
-  {...faceRecognitionRouter},
-  {...work}]
+    {
+      path: '',
+      redirect: 'mainIndex'
+    },
+    {
+      path: 'message',
+      component: Message,
+      name: 'Message'
+    },
+    {
+      path: 'notice',
+      component: Notice,
+      name: 'Notice'
+    },
+    {
+      path: 'mainIndex',
+      component: MainIndex,
+      name: 'MainIndex'
+    },
+    {
+      path: 'goodsSearch',
+      component: GoodsSearch,
+      name: 'GoodsSearch'
+    },
+    {
+      path: 'inventory',
+      component: Inventory,
+      name: 'Inventory'
+    },
+    {
+      path: 'billSearch',
+      component: BillSearch,
+      name: 'BillSearch'
+    },
+    {
+      path: 'helpCenter',
+      component: HelpCenter,
+      name: 'HelpCenter'
+    },
+    {
+      path: 'dataCenter',
+      component: DataCenter,
+      name: 'DataCenter'
+    },
+    {
+      path: 'organizationChart',
+      component: OrganizationChart,
+      name: '组织架构'
+    },
+    {
+      path: 'jinbaifu',
+      component: jinbaifu,
+      name: '金百福'
+    },
+    {
+      path: 'stockStatement',
+      component: StockStatement,
+      name: '库存'
+    },
+    {...additional},
+    {...admin},
+    {...leaguer},
+    {...faceRecognitionRouter},
+    {...work}
+  ]
 }]
 routes.push(member)
 export default routes
