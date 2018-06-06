@@ -8,9 +8,9 @@
         <div class="input-drop-list">
             <h4>条形码范围</h4>
             <div title="件数" class="down-range-box" style="background:url(../../../static/img/batch/number.png) no-repeat 5px center;">
-                <input type="text" placeholder="件数" v-model="moreChange.beginNum">
+                <input type="text" placeholder="条形码范围" v-model="moreChange.beginNum">
                 <span>-</span>
-                <input type="text" placeholder="件数" v-model="moreChange.endNum">
+                <input type="text" placeholder="条形码范围" v-model="moreChange.endNum">
             </div>
             <h4>件重范围</h4>
             <div title="件重" class="down-range-box" style="background:url(../../../static/img/batch/weight.png) no-repeat 5px center;">
@@ -82,7 +82,12 @@ export default {
             this.$emit('filterData', this.moreChange)
         },
         reset () {
-
+            this.moreChange.beginNum = ''
+            this.moreChange.endNum = ''
+            this.moreChange.beginWeight = ''
+            this.moreChange.endWeight = ''
+            this.moreChange.beginPrice = ''
+            this.moreChange.endPrice = ''
         }
     }
 }

@@ -30,11 +30,7 @@
 
         </div>
 
-        <filter-header @seekProduct="seekProduct" @resetData="resetData" @filterData="filterData"></filter-header>
-
-<!--         <div class="reset-btn" @resetData="resetData">
-          重置
-        </div> -->
+        <filter-header @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
 
       </div>
       <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
@@ -81,6 +77,7 @@ export default {
   },
   data () {
     return {
+      addData: [], // 让后台过滤的数据源
       printNum: { // 打印行数
         allChecked: false, // 全部选中
         beginNum: '',
@@ -422,14 +419,13 @@ export default {
       let barcode = {
         barcode: []
       }
-      for (let i of this.dataGridStorage) {
+      for (let i of this.addData) {
         barcode.barcode.push(i.barcode)
       }
       seekGetPrintLabelList(Object.assign(parm, barcode))
         .then(res => {
           if (res.data.state == 200) {
-            debugger
-            this.allData = res.data.data.dataList
+            this.allData = res.data.data
             let datas = res.data.data.dataList
             for (let i of datas) {
               // 属性
@@ -437,6 +433,7 @@ export default {
               // 状态
               i.status = productDetailStatus(i.status)
             }
+            this.addData = datas
             this.dataGridStorage = datas
             this.loading = false
           } else {
@@ -455,15 +452,22 @@ export default {
       let barcode = {
         barcode: []
       }
-      for (let i of this.dataGridStorage) {
+      for (let i of this.addData) {
         barcode.barcode.push(i.barcode)
       }
       this.loading = true
       seekGetPrintLabelList(Object.assign(this.filterCondition, barcode, {}))
         .then(res => {
           if (res.data.state == 200) {
-            this.allData = res.data.data.dataList
-            this.dataGridStorage = res.data.data.dataList
+            this.allData = res.data.data
+            let datas = res.data.data.dataList
+            for (let i of datas) {
+              // 属性
+              i.productClass = productTpyeState(i.productClass)
+              // 状态
+              i.status = productDetailStatus(i.status)
+            }
+            this.dataGridStorage = datas
             this.loading = false
           } else {
             this.$message({
@@ -758,8 +762,9 @@ export default {
 
     },
     //成本控制
-    reportSwitch() {
-      this.tabSwitch = !this.tabSwitch
+    reportSwitch(parm) {
+      debugger
+      this.tabSwitch = parm
     },
     setPrintShowCompany(type) {
       this.printSelectDate.showCompany = type
@@ -1003,21 +1008,6 @@ export default {
   //   padding-bottom: 20px;
   //   vertical-align: top;
   // }
-  .reset-btn{
-    position: absolute;
-    right: 30px;
-    bottom: 15px;
-    border: 1px solid #d6d6d6;
-    color: #666;
-    height: 28px;
-    width: 60px;
-    color: #2993f8;
-    text-align: center;
-    border-radius: 5px;
-    line-height: 28px;
-    font-size: 14px;
-    cursor: pointer;
-  }
 }
 
 </style>

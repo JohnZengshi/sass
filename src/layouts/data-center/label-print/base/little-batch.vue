@@ -190,7 +190,7 @@ import {seekBatchAddByOrderNum, seekBatchAddByProductList} from "Api/commonality
                 }
                 this.isLoading = true
                 let options = {
-                    orderId: 'FH20180605001',
+                    orderId: '',
                     keyword: this.keyword,
                     beginTime: startTime,
                     endTime: endTime,

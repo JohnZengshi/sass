@@ -8,7 +8,7 @@
             <ul class="list-left">
                 <el-checkbox-group v-if="allName" v-model="allChecked" @change="checkedAll">
                     <li  @mouseover="selLeftItem([], 0)">
-                        <el-checkbox :indeterminate="false" :label="'allId'" :class="{active: allName[0]}" style="font-size: 14px;">{{allName}}</el-checkbox>
+                        <el-checkbox :indeterminate="filterState" :label="'allId'" :class="{active: allName[0]}" style="font-size: 14px;">{{allName}}</el-checkbox>
                     </li>
                 </el-checkbox-group>
 
@@ -19,14 +19,6 @@
                     </li>
                 </el-checkbox-group>
 
-            </ul>
-            <ul class="list-right">
-                <el-checkbox-group v-model="smallIdList" @change="changeSmallId">
-                    <li v-for="(item, index) in rightList">
-                       <el-checkbox :label="item.id" :style="filterSamllStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
-                    </li>
-                </el-checkbox-group>  
-                <!-- <li @click="selRightItem(item, index)" :class="{active: item.id == operateId}" v-for="(item, index) in rightList">{{item.name}}</li> -->
             </ul>
             <div class="list-footer">
                 <span @click="complate">完成</span>
@@ -54,79 +46,11 @@ export default {
     props: [
         'propsList',
         'titleData',
-        'allName',
-        'keyName'
+        'allName'
     ],
-    watch: {
-        checkedCities (newValue, oldValue) {
-            // 新增
-            if (newValue.length > oldValue.length) {
-                for (let i of this.propsList) {
-                    if (i.id == newValue.slice(newValue.length - 1, newValue.length)[0]) {
-                        for (let j of i.childrenList) {
-                            if (!this.smallIdList.includes(j.id)) {
-                                this.smallIdList.push(j.id)
-                            }
-                        }
-                    }
-                }
-            } else if (newValue.length < oldValue.length){ // 删除
-                let amendValue = ''
-                for (let k of oldValue) {
-                    if (!newValue.includes(k)) {
-                        amendValue = k
-                    }
-                }
-                for (let i of this.propsList) {
-                    if (i.id == amendValue) {
-                        for (let j of i.childrenList) {
-                            this.smallIdList.forEach((currentValue,index,arr) => {
-                                if (currentValue == j.id) {
-                                    this.smallIdList.splice(index, index+1)
-                                }
-                            })
-                        }
-                    }
-                }
-            }
-        },
-        smallIdList (newValue, oldValue) {
-            if (newValue.length < oldValue.length) { // 减小了一个值
-                for (let i of this.propsList) {
-                    for (let j of i.childrenList) {
-                        // 删除
-                        if (!newValue.includes(j.id)) {
-                            this.checkedCities.forEach((currentValue,index,arr) => {
-                                if (currentValue == i.id) {
-                                    this.checkedCities.splice(index, index+1)
-                                    return
-                                }
-                            })
-                            return
-                        }
-                    }
-                } 
-            } else if (newValue.length > oldValue.length) { // 新增一个值
-
-                for (let i of this.propsList) {
-
-                    let isHas = true
-
-                    for (let j of i.childrenList) {
-                        // 删除
-                        if (!newValue.includes(j.id)) {
-                            isHas = false
-                        }
-                    }
-
-                    if (this.checkedCities.includes(i.id)) {
-                        return
-                    } else {
-                        if (isHas) {
-                           this.checkedCities.push(i.id) 
-                        }
-                    }
-                }
+    computed: {
+        filterState () {
+            if (this.checkedCities.length ?  this.checkedCities.length > this.propsList.length : false) {
 
             }
         }
@@ -150,24 +74,14 @@ export default {
                     if (!this.checkedCities.includes(i.id)) {
                         this.checkedCities.push(i.id)
                     }
-                    for (let j of i.childrenList) {
-                        
-                        if (!this.smallIdList.includes(j.id)) {
-                            this.smallIdList.push(j.id)
-                        }
-                    }
                 }
             } else {
                 this.checkedCities = []
-                this.smallIdList = []
             }
         },
         handleCheckedCitiesChange (parm) {
-            console.log('选择的大类', parm)
         },
         changeSmallId (parm) {
-            console.log('大类', this.checkedCities)
-            console.log('选择小类', parm)
         },
         selLeftItem (item, index) {
             this.rightList = item.childrenList
@@ -177,11 +91,10 @@ export default {
             this.operateId = item.id
         },
         complate () {
-            this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll, keyName: this.keyName})
+            this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll})
         },
         reset () {
             this.checkedCities = []
-            this.smallIdList = []
             this.allChecked = []
         }
     }
@@ -238,6 +151,7 @@ export default {
         width: 100%;
         height: 100%;
         font-size: 14px;
+        text-align: left;
         line-height: 26px;
         i {
             position: absolute;
@@ -247,7 +161,7 @@ export default {
         }
     }
     .list-box {
-        width: 300px;
+        width: 150px;
         height: 300px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -256,7 +170,7 @@ export default {
         opacity: 0;
         background:#fff;
         overflow: hidden;
-        left: -120px;
+        left: -40px;
         top: 40px;
         transition: all .3s ease;
         .list-left {

@@ -19,16 +19,6 @@ export default {
     return {
       actIndex: null,
       noChange: true // 选中标记
-      // showList: [
-      //   {
-      //     name: 123,
-      //     id: 789
-      //   },
-      //   {
-      //     name: 6666,
-      //     id: 7889
-      //   }
-      // ]
     }
   },
   methods: {
@@ -39,7 +29,6 @@ export default {
     },
     itemClick (item, index) {
       this.noChange = false
-      console.log('选中', item)
       this.actIndex = null,
       this.$emit("changeData", item)
     }

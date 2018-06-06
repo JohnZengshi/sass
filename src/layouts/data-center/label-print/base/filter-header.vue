@@ -85,15 +85,22 @@
 
       <down-input
         ref="moreWrap"
-        class="ml-20"
+        class="ml-10"
         @filterData="filterData"
         titleName="更多筛选"
       ></down-input>
 
     </div>
 
-    <div class="reset-btn" @click="resetData">
-      重置
+    <div class="right-btn-wrap">
+        <div class="reset-btn" @click="resetData">
+          重置
+        </div>
+
+        <div class="cost-btn" v-if="isShowCost == 'Y'" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu" :class="{active: tabSwitch}">
+          专列项
+        </div>
+      
     </div>
 
     <little-batch ref="littleBatchWrap" @changeOrderId="changeOrderId" :supplierListData="supplierListData"></little-batch>
@@ -101,7 +108,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList} from "Api/commonality/seek"
+import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList,seekSettingUserRole} from "Api/commonality/seek"
 import dropDownColums from './dropDownColums'
 import aloneDropDownColums from './alone-drop-down-colums'
 import littleBatch from './little-batch'
@@ -120,7 +127,9 @@ export default {
   },
   data () {
     return {
+      isShowCost: '',
       keyword: '',
+      tabSwitch: false,
       repositoryList: [], // 仓库列表
       shopDataList: [],
       filterCondition: {
@@ -146,80 +155,100 @@ export default {
       stateList: [
         {
           name: "入库中",
-          id: '1'
+          id: '11'
         },
         {
           name: "已入库",
-          id: '2'
-        },
-        {
-          name: "退库中",
-          id: '3'
-        },
-        {
-          name: "已退库",
-          id: '4'
+          id: '10'
         },
         {
           name: "修改中",
-          id: '5'
+          id: '31'
         },
          {
           name: "已修改",
-          id: '6'
+          id: '30'
         },
         {
           name: "调库中",
-          id: '7'
+          id: '41'
         },
         {
           name: "已调库",
-          id: '8'
+          id: '40'
         },
         {
-          id: "9",
+          name: "退库中",
+          id: '21'
+        },
+        {
+          name: "已退库",
+          id: '20'
+        },
+        {
+          id: "51",
 
           name: "发货中"
         }, {
-          id: "10",
+          id: "50",
 
           name: "已发货"
-        }, {
-          id: "11",
+        }, 
+        {
+          id: "61",
 
           name: "退货中"
         }, {
-          id: "12",
+          id: "60",
 
           name: "已退货"
-        }, {
-          id: "13",
+        },
+        {
+          id: "71",
 
           name: "调柜中"
-        }, {
-          id: "14",
+        },
+        {
+          id: "70",
 
           name: "已调柜"
-        }, {
-          id: "15",
+        },
+        {
+          id: "80",
 
           name: "销售中"
         }, {
-          id: "16",
+          id: "81",
           name: "已销售"
-        }, {
-          id: "17",
-          name: "发货审核"
-        }, {
-          id: "18",
-          name: "退货审核"
-        }, {
-          id: "19",
-          name: "已退换"
-        }, {
-          id: "20",
-          name: "退换中"
-        }
+        }, 
+        // {
+        //   id: "13",
+
+        //   name: "调柜中"
+        // }, {
+        //   id: "14",
+
+        //   name: "已调柜"
+        // }, {
+        //   id: "15",
+
+        //   name: "销售中"
+        // }, {
+        //   id: "16",
+        //   name: "已销售"
+        // }, {
+        //   id: "17",
+        //   name: "发货审核"
+        // }, {
+        //   id: "18",
+        //   name: "退货审核"
+        // }, {
+        //   id: "19",
+        //   name: "已退换"
+        // }, {
+        //   id: "20",
+        //   name: "退换中"
+        // }
 
       ],
       "supplierListData": [
@@ -253,6 +282,7 @@ export default {
     this.productClassList(3)
     this._seekGetShopListByCo()
     this._seekRepositoryList()
+    this.settingUserRole()
   },
   computed: {
     ...mapGetters([
@@ -290,6 +320,20 @@ export default {
     }
   },
   methods: {
+    choseMenu () {
+      this.tabSwitch = !this.tabSwitch
+      this.$emit('reportSwitch', this.tabSwitch)
+    },
+    settingUserRole () { // 用户查看成本权限
+      let options = {
+        userId: sessionStorage.getItem('id')
+      }
+      seekSettingUserRole(options).then((res) => {
+        if (res.data.state == 200) {
+          this.isShowCost = res.data.data.costFlag
+        }
+      })
+    },
     resetData () {
       this.keyword = ''
       this.$refs.moreWrap.reset()
@@ -299,6 +343,7 @@ export default {
       this.$refs.colourIdWrap.reset()
       this.$refs.productTypeIdWrap.reset()
       this.$refs.shopWrap.reset()
+      this.$emit('resetData')
     },
     batchAddByOrderNum () {
       let options = {
@@ -407,7 +452,8 @@ export default {
       this.$emit('filterData', this.filterCondition)
     },
     dataBackProductTypeId (parm) { // 产品类别过滤
-      this.filterCondition.productTypeId = parm.samllList
+      this.filterCondition.productTypeId = parm.bigList
+      this.$emit('filterData', this.filterCondition)
     },
     seekProductTypeList () { // 产品类别列表
       getProductTypeList().then((res) => {
@@ -513,7 +559,7 @@ export default {
       .search-block {
           width: 85px;
           height: 28px;
-          margin-left: 20px;
+          margin-left: 10px;
           border: 1px solid #d6d6d6;
           border-radius: 4px;
           color:#333;
@@ -532,7 +578,7 @@ export default {
           border-radius: 4px;
           border: 1px solid #d6d6d6;
           float: left;
-          margin-left: 20px;
+          margin-left: 10px;
       }
       .drop-block {
           width: 90px;
@@ -560,7 +606,7 @@ export default {
       }
       .range-box {
           float: left;
-          margin-left: 16px;
+          margin-left: 10px;
           width: 168px;
           height: 28px;
           border-radius: 4px;
@@ -647,8 +693,47 @@ export default {
           }
       }
   }
-  .ml-20{
-    margin-left: 20px;
+  .right-btn-wrap{
+    position: absolute;
+    right: 20px;
+    bottom: 15px;
+  }
+  .reset-btn{
+    float: left;
+    border: 1px solid #d6d6d6;
+    color: #666;
+    height: 26px;
+    width: 60px;
+    color: #2993f8;
+    text-align: center;
+    border-radius: 5px;
+    line-height: 26px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .cost-btn{
+    float: left;
+    font-size: 12px;
+    display: block;
+    margin-left: 10px;
+    width: 52px;
+    height: 26px;
+    text-align: center;
+    line-height: 26px;
+    color: #2993f8;
+    background: #e0ecf7;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 1px solid #2993f8;
+    &.active {
+      color: #fff;
+      background: #2993f8;
+    }
+  }
+
+
+  .ml-10{
+    margin-left: 10px;
   }
 }
 

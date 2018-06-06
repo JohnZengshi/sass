@@ -1,5 +1,5 @@
 <template>
-  <div class="Rp_selected_container">
+  <div class="Rp_selected_container label-print-btn-h-main">
 
     <div class="e-border-radio-5">
       <el-checkbox v-model="printNum.allChecked" @change="changeAllChecked">全部</el-checkbox>
@@ -11,9 +11,9 @@
       <input type="text" @blur="amendNum" placeholder="打印行范围" v-model="printNum.endNum">
     </div>
 
-    <DownMenu :titleInfo="currentTemplate.templateName ? currentTemplate.templateName : '选择模板'" :showList="labelTemplateList" :nameKey="'templateName'" @changeData="changeTemplateId" @clearInfo="clearShop"></DownMenu>
+    <DownMenu :isSolid="true" :titleInfo="currentTemplate.templateName ? currentTemplate.templateName : '选择模板'" :showList="labelTemplateList" :nameKey="'templateName'" @changeData="changeTemplateId" @clearInfo="clearTemplate"></DownMenu>
 
-    <printDownMenu :titleInfo="currentPrint ? currentPrint : '选择打印机'" :showList="printList" :nameKey="'name'" @changeData="changePrint" @clearInfo="clearShop"></printDownMenu>
+    <DownMenu :titleInfo="currentPrint ? currentPrint : '选择打印机'" :showList="printList" :nameKey="'name'" @changeData="changePrint" @clearInfo="clearPrint"></DownMenu>
 
     <el-button size="small" class="ml-10" @click.native="_previewTemplate('Y')">预览</el-button>
     <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">打印标签</el-button>
@@ -22,7 +22,7 @@
 <script>
 import {mapState} from 'vuex'
 import {JaTools} from '@/utils/JaTool.js';
-import DownMenu from 'base/menu/DownMenu'
+import DownMenu from 'base/menu/new-down-menu'
 import printDownMenu from './DownMenu'
 
 export default {
@@ -72,14 +72,17 @@ export default {
     changeTemplateId (parm) {
       this.currentTemplate = parm
     },
+    clearTemplate () {
+      this.currentTemplate = ''
+    },
     changeShopData (parm) {
       // this.dataGridOptions.receiveObject = 5
       // this.dataGridOptions.shopId = parm.shopId
       // this.dataGridOptions.shopName = parm.shopName
       // this.send()
     },
-    clearShop () {
-
+    clearPrint () {
+      this.currentPrint = ''
     },
     toHome () {
 
@@ -175,35 +178,39 @@ export default {
 }
 </script>
 <style lang="scss">
-.l-p-range-box {
-  display: inline-block;
-  position: relative;
-  cursor: pointer;
-  vertical-align: top;
-  margin-left: 16px;
-  width: 180px;
-  height: 28px;
-  border-radius: 4px;
-  border: 1px solid #d6d6d6;
-  padding-left: 10px;
-  background-color: #fff;
-  input {
-      width: 68px;
-      height: 100%;
-      float: left;
-      text-align: center;
+.label-print-btn-h-main{
+  font-size: 0;
+  .l-p-range-box {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    vertical-align: top;
+    margin-left: 16px;
+    width: 180px;
+    height: 28px;
+    border-radius: 4px;
+    border: 1px solid #d6d6d6;
+    padding-left: 10px;
+    background-color: #fff;
+    input {
+        width: 68px;
+        height: 100%;
+        float: left;
+        text-align: center;
+    }
+    span {
+        float: left;
+        margin: 0 4px;
+        color: #666;
+        font-size: 14px;
+        line-height: 26px;
+    }
   }
-  span {
-      float: left;
-      margin: 0 4px;
-      color: #666;
-      font-size: 14px;
-      line-height: 26px;
+  .e-border-radio-5{
+    height: 28px;
+    padding-bottom: 20px;
+    font-size: 14px;
+    vertical-align: top;
   }
-}
-.e-border-radio-5{
-  height: 28px;
-  padding-bottom: 20px;
-  vertical-align: top;
 }
 </style>
