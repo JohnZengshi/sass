@@ -379,9 +379,16 @@ export default {
                 return
             }
             this.actionType = type
+            let orderList = []
+            if(this.dataInfo.orderList.length != 0){
+                this.dataInfo.orderList.forEach((item,index) => {
+                    orderList[index] = {orderNo:item.orderNum}
+                })
+            }
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
+                orderList,
                 type
             })
             operateMemberUpdateBy(options).then(res => {
@@ -452,9 +459,16 @@ export default {
             this.leaderStr = parm.nameList.join(',') || '指派'
             
             // 修改负责人
+            let orderList = []
+            if(this.dataInfo.orderList.length != 0){
+                this.dataInfo.orderList.forEach((item,index) => {
+                    orderList[index] = {orderNo:item.orderNum}
+                })
+            }
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
+                orderList
             })
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
@@ -606,9 +620,17 @@ export default {
                     })
                     this.signName = ''
 
+                    let orderList = []
+                    if(this.dataInfo.orderList.length != 0){
+                        this.dataInfo.orderList.forEach((item,index) => {
+                            orderList[index] = {orderNo:item.orderNum}
+                        })
+                    }
+
                     let optionsdata = Object.assign({},this.dataInfo,{
                         memberId: this.memberId,
                         shopId: this.shopId,
+                        orderList,
                     })
 
                     operateMemberUpdateBy(optionsdata).then(res => {
@@ -633,9 +655,18 @@ export default {
         // 删除标签
         delLabel (item, index) {
             this.dataInfo.signList.splice(index, 1)
+            
+            let orderList = []
+            if(this.dataInfo.orderList.length != 0){
+                this.dataInfo.orderList.forEach((item,index) => {
+                orderList[index] = {orderNo:item.orderNum}
+            })
+            }
+
             let optionsdata = Object.assign({},this.dataInfo,{
                         memberId: this.memberId,
                         shopId: this.shopId,
+                        orderList,
                     })
 
                     operateMemberUpdateBy(optionsdata).then(res => {

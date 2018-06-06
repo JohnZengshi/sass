@@ -29,12 +29,12 @@ function apiCall (param, URL) {
     
     let resourcePromise = foo(data).next().value
     // 中间件
-    resourcePromise.then( res =>{
-      // 截获登录超时
-      if(res.data.state == 100 ){
-        Vue.prototype.loginPopup.show()
-      }
-    })
+    // resourcePromise.then( res =>{
+    //   // 截获登录超时
+    //   if(res.data.state == 100 ){
+    //     Vue.prototype.loginPopup.show()
+    //   }
+    // })
     
     return resourcePromise
 }

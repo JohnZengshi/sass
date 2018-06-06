@@ -479,11 +479,13 @@ export default {
             memberBuyIntegral(options).then(res => {
                 if(res.data.state == 200){
                     console.log('成功')
+                } else if(res.data.state == 1001399){
                 } else {
                     this.$message({
                         type:'error',
                         message:res.data.msg
                     })
+
                 }
             })
             

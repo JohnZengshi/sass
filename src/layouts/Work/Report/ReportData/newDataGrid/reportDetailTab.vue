@@ -29,7 +29,8 @@
 	</template>
     
 	<template v-else>
-	  <!--表格内容区  -->
+    
+	<!--表格内容区  -->
     <data-grid-body 
       :detailDataGridColumn="detailDataGridColumn" 
       :dataGridStorage="dataGridStorage" 
@@ -102,27 +103,26 @@ export default {
 	},
 	props : ['dataGridStorage','reportType','tabSwitch','isOld', 'positionSwitch', 'newList','type'],
 	methods:{
-    sortList (val) {
-        //console.log(val)
-        this.$emit('sortList', val)
-    },
-    lazyloadSend (val) {
-        this.$emit('lazyloadSend', val)
-    },
-    ObjectAssign(){
-        this.tempDatagrid = [];
-        this.detailDataGridColumn.forEach((item)=>{
-            let tempItem = Object.assign({},item)
-            this.tempDatagrid.push(tempItem)
-        })
-    },
-    //单元格宽度
+        sortList (val) {
+            this.$emit('sortList', val)
+        },
+        lazyloadSend (val) {
+            this.$emit('lazyloadSend', val)
+        },
+        ObjectAssign(){
+            this.tempDatagrid = [];
+            this.detailDataGridColumn.forEach((item)=>{
+                let tempItem = Object.assign({},item)
+                this.tempDatagrid.push(tempItem)
+            })
+        },
+        //单元格宽度
 		tabCell( result ){
 			if( result.width ){
 				let w = 'width:' + result.width + 'px'
 				result.res && result.res.call(this, w)
 			}
-       },
+        },
         tableSwitch(){
             let temp = [];
             //this.setConfig()
@@ -167,7 +167,7 @@ export default {
                 }
             }
             this.detailDataGridColumn = temp;
-            //console.log('temp',this.detailDataGridColumn)
+            console.log('temp',this.detailDataGridColumn)
         },
         posSwitch(){
             let temp = [];
@@ -175,7 +175,6 @@ export default {
             this.configType()
             this.ObjectAssign()
             if (!this.positionSwitch) {
-                //console.log(11111)
                 if (!this.tabSwitch) {
                     this.tempDatagrid.forEach((item)=>{
                         let tempwidth, _item = Object.assign({},item)
@@ -211,10 +210,8 @@ export default {
                 }
             }
             this.detailDataGridColumn = temp;
-            //console.log('temp',this.detailDataGridColumn)
         },
         configType(){
-            //console.log(this.reportType)
             switch( this.reportType ){
                 case 1 :
                     this.setColumn(this.configData.detailConfing)
