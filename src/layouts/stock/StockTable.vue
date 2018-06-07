@@ -8,40 +8,40 @@
 
 			<div class="Rp_dataGrid_container">
         <!-- 表头筛选 begin -->
-				<!-- <div class="rp_gridState">
+				<div class="rp_gridState">
 					<p class="side-nav"><i class="iconfont icon-baobiao"></i>商品列表</p>
 					<div class="sort-wrap">
-						<label>排序:</label> -->
+						<label>排序:</label>
             <!-- 排序的标签 begin -->
-						<!-- <div class="sortwrap-text" v-for="(item, index) in sortList" :key="index">
+						<div class="sortwrap-text" v-for="(item, index) in sortList" :key="index">
 							{{item.name}}
 							<img class="sortwrap-img" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
 							<img class="sortwrap-img" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
 							<i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
-						</div> -->
+						</div>
             <!-- 排序的标签 end -->
-					<!-- </div>
+					</div>
 					<div class="right-wrap">
 						<div class="search-wrap">
-							<input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" /> -->
+							<input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" />
 							<!--<i class="iconfont icon-sousuo" @click="send"></i>-->
-						<!-- </div> -->
+						</div>
 						<!-- <div @click="toggleAttribute" class="iconfont-wrap">
 							<span v-if="dataGridOptions.productClass == 1">成品</span>
 							<span v-if="dataGridOptions.productClass == 2">旧料</span>
 							<i class="iconfont icon-qiehuan"></i>
 						</div> -->
              <!-- 修改样式位置 -->
-						<!-- <div class="iconfont-wrap">
+						<div class="iconfont-wrap">
 							<span style="margin-right:25px;" :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)" >成品</span>
 							<span style="margin-right:25px;" :class="inconspanactive2 == true ? 'myspanactive' : ''"  @click="toggleAttribute(2)" >旧料</span>
 						</div>
 						<div class="tab">
 							<span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span>
 							<span :class="1 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(1, 2)">智能分类</span>
-							<span :class="2 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(2, 3)">产品分类</span> -->
+							<span :class="2 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(2, 3)">产品分类</span>
 							<!--自定原点击事件：@click="tabs(3, 4)"-->
-							<!-- <span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义
+							<span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义
                                 <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
                                 <div class="customDia" ref="customDia" style="display: none;">
                                     <div class="body">
@@ -134,58 +134,58 @@
                               </div>
                       </div>
                     </span>
-            </div> -->
+            </div>
             <!-- 位置 -->
-            <!-- <div class="position-group"> -->
+            <div class="position-group">
               <!-- <el-radio class="radio" label="1">位置分组</el-radio> -->
               <!-- <el-checkbox v-model="positionSwitch" :disabled="dataGridOptions.type == 1">位置分组</el-checkbox> -->
-              <!-- <span :title="positionSwitch ? '取消位置' : '选择位置'" @click="choseMenu(1)" class="btn" :class="{active: positionSwitch}" v-if="dataGridOptions.type != 1">位置</span> -->
-            <!-- </div> -->
+              <span :title="positionSwitch ? '取消位置' : '选择位置'" @click="choseMenu(1)" class="btn" :class="{active: positionSwitch}" v-if="dataGridOptions.type != 1">位置</span>
+            </div>
             <!-- 专列项 -->
-            <!-- <div class="xj-switch" v-if="isShowCost == 'Y'"> -->
+            <div class="xj-switch" v-if="isShowCost == 'Y'">
               <!-- <el-checkbox v-model="tabSwitch">成本</el-checkbox> -->
-              <!-- <span :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" class="btn" :class="{active: tabSwitch}">专列项</span>
+              <span :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" class="btn" :class="{active: tabSwitch}">专列项</span>
             </div>
           </div>
-        </div> -->
+        </div>
         <!-- 表头的筛选 end -->
 
         <!-- 表头筛选重构 begin -->
-        <div class="Header_screening">
+        <!-- <div class="Header_screening"> -->
           <!-- 标题 -->
-          <div class="side_nav fl">
-            <i class="iconfont icon-baobiao"></i>商品列表
-          </div>
+          <!-- <div class="side_nav fl"> -->
+            <!-- <i class="iconfont icon-baobiao"></i>商品列表 -->
+          <!-- </div> -->
           <!-- 标签 -->
-          <div class="sort_wrap fl">
+          <!-- <div class="sort_wrap fl"> -->
             <!-- 少于三个的显示 -->
-            <div class="sortwrap_text" v-if="index<3" v-for="(item, index) in sortList" :key="index">
-              <span class="fl">{{item.name}}</span>
-              <img class="sortwrap_img fl" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
-							<img class="sortwrap_img fl" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
-							<i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
-            </div>
+            <!-- <div class="sortwrap_text" v-if="index<3" v-for="(item, index) in sortList" :key="index"> -->
+              <!-- <span class="fl">{{item.name}}</span> -->
+              <!-- <img class="sortwrap_img fl" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png"> -->
+							<!-- <img class="sortwrap_img fl" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png"> -->
+							<!-- <i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i> -->
+            <!-- </div> -->
             <!-- 大于三个的显示 -->
-            <i class="el-icon-caret-bottom arrow" v-if="sortList.length > 3">
+            <!-- <i class="el-icon-caret-bottom arrow" v-if="sortList.length > 3"> -->
               <!-- 标签列表 -->
-              <ul class="tag_list">
-                <li v-for="(item, index) in sortList" :key="index">
-                  <span class="fl">{{item.name}}</span>
-                  <img class="sortwrap_img fl" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
-    							<img class="sortwrap_img fl" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
-							    <i class="el-icon-circle-cross fr" @click="cancelSort(item, index)"></i>                  
-                </li>
-              </ul>
-            </i>
+              <!-- <ul class="tag_list"> -->
+                <!-- <li v-for="(item, index) in sortList" :key="index"> -->
+                  <!-- <span class="fl">{{item.name}}</span> -->
+                  <!-- <img class="sortwrap_img fl" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png"> -->
+    							<!-- <img class="sortwrap_img fl" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png"> -->
+							    <!-- <i class="el-icon-circle-cross fr" @click="cancelSort(item, index)"></i>                   -->
+                <!-- </li> -->
+              <!-- </ul> -->
+            <!-- </i> -->
             
-          </div>
+          <!-- </div> -->
           <!-- 输入框 -->
-          <div class="search_wrap">
-            <input type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" />
-          </div>
+          <!-- <div class="search_wrap"> -->
+            <!-- <input type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" /> -->
+          <!-- </div> -->
           <!-- 成品旧料的切换 -->
           
-        </div>
+        <!-- </div> -->
         <!-- 表头筛选重构 end -->
 
         <div class="rp_dataGridTemp" :class="tabShow">
