@@ -58,7 +58,7 @@
                             <new-down-menu
                                 :titleInfo="filterData.wJewelryId.name"
                                 :keyName="'wJewelryId'"
-                                :showList="dialogOptions.conditionList"
+                                :showList="dialogOptions.jewelryList"
                                 @changeData="changeClass"
                             ></new-down-menu>
                             <!-- <DropDownMenu
@@ -93,6 +93,13 @@
                             </DropDownMenu> -->
                         </li>
                         <li>
+                            <!-- 宝石名称-计件 -->
+                            <new-down-menu
+                                :titleInfo="filterData.nColorId.name"
+                                :keyName="'nColorId'"
+                                :showList="dialogOptions.conditionList"
+                                @changeData="changeClass"
+                            ></new-down-menu>
                            <!--  <DropDownMenu
                                 titleName="不选"
                                 dataType="customDia"
@@ -104,6 +111,13 @@
                             </DropDownMenu> -->
                         </li>
                         <li>
+                            <!-- 首饰类别-计件 -->
+                            <new-down-menu
+                                :titleInfo="filterData.nColorId.name"
+                                :keyName="'nColorId'"
+                                :showList="dialogOptions.jewelryList"
+                                @changeData="changeClass"
+                            ></new-down-menu>
                            <!--  <DropDownMenu
                                 titleName="大类"
                                 dataType="customDia"
@@ -308,9 +322,8 @@ export default {
         }
     }
     .select-drop-list {
-        overflow: hidden;
-        // opacity: 0;
-        // visibility: hidden;
+        opacity: 0;
+        visibility: hidden;
         transition: all .3s;
         background:#fff;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -323,11 +336,11 @@ export default {
         height: 300px;
         width: 375px;
         // padding: 20px 30px;
-        overflow: hidden;
         // overflow-y: auto;
         .select-drop-list-inner{
             height: 260px;
             .list-wrap {
+                padding-top: 30px;
                 width: 100%;
                 height: 180px;
                 &>ul {

@@ -41,10 +41,6 @@
             {
                 name: '产品分类',
                 id: '2'
-            },
-            {
-                name: '自定义',
-                id: '3'
             }
         ],
         dataGridOptions: {
