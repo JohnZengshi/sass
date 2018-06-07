@@ -109,7 +109,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList,seekSettingUserRole} from "Api/commonality/seek"
-import dropDownColums from './dropDownColums'
+import dropDownColums from 'base/menu/drop-down-colums'
 import aloneDropDownColums from 'base/menu/alone-drop-down-colums'
 import littleBatch from './little-batch'
 import DownMenu from 'base/menu/DownMenu'
