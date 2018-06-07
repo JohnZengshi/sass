@@ -154,107 +154,107 @@ export default {
       jewelryList: [], // 首饰列表
       stateList: [
         {
-            id: 10,
+            id: "10",
             name: "在库位"
         },
         {
-            id: 11,
+            id: "11",
             name: "入库中"
         },
         {
-            id: 20,
+            id: "20",
             name: "已退库"
         },
         {
-            id: 21,
+            id: "21",
             name: "退库中"
         },
         {
-            id: 30,
+            id: "30",
             name: "已修改"
         },
         {
-            id: 31,
+            id: "31",
             name: "修改中"
         },
         {
-            id: 40,
+            id: "40",
             name: "已调库"
         },
         {
-            id: 41,
+            id: "41",
             name: "调库中"
         },
         {
-            id: 50,
+            id: "50",
             name: "已发货"
         },
         {
-            id: 51,
+            id: "51",
             name: "发货中"
         },
         {
-            id: 52,
+            id: "52",
             name: "发货审核"
         },
         {
-            id: 60,
+            id: "60",
             name: "已退货"
         },
         {
-            id: 61,
+            id: "61",
             name: "退货中"
         },
         {
-            id: 62,
+            id: "62",
             name: "退货审核"
         },
         {
-            id: 70,
+            id: "70",
             name: "已调柜"
         },
         {
-            id: 71,
+            id: "71",
             name: "调柜中"
         },
         {
-            id: 80,
+            id: "80",
             name: "已销售"
         },
         {
-            id: 81,
+            id: "81",
             name: "销售中"
         },
         {
-            id: 90,
+            id: "90",
             name: "已退货"
         },
         {
-            id: 91,
+            id: "91",
             name: "退货中"
         },
         {
-            id: 92,
+            id: "92",
             name: "已换货"
         },
         {
-            id: 93,
+            id: "93",
             name: "换货中"
         },
         {
-            id: 94,
+            id: "94",
             name: "已回收"
         },
         {
-            id: 95,
+            id: "95",
             name: "回收中"
         },
         {
-            id: 100,
+            id: "100",
             name: "店铺收货"
         },
         {
-            id: 101,
+            id: "101",
             name: "仓库收货"
         }
       ],
@@ -350,6 +350,7 @@ export default {
       this.$refs.colourIdWrap.reset()
       this.$refs.productTypeIdWrap.reset()
       this.$refs.shopWrap.reset()
+      this.$refs.storageLocationWrap.reset()
       this.$emit('resetData')
     },
     batchAddByOrderNum () {

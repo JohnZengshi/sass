@@ -43,6 +43,62 @@ export const productDetailStatus = function (parm) { // 商品列表
             return "退换中";
     }
 }
+export const newProductDetailStatus = function (parm) { // 商品列表
+    switch (parm) {
+        case "10":
+            return '在库位'
+        case "11":
+            return '入库中'
+        case "20":
+            return '已退库'
+        case "21":
+            return '退库中'
+        case "30":
+            return '已修改'
+        case "31":
+            return '修改中'
+        case "40":
+            return '已调库'
+        case "41":
+            return '调库中'
+        case "50":
+            return '已发货'
+        case "51":
+            return '发货中'
+        case "52":
+            return '发货审核'
+        case "60":
+            return '已退货'
+        case "61":
+            return '退货中'
+        case "62":
+            return '退货审核'
+        case "70":
+            return '已调柜'
+        case "71":
+            return '调柜中'
+        case "80":
+            return '已销售'
+        case "81":
+            return '销售中'
+        case "90":
+            return '已退货'
+        case "91":
+            return '退货中'
+        case "92":
+            return '已换货'
+        case "93":
+            return '换货中'
+        case "94":
+            return '已回收'
+        case "95":
+            return '回收中'
+        case "100":
+            return '店铺收货'
+        case "101":
+            return '店铺收货'
+    }
+}
 export const receiptStatus = function (parm) { // 审核状态
     switch (parm) {
         case "1":
