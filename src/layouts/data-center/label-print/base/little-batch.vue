@@ -523,7 +523,6 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
                             width: 110px;
                         }
                         .el-radio {
-                            margin-top: 10px;
                             &>span {
                                 font-size: 0;
                             }

@@ -17,7 +17,7 @@ module.exports = {
       editOldType : '' // 报表修改 获取修改后的字段
     },
     {
-      id: '2', //id 
+      id: '1', //id 
       text: '条码号', //头部title文字
       width: '150', //单元格宽
       type: '', //合计类型值
@@ -26,6 +26,22 @@ module.exports = {
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
       childType: 'barcode', //单元格类型
+      totalType: 'totalNum', //小计
+      toFixed: false, //是否进行小数点精确截取
+      countCut: 0, //小数点截取位数
+      sort: 1,
+      editOldType : ''
+    },
+    {
+      id: '2', //id 
+      text: '产品类别', //头部title文字
+      width: '150', //单元格宽
+      type: '', //合计类型值
+      type1: '', //合计类型值
+      unit: '', //头部单位补充文字
+      footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
+      totalName: '', //底部合计 提示文字
+      childType: 'classTypeName', //单元格类型
       totalType: 'totalNum', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
