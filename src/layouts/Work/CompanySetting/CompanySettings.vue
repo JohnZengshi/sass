@@ -51,7 +51,7 @@
                     </div>
                     <div class="member-list">
                         <ul>
-                            <li v-for="(item,index) in templateDataList" :key="index" @click.stop="openMenberPoint(index,1)" ><i>●</i>{{item.templateName}}<i v-if="userType<4" class="el-icon-delete iDel" @click.stop="delTemplat(index)"></i></li>
+                            <li v-for="(item,index) in templateDataList" :key="index" @click.stop="openMenberPoint(index,1)" ><i>●</i>{{item.templateName}}<i id="iDel" v-if="userType<4 && item.templateName != '默认模版'" class="el-icon-delete iDel" @click.stop="delTemplat(index)"></i></li>
                         </ul>
                     </div>
                 </div>
@@ -556,7 +556,7 @@ export default {
             templateCreate(options).then(res => {
                 if(res.data.state == 200) {
                     this.addDialog = false                    
-                    this.supplierName = ''                    
+                    this.templateName = ''                    
                     this.$message({
                         type: 'success',
                         message: '添加成功!'
@@ -914,6 +914,15 @@ export default {
                                 top: 0;
                                 color: #2993f8;
                             }
+                            .iDel {
+                                float: right;
+                                line-height: 42px;
+                                color: #666;
+                                opacity: 0;
+                                &:hover {
+                                    color: #2993f8;
+                                }
+                            }
                         }
                         li:nth-child(1n+0) i{
                             color:#f7b73b;
@@ -926,16 +935,22 @@ export default {
                         }
                         li:hover {
                             background:#f1f2f3;
+                            .iDel {
+                                opacity: 1;
+                            }
                         }
+                        
                     }
                 }
             }
         }
     }
 }
-.iDel {
-    float: right;
-    line-height: 42px;
+#iDel {
+    color: #666;
+    &:hover {
+        color: #2993f8;
+    }
 }
 </style>
 
