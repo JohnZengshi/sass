@@ -2193,7 +2193,7 @@ color: #d6d6d6;
     margin-top: 12px;
     // margin-right: 10px;
     float: right;
-    border:1px solid #eee;
+    border:1px solid #d6d6d6;
     border-radius: 4px;
     font-size: 12px;
     text-align: center;
@@ -2212,10 +2212,10 @@ color: #d6d6d6;
     left: -210px;
 }
 .class_btn_wrap {
-    width: 306px;
+    width: 300px;
     height: 26px;
     border-radius: 4px;
-    border: 1px solid #eee;
+    border: 1px solid #d6d6d6;
     float: right;
     margin-right: 10px;
     margin-top: 12px;

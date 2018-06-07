@@ -186,7 +186,7 @@
           <!-- 成品旧料的切换 -->
           <div class="iconfont_wrap fl">
             <span :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)">成品</span>
-            <span style="color: #d6d6d6">丨</span>
+            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
             <span :class="inconspanactive2 == true ? 'myspanactive' : ''" @click="toggleAttribute(2)">旧料</span>
           </div>
           <!-- 新增的一些筛选 -->
@@ -230,11 +230,11 @@
           <!-- 表格的筛选 -->
           <div class="tab_wrap">
             <span :class="0 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(0, 1)">明细</span>
-            <span style="color: #d6d6d6">丨</span>						
+            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>						
             <span :class="1 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(1, 2)">智能分类</span>
-            <span style="color: #d6d6d6">丨</span>
+            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
 						<span :class="2 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(2, 3)">产品分类</span>
-            <span style="color: #d6d6d6">丨</span>
+            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
             <!-- 自定义 -->
             <span style="position: relative" :class="3 == tabClassActive.index ? 'myspanactive' : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)" @click="tabs(3,4)">自定义
               <div class="customDia site" ref="customDia" style="display: none;">
@@ -1913,13 +1913,13 @@ export default {
   .iconfont_wrap {
     width: 86px;
     height: 26px;
-    border: 1px solid #eee;
+    border: 1px solid #d6d6d6;
     border-radius: 4px;
     margin-top: 12px;
     text-align: center;
-    line-height: 24px;
+    line-height: 26px;
     span{
-      font-size: 14px;
+      font-size: 12px;
       font-weight: bold;
       color: #666;
       cursor: pointer;
@@ -1930,10 +1930,10 @@ export default {
   }
   // 多重筛选
   .class_btn_wrap {
-    width: 306px;
+    width: 300px;
     height: 26px;
     border-radius: 4px;
-    border: 1px solid #eee;
+    border: 1px solid #d6d6d6;
     float: left;
     margin-left: 10px;
     margin-top: 12px;
@@ -1945,11 +1945,11 @@ export default {
     margin-top: 12px;
     margin-left: 10px;
     float: left;
-    border:1px solid #eee;
+    border:1px solid #d6d6d6;
     border-radius: 4px;
     font-size: 12px;
     text-align: center;
-    line-height: 24px;
+    line-height: 26px;
     span {
       font-size: 12px;
       font-weight: bold;
