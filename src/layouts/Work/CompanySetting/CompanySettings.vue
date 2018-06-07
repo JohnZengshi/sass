@@ -10,7 +10,7 @@
                 </div>
                 <el-menu class="main-left-menu" @select="selectItem">
                     
-                    <el-menu-item :class="{active: actIndex == index}" class="main-left-menu-item" :index="index + ''" v-for="(item, index) in catalog">
+                    <el-menu-item :class="{active: actIndex == index}" class="main-left-menu-item" :index="index + ''" v-for="(item, index) in catalog" :key="index">
                         <span :class="{active: actIndex == index}" class="active-bar"></span>
                         {{item.name}}
                     </el-menu-item>
@@ -19,6 +19,7 @@
                     <component :is="panel"></component>
                 </div>
             </div>
+            <!-- 右边设置 -->
             <div class="main-right">
                 <div class="supplier-setting">
                     <div class="supplier-setting-title">
@@ -27,7 +28,7 @@
                     </div>
                     <div class="supplier-list">
                         <ul>
-                            <li v-for="(item, index) in supplierList" @click="supplierAct(item)"><i>●</i>{{item.supplierName}}</li>
+                            <li v-for="(item, index) in supplierList" @click="supplierAct(item)" :key="index"><i>●</i>{{item.supplierName}}</li>
                         </ul>
                     </div>
                 </div>
@@ -38,11 +39,24 @@
                     </div>
                     <div class="storage-list">
                         <ul>
-                            <li @click="openOperateDia(item)" v-for="(item, index) in repositoryList"><i>●</i>{{item.repositoryName}}<span class="default-flag iconfont icon-duigou" v-if="item.isDefault == 'Y'"></span></li>
+                            <li @click="openOperateDia(item)" v-for="(item, index) in repositoryList" :key="index"><i>●</i>{{item.repositoryName}}<span class="default-flag iconfont icon-duigou" v-if="item.isDefault == 'Y'"></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 会员积分模板配置 -->
+                <div class="member-points">
+                    <div class="member-title">
+                        <h4><i class="iconfont icon-liebiao"></i>会员积分模板设置</h4>
+                        <span @click="addDialogAct(3)">+模板</span>
+                    </div>
+                    <div class="member-list">
+                        <ul>
+                            <li v-for="(item,index) in templateDataList" :key="index" @click.stop="openMenberPoint(index,1)" ><i>●</i>{{item.templateName}}<i id="iDel" v-if="userType<4 && item.templateName != '默认模版'" class="el-icon-delete iDel" @click.stop="delTemplat(index)"></i></li>
                         </ul>
                     </div>
                 </div>
             </div>
+
         </div>
         <div>
             <el-dialog :visible.sync="addDialog" customClass="addDig">
@@ -53,6 +67,7 @@
                 <div class="body">
                     <input v-if="newPopupType == 1" v-model="supplierName" type="text" placeholder="输入供应商名称">
                     <input v-if="newPopupType == 2" v-model="repositoryName" type="text" placeholder="输入库位名称">
+                    <input v-if="newPopupType == 3" v-model="templateName" type="text" placeholder="输入模板名称" maxlength="10">
                 </div>
                 <div class="foot" solt="footer">
                     <div class="ope-btn" @click="selectMethods()">确定</div>
@@ -90,6 +105,8 @@
 import {mapActions, mapGetters} from 'vuex'
 import {seekShowProviderList} from './../../../Api/commonality/seek'
 
+import { getTemplateIntegralList, templateCreate, templateIntegralUpdate } from 'Api/member'
+
 import {operateAddProvIder, operateDelProvIder, addRepository, operateStockInfoUpdate, operateDelRepository, operateSupplierInfoUpdate} from './../../../Api/commonality/operate'
 import ProductName from "./settings/ProductName"
 import GemName from "./settings/GemName"
@@ -125,14 +142,16 @@ export default {
             actIndex: 0,
             supplierList: [], // 供应商列表
             stockType: null, // 库存类型
-            isDefault: ''
-            
+            isDefault: '',
+            templateDataList:[],
+            templateName:''
         }
     },
     created () {
         this.workRepositoryList(); // 库位列表
         this.workProductClass(); // 产品类别
         this.showProviderList() // 供应商列表
+        this.getTemplateList() // 会员模板列表
     },
     mounted () {
         let self = this
@@ -175,7 +194,7 @@ export default {
             "repositoryList", // 库位列表
             "productClass", // 产品类别
             // "supplierListData", // 供应商列表
-            // "userType", // 监听编辑权限
+            "userType", // 监听编辑权限
             "applyUserList" // 应用用户列表
         ]),
         productClassPull: function () {
@@ -192,7 +211,8 @@ export default {
     methods: {
         ...mapActions([
             "workProductClass", // 产品类别
-            "workRepositoryList" // 库位列表
+            "workRepositoryList", // 库位列表
+            "getUserInfo"
         ]),
         delSupplier () { // 删除供应商
             let options = {
@@ -203,7 +223,6 @@ export default {
                     }
                 ]
             }
-            console.log(options)
             operateDelProvIder(options).then((res) => {
                 console.log(res)
                 if (res.data.state == 200) {
@@ -359,6 +378,8 @@ export default {
                 this. addProvIder()
             } else if (this.newPopupType == 2) {
                 this.repository()
+            } else if (this.newPopupType == 3){
+                this.addTemplat()
             }
         },
         addProvIder () { // 新增供应商
@@ -458,8 +479,10 @@ export default {
             this.addDialog = true
             if (type == 1) {
                 this.newPopupType = 1
-            } else {
+            } else if(type == 2){
                 this.newPopupType = 2
+            } else if(type == 3) {
+                this.newPopupType = 3
             }
         },
         showProviderList () {
@@ -514,6 +537,93 @@ export default {
                     break
             }
         },
+        openMenberPoint(index,type){
+            // this.$router.push({ path: '/work/memberSettingIndex', query: { templateId:1234 }})
+            this.$router.push({path:'/work/memberSettingIndex',query:{templateId:this.templateDataList[index].templateId,type:type}})
+        },
+        // 积分模板的添加
+        getTemplateList(){
+            getTemplateIntegralList({}).then(res => {
+                console.log('会员模板列表',res)
+                this.templateDataList = res.data.data.dataList
+            })
+        },
+        // 添加模板
+        addTemplat(){
+            let options = {
+                templateName: this.templateName
+            }
+            templateCreate(options).then(res => {
+                if(res.data.state == 200) {
+                    this.addDialog = false                    
+                    this.templateName = ''                    
+                    this.$message({
+                        type: 'success',
+                        message: '添加成功!'
+                    })
+                    this.getTemplateList()
+                } else {
+                    this.$message({
+                        type: 'warning',
+                        message: res.data.msg
+                    })
+                }
+            })
+        },
+        // 删除模板
+        delTemplat(index) {
+            // 删除模板提示
+            if(this.templateDataList[index].existence == 'Y') {
+                this.$confirm('该模板已应用店铺，是否确认删除模板?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(() => {
+                    let options = {
+                        templateId:this.templateDataList[index].templateId,
+                        operateType:'1'
+                    }
+                    templateIntegralUpdate(options).then(res => {
+                        if(res.data.state == 200){
+                            this.$message({
+                                type:'success',
+                                message:'删除成功'
+                            })
+                            this.getTemplateList()
+                        }
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            } else {
+                this.$confirm('是否确认删除该模板?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                }).then(() => {
+                    let options = {
+                        templateId:this.templateDataList[index].templateId,
+                        operateType:'1'
+                    }
+                    templateIntegralUpdate(options).then(res => {
+                        if(res.data.state == 200){
+                            this.$message({
+                                type:'success',
+                                message:'删除成功'
+                            })
+                            this.getTemplateList()
+                        }
+                    })
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+
+            }
+        }
     }
 }
 </script>
@@ -625,9 +735,10 @@ export default {
                 background:#fff;
                 border-radius: 10px;
             }
+
             .supplier-setting {
                 width: 300px;
-                height: 370px;
+                height: 230px;
                 margin-bottom: 20px;
                 box-shadow: 0px 0 15px #ddd;
                 .supplier-setting-title {
@@ -653,7 +764,7 @@ export default {
                     }
                 }
                 .supplier-list {
-                    height: 350px;
+                    height: 180px;
                     width: 100%;
                     ul {
                         width: 100%;
@@ -685,10 +796,12 @@ export default {
                     }
                 }
             }
+
             .storage-setting {
                 width: 300px;
-                height: 350px;
+                height: 230px;
                 box-shadow: 0px 0 15px #ddd;
+                margin-bottom: 20px;
                 .storage-setting-title {
                     height: 50px;
                     width: 100%;
@@ -712,7 +825,7 @@ export default {
                     }
                 }
                 .storage-list {
-                    height: 340px;
+                    height: 180px;
                     width: 100%;
                     ul {
                         width: 100%;
@@ -750,7 +863,93 @@ export default {
                     }
                 }
             }
+
+            .member-points{
+                width: 300px;
+                height: 238px;
+                box-shadow: 0px 0 15px #ddd;
+                .member-title{
+                    height: 50px;
+                    width: 100%;
+                    padding: 0 16px;
+                    h4 {
+                        float: left;
+                        font-weight: normal;
+                        line-height: 50px;
+                        height: 50px;
+                        .iconfont {
+                            margin-right: 13px;
+                            color: #2993f8;
+                        }
+                    }
+                    span {
+                        float: right;
+                        line-height: 50px;
+                        font-size: 14px;
+                        color:#2993f8;
+                        cursor: pointer;
+                    }
+                }
+                .member-list{
+                    height: 188px;
+                    width: 100%;
+                    overflow-y: scroll;
+                    ul {
+                        width: 100%;
+                        li {
+                            height: 42px;
+                            line-height: 42px;
+                            padding-left: 30px;
+                            color:#666;
+                            font-size: 14px;
+                            position: relative;
+                            cursor: pointer;
+                            i {
+                                font-style: normal;
+                                margin-right: 20px;
+                            }
+                            .default-flag {
+                                position: absolute;
+                                right: 16px;
+                                top: 0;
+                                color: #2993f8;
+                            }
+                            .iDel {
+                                float: right;
+                                line-height: 42px;
+                                color: #666;
+                                opacity: 0;
+                                &:hover {
+                                    color: #2993f8;
+                                }
+                            }
+                        }
+                        li:nth-child(1n+0) i{
+                            color:#f7b73b;
+                        }
+                        li:nth-child(2n+0) i{
+                            color:#ef8641;
+                        }
+                        li:nth-child(3n+0) i{
+                            color:#cd5867;
+                        }
+                        li:hover {
+                            background:#f1f2f3;
+                            .iDel {
+                                opacity: 1;
+                            }
+                        }
+                        
+                    }
+                }
+            }
         }
+    }
+}
+#iDel {
+    color: #666;
+    &:hover {
+        color: #2993f8;
     }
 }
 </style>

@@ -84,15 +84,12 @@ export default {
       //console.log(document.getElementById("file_input").value);
     },
     changeFileInput (ev) {
-      console.log(222222)
       let self = this
       let file = ev.target.files[0];
-      console.log(file)
       let fileData = new FormData(); // 创建表单数据对象(本地上传服务器文件对象)
       fileData.append("backupsFile", file); // 将文件对象append进去
       let extNameList = file.name.split('.');
       let extName = extNameList[extNameList.length - 1]
-      console.log(extName)
       let data = {
           "data": {
 
@@ -107,7 +104,6 @@ export default {
           }
       }
       fileData.append("data", JSON.stringify(data)); // 用户id
-      console.log(fileData)
       if (extName == 'sql') {
         // this.uploadHandler(file)
         // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:9097/yunzhubao-bat' : 'http://upload.yunzhubao.com:8082/yunzhubao-bat'
@@ -116,8 +112,6 @@ export default {
         // let url = "http://192.168.100.110:9097/yunzhubao-bat/b1/backupsUpload" // 'http://192.168.100.110:9097/yunzhubao-bat' || 'http://upload.yunzhubao.com:8082/yunzhubao-bat'
         this.$http.post(url, fileData).then((response) => {
             if (response.data.state === 200) {
-                console.log(response)
-                console.log(11111)
                 this.$alert('文件上传成功', '上传', {
                   confirmButtonText: '确定',
                   callback: action => {
@@ -196,7 +190,6 @@ export default {
     // 检查备份状态
     getBackupsStatus () {
       seekGetBackupsStatus().then((res) => {
-        console.log(res)
         if (res.data.data.backStatus == '1') {
           this.openSave = true
           this.switchTitle="关闭数据备份"
@@ -224,7 +217,6 @@ export default {
             backId: id
           }
           seekOperate(options).then((res) => {
-            console.log(res)
             self.listlog()
           }, (res) => {
             console.log(res)
@@ -238,18 +230,15 @@ export default {
     },
     // 备份操作
     operate (val) {
-      console.log(val)
       if (val == true) {
         this.operationType = '01'
       } else if (val == false) {
         this.operationType = '02'
       }
-      console.log(this.operationType)
       let options = {
         operationType: this.operationType
       }
       seekOperate(options).then((res) => {
-        console.log(res)
         this.getBackupsStatus()
       }, (res) => {
         console.log(res)
@@ -258,13 +247,9 @@ export default {
     // 备份数据列表
     listlog () {
       seekListlog().then((res) => {
-        console.log(res.data.data)
         this.dataList = res.data.data.dataList
-        console.log(this.dataList)
         for (let i = 0; i < this.dataList.length; i++) {
-            console.log(typeof this.dataList[i].recoverTime)
             if (typeof this.dataList[i].recoverTime == 'number') {
-              console.log(11111111)
               let year = this.dataList[i].recoverTime.toString().substring(0, 4)
               let month = this.dataList[i].recoverTime.toString().substring(4, 6)
               let data = this.dataList[i].recoverTime.toString().substring(6, 8)

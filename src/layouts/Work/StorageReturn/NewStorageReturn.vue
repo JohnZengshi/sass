@@ -630,7 +630,8 @@ export default {
                 wJewelryId: '1',
                 nColorId: '',
                 nGemId: '',
-                nJewelryId: '1'
+                nJewelryId: '1',
+                specialId: ''
             },
             dialogOptions: {
             conditionList: [
@@ -805,11 +806,18 @@ export default {
             this.receiptStatusList();
         },
         choseMenu (type) {
-          if (type == 1) {
-            this.positionSwitch = !this.positionSwitch
-          } else if (type == 2) {
-            this.tabSwitch = !this.tabSwitch
-          }
+            if(this.tabSwitch) {
+                this.dataGridOptions.specialId = ''
+            } else {
+                this.dataGridOptions.specialId = '1'
+            }
+            console.log(this.dataGridOptions)
+            
+            if (type == 1) {
+                this.positionSwitch = !this.positionSwitch
+            } else if (type == 2) {
+                this.tabSwitch = !this.tabSwitch
+            }
         },
         resetOption () {
             this.dataGridOptions.wColorId = ''
@@ -1111,7 +1119,7 @@ export default {
             var rowData = JSON.stringify(this.configData);
             var newRowData = JSON.parse(rowData);
             console.log(newRowData)
-            this.enterOrderNum
+//          this.enterOrderNum
             this.queryBarCode(this.enterOrderNum, 0, 1, el)
             this.getSeekSellReceiptsIntro(); // 单据简介
             this.send();
@@ -1523,7 +1531,7 @@ export default {
                         this.send();
                         this.receiptStatusList();
                         this.enterOrderNum = ''
-                        if (operate === "1") { // 新增
+                        if (operate == 1) { // 新增
                             // this.savaOperateSuccess(response.data.data, index);
                             this.$message({
                                 message: '添加成功',

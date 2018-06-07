@@ -224,7 +224,6 @@
     },
     mounted () {
       eventBus.$on('xcx-upload-data', (shopId) => {
-        console.log('抗--------------=========', shopId)
         this.getmallsClassification(shopId)
       })
     },
@@ -377,7 +376,7 @@
         //编辑的时候有，，从列表里跳转过去  stid
         let role = sessionStorage.getItem('miniprogramrole');
         if (role === '店长' || role === "店员") {
-          this.$router.push({ path: '/work/addminiprogram', query: { stid: "", spid: sessionStorage.getItem('miniprogram') } });
+          this.$router.push({ path: '/work/addminiprogram', query: { stid: "", spid: sessionStorage.getItem('shopId') } });
         } else {
           this.$message({ type: 'warning', message: '没有权限' });
           return;
@@ -421,8 +420,6 @@
         })
       },
       sortList(val) {
-        debugger
-        console.log('sortList-----------', val)
         //console.log(val);
         this.priceSortBy = val;
         if (this.shopId) {

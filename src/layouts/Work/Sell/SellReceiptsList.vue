@@ -60,7 +60,7 @@
 												<span v-else>
                                                     {{receiptsIntroList.sellManName}}
                                                 </span>
-												<div class="item-name" style="margin-left: 8px;">店员</div>
+												<div class="item-name" style="margin-left: 8px;">销售员</div>
 											</div>
 										</div>
 									</div>
@@ -202,7 +202,7 @@
 									<div class="tittle-left">商品</div>
 									<div class="tittle-right">
 										<span>详情说明</span>
-										<input v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
+										<input ref="detailInputWrap" v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
 										<span class="tooltip" v-if="isShowTooltip">输入/扫描条码号</span>
 
 									</div>
@@ -412,13 +412,16 @@
 									</ul>
 								</div>
 								<div class="footer">
-									<div class="footer-left" @click.stop="goNext" v-if="isSkip == false">
-										跳过
-									</div>
-									<div class="footer-right">
+									
+									<div class="footer-left">
 										<span @click.stop="goPro" v-if="entry.tep2List.isShowBtn">上一步</span>
 										<span @click.stop="goNext" v-if="entry.tep2List.isShowBtn1">下一步</span>
 									</div>
+
+									<div class="footer-right" @click.stop="goNext" v-if="isSkip == false">
+										跳过
+									</div>
+									
 								</div>
 							</div>
 							<!--  珠宝名称 -->
@@ -538,10 +541,10 @@
 			<remarkTit ref="remarkTitWrap" :boundingData="boundingData"></remarkTit>
 			
 			<!--打印模块-->
-<!-- 			<div style="display: none;"> -->
+			<div style="display: none;">
 				<sell-template title="销售" ref="sellTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></sell-template>
 				<warranty-template :template="warrantyTemplate.template" :dataList="warrantyTemplate.dataList"></warranty-template>
-<!-- 			</div> -->
+			</div>
 			
 		</div>
 	</transition>
@@ -1087,6 +1090,10 @@
 				eventBus.$on('update-data-sell-List', () => {
 					this.send()
 				})
+				if (this.$refs.detailInputWrap) {
+					this.$refs.detailInputWrap.focus()
+				}
+				
 			})
 		},
 		computed: {
@@ -1537,6 +1544,7 @@
 				}
 			},
 			operateCashierAct() { 
+				debugger
 				// 打单操作
 				if(this.isPrintOnly && this.templateId == '') {
 					this.$message({
@@ -1676,13 +1684,11 @@
 				});
 			},
 			print(){
-				debugger
 				this.cashierDialog = false
 				let selectedTemplate = find(this.qualityTemplateList, {
 					templateId: this.templateId
 				})
 				this.$emit('printOrder', this.orderNum, selectedTemplate && JSON.parse(selectedTemplate.content))
-				debugger
 				this.printOrder(this.$route.query.orderNumber, selectedTemplate && JSON.parse(selectedTemplate.content))
 			},
 			orderPay() { // 单据操作收银
@@ -2003,7 +2009,7 @@
 						}
 						this.templateData = json.data
 						this.isPreview = true
-						this.windowPrint1(template, json.data)
+						this.windowPrint(template, json.data)
 					}else {
 						this.$message({
 							message: json.msg,
@@ -2015,7 +2021,6 @@
 
 			//质保单打印
 			windowPrint1(templateList, data){
-				debugger
 				this.warrantyTemplate.template = templateList;
 				this.warrantyTemplate.dataList = data;
 			},
@@ -3401,7 +3406,7 @@
 				width: 1250px;
 				overflow: visible;
 				margin: 0;
-				background: #f5f8f7;
+				// background: #f5f8f7;
 				box-sizing: border-box;
 				margin-bottom: 30px;
 				.member-btn {

@@ -11,16 +11,16 @@
         </div>
         <div class="Rp_selected_container">
 
-          <DropDownMenu class="selected_dropdown" titleName="修改库位" dataType="库位" :propList="repositoryList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </DropDownMenu>
+          <HeaderDropDownMenu class="selected_dropdown" titleName="修改库位" dataType="库位" :propList="repositoryList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+          </HeaderDropDownMenu>
           <span class="spaceMark">|</span>
 
-          <DropDownMenu class="selected_dropdown" titleName="制单人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </DropDownMenu>
+          <HeaderDropDownMenu class="selected_dropdown" titleName="制单人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+          </HeaderDropDownMenu>
           <span class="spaceMark">|</span>
 
-          <DropDownMenu class="selected_dropdown" titleName="审核人" dataType="审核人" :propList="auditorUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </DropDownMenu>
+          <HeaderDropDownMenu class="selected_dropdown" titleName="审核人" dataType="审核人" :propList="auditorUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+          </HeaderDropDownMenu>
           <div class="report-data">
             <div class="block until" data-txt="至">
               <el-date-picker size="mini" v-model="beginTime" @change="getTimeData" type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
@@ -39,7 +39,7 @@
           <!--<el-switch v-model="tabSwitch" :width="30" :title="tabSwitch ? '关闭成本核算':'开启成本核算'"></el-switch>-->
           <div class="sort-wrap">
             <label>排序:</label>
-            <div v-for="(item, index) in sortList">
+            <div v-for="(item, index) in sortList" :key="index">
               {{item.name}}
               <img v-if="item.value == '2'" src="./../../../../../static/img/sort/down1.png">
               <img v-if="item.value == '1'" src="./../../../../../static/img/sort/up1.png">
@@ -62,7 +62,7 @@
             <span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(3, 4)" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义
                     <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
                     <div class="customDia" ref="customDia">
-                    <div class="body" v-if="openReset">
+                    <div class="body">
                         <div class="list-wrap">
                         <ul>
                             <li></li>
@@ -221,7 +221,8 @@
     seekSettingUserRole
   } from 'Api/commonality/seek'
   import Cascade from './../../../../components/template/Cascade'
-  import DropDownMenu from './../../../../components/template/DropDownMenu'
+  import DropDownMenu from './../../../../components/template/DropDownMenu1'
+  import HeaderDropDownMenu from './../../../../components/template/DropDownMenu'
   import ReportDetail from './newDataGrid/reportDetailTab'
   //打印模块
   import TablePrint from './newPrint/reportDetailTab'
@@ -249,6 +250,7 @@
 			intelligenceTypeTemplate,
       customTemplate,
       ReportLoad,
+      HeaderDropDownMenu
     },
     data() {
       return {
@@ -401,7 +403,8 @@
           wJewelryId: '1',
           nColorId: '',
           nGemId: '',
-          nJewelryId: '1'
+          nJewelryId: '1',
+          specialId:''
         },
         dialogOptions: {
           conditionList: [
@@ -478,6 +481,11 @@
     },
     methods: {
       choseMenu(type) {
+        if(this.tabSwitch) {
+              this.dataGridOptions.specialId = ''
+          } else {
+              this.dataGridOptions.specialId = '1'
+        }
         if(type == 1) {
           this.positionSwitch = !this.positionSwitch
         } else if(type == 2) {
@@ -485,10 +493,10 @@
         }
       },
       resetOption() {
-        this.openReset = false
-        setTimeout(() => {
-           this.openReset = true 
-        }, 100)
+        // this.openReset = false
+        // setTimeout(() => {
+        //    this.openReset = true 
+        // }, 100)
         this.dataGridOptions.wColorId = ''
         this.dataGridOptions.wGemId = ''
         this.dataGridOptions.wJewelryId = '1'
@@ -496,12 +504,12 @@
         this.dataGridOptions.nGemId = ''
         this.dataGridOptions.nJewelryId = '1'
         this.resetFlag = true
-        this.send()
+        // this.send()
       },
       compOption() {
         if(this.dataGridOptions.type != 4) {
           this.dataGridOptions.type == 4
-          this.setReportType(type)
+          this.setReportType(this.dataGridOptions.type)
         } else {
           this.send()
         }

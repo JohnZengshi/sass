@@ -57,7 +57,7 @@
                     >
                     </DropDownMenu>
                 </li>
-                <li>
+<!--                 <li>
                     <div class="batch-time-wrap">
                         <div class="date-w81">
                             <el-date-picker
@@ -80,7 +80,7 @@
                             </el-date-picker>
                         </div>
                     </div>
-                </li>
+                </li> -->
                 <!-- <div class="goBack" @click="goBackAct()">返回上一级</div> -->
             </ul>
         </div>
@@ -148,8 +148,7 @@
             <!-- v-on:memberAllList="memberAllList" -->
             </addLeaguerDia>
             <!-- 编辑弹窗 -->
-           <!--       -->
-            <editLeaguerDia
+            <!-- <editLeaguerDia
                 v-if="editLeaguer"
                 :editLeaguer="editLeaguer"
                 :shopId="shopId"
@@ -157,7 +156,17 @@
                 :memberId="memberId"
                 @closeReturn="closeEditReturn"
                 @seekHistoryList="seekHistoryList"
-            ></editLeaguerDia>
+            ></editLeaguerDia> -->
+
+            <!-- 会员信息 begin -->
+            <member-info
+                @closeReturn="closeEditReturn" 
+                :memberId="memberId"
+                :shopId="shopId"
+                :memberInfoFlag="editLeaguer">
+            </member-info>
+            <!-- 会员信息 end -->
+
             <!-- 跟进记录 -->
             <el-dialog :visible.sync="isShowFllow" top="7%" customClass="followReDig">
                 <followRecord
@@ -223,6 +232,12 @@ import ChoseLeader from './components/choseLeader'
 import FormatImg from 'components/template/DefaultHeadFormat.vue'
 /* --外链-- */
 import ClientDetail from './ClientTemplate/ClientDetail.vue'
+// 会员信息
+import memberInfo from  './components/memberInfo'
+
+// 获取会员信息
+import { getMemberInfoById } from '../../Api/member'
+
 export default {
     components: {
         DropDownMenu,
@@ -233,7 +248,8 @@ export default {
         ChoseMember,
         ChoseLeader,
         FormatImg,
-        ClientDetail
+        ClientDetail,
+        memberInfo
     },
     data () {
         return {
@@ -590,8 +606,8 @@ export default {
             let options = {
                 shopId: this.shopId,
                 keyWord: this.keyWord,
-                startTime: this.adminStartTime,
-                endTime: this.adminEndTime,
+                // startTime: this.adminStartTime,
+                // endTime: this.adminEndTime,
                 memberType: this.memberType,
                 memberGrade: this.memberGrade,
                 followStatus: this.followStatus,

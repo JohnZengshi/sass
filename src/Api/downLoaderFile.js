@@ -88,6 +88,8 @@ export const downLoaderFile = (url,data) => {
 //     // let serverHost = 'http://www.jzmsoft.com'
 //     // 正式
 //     // let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
+		var newStr = JSON.stringify(dataStr)
+		console.log(newStr)
     let hrefurl = serverHost + url + '?' + dataStr
     
     let strurl = encodeURI(hrefurl)
@@ -96,5 +98,13 @@ export const downLoaderFile = (url,data) => {
     var a = document.createElement('a');
     a.href = encodeURI(hrefurl);
     a.download = "filename.xlsx";
-    a.click();                    
+    // $('a').click();
+    // a.click();      
+    invokeClick(a)              
+}
+// 兼容火狐
+function invokeClick(element) {
+    var evt = document.createEvent("MouseEvents");
+    evt.initEvent("click", true, true);
+    element.dispatchEvent(evt);
 }

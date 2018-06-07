@@ -143,6 +143,7 @@
 				}
 			},
 			auditReceiptsState(parm) { // 审核回调
+				console.log(parm)
 				this.deleteReceipts = parm.name;
 				this.auditPopup = parm.name;
 				if(parm.type === "2") { // 成功

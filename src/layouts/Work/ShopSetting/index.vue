@@ -36,14 +36,17 @@
         </div>
         <!--右侧柜组设-->
         <tpl-slider :shopId="shopDefaultData.shopId" :storePrivilege="storePrivilege"></tpl-slider>
-        
+        <!-- 右侧会员模板设置 -->
+        <member-points :shopId="shopDefaultData.shopId" :storePrivilege="storePrivilege"></member-points>
     </div>
 </div>
 </template>
 <script>
 import menuTab from './shop/tab'
 import tplSlider from './shop/tplSlider'
+import memberPoints from './memberPoints/memberPoints'
 import { seekGetShopListByCo,seekGetUserInfo } from 'Api/commonality/seek'
+
 export default{
     data(){
        return{
@@ -60,7 +63,8 @@ export default{
     },
     components : {
       menuTab,
-      tplSlider
+      tplSlider,
+      memberPoints
     },
     created(){
         //this.$store.state.shopSetting
@@ -81,14 +85,11 @@ export default{
               page : '1',
               pageSize : '10'
           }).then((res)=>{
-            debugger
             if (res.data.state == 200) {
               // console.log(res.body.data.shopList)
               this.shopLister = res.data.data.shopList
               this.shopDefaultData = this.shopLister[0]
               this.fatchUserPermission()
-              console.log(123123123)
-              console.log(this.shopLister)
               if(this.shopLister.length == 1){
                  this.iconShow = false
                  this.meauShow = false 

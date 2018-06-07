@@ -27,7 +27,7 @@
                 </div>
               </el-dropdown-menu>
             </el-dropdown> -->
-             <DropDownMenu
+             <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="店铺"
                 dataType="店铺"
@@ -35,7 +35,7 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
             <span class="spaceMark">|</span>
             
             <!-- <el-dropdown v-if="!takeUserDisabled" class="selected_dropdown" :class="printSelectDate.preparedBy =='' ? 'placeholder' : ''">
@@ -56,7 +56,7 @@
                 </div>
               </el-dropdown-menu>
             </el-dropdown> -->
-            <DropDownMenu
+            <HeaderDropDownMenu
                 v-if="!takeUserDisabled"
                 class="selected_dropdown"
                 titleName="制单人"
@@ -65,7 +65,7 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
             <div v-else class="selected_dropdown el-dropdown placeholder disabled">
                <span class="el-dropdown-link">制单人</span>
                <i class="iconfont icon-arrow-down"></i>
@@ -89,7 +89,7 @@
 			<!--<el-switch v-model="tabSwitch" :width="30" :title="tabSwitch ? '关闭成本核算':'开启成本核算'"></el-switch>-->
             <div class="sort-wrap">
                 <label>排序:</label>
-                <div v-for="(item, index) in sortList">
+                <div v-for="(item, index) in sortList" :key="index">
                 {{item.name}}
                 <img v-if="item.value == '2'" src="./../../../../../static/img/sort/down1.png">
                 <img v-if="item.value == '1'" src="./../../../../../static/img/sort/up1.png">
@@ -140,7 +140,7 @@
                 >自定义
                     <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
                     <div class="customDia" ref="customDia">
-                    <div class="body" v-if="openReset">
+                    <div class="body">
                         <div class="list-wrap">
                         <ul>
                             <li></li>
@@ -301,7 +301,8 @@ import Vue from 'vue'
      seekMemberList,
      seekSettingUserRole
  } from './../../../../Api/commonality/seek.js'
- import DropDownMenu from './../../../../components/template/DropDownMenu'
+ import DropDownMenu from './../../../../components/template/DropDownMenu1'
+ import HeaderDropDownMenu from './../../../../components/template/DropDownMenu'
 
 import ReportDetail from './newDataGrid/reportDetailTab'
 //打印模块
@@ -330,6 +331,7 @@ export default {
 			intelligenceTypeTemplate,
             customTemplate,
             ReportLoad,
+            HeaderDropDownMenu
     	},
      	data() {
       return {
@@ -439,7 +441,8 @@ export default {
             wJewelryId: '1',
             nColorId: '',
             nGemId: '',
-            nJewelryId: '1'
+            nJewelryId: '1',
+            specialId: ''
         },
         dialogOptions: {
           conditionList: [
@@ -499,17 +502,18 @@ export default {
     },
     methods: {
         choseMenu (type) {
-          if (type == 1) {
-            this.positionSwitch = !this.positionSwitch
-          } else if (type == 2) {
-            this.tabSwitch = !this.tabSwitch
-          }
+            if(this.tabSwitch) {
+                this.dataGridOptions.specialId = ''
+            } else {
+                this.dataGridOptions.specialId = '1'
+            }
+            if (type == 1) {
+                this.positionSwitch = !this.positionSwitch
+            } else if (type == 2) {
+                this.tabSwitch = !this.tabSwitch
+            }
         },
         resetOption () {
-            this.openReset = false
-            setTimeout(() => {
-               this.openReset = true 
-            }, 100)
             this.dataGridOptions.wColorId = ''
             this.dataGridOptions.wGemId = ''
             this.dataGridOptions.wJewelryId = '1'
@@ -517,13 +521,12 @@ export default {
             this.dataGridOptions.nGemId = ''
             this.dataGridOptions.nJewelryId = '1'
             this.resetFlag = true
-            this.send()
         },
         compOption () {
             // console.log(this.dataGridOptions.type)
             if (this.dataGridOptions.type != 4) {
                 this.dataGridOptions.type == 4
-                this.setReportType(4)
+                this.setReportType(this.dataGridOptions.type)
             } else {
                 this.send()
             }
@@ -843,11 +846,12 @@ export default {
         //店铺
         getShopListByCo(){
         	let options = {
-                page: "",
+                page: '1',
                 pageSize: '10'
             }
             seekGetShopListByCo(options).then((res) => {
                 this.distributorList = res.body.data.shopList
+                console.log('店铺列表',res.body.data.shopList)
             }, (res) => {
                 console.log(res);
             })

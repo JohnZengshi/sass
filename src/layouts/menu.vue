@@ -17,7 +17,7 @@
               class="root" 
               :class="systemItemClass.rootIndex == i ? 
               (menu.path.length > 0 ? 'active path-href' : 'active') : (menu.path.length > 0 ? 'path-href' : '')" 
-              @click.native="systemTab(i,menu.path.length > 0)">
+              @click.native="systemTab(i,menu.path.length > 0,menu)">
               <i class="iconfont" :class="'icon-'+menu.icon"></i>
               <!--<i v-if="menu.children.length > 0 " class="el-icon el-icon-arrow-down"></i>-->
             </router-link>
@@ -33,7 +33,7 @@
                         :to="menu.path" 
                         class="path-target"
                         @click.native="systemItem(i,-1, menu)">{{menu.text}}
-                            </router-link>
+                    </router-link>
                 </template>
                 
               <template v-for="(item,b) in menu.children" >
@@ -57,7 +57,7 @@
               :class="systemItemClass.rootIndex == i ? 
               (menu.path.length > 0 ? 'active path-href' : 'active') : (menu.path.length > 0 ? 'path-href' : '')" 
               :data-text="menu.text"
-              @click.native="systemTab(i,menu.path.length > 0)">
+              @click.native="systemTab(i,menu.path.length > 0,menu)">
               <i class="iconfont" :class="'icon-'+menu.icon"></i>
             </router-link>
             <ul class="item menu-item">
@@ -96,6 +96,7 @@
 </template>
 
 <script>
+import bus from '../vuex/event' //引入一个中央事件总线
 const systemMenu = require('../config/systemMenu')
 import {mapGetters} from 'vuex'
 import { seekMySelfWorkApplyList, seekGetFaceByShop, seekSmallProgramShopList} from 'Api/commonality/seek'
@@ -113,7 +114,8 @@ export default{
         systemMenu : systemMenu,
         faceByShop: [], // 有人脸识别的店铺
         smallProgram: [], // 有小程序的店铺
-        applyLists : []
+        applyLists : [],
+        myMenuTab:[]  //头部目录tab
     }
   },
   
@@ -177,8 +179,7 @@ export default{
     },
     
     //菜单切换
-    systemTab ( loop ,type ){
-    console.log(loop,type);
+    systemTab ( loop ,type ,menu){
       if( type ){
         this.systemItemClass.rootIndex = loop
         this.systemItemClass.childIndex = -1
@@ -186,6 +187,32 @@ export default{
         sessionStorage.setItem('childIndex', -1)
       }
       this.sysShow = loop
+      
+      //去掉定义数组的undefined
+      if (typeof(this.myMenuTab[0]) === "undefined" ){
+      	this.myMenuTab = []
+      }
+      let pushStatus = true
+      //如果没打开任何页签就把当前页签数据加入数组
+      if(this.myMenuTab.length == 0){
+      	this.myMenuTab.push(menu)
+      }else{
+      	for(let i=0;i<this.myMenuTab.length;i++){
+	      	if(this.myMenuTab[i].path == menu.path || menu.path==''){
+	      		pushStatus = false
+	      	}
+	      }
+      	if(pushStatus){
+      		this.myMenuTab.push(menu)
+      	}
+      }
+      
+      console.log(this.myMenuTab)
+      console.log(menu.path)
+      //将已经打开的页签数据绑定到Vue实例
+//    Object.assign( Vue.prototype, { menuTabData : this.myMenuTab})
+			bus.$emit('menuTabDataChange',this.myMenuTab)  //发送事件
+			bus.$emit('menuTabPath',menu.path)
     },
         
         //菜单显示
@@ -252,7 +279,13 @@ export default{
         
         //子菜单点击事件
         systemItem (rootIndex, childIndex, menu ){
-          if (menu) {
+        	console.log(rootIndex)
+        	console.log(childIndex)
+        	console.log(menu)
+        	/*
+        	 * 这里要判断menu.children是否有数据，如无数据会报错导致只有一项子项的菜单获取不了焦点
+        	 */
+          if (menu && menu.children.length > 0) {
             if (!this.isFaceRecognition) {
               if (menu.text == '人脸' || menu.children[childIndex].text == '意向顾客') {
                 eventBus.$emit('open-face-popup', '人脸识别')
@@ -279,6 +312,32 @@ export default{
           this.systemItemClass.childIndex = childIndex
           sessionStorage.setItem('rootIndex', rootIndex)
           sessionStorage.setItem('childIndex', childIndex)
+          
+          //去掉定义数组的undefined
+		      if (typeof(this.myMenuTab[0]) === "undefined" ){
+		      	this.myMenuTab = []
+		      }
+		      let pushStatus = true
+		      //如果没打开任何页签就把当前页签数据加入数组
+		      if(this.myMenuTab.length == 0){
+		      	this.myMenuTab.push(menu.children[childIndex])
+		      }else{
+		      	for(let i=0;i<this.myMenuTab.length;i++){
+			      	if(this.myMenuTab[i].path == menu.children[childIndex].path || menu.children[childIndex].path == ''){
+			      		pushStatus = false
+			      	}
+			      }
+		      	if(pushStatus){
+		      		this.myMenuTab.push(menu.children[childIndex])
+		      	}
+		      }
+		      
+		      console.log(this.myMenuTab)
+		      console.log(menu.path)
+		      //将已经打开的页签数据绑定到Vue实例
+//		      Object.assign( Vue.prototype, { menuTabData : this.myMenuTab})
+					bus.$emit('menuTabDataChange',this.myMenuTab)	//发送事件
+					bus.$emit('menuTabPath',menu.path)
         },
 
         _seekGetFaceByShop () {

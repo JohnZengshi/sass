@@ -28,7 +28,7 @@
                 </div>
               </el-dropdown-menu>
             </el-dropdown> -->
-            <DropDownMenu
+            <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="退库库位"
                 dataType="库位"
@@ -36,7 +36,7 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
             <span class="spaceMark">|</span>
   			<!-- <el-cascader 
   				:options="productCategory" 
@@ -75,7 +75,7 @@
                 </div>
               </el-dropdown-menu>
             </el-dropdown> -->
-            <DropDownMenu
+            <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="供应商"
                 dataType="供应商"
@@ -83,7 +83,7 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
             <span class="spaceMark">|</span>
             <!-- <el-dropdown class="selected_dropdown" :class="printSelectDate.preparedBy =='' ? 'placeholder' : ''">
               <span class="el-dropdown-link">
@@ -102,7 +102,7 @@
                 </div>
               </el-dropdown-menu>
             </el-dropdown> -->
-            <DropDownMenu
+            <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="制单人"
                 dataType="制单人"
@@ -110,7 +110,7 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
             <span class="spaceMark">|</span>
   			<!-- <el-dropdown class="selected_dropdown" :class="printSelectDate.auditor =='' ? 'placeholder' : ''">
               <span class="el-dropdown-link" >
@@ -129,7 +129,7 @@
                 </div>
               </el-dropdown-menu>
             </el-dropdown> -->
-  			<DropDownMenu
+  			<HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="审核人"
                 dataType="审核人"
@@ -137,7 +137,7 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
   			<div class="report-data">
                 <div class="block until" data-txt="至">
                     <el-date-picker size="mini" v-model="beginTime" @change="getTimeData"  type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
@@ -156,7 +156,7 @@
 			<!--<el-switch v-model="tabSwitch" :width="30" :title="tabSwitch ? '关闭成本核算':'开启成本核算'"></el-switch>-->
             <div class="sort-wrap">
                 <label>排序:</label>
-                <div v-for="(item, index) in sortList">
+                <div v-for="(item, index) in sortList" :key="index">
                 {{item.name}}
                 <img v-if="item.value == '2'" src="./../../../../../static/img/sort/down1.png">
                 <img v-if="item.value == '1'" src="./../../../../../static/img/sort/up1.png">
@@ -207,7 +207,7 @@
                 >自定义
                     <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
                     <div class="customDia" ref="customDia">
-                    <div class="body" v-if="openReset">
+                    <div class="body">
                         <div class="list-wrap">
                         <ul>
                             <li></li>
@@ -370,7 +370,8 @@ import find from 'lodash/find'
     seekSettingUserRole
  } from './../../../../Api/commonality/seek.js'
 import Cascade from './../../../../components/template/Cascade'
-import DropDownMenu from './../../../../components/template/DropDownMenu'
+import DropDownMenu from './../../../../components/template/DropDownMenu1'
+import HeaderDropDownMenu from './../../../../components/template/DropDownMenu'
 // import ReportDetail from './dataGrid/reportDetailTab'
 import ReportDetail from './newDataGrid/reportDetailTab'
 //打印模块
@@ -400,6 +401,7 @@ export default {
 		intelligenceTypeTemplate,
         customTemplate,
         ReportLoad,
+        HeaderDropDownMenu
     },
      data() {
       return {
@@ -547,7 +549,8 @@ export default {
             wJewelryId: '1',
             nColorId: '',
             nGemId: '',
-            nJewelryId: '1'
+            nJewelryId: '1',
+            specialId: ''
         },
         dialogOptions: {
           conditionList: [
@@ -621,17 +624,22 @@ export default {
     },
     methods: {
         choseMenu (type) {
-          if (type == 1) {
-            this.positionSwitch = !this.positionSwitch
-          } else if (type == 2) {
-            this.tabSwitch = !this.tabSwitch
-          }
+            if(this.tabSwitch) {
+              this.dataGridOptions.specialId = ''
+            } else {
+              this.dataGridOptions.specialId = '1'
+            }
+            if (type == 1) {
+                this.positionSwitch = !this.positionSwitch
+            } else if (type == 2) {
+                this.tabSwitch = !this.tabSwitch
+            }
         },
         resetOption () {
-            this.openReset = false
-            setTimeout(() => {
-               this.openReset = true 
-            }, 100)
+            // this.openReset = false
+            // setTimeout(() => {
+            //    this.openReset = true 
+            // }, 100)
             this.dataGridOptions.wColorId = ''
             this.dataGridOptions.wGemId = ''
             this.dataGridOptions.wJewelryId = '1'
@@ -639,12 +647,12 @@ export default {
             this.dataGridOptions.nGemId = ''
             this.dataGridOptions.nJewelryId = '1'
             this.resetFlag = true
-            this.send()
+            // this.send()
         },
         compOption () {
             if (this.dataGridOptions.type != 4) {
                 this.dataGridOptions.type == 4
-                this.setReportType(type)
+                this.setReportType(this.dataGridOptions.type)
             } else {
                 this.send()
             }

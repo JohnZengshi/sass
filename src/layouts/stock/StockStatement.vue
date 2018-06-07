@@ -1,5 +1,6 @@
 <template>
 <transition name="tp-ani">
+<!--   <printChange></printChange> -->
   <div class="stock-statement-main">
     <div class="stock-header-wrap">
       <div class="headervisi"></div>
@@ -99,6 +100,7 @@
   import Charts from './Charts'
   import StatisticsNumber from './StatisticsNumber'
   import {GetDateStr, GetMonth} from 'assets/js/getTime'
+    import printChange from "./base/printChange";
   import {seekRepositoryList, seekGetShopListByCo, seekShowCounterList, seekStatisticalIndex} from 'Api/commonality/seek'
   import DropDownMenu from 'components/template/DropDownMenu'
   export default {
@@ -108,7 +110,8 @@
       Charts,
       StatisticsNumber,
       StockTable,
-      DropDownMenu
+      DropDownMenu,
+      printChange
     },
     data () {
       return {
@@ -284,19 +287,26 @@
         seekRepositoryList()
           .then(res => {
             if (res.data.state === 200) {
-              this.repositoryList = res.data.data.repositoryList
+              this.repositoryList = [...res.data.data.repositoryList, {
+                isDefault: "Y",
+                repositoryId: "",
+                repositoryName: "全部仓库"
+              }]
             }
           })
       },
       _seekGetShopListByCo () {
         let options = {
           page: 1,
-          pageSize: 99
+          pageSize: 9999
         }
         seekGetShopListByCo(options)
           .then(res => {
             if (res.data.state === 200) {
-              this.shopList = res.data.data.shopList
+              this.shopList = [...res.data.data.shopList, {
+                shopId: '',
+                shopName: '全部店铺'
+              }]
             }
           })
       },
@@ -387,7 +397,7 @@
 .stock-statement-main{
   font-size: 0;
   width: 1250px;
-  margin: 30px auto;
+  margin: 30px auto 0;
   .stock-header-wrap{
     // height: 410px;
     height: 30px;
@@ -402,7 +412,7 @@
       z-index:999;
     }
     .header-select{
-      position: fixed;
+      position: absolute;
       z-index: 999;
       height: 40px;
       width: 1270px;
@@ -469,7 +479,7 @@
     }
   }
   .stock-table-wrap{
-    height: 800px;
+    /*height: 800px;*/
     width: 100%;
   }
 }

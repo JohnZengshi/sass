@@ -11,7 +11,7 @@
 		</div>
 		<div class="Rp_selected_container">
 		    
-            <DropDownMenu
+            <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="退货库位"
                 dataType="库位"
@@ -19,7 +19,7 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
             <span class="spaceMark">|</span>
   			<Cascade
                 :propList="productCategory"
@@ -29,7 +29,7 @@
             >
             </Cascade>
             <span class="spaceMark">|</span>
-            <DropDownMenu
+            <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="退货店铺"
                 dataType="店铺"
@@ -37,9 +37,9 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
             <span class="spaceMark">|</span>
-            <DropDownMenu
+            <HeaderDropDownMenu
                 v-if="!takeUserDisabled"
                 class="selected_dropdown"
                 titleName="制单人"
@@ -48,13 +48,13 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
             <div class="selected_dropdown disabled el-dropdown" :class="printSelectDate.preparedBy =='' ? 'placeholder' : ''" v-else>
                 <span class="el-dropdown-link">{{printSelectDate.preparedBy ==''? '制单人' : printSelectDate.preparedBy}}</span>
                 <i class="iconfont icon-arrow-down"></i>
             </div>
             <span class="spaceMark">|</span>
-            <DropDownMenu
+            <HeaderDropDownMenu
                 v-if="!takeUserDisabled"
                 class="selected_dropdown"
                 titleName="审核人"
@@ -63,13 +63,13 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
             <div class="selected_dropdown disabled el-dropdown" :class="printSelectDate.preparedBy =='' ? 'placeholder' : ''" v-else>
                 <span class="el-dropdown-link">{{printSelectDate.auditor ==''? '审核人' : printSelectDate.auditor}}</span>
                 <i class="iconfont icon-arrow-down"></i>
             </div>
             <span class="spaceMark">|</span>
-            <DropDownMenu
+            <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="收货人"
                 dataType="收货人"
@@ -77,7 +77,7 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
   			<div class="report-data">
                 <div class="block until" data-txt="至">
                     <el-date-picker size="mini" v-model="beginTime" @change="getTimeData"  type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
@@ -95,7 +95,7 @@
 			<p class="side-nav"><i class="iconfont icon-liebiao"></i>退货报表</p>
             <div class="sort-wrap">
                 <label>排序:</label>
-                <div v-for="(item, index) in sortList">
+                <div v-for="(item, index) in sortList" :key="index">
                 {{item.name}}
                 <img v-if="item.value == '2'" src="./../../../../../static/img/sort/down1.png">
                 <img v-if="item.value == '1'" src="./../../../../../static/img/sort/up1.png">
@@ -130,7 +130,7 @@
                 >自定义
                     <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
                     <div class="customDia" ref="customDia">
-                    <div class="body" v-if="openReset">
+                    <div class="body">
                         <div class="list-wrap">
                         <ul>
                             <li></li>
@@ -290,7 +290,8 @@ import {
     seekSettingUserRole
 } from './../../../../Api/commonality/seek.js'
 import Cascade from './../../../../components/template/Cascade'
-import DropDownMenu from './../../../../components/template/DropDownMenu'
+import DropDownMenu from './../../../../components/template/DropDownMenu1'
+import HeaderDropDownMenu from './../../../../components/template/DropDownMenu'
 // import ReportDetail from './dataGrid/reportDetailTab'
 import ReportDetail from './newDataGrid/reportDetailTab'
 //打印模块
@@ -319,6 +320,7 @@ export default {
 		intelligenceTypeTemplate,
         customTemplate,
         ReportLoad,
+        HeaderDropDownMenu
     },
      data() {
       return {
@@ -481,7 +483,8 @@ export default {
             wJewelryId: '1',
             nColorId: '',
             nGemId: '',
-            nJewelryId: '1'
+            nJewelryId: '1',
+            specialId: ''
         },
         dialogOptions: {
           conditionList: [
@@ -558,17 +561,18 @@ export default {
     },
     methods: {
         choseMenu (type) {
-          if (type == 1) {
-            this.positionSwitch = !this.positionSwitch
-          } else if (type == 2) {
-            this.tabSwitch = !this.tabSwitch
-          }
+            if(this.tabSwitch) {
+                this.dataGridOptions.specialId = ''
+            } else {
+                this.dataGridOptions.specialId = '1'
+            }
+            if (type == 1) {
+                this.positionSwitch = !this.positionSwitch
+            } else if (type == 2) {
+                this.tabSwitch = !this.tabSwitch
+            }
         },
         resetOption () {
-            this.openReset = false
-            setTimeout(() => {
-               this.openReset = true 
-            }, 100)
             this.dataGridOptions.wColorId = ''
             this.dataGridOptions.wGemId = ''
             this.dataGridOptions.wJewelryId = '1'
@@ -576,12 +580,11 @@ export default {
             this.dataGridOptions.nGemId = ''
             this.dataGridOptions.nJewelryId = '1'
             this.resetFlag = true
-            this.send()
         },
         compOption () {
             if (this.dataGridOptions.type != 4) {
                 this.dataGridOptions.type == 4
-                this.setReportType(type)
+                this.setReportType(this.dataGridOptions.type)
             } else {
                 this.send()
             }
@@ -974,7 +977,7 @@ export default {
         //退货店铺
         getShopListByCo(){
         	let options = {
-                page: "",
+                page: "1",
                 pageSize: '10'
             }
             seekGetShopListByCo(options).then((res) => {

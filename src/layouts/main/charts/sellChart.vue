@@ -1,13 +1,13 @@
 <template>
-<transition name="tp-ani">
-<div class="rp_chart_item">
-	<storage-chart :chartData="chartData"  :chartloading="chart_configData.loading" :chartSize="chartSize"></storage-chart>
-	<div class="rp_chart_title">
-		<span class="txt">本月销售统计</span>
-		<span v-if="isShow" class="swtich" @click="proTypeSwitch" :title="chart_configData.title">{{chart_configData.text}}<i class="iconfont icon-qiehuan"></i></span>
-	</div>
-</div>
-</transition>
+	<transition name="tp-ani">
+		<div class="rp_chart_item">
+			<storage-chart :chartData="chartData"  :chartloading="chart_configData.loading" :chartSize="chartSize"></storage-chart>
+			<div class="rp_chart_title">
+				<span class="txt">本月销售统计</span>
+				<span v-if="isShow" class="swtich" @click="proTypeSwitch" :title="chart_configData.title">{{chart_configData.text}}<i class="iconfont icon-qiehuan"></i></span>
+			</div>
+		</div>
+	</transition>
 </template>
 
 <script>

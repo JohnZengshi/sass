@@ -39,6 +39,7 @@ export default{
   
   methods: {
     sureSubmit () {
+    	let that = this
       this.$emit('submit', this.textareaData)
       // if (this.textareaData.length < 1) {
       //   this.$message({

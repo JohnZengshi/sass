@@ -18,15 +18,10 @@ function apiCall (param, URL) {
     };
     // 内网
     let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8083/yunzhubao' : ''
-    // 测试
-    // let serverHost = process.env.NODE_ENV === 'development' ? 'http://www.yunzhubao.com:9001' : ''
-    //let serverHost = process.env.NODE_ENV === 'development' ? 'https://program.yunzhubao.com/yunzhubao/' : ''
     // uat
-   // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8099' : ''
-    // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8088' : ''
+    // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8099' : ''
     // 正式
     // let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
-    // let serverHost = 'http://www.jzmsoft.com'
     let IT_URL = serverHost + URL;
     let foo = function* (up_data) {
         yield Vue.http.post(IT_URL, up_data)
@@ -34,12 +29,12 @@ function apiCall (param, URL) {
     
     let resourcePromise = foo(data).next().value
     // 中间件
-    resourcePromise.then( res =>{
-      // 截获登录超时
-      if(res.data.state == 100 ){
-        Vue.prototype.loginPopup.show()
-      }
-    })
+    // resourcePromise.then( res =>{
+    //   // 截获登录超时
+    //   if(res.data.state == 100 ){
+    //     Vue.prototype.loginPopup.show()
+    //   }
+    // })
     
     return resourcePromise
 }

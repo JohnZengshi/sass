@@ -11,7 +11,6 @@
     <com-menu :rootList="rootList" @setScopeSize="setScopeSize"></com-menu>
     
     <div class="app-main" @click="wholdClick" @scroll="scrollFun($event)">
-        
         <router-view></router-view>
 
         <div class="index-img" v-if="isImg">
@@ -146,9 +145,11 @@ import {
     createCompany,
     seekGetAddress,
     seekUserRoleList,
-    seekFaceUserImageList
-} from '../../src/Api/commonality/seek'
-import {operateSwitchCompany, operateUpdateUser, operateUpdateFaceUserImage} from '../../src/Api/commonality/operate'
+    seekFaceUserImageList,
+    downloadTable,
+    seekGetShopListByCo
+} from 'Api/commonality/seek'
+import {operateSwitchCompany, operateUpdateUser, operateUpdateFaceUserImage, operateLogout} from 'Api/commonality/operate'
 
 import ComponentHeader from './header'
 import ComMenu from './menu'
@@ -221,7 +222,9 @@ export default {
             isImg: false,
             createType: null, // 创建公司类型 1 第一次  2 非第一次
             isAllowCreate: true,
-            pcaValue: ''
+            pcaValue: '',
+            filterFaceShopList: [], // 当前过滤人脸的店铺列表
+            currentFaceShop: '' // 当前要过滤的店铺
         }
     },
     computed: {
@@ -258,13 +261,20 @@ export default {
         this.getShopListByCo()
         this._seekFaceUserImageList()
     },
+    beforeDestroy () {
+        // this.closeWebSocket()
+        this.closeCreatedWebSocket()
+    },
     mounted () {
-        this.routerActive()
+        // this.routerActive()
         eventBus.$on('cut-web-socket', (parm) => {
-            this.closeWebSocket()
-            this.establishWebSocket(parm)
+            this.currentFaceShop = parm
+            console.log('收到的店铺id', parm)
+            // this.closeWebSocket()
+            // this.establishWebSocket(parm)
         });
         this.$nextTick(() => {
+            this._seekGetShopListByCo()
             setTimeout(() => {
                 if (!this.userInfo.userName) {
                    this.getSeekUserInfo() 
@@ -278,10 +288,10 @@ export default {
         },
         'shopListByCo' () {
             if (this.shopListByCo[0]) {
-                if (this.closeWebSocket) {
-                    this.closeWebSocket()
-                }
-                this.establishWebSocket(this.shopListByCo[0].shopId)
+                // if (this.closeWebSocket) {
+                //     this.closeWebSocket()
+                // }
+                // this.establishWebSocket(this.shopListByCo[0].shopId)
             }
         }
     },
@@ -292,6 +302,160 @@ export default {
             'getSeekCompanyInfo',
             "getShopListByCo", // 店铺列表
         ]),
+        // 新店铺列表
+        _seekGetShopListByCo () {
+            let options = {
+                page: '1',
+                pageSize: 9999,
+                type: 1 // 1.可查看 2.所属 3.全部
+            }
+
+            seekGetShopListByCo(options)
+                .then(res => {
+                    if (res.data.state == 200) {
+                        this.filterFaceShopList = res.data.data.shopList
+                        this._downloadTable()
+                    } else {
+                        this.$message({
+                           message: res.data.msg,
+                           type: 'warning'
+                        })
+                    }
+                })
+        },
+        // 获取推送地址
+        _downloadTable () {
+          let options = {
+            "type":"1",
+            "infoType":"003"
+          }
+          downloadTable(options)
+            .then(res => {
+              // ws://192.168.100.110:9097/yunzhubao-bat/ws/{companyId}/1?msgType=09&os={client}&userId={userId}&env=test
+              if (res.data.state == 200) {
+                let url = res.data.data.url
+                url = url.replace('{companyId}', sessionStorage.getItem('companyId'))
+                url = url.replace('{client}', 'web')
+                url = url.replace('{userId}', sessionStorage.getItem('id'))
+                this.createdWebSocket(url)
+                // this.url = url
+                console.log('组装好的地址', url)
+              }
+            })
+        },
+        // 创建连接
+        createdWebSocket (parm) {
+          let _self = this
+          let ws = new WebSocket(parm)
+          // 连接成功
+          ws.onopen = function(evt) {
+            console.log('测试连接成功', evt)
+          }
+          // 有新消息来
+          ws.onmessage = function(evt) {
+            console.log('新消息--===', evt.data)
+            let datas = JSON.parse(evt.data)
+            if (datas.msgType == '09') { // 登出
+              if (datas.os == 'app') {
+                if (datas.opType == 'qry') {
+                  ws.send(JSON.stringify({"os":"web","fs":"xiaohua","msgType":"09","status":"1"}))
+                } else if (datas.opType == 'out') {
+                    operateLogout()
+                        .then(res => {
+                            if (res.data.state == 200) {
+                                ws.close()
+                                _self.loginOut()
+                                // sessionStorage.clear()
+                                // localStorage.clear()
+                                // _self.$router.push({path: '/member/login'})
+                                // let body = document.getElementById('body')
+                                // body.style.background = '#f5f8f7'
+                            } else {
+                                _self.$message({
+                                    message: res.data.msg,
+                                    type: 'warning'
+                                });
+                            }
+                        })
+                }
+              }
+            } else if (datas.msgType == '08') { // 人脸识别
+                console.log('收到人脸的数据', evt)
+                _self.faceWebsocked(datas)
+            } else if (datas.msgType == '10' && sessionStorage.getItem("tokenId") != datas.tokenId && datas.os == 'web' && sessionStorage.getItem("id") == datas.userId) { // 退出
+                ws.close()
+                Vue.prototype.loginPopup.show()
+                // _self.loginOut()
+            }
+          }
+          ws.error = function(evt) {
+            console.log('测试连接失败', evt)
+          }
+          _self.closeCreatedWebSocket = () => {
+            ws.close()
+          }
+          window.onbeforeunload = function() {
+            ws.send({"companyId":sessionStorage.getItem('companyId'),"msgType":"09","os":"web","userId":sessionStorage.getItem('id'),"status":"1000"})
+            ws.close()
+          }
+        },
+        loginOut () {
+            sessionStorage.clear()
+            localStorage.clear()
+            this.$router.push({path: '/member/login'})
+            let body = document.getElementById('body')
+            body.style.background = '#f5f8f7'
+        },
+        faceWebsocked (datas) {
+            if (this.currentFaceShop) {
+                if (datas.shopId != this.currentFaceShop) {
+                    return
+                }
+            } else {
+                let shopList = []
+                for (let i of this.filterFaceShopList) {
+                    shopList.push(i.shopId)
+                }
+                if (!shopList.includes(datas.shopId)) {
+                    return
+                }
+            }
+            let _self = this
+            let hintTit = '有新访客到店，请及时接待'
+            if (datas.vipFlag == 1) {
+                switch (datas.grade) {
+                    case '1':
+                        hintTit = '普通会员'
+                        break
+                    case '2':
+                        hintTit = '中级会员'
+                        break
+                    case '3':
+                        hintTit = '高级会员'
+                        break
+                }
+                hintTit = hintTit + datas.userName + '到店，请及时接待'
+            }
+            const h = _self.$createElement;
+            _self.$notify({
+                duration: 2000,
+                title: '新消息',
+                message: hintTit,
+                type: 'success',
+                onClick: () => {
+                    _self.$router.push(
+                        {
+                            path: '/faceRecognition/visitList',
+                            query: {
+                                id: datas.id
+                            }
+                        }
+                    )
+                }
+            })
+
+            eventBus.$emit('new-client-come-on')
+        },
         establishWebSocket (parm) {
             let _self = this;
             let socketUrl = process.env.NODE_ENV === 'development' ? 'ws://uat.yunzhubao.com:8080/yunzhubao/ws/facepass/' : 'wss://app.yunzhubao.com:9092/yunzhubao/ws/facepass/'
@@ -319,12 +483,6 @@ export default {
                     hintTit = hintTit + datas.userName + '到店，请及时接待'
                 }
                 const h = _self.$createElement;
-                // _self.$notify({
-                //     duration: 2000,
-                //     title: '新消息',
-                //     message: hintTit,
-                //     type: 'success'
-                // })
                 _self.$notify({
                     duration: 2000,
                     title: '新消息',
@@ -347,9 +505,15 @@ export default {
             ws.error = function(evt) {
                 console.log('访客连接失败', evt)
             }
-            _self.closeWebSocket = () => {
-                ws.close()
-            }
+            // _self.closeWebSocket = () => {
+            //     ws.close()
+            // }
+                //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+            // window.onbeforeunload = function() {
+            //     localStorage.setItem('浏览器执行了关闭', '浏览器执行了关闭')
+            //     alert('关闭窗口')
+            // }
+
         },
         filterFaceFlag (parm) {
             switch (parm) {

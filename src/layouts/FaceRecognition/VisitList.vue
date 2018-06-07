@@ -149,6 +149,10 @@ export default{
       }
     }
   },
+  beforeDestroy () {
+    console.log('结束推送')
+    eventBus.$emit('cut-web-socket', '')
+  },
   methods: {
     openDetail () {
       if (this.$route.query.id) {

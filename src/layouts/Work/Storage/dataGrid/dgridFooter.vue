@@ -1,7 +1,7 @@
 <template>
 	<!--表尾-->
 	<div class="dg-footer">
-		<span v-for="k in footerData" :style="'width:'+k.width+'px'">{{synopsiData1[k.total]}}</span>
+		<span v-for="k in footerData" :style="'width:'+k.width+'px'">{{newSynopsiData[k.total]}}</span>
 	</div>
 </template>
 
@@ -14,10 +14,10 @@
 			return {
 				footerData: fixedData,
 				synopsiData: {},
-				synopsiData1: {}
+				newSynopsiData:{}
 			}
 		},
-		props: ['smallDataList', 'orderNum', 'isRefreshFooter'],
+		props: ['smallDataList', 'orderNum', 'isRefreshFooter', 'allSynopsiData'],
 		watch: {
 			smallDataList: function() {
 				let tpData = []
@@ -30,7 +30,10 @@
 			},
 			isRefreshFooter(o, n) {
 				this.fetchFootData()
-				this.fetchNewFootData()
+//				this.fetchNewFootData()
+				console.log(this.footerData)
+				console.log(this.newSynopsiData)
+				console.log(this.allSynopsiData)
 			}
 		},
 		methods: {
@@ -39,29 +42,30 @@
 				seekReceiptRKSynopsis({
 					orderNum: this.orderNum
 				}).then((res) => {
+					console.log(res)
 					this.synopsiData = res.data.data
 					this.$emit('setSynopsiData', this.synopsiData)
 				})
 			},
 			fetchNewFootData() {
 				seekNewGoodsInfoList({
-					orderNum: this.orderNum,
-					page: 1,
-					pageSize: 1
-				}).then((res) => {
-					if(res.data && res.data.data) {
-						this.synopsiData1 = res.data.data;
-					}
-				}, (res) => {
+				 	orderNum: this.orderNum,
+				 	page: 1,
+				 	pageSize: 1
+				 }).then((res) => {
+				 	if(res.data && res.data.data) {
+				 		this.newSynopsiData = res.data.data;
+				 	}
+				 }, (res) => {
 
-				})
+				 })
 			}
 		},
 
 		mounted() {
 			this.$nextTick(() => {
 				this.fetchFootData()
-				this.fetchNewFootData()
+//				this.fetchNewFootData()
 			})
 		}
 	}

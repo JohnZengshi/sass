@@ -23,7 +23,7 @@
    <!--  <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind"> -->
     <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in filterHasData(dataGridStorage.dataList)" :index="resetIndex(ind)" :key="ind">
       <div class="left-type-name-wrap" :style="getRightH(caty)">
-        <p>{{caty.typeName}}<span>({{caty.totalReceiptNum0}})</span></p>
+        <p>{{caty.typeName}}<span v-if="caty.typeName != '期初' && caty.typeName != '期末'">({{caty.totalReceiptNum0}})</span></p>
       </div>
       <div class="right-type-inner-wrap">
 
@@ -180,12 +180,6 @@ export default {
       this.storageFormatDate()
       //console.log(1111)
       this.tabCellHeight()
-
-      console.log(this.tempArray)
-      console.log(this.detailDataGridColumn)
-      console.log(this.dataGridStorage)
-      console.log(this.tabCell)
-      console.log(this.reportType)
     },
     // 'reportType': function (val) {
     //  //console.log(this.positionSwitch)
@@ -208,6 +202,23 @@ export default {
       _this.$emit('lazyloadSend',123 )
     })
     
+    $(".ui-table-container").mCustomScrollbar({
+      theme: "minimal-dark",
+      axis: 'y',
+      scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
+      mouseWheel: {
+        scrollAmount: 200,
+        preventDefault: false,
+        normalizeDelta: true,
+        scrollInertia: 50
+      },
+      callbacks: {
+        onTotalScroll: function() {
+          // console.log('滚轮到底了')
+        },
+      }
+    });
+
     // $(".ui-table-container").mCustomScrollbar({
         //     theme: "minimal-dark",
         //     axis: 'y',
@@ -235,7 +246,19 @@ export default {
       let datas = []
       for (let i of parm) {
         if (i.productTypeList.length) {
-          datas.push(i)
+          let isTrue = false
+          for (let j of i.productTypeList) {
+            if (j.detailList.length) {
+              // datas.push(i)
+              isTrue = true
+            }
+          }
+          if (isTrue) {
+            datas.push(i)
+          }
+          // if (i.productTypeList[0].detailList.length) {
+          //   datas.push(i)
+          // }
         }
       }
       return datas
@@ -366,7 +389,7 @@ export default {
 <style scoped lang="scss">
 .ui-table-container{
     height: 556px;
-    overflow-y: auto;
+    // overflow-y: auto;
     .hz-tb-category-two{
       margin-bottom: 2px;
     }

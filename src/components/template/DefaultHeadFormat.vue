@@ -20,9 +20,7 @@ export default {
     },
     watch: {
         'userName' (val) {
-            // this.formatFunction()
-            // this.customStyle()
-            console.log('啦啦啦，userName',val)
+            console.log(this.logo)
             setTimeout(() => {
                 this.formatFunction()
                 this.customStyle()
@@ -42,7 +40,6 @@ export default {
             if (this.userName) {
                 temValue = this.userName.substring(0, 1)
                 // secondValue = this.userName.substring(1, 2)
-                console.log('数字1',temValue)
                 this.formatValue = temValue
             }
             // let temValue = this.userName.substring(0, 1)
@@ -88,9 +85,6 @@ export default {
         }
     },
     updated(){
-        console.log('嘿,logo',this.logo)
-        console.log('嘿,userName',this.userName)
-        console.log('嘿,size',this.size)
     }
 }
 </script>

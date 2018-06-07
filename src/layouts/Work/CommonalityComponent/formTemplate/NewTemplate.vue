@@ -813,7 +813,7 @@ export default {
             top: 40px;
             left: 190px;
             z-index: 10;
-            background:#f5f8f7;
+            // background:#f5f8f7;
             padding-top: 20px;
             // border-radius: 10px;
             // box-shadow: 0 0 15px rgba(0,0,0,0.1);

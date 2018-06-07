@@ -207,6 +207,7 @@
 				console.log('导出表格')
 				// console.log('http://192.168.100.110:8083/yunzhubao/v1/export/exportExcelByBusinss?'+objStr)
 				// location.href='http://192.168.100.109:8080/yunzhubao/v1/export/exportExcelByBusinss?'+objStr
+				console.log(this.exportTabData)
 
 				downLoaderFile('/v1/export/exportExcelByBusinss',this.exportTabData)
 
@@ -231,8 +232,10 @@
 			getPrintLabelData(type, orderId, beginNum, endNum, canvas, selectedProducts, isPrint){
 				this.print.canvas = canvas
 				if(type==0){//勾选
+					debugger
 					this.previewTemplate(canvas, selectedProducts, isPrint);
 				}else if(type==1){//全部
+					debugger
 					this.$store.dispatch('getPrintLabelData', {orderId:orderId}).then(json => {
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)
@@ -242,6 +245,7 @@
 						}
 					})
 				}else if(type==2){//分页
+					debugger
 					this.$store.dispatch('getPrintLabelData', {orderId:orderId,beginNum:beginNum, endNum:endNum}).then(json => {
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)

@@ -4,12 +4,12 @@
             <div class="batch-header">
                 <div class="title">批量添加</div>
                 <div class="operate-bar-top">
-                    <div class="search">
+                    <!-- <div class="search">
                         <input v-model="keyword" type="text" :placeholder="listType == '单据' ? '请输入单据号' : '请输入条码号'">
                         <div class="search-btn">
                             <i class="iconfont icon-sousuo"></i>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="batch-time-wrap">
                         <div class="date-w81">
                             <el-date-picker
@@ -96,7 +96,7 @@
             </div>
             <div class="batch-footer">
                 <div class="btn-wrap">
-                    <div class="cenl-btn btn" @click="closeOnly">取消</div>
+                    <div class="cenl-btn btn" @click="closeBtn">取消</div>
                     <div class="add-btn btn" @click="close">添加</div>
                 </div>
                 <div class="checkAll">
@@ -126,7 +126,8 @@ export default {
     props: [
         'shopId',
         'saveSuccess',
-        'isEdit'
+        'isEdit',
+        'oldMemberInfo'
     ],
     components: {
         dropDownColums,
@@ -213,7 +214,7 @@ export default {
                 cashStatus: -1,
                 orderNum: '',
                 page: 1,
-                pageSize: 10,
+                pageSize: 9999,
                 startTime: '',
                 endTime: '',
                 sNumRange: '',
@@ -231,7 +232,7 @@ export default {
     watch: {
         'saveSuccess': function () {
             if (this.saveSuccess === false) {
-                this.close()
+                // this.close()
             }
         },
         'checkList': function (val) { // 监听全选
@@ -250,6 +251,18 @@ export default {
             } else {
                 this.checked1 = false;
             }
+        },
+        'oldMemberInfo'(val) {
+            // if(this.oldMemberInfo) {
+            //     this.oldMemberInfo.orderList.forEach((item,index) => {
+            //         this.dataList.forEach(i => {
+            //             if(item.orderNum == i.orderNum) {
+            //                 this.checkList[index] = item.orderNum
+            //             }
+            //         })
+            //     })
+            // }
+            // console.log('查看选中的个数',this.checkList)
         }
     },
     computed: {
@@ -263,7 +276,6 @@ export default {
         }
     },
     created () {
-        //console.log(111111111)
         this.getDate(0)
         this.goodsSellOrder()
         this.getShopUserList()
@@ -341,22 +353,22 @@ export default {
             })
         },
         changeCheckList (val) {
-            if (this.isEdit && val.length == 0) {
-                this.$confirm('无负责人时，此会员的所有跟进将被删除！', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                }).then(() => {
-                    // this.$message({
-                    //     type: 'success',
-                    //     message: '删除成功!'
-                    // });
-                }).catch(() => {
-                    // this.$message({
-                    //     type: 'info',
-                    //     message: '已取消删除'
-                    // });          
-                });
-            }
+            // if (this.isEdit && val.length == 0) {
+            //     this.$confirm('无负责人时，此会员的所有跟进将被删除！', '提示', {
+            //         confirmButtonText: '确定',
+            //         cancelButtonText: '取消',
+            //     }).then(() => {
+            //         // this.$message({
+            //         //     type: 'success',
+            //         //     message: '删除成功!'
+            //         // });
+            //     }).catch(() => {
+            //         // this.$message({
+            //         //     type: 'info',
+            //         //     message: '已取消删除'
+            //         // });          
+            //     });
+            // }
         },
         scrollFun (el) {
             if (el.target.scrollTop >= (el.target.scrollHeight - 440)) {
@@ -387,12 +399,12 @@ export default {
             console.log(id)
         },
         goodsSellOrder () {
-            console.log(this.orderOptions)
             if (this.shopManRole) { // 店员
                 this.orderOptions.Seller = sessionStorage.id
             }
+
+            this.orderOptions.shopId = this.shopId
             seekGoodsSellOrder(this.orderOptions).then((res) => {
-                console.log(res)
                 if (res.data.state == 200) {
                     this.dataList = res.data.data.orderList
                     this.totalNum = res.data.data.totalNum
@@ -527,7 +539,6 @@ export default {
             }else if( type == 'start'){
               hours = mins = seconds = '00'
             }
-            console.log(Day)
             this.endTime = Year + '-' + month + '-' + Day
             this.startTime = Year + '-' + month + '-' + (Day- (Day-1))
             //this.seekReceipts()
@@ -563,8 +574,8 @@ export default {
         getModuleType (parm) {
             return statusModuleType(parm);
         },
-        closeOnly () {//取消按钮
-            this.checkList = [];
+        closeBtn () {//取消按钮
+            // this.checkList = [];
             this.$emit("closeOnly")
         },
         close () {//添加按钮
@@ -632,6 +643,7 @@ export default {
         }
     }
 }
+
 </style>
 <style lang="scss" scoped>
 @import "~assets/css/template/fonts.scss";
@@ -804,7 +816,7 @@ export default {
         .table-main {
             width: 100%;
             height: 440px;
-            overflow-y: auto;
+            overflow-y: scroll;
             ul {
                 li {
                     width: 99%;
@@ -891,10 +903,13 @@ export default {
                 border: 1px solid #d6d6d6;
                 color:#999999;
                 margin-right: 56px;
+                cursor: pointer;
+                
             }
             .add-btn {
                 background:#2993f8;
                 color:#fff;
+                cursor: pointer;
             }
         }
         .checkAll {

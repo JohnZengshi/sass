@@ -10,7 +10,7 @@
 			<router-link tag="span" to="/work/report/" class="path_crumbs">报表</router-link> > <span class="txt">调库</span>
 		</div>
 		<div class="Rp_selected_container">
-            <DropDownMenu
+            <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="调入库位"
                 dataType="库位"
@@ -18,11 +18,11 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
 
             <span class="spaceMark">|</span>
             
-            <DropDownMenu
+            <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="调出库位"
                 dataType="库位1"
@@ -30,11 +30,11 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
 
             <span class="spaceMark">|</span>
             
-            <DropDownMenu
+            <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="制单人"
                 dataType="制单人"
@@ -42,11 +42,11 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
 
             <span class="spaceMark">|</span>
             
-            <DropDownMenu
+            <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="收货人"
                 dataType="收货人"
@@ -54,7 +54,7 @@
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
             >
-            </DropDownMenu>
+            </HeaderDropDownMenu>
 
   			<div class="report-data">
                 <div class="block until" data-txt="至">
@@ -124,7 +124,7 @@
                 >自定义
                     <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
                     <div class="customDia" ref="customDia">
-                    <div class="body" v-show="openReset">
+                    <div class="body">
                         <div class="list-wrap">
                         <ul>
                             <li></li>
@@ -285,7 +285,8 @@ import Vue from 'vue'
      seekMemberList,
      seekSettingUserRole
  } from './../../../../Api/commonality/seek.js'
- import DropDownMenu from './../../../../components/template/DropDownMenu'
+ import DropDownMenu from './../../../../components/template/DropDownMenu1'
+ import HeaderDropDownMenu from './../../../../components/template/DropDownMenu'
 // import ReportDetail from './dataGrid/reportDetailTab'
 import ReportDetail from './newDataGrid/reportDetailTab'
 //打印模块
@@ -312,6 +313,7 @@ export default {
 		intelligenceTypeTemplate,
         customTemplate,
         ReportLoad,
+        HeaderDropDownMenu
     },
      data() {
       return {
@@ -472,7 +474,8 @@ export default {
             wJewelryId: '1',
             nColorId: '',
             nGemId: '',
-            nJewelryId: '1'
+            nJewelryId: '1',
+            specialId: ''
         },
         dialogOptions: {
           conditionList: [
@@ -540,18 +543,23 @@ export default {
     },
     methods: {
         choseMenu (type) {
-          if (type == 1) {
-            this.positionSwitch = !this.positionSwitch
-          } else if (type == 2) {
-            this.tabSwitch = !this.tabSwitch
-          }
+            if(this.tabSwitch) {
+                this.dataGridOptions.specialId = ''
+            } else {
+                this.dataGridOptions.specialId = '1'
+            }
+            if (type == 1) {
+                this.positionSwitch = !this.positionSwitch
+            } else if (type == 2) {
+                this.tabSwitch = !this.tabSwitch
+            }
         },
         resetOption () {
-            console.log('重置')
-            this.openReset = false
-            setTimeout(() => {
-               this.openReset = true 
-            }, 100)
+            // console.log('重置')
+            // this.openReset = false
+            // setTimeout(() => {
+            //    this.openReset = true 
+            // }, 100)
             this.dataGridOptions.wColorId = ''
             this.dataGridOptions.wGemId = ''
             this.dataGridOptions.wJewelryId = '1'
@@ -559,12 +567,12 @@ export default {
             this.dataGridOptions.nGemId = ''
             this.dataGridOptions.nJewelryId = '1'
             this.resetFlag = true
-            this.send()
+            // this.send()
         },
         compOption () {
             if (this.dataGridOptions.type != 4) {
                 this.dataGridOptions.type == 4
-                this.setReportType(type)
+                this.setReportType(this.dataGridOptions.type)
             } else {
                 this.send()
             }

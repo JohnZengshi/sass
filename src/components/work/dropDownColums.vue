@@ -84,7 +84,6 @@ export default {
     }
 }
 </script>
-
 <style scoped lang="scss">
 .dropColums-wrap {
     width: 78px;

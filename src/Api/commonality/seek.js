@@ -173,6 +173,10 @@ export const seekStockData = function (parm) { // 21.7库存数据
     let URL = "/v1/stock/stockData";
     return apiCall(parm, URL);
 }
+export const seekStockExport = function (parm) { // 2018-05-29库存导出
+    let URL = "/v1/export/exportExcelByInventory";
+    return apiCall(parm, URL);
+}
 export const seekProductClassList = function (parm) { // 获取商品大小类的下拉列表
     let URL = "/v1/headquarter/showProductClassesList";
     return apiCall(parm, URL);
@@ -216,6 +220,7 @@ export const getProductStatusLogList = function (parm) { // 商品修改列表
     return apiCall(parm, URL);
 }
 export const seekGetShopListByCo = function (parm) { // 8.2店铺列表
+    parm.pageSize = 9999
     let URL = "/v1/auth/getShopListById";
     return apiCall(parm, URL);
 }
@@ -418,6 +423,10 @@ export const seekShowhCertificateList = function (parm) { //6.31证书列表
 }
 export const seekBatchAddByOrderNum = function (parm) { //5.60批量添加-单据列表
     let URL = "/v1/order/batchAddByOrderNum";
+    return apiCall(parm, URL);
+}
+export const seekBatchAllByOrderNum = function (parm) { // 批量添加
+    let URL = "/v1/order/batchAllByOrderNum";
     return apiCall(parm, URL);
 }
 export const seekBatchAddByProductList = function (parm) { //5.61批量添加-商品列表
@@ -832,5 +841,13 @@ export const seekGetMemberInfoByPhone = function(parm) { // 根据手机号查�
 }
 export const seekGetReportsComprehensive = function(parm) { // 报表-进销存汇总
     let URL = "/v1/reports/getReportsComprehensive";
+    return apiCall(parm, URL);
+}
+export const showCounterList = function (parm) { // 柜组列表
+    let URL = "/v1/headquarter/showCounterList"
+    return apiCall(parm, URL);
+}
+export const seekGetPrintLabelList = function (parm) { // 标签打印
+    let URL = "/v1/print/getPrintLabelList"
     return apiCall(parm, URL);
 }

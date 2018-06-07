@@ -383,15 +383,17 @@ export default {
 </script>
 <style lang="scss">
 .property-component{
+	padding: 1px;
     &.string {
         //padding: 5px;
         white-space: nowrap;
         span {
-            display: table-cell;
+            display: inline-block;
             vertical-align: middle;
             line-height: 1;
         }
         &.active {
+        	padding: 0;
             border: 1px dashed #4ec0ff;
             //padding: 4px;
             background-color: rgba(78, 192, 255, .15);
@@ -421,6 +423,7 @@ export default {
         }
         &.active {
             opacity: .7;
+            padding: 0;
             border: 1px dashed #4ec0ff;
             .resize {
                 display: block;

@@ -272,6 +272,7 @@ export default {
     },
     // 更新选中数据 以便进行复制
     updataCopyOrderObject(data){
+    	console.log(data)
       if(data){
       	this.copyOrderObject = Object.assign({}, data)
       }
@@ -365,6 +366,7 @@ export default {
     
     // 复制
     submitCopy(num){
+    	console.log(num)
       if (!/^(\d)*$/.test(num)) {
         this.$message({
           type:'warning',
@@ -386,6 +388,7 @@ export default {
 	            let copyObj = Object.assign({}, this.copyOrderObject, { barcode:''})
 	            this.copyOrderArray.push(copyObj)
 	          }
+	          
 	          operateAddProductToRKOrder({
 	            orderNum: this.orderData.orderNum,
 	            rowDataList: this.copyOrderArray
@@ -396,6 +399,8 @@ export default {
           	//复制未保存的
           	for(let i = 0; i < Number(num); i++){
 	            let copyObj = Object.assign({}, this.copyOrderObject, { barcode:''})
+	            console.log(this.copyOrderObject)
+	            console.log(copyObj)
 	            this.$refs.datagrid.addDataObj(copyObj);
 	          }
           }
@@ -411,7 +416,7 @@ export default {
           message :'请选中需要复制的商品'
         })
       } else {
-        this.isShowPopup = type
+      		this.isShowPopup = type
       }
     },
     // 更新单据页面API接口出数据
@@ -500,7 +505,7 @@ export default {
                 message : '添加商品失败'
               })
             }else{
-              this.isRefreshFooter = !this.isRefreshFooter
+//            this.isRefreshFooter = !this.isRefreshFooter
               this.$message({
                 type:'success',
                 message :'添加商品成功'

@@ -220,7 +220,8 @@ export const weightData = [
     text: '含配金重',
     type: 'heavyCode',
     unit: '(g)',
-    total: 'totalHeavyWeight'
+    // total: 'totalHeavyWeight'
+    total: 'totalHeavyCode'
   },
   {
     id: '04',

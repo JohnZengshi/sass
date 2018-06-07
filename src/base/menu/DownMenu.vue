@@ -1,4 +1,4 @@
-<template>
+。<template>
   <div class="down-menu-main">
     <span class="title-name" :class="titleInfo ? '' : 'select'" :style="specialStyle">
       {{titleInfo}}
@@ -96,7 +96,7 @@ export default {
         text-align: center;
         display: block;
         height: 30px;
-        font-weight: bold;
+        // font-weight: bold;
         font-size: 14px;
         line-height: 30px;
         .drop-triangle {

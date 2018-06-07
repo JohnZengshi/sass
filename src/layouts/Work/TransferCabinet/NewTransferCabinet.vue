@@ -576,7 +576,8 @@ export default {
                 wJewelryId: '1',
                 nColorId: '',
                 nGemId: '',
-                nJewelryId: '1'
+                nJewelryId: '1',
+                specialId:''
             },
             dialogOptions: {
             conditionList: [
@@ -796,11 +797,18 @@ export default {
             this.receiptStatusList();
         },
         choseMenu (type) {
-          if (type == 1) {
-            this.positionSwitch = !this.positionSwitch
-          } else if (type == 2) {
-            this.tabSwitch = !this.tabSwitch
-          }
+
+            if(this.tabSwitch) {
+                this.dataGridOptions.specialId = ''
+            } else {
+                this.dataGridOptions.specialId = '1'
+            }
+
+            if (type == 1) {
+                this.positionSwitch = !this.positionSwitch
+            } else if (type == 2) {
+                this.tabSwitch = !this.tabSwitch
+            }
         },
         resetOption () {
             this.dataGridOptions.wColorId = ''
@@ -1603,12 +1611,13 @@ color: #d6d6d6;
 .sortwrap-text{
     margin-top: 2px;
     line-height: 16px;
-    width: 55px;
+    width: 60px;
+    text-align: center;
     position: relative;
     .sortwrap-img{
         position: absolute;
         top: 8px;
-        right: 1px;
+        right: -2px;
     }
 }
 .select-container-name{
