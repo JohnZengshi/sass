@@ -2,7 +2,7 @@
   <div class="d-c-filter-header-main">
     <div class="operate-bar-bottom">
       <div class="search">
-          <input type="text" v-model="keyword" placeholder="请输入单据号" @keyup.enter="batchAddByOrderNum">
+          <input type="text" v-model="keyword" placeholder="请输入正确的条码号" @keyup.enter="batchAddByOrderNum">
           <div class="search-btn" @click="batchAddByOrderNum">
               <i class="iconfont icon-sousuo"></i>
           </div>
@@ -452,7 +452,7 @@ export default {
       this.$emit('filterData', this.filterCondition)
     },
     dataBackProductTypeId (parm) { // 产品类别过滤
-      this.filterCondition.productTypeId = parm.bigList
+      this.filterCondition.productStatus = parm.bigList
       this.$emit('filterData', this.filterCondition)
     },
     seekProductTypeList () { // 产品类别列表

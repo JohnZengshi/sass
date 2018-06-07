@@ -224,7 +224,6 @@
     },
     mounted () {
       eventBus.$on('xcx-upload-data', (shopId) => {
-        console.log('抗--------------=========', shopId)
         this.getmallsClassification(shopId)
       })
     },
@@ -421,8 +420,6 @@
         })
       },
       sortList(val) {
-        debugger
-        console.log('sortList-----------', val)
         //console.log(val);
         this.priceSortBy = val;
         if (this.shopId) {

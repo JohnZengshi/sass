@@ -425,6 +425,10 @@ export const seekBatchAddByOrderNum = function (parm) { //5.60批量添加-单�
     let URL = "/v1/order/batchAddByOrderNum";
     return apiCall(parm, URL);
 }
+export const seekBatchAllByOrderNum = function (parm) { // 批量添加
+    let URL = "/v1/order/batchAllByOrderNum";
+    return apiCall(parm, URL);
+}
 export const seekBatchAddByProductList = function (parm) { //5.61批量添加-商品列表
     let URL = "/v1/order/batchAddByProductList";
     return apiCall(parm, URL);

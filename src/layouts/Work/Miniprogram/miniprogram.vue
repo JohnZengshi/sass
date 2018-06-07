@@ -103,10 +103,12 @@ export default{
                         this.shopname = sessionStorage.getItem('shopName');
                     }
                   }
+                  eventBus.$emit('xcx-upload-data', this.shopListByCo[0].shopId)
                 } else if (this.shopListByCo[0].shopId) {
                   this.shopId = this.shopListByCo[0].shopId;
                   this.shopname = this.shopListByCo[0].shopName;
                   sessionStorage.setItem('miniprogram', this.shopListByCo[0].shopId)
+                  sessionStorage.setItem('shopId', this.shopListByCo[0].shopId)
                   eventBus.$emit('xcx-upload-data', this.shopListByCo[0].shopId)
                 }
                 // if () {

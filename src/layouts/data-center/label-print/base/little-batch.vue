@@ -56,26 +56,29 @@
                 </div>
             </div>
             <div class="table-main" @scroll="scrollFun1($event)">
-                <ul>
-                    <li v-for="(item, index) in dataList" @click="choseListData(item)" :key="index">
-                        <div class="left-list list">
-                            <div class="num">{{index + 1}}</div>
-                            <div class="order-num">{{item.orderNo}}</div>
-                            <div class="order-position">{{getDataType(item.type)}}</div>
-                            <div class="order-makeMan">{{item.makeUserName}}</div>
-                            <div class="order-time">{{item.createTime}}</div>
-                        </div>
-                        <div class="right-list list">
-                            <div>{{item.num}}件</div>
-                            <div>{{item.weight}}g</div>
-                            <div>{{item.price}}元</div>
-                            <!-- <div>
-                                <el-checkbox class="checkbox-font" :label='item.orderNo'></el-checkbox>
-                            </div> -->
-                            <el-radio v-model="newOrderId" :label="item.orderNo"></el-radio>
-                        </div>
-                    </li>
-                </ul>
+                <el-checkbox-group v-model="checkList">
+                    <img v-if="dataList.length ==0" style="display: block; margin:0 auto;" src="~static/img/space-page.png"/>
+                    <ul v-else>
+                        <li v-for="(item, index) in dataList" @click="pushData(item.orderNo)" :key="index">
+                            <div class="left-list list">
+                                <div class="num">{{index + 1}}</div>
+                                <div class="order-num">{{item.orderNo}}</div>
+                                <div class="order-position">{{getDataType(item.type)}}</div>
+                                <div class="order-makeMan">{{item.makeUserName}}</div>
+                                <div class="order-time">{{formatTime(item.createTime)}}</div>
+                            </div>
+                            <div class="right-list list">
+                                <div>{{item.num}}件</div>
+                                <div>{{item.weight}}g</div>
+                                <div>{{item.price}}元</div>
+                                <div>
+                                    <el-checkbox class="checkbox-font" :label='item.orderId'></el-checkbox>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    
+                </el-checkbox-group>
             </div>
         </div>
         <div class="little-batch-footer">
@@ -88,21 +91,23 @@
 </template>
 <script>
 var moment = require('moment');
-import {seekBatchAddByOrderNum, seekBatchAddByProductList} from "Api/commonality/seek"
+import {seekBatchAllByOrderNum, seekBatchAddByProductList} from "Api/commonality/seek"
+import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from 'assets/js/getTime'
     export default {
         props: ['supplierListData'],
         data () {
             return {
-                pickerOptions: {
-                    disabledDate:(time) => {
-                        return time.getTime() < this.startTime;
-                    }
-                },
-                pickerOptions10: {
-                  disabledDate(time) {
-                    return time.getTime() < Date.now() - 8.64e7;
-                  }
-                },
+                checkList: [],
+                // pickerOptions: {
+                //     disabledDate:(time) => {
+                //         return time.getTime() < this.startTime;
+                //     }
+                // },
+                // pickerOptions10: {
+                //   disabledDate(time) {
+                //     return time.getTime() < Date.now() - 8.64e7;
+                //   }
+                // },
                 beginNum: "",
                 endNum: "",
                 beginWeight: "",
@@ -110,12 +115,13 @@ import {seekBatchAddByOrderNum, seekBatchAddByProductList} from "Api/commonality
                 beginPrice: "",
                 endPrice: "",
                 keyword: "",
-                startTime: "",
-                endTime: "",
+                startTime: new Date(),
+                endTime: new Date(),
                 modelType: "",
                 newOrderId: '',
                 dataList: [],
-                pageSize: 15,
+                page: 1,
+                pageSize: 30,
                 littleBatch: false
             }
         },
@@ -123,8 +129,31 @@ import {seekBatchAddByOrderNum, seekBatchAddByProductList} from "Api/commonality
             this.getDate(0)
         },
         methods: {
+            formatTime (val) {       
+                if (val) {
+                    let year = val.substring(0, 4)
+                    let month = val.substring(4, 6)
+                    let data = val.substring(6, 8)
+                    let hour = val.substring(8, 10)
+                    let time = val.substring(10, 12)
+                    return year + "-" + month + "-" + data + " " + hour + ":" + time
+                }
+            },
+            pushData (data) {
+                if (this.checkList.includes(data)) {
+                    this.checkList.forEach((item, index) => {
+                        if (item == data) {
+                            this.checkList.splice(index, 1)
+                        }
+                    })
+                } else {
+                    this.checkList.push(data)
+                }
+                console.log(this.checkList)
+            },
             open () {
                 this.littleBatch = true
+                this.page = 1
                 this.batchAddByOrderNum()
             },
             choseListData (item) { // 选择单据列表
@@ -159,41 +188,30 @@ import {seekBatchAddByOrderNum, seekBatchAddByProductList} from "Api/commonality
                 }
             },
             changeState (parm) {
-                console.log('选择状态', parm)
+                this.page = 1
                 this.batchAddByOrderNum()
             },
             dateChange () {
+                this.page = 1
                 this.batchAddByOrderNum()
-                // if (this.listType == "单据") {
-                //     this.batchAddByOrderNum()
-                // } else {
-                //     this.batchAddByProductList()
-                // }
             },
             scrollFun1 (el) {
                 if (el.target.scrollTop >= (el.target.scrollHeight - 440)) {
-                    this.pageSize += 10
                     this.batchAddByOrderNum()
                 }
             },
             confirmClick () {
                 this.littleBatch = false
-                this.$emit('changeOrderId', this.newOrderId)
+                this.$emit('changeOrderId', this.checkList)
                 // this.batchAddByProductList()
             },
             batchAddByOrderNum () { // 5.60批量添加-单据列表
-                var startTime = "";
-                var endTime = ""
-                if (this.startTime && this.endTime) {
-                    startTime = moment(this.startTime).format('YYYY-MM-DD');
-                    endTime = moment(this.endTime).format('YYYY-MM-DD');
-                }
                 this.isLoading = true
                 let options = {
                     orderId: '',
                     keyword: this.keyword,
-                    beginTime: startTime,
-                    endTime: endTime,
+                    beginTime: formattingTime(this.startTime),
+                    endTime: formattingEndTime(this.endTime),
                     type: this.modelType,
                     makeUserId: '',
                     beginNum: this.beginNum,
@@ -202,11 +220,12 @@ import {seekBatchAddByOrderNum, seekBatchAddByProductList} from "Api/commonality
                     endWeight: this.endWeight,
                     beginPrice: this.beginPrice,
                     endPrice: this.endPrice,
-                    page: 1,
+                    page: this.page,
                     pageSize: this.pageSize
                 }
-                seekBatchAddByOrderNum(options).then((res) => {
+                seekBatchAllByOrderNum(options).then((res) => {
                     if (res.data.state == 200) {
+                        this.page += 1
                         this.isLoading = false
                         this.dataList = res.data.data.dataList
                         this.totalNum = res.data.data.totalNum
@@ -219,98 +238,98 @@ import {seekBatchAddByOrderNum, seekBatchAddByProductList} from "Api/commonality
                 })
             },
             batchAddByProductList () { // 5.61批量添加-商品列表
-                this.littleBatch = false
-                this.isLoading = true
-                let options = {
-                    page: 1,
-                    pageSize: this.pageSize,
-                    orderId: this.$route.query.orderNumber, // this.orderNo
-                    newOrderId: this.newOrderId,
-                    keyword: this.keyword,
-                    productTypeId: this.productTypeId,
-                    colourId: this.colourId,
-                    jewelId: this.jewelId,
-                    jewelryId: this.jewelryId,
-                    productType: this.productType,
-                    location: this.location,
-                    locationId: '',
-                    beginBarcode: this.beginBarcode1,
-                    endBarcode: this.endBarcode1,
-                    beginWeight: this.beginWeight1,
-                    endWeight: this.endWeight1,
-                    beginPrice: this.beginPrice1,
-                    endPrice: this.endPrice1
-                }
-                seekBatchAddByProductList(options).then((res) => {
-                    if (res.data.state == 200) {
-                        this.isLoading = false
-                        this.receiptList = res.data.data.dataList
-                        this.orderNo = ''
-                        this.totalNum1 = res.data.data.totalNum
-                    } else {
-                        this.$message({
-                            message: res.data.msg,
-                            type: 'warning'
-                        })
-                    }
-                })
+                // this.littleBatch = false
+                // this.isLoading = true
+                // let options = {
+                //     page: 1,
+                //     pageSize: this.pageSize,
+                //     orderId: this.$route.query.orderNumber, // this.orderNo
+                //     newOrderId: this.newOrderId,
+                //     keyword: this.keyword,
+                //     productTypeId: this.productTypeId,
+                //     colourId: this.colourId,
+                //     jewelId: this.jewelId,
+                //     jewelryId: this.jewelryId,
+                //     productType: this.productType,
+                //     location: this.location,
+                //     locationId: '',
+                //     beginBarcode: this.beginBarcode1,
+                //     endBarcode: this.endBarcode1,
+                //     beginWeight: this.beginWeight1,
+                //     endWeight: this.endWeight1,
+                //     beginPrice: this.beginPrice1,
+                //     endPrice: this.endPrice1
+                // }
+                // seekBatchAddByProductList(options).then((res) => {
+                //     if (res.data.state == 200) {
+                //         this.isLoading = false
+                //         this.receiptList = res.data.data.dataList
+                //         this.orderNo = ''
+                //         this.totalNum1 = res.data.data.totalNum
+                //     } else {
+                //         this.$message({
+                //             message: res.data.msg,
+                //             type: 'warning'
+                //         })
+                //     }
+                // })
             },
             getDate( day, type  ){
-                let _date = new Date() 
-                _date.setDate( _date.getDate() + day )
-                //年
-                let Year = _date.getFullYear()
-                //月
-                let month = this.formatDate(_date.getMonth()+1)
+                // let _date = new Date() 
+                // _date.setDate( _date.getDate() + day )
+                // //年
+                // let Year = _date.getFullYear()
+                // //月
+                // let month = this.formatDate(_date.getMonth()+1)
 
-                let month1 = this.formatDate(_date.getMonth())
-                //天
-                let Day = this.formatDate(_date.getDate())
-                //天
-                let Day1 = this.formatDate(_date.getDate()-1)
-                //时
-                let hours = this.formatDate(_date.getHours())
-                //分
-                let mins = this.formatDate(_date.getMinutes())
-                //秒
-                let seconds = this.formatDate(_date.getSeconds())
+                // let month1 = this.formatDate(_date.getMonth())
+                // //天
+                // let Day = this.formatDate(_date.getDate())
+                // //天
+                // let Day1 = this.formatDate(_date.getDate()-1)
+                // //时
+                // let hours = this.formatDate(_date.getHours())
+                // //分
+                // let mins = this.formatDate(_date.getMinutes())
+                // //秒
+                // let seconds = this.formatDate(_date.getSeconds())
         
-                let timestamp = Year + month +  Day 
-                let currentData = new Date()
+                // let timestamp = Year + month +  Day 
+                // let currentData = new Date()
 
-                if (month1 == '01' || month1 == '03' ||month1 == '05' || month1 == '07' || month1 == '08' || month1 ==  '10' || month1 == '12') {
-                    if (Day1 == '00') {
-                        Day1 = '31'
-                    }
-                } else if (month1 == '02') {
-                    if (((Year % 4)==0) && ((Year % 100)!=0) || ((Year % 400)==0)) {
-                        if (Day1 == '00') {
-                            Day1 = '29'
-                        }
-                    } else {
-                        if (Day1 == '00') {
-                            Day1 = '28'
-                        }
-                    }
-                } else {
-                    if (Day1 == '00') {
-                        Day1 = '30'
-                    }
-                }
-                if( type == 'end' ){
-                    if( Year < currentData.getFullYear() || 
-                      month < currentData.getMonth()+1 ||
-                      Day < currentData.getDate()
-                    ){
-                      hours = '23'
-                      mins = seconds = '59'
-                    }
-                }else if( type == 'start'){
-                  hours = mins = seconds = '00'
-                }
-                //console.log(Day)
-                this.endTime = Year + '-' + month + '-' + Day
-                this.startTime = Year + '-' + month + '-' + (Day- (Day-1))
+                // if (month1 == '01' || month1 == '03' ||month1 == '05' || month1 == '07' || month1 == '08' || month1 ==  '10' || month1 == '12') {
+                //     if (Day1 == '00') {
+                //         Day1 = '31'
+                //     }
+                // } else if (month1 == '02') {
+                //     if (((Year % 4)==0) && ((Year % 100)!=0) || ((Year % 400)==0)) {
+                //         if (Day1 == '00') {
+                //             Day1 = '29'
+                //         }
+                //     } else {
+                //         if (Day1 == '00') {
+                //             Day1 = '28'
+                //         }
+                //     }
+                // } else {
+                //     if (Day1 == '00') {
+                //         Day1 = '30'
+                //     }
+                // }
+                // if( type == 'end' ){
+                //     if( Year < currentData.getFullYear() || 
+                //       month < currentData.getMonth()+1 ||
+                //       Day < currentData.getDate()
+                //     ){
+                //       hours = '23'
+                //       mins = seconds = '59'
+                //     }
+                // }else if( type == 'start'){
+                //   hours = mins = seconds = '00'
+                // }
+                // //console.log(Day)
+                // this.endTime = Year + '-' + month + '-' + Day
+                // this.startTime = Year + '-' + month + '-' + (Day- (Day-1))
                 //this.seekReceipts()
                 // -----this.batchAddByOrderNum()
                 // return {
@@ -448,7 +467,7 @@ import {seekBatchAddByOrderNum, seekBatchAddByProductList} from "Api/commonality
         }
         .table-main {
             width: 100%;
-            height: 300px;
+            height: 426px;
             overflow-y: auto;
             ul {
                 li {

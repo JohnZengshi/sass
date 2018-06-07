@@ -951,6 +951,7 @@ export default {
 
     //懒加载
     lazyloadSend() {
+      console.log('懒加载')
       // this.currentPage++
       //   this.send()
     }

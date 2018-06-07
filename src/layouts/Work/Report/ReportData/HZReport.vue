@@ -57,10 +57,23 @@
             <!-- <div class="position-group">
                 <span class="btn" v-if="dataGridOptions.type != 1" :title="positionSwitch ? '取消位置' : '选择位置'" @click="choseMenu(1)" :class="{active: positionSwitch}" :disabled="dataGridOptions.type == 1">位置</span>
             </div> -->
+<!--             <div class="iconfont-wrap">
+                <span style="margin-right:25px;" :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)" >成品</span>
+                <span style="margin-right:25px;" :class="inconspanactive2 == true ? 'myspanactive' : ''"  @click="toggleAttribute(2)" >旧料</span>
+            </div> -->
+
             <div class="xj-switch" v-if="isShowCost == 'Y'">
                 <!-- <el-checkbox v-model="tabSwitch">成本</el-checkbox> -->
                 <span class="btn" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" :class="{active: tabSwitch}">专列项</span>
             </div>
+
+<!--             <ul class="xj-cut-btn-wrap">
+                <li>成品</li>
+                <li>旧料</li>
+            </ul>  -->
+
+
+
       <div class="tab">
 <!--                 <span
                     :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''"
@@ -867,12 +880,13 @@ export default {
             break;
           }
         },
-        toggleAttribute () {
-          this.dataGridOptions.page = 1
-          this.dataGridOptions.pageSize = 15
+        toggleAttribute (val) {
+            this.dataGridOptions.productClass = val;
+            this.dataGridOptions.page = 1
+            this.dataGridOptions.pageSize = 15
         //   this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
-          this.loading = true;
-          this.send()
+            this.loading = true;
+            this.send()
           
         },
         //成本控制
