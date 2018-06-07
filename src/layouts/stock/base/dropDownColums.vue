@@ -224,8 +224,8 @@ export default {
 </style>
 <style scoped lang="scss">
 .dropColums-wrap {
-    width: 68px;
-    height: 28px;
+    width: 66px;
+    height: 26px;
     //border: 1px solid #d6d6d6;
     //border-radius: 4px;
     float: left;
@@ -234,8 +234,9 @@ export default {
     .tltle {
         width: 100%;
         height: 100%;
-        font-size: 14px;
-        line-height: 24px;
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 26px;
         cursor: pointer;
         i {
             position: absolute;
