@@ -32,6 +32,7 @@
               @dataBack="dataBack"
           >
           </dropDownColums>
+          
       </div>
 
       <div class="class-btn-wrap">

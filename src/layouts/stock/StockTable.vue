@@ -8,45 +8,45 @@
 
 			<div class="Rp_dataGrid_container">
         <!-- 表头筛选 begin -->
-				<div class="rp_gridState">
-					<p class="side-nav"><i class="iconfont icon-baobiao"></i>商品列表</p>
-					<div class="sort-wrap">
-						<label>排序:</label>
+				<!-- <div class="rp_gridState"> -->
+					<!-- <p class="side-nav"><i class="iconfont icon-baobiao"></i>商品列表</p> -->
+					<!-- <div class="sort-wrap"> -->
+						<!-- <label>排序:</label> -->
             <!-- 排序的标签 begin -->
-						<div class="sortwrap-text" v-for="(item, index) in sortList" :key="index">
+						<!-- <div class="sortwrap-text" v-for="(item, index) in sortList" :key="index">
 							{{item.name}}
 							<img class="sortwrap-img" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
 							<img class="sortwrap-img" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
 							<i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
-						</div>
+						</div> -->
             <!-- 排序的标签 end -->
-					</div>
-					<div class="right-wrap">
-						<div class="search-wrap">
-							<input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" />
+					<!-- </div> -->
+					<!-- <div class="right-wrap"> -->
+						<!-- <div class="search-wrap"> -->
+							<!-- <input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" /> -->
 							<!--<i class="iconfont icon-sousuo" @click="send"></i>-->
-						</div>
+						<!-- </div> -->
 						<!-- <div @click="toggleAttribute" class="iconfont-wrap">
 							<span v-if="dataGridOptions.productClass == 1">成品</span>
 							<span v-if="dataGridOptions.productClass == 2">旧料</span>
 							<i class="iconfont icon-qiehuan"></i>
 						</div> -->
              <!-- 修改样式位置 -->
-						<div class="iconfont-wrap">
-							<span style="margin-right:25px;" :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)" >成品</span>
-							<span style="margin-right:25px;" :class="inconspanactive2 == true ? 'myspanactive' : ''"  @click="toggleAttribute(2)" >旧料</span>
-						</div>
-						<div class="tab">
-							<span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span>
-							<span :class="1 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(1, 2)">智能分类</span>
-							<span :class="2 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(2, 3)">产品分类</span>
+						<!-- <div class="iconfont-wrap"> -->
+							<!-- <span style="margin-right:25px;" :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)" >成品</span> -->
+							<!-- <span style="margin-right:25px;" :class="inconspanactive2 == true ? 'myspanactive' : ''"  @click="toggleAttribute(2)" >旧料</span> -->
+						<!-- </div> -->
+						<!-- <div class="tab"> -->
+							<!-- <span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span> -->
+							<!-- <span :class="1 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(1, 2)">智能分类</span> -->
+							<!-- <span :class="2 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(2, 3)">产品分类</span> -->
 							<!--自定原点击事件：@click="tabs(3, 4)"-->
-							<span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义
-                                <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
-                                <div class="customDia" ref="customDia" style="display: none;">
-                                    <div class="body">
-                                        <div class="list-wrap">
-                      <ul>
+							<!-- <span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义 -->
+                                <!-- <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i> -->
+                                <!-- <div class="customDia" ref="customDia" style="display: none;"> -->
+                                    <!-- <div class="body"> -->
+                                        <!-- <div class="list-wrap"> -->
+                      <!-- <ul>
                         <li></li>
                         <li>成色名称</li>
                         <li>宝石名称</li>
@@ -134,58 +134,211 @@
                               </div>
                       </div>
                     </span>
-            </div>
+            </div> -->
             <!-- 位置 -->
-            <div class="position-group">
+            <!-- <div class="position-group"> -->
               <!-- <el-radio class="radio" label="1">位置分组</el-radio> -->
               <!-- <el-checkbox v-model="positionSwitch" :disabled="dataGridOptions.type == 1">位置分组</el-checkbox> -->
-              <span :title="positionSwitch ? '取消位置' : '选择位置'" @click="choseMenu(1)" class="btn" :class="{active: positionSwitch}" v-if="dataGridOptions.type != 1">位置</span>
-            </div>
+              <!-- <span :title="positionSwitch ? '取消位置' : '选择位置'" @click="choseMenu(1)" class="btn" :class="{active: positionSwitch}" v-if="dataGridOptions.type != 1">位置</span> -->
+            <!-- </div> -->
             <!-- 专列项 -->
-            <div class="xj-switch" v-if="isShowCost == 'Y'">
+            <!-- <div class="xj-switch" v-if="isShowCost == 'Y'"> -->
               <!-- <el-checkbox v-model="tabSwitch">成本</el-checkbox> -->
-              <span :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" class="btn" :class="{active: tabSwitch}">专列项</span>
-            </div>
-          </div>
-        </div>
+              <!-- <span :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" class="btn" :class="{active: tabSwitch}">专列项</span> -->
+            <!-- </div> -->
+          <!-- </div> -->
+        <!-- </div> -->
         <!-- 表头的筛选 end -->
 
         <!-- 表头筛选重构 begin -->
-        <!-- <div class="Header_screening"> -->
+        <div class="Header_screening">
           <!-- 标题 -->
-          <!-- <div class="side_nav fl"> -->
-            <!-- <i class="iconfont icon-baobiao"></i>商品列表 -->
-          <!-- </div> -->
+          <div class="side_nav fl">
+            <i class="iconfont icon-baobiao"></i>商品列表
+          </div>
           <!-- 标签 -->
-          <!-- <div class="sort_wrap fl"> -->
+          <div class="sort_wrap fl">
             <!-- 少于三个的显示 -->
-            <!-- <div class="sortwrap_text" v-if="index<3" v-for="(item, index) in sortList" :key="index"> -->
-              <!-- <span class="fl">{{item.name}}</span> -->
-              <!-- <img class="sortwrap_img fl" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png"> -->
-							<!-- <img class="sortwrap_img fl" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png"> -->
-							<!-- <i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i> -->
-            <!-- </div> -->
+            <div class="sortwrap_text" v-if="index<3" v-for="(item, index) in sortList" :key="index">
+              <span class="fl">{{item.name}}</span>
+              <img class="sortwrap_img fl" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
+							<img class="sortwrap_img fl" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
+							<i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
+            </div>
             <!-- 大于三个的显示 -->
-            <!-- <i class="el-icon-caret-bottom arrow" v-if="sortList.length > 3"> -->
+            <i class="el-icon-caret-bottom arrow" v-if="sortList.length > 3">
               <!-- 标签列表 -->
-              <!-- <ul class="tag_list"> -->
-                <!-- <li v-for="(item, index) in sortList" :key="index"> -->
-                  <!-- <span class="fl">{{item.name}}</span> -->
-                  <!-- <img class="sortwrap_img fl" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png"> -->
-    							<!-- <img class="sortwrap_img fl" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png"> -->
-							    <!-- <i class="el-icon-circle-cross fr" @click="cancelSort(item, index)"></i>                   -->
-                <!-- </li> -->
-              <!-- </ul> -->
-            <!-- </i> -->
+              <ul class="tag_list">
+                <li v-for="(item, index) in sortList" :key="index">
+                  <span class="fl">{{item.name}}</span>
+                  <img class="sortwrap_img fl" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
+    							<img class="sortwrap_img fl" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
+							    <i class="el-icon-circle-cross fr" @click="cancelSort(item, index)"></i>                  
+                </li>
+              </ul>
+            </i>
             
-          <!-- </div> -->
+          </div>
           <!-- 输入框 -->
-          <!-- <div class="search_wrap"> -->
-            <!-- <input type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" /> -->
-          <!-- </div> -->
+          <div class="search_wrap">
+            <input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" />
+          </div>
           <!-- 成品旧料的切换 -->
-          
-        <!-- </div> -->
+          <div class="iconfont_wrap fl">
+            <span :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)">成品</span>
+            <span style="color: #d6d6d6">丨</span>
+            <span :class="inconspanactive2 == true ? 'myspanactive' : ''" @click="toggleAttribute(2)">旧料</span>
+          </div>
+          <!-- 新增的一些筛选 -->
+          <div class="class_btn_wrap">
+            <dropDownColum
+                ref="productTypeIdWrap"
+                :propsList="proList"
+                :keyName="'productTypeId'"
+                titleData="产品类别"
+                @dataBack="dataBack"
+            >
+            </dropDownColum>
+
+            <dropDownColum
+                ref="colourIdWrap"
+                :propsList="conditionList"
+                :keyName="'colourId'"
+                titleData="成色名称"
+                @dataBack="dataBack"
+            >
+            </dropDownColum>
+
+            <dropDownColum
+                ref="jeweIdWrap"
+                :propsList="jewelList"
+                :keyName="'jeweId'"
+                titleData="宝石名称"
+                @dataBack="dataBack"
+            >
+            </dropDownColum>
+
+            <dropDownColum
+                ref="jewelryIdWrap"
+                :propsList="jewelryList"
+                :keyName="'jewelryId'"
+                titleData="首饰类别"
+                @dataBack="dataBack"
+            >
+            </dropDownColum>
+          </div>
+          <!-- 表格的筛选 -->
+          <div class="tab_wrap">
+            <span :class="0 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(0, 1)">明细</span>
+            <span style="color: #d6d6d6">丨</span>						
+            <span :class="1 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(1, 2)">智能分类</span>
+            <span style="color: #d6d6d6">丨</span>
+						<span :class="2 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(2, 3)">产品分类</span>
+            <span style="color: #d6d6d6">丨</span>
+            <!-- 自定义 -->
+            <span style="position: relative" :class="3 == tabClassActive.index ? 'myspanactive' : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)" @click="tabs(3,4)">自定义
+              <div class="customDia site" ref="customDia" style="display: none;">
+                <div class="body">
+                  <div class="list-wrap">
+                    <ul>
+                        <li></li>
+                        <li>成色名称</li>
+                        <li>宝石名称</li>
+                        <li>首饰类别</li>
+                    </ul>
+                    <ul>
+                        <li>计重类</li>
+                        <li>
+                        <DropDownMenu
+                          titleName="不选"
+                          dataType="customDia"
+                          dataDataType="成色名称-计重"
+                          :propList="dialogOptions.conditionList"
+                          :resetFlag='resetFlag'
+                          @infoBack="diaInfoBack"
+                        >
+                        </DropDownMenu>
+                        </li>
+                        <li>
+                        <DropDownMenu
+                          titleName="不选"
+                          dataType="customDia"
+                          dataDataType="宝石名称-计重"
+                          :propList="dialogOptions.conditionList"
+                          :resetFlag='resetFlag'
+                          @infoBack="diaInfoBack"
+                        >
+                        </DropDownMenu>
+                        </li>
+                        <li>
+                        <DropDownMenu
+                          titleName="大类"
+                          dataType="customDia"
+                          dataDataType="首饰类别-计重"
+                          :propList="dialogOptions.jewelryList"
+                          :resetFlag='resetFlag'
+                          @infoBack="diaInfoBack"
+                        >
+                        </DropDownMenu>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>计件类</li>
+                        <li>
+                        <DropDownMenu
+                          titleName="不选"
+                          dataType="customDia"
+                          dataDataType="成色名称-计件"
+                          :propList="dialogOptions.conditionList"
+                          :resetFlag='resetFlag'
+                          @infoBack="diaInfoBack"
+                        >
+                        </DropDownMenu>
+                        </li>
+                        <li>
+                        <DropDownMenu
+                          titleName="不选"
+                          dataType="customDia"
+                          dataDataType="宝石名称-计件"
+                          :propList="dialogOptions.conditionList"
+                          :resetFlag='resetFlag'
+                          @infoBack="diaInfoBack"
+                        >
+                        </DropDownMenu>
+                        </li>
+                        <li>
+                        <DropDownMenu
+                          titleName="大类"
+                          dataType="customDia"
+                          dataDataType="首饰类别-计件"
+                          :propList="dialogOptions.jewelryList"
+                          :resetFlag='resetFlag'
+                          @infoBack="diaInfoBack"
+                        >
+                        </DropDownMenu>
+                        </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="foot" solt="footer">
+                  <div class="btn-wrap">
+                    <div @click.stop="resetOption" class="reset btn">重置</div>
+                    <div @click.stop="compOption" class="comp btn">完成</div>
+                  </div>
+                </div>
+
+              </div>
+            </span>
+          </div>
+          <!-- 位置与专列项 -->
+          <div class="position_group fr">
+              <span :title="positionSwitch ? '取消位置' : '选择位置'" @click="choseMenu(1)" class="btn" :class="{active: positionSwitch}" v-if="dataGridOptions.type != 1">位置</span>
+          </div>
+          <div class="xj_switch fr" v-if="isShowCost == 'Y'">
+              <span :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" class="btn" :class="{active: tabSwitch}">专列项</span>
+          </div>
+        </div>
         <!-- 表头筛选重构 end -->
 
         <div class="rp_dataGridTemp" :class="tabShow">
@@ -265,6 +418,12 @@ import customTemplate from "@/components/jcp-print/kc/intelligence-type-template
 
 // 导出按钮
 import { downLoaderFile } from "Api/downLoaderFile";
+
+// 筛选的组件
+import dropDownColum from './base/dropDownColums'
+
+import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList} from "Api/commonality/seek"
+
 
 export default {
   props: ["changeRepository", "changeShop", "changeCounter"],
@@ -395,7 +554,14 @@ export default {
           name: "产品类别",
           value: "1"
         }
-      ]
+      ],
+
+      // 假数据
+      proList:[],
+      conditionList:[],
+      jewelList:[],
+      jewelryList:[],
+
     };
   },
   watch: {
@@ -443,9 +609,16 @@ export default {
     projectTypeTemplate,
     intelligenceTypeTemplate,
     detailTemplate,
-    customTemplate
+    customTemplate,
+    dropDownColum
   },
   created() {
+    // 初始化筛选列表
+    this.seekProductTypeList()
+    this.productClassList(1)
+    this.productClassList(2)
+    this.productClassList(3)
+
     this.settingUserRole();
   },
   methods: {
@@ -702,7 +875,6 @@ export default {
       this.dataGridOptions.nGemId = "";
       this.dataGridOptions.nJewelryId = "1";
       this.resetFlag = true;
-      this.send();
     },
     compOption() {
       this.tabClassActive.index = 3;
@@ -765,6 +937,84 @@ export default {
       }
     },
 
+    // 新增的筛选条件
+    seekProductTypeList () { // 产品类别列表
+      getProductTypeList().then((res) => {
+        if (res.data.state == 200) {
+          this.isLoading = false
+          let datas = res.data.data.list
+          for (let i of datas) {
+            i.id = i.classesType
+            i.name = i.classesName
+            i.childrenList = i.typeList
+            for (let j of i.childrenList) {
+              j.name = j.classesName
+              j.id = j.classesId
+            }
+          }
+          this.proList = datas
+        }
+      })
+    },
+    productClassList (type) { // 商品大小类列表
+        let options = {
+            type: type
+        }
+        seekProductClassList(options).then((res) => {
+            if (res.data.state == 200) {
+                this.isLoading = false
+                let datas =  res.data.data.list
+                for (let i of datas) {
+                  i.id = i.classesId
+                  i.name = i.classesName
+                  for (let j of i.childrenList) {
+                    j.name = j.classesName
+                    j.id = j.classesId
+                  }
+                }
+                if (type == 1) {
+                    this.conditionList = datas
+                } else if (type == 2) {
+                    this.jewelList = datas
+                } else {
+                    this.jewelryList = datas
+                }
+            }
+        })
+    },
+    dataBack (parm) {
+      console.log('回调',parm)
+      let optionsList = []
+      switch (parm.keyName) {
+        case 'productTypeId':
+          parm.samllList.forEach((item,index) => {
+            optionsList[index] = {productClassId:item}
+          })
+          this.dataGridOptions.productClassIdList = optionsList
+          break;
+        case 'colourId':
+          parm.samllList.forEach((item,index) => {
+            optionsList[index] = {colourNameId:item}
+          })
+          this.dataGridOptions.colourNameIdList = optionsList
+          break;
+        case 'jeweId':
+          parm.samllList.forEach((item,index) => {
+            optionsList[index] = {gemNameId:item}
+          })
+          this.dataGridOptions.gemNameIdList = optionsList
+          break;
+        case 'jewelryId':
+          parm.samllList.forEach((item,index) => {
+            optionsList[index] = {jewelNameId:item}
+          })
+          this.dataGridOptions.jewelNameIdList = optionsList
+          break;
+        default:
+          break;
+      }
+      this.send()
+    },
     //产品类别
     callProductCategory(res) {
       if (res.length == 0) {
@@ -1008,6 +1258,7 @@ export default {
       this.dataGridOptions.pageSize = 15;
       this.send();
     },
+    // 懒加载
     sendlayLoad() {
       //初始化数据
       this.dataGridOptions.pageSize += 15;
@@ -1022,6 +1273,7 @@ export default {
         res => {}
       );
     },
+    // 请求获取数据
     send() {
       this.loading = true;
       seekStockProductList(this.dataGridOptions).then(
@@ -1044,7 +1296,8 @@ export default {
           });
         }
       );
-    }
+    },
+    
   },
 
   mounted() {
@@ -1608,7 +1861,7 @@ export default {
     height: 32px;
     margin-top: 12px;
     margin-left: 10px;
-    margin-right: 25px;
+    margin-right: 10px;
     // display: inline-block;
     float: left;
     vertical-align: top;
@@ -1654,6 +1907,104 @@ export default {
       font-size: 16px;
       color: #333;
       cursor: pointer;
+    }
+  }
+  // 成品旧料切换
+  .iconfont_wrap {
+    width: 86px;
+    height: 26px;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    margin-top: 12px;
+    text-align: center;
+    line-height: 24px;
+    span{
+      font-size: 14px;
+      font-weight: bold;
+      color: #666;
+      cursor: pointer;
+    }
+    .myspanactive {
+      color: #2993f8;
+    }
+  }
+  // 多重筛选
+  .class_btn_wrap {
+    width: 306px;
+    height: 26px;
+    border-radius: 4px;
+    border: 1px solid #eee;
+    float: left;
+    margin-left: 10px;
+    margin-top: 12px;
+  }
+  // 表格筛选
+  .tab_wrap {
+    width: 232px;
+    height: 26px;
+    margin-top: 12px;
+    margin-left: 10px;
+    float: left;
+    border:1px solid #eee;
+    border-radius: 4px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 24px;
+    span {
+      font-size: 12px;
+      font-weight: bold;
+      color: #666;
+      cursor: pointer;
+    }
+    .myspanactive {
+      color: #2993f8;
+    }
+  }
+  // 明细 智能的切换
+  .site {
+    left: -210px;
+  }
+  // 位置与专列项
+  .position_group {
+    margin-top: 12px;
+    margin-right: 10px;
+    & > .btn {
+      display: block;
+      width: 52px;
+      height: 26px;
+      text-align: center;
+      line-height: 26px;
+      color: #2993f8;
+      background: #e0ecf7;
+      font-size: 12px;
+      border-radius: 4px;
+      border: 1px solid #2993f8;
+      cursor: pointer;
+    }
+    & > .btn.active {
+      color: #fff;
+      background: #2993f8;
+    }
+  }
+  .xj_switch {
+    margin-top: 12px;
+    margin-right: 10px;
+    & > .btn {
+      font-size: 12px;
+      display: block;
+      width: 52px;
+      height: 26px;
+      text-align: center;
+      line-height: 26px;
+      color: #2993f8;
+      background: #e0ecf7;
+      border-radius: 4px;
+      cursor: pointer;
+      border: 1px solid #2993f8;
+    }
+    & > .btn.active {
+      color: #fff;
+      background: #2993f8;
     }
   }
 }
