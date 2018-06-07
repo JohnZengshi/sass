@@ -180,7 +180,7 @@ const systemMenu = [
 			{
 			   text: '标签打印',
 			   path: '/dataCenter/labelPrint',
-			   icon: 'gongsishezhi',
+			   icon: 'dayinbiaoqian',
 			   children: []
 			},
 			{

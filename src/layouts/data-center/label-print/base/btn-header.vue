@@ -195,6 +195,7 @@ export default {
     input {
         width: 68px;
         height: 100%;
+        font-size: 12px;
         float: left;
         text-align: center;
     }

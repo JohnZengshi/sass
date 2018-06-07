@@ -63,7 +63,7 @@ import ReportDetail from './newDataGrid/reportDetailTab'
 import DropDownMenu from '@/components/template/DropDownMenu'
 import filterHeader from './base/filter-header'
 import btnHeader from './base/btn-header'
-import {productTpyeState, productDetailStatus} from 'Api/commonality/status'
+import {productTpyeState, newProductDetailStatus} from 'Api/commonality/status'
 
 export default {
   components: {
@@ -431,7 +431,7 @@ export default {
               // 属性
               i.productClass = productTpyeState(i.productClass)
               // 状态
-              i.status = productDetailStatus(i.status)
+              i.status = newProductDetailStatus(i.status)
             }
             this.addData = datas
             this.dataGridStorage = datas
@@ -465,7 +465,7 @@ export default {
               // 属性
               i.productClass = productTpyeState(i.productClass)
               // 状态
-              i.status = productDetailStatus(i.status)
+              i.status = newProductDetailStatus(i.status)
             }
             this.dataGridStorage = datas
             this.loading = false

@@ -65,7 +65,7 @@
 		mounted() {
 			this.$nextTick(() => {
 				this.fetchFootData()
-//				this.fetchNewFootData()
+				this.fetchNewFootData()
 			})
 		}
 	}
