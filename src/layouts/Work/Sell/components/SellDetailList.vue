@@ -138,7 +138,7 @@
 				<span>积分抵扣
 					<i></i>
 				</span>
-				<div>{{item.offset || 0}}</div>
+				<div>-{{item.offset || 0}}</div>
 				<i>元</i>
 			</div>
 
