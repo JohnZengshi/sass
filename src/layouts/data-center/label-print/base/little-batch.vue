@@ -71,7 +71,7 @@
                                 <div>{{item.num}}件</div>
                                 <div>{{item.weight}}g</div>
                                 <div>{{item.price}}元</div>
-                                <div>
+                                <div style="margin-top: 0;">
                                     <el-checkbox class="checkbox-font" :label='item.orderId'></el-checkbox>
                                 </div>
                             </div>

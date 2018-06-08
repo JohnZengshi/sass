@@ -261,24 +261,32 @@ export default {
       ],
       "supplierListData": [
           {
-              name: "全部",
-              type: ""
+            name: "全部",
+            type: ""
           },
           {
-              name: "入库单",
-              type: "01"
+            name: "入库单",
+            type: "01"
           },
           {
-              name: "修改单",
-              type: "10"
+            name: "发货",
+            type: "03"
           },
           {
-              name: "退货单",
-              type: "04"
+            name: "退货单",
+            type: "04"
           },
           {
-              name: "调库单",
-              type: "07"
+            name: "调柜",
+            type: "06"
+          },
+          {
+            name: "调库单",
+            type: "07"
+          },
+          {
+            name: "修改单",
+            type: "10"
           }
       ],
     }
