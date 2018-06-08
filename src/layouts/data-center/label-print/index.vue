@@ -273,7 +273,7 @@ export default {
       sortList: [{ name: '产品类别', value: '1' }],
       newList: [{ name: '产品类别', value: '1' }],
       paging: {
-        page: '1',
+        page: 1,
         pageSize: '30'
       }
     };
@@ -959,8 +959,8 @@ export default {
 
     //懒加载
     lazyloadSend() {
-      if (el.target.scrollTop >= (el.target.scrollHeight - 440)) {
-         if (this.dataGridStorage.length != this.totalNum) {
+      if (this.dataGridStorage.length) {
+        if (this.dataGridStorage.length != this.totalNum) {
           this.filterData()
         }
       }

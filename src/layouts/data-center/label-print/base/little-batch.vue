@@ -135,6 +135,9 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
             }
         },
         methods: {
+            reset () {
+                this.checkList = []
+            },
             formatTime (val) {       
                 if (val) {
                     let year = val.substring(0, 4)

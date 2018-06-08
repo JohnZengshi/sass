@@ -269,7 +269,11 @@ export default {
             type: "01"
           },
           {
-            name: "发货",
+            name: "退库单",
+            type: "01"
+          },
+          {
+            name: "发货单",
             type: "03"
           },
           {
@@ -277,7 +281,11 @@ export default {
             type: "04"
           },
           {
-            name: "调柜",
+            name: "销售单",
+            type: "04"
+          },
+          {
+            name: "调柜单",
             type: "06"
           },
           {
@@ -287,6 +295,10 @@ export default {
           {
             name: "修改单",
             type: "10"
+          },
+          {
+            name: "服务单",
+            type: "11"
           }
       ],
     }
@@ -360,6 +372,7 @@ export default {
       this.$refs.productTypeIdWrap.reset()
       this.$refs.shopWrap.reset()
       this.$refs.storageLocationWrap.reset()
+      this.$refs.littleBatchWrap.reset()
       this.$emit('resetData')
     },
     batchAddByOrderNum () {

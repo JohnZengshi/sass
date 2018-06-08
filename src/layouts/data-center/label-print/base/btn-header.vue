@@ -16,7 +16,7 @@
     <printDownMenu :titleInfo="currentPrint ? currentPrint : '选择打印机'" :showList="printList" :nameKey="'name'" @changeData="changePrint" @clearInfo="clearPrint" @toMouseover="loadPrinters"></printDownMenu>
 
     <el-button size="small" class="ml-10" @click.native="_previewTemplate('Y')">预览</el-button>
-    <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">打印标签</el-button>
+    <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">打印</el-button>
   </div>
 </template>
 <script>
