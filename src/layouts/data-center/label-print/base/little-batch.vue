@@ -55,7 +55,7 @@
                     <input type="text" v-model="endPrice" placeholder="售价" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
                 </div>
             </div>
-            <div class="table-main" @scroll="scrollFun1($event)">
+            <div class="label-table-main" @scroll="scrollFun1($event)">
                 <el-checkbox-group v-model="checkList">
                     <img v-if="dataList.length ==0" style="display: block; margin:0 auto;" src="~static/img/space-page.png"/>
                     <ul v-else>
@@ -128,6 +128,12 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
         created () {
             this.getDate(0)
         },
+        watch: {
+            'littleBatch' () {
+                this.page = 1
+                this.dataList = []
+            }
+        },
         methods: {
             formatTime (val) {       
                 if (val) {
@@ -154,7 +160,7 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
             open () {
                 this.littleBatch = true
                 this.page = 1
-                this.batchAddByOrderNum()
+                this._seekBatchAllByOrderNum()
             },
             choseListData (item) { // 选择单据列表
                 this.newOrderId = item.orderNo
@@ -185,6 +191,9 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
                     case "10":
                         return "修改"
                     break;
+                    case "11":
+                        return "服务"
+                    break;
                 }
             },
             changeState (parm) {
@@ -197,7 +206,9 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
             },
             scrollFun1 (el) {
                 if (el.target.scrollTop >= (el.target.scrollHeight - 440)) {
-                    this.batchAddByOrderNum()
+                    if (this.dataList.length != this.totalNum) {
+                        this._seekBatchAllByOrderNum()
+                    }
                 }
             },
             confirmClick () {
@@ -206,6 +217,11 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
                 // this.batchAddByProductList()
             },
             batchAddByOrderNum () { // 5.60批量添加-单据列表
+                this.page = 1
+                this.dataList = []
+                this._seekBatchAllByOrderNum()
+            },
+            _seekBatchAllByOrderNum () {
                 this.isLoading = true
                 let options = {
                     orderId: '',
@@ -227,7 +243,7 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
                     if (res.data.state == 200) {
                         this.page += 1
                         this.isLoading = false
-                        this.dataList = res.data.data.dataList
+                        this.dataList.push(...res.data.data.dataList)
                         this.totalNum = res.data.data.totalNum
                     } else {
                         this.$message({
@@ -466,9 +482,9 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
                 }
             }
         }
-        .table-main {
+        .label-table-main {
             width: 100%;
-            height: 426px;
+            height: 456px;
             overflow-y: auto;
             ul {
                 li {
