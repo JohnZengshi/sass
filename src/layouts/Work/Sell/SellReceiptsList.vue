@@ -201,10 +201,14 @@
 								<div class="row4-tittle">
 									<div class="tittle-left">商品</div>
 									<div class="tittle-right">
+										<!-- 会员积分 -->
+										<span v-show="haveTem && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">积分抵扣</span>
+										<input v-show="haveTem && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0" v-model="daiding" type="text" :placeholder="'本次最多使用'+integralNow.offsetScore+'积分'" @keyup.enter="shiyongjifen">&nbsp;&nbsp;&nbsp;&nbsp;
+										<!-- <span v-show="haveTem && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">(总积分{{ integralNow.totalScore || 0 }})</span> -->
+
 										<span>详情说明</span>
 										<input ref="detailInputWrap" v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
 										<span class="tooltip" v-if="isShowTooltip">输入/扫描条码号</span>
-
 									</div>
 								</div>
 								<div class="row4-data-main">
@@ -219,13 +223,13 @@
 									</div>
 									<div class="row4-main-wrap" v-else>
 
-										<sell-detail-list :item="item" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :shopRole="shopRole" :goodType="1" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" v-for="(item, index) in goodsTypeList.saleList" :key="index">
+										<sell-detail-list :memberDataInfo="memberDataInfo" :item="item" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :shopRole="shopRole" :goodType="1" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" v-for="(item, index) in goodsTypeList.saleList" :key="index">
 										</sell-detail-list>
 
-										<sell-detail-list v-for="(item, index) in goodsTypeList.exchangeList" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :item="item" :goodType="2" :shopRole="shopRole" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" :key="index">
+										<sell-detail-list :memberDataInfo="memberDataInfo" v-for="(item, index) in goodsTypeList.exchangeList" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :item="item" :goodType="2" :shopRole="shopRole" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" :key="index">
 										</sell-detail-list>
 
-										<sell-detail-list :item="item" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :goodType="3" :shopRole="shopRole" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" v-for="(item, index) in goodsTypeList.recycleList" :key="index">
+										<sell-detail-list :memberDataInfo="memberDataInfo" :item="item" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :goodType="3" :shopRole="shopRole" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" v-for="(item, index) in goodsTypeList.recycleList" :key="index">
 										</sell-detail-list>
 
 									</div>
@@ -334,7 +338,7 @@
 									</div>
 									<div class="cashier-footer">
 
-										<div class="revoke-btn" v-if="shopManageRole" v-show="nowStatus != 6 && receiptsIntroList.cashStatus != 2" @click="revokeOrderPay">撤销收银</div>
+										<div class="revoke-btn" v-if="shopManageRole || shopManRole" v-show="nowStatus != 6 && receiptsIntroList.cashStatus != 2" @click="revokeOrderPay">撤销收银</div>
 										<div class="btn" @click="operateCashierAct" :disabled="true" :class="{active: !(isPrintOnly||(isCashierOnly&&(receiptsIntroList.cashStatus==2)&&(mathAdd(priceType.card, priceType.cash, priceType.alipay, priceType.wechat, priceType.other)>=totalPrice)))}">确定</div>
 										<el-select class="template-selector" :disabled="isPrintOnly == false" v-model="templateId" :placeholder="placeText" style="float:right">
 											<el-option :label="qualityTemplate.templateName" :value="qualityTemplate.templateId" v-for="(qualityTemplate,index) in qualityTemplateList" :key="index">
@@ -415,11 +419,11 @@
 									
 									<div class="footer-left">
 										<span @click.stop="goPro" v-if="entry.tep2List.isShowBtn">上一步</span>
-										<span @click.stop="goNext" v-if="entry.tep2List.isShowBtn1">下一步</span>
 									</div>
 
-									<div class="footer-right" @click.stop="goNext" v-if="isSkip == false">
-										跳过
+									<div class="footer-right" >
+										<span @click.stop="goNext" v-if="entry.tep2List.isShowBtn1">下一步</span>
+										<span @click.stop="goNext" v-if="isSkip == false">跳过</span>
 									</div>
 									
 								</div>
@@ -439,12 +443,12 @@
 									</ul>
 								</div>
 								<div class="footer">
-									<div class="footer-left" @click.stop="goNext" v-if="isSkip == false">
-										跳过
-									</div>
-									<div class="footer-right">
+									<div class="footer-left">
 										<span @click.stop="goPro" v-if="entry.tep3List.isShowBtn">上一步</span>
+									</div>
+									<div class="footer-right" >
 										<span @click.stop="goNext" v-if="entry.tep3List.isShowBtn1">下一步</span>
+										<span @click.stop="goNext" v-if="isSkip == false">跳过</span>
 									</div>
 								</div>
 							</div>
@@ -591,11 +595,16 @@
 
 	import FormatImg from 'components/template/DefaultHeadFormat.vue'
 
+	import { memberBuyIntegral } from 'Api/member'
+
 	//打印模块
 	import TablePrint from './components/print/dataGridPrint'
 
 	// 导出表格
 	import {downLoaderFile} from 'Api/downLoaderFile'
+
+	// 最多积分
+	import { getTotalDoIntegral,integralOffset } from 'Api/member'
 	
 	Vue.use(Dialog)
 	Vue.use(Select)
@@ -996,7 +1005,15 @@
 					left: 0,
 					top: 0,
 					display: 'none'
-				}
+				},
+
+				integralNow:{
+					offsetScore:'',
+					totalScore:'',
+				},
+				daiding:'',
+				isShouyin: false,
+				haveTem: true,
 			}
 		},
 		directives: {
@@ -1025,8 +1042,13 @@
 			this.companyPosition = sessionStorage.getItem('companyPosition')
 			this.multipleIdentities = sessionStorage.getItem('multipleIdentities')
 			this.isFocus = true
+
+			// 获取抵限积分
+			
 		},
 		mounted() {
+			console.log('权限',this.shopManageRole)
+			
 			let self = this
 			$(".row4-data-main").mCustomScrollbar({
 				axis: 'x',
@@ -1048,17 +1070,17 @@
 					}
 				}
 			});
-			$(".new-table-wrap").mCustomScrollbar({
-				theme: "minimal-dark",
-				autoHideScrollbar: true,
-				scrollInertia: 500,
-				mouseWheel: {
-					scrollAmount: 200,
-					preventDefault: false,
-					normalizeDelta: false,
-					//disableOver: [div]
-				},
-			});
+//			$(".new-table-wrap").mCustomScrollbar({
+//				theme: "minimal-dark",
+//				autoHideScrollbar: true,
+//				scrollInertia: 500,
+//				mouseWheel: {
+//					scrollAmount: 200,
+//					preventDefault: false,
+//					normalizeDelta: false,
+//					//disableOver: [div]
+//				},
+//			});
 			$(".total-wrap").mCustomScrollbar({
 				axis: 'x',
 				theme: "minimal-dark",
@@ -1100,7 +1122,7 @@
 			...mapGetters([
 				"userInfo", // 用户基本信息
 				"saveSuccess", // 保存弹窗
-				"saveSuccessData", // 保存弹窗数据
+//				"saveSuccessData", // 保存弹窗数据
 				// "userPositionInfo" // 职位信息
 			]),
 			filterUserType () {
@@ -1349,6 +1371,26 @@
 				if(defaultTemplate) {
 					this.templateId = defaultTemplate.templateId
 				}
+			},
+			receiptsIntroList(val) {
+				console.log('单据简介',this.receiptsIntroList,this.receiptsIntroList.cashStatus,this.nowStatus)				
+				if(val.orderNum) {
+					let options = {
+						orderNum:val.orderNum,
+						shopId:val.shopId
+					}
+					console.log(options)
+					getTotalDoIntegral(options).then(res => {
+						if(res.data.state == 200){
+							this.integralNow = res.data.data
+							this.integralNow.offsetScore = this.integralNow.offsetScore || 0
+						}
+						if(res.data.state == 1001399) {
+							// 没有店铺的情况
+							this.haveTem = false
+						}
+					})
+				}
 			}
 		},
 		methods: {
@@ -1445,6 +1487,7 @@
 								message: '删除关联成功!'
 							});
 							this.getSeekSellReceiptsIntro()
+							this.memberDataInfo = {}
 						} else {
 							this.$message({
 								type: 'warning',
@@ -1457,7 +1500,7 @@
 							message: res.data.msg
 						})
 					})
-
+					// this.setMemberBuyIntegral('2') // 删除关联
 				}).catch(() => {
 					this.$message({
 						type: 'info',
@@ -1472,27 +1515,44 @@
 					memberOrPhone: this.memberNumber,
 					sellOrderId: this.receiptsIntroList.id
 				}
+
 				operateMemberSalesList(options).then((res) => {
 					if(res.data.state == 200) {
 						this.getSeekSellReceiptsIntro()
+						// console.log('关联成功')
+						// // 关联已收银的时候加积分 
+						// if(this.priceType.cash == 0 && this.priceType.card == 0 && this.priceType.other == 0 && this.priceType.wechat == 0 && this.priceType.alipay == 0) {
+						// } else {
+						// 	console.log('关联成功')
+						// 	let self = this
+						// 	setTimeout(function(){
+						// 		self.setMemberBuyIntegral('1')
+						// 	},500)
+						// }
+
 						this.isSeekMember = false
 					} else {
 						this.$message({
 							type: 'warning',
 							message: res.data.msg
 						})
+
 					}
+					
 				}, (res) => {
 					this.$message({
 						type: 'warning',
 						message: res.data.msg
 					})
 				})
+				// this.setMemberBuyIntegral('1')
+				
 			},
 			closeChoMember(val) {
 				this.isChoseMember = false
 				this.memberNumber = val.list
 				this.memberSalesList()
+				this.send()
 			},
 			closeReturn() {
 				this.addLeaguer = false
@@ -1544,7 +1604,6 @@
 				}
 			},
 			operateCashierAct() { 
-				debugger
 				// 打单操作
 				if(this.isPrintOnly && this.templateId == '') {
 					this.$message({
@@ -1609,6 +1668,8 @@
 					}
 					this.cashierTime = ''
 				}, (res) => {})
+				// 撤销收银时候的积分
+				this.setMemberBuyIntegral('2')
 			},
 			mathAdd(...param){
 				let result = 0;
@@ -1661,6 +1722,7 @@
 						},
 					]
 				}
+							
 				this.$confirm('确定要执行收银操作吗?', '提示', {
 					confirmButtonText: '确定',
 					cancelButtonText: '取消',
@@ -1676,7 +1738,7 @@
 						this.sellData()
 						this.statusREfresh = true
 						this.sellcollectMoney(); // 收银信息
-						this.print();
+						// this.print();
 					}, (res) => {
 						this.isShowFooter = true
 					})
@@ -1684,12 +1746,15 @@
 				});
 			},
 			print(){
+				debugger
 				this.cashierDialog = false
 				let selectedTemplate = find(this.qualityTemplateList, {
 					templateId: this.templateId
 				})
 				this.$emit('printOrder', this.orderNum, selectedTemplate && JSON.parse(selectedTemplate.content))
 				this.printOrder(this.$route.query.orderNumber, selectedTemplate && JSON.parse(selectedTemplate.content))
+				this.setMemberBuyIntegral('1') // 收银积分	
+				
 			},
 			orderPay() { // 单据操作收银
 				if(this.receiptsIntroList.cashStatus != 2){
@@ -1741,6 +1806,8 @@
 						this.sellData()
 						this.statusREfresh = true
 						this.sellcollectMoney(); // 收银信息
+						this.setMemberBuyIntegral('1') // 收银积分	
+						
 					}, (res) => {
 						this.isShowFooter = true
 					})
@@ -1760,6 +1827,8 @@
 							this.sellData()
 							this.statusREfresh = true
 							this.sellcollectMoney(); // 收银信息
+							this.setMemberBuyIntegral('1') // 收银积分	
+
 						}, (res) => {
 							this.isShowFooter = true
 						})
@@ -2134,6 +2203,10 @@
 					this.operateType = '销售'
 					this.isShowTooltip = true
 					this.isMaskShow = true
+				}else if(type == 2){
+					//回购操作去掉默认选择
+					this.entry.tep1List.productStep = 1
+					this.isShowDio = !this.isShowDio
 				} else {
 					// this.dropdownEvents()
 					this.isShowDio = !this.isShowDio
@@ -2633,6 +2706,21 @@
 					} else {}
 
 				})
+
+				if(!this.receiptsIntroList.orderNum) {
+					return
+				}
+
+				let datas = {
+					orderNum:this.receiptsIntroList.orderNum,
+					shopId:this.receiptsIntroList.shopId
+				}
+				getTotalDoIntegral(datas).then(res => {
+					if(res.data.state == 200){
+						this.integralNow = res.data.data
+						this.integralNow.offsetScore = this.integralNow.offsetScore || 0
+					}
+				})
 			},
 			complate() {
 				this.orderPay()
@@ -2649,7 +2737,7 @@
 				}
 				seekSellReceiptsIntro(options).then((response) => {
 					if(response.data.state === 200) {
-						this.receiptsIntroList = response.data.data;
+						this.receiptsIntroList = response.data.data;						
 						// this.cashStatus = res.data.data.cashStatus
 						this.getShopUserList(response.data.data.shopId)
 						this.seekGetTemplateList(response.data.data.shopId)
@@ -2674,6 +2762,7 @@
 				}
 				seekGetMemberInfo(options).then((res) => {
 					if(res.data.state == 200) {
+						this.memberDataInfo.memberId = memberId
 						this.memberDataInfo.memberNum = res.data.data.memberNum
 						this.memberDataInfo.memberName = res.data.data.username
 						this.memberDataInfo.phone = res.data.data.phone
@@ -2689,7 +2778,8 @@
 						this.memberDataInfo.logo = res.data.data.memberLogo
 						this.memberDataInfo.createTime = res.data.data.createTime
 						this.memberDataInfo.totalMoney = res.data.data.totalMoney
-						this.leamemberDataInfo.level = res.data.data.type
+						this.memberDataInfo.level = res.data.data.type
+						// this.leamemberDataInfo.level = res.data.data.type
 					} else {
 
 					}
@@ -2706,7 +2796,79 @@
             	exportTabData['exportType'] = 'XS'
             	console.log(exportTabData)
             	downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
-        	},
+			},
+
+			// 积分操作
+			shiyongjifen() {
+				if(this.daiding == ''){
+					return
+				}
+
+				if(this.integralNow.offsetScore <= 0){
+					this.daiding = ''
+					return
+				}
+
+				if(this.daiding > this.integralNow.offsetScore){
+					this.daiding = ''
+					return
+				}
+
+				if(this.daiding < 0){
+					this.daiding = ''
+					return
+				}
+
+				console.log('积分里面的数据',this.daiding,this.integralNow.offsetScore)
+				
+				let options = {
+					shopId:this.receiptsIntroList.shopId,
+					orderNum:this.receiptsIntroList.orderNum,
+					memberId:this.memberDataInfo.memberId,
+					score:this.daiding
+				}
+
+				integralOffset(options).then(res => {
+					if(res.data.state != 200) {
+						this.$message({
+							type:'error',
+							message:res.data.msg
+						})
+					}
+					if(res.data.state == 200) {
+						this.daiding = ''
+					}
+					
+					console.log('积分抵扣回调',res)
+					this.send()
+				})
+			},
+			// 收银积分操作
+			setMemberBuyIntegral(type) {
+				console.log('我要的参数',this.memberDataInfo.memberId)
+				if(!this.memberDataInfo.memberId || !this.receiptsIntroList.orderNum || !this.receiptsIntroList.shopId) {
+					return
+				}
+
+				let options = {
+					memberId:this.memberDataInfo.memberId,
+					dataList:[{orderNum:this.receiptsIntroList.orderNum}],
+					shopId:this.receiptsIntroList.shopId,
+					operateType:type
+				}
+
+				memberBuyIntegral(options).then(res => {
+					if(res.data.state == 200){
+					} else if(res.data.state == 1001399){
+						
+					} else {
+						this.$message({
+							type:'error',
+							message:res.data.msg
+						})
+					}
+				})
+			}
 		}
 	}
 </script>
@@ -3398,7 +3560,6 @@
 			width: 1250px;
 			box-sizing: border-box;
 			padding-right: 10px;
-			padding-bottom: 120px;
 			padding-top: 30px;
 			margin: 0 auto;
 			.body-header {
@@ -3965,7 +4126,7 @@
 				}
 				.row4-data-main {
 					width: 1215px;
-					height: 496px;
+					height: 540px;
 					white-space: nowrap;
 					.row4-main-wrap {
 						padding: 10px 10px;
