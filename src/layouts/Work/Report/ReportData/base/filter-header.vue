@@ -60,7 +60,7 @@
           this.$emit('complate', this.filterData)
         },
         madeUpOn (parm) {
-          console.log('接收到的值', parm)
+          let datas = parm
           this.filterData = Object.assign(this.filterData, parm)
           this.$emit('complate', this.filterData)
         },
