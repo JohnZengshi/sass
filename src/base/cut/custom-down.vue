@@ -1,6 +1,6 @@
 <template>
     <li class="dropDown-wrap">
-        <span class="title-name" :class="optionData.titleInfo == '' ? '' : 'select'">
+        <span class="title-name" @click="complate" :class="optionData.titleInfo == '' ? '' : 'select'">
             {{titleName}}
 <!--             <i class="iconfont icon-arrow-down drop-triangle" v-if="optionData.titleInfo ==''"></i> -->
            <!--  <i v-if="isClear == undefined ? true : isClear == true ? true : false" class="el-icon-circle-close" title="清除" @click="clearTitleInfo"></i> -->
@@ -179,19 +179,14 @@ export default {
     methods: {
         changeClass (parm) {
             this.filterData[parm.keyName] = parm.item
-            console.log('选择产品类型', parm)
         },
         clearTitleInfo () {
             this.optionData.titleInfo = '';
-            //console.log('查看取消类型：'+this.dataType);
-            console.log(this.dataType)
             this.$emit("clearInfo", {type: this.dataType})
             this.actIndex = null
         },
         clearTitletext(){
-            //只清除掉 第二次选择的  选项，，不再走请求
             this.optionData.titleInfo = '';
-            console.log('查看清除类型：'+this.dataType);
             this.$emit("clearTitletext", {type: this.dataType})
             this.actIndex = null
         },

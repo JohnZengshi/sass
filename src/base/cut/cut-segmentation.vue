@@ -1,7 +1,7 @@
 <template>
   <ul class="xj-cut-segmentation-main">
     <li v-for="item in showList" @click="pitchOn(item)" :class="{actions: filterData.type == item.id}">{{item.name}}</li>
-    <custom-down :titleName="'自定义'" @complate="complate"></custom-down>
+    <custom-down :titleName="'自定义'" :class="{actions: filterData.type == 4}" @complate="complate"></custom-down>
   </ul> 
 </template>     
 <script>
@@ -25,6 +25,7 @@ export default {
       this.$emit('pitchOn', this.filterData)
     },
     complate (item) {
+      this.filterData.type = '4'
       this.filterData = Object.assign(this.filterData, item)
       this.$emit('pitchOn', this.filterData)
     }

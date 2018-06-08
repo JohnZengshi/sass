@@ -59,7 +59,9 @@
           this.filterData.productClass = parm.id
         },
         madeUpOn (parm) {
+          console.log('接收到的值', parm)
           this.filterData = Object.assign(this.filterData, parm)
+          console.log('目前要筛选的值', parm)
         },
         choseMenu () {
           this.tabSwitch = !this.tabSwitch
