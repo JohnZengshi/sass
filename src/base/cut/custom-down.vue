@@ -24,16 +24,6 @@
                                 :showList="dialogOptions.conditionList"
                                 @changeData="changeClass"
                             ></new-down-menu>
-
-                           <!--  <DropDownMenu
-                                titleName="不选"
-                                dataType="customDia"
-                                dataDataType="成色名称-计重"
-                                :propList="dialogOptions.conditionList"
-                                :resetFlag='resetFlag'
-                                @infoBack="diaInfoBack"
-                            >
-                            </DropDownMenu> -->
                         </li>
                         <li>
                             <!-- 宝石名称-计重 -->
@@ -43,15 +33,6 @@
                                 :showList="dialogOptions.conditionList"
                                 @changeData="changeClass"
                             ></new-down-menu>
-                            <!-- <DropDownMenu
-                                titleName="不选"
-                                dataType="customDia"
-                                dataDataType="宝石名称-计重"
-                                :propList="dialogOptions.conditionList"
-                                :resetFlag='resetFlag'
-                                @infoBack="diaInfoBack"
-                            >
-                            </DropDownMenu> -->
                         </li>
                         <li>
                             <!-- 首饰类别-计重 -->
@@ -61,15 +42,6 @@
                                 :showList="dialogOptions.jewelryList"
                                 @changeData="changeClass"
                             ></new-down-menu>
-                            <!-- <DropDownMenu
-                                titleName="大类"
-                                dataType="customDia"
-                                dataDataType="首饰类别-计重"
-                                :propList="dialogOptions.jewelryList"
-                                :resetFlag='resetFlag'
-                                @infoBack="diaInfoBack"
-                            >
-                            </DropDownMenu> -->
                         </li>
                     </ul>
                     <ul>
@@ -82,51 +54,24 @@
                                 :showList="dialogOptions.conditionList"
                                 @changeData="changeClass"
                             ></new-down-menu>
-                            <!-- <DropDownMenu
-                                titleName="不选"
-                                dataType="customDia"
-                                dataDataType="成色名称-计件"
-                                :propList="dialogOptions.conditionList"
-                                :resetFlag='resetFlag'
-                                @infoBack="diaInfoBack"
-                            >
-                            </DropDownMenu> -->
                         </li>
                         <li>
                             <!-- 宝石名称-计件 -->
                             <new-down-menu
-                                :titleInfo="filterData.nColorId.name"
-                                :keyName="'nColorId'"
+                                :titleInfo="filterData.nGemId.name"
+                                :keyName="'nGemId'"
                                 :showList="dialogOptions.conditionList"
                                 @changeData="changeClass"
                             ></new-down-menu>
-                           <!--  <DropDownMenu
-                                titleName="不选"
-                                dataType="customDia"
-                                dataDataType="宝石名称-计件"
-                                :propList="dialogOptions.conditionList"
-                                :resetFlag='resetFlag'
-                                @infoBack="diaInfoBack"
-                            >
-                            </DropDownMenu> -->
                         </li>
                         <li>
                             <!-- 首饰类别-计件 -->
                             <new-down-menu
-                                :titleInfo="filterData.nColorId.name"
-                                :keyName="'nColorId'"
+                                :titleInfo="filterData.nJewelryId.name"
+                                :keyName="'nJewelryId'"
                                 :showList="dialogOptions.jewelryList"
                                 @changeData="changeClass"
                             ></new-down-menu>
-                           <!--  <DropDownMenu
-                                titleName="大类"
-                                dataType="customDia"
-                                dataDataType="首饰类别-计件"
-                                :propList="dialogOptions.jewelryList"
-                                :resetFlag='resetFlag'
-                                @infoBack="diaInfoBack"
-                            >
-                            </DropDownMenu> -->
                         </li>
                     </ul>
                 </div>
@@ -161,8 +106,8 @@ export default {
                     id: '',
                 },
                 wJewelryId: {
-                    name: '不选',
-                    id: '',
+                    name: '大类',
+                    id: '1',
                 },
                 nColorId: {
                     name: '不选',
@@ -173,8 +118,8 @@ export default {
                     id: '',
                 },
                 nJewelryId: {
-                    name: '不选',
-                    id: '',
+                    name: '大类',
+                    id: '1',
                 }
             },
             specialStyle: {
@@ -251,15 +196,35 @@ export default {
             this.actIndex = null
         },
         complate () {
-            this.$emit('filterData', this.moreChange)
+            this.$emit('complate', this.filterData)
         },
         reset () {
-            this.moreChange.beginNum = ''
-            this.moreChange.endNum = ''
-            this.moreChange.beginWeight = ''
-            this.moreChange.endWeight = ''
-            this.moreChange.beginPrice = ''
-            this.moreChange.endPrice = ''
+            this.filterData = {
+                wColorId: {
+                    name: '不选',
+                    id: '',
+                },
+                wGemId: {
+                    name: '不选',
+                    id: '',
+                },
+                wJewelryId: {
+                    name: '大类',
+                    id: '1',
+                },
+                nColorId: {
+                    name: '不选',
+                    id: '',
+                },
+                nGemId: {
+                    name: '不选',
+                    id: '',
+                },
+                nJewelryId: {
+                    name: '大类',
+                    id: '1',
+                }
+            }
         }
     }
 }

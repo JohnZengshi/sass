@@ -29,7 +29,7 @@
               @clearInfo="clearShop"
             ></DownMenu>
             
-        <div class="report-data">
+            <div class="report-data">
                 <div class="block until" data-txt="至">
                     <el-date-picker size="mini" v-model="beginTime" @change="getTimeData"  type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
                 </div>
@@ -54,7 +54,8 @@
                 <i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
                 </div>
             </div>
-            <filter-header></filter-header>
+
+            <filter-header @complate="filterHeaderComplate"></filter-header>
             <!-- <div class="position-group">
                 <span class="btn" v-if="dataGridOptions.type != 1" :title="positionSwitch ? '取消位置' : '选择位置'" @click="choseMenu(1)" :class="{active: positionSwitch}" :disabled="dataGridOptions.type == 1">位置</span>
             </div> -->
@@ -619,6 +620,10 @@ export default {
         }
     },
     methods: {
+        // 完成
+        filterHeaderComplate (parm) {
+            console.log('完成后过滤的值', parm)
+        },
         // madeUpOn (parm) {
         //     this.dataGridOptions.productClass = parm.id
         // },
