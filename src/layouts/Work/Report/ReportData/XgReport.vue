@@ -440,7 +440,7 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
           shopId: '',
           counterId: '',
           productTypeId: '',
-          productClass: '1',                    
+          // productClass: '1',                    
           makeUserList: [],
           checkUserList: [],
           // productClass: '1',
