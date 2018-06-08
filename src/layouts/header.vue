@@ -1,83 +1,134 @@
 <template>
 <transition name="tp-ani">
-<header class="app-header not-print">
-    
-    <h1 class="logo">
-        <img class="companyLogo" v-if='companyInfo' :src="companyInfo ? companyInfo.logo : ''">
-        <span class="company-name-now" v-if='companyInfo'>{{companyInfo.companyName}}</span>
-        <!--公司切换-->
-        <el-dropdown @command="switchCompany" trigger="click" v-if="companyList1.length>1">
-		  <span class="el-dropdown-link"><i class="iconfont icon-icon_qiehuangongsi"></i></span>
-		  
-    		  <el-dropdown-menu slot="dropdown"  class="layout-drop-item">
-    		    <div class="header-layout">
-        		    <el-dropdown-item
-        		        :class="changeActive == index"
-        		        :command="{item:item,index:index}"
-        		        v-for="(item, index) in companyList1" :key="index">
-        		        {{item.companyName}}
-        		    </el-dropdown-item>
-    		    </div>
-                <el-dropdown-item v-if="isAllowCreate" @click.native="createComp"><i class="iconfont icon-jia2 icon-create-company"></i>创建公司</el-dropdown-item>
-                
-    		  </el-dropdown-menu>
-		  
-        
-		</el-dropdown>
-        
-    </h1>
-    <div class="page-side">
-    		<div class="menuTabs">
-    				<!--<menutabs></menutabs>-->
-       	</div>
-    		<div class="button">
-            <div class="search" ref="mysearch">
-                <!-- <div class="drop-search">单据<i class="el-icon-caret-bottom"></i></div> -->
-                <el-dropdown class="drop-search" @command="searchType">
-                    <span class="el-dropdown-link">
-                        {{searchTypeText}}<i class="iconfont icon-xiala"></i>
-                    </span>
-                    <el-dropdown-menu slot="dropdown" class="layout-drop-item search-drop-item">
-                        <el-dropdown-item command="单据">单据</el-dropdown-item>
-                        <el-dropdown-item command="商品">商品</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-                <input type="text" @focus="changesearchborder(1)" @blur="changesearchborder(2)" @keyup="watchCloseIcon" @keyup.enter="goSearchPage" v-model="searchText" placeholder="请输入关键字..." />
-                <i v-if="iconShow" class="iconfont icon-sousuo" @click="goSearchPage" title="搜索"></i>
-                <i v-else class="iconfont el-icon-circle-cross" @click="closeIcon" title="清除"></i>
-            </div>
-            <div class="info" @click="unreadNoticeNum = 0">
-            	<el-badge :value="unreadNoticeNum" :hidden="unreadNoticeNum == 0" class="item" title="公告">
-            		<router-link class="iconfont icon-tixing" tag="i" to="/notice"></router-link>
-            	</el-badge>
-            </div>
-            <div class="msg">
-            	<!-- <i class="iconfont icon-xinxiang" title="消息"></i> -->
-                <el-badge :value="unreadSystemMessageNum" :hidden="unreadSystemMessageNum == 0" class="item" title="消息">
-                    <router-link class="iconfont icon-xinxiang" tag="i" to="/message"></router-link>
+  <header class="app-header not-print">
+      
+      <h1 class="logo">
+          <img class="companyLogo" v-if='companyInfo' :src="companyInfo ? companyInfo.logo : ''">
+          <span class="company-name-now" v-if='companyInfo'>{{companyInfo.companyName}}</span>
+          <!--公司切换-->
+          <el-dropdown @command="switchCompany" trigger="click" v-if="companyList1.length>1">
+            <span class="el-dropdown-link"><i class="iconfont icon-icon_qiehuangongsi"></i></span>
+            
+                <el-dropdown-menu slot="dropdown"  class="layout-drop-item">
+                  <div class="header-layout">
+                      <el-dropdown-item
+                          :class="changeActive == index"
+                          :command="{item:item,index:index}"
+                          v-for="(item, index) in companyList1" :key="index">
+                          {{item.companyName}}
+                      </el-dropdown-item>
+                  </div>
+                      <el-dropdown-item v-if="isAllowCreate" @click.native="createComp"><i class="iconfont icon-jia2 icon-create-company"></i>创建公司</el-dropdown-item>
+                      
+                </el-dropdown-menu>
+          </el-dropdown>
+          
+      </h1>
+
+      <div class="page-side">
+          <div class="menuTabs">
+              <!--<menutabs></menutabs>-->
+          </div>
+          <div class="button">
+              <!-- 搜索模块 begin  -->
+              <div class="search" ref="mysearch">
+                  <!-- <div class="drop-search">单据<i class="el-icon-caret-bottom"></i></div> -->
+                  <!-- <el-dropdown class="drop-search" @command="searchType">
+                      <span class="el-dropdown-link">
+                          {{searchTypeText}}<i class="iconfont icon-xiala"></i>
+                      </span>
+                      <el-dropdown-menu slot="dropdown" class="layout-drop-item search-drop-item">
+                          <el-dropdown-item command="单据">单据</el-dropdown-item>
+                          <el-dropdown-item command="商品">商品</el-dropdown-item>
+                      </el-dropdown-menu>
+                  </el-dropdown> -->
+                  <input type="text" @focus="changesearchborder(1)" @blur="changesearchborder(2)" @keyup="watchCloseIcon" @keyup.enter="goSearchPage" v-model="searchText" placeholder="请输入关键字..." />
+                  <i v-if="iconShow" class="iconfont icon-sousuo" @click="goSearchPage" title="搜索"></i>
+                  <i v-else class="iconfont el-icon-circle-cross" @click="closeIcon" title="清除"></i>
+                  <!-- 搜索的列表 begin -->
+                  <div v-if="isSearch" class="searchList">
+                    <!-- 商品 -->
+                    <div class="commodity">
+                        <h1>商品</h1>
+                        <div class="commodityList">
+                          <div class="commodityItem">未匹配到相关商品信息，查看<span>所有商品</span></div>
+                          <div class="commodityItem">
+                            <span class="gno">999888777444555</span><span class="gnn">千足银来宝手镯</span><span class="slocation fr">库位01</span>
+                          </div>
+                          <div class="commodityItem">
+                            <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多商品</span><span class="more_num">(16)</span>
+                          </div>
+                        </div>
+                    </div>
+                    <!-- 单据 -->
+                    <div class="receipts">
+                        <h1>单据</h1>
+                        <div class="receiptsList">
+                          <div class="receiptsItem">未匹配到相关单据信息，查看<span>所有单据</span></div>
+                          <div class="receiptsItem">
+                            <span class="gno">RK20180609123456</span><span class="state">入库</span><span class="slocation fr">李发财</span>
+                          </div>
+                          <div class="receiptsItem">
+                            <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多单据</span><span class="more_num">(16)</span>
+                          </div>
+                        </div>
+                    </div>
+                    <!-- 会员 -->
+                    <div class="members">
+                        <h1>会员</h1>
+                        <div class="membersList">
+                          <div class="membersItem">未匹配到相关会员信息，查看<span>所有会员</span></div>
+                          <div class="membersItem">
+                            <span class="gno">12345678901</span><span class="gnn">潘晓婷</span><span class="slocation fr">四季如春珠宝店</span>
+                          </div>
+                          <div class="membersItem">
+                            <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多会员</span><span class="more_num">(16)</span>
+                          </div>
+                        </div>
+                    </div>
+
+                  </div>
+                  <!-- 搜索的列表 end -->
+
+              </div>
+              <!-- 搜索模块 end  -->
+              <div class="info" @click="unreadNoticeNum = 0">
+                <el-badge :value="unreadNoticeNum" :hidden="unreadNoticeNum == 0" class="item" title="公告">
+                  <router-link class="iconfont icon-tixing" tag="i" to="/notice"></router-link>
                 </el-badge>
-            </div>
-        </div>
-        <div class="user-info">
-            <!-- <img @click="goAdmin" v-if="userInfo" class="user-img" :src="userInfo.userLogo"> -->
-            <FormatImg :logo="userInfo.userLogo" @click.native="goAdmin" class="img" :userName="userInfo.userName || userInfo.phone" :size="40"></FormatImg>
-            <div v-if="userInfo" class="userInfo_silder">欢迎您！
-                <el-dropdown @command="selectMenu">
-                    <span class="el-dropdown-link">
-                        {{userInfo.userName || userInfo.phone}}<i class="el-icon-caret-bottom el-icon--right"></i>
-                    </span>
-                    <el-dropdown-menu slot="dropdown" class="layout-drop-item">
-                        <!--<el-dropdown-item command="a">个人信息</el-dropdown-item>-->
-                        <!--<el-dropdown-item command="b">我的公司</el-dropdown-item>
-                        <el-dropdown-item command="c">店铺管理</el-dropdown-item>-->
-                        <!--<el-dropdown-item command="d">修改密码</el-dropdown-item>-->
-                        <el-dropdown-item command="e">退出登录</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-            </div>
-        </div>
-    </div>
-</header>
+              </div>
+              <div class="msg">
+                <!-- <i class="iconfont icon-xinxiang" title="消息"></i> -->
+                  <el-badge :value="unreadSystemMessageNum" :hidden="unreadSystemMessageNum == 0" class="item" title="消息">
+                      <router-link class="iconfont icon-xinxiang" tag="i" to="/message"></router-link>
+                  </el-badge>
+              </div>
+          </div>
+          <div class="user-info">
+              <!-- <img @click="goAdmin" v-if="userInfo" class="user-img" :src="userInfo.userLogo"> -->
+              <FormatImg :logo="userInfo.userLogo" @click.native="goAdmin" class="img" :userName="userInfo.userName || userInfo.phone" :size="40"></FormatImg>
+              <div v-if="userInfo" class="userInfo_silder">欢迎您！
+                  <el-dropdown @command="selectMenu">
+                      <span class="el-dropdown-link">
+                          {{userInfo.userName || userInfo.phone}}<i class="el-icon-caret-bottom el-icon--right"></i>
+                      </span>
+                      <el-dropdown-menu slot="dropdown" class="layout-drop-item">
+                          <!--<el-dropdown-item command="a">个人信息</el-dropdown-item>-->
+                          <!--<el-dropdown-item command="b">我的公司</el-dropdown-item>
+                          <el-dropdown-item command="c">店铺管理</el-dropdown-item>-->
+                          <!--<el-dropdown-item command="d">修改密码</el-dropdown-item>-->
+                          <el-dropdown-item command="e">退出登录</el-dropdown-item>
+                      </el-dropdown-menu>
+                  </el-dropdown>
+              </div>
+          </div>
+      </div>
+
+      <!-- 点击了搜索列表后的弹窗 -->
+
+      
+
+  </header>
 </transition>
 </template>
 
@@ -108,7 +159,8 @@ export default {
       skinIndex: 0,
       smallUrl: "",
       unreadSystemMessageNum: "", // 未读系统消息
-      unreadNoticeNum: "" // 未读公告
+      unreadNoticeNum: "", // 未读公告
+      isSearch: false, // 搜索列表
     };
   },
   components: {
@@ -153,8 +205,10 @@ export default {
     changesearchborder(val) {
       if (val == 1) {
         this.$refs.mysearch.style.border = "1px solid #2993f8";
+        this.isSearch = true
       } else {
         this.$refs.mysearch.style.border = "1px solid #fff";
+        this.isSearch = false
       }
     },
     unreadCount() {
@@ -171,6 +225,7 @@ export default {
       this.iconShow = true;
     },
     watchCloseIcon() {
+      console.log("键盘弹起的时候调用");
       if (this.searchText != "") {
         this.iconShow = false;
       } else {
@@ -595,5 +650,99 @@ export default {
   flex: 1;
   padding: 0 40px;
   position: relative;
+}
+</style>
+
+<style lang="scss" scoped>
+.searchList {
+  position: absolute;
+  top: 32px;
+  left: 0;
+
+  width: 420px;
+  // height: 500px;
+  padding: 20px ;
+
+  border: 1px solid #d6d6d6;
+  border-radius: 4px;
+  background: #fff;
+
+  .commodity,.receipts,.members {
+    & > h1 {
+      width: 100%;
+      height: 24px;
+      padding-bottom: 10px;
+
+      font-size: 14px;
+      font-weight: bold;
+      color: #666;
+
+      border-bottom: 1px solid #eee;
+
+    }
+    .commodityList,.receiptsList,.membersList {
+      width: 100%;
+      margin-bottom: 20px;
+      .commodityItem,.receiptsItem,.membersItem {
+        width: 100%;
+        height: 42px;
+
+        font-size: 14px;
+        color: #999;
+        line-height: 42px;
+        
+        span {
+          color: #2993f8;
+          cursor: pointer;
+        }
+        .gno {
+          color: #333;
+
+        }
+        .state {
+          display: inline-block;
+
+          width: 40px;
+          height: 20px;
+          margin: 0 10px;
+
+          font-size: 12px;
+          color: #999;
+          text-align: center;
+          line-height: 20px;
+
+          background: #eee;
+          border-radius: 4px;
+        }
+        .gnn {
+          margin: 0 10px;
+          color: #333;
+        }
+        .slocation {
+          color: #999;
+        }
+        .more {
+          margin: 0 10px;
+
+          font-size: 14px;
+          color: #333;
+        }
+        .more_num {
+          color: #999;
+        }
+       
+      }
+    }
+  }
+  
+  .receipts {
+
+  }
+  .members {
+    .membersList {
+      margin-bottom: 0;
+    }
+  }
+
 }
 </style>
