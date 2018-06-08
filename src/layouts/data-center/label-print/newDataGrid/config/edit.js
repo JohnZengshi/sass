@@ -51,7 +51,7 @@ module.exports = {
     {
       id: '3', //id 
       text: '首饰名称', //头部title文字
-      width: '155', //单元格宽
+      width: '175', //单元格宽
       type: '', //合计类型值
       type1: '', //合计类型值
       unit: '', //头部单位补充文字
@@ -67,7 +67,7 @@ module.exports = {
     {
       id: '8', //id 
       text: '件重', //头部title文字
-      width: '150', //单元格宽
+      width: '120', //单元格宽
       type: 'totalWeight', //合计类型值
       type1: 'afTotalWeight', //合计类型值
       unit: '(g)', //头部单位补充文字
