@@ -96,296 +96,340 @@
 </template>
 
 <script>
-import bus from '../vuex/event' //引入一个中央事件总线
-const systemMenu = require('../config/systemMenu')
-import {mapGetters} from 'vuex'
-import { seekMySelfWorkApplyList, seekGetFaceByShop, seekSmallProgramShopList} from 'Api/commonality/seek'
-export default{
-  data(){
+import bus from "../vuex/event"; //引入一个中央事件总线
+const systemMenu = require("../config/systemMenu");
+import { mapGetters } from "vuex";
+import {
+  seekMySelfWorkApplyList,
+  seekGetFaceByShop,
+  seekSmallProgramShopList
+} from "Api/commonality/seek";
+export default {
+  data() {
     return {
-        sysShow :'', //一级菜单当前状态
-          systemItemClass : {
-            rootIndex : '',
-            childIndex :''
-          }, //子菜单当前状态
-        systemActive : 'hover-item', //大菜单
-        isFixed : false, //是否固定菜单
-        fixedClass : 'icon-zhankai1', 
-        systemMenu : systemMenu,
-        faceByShop: [], // 有人脸识别的店铺
-        smallProgram: [], // 有小程序的店铺
-        applyLists : [],
-        myMenuTab:[]  //头部目录tab
-    }
+      sysShow: "", //一级菜单当前状态
+      systemItemClass: {
+        rootIndex: "",
+        childIndex: ""
+      }, //子菜单当前状态
+      systemActive: "hover-item", //大菜单
+      isFixed: false, //是否固定菜单
+      fixedClass: "icon-zhankai1",
+      systemMenu: systemMenu,
+      faceByShop: [], // 有人脸识别的店铺
+      smallProgram: [], // 有小程序的店铺
+      applyLists: [],
+      myMenuTab: [] //头部目录tab
+    };
   },
-  
-  props : ['rootList'],
-  
-  created(){
-    this.getIcon()
-    this.initFixed()
-    this._seekGetFaceByShop()
-    this._seekSmallProgramShopList()
+
+  props: ["rootList"],
+
+  created() {
+    this.getIcon();
+    this.initFixed();
+    this._seekGetFaceByShop();
+    this._seekSmallProgramShopList();
   },
-  
+
   computed: {
     ...mapGetters([
       "shopListByCo" // 店铺列表
     ]),
-    isFaceRecognition () {
+    isFaceRecognition() {
       for (let i of this.faceByShop) {
         for (let k of this.shopListByCo) {
           if (i.id == k.shopId) {
             // 有开通
             if (i.count != 0) {
-              return true
+              return true;
             }
           }
         }
       }
       // 没开通
-      return false
+      return false;
     },
-    isSmallProgram () {
+    isSmallProgram() {
       for (let i of this.smallProgram) {
         for (let k of this.shopListByCo) {
           if (i.shopId == k.shopId) {
-              sessionStorage.setItem('isSmallProgram', 'Y');
-              return true
+            sessionStorage.setItem("isSmallProgram", "Y");
+            return true;
           }
         }
       }
-      sessionStorage.setItem('isSmallProgram', 'N');
+      sessionStorage.setItem("isSmallProgram", "N");
       // 没开通
-      return false
+      return false;
     }
   },
-  methods:{
+  methods: {
     // 获取个人信息
-    getIcon () {
-        seekMySelfWorkApplyList().then((response) => {
-      console.log('获取菜单:::',response);
-            if (response.data.state === 200) {
-              this.applyLists = [];
-              for (let i = 0; i < response.data.data.classifyList.length; i++) {
-                this.applyLists.push(...response.data.data.classifyList[i].applyList)
-              }
-            } else {
-              console.log('获取个人应用列表报错信息: ' + response.data.msg);
+    getIcon() {
+      seekMySelfWorkApplyList().then(
+        response => {
+          console.log("获取菜单:::", response);
+          if (response.data.state === 200) {
+            this.applyLists = [];
+            for (let i = 0; i < response.data.data.classifyList.length; i++) {
+              this.applyLists.push(
+                ...response.data.data.classifyList[i].applyList
+              );
             }
-        }, (response) => {
-            console.log(response);
-        })
+          } else {
+            console.log("获取个人应用列表报错信息: " + response.data.msg);
+          }
+        },
+        response => {
+          console.log(response);
+        }
+      );
     },
-    
+
     //菜单切换
-    systemTab ( loop ,type ,menu){
-      if( type ){
-        this.systemItemClass.rootIndex = loop
-        this.systemItemClass.childIndex = -1
-        sessionStorage.setItem('rootIndex', loop)
-        sessionStorage.setItem('childIndex', -1)
+    systemTab(loop, type, menu) {
+      if (type) {
+        this.systemItemClass.rootIndex = loop;
+        this.systemItemClass.childIndex = -1;
+        sessionStorage.setItem("rootIndex", loop);
+        sessionStorage.setItem("childIndex", -1);
       }
-      this.sysShow = loop
-      
+      this.sysShow = loop;
+
       //去掉定义数组的undefined
-      if (typeof(this.myMenuTab[0]) === "undefined" ){
-      	this.myMenuTab = []
+      if (typeof this.myMenuTab[0] === "undefined") {
+        this.myMenuTab = [];
       }
-      let pushStatus = true
+      let pushStatus = true;
       //如果没打开任何页签就把当前页签数据加入数组
-      if(this.myMenuTab.length == 0){
-      	this.myMenuTab.push(menu)
-      }else{
-      	for(let i=0;i<this.myMenuTab.length;i++){
-	      	if(this.myMenuTab[i].path == menu.path || menu.path==''){
-	      		pushStatus = false
-	      	}
-	      }
-      	if(pushStatus){
-      		this.myMenuTab.push(menu)
-      	}
+      if (this.myMenuTab.length == 0) {
+        this.myMenuTab.push(menu);
+      } else {
+        for (let i = 0; i < this.myMenuTab.length; i++) {
+          if (this.myMenuTab[i].path == menu.path || menu.path == "") {
+            pushStatus = false;
+          }
+        }
+        if (pushStatus) {
+          this.myMenuTab.push(menu);
+        }
       }
-      
-      console.log(this.myMenuTab)
-      console.log(menu.path)
+
+      console.log(this.myMenuTab);
+      console.log(menu.path);
       //将已经打开的页签数据绑定到Vue实例
-//    Object.assign( Vue.prototype, { menuTabData : this.myMenuTab})
-			bus.$emit('menuTabDataChange',this.myMenuTab)  //发送事件
-			bus.$emit('menuTabPath',menu.path)
+      //    Object.assign( Vue.prototype, { menuTabData : this.myMenuTab})
+      bus.$emit("menuTabDataChange", this.myMenuTab); //发送事件
+      bus.$emit("menuTabPath", menu.path);
     },
-        
-        //菜单显示
-        systemShow(){
-          
-          this.$emit('setScopeSize', this.isFixed)
-          //if( this.isFixed ) return; 
-          let fixedBtn = document.getElementsByClassName('elem-btn')[0]
-          let bodyHeader = document.getElementsByClassName('body-header')[0]
-          let leftTittle = document.getElementsByClassName('left-tittle')[0]
-          let totalTable = document.getElementsByClassName('total-table')[0]
-          let bodyRow5 = document.getElementsByClassName('body-row5')[0]
-          
-          if( !this.isFixed ){
-          this.systemActive = 'hover-item'
-        setTimeout(function () {
-          if( bodyHeader ) bodyHeader.style.left = document.getElementsByClassName('body-box')[0].getBoundingClientRect().left + 'px'
-          if( leftTittle ) leftTittle.style.left = document.getElementsByClassName('body-box')[0].getBoundingClientRect().left + 'px'
-          if( totalTable ) totalTable.style.left = document.getElementsByClassName('body-box')[0].getBoundingClientRect().left + 'px'
-          if( bodyRow5 ) bodyRow5.style.left = document.getElementsByClassName('body-box')[0].getBoundingClientRect().left + 'px'
-        }, 300)
-          
+
+    //菜单显示
+    systemShow() {
+      this.$emit("setScopeSize", this.isFixed);
+      //if( this.isFixed ) return;
+      let fixedBtn = document.getElementsByClassName("elem-btn")[0];
+      let bodyHeader = document.getElementsByClassName("body-header")[0];
+      let leftTittle = document.getElementsByClassName("left-tittle")[0];
+      let totalTable = document.getElementsByClassName("total-table")[0];
+      let bodyRow5 = document.getElementsByClassName("body-row5")[0];
+
+      if (!this.isFixed) {
+        this.systemActive = "hover-item";
+        setTimeout(function() {
+          if (bodyHeader)
+            bodyHeader.style.left =
+              document
+                .getElementsByClassName("body-box")[0]
+                .getBoundingClientRect().left + "px";
+          if (leftTittle)
+            leftTittle.style.left =
+              document
+                .getElementsByClassName("body-box")[0]
+                .getBoundingClientRect().left + "px";
+          if (totalTable)
+            totalTable.style.left =
+              document
+                .getElementsByClassName("body-box")[0]
+                .getBoundingClientRect().left + "px";
+          if (bodyRow5)
+            bodyRow5.style.left =
+              document
+                .getElementsByClassName("body-box")[0]
+                .getBoundingClientRect().left + "px";
+        }, 300);
+
         //console.log(document.getElementsByClassName('body-box')[0].getBoundingClientRect().left + 'px')
-          }else{
-          this.systemActive = 'active'
-          //if( fixedBtn ) fixedBtn.style.marginLeft = '-530px'
-        setTimeout(function () {
-          if( bodyHeader ) bodyHeader.style.left = document.getElementsByClassName('body-box')[0].getBoundingClientRect().left + 'px'
-          if( leftTittle ) leftTittle.style.left = document.getElementsByClassName('body-box')[0].getBoundingClientRect().left + 'px'
-          if( totalTable ) totalTable.style.left = document.getElementsByClassName('body-box')[0].getBoundingClientRect().left + 'px'
-          if( bodyRow5 ) bodyRow5.style.left = document.getElementsByClassName('body-box')[0].getBoundingClientRect().left + 'px'
-        }, 300)
+      } else {
+        this.systemActive = "active";
+        //if( fixedBtn ) fixedBtn.style.marginLeft = '-530px'
+        setTimeout(function() {
+          if (bodyHeader)
+            bodyHeader.style.left =
+              document
+                .getElementsByClassName("body-box")[0]
+                .getBoundingClientRect().left + "px";
+          if (leftTittle)
+            leftTittle.style.left =
+              document
+                .getElementsByClassName("body-box")[0]
+                .getBoundingClientRect().left + "px";
+          if (totalTable)
+            totalTable.style.left =
+              document
+                .getElementsByClassName("body-box")[0]
+                .getBoundingClientRect().left + "px";
+          if (bodyRow5)
+            bodyRow5.style.left =
+              document
+                .getElementsByClassName("body-box")[0]
+                .getBoundingClientRect().left + "px";
+        }, 300);
         // console.log(document.getElementsByClassName('body-box')[0].getBoundingClientRect().left + 'px')
-          }
-        },
-        
-        //菜单权限控制
-        getPrivilegeList (item,txt){
-          let fb = item.split('-')
-          if(fb.length > 0){
-            if(fb[1]){
-              return fb.includes(txt)
-            }
-          }
-          return false
-        },
-        
-        //固定菜单
-        navFixed(){
-           this.isFixed = !this.isFixed;
-           this.systemActive = 'active'
-           sessionStorage.setItem('_systemFixed', this.isFixed )
-           this.systemShow()
-        },
-        
-        initFixed(){
-           let fixed = sessionStorage.getItem('_systemFixed')
-           
-           if( fixed == 'true'){
-            this.isFixed = true;
-            this.systemActive = 'active'
-           } 
-        },
-        
-        //子菜单点击事件
-        systemItem (rootIndex, childIndex, menu ){
-        	console.log(rootIndex)
-        	console.log(childIndex)
-        	console.log(menu)
-        	/*
+      }
+    },
+
+    //菜单权限控制
+    getPrivilegeList(item, txt) {
+      let fb = item.split("-");
+      if (fb.length > 0) {
+        if (fb[1]) {
+          return fb.includes(txt);
+        }
+      }
+      return false;
+    },
+
+    //固定菜单
+    navFixed() {
+      this.isFixed = !this.isFixed;
+      this.systemActive = "active";
+      sessionStorage.setItem("_systemFixed", this.isFixed);
+      this.systemShow();
+    },
+
+    initFixed() {
+      let fixed = sessionStorage.getItem("_systemFixed");
+
+      if (fixed == "true") {
+        this.isFixed = true;
+        this.systemActive = "active";
+      }
+    },
+
+    //子菜单点击事件
+    systemItem(rootIndex, childIndex, menu) {
+      console.log(rootIndex);
+      console.log(childIndex);
+      console.log(menu);
+      /*
         	 * 这里要判断menu.children是否有数据，如无数据会报错导致只有一项子项的菜单获取不了焦点
         	 */
-          if (menu && menu.children.length > 0) {
-            if (!this.isFaceRecognition) {
-              if (menu.text == '人脸' || menu.children[childIndex].text == '意向顾客') {
-                eventBus.$emit('open-face-popup', '人脸识别')
-              }
-            }
-            if (!this.isSmallProgram) {
-              if (menu.children[childIndex].text == '小程序设置') {
-                eventBus.$emit('open-face-popup', '小程序')
-                return
-              }
-            }
-            // if (menu.text == '人脸' && ) {
-            //   eventBus.$emit('open-face-popup')
-            // } else  if (menu.text == '人脸' && !this.isFaceRecognition) {
-            //   // for (let i of menu.children) {
-            //   //   if (i.text == '意向顾客' && !this.isFaceRecognition) {
-            //   //     eventBus.$emit('open-face-popup')
-            //   //     break
-            //   //   }
-            //   // }
-            // }
+      if (menu && menu.children.length > 0) {
+        if (!this.isFaceRecognition) {
+          if (
+            menu.text == "人脸" ||
+            menu.children[childIndex].text == "意向顾客"
+          ) {
+            eventBus.$emit("open-face-popup", "人脸识别");
           }
-          this.systemItemClass.rootIndex = rootIndex
-          this.systemItemClass.childIndex = childIndex
-          sessionStorage.setItem('rootIndex', rootIndex)
-          sessionStorage.setItem('childIndex', childIndex)
-          
-          //去掉定义数组的undefined
-		      if (typeof(this.myMenuTab[0]) === "undefined" ){
-		      	this.myMenuTab = []
-		      }
-		      let pushStatus = true
-		      //如果没打开任何页签就把当前页签数据加入数组
-		      if(this.myMenuTab.length == 0){
-		      	this.myMenuTab.push(menu.children[childIndex])
-		      }else{
-		      	for(let i=0;i<this.myMenuTab.length;i++){
-			      	if(this.myMenuTab[i].path == menu.children[childIndex].path || menu.children[childIndex].path == ''){
-			      		pushStatus = false
-			      	}
-			      }
-		      	if(pushStatus){
-		      		this.myMenuTab.push(menu.children[childIndex])
-		      	}
-		      }
-		      
-		      console.log(this.myMenuTab)
-		      console.log(menu.path)
-		      //将已经打开的页签数据绑定到Vue实例
-//		      Object.assign( Vue.prototype, { menuTabData : this.myMenuTab})
-					bus.$emit('menuTabDataChange',this.myMenuTab)	//发送事件
-					bus.$emit('menuTabPath',menu.path)
-        },
-
-        _seekGetFaceByShop () {
-          seekGetFaceByShop()
-            .then(res => {
-              if (res.data.state == 200) {
-                this.faceByShop = res.data.data.shopList
-              } else {
-                this.$message({
-                  message: res.data.msg,
-                  type: 'warning'
-                })
-              }
-            })
-        },
-
-        _seekSmallProgramShopList () {
-          seekSmallProgramShopList()
-            .then(res => {
-              if (res.data.state == 200) {
-                this.smallProgram = res.data.data.dataList
-              } else {
-                this.$message({
-                  message: res.data.msg,
-                  type: 'warning'
-                })
-              }
-            })
         }
+        if (!this.isSmallProgram) {
+          if (menu.children[childIndex].text == "小程序设置") {
+            eventBus.$emit("open-face-popup", "小程序");
+            return;
+          }
+        }
+        // if (menu.text == '人脸' && ) {
+        //   eventBus.$emit('open-face-popup')
+        // } else  if (menu.text == '人脸' && !this.isFaceRecognition) {
+        //   // for (let i of menu.children) {
+        //   //   if (i.text == '意向顾客' && !this.isFaceRecognition) {
+        //   //     eventBus.$emit('open-face-popup')
+        //   //     break
+        //   //   }
+        //   // }
+        // }
+      }
+      this.systemItemClass.rootIndex = rootIndex;
+      this.systemItemClass.childIndex = childIndex;
+      sessionStorage.setItem("rootIndex", rootIndex);
+      sessionStorage.setItem("childIndex", childIndex);
+
+      //去掉定义数组的undefined
+      if (typeof this.myMenuTab[0] === "undefined") {
+        this.myMenuTab = [];
+      }
+      let pushStatus = true;
+      //如果没打开任何页签就把当前页签数据加入数组
+      if (this.myMenuTab.length == 0) {
+        this.myMenuTab.push(menu.children[childIndex]);
+      } else {
+        for (let i = 0; i < this.myMenuTab.length; i++) {
+          if (
+            this.myMenuTab[i].path == menu.children[childIndex].path ||
+            menu.children[childIndex].path == ""
+          ) {
+            pushStatus = false;
+          }
+        }
+        if (pushStatus) {
+          this.myMenuTab.push(menu.children[childIndex]);
+        }
+      }
+
+      console.log(this.myMenuTab);
+      console.log(menu.path);
+      //将已经打开的页签数据绑定到Vue实例
+      //		      Object.assign( Vue.prototype, { menuTabData : this.myMenuTab})
+      bus.$emit("menuTabDataChange", this.myMenuTab); //发送事件
+      bus.$emit("menuTabPath", menu.path);
+    },
+
+    _seekGetFaceByShop() {
+      seekGetFaceByShop().then(res => {
+        if (res.data.state == 200) {
+          this.faceByShop = res.data.data.shopList;
+        } else {
+          this.$message({
+            message: res.data.msg,
+            type: "warning"
+          });
+        }
+      });
+    },
+
+    _seekSmallProgramShopList() {
+      seekSmallProgramShopList().then(res => {
+        if (res.data.state == 200) {
+          this.smallProgram = res.data.data.dataList;
+        } else {
+          this.$message({
+            message: res.data.msg,
+            type: "warning"
+          });
+        }
+      });
+    }
   },
   mounted() {
-    let self = this
-    this.$nextTick(()=>{
-      this.systemTab()
-      this.systemItemClass.rootIndex = sessionStorage.getItem('rootIndex')
-      this.systemItemClass.childIndex = sessionStorage.getItem('childIndex')
-    })
-      eventBus.$on("updateRoleList", function () {
-      self.getIcon()
-      self.initFixed()
-    })
-    }
-}
+    let self = this;
+    this.$nextTick(() => {
+      this.systemTab();
+      this.systemItemClass.rootIndex = sessionStorage.getItem("rootIndex");
+      this.systemItemClass.childIndex = sessionStorage.getItem("childIndex");
+    });
+    eventBus.$on("updateRoleList", function() {
+      self.getIcon();
+      self.initFixed();
+    });
+  }
+};
 </script>
 
 <style scoped lang="scss">
 /* 新菜单 样式 */
-.system-nav{
+.system-nav {
   position: fixed;
   left: 0;
   top: 0;
@@ -397,41 +441,42 @@ export default{
   box-sizing: border-box;
   width: 70px;
   float: left;
-  transition: all .2s;
+  transition: all 0.2s;
   box-shadow: 1px 3px 10px 0px rgba(0, 0, 0, 0.12);
   overflow-y: auto;
   overflow-x: hidden;
-  
-  >button{
+
+  > button {
     height: 60px;
     width: 100%;
     text-align: center;
-    border:0 none;
+    border: 0 none;
     background-color: #2993f8;
-    border-bottom:1px solid #e0e0e0;
-    cursor: pointer;  
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
   }
-  
-  
-  .navFixed{
+
+  .navFixed {
     display: inline-block;
     cursor: pointer;
     color: #fff;
     font-size: 16px;
-    transition: .2s ease transform; 
+    transition: 0.2s ease transform;
   }
 
-  >.nav{
-    border-bottom:1px solid #e0e0e0;
-    
-    >.menu-item{display: none;}
-    >.item{
-       //padding:5px 0 ;
-       overflow: hidden;
-       display: none;
-       width: 190px;
-       
-       li{
+  > .nav {
+    border-bottom: 1px solid #e0e0e0;
+
+    > .menu-item {
+      display: none;
+    }
+    > .item {
+      //padding:5px 0 ;
+      overflow: hidden;
+      display: none;
+      width: 190px;
+
+      li {
         height: 42px;
         line-height: 42px;
         padding-left: 55px;
@@ -439,41 +484,42 @@ export default{
         font-size: 14px;
         color: #333;
         border-left: 3px solid transparent;
-        
-        i{
+
+        i {
           font-size: 16px;
           margin-right: 8px;
           color: #333;
         }
-        &:hover,&.active{
+        &:hover,
+        &.active {
           color: #2993f8;
           background-color: #f7f7f7;
-          i{
+          i {
             color: #2993f8;
           }
         }
-        &.active{
+        &.active {
           border-color: #2993f8;
         }
-       }
-       
-      .path-target{
-         display: none;
+      }
+
+      .path-target {
+        display: none;
       }
     }
   }
-  
+
   //鼠标滑过出现下拉框
-  &.hover-item{
+  &.hover-item {
     overflow: visible;
-    .nav{
+    .nav {
       position: relative;
       //width: 70px;
-      >.item{
+      > .item {
         padding: 0;
         position: absolute;
         left: 70px;
-        top:0;
+        top: 0;
         background-color: #fff;
         z-index: 9;
         display: block;
@@ -481,18 +527,18 @@ export default{
         box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.12);
         overflow: visible;
         visibility: hidden;
-        opacity:0;
-        
-        >li{
-          padding-left:22px; 
+        opacity: 0;
+
+        > li {
+          padding-left: 22px;
         }
-        
-        &.secondary_item:before{
+
+        &.secondary_item:before {
           content: attr(data-text);
           display: block;
           height: 60px;
           width: 160px;
-          position: relative; 
+          position: relative;
           top: 0;
           left: -5px;
           background-color: #fff;
@@ -502,105 +548,102 @@ export default{
           color: #999;
           z-index: 1;
         }
-        
+
         //item
-        &.path-href{
-           &:before{
-               display: none;
-           }
-           >.path-target{
-              display: block;
-              height: 60px;
-              color: #999;
-              line-height: 60px;
-              padding-left: 25px;
-              font-size: 16px;
-              &:hover{
-                color: #2993f8;  
-              }
-           }
+        &.path-href {
+          &:before {
+            display: none;
+          }
+          > .path-target {
+            display: block;
+            height: 60px;
+            color: #999;
+            line-height: 60px;
+            padding-left: 25px;
+            font-size: 16px;
+            &:hover {
+              color: #2993f8;
+            }
+          }
         }
-        
-        
-        &.menu-item{
-          &:before{
-            content:'';
+
+        &.menu-item {
+          &:before {
+            content: "";
             display: block;
             height: 60px;
             width: 5px;
-            position: absolute; 
+            position: absolute;
             top: 0;
             left: -5px;
             background-color: #fff;
             z-index: 0;
           }
-          >li{
+          > li {
             height: 60px;
             line-height: 60px;
             color: #333;
-            &:hover{
-                color: #2993f8;
+            &:hover {
+              color: #2993f8;
             }
           }
         }
       }
-      
-      &:hover{
-        >.item{
+
+      &:hover {
+        > .item {
           visibility: visible;
           opacity: 1;
         }
       }
-      
-      
-      >.root{
+
+      > .root {
         padding-left: 22px;
         border-left: 3px solid transparent;
-        &.active{
+        &.active {
           border-left-color: #2993f8;
-          i.iconfont{
+          i.iconfont {
             color: #2993f8;
           }
         }
-        
-        &:hover{
-          i.iconfont{
+
+        &:hover {
+          i.iconfont {
             color: #2993f8;
           }
         }
       }
-      
-      &:hover{
-        >.root{
+
+      &:hover {
+        > .root {
           box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.12);
         }
       }
     }
-    
   }
-  
+
   /* 标题 */
-  .root{
+  .root {
     font-weight: normal;
     font-size: 16px;
     height: 60px;
     padding-left: 22px;
-    width:100%;
+    width: 100%;
     position: relative;
-    
-    &.path-href{
+
+    &.path-href {
       cursor: pointer;
-      &:hover{
-        i.iconfont{
-          color: #2993f8!important;
+      &:hover {
+        i.iconfont {
+          color: #2993f8 !important;
         }
-        &:after{
+        &:after {
           color: #2993f8;
         }
       }
     }
-    
-    &:after{
+
+    &:after {
       content: attr(data-text);
       position: absolute;
       white-space: nowrap;
@@ -609,82 +652,80 @@ export default{
       display: none;
       color: #bdbdbd;
     }
-    
-    .el-icon{
+
+    .el-icon {
       position: absolute;
-      right:18px;
+      right: 18px;
       top: 26px;
       font-size: 11px;
     }
 
-    i.iconfont{
+    i.iconfont {
       display: inline-block;
       font-size: 20px;
       margin: 19px 0;
       color: #999;
     }
   }
-  
+
   //展开状态
-  &.active{
+  &.active {
     width: 190px;
-    & + .app-main{
+    & + .app-main {
       left: 190px;
     }
-    
-    >button{
+
+    > button {
       background-color: transparent;
-      .navFixed{
+      .navFixed {
         color: #666;
         transform: rotate(-180deg);
       }
     }
-  
-    .root{
-      
-      i.iconfont{
+
+    .root {
+      i.iconfont {
         color: #bdbdbd;
       }
-      
-      &:after{
-        display:inline-block;
+
+      &:after {
+        display: inline-block;
       }
-      
-      border-left:3px solid transparent;
-      
-      &.active{
-        &.path-href{
+
+      border-left: 3px solid transparent;
+
+      &.active {
+        &.path-href {
           border-left-color: #2993f8;
-          &:after{
+          &:after {
             color: #2993f8;
           }
-          i.iconfont{
-            color: #2993f8!important;
+          i.iconfont {
+            color: #2993f8 !important;
           }
         }
       }
     }
-    
-    .nav{
-      
-      .item{
-         display: block;
+
+    .nav {
+      .item {
+        display: block;
       }
-      
-      .menu-item{
+
+      .menu-item {
         display: none;
       }
       /* 子菜单 */
-      &.active{
-        
-        .root i{ color: #a0a0a0;}
-        
-        >.item{
+      &.active {
+        .root i {
+          color: #a0a0a0;
+        }
+
+        > .item {
           color: #333;
         }
       }
     }
-    
   }
 }
 </style>
