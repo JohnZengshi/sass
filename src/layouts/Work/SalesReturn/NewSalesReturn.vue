@@ -348,6 +348,12 @@
                                         </dropDownColum>
                 </div>
 
+                <div class="iconfont_wrap fr">
+                  <span :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)">成品</span>
+                  <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
+                  <span :class="inconspanactive2 == true ? 'myspanactive' : ''" @click="toggleAttribute(2)">旧料</span>
+                </div>
+
                 <ul class="header-wrap-btn">
                   <li v-if='addRole && dataGridOptions.type == 1' class="confirm-btn">
                     <!--单个添加--><input ref="inputDom" @keyup.enter="addNewGoods" v-model="enterOrderNum" type="text" placeholder="扫描/输入条码号以添加商品">
@@ -536,6 +542,8 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
     },
     data() {
       return {
+        inconspanactive1: true,
+        inconspanactive2: false,
         isSelDelect: true, // 批量删除操作
         receiptInfoList: '',
         "receiptsIntroList": {}, // 单据简介
@@ -757,7 +765,7 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
         browserType: false,
         dataGridOptions: {
           orderNum: this.$route.query.orderNumber,
-          // productClass: '1',
+          productClass: '1',
           sortFlag: '0',
           sortList: [{
             barcode: '1'
@@ -1171,11 +1179,21 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
             break;
         }
       },
-      toggleAttribute() {
-        this.dataGridOptions.page = 1
-        this.dataGridOptions.pageSize = 15
-        this.loading = true;
-        this.send()
+      toggleAttribute(val) {
+        if (val == 1) {
+                this.inconspanactive1 = true;
+                this.inconspanactive2 = false;
+            } else {
+                this.inconspanactive1 = false;
+                this.inconspanactive2 = true;
+            }
+            this.dataGridOptions.page = 1;
+            this.dataGridOptions.pageSize = 15;
+            this.dataGridOptions.productClass = val;
+            console.log("切换成旧料", this.dataGridOptions.productClass);
+            //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
+            this.loading = true;
+            this.send();
 
       },
       //成本控制
@@ -2021,7 +2039,7 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
     margin-top: 12px;
     // margin-right: 10px;
     float: right;
-    border:1px solid #eee;
+    border:1px solid #d6d6d6;
     border-radius: 4px;
     font-size: 12px;
     text-align: center;
@@ -2040,12 +2058,31 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
     left: -210px;
 }
 .class_btn_wrap {
-    width: 306px;
+    width: 300px;
     height: 26px;
     border-radius: 4px;
-    border: 1px solid #eee;
+    border: 1px solid #d6d6d6;
     float: right;
     margin-right: 10px;
     margin-top: 12px;
 }
+.iconfont_wrap {
+    width: 86px;
+    height: 26px;
+    border: 1px solid #d6d6d6;
+    border-radius: 4px;
+    margin-top: 12px;
+    margin-right: 10px;
+    text-align: center;
+    line-height: 26px;
+    span{
+      font-size: 12px;
+      font-weight: bold;
+      color: #666;
+      cursor: pointer;
+    }
+    .myspanactive {
+      color: #2993f8;
+    }
+  }
 </style>
