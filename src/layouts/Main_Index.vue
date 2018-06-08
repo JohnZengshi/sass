@@ -100,9 +100,10 @@
               
               <el-dropdown-menu slot="dropdown" class="layout-drop-item shopManage">
                 <el-dropdown-item 
-                    v-for="item in shopList" 
+                    v-for="(item,index) in shopList" 
                     v-if="item.shopName !=''"
-                    @click.native="switchShop(item)">
+                    @click.native="switchShop(item)"
+                    :key="index">
                     {{item.shopName}}
                 </el-dropdown-item>
               </el-dropdown-menu>

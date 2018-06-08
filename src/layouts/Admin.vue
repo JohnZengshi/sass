@@ -15,7 +15,7 @@
           <span>{{navDataList[2].type}}</span>
           <div class="shop_out_side" v-if="shopList.length"> <!--v-if="shopList.length"-->
             <div>
-              <div v-for="(shop, index) in shopList" class="shop_out_side_item">
+              <div v-for="(shop, index) in shopList" class="shop_out_side_item" :key="index">
                 <li :title="shop.shopName" :class="{active:index==outSideIndex}" class="shopList_item" shopList="mainList" @click="propsShopList(shop, index)"><img src="./../../static/img/staffDefaultImg.png"/> {{shop.shopName}}</li>
               </div>
             </div>

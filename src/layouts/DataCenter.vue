@@ -39,7 +39,7 @@
           <th><div class="item fileOperate">操作</div></th>
           <th><div class="item fileRecover">恢复时间</div></th>
         </tr>
-        <tr class="table-cont" v-for="(item, index) in dataList">
+         <tr class="table-cont" v-for="(item, index) in dataList" :key="index">
           <td>{{item.filename}}</td>
           <td>{{item.fileSize}}</td>
           <td>{{item.backType == '0' ? '逻辑备份' : '逻辑备份'}}</td>
