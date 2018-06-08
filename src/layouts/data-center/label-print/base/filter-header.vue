@@ -136,8 +136,8 @@ export default {
       filterCondition: {
         keyWord: '',
         newOrderId: '',
-        beginPage: '1',
-        pageSize: '9999',
+        // page: '1',
+        // pageSize: '30',
         storageId: [],
         shopId: [],
         productTypeId: [],
@@ -363,6 +363,13 @@ export default {
       this.$emit('resetData')
     },
     batchAddByOrderNum () {
+      if (!this.keyword) {
+        this.$message({
+          message: '请输入正确的条码号',
+          type: 'warning'
+        })
+        return
+      }
       let options = {
         keyword: this.keyword
       }
