@@ -8,7 +8,7 @@
                 </div>
             </div>
             <div class="menu-bottom">
-                <div class="batch-time-wrap">
+<!--                 <div class="batch-time-wrap">
                     <div class="date-w81">
                         <el-date-picker
                             format
@@ -29,7 +29,7 @@
                         >
                         </el-date-picker>
                     </div>
-                </div>
+                </div> -->
                 <div class="batch-select-wrap select-w100">
                     <el-select filterable v-model="modelType" @change="changeState" placeholder="全部">
                         <el-option
@@ -210,8 +210,8 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
                 let options = {
                     orderId: '',
                     keyword: this.keyword,
-                    beginTime: formattingTime(this.startTime),
-                    endTime: formattingEndTime(this.endTime),
+                    // beginTime: formattingTime(this.startTime),
+                    // endTime: formattingEndTime(this.endTime),
                     type: this.modelType,
                     makeUserId: '',
                     beginNum: this.beginNum,
@@ -429,6 +429,7 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
         .menu-bottom {
             height: 28px;
             float: left;
+            margin-left: 16px;
             .batch-time-wrap{
                 float: left;
                 height: 28px;
