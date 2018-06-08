@@ -819,7 +819,7 @@ export default {
             break;
           }
         },
-        toggleAttribute () {
+        toggleAttribute (val) {
                 if (val == 1) {
                     this.inconspanactive1 = true;
                     this.inconspanactive2 = false;

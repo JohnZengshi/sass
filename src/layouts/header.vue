@@ -237,6 +237,10 @@ export default {
             //this.$router.push({path: '/admin'})
             this.$emit("goPersonalInfo",{flag: true})
         },
+
+        open() {
+            console.log('打开')
+        }
 	}
 }
 </script>
