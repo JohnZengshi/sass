@@ -190,6 +190,12 @@ const systemMenu = [
 				children: []
 			},
 			{
+				text: '打印设置',
+				path: '/work/template/list',
+				icon: 'moban',
+				children: []
+			},
+			{
 			   text: '小程序设置',
 			   path: '/work/miniprogram',
 			   icon: 'gongsishezhi',

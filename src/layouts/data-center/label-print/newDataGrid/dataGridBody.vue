@@ -38,7 +38,7 @@ export default {
 		}
 	},
 	mounted () {
-    	let _this = this
+    let _this = this
 		this.$nextTick(()=>{
 			
 			if( this.dataGridStorage.length ){
@@ -46,7 +46,7 @@ export default {
 				this.cheackData()
 				this.storageFormatDate()
 			}
-			_this.$emit('lazyloadSend',123 )
+			_this.$emit('lazyloadSend')
 		})
 		
 		$(".ui-table-container").mCustomScrollbar({
@@ -60,6 +60,8 @@ export default {
             },
             callbacks: {
                 onTotalScroll: function () {
+                  _this.$emit('lazyloadSend')
+                  console.log('滚到底部')
 					$('.loadControl').css({
 						opacity:1
 					})

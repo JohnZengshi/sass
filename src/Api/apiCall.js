@@ -17,11 +17,11 @@ function apiCall (param, URL) {
       }
     };
     // 内网
-    let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8083/yunzhubao' : ''
+    //let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8083/yunzhubao' : ''
     // uat
     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8099' : ''
     // 正式
-    // let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
+    let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
     let IT_URL = serverHost + URL;
     let foo = function* (up_data) {
         yield Vue.http.post(IT_URL, up_data)

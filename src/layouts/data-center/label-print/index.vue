@@ -960,6 +960,7 @@ export default {
 
     //懒加载
     lazyloadSend() {
+      debugger
       if (this.dataGridStorage.length) {
         if (this.dataGridStorage.length != this.totalNum) {
           this.filterData()
