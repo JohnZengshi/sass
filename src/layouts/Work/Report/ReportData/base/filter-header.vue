@@ -21,6 +21,9 @@
     },
     data () {
       return {
+        filterData: {
+
+        },
         tabSwitch: false,
         isShowCost: '',
         madeUpList: [
@@ -43,6 +46,9 @@
                 id: '2'
             }
         ],
+        filterData: {
+
+        },
         dataGridOptions: {
           productClass: ''
         }
