@@ -622,6 +622,7 @@ export default {
     methods: {
         // 完成
         filterHeaderComplate (parm) {
+            alert('7897897')
             console.log('完成后过滤的值', parm)
         },
         // madeUpOn (parm) {

@@ -57,11 +57,12 @@
     methods: {
         madeUpOnProductClass (parm) {
           this.filterData.productClass = parm.id
+          this.$emit('complate', this.filterData)
         },
         madeUpOn (parm) {
           console.log('接收到的值', parm)
           this.filterData = Object.assign(this.filterData, parm)
-          console.log('目前要筛选的值', parm)
+          this.$emit('complate', this.filterData)
         },
         choseMenu () {
           this.tabSwitch = !this.tabSwitch
