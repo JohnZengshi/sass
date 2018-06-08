@@ -228,11 +228,11 @@ export default {
         },
         {
             id: "90",
-            name: "已退货"
+            name: "已销退"
         },
         {
             id: "91",
-            name: "退货中"
+            name: "销退中"
         },
         {
             id: "92",
@@ -250,14 +250,14 @@ export default {
             id: "95",
             name: "回收中"
         },
-        {
-            id: "100",
-            name: "店铺收货"
-        },
-        {
-            id: "101",
-            name: "仓库收货"
-        }
+        // {
+        //     id: "100",
+        //     name: "店铺收货"
+        // },
+        // {
+        //     id: "101",
+        //     name: "仓库收货"
+        // }
       ],
       "supplierListData": [
           {

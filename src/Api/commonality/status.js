@@ -82,9 +82,9 @@ export const newProductDetailStatus = function (parm) { // 商品列表
         case "81":
             return '销售中'
         case "90":
-            return '已退货'
+            return '已销退'
         case "91":
-            return '退货中'
+            return '销退中'
         case "92":
             return '已换货'
         case "93":
