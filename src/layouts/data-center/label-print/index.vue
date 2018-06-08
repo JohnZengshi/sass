@@ -398,6 +398,7 @@ export default {
   },
   methods: {
     resetData () {
+      debugger
       this.filterCondition = {
         keyWord: '',
         newOrderId: '',
@@ -410,7 +411,7 @@ export default {
         sortList: [{ classTypeName: '1' }],
         productStatus: [], // 产品状态
       }
-      this.allData = {}
+      this.addData = []
       this.dataGridStorage = []
       this.sortList = [{ name: '产品类别', value: '1' }]
     },
