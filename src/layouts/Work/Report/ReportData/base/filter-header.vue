@@ -1,8 +1,11 @@
 <template>
   <div class="report-filter-height-main">
-    <cut-bg class="ml-10" :showList="madeUpList" :current="dataGridOptions.productClass" @pitchOn="madeUpOn"></cut-bg>
 
-    <cut-segmentation class="ml-10" :showList="cutSegmentationList" :current="dataGridOptions.productClass" @pitchOn="madeUpOn"></cut-segmentation>
+    <!-- 成品旧料 -->
+    <cut-bg class="ml-10" :showList="madeUpList" :current="filterData.productClass" @pitchOn="madeUpOnProductClass"></cut-bg>
+    
+
+    <cut-segmentation class="ml-10" :showList="cutSegmentationList" :current="filterData.productClass" @pitchOn="madeUpOn"></cut-segmentation>
 
     <div class="cost-btn ml-10" v-if="isShowCost == 'Y'" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu" :class="{active: tabSwitch}">
       专列项
@@ -22,9 +25,9 @@
     data () {
       return {
         filterData: {
-
+          productClass: '' // 成品旧料
         },
-        tabSwitch: false,
+        tabSwitch: false, // 专列项
         isShowCost: '',
         madeUpList: [
             {
@@ -45,21 +48,18 @@
                 name: '产品分类',
                 id: '2'
             }
-        ],
-        filterData: {
-
-        },
-        dataGridOptions: {
-          productClass: ''
-        }
+        ]
       }
     },
     created () {
       this.settingUserRole()
     },
     methods: {
+        madeUpOnProductClass (parm) {
+          this.filterData.productClass = parm.id
+        },
         madeUpOn (parm) {
-            this.dataGridOptions.productClass = parm.id
+          this.filterData = Object.assign(this.filterData, parm)
         },
         choseMenu () {
           this.tabSwitch = !this.tabSwitch
