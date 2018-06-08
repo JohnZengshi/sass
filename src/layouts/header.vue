@@ -150,8 +150,6 @@ export default {
         changesearchborder(val){
             if(val == 1){
                this.$refs.mysearch.style.border="1px solid #2993f8";
-               debugger
-               console.log(this.$refs.mysearch)
             }else{
                 this.$refs.mysearch.style.border="1px solid #fff";
             }
