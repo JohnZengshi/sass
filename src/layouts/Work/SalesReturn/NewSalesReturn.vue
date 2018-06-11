@@ -348,11 +348,11 @@
                                         </dropDownColum>
                 </div>
 
-                <div class="iconfont_wrap fr">
+                <!-- <div class="iconfont_wrap fr">
                   <span :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)">成品</span>
                   <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
                   <span :class="inconspanactive2 == true ? 'myspanactive' : ''" @click="toggleAttribute(2)">旧料</span>
-                </div>
+                </div> -->
 
                 <ul class="header-wrap-btn">
                   <li v-if='addRole && dataGridOptions.type == 1' class="confirm-btn">
