@@ -1,8 +1,11 @@
 <template>
   <div class="report-filter-height-main">
-    <cut-bg class="ml-10" :showList="madeUpList" :current="dataGridOptions.productClass" @pitchOn="madeUpOn"></cut-bg>
 
-    <cut-segmentation class="ml-10" :showList="cutSegmentationList" :current="dataGridOptions.productClass" @pitchOn="madeUpOn"></cut-segmentation>
+    <!-- 成品旧料 -->
+    <cut-bg class="ml-10" :showList="madeUpList" :current="filterData.productClass" @pitchOn="madeUpOnProductClass"></cut-bg>
+    
+
+    <cut-segmentation class="ml-10" :showList="cutSegmentationList" :current="filterData.productClass" @pitchOn="madeUpOn"></cut-segmentation>
 
     <div class="cost-btn ml-10" v-if="isShowCost == 'Y'" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu" :class="{active: tabSwitch}">
       专列项
@@ -21,7 +24,13 @@
     },
     data () {
       return {
-        tabSwitch: false,
+        filterData: {
+          productClass: '1' // 成品旧料
+        },
+        segmentationFilter: { // 主类切换
+
+        },
+        tabSwitch: false, // 专列项
         isShowCost: '',
         madeUpList: [
             {
@@ -36,28 +45,27 @@
         cutSegmentationList: [
             {
                 name: '智能分类',
-                id: '1'
+                id: 2
             },
             {
                 name: '产品分类',
-                id: '2'
-            },
-            {
-                name: '自定义',
-                id: '3'
+                id: 3
             }
-        ],
-        dataGridOptions: {
-          productClass: ''
-        }
+        ]
       }
     },
     created () {
       this.settingUserRole()
     },
     methods: {
+        madeUpOnProductClass (parm) {
+          this.filterData.productClass = parm.id
+          this.$emit('complate', Object.assign({}, this.filterData, this.segmentationFilter))
+        },
         madeUpOn (parm) {
-            this.dataGridOptions.productClass = parm.id
+          let datas = parm
+          this.segmentationFilter = parm
+          this.$emit('complate', Object.assign({}, this.filterData, this.segmentationFilter))
         },
         choseMenu () {
           this.tabSwitch = !this.tabSwitch

@@ -1,18 +1,18 @@
 <template>
-  <div class="down-menu-main">
-    <span class="title-name" :class="titleInfo ? '' : 'select'" :style="specialStyle">
+  <div class="no-border-down-menu-main">
+    <span class="title-name" :class="titleInfo ? '' : 'select'">
       {{titleInfo}}
       <i v-show="!isSolid" class="iconfont icon-arrow-down drop-triangle" v-if="noChange"></i><i v-show="isSolid" class="iconfont icon-xiala drop-triangle"></i><i class="el-icon-circle-close" title="清除" @click="clearTitleInfo"
       v-if="!noChange && !noClear"></i>
     </span>
     <ul class="drop-list">
-      <li :class="{active: actIndex == index}" v-for="(item, index) in showList" @click="itemClick(item, index)">{{nameKey ? item[nameKey] : item.name || item.shopName || item.userName}}</li>
+      <li :class="{active: actIndex == index}" v-for="(item, index) in showList" @click="itemClick(item, index)">{{nameKey ? item[nameKey] : item.name}}</li>
     </ul>
   </div>
 </template>
 <script>
 export default {
-  props: ['titleInfo', 'showList', 'isSolid', 'specialStyle', 'noClear', 'nameKey'], // isSolid->实心 nameKey->取值的key
+  props: ['titleInfo', 'showList', 'isSolid', 'noClear', 'nameKey', 'keyName'], // isSolid->实心 nameKey->取值的key
   data () {
     return {
       actIndex: null,
@@ -36,15 +36,15 @@ export default {
       this.noChange = true
     },
     itemClick (item, index) {
-      this.noChange = false
-      this.actIndex = index
-      this.$emit("changeData", item)
+        this.$emit('changeData', {item: item, keyName: this.keyName})
+        this.noChange = false
+        this.actIndex = index
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.down-menu-main{
+.no-border-down-menu-main{
     display: inline-block;
     position: relative;
     cursor: pointer;
@@ -56,13 +56,13 @@ export default {
         height: 0;
         position: absolute;
         top: 38px;
-        right:0px;
+        right: 0px;
         z-index: 102;
         transition: all .3s;
         margin-left: -3px;
     }
     &:hover{
-        // background:#e0ecf7;
+        background:#e0ecf7;
         color:#3195f5;
         >ul{
             opacity: 1;
@@ -79,7 +79,6 @@ export default {
         }
         >.title-name {
             color:#3195f5;
-            border: 1px solid #3195f5;
         }
         .title-name .el-icon-circle-close {
             color:#2993f8;
@@ -87,14 +86,8 @@ export default {
     }
     .title-name {
         padding: 0 8px;
-        border: 1px solid #d6d6d6;
-        border-radius: 5px;
-        width: 100px;
-        margin-left: 10px;
-        overflow-x: hidden; 
         text-overflow: ellipsis;
         white-space: nowrap;
-        background-color: #fff;
         &.select{
             //color: #333;
         }
