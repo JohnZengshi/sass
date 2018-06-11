@@ -131,21 +131,12 @@ export default {
 			this.tempArray = []
 			this.cheackData()
 			this.storageFormatDate()
-			//console.log(1111)
 			this.tabCellHeight()
-
-			console.log(this.tempArray)
-			console.log(this.detailDataGridColumn)
-			console.log(this.dataGridStorage)
-			console.log(this.tabCell)
-			console.log(this.reportType)
 		},
 		// 'reportType': function (val) {
-		// 	//console.log(this.positionSwitch)
 		// 	this.tabCellHeight()
 		// },
 		// 'positionSwitch': function (val) {
-		// 	//console.log(val)
 		// 	this.tabCellHeight()
 		// }
 	},

@@ -49,10 +49,20 @@
 									<td>{{item.price|NOUNIT}}</td>
 									<td>{{item.cost|NOUNIT}}</td>
 							</tr>
+
+							<tr>
+								<td colspan="2">小计</td>
+								<td></td>
+								<td>{{dataList.totalNum0}}件</td>
+								<td>{{dataList.totalWeight0|GRAMUNIT}}</td>
+								<td>{{dataList.totalGoldWeight0|GRAMUNIT}}</td>
+								<td>{{dataList.totalPrice0|RMBUNIT}}</td>
+								<td>{{dataList.totalCost0|RMBUNIT}}</td>
+							</tr>
 					</template>
 					
 					<tr>
-						<td colspan="3">小计</td>
+						<td colspan="3">{{dataList.typeName}}合计</td>
 						<td></td>
 						<td>{{dataList.totalNum0}}件</td>
 						<td>{{dataList.totalWeight0|GRAMUNIT}}</td>
@@ -61,6 +71,15 @@
 						<td>{{dataList.totalCost0|RMBUNIT}}</td>
 					</tr>
 				</template>
+				<tr>
+						<td colspan="3">合计</td>
+						<td></td>
+						<td>{{sellList.totalNum0}}件</td>
+						<td>{{sellList.totalWeight0|GRAMUNIT}}</td>
+						<td>{{sellList.totalGoldWeight0|GRAMUNIT}}</td>
+						<td>{{sellList.totalPrice0|RMBUNIT}}</td>
+						<td>{{sellList.totalCost0|RMBUNIT}}</td>
+					</tr>
 			</table>
 		</div>
 		<div class="printDate">
@@ -144,6 +163,7 @@
 	      if (parm) {
 	        for (let i of parm.productTypeList) {
 	          if (i) {
+	          	Num += 1
 	            for (let j of i.detailList) {
 	              Num += 1
 	            }

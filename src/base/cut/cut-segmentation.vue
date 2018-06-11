@@ -15,8 +15,9 @@ export default {
     return {
       current: '',
       filterData: {
-        type: '2'
-      }
+        type: 2
+      },
+      customData: {}
     }
   },
   methods: {
@@ -25,9 +26,9 @@ export default {
       this.$emit('pitchOn', this.filterData)
     },
     complate (item) {
-      this.filterData.type = '4'
-      this.filterData = Object.assign(this.filterData, item)
-      this.$emit('pitchOn', this.filterData)
+      this.filterData.type = 4
+      this.customData = item
+      this.$emit('pitchOn', Object.assign({}, this.filterData, this.customData))
     }
   }
 }

@@ -25,7 +25,10 @@
     data () {
       return {
         filterData: {
-          productClass: '' // 成品旧料
+          productClass: '1' // 成品旧料
+        },
+        segmentationFilter: { // 主类切换
+
         },
         tabSwitch: false, // 专列项
         isShowCost: '',
@@ -42,11 +45,11 @@
         cutSegmentationList: [
             {
                 name: '智能分类',
-                id: '1'
+                id: 2
             },
             {
                 name: '产品分类',
-                id: '2'
+                id: 3
             }
         ]
       }
@@ -57,12 +60,12 @@
     methods: {
         madeUpOnProductClass (parm) {
           this.filterData.productClass = parm.id
-          this.$emit('complate', this.filterData)
+          this.$emit('complate', Object.assign({}, this.filterData, this.segmentationFilter))
         },
         madeUpOn (parm) {
           let datas = parm
-          this.filterData = Object.assign(this.filterData, parm)
-          this.$emit('complate', this.filterData)
+          this.segmentationFilter = parm
+          this.$emit('complate', Object.assign({}, this.filterData, this.segmentationFilter))
         },
         choseMenu () {
           this.tabSwitch = !this.tabSwitch

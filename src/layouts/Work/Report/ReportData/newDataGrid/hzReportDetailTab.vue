@@ -49,13 +49,13 @@
     </div>
   
     <!--表尾  -->
-<!--     <data-grid-footer 
+    <data-grid-footer 
       :detailDataGridColumn="detailDataGridColumn" 
       :dataGridStorage="dataGridStorage" 
       :reportType = "reportType" 
       :configData="configData"
       @tabCell="tabCell">
-    </data-grid-footer> -->
+    </data-grid-footer>
   </template>
 </div>
 </transition>
@@ -88,14 +88,14 @@ export default {
     DataGridHeaderT
   },
   watch :{
-        reportType:function(){
+    reportType () {
       this.tableSwitch()
-        },
-        //开关 成本列
-    tabSwitch : function(){
+    },
+    // 开关 成本列
+    tabSwitch () {
       this.tableSwitch()
-        },
-        positionSwitch : function(){
+    },
+    positionSwitch () {
       this.posSwitch()
     },
     
@@ -229,7 +229,6 @@ export default {
             //console.log('temp',this.detailDataGridColumn)
         },
         configType(){
-            //console.log(this.reportType)
             switch( this.reportType ){
                 case 1 :
                     this.setColumn(this.configData.detailConfing)

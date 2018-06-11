@@ -87,13 +87,15 @@
         <i class="iconfont icon-dayin1"></i>
         <span>打印报表</span>
     </div>
+
     <!--打印模块-->
     <div style="display: none;">
-        <intelligence-type-template v-if="this.tabClassActive.index==1" title="进销存汇总" ref="intelligenceTypeTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></intelligence-type-template>
+    
+        <intelligence-type-template v-if="this.dataGridOptions.type==2" title="进销存-智能分类-汇总" ref="intelligenceTypeTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></intelligence-type-template>
 
-        <project-type-template v-if="this.tabClassActive.index==2" title="进销存汇总" ref="projectTypeTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></project-type-template>
+        <project-type-template v-if="this.dataGridOptions.type==3" title="进销存-产品类别-汇总" ref="projectTypeTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></project-type-template>
 
-        <custom-template v-if="this.tabClassActive.index==3" title="进销存汇总" ref="customTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></custom-template>
+        <custom-template v-if="this.dataGridOptions.type==4" title="进销存-自定义-汇总" ref="customTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></custom-template>
 
     </div>
 </div>
@@ -731,17 +733,17 @@ export default {
 
         // 打印
         tabPrin(){
-          switch (this.tabClassActive.index){
-            case 0:
+          switch (this.dataGridOptions.type){
+            case 1:
               this.$refs.detailTemplate.print();
               break;
-            case 1:
+            case 2:
               this.$refs.intelligenceTypeTemplate.print();
               break;
-            case 2:
+            case 3:
               this.$refs.projectTypeTemplate.print();
               break;
-            case 3:
+            case 4:
               this.$refs.customTemplate.print();
               break;
             default:
