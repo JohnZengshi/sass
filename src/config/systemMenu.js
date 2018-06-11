@@ -178,12 +178,6 @@ const systemMenu = [
 				children: []
 			},
 			{
-			   text: '标签打印',
-			   path: '/dataCenter/labelPrint',
-			   icon: 'dayinbiaoqian',
-			   children: []
-			},
-			{
 				text: '店铺设置',
 				path: '/work/shopSetting',
 				icon: 'dianpu', 
@@ -225,6 +219,12 @@ const systemMenu = [
 				path: '/jinbaifu',
 				icon: 'daoru', 
 				children: []
+			},
+			{
+			   text: '标签打印',
+			   path: '/dataCenter/labelPrint',
+			   icon: 'dayinbiaoqian',
+			   children: []
 			}
 		]
 	},

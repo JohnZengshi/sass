@@ -21,7 +21,7 @@ function apiCall (parm, URL) {
     // uat
     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8099' : ''
     // 正式
-    // let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
+    let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
     // 本地
     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.109:8080/yunzhubao' : ''
     let url = serverHost + URL
@@ -33,14 +33,14 @@ function apiCall (parm, URL) {
     
     let resourcePromise = foo(data).next().value
     // 中间件
-    resourcePromise.then( res =>{
-        // console.log('中间件拦截', res)
-      // 截获登录超时
-      if(res.data.state == 100 ){
-        Vue.prototype.loginPopup.show()
-      }
+    // resourcePromise.then( res =>{
+    //     // console.log('中间件拦截', res)
+    //   // 截获登录超时
+    //   if(res.data.state == 100 ){
+    //     Vue.prototype.loginPopup.show()
+    //   }
       
-    })
+    // })
     
     return resourcePromise
 }

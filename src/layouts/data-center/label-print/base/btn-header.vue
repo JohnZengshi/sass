@@ -13,18 +13,17 @@
 
     <DownMenu :isSolid="true" :titleInfo="currentTemplate.templateName ? currentTemplate.templateName : '选择模板'" :showList="labelTemplateList" :nameKey="'templateName'" @changeData="changeTemplateId" @clearInfo="clearTemplate"></DownMenu>
 
-    <DownMenu :titleInfo="currentPrint ? currentPrint : '选择打印机'" :showList="printList" :nameKey="'name'" @changeData="changePrint" @clearInfo="clearPrint"></DownMenu>
+    <printDownMenu :titleInfo="currentPrint ? currentPrint : '选择打印机'" :showList="printList" :nameKey="'name'" @changeData="changePrint" @clearInfo="clearPrint" @toMouseover="loadPrinters"></printDownMenu>
 
     <el-button size="small" class="ml-10" @click.native="_previewTemplate('Y')">预览</el-button>
-    <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">打印标签</el-button>
+    <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">打印</el-button>
   </div>
 </template>
 <script>
 import {mapState} from 'vuex'
 import {JaTools} from '@/utils/JaTool.js';
 import DownMenu from 'base/menu/new-down-menu'
-import printDownMenu from './DownMenu'
-
+import printDownMenu from 'base/menu/print-down-menu'
 export default {
   props: ['dataGridStorage'],
   components: {
@@ -48,8 +47,10 @@ export default {
       labelTemplateList: state => state.template.labelList
     }),
   },
-  created () {
-    this.loadPrinters() // 打印机列表
+  mounted: function () {
+    this.$nextTick(function () {
+      this._getVersion()
+    })
   },
   methods: {
     changeAllChecked (parm) {
@@ -141,6 +142,22 @@ export default {
       } else {
         JaTools.directPrint(templateList, dataList);
       }
+    },
+    _getVersion () {
+      let noSetup = true
+      var JCP = {  
+          setup : {  
+              noSetupHandle : function() {
+                  noSetup = false
+              }  
+          }  
+      }
+      JCP.setup.noSetupHandle()
+      setTimeout(() => {
+        if (noSetup) {
+          this.loadPrinters()
+        }
+      }, 1000)
     },
     // 获取打印机列表
     loadPrinters() {

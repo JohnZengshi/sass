@@ -258,7 +258,7 @@ export default {
         sortList: [{ classTypeName: '1' }],
         type: 2,
         page: 1,
-        pageSize: 15,
+        pageSize: 30,
         keyWord: '',
         wColorId: '',
         wGemId: '',
@@ -271,7 +271,11 @@ export default {
       customDialog: false, // 自定义列表弹窗
       resetFlag: false,
       sortList: [{ name: '产品类别', value: '1' }],
-      newList: [{ name: '产品类别', value: '1' }]
+      newList: [{ name: '产品类别', value: '1' }],
+      paging: {
+        page: 1,
+        pageSize: '30'
+      }
     };
   },
   created() {
@@ -394,6 +398,7 @@ export default {
   },
   methods: {
     resetData () {
+      debugger
       this.filterCondition = {
         keyWord: '',
         newOrderId: '',
@@ -406,7 +411,7 @@ export default {
         sortList: [{ classTypeName: '1' }],
         productStatus: [], // 产品状态
       }
-      this.allData = {}
+      this.addData = []
       this.dataGridStorage = []
       this.sortList = [{ name: '产品类别', value: '1' }]
     },
@@ -422,7 +427,7 @@ export default {
       for (let i of this.addData) {
         barcode.barcode.push(i.barcode)
       }
-      seekGetPrintLabelList(Object.assign(parm, barcode))
+      seekGetPrintLabelList(Object.assign(parm, barcode, {page: '1', pageSize: '30'}))
         .then(res => {
           if (res.data.state == 200) {
             this.allData = res.data.data
@@ -447,6 +452,8 @@ export default {
     },
     filterData (parm) {
       if (parm) {
+        this.dataGridStorage = []
+        this.paging.page = 1
         this.filterCondition = Object.assign({}, this.filterCondition, parm)
       }
       let barcode = {
@@ -456,18 +463,20 @@ export default {
         barcode.barcode.push(i.barcode)
       }
       this.loading = true
-      seekGetPrintLabelList(Object.assign(this.filterCondition, barcode, {}))
+      seekGetPrintLabelList(Object.assign(this.filterCondition, barcode, this.paging, {}))
         .then(res => {
           if (res.data.state == 200) {
+            this.paging.page += 1
             this.allData = res.data.data
             let datas = res.data.data.dataList
+            this.totalNum = res.data.data.totalNum
             for (let i of datas) {
               // 属性
               i.productClass = productTpyeState(i.productClass)
               // 状态
               i.status = newProductDetailStatus(i.status)
             }
-            this.dataGridStorage = datas
+            this.dataGridStorage.push(...datas)
             this.loading = false
           } else {
             this.$message({
@@ -951,9 +960,12 @@ export default {
 
     //懒加载
     lazyloadSend() {
-      console.log('懒加载')
-      // this.currentPage++
-      //   this.send()
+      debugger
+      if (this.dataGridStorage.length) {
+        if (this.dataGridStorage.length != this.totalNum) {
+          this.filterData()
+        }
+      }
     }
   },
 
