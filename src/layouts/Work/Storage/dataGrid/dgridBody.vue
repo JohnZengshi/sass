@@ -364,13 +364,22 @@
 						tab.type === 'unitPrice' ||
 						tab.type === 'mainCalcMethod'
 					) {
-						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
-						tempArray.push({
-							mainPrice: item['mainPrice'],
-							productId: productId
-						})
-					}
+						if(tab.type === 'count') {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type])
+							tempArray.push({
+								mainPrice: item['mainPrice'],
+								productId: productId
+							})
+						} else {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+							tempArray.push({
+								mainPrice: item['mainPrice'],
+								productId: productId
+							})
 
+						}
+					}
+					
 					//修改主石重同步更新总件重
 					if(tab.type === 'mainWeight') {
 						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
