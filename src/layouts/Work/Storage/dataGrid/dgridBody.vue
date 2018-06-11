@@ -328,11 +328,19 @@
 						tab.type === 'deputyUnitPrice' ||
 						tab.type === 'deputyCalcMethod'
 					) {
-						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
-						tempArray.push({
-							deputyPrice: item['deputyPrice'],
-							productId: productId
-						})
+						if(tab.type === 'deputyCount') {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type])
+							tempArray.push({
+								deputyPrice: item['deputyPrice'],
+								productId: productId
+							})
+						} else {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+							tempArray.push({
+								deputyPrice: item['deputyPrice'],
+								productId: productId
+							})
+						}
 					}
 
 					// 修改副石重同步更新总件重
