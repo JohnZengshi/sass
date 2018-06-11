@@ -100,14 +100,11 @@ export default{
 		        endTime: this.chart_configData.endTime,
 		        shopId: this.shopId
 		    }
-			//console.log(option)
 			seekSalesTrend(option).then( (res)=>{
 				if( res.data.state == 200){
-					//console.log('resresresresres',res)
 					setTimeout(()=>{
 						_assign( this.chart_configData , res.data.data,{ loading : false })
 						this.chartData = salesTrendsData( this.chart_configData)
-						console.log(this.chartData);
 					},100)
 				}
 			},(res)=>{
