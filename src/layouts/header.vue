@@ -125,9 +125,20 @@
       </div>
 
       <!-- 点击了搜索列表后的弹窗 -->
-
-      
-
+      <el-dialog top="7%" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption serachList">
+        <!-- tab栏 -->
+        <div class="tab-list">
+          <ul>
+            <li @click="tabAction(index)" v-for="(item, index) in tabList" :key="index" :class="{active: actIndex == index}">
+              <div>{{item}}</div>
+            </li>
+          </ul>
+			  </div>
+        <!-- tab栏切换的内容 -->
+        <div class="page-wrap">
+				  <component :importType='importType' :is="panel" :ruleOptionDia="ruleOptionDia"></component>
+			  </div>
+      </el-dialog>
   </header>
 </transition>
 </template>
@@ -146,6 +157,7 @@ import {
 import FormatImg from "components/template/DefaultHeadFormat.vue";
 import menutabs from "components/menuTab.vue";
 let skinConfig = require("./skinConfig");
+
 export default {
   data() {
     return {
@@ -160,7 +172,17 @@ export default {
       smallUrl: "",
       unreadSystemMessageNum: "", // 未读系统消息
       unreadNoticeNum: "", // 未读公告
+
       isSearch: false, // 搜索列表
+      ListDetails: true, // 列表弹框      
+      tabList: [
+        '商品',
+        '单据',
+        '会员'	
+      ],
+      panel:'',// 对应的页面
+      actIndex:'0', // 对应选中的参数
+
     };
   },
   components: {
@@ -205,10 +227,10 @@ export default {
     changesearchborder(val) {
       if (val == 1) {
         this.$refs.mysearch.style.border = "1px solid #2993f8";
-        this.isSearch = true
+        this.isSearch = true;
       } else {
         this.$refs.mysearch.style.border = "1px solid #fff";
-        this.isSearch = false
+        this.isSearch = false;
       }
     },
     unreadCount() {
@@ -307,10 +329,20 @@ export default {
       //this.$router.push({path: '/admin'})
       this.$emit("goPersonalInfo", { flag: true });
     },
-
-    open() {
-      console.log("打开");
-    }
+    // tab栏切换
+    tabAction(index) {
+        console.log(index)
+        this.actIndex = index + ''
+				switch(index) {
+					case 0:
+						break;
+					case 1:
+						break;
+					case 2:
+						break;
+				}
+		},
+    
   }
 };
 </script>
@@ -661,13 +693,15 @@ export default {
 
   width: 420px;
   // height: 500px;
-  padding: 20px ;
+  padding: 20px;
 
   border: 1px solid #d6d6d6;
   border-radius: 4px;
   background: #fff;
 
-  .commodity,.receipts,.members {
+  .commodity,
+  .receipts,
+  .members {
     & > h1 {
       width: 100%;
       height: 24px;
@@ -678,26 +712,28 @@ export default {
       color: #666;
 
       border-bottom: 1px solid #eee;
-
     }
-    .commodityList,.receiptsList,.membersList {
+    .commodityList,
+    .receiptsList,
+    .membersList {
       width: 100%;
       margin-bottom: 20px;
-      .commodityItem,.receiptsItem,.membersItem {
+      .commodityItem,
+      .receiptsItem,
+      .membersItem {
         width: 100%;
         height: 42px;
 
         font-size: 14px;
         color: #999;
         line-height: 42px;
-        
+
         span {
           color: #2993f8;
           cursor: pointer;
         }
         .gno {
           color: #333;
-
         }
         .state {
           display: inline-block;
@@ -730,19 +766,33 @@ export default {
         .more_num {
           color: #999;
         }
-       
       }
     }
   }
-  
-  .receipts {
 
+  .receipts {
   }
   .members {
     .membersList {
       margin-bottom: 0;
     }
   }
-
 }
 </style>
+
+<style lang="scss">
+.serachList.ruleOption .el-dialog__header .el-dialog__headerbtn {
+  margin-top: 16px;
+  margin-right: 16px;
+}
+.serachList .el-dialog__body {
+  padding-top: 50px;
+  .tab-list {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+  }
+  
+}
+</style>
+ 
