@@ -217,11 +217,21 @@
 
 					// 修改配件数、计价方式 、单价需要同步更新配件额字段
 					if(tab.type == 'partCount' || tab.type === 'calcMethod' || tab.type === 'partPrice') {
-						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
-						tempArray.push({
-							price: item['price'],
-							productId: productId
-						})
+						if(tab.type == 'partCount') {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type])
+							tempArray.push({
+								price: item['price'],
+								productId: productId
+							})
+						} else {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+							tempArray.push({
+								price: item['price'],
+								productId: productId
+							})
+						}
+
+						
 					}
 
 					// 修改配件额  同步更新单价字段
