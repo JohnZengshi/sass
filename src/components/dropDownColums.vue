@@ -186,6 +186,7 @@ export default {
 </script>
 <style lang="scss">
 .dropColums-wrap{
+    color: #666;
   .el-checkbox{
     height: 20px!important;
     line-height: 20px!important;

@@ -136,7 +136,7 @@
 			  </div>
         <!-- tab栏切换的内容 -->
         <div class="page-wrap">
-				  <component :is="panel"></component>
+				  <component :is="panel" :panelType="panelType"></component>
 			  </div>
       </el-dialog>
   </header>
@@ -186,7 +186,7 @@ export default {
       ],
       panel: ProductList,// 对应的页面
       actIndex:'0', // 对应选中的参数
-
+      panelType: 0,
     };
   },
   components: {
@@ -340,6 +340,7 @@ export default {
     tabAction(index) {
         console.log(index)
         this.actIndex = index + ''
+        this.panelType = index        
 				switch(index) {
           case 0:
             this.panel = ProductList
@@ -797,12 +798,17 @@ export default {
 }
 .serachList .el-dialog__body {
   padding-top: 50px;
+  padding-left: 0;
+  padding-right: 0;
   .tab-list {
     position: absolute;
     top: 10px;
-    left: 10px;
+    left: 20px;
   }
-  
+}
+.serachList .el-dialog__body .page-wrap {
+  height: auto;
+  overflow-y: visible;
 }
 </style>
  

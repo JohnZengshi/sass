@@ -236,6 +236,7 @@ export default {
         height: 100%;
         font-size: 14px;
         line-height: 26px;
+        cursor: pointer;
         i {
             position: absolute;
             right: 0;
