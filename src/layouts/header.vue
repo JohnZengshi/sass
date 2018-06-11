@@ -136,7 +136,7 @@
 			  </div>
         <!-- tab栏切换的内容 -->
         <div class="page-wrap">
-				  <component :importType='importType' :is="panel" :ruleOptionDia="ruleOptionDia"></component>
+				  <component :is="panel"></component>
 			  </div>
       </el-dialog>
   </header>
@@ -157,6 +157,10 @@ import {
 import FormatImg from "components/template/DefaultHeadFormat.vue";
 import menutabs from "components/menuTab.vue";
 let skinConfig = require("./skinConfig");
+
+import ProductList from './SearchPage/ProductList'
+import DocumentsList from './SearchPage/DocumentsList'
+import memberList from './SearchPage/memberList'
 
 export default {
   data() {
@@ -180,14 +184,17 @@ export default {
         '单据',
         '会员'	
       ],
-      panel:'',// 对应的页面
+      panel: ProductList,// 对应的页面
       actIndex:'0', // 对应选中的参数
 
     };
   },
   components: {
     FormatImg,
-    menutabs //加载头部页签组件
+    menutabs, //加载头部页签组件
+    ProductList,
+    DocumentsList,
+    memberList
   },
   props: ["companyInfo", "userInfo", "isAllowCreate"],
 
@@ -334,11 +341,14 @@ export default {
         console.log(index)
         this.actIndex = index + ''
 				switch(index) {
-					case 0:
+          case 0:
+            this.panel = ProductList
 						break;
-					case 1:
+          case 1:
+            this.panel = DocumentsList
 						break;
-					case 2:
+          case 2:
+            this.panel = memberList
 						break;
 				}
 		},
