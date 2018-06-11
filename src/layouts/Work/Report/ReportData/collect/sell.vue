@@ -66,11 +66,12 @@ export default{
     },
     
     setTableData(){
-      if( this.reportType == 1 ){
-        this.$set(this,'detailDataGridColumn', config.sell)
-      }else{
-        this.$set(this,'detailDataGridColumn', config.trade)
-      }
+      this.$set(this,'detailDataGridColumn', config.trade)
+      // if( this.reportType == 1 ){
+      //   this.$set(this,'detailDataGridColumn', config.sell)
+      // }else{
+      //   this.$set(this,'detailDataGridColumn', config.trade)
+      // }
     }
 	},
 	

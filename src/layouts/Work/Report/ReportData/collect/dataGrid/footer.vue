@@ -72,10 +72,10 @@ export default{
 
 <style lang="scss" scoped>
 .ui-table_footer{
+  position: relative!important;
   .th_footer{
     position: relative;
     .total-more{
-      position:absolute;
       left: 0;
       top: 0;
       width: 100%;

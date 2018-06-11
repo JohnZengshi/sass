@@ -6,7 +6,7 @@
       <div class="tb-category" v-for="(caty, ind) in otherDatagrid" :index="resetIndex(ind)">
 
         <div class="left-type-name-wrap" :style="getRightH(caty)">
-          <p>{{caty.typeName}}</p>
+          <p>1000{{caty.typeName}}</p>
         </div>
 
         <div class="right-type-inner-wrap">
@@ -248,9 +248,6 @@
           background-color: #f9f9f9;
         }
       }
-      .tb-category{
-        font-size: 0;
-      }
     }
     .tb-tr {
       height: 50px;
@@ -340,7 +337,7 @@
   }
   .right-type-inner-wrap{
     display: inline-block;
-    width: 1100px;
+    width: 1095px;
     overflow: hidden;
   }
 </style>

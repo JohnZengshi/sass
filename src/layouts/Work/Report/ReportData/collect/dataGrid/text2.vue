@@ -4,44 +4,43 @@
   <div class="ui-table-container con-line" ref="tableContainer">
     <div>
       <div class="tb-category" v-for="(caty, ind) in otherDatagrid" :index="resetIndex(ind)">
-
-        <div class="left-type-name-wrap" :style="getRightH(caty)">
-          <p>{{caty.typeName}}</p>
-        </div>
-
-        <div class="right-type-inner-wrap">
-          <div v-for="(tb, index) in caty.productTypeList">
-            <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()">
-              <template v-for="tab in detailDataGridColumn">
+        <div v-for="(tb, index) in caty.productTypeList">
+          <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()">
+            <template v-for="tab in detailDataGridColumn">
+              
+              <div 
+                class="tb-td category-td" 
+                v-if="tab.text == '产品类别' && index1 == 0" 
+                :style="tableCell(tab.width)">
+                <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i>
+              </div>
+              
+              <div 
+                class="tb-td category-td" 
+                v-else-if="tab.text == '回购类型'" 
+                :style="tableCell(tab.width)">
+                <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;'">{{caty[tab.childType]}}</i>
+              </div>
+              
+              <div 
+                class="tb-td" 
+                v-else 
+                :class="{backLine:tab.childType != ''}" 
+                :style="tableCell(tab.width)" 
+                v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
                 
-                <div 
-                  class="tb-td category-td" 
-                  v-if="tab.text == '回购类型'" 
-                  :style="tableCell(tab.width)">
-                  <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;'">{{caty[tab.childType]}}</i>
-                </div>
-                
-                <div 
-                  class="tb-td" 
-                  v-else 
-                  :class="{backLine:tab.childType != ''}" 
-                  :style="tableCell(tab.width)" 
-                  v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
-                  
-                </div>
-              </template>
-            </div>
-            <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
-            <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch && tb.detailList.length>0">
-              <!-- 类型小计 -->
-              <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"></div>
-            </div>
+              </div>
+            </template>
+          </div>
+          <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
+          <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch && tb.detailList.length>0">
+            <!-- 类型小计 -->
+            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"></div>
           </div>
         </div>
-
-        <div class="tb-total" style="background:#e9f4fe;">
+        <div class="tb-total" style="background:#e9f4fe;" v-if="positionSwitch">
           <!-- 位置小计 -->
-          <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 1 ? '<b>销售合计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"></div>
+          <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 1 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"></div>
         </div>
       </div>
       <div v-if="isDate" class="no-data"></div>
@@ -125,23 +124,6 @@
       this.tabCellHeight()
     },
     methods: {
-      getRightH (parm) {
-        let Num = 100
-        // if (parm) {
-        //   for (let i of parm.productTypeList) {
-        //     if (i) {
-        //       Num += 40
-        //       for (let j of i.detailList) {
-        //         Num += 40
-        //       }
-        //     }
-        //   }
-        // }
-
-        return {
-          'height': Num + 'px'
-        }
-      },
       //重置index
       resetIndex(index) {
         if(index == 0) applyIndex = 0
@@ -230,7 +212,7 @@
 </style>
 <style scoped lang="scss">
   .ui-table-container {
-    height: 575px;
+    height: 317px;
     overflow-y: auto;
     &.produc-line {
       .tb-tr:nth-child(even) {
@@ -247,9 +229,6 @@
         .backLine {
           background-color: #f9f9f9;
         }
-      }
-      .tb-category{
-        font-size: 0;
       }
     }
     .tb-tr {
@@ -319,28 +298,5 @@
   .no-data {
     height: 100%;
     background: url(~static/img/space-page.png) center center no-repeat;
-  }
-  .left-type-name-wrap{
-    position: relative;
-    display: inline-block;
-    vertical-align:top;
-    width: 148px;
-    >p{
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 16px;
-      font-size: 16px;
-      color: #2993f8;
-      text-align: center;
-      margin: auto;
-    }
-  }
-  .right-type-inner-wrap{
-    display: inline-block;
-    width: 1100px;
-    overflow: hidden;
   }
 </style>

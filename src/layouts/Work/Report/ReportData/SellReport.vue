@@ -3,23 +3,14 @@
 
 		<div class="RP_report_wrapper ui-page-max-width " v-if="isPrint==0">
 
-			<div class="Rp_title_container">
-				<!--面包屑-->
-				<div class="Rp_crumbs">
-					<i class="iconfont icon-baobiao1"></i>
-					<router-link tag="span" to="/work/report/" class="path_crumbs">报表</router-link> > <span class="txt">销售</span>
-				</div>
+			<div class="Rp_title_container sell-report-header">
 				<div class="Rp_selected_container">
-
-					<!--收银统计跟销售统计切换-->
-					<span class="statistics-switch" :title="modleSwitch.title" @click="modleSwitchFn">{{modleSwitch.text}}<i class="iconfont icon-qiehuan"></i></span>
-
 					<span class="spaceMark">|</span>
 					<DropDownMenu class="selected_dropdown" :titleName="shopList[0].shopName" dataType="店铺" v-if="itemShow" :propList="shopList" @dropReturn="dropReturn" @clearInfo="clearInfo">
 					</DropDownMenu>
 					<span v-else :style="{color:activeColor, fontSize:size,fontWeight:weight,marginRight:right,lineHeight:height,height:high}">{{printSelectDate.shop}}</span>
 
-					<template v-if="modleSwitch.type">
+					<template v-if="modleSwitch == '2'">
 						<span class="spaceMark">|</span>
 
 						<DropDownMenu v-if="!isdisabled" class="selected_dropdown" titleName="制单人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
@@ -54,8 +45,13 @@
 				</div>
 			</div>
 
+      <!--收银统计跟销售统计切换-->
+      <ul class="sell-report-cut-nav-list">
+          <li v-for="item in cutList" @click="modleSwitchFn(item.id)" :class="{actions: modleSwitch == item.id}">{{item.name}}</li>
+      </ul>
+
 			<!--销售统计-->
-			<div class="dataGrid_statistics_switch" v-if="modleSwitch.type">
+			<div class="dataGrid_statistics_switch" v-if="modleSwitch == 2">
 
 				<div class="Rp_dataGrid_container last-table" v-loading="loading" element-loading-text="数据查询中">
 					<div class="rp_gridState">
@@ -370,11 +366,24 @@ export default {
       },
 
       // 销售统计 收银统计切换操作
-      modleSwitch: {
-        title: "点击切换到销售统计",
-        type: false, // true为收银统计 false为销售统计
-        text: "收银统计"
-      },
+      modleSwitch: '1',
+
+      //导航切换
+      cutList: [
+        {
+          name: '收银统计',
+          id: '1'
+        },
+        {
+          name: '销售统计',
+          id: '2'
+        }
+      ],
+      // modleSwitch: {
+      //   title: "点击切换到销售统计",
+      //   type: false, // true为收银统计 false为销售统计
+      //   text: "收银统计"
+      // },
 
       //打印select
       selectValue: selectParam,
@@ -863,16 +872,17 @@ export default {
       }
     },
 
-    modleSwitchFn() {
-      this.$set(this, "modleSwitch", {
-        title: this.modleSwitch.type
-          ? "点击切换到销售统计"
-          : "点击切换到收银统计",
-        type: !this.modleSwitch.type,
-        text: this.modleSwitch.type ? "收银统计" : "销售统计"
-      });
+    modleSwitchFn(parm) {
+      // this.$set(this, "modleSwitch", {
+      //   title: this.modleSwitch.type
+      //     ? "点击切换到销售统计"
+      //     : "点击切换到收银统计",
+      //   type: !this.modleSwitch.type,
+      //   text: this.modleSwitch.type ? "收银统计" : "销售统计"
+      // });
+      this.modleSwitch = parm
       // 销售报表
-      if (this.modleSwitch.type) {
+      if (this.modleSwitch == '2') {
         //后台请求时间
         this.dataGridOptions.beginTime = this.getDate(0,"start").fullData;
         this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
@@ -1253,7 +1263,7 @@ export default {
     },
 
     send(type) {
-      if (this.modleSwitch.type) {
+      if (this.modleSwitch == '2') {
         this.dataGridOptions.sellStatu = ''        
         this.sellSend();
         this.sellTradeSend();
@@ -1578,7 +1588,7 @@ export default {
 
 .Rp_dataGrid_container {
   &.last-table {
-    margin-bottom: 150px;
+   // margin-bottom: 150px;
     // height: 645px !important;
   }
   .report-change {
@@ -1697,5 +1707,32 @@ export default {
 }
 .exportBtn {
 	bottom: 60px;
+}
+.sell-report-header{
+  float: right;
+}
+
+.sell-report-cut-nav-list{
+  float: left;
+  overflow: hidden;
+  box-shadow: 0 0 15px #e2e2e2;
+  >li{
+    padding: 25px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    float: left;
+    color: #333;
+    border-right: 1px solid #fff;
+    background-color: #f1f2f3;
+    cursor: pointer;
+    transition: all 0.3s;
+    &.actions, &:hover{
+      background-color: #fff;
+      color: #2993f8;
+    }
+  }
+  li:last-child{
+    border-right: none;
+  }
 }
 </style>
