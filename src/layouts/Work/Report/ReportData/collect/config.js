@@ -140,8 +140,8 @@ module.exports = {
         childType : 'className',
         totalType : '' ,
         allType : '',
-            toFixed : false,
-            countCut : 0
+        toFixed : false,
+        countCut : 0
       },
       { 
         id: '2245',  
@@ -190,15 +190,15 @@ module.exports = {
         id: '523',  
         text: '标价/原售价',
         width:'15%', 
-        type:'totalWage', 
+        type:'totalSoldPrice', 
         unit: '(元)',
         footerUnit: '',
         totalName : '',
-        childType : 'wage',
-        totalType : 'totalWage' ,
-        allType : 'allWage',
-            toFixed : true,
-            countCut : 2
+        childType : 'soldPrice',
+        totalType : 'totalSoldPrice',
+        allType : 'allSoldPrice',
+        toFixed : true,
+        countCut : 2
       },
       { 
         id: '6',  
@@ -218,15 +218,15 @@ module.exports = {
         id: '7',  
         text: '实售价/回购价', 
         width:'15%', 
-        type:'totalActualPrice', 
+        type:'totalRealPrice', 
         unit: '(元)',
         footerUnit: '',
         totalName : '',
-        childType : 'buy',
-        totalType : 'totalActualPrice' ,
+        childType : 'realPrice',
+        totalType : 'totalRealPrice' ,
         allType : 'allBackPrice',
-            toFixed : true,
-            countCut : 2
+        toFixed : true,
+        countCut : 2
       }
     ]
 }
