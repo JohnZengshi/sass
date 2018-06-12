@@ -9,10 +9,11 @@
 					</div>
 				</div>
 				<div class="rp_dataGridTemp">
-					<sell-datagrid :dataGridStorage="sellStorage" reportType="1">
+					<sell-datagrid :dataGridStorage="sellStorage" :cashierStatistics="cashierStatistics" :buyBackStorage="buyBackStorage" reportType="1">
 					</sell-datagrid>
 				</div>
 			</div>
+
 <!-- 			<div class="Rp_dataGrid_container">
 				<div class="rp_gridState">
 					<div class="side-nav">

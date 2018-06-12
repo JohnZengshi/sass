@@ -1,12 +1,13 @@
 <template>
   <!--表格内容区-->
 
-  <div class="ui-table-container con-line" ref="tableContainer">
+  <div class="xj-report-table-container con-line" ref="tableContainer">
     <div>
+      <!-- 销售 -->
       <div class="tb-category" v-for="(caty, ind) in otherDatagrid" :index="resetIndex(ind)">
 
         <div class="left-type-name-wrap" :style="getRightH(caty)">
-          <p>{{caty.typeName}}</p>
+          <p>销售</p>
         </div>
 
         <div class="right-type-inner-wrap">
@@ -15,10 +16,69 @@
               <template v-for="tab in detailDataGridColumn">
                 
                 <div 
+                  class="tb-td" 
+                  :class="{backLine:tab.childType != ''}" 
+                  :style="tableCell(tab.width)" 
+                  v-if="tab.text == '回购类型'">
+                  -
+                </div>
+
+                <div 
+                  class="tb-td"
+                  v-else 
+                  :class="{backLine:tab.childType != ''}" 
+                  :style="tableCell(tab.width)" 
+                  v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
+                </div>
+
+              </template>
+            </div>
+            <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
+
+          </div>
+        </div>
+        
+        <div class="total-num-wrap" v-if="!positionSwitch">
+          <div>
+            销售合计
+          </div>
+
+          <div class="tb-total" style="background:#ECF3FF;">
+            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '' : caty[tab.totalType]"></div>
+          </div>
+
+        </div>
+
+      </div>
+      
+
+
+
+
+
+
+
+
+
+
+    <div class="tb-category" v-if="buyBackDataList.length">
+
+      <div class="left-type-name-wrap" :style="getbuyBackRightH(buyBackDataList)">
+        <p>回购</p>
+      </div>
+
+      <div class="right-type-inner-wrap">
+        <div class="tb-category" v-for="(caty, ind) in buyBackDataList">
+          <div v-for="(tb, index) in caty.productTypeList">
+            <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()">
+              <template v-for="tab in detailDataGridColumn">
+                
+                <div 
                   class="tb-td category-td" 
-                  v-if="tab.text == '回购类型'" 
+                  v-if="tab.text == '回购类型' && index == 0" 
                   :style="tableCell(tab.width)">
-                  <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;'">{{caty[tab.childType]}}</i>
+                  <i :style="sellTypeNameH(caty)">{{caty[tab.childType]}}</i>
+
                 </div>
                 
                 <div 
@@ -31,20 +91,30 @@
                 </div>
               </template>
             </div>
-            <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
-            <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch && tb.detailList.length>0">
-              <!-- 类型小计 -->
-              <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"></div>
-            </div>
+
+          </div>
+          <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
+          <div class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
+            <!-- 类型小计 -->
+            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : caty[tab.totalType]"></div>
           </div>
         </div>
-
-        <div class="tb-total" style="background:#e9f4fe;">
-          <!-- 位置小计 -->
-          <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 1 ? '<b>销售合计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"></div>
-        </div>
       </div>
-      <div v-if="isDate" class="no-data"></div>
+
+      <div class="total-num-wrap" v-if="!positionSwitch">
+        <div>
+          回购合计
+        </div>
+
+        <div class="tb-total" style="background:#ECF3FF;">
+          <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '' : buyBackStorage[tab.totalType]"></div>
+        </div>
+
+      </div>
+
+    </div>
+  
+    <div v-if="isDate" class="no-data"></div>
     </div>
   </div>
 
@@ -58,10 +128,11 @@
         isDate: false,
         tempArray: [],
         heightArr: [],
-        otherDatagrid : []
+        otherDatagrid: [],
+        buyBackDataList: []
       }
     },
-    props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch'],
+    props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch', 'buyBackStorage'],
 
     watch: {
       'dataGridStorage': function() {
@@ -76,6 +147,9 @@
         console.log('这是表格里面的小鸡',this.positionSwitch)
         
       },
+      'buyBackStorage':  function() {
+        this.reduceAssignbuyBack()
+      }
       // 'reportType': function (val) {
       //  //console.log(this.positionSwitch)
       //  this.tabCellHeight()
@@ -100,7 +174,7 @@
         _this.$emit('lazyloadSend', 123)
       })
 
-      $(".ui-table-container").mCustomScrollbar({
+      $(".xj-report-table-container").mCustomScrollbar({
         theme: "minimal-dark",
         axis: 'y',
         scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
@@ -126,17 +200,64 @@
     },
     methods: {
       getRightH (parm) {
-        let Num = 100
-        // if (parm) {
-        //   for (let i of parm.productTypeList) {
-        //     if (i) {
-        //       Num += 40
-        //       for (let j of i.detailList) {
-        //         Num += 40
-        //       }
-        //     }
-        //   }
-        // }
+        let Num = 0
+        if (parm) {
+          for (let i of parm.productTypeList) {
+            if (i) {
+
+              // if (i.detailList.length) {
+              //   Num += 40
+              // }
+
+              for (let j of i.detailList) {
+                Num += 40
+              }
+
+            }
+          }
+        }
+
+        return {
+          'height': Num + 'px'
+        }
+      },
+      // 提取高度
+      getbuyBackRightH (parm) {
+        let Num = 0
+        for (let i of parm) {
+          Num += 40
+          for (let j of i.productTypeList) {
+            if (j) {
+
+              for (let j of j.detailList) {
+                Num += 40
+              }
+
+            }
+          }
+        }
+
+        return {
+          'height': Num + 'px'
+        }
+      },
+      sellTypeNameH (parm) {
+        let Num = 0
+        if (parm) {
+          for (let i of parm.productTypeList) {
+            if (i) {
+
+              // if (i.detailList.length) {
+              //   Num += 40
+              // }
+
+              for (let j of i.detailList) {
+                Num += 40
+              }
+
+            }
+          }
+        }
 
         return {
           'height': Num + 'px'
@@ -211,6 +332,14 @@
             console.log('小鸡',this.otherDatagrid)
           }
         }
+      },
+      reduceAssignbuyBack () {
+        if(this.buyBackStorage.productTypeList) {
+          if(this.buyBackStorage.productTypeList[0].productSellTypeList) {
+            this.buyBackDataList = this.buyBackStorage.productTypeList[0].productSellTypeList
+            console.log('小鸡--',this.buyBackDataList)
+          }
+        }
       }
 
     },
@@ -222,14 +351,14 @@
 <style lang="scss">
   .tb-total {
     .tb-td {
-      b {
-        color: #333;
-      }
+      // b {
+      //   color: #333;
+      // }
     }
   }
 </style>
 <style scoped lang="scss">
-  .ui-table-container {
+  .xj-report-table-container {
     height: 575px;
     overflow-y: auto;
     &.produc-line {
@@ -243,77 +372,78 @@
       }
     }
     &.con-line {
-      .tb-tr:nth-child(even) {
-        .backLine {
-          background-color: #f9f9f9;
-        }
-      }
+      // .tb-tr:nth-child(even) {
+      //   .backLine {
+      //     background-color: #f9f9f9;
+      //   }
+      // }
       .tb-category{
         font-size: 0;
       }
     }
-    .tb-tr {
-      height: 50px;
-      display: flex;
-      .tb-td {
-        float: left;
-        display: inline-block;
-        height: 50px;
-        line-height: 50px;
-        text-align: center;
-        font-size: 14px;
-        font-weight: 500;
-        transition: all .1s;
-        white-space: nowrap;
-        color: #333;
-        -webkit-font-smoothing: subpixel-antialiased;
-        text-overflow: ellipsis;
-        &.category-td {
-          position: relative;
-          //overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: pre-wrap;
-          >i {
-            font-style: normal;
-            // font-weight: bold;
-            // color: #248efc;
-            color: #333;
-            font-size: 14px;
-            // font-size: 15px;
-            position: absolute;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            left: 0;
-            top: 0;
-            text-align: center;
-            justify-content: center
-          }
-        }
-      }
-    }
-    .tb-total {
-      background-color: #e9f4fe;
-      height: 50px;
-      display: flex;
-      .tb-td {
-        float: left;
-        display: inline-block;
-        height: 50px;
-        line-height: 50px;
-        text-align: center;
-        font-size: 14px;
-        font-weight: bold;
-        color: #2993f8;
-        transition: all .3s;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        b {
-          color: #333 !important;
-        }
-      }
-    }
+    // .tb-tr {
+    //   height: 40px;
+    //   display: flex;
+    //   .tb-td {
+    //     float: left;
+    //     display: inline-block;
+    //     height: 40px;
+    //     line-height: 40px;
+    //     text-align: center;
+    //     font-size: 14px;
+    //     font-weight: 500;
+    //     transition: all .1s;
+    //     white-space: nowrap;
+    //     color: #333;
+    //     -webkit-font-smoothing: subpixel-antialiased;
+    //     text-overflow: ellipsis;
+    //     &.category-td {
+    //       position: relative;
+    //       //overflow: hidden;
+    //       text-overflow: ellipsis;
+    //       white-space: pre-wrap;
+    //       >i {
+    //         font-style: normal;
+    //         // font-weight: bold;
+    //         // color: #248efc;
+    //         color: #333;
+    //         font-size: 14px;
+    //         // font-size: 15px;
+    //         position: absolute;
+    //         display: flex;
+    //         align-items: center;
+    //         width: 100%;
+    //         left: 0;
+    //         top: 0;
+    //         text-align: center;
+    //         justify-content: center;
+    //         background-color: #f9f9f9;
+    //       }
+    //     }
+    //   }
+    // }
+    // .tb-total {
+    //   background-color: #ECF3FF;
+    //   height: 40px;
+    //   display: flex;
+    //   .tb-td {
+    //     float: left;
+    //     display: inline-block;
+    //     height: 40px;
+    //     line-height: 40px;
+    //     text-align: center;
+    //     font-size: 14px;
+    //     font-weight: bold;
+    //     color: #2993f8;
+    //     transition: all .3s;
+    //     overflow: hidden;
+    //     white-space: nowrap;
+    //     text-overflow: ellipsis;
+    //     b {
+    //       color: #333 !important;
+    //     }
+    //   }
+    // }
   }
   
   .no-data {
@@ -333,7 +463,7 @@
       right: 0;
       height: 16px;
       font-size: 16px;
-      color: #2993f8;
+      // color: #2993f8;
       text-align: center;
       margin: auto;
     }
@@ -343,4 +473,27 @@
     width: 1100px;
     overflow: hidden;
   }
+
+  .total-num-wrap{
+      height: 40px;
+      width: 100%;
+      background: #ECF3FF;
+      margin-top: 1px;
+      // border-top: 1px solid #fff;
+      >div:first-child{
+        float: left;
+        display: inline-block;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: bold;
+        color: #2993f8;
+        transition: all .3s;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 148px;
+      }
+    }
 </style>

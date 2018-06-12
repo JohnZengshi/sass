@@ -24,10 +24,7 @@
         <div v-for="(tb, index) in caty.productTypeList" :key="index">
           <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :key="index1" :index="addIndex()">
             <template v-for="(tab,index) in detailDataGridColumn">
-              <div class="tb-td category-td" :key="index" v-if="tab.text == '产品类别' && index1 == 0" :style="tableCell(tab.width)">
-                <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{tb[tab.childType]}}</i>
-              </div>
-              <div class="tb-td category-td" :key="index" v-else-if="tab.text == '回购类型' && index1 == 0" :style="tableCell(tab.width)">
+              <div class="tb-td category-td" :key="index" v-if="tab.text == '回购类型' && index1 == 0" :style="tableCell(tab.width)">
                 <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{caty[tab.childType]}}</i>
               </div>
               <div class="tb-td" :key="index" v-else :class="{backLine:tab.childType != ''}" :style="tableCell(tab.width)" v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
@@ -44,7 +41,7 @@
           <!-- 位置小计 -->
           <!--保留2位小数-->
           <!--<div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="tableCell(tab.width)" v-html="f == 1 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"></div>-->
-        	<div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="tableCell(tab.width)" v-html="f == 1 ? '<b>小计</b>' : caty[tab.totalType0]"></div>
+          <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="tableCell(tab.width)" v-html="f == 1 ? '<b>小计</b>' : caty[tab.totalType0]"></div>
         </div>
       </div>
       <div v-if="isDate" class="no-data"></div>
@@ -79,7 +76,7 @@
       }
     },
     mounted() {
-    	
+      
       let _this = this
       this.$nextTick(() => {
         // console.log(1111, this.dataGridStorage.productTypeList)
@@ -107,23 +104,23 @@
         },
         callbacks: {
           onTotalScroll: function () {
-					// console.log('滚轮到底了')
-					$('.loadControl').css({
-						opacity:1
-					})
+          // console.log('滚轮到底了')
+          $('.loadControl').css({
+            opacity:1
+          })
                 },
-				onUpdate(){
-					// console.log('滚动条更新')
-					$('.loadControl').css({
-						opacity:0
-					})
-				},
-				whileScrolling(){
-					// console.log('滚动条活动')
-					$('.loadControl').css({
-						opacity:0
-					})
-				}
+        onUpdate(){
+          // console.log('滚动条更新')
+          $('.loadControl').css({
+            opacity:0
+          })
+        },
+        whileScrolling(){
+          // console.log('滚动条活动')
+          $('.loadControl').css({
+            opacity:0
+          })
+        }
         }
       });
       this.tabCellHeight()
@@ -209,99 +206,15 @@
 <style lang="scss">
   .tb-total {
     .tb-td {
+      color: #333;
       b {
-        color: #333;
+        color: #2993f8;
       }
     }
   }
 </style>
 <style scoped lang="scss">
-  // .xj-report-table-container {
-  //   height: 515px;
-  //   overflow-y: auto;
-  //   &.produc-line {
-  //     .tb-tr:nth-child(even) {
-  //       background-color: #f9f9f9;
-  //     }
-  //   }
-  //   &.default-line {
-  //     .tb-tr:nth-child(even) {
-  //       background-color: #f9f9f9;
-  //     }
-  //   }
-  //   &.con-line {
-  //     .backLine {overflow: hidden;}
-  //     .tb-tr:nth-child(even) {
-  //       .backLine {
-  //         background-color: #f9f9f9;
-          
-  //       }
-  //     }
-  //   }
-  //   .tb-tr {
-  //     // height: 40px;
-  //     display: flex;
-  //     .tb-td {
-  //       float: left;
-  //       display: inline-block;
-  //       // height: 40px;
-  //       // line-height: 40px;
-  //       text-align: center;
-  //       font-size: 14px;
-  //       font-weight: 400;
-  //       transition: all .1s;
-  //       white-space: nowrap;
-  //       color: #333;
-  //       -webkit-font-smoothing: subpixel-antialiased;
-  //       text-overflow: ellipsis;
-  //       &.category-td {
-  //         position: relative;
-  //         //overflow: hidden;
-  //         text-overflow: ellipsis;
-  //         white-space: pre-wrap;
-  //         >i {
-  //           font-style: normal;
-  //           // font-weight: bold;
-  //           // color: #248efc;
-  //           color: #333;
-  //           font-size: 14px;
-  //           // font-size: 15px;
-  //           position: absolute;
-  //           display: flex;
-  //           align-items: center;
-  //           width: 100%;
-  //           left: 0;
-  //           top: 0;
-  //           text-align: center;
-  //           justify-content: center
-  //         }
-  //       }
-  //     }
-  //   }
-  //   .tb-total {
-  //     background-color: #e9f4fe;
-  //     height: 40px;
-  //     display: flex;
-  //     .tb-td {
-  //       float: left;
-  //       display: inline-block;
-  //       // height: 40px;
-  //       // line-height: 40px;
-  //       text-align: center;
-  //       font-size: 14px;
-  //       font-weight: bold;
-  //       color: #2993f8;
-  //       transition: all .3s;
-  //       overflow: hidden;
-  //       white-space: nowrap;
-  //       text-overflow: ellipsis;
-  //       b {
-  //         color: #333 !important;
-  //       }
-  //     }
-  //   }
-  // }
-  
+
   .no-data {
     height: 100%;
     background: url(~static/img/space-page.png) center center no-repeat;

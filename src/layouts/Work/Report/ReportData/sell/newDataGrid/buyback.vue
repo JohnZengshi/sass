@@ -26,7 +26,7 @@
 
 <script>
 import DataGridHeader from './dataGridHeader'
-import DataGridBody from './dataGridBody'
+import DataGridBody from './buyback/dataGridBody'
 import DataGridFooter from './dataGridFooter'
 //let configData = null
 let configData = require('./config/buyBack')

@@ -2,58 +2,60 @@
 	<transition name="tp-ani">
 
 		<div class="RP_report_wrapper ui-page-max-width " v-if="isPrint==0">
+      
+      <div style="height: 71px;">
+          <div class="Rp_title_container sell-report-header">
+            <div class="Rp_selected_container">
+         <!--      <span class="spaceMark">|</span> -->
+              <DropDownMenu class="selected_dropdown" :titleName="shopList[0].shopName" dataType="店铺" v-if="itemShow" :propList="shopList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+              </DropDownMenu>
+              <span v-else :style="{color:activeColor, fontSize:size,fontWeight:weight,marginRight:right,lineHeight:height,height:high}">{{printSelectDate.shop}}</span>
 
-			<div class="Rp_title_container sell-report-header">
-				<div class="Rp_selected_container">
-					<span class="spaceMark">|</span>
-					<DropDownMenu class="selected_dropdown" :titleName="shopList[0].shopName" dataType="店铺" v-if="itemShow" :propList="shopList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-					</DropDownMenu>
-					<span v-else :style="{color:activeColor, fontSize:size,fontWeight:weight,marginRight:right,lineHeight:height,height:high}">{{printSelectDate.shop}}</span>
+              <template v-if="modleSwitch == '2'">
+                <span class="spaceMark">|</span>
 
-					<template v-if="modleSwitch == '2'">
-						<span class="spaceMark">|</span>
+                <DropDownMenu v-if="!isdisabled" class="selected_dropdown" titleName="制单人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+                </DropDownMenu>
+                <div v-else class="selected_dropdown el-dropdown placeholder disabled">
+                  <span class="el-dropdown-link">制单人</span>
+                  <i class="iconfont icon-arrow-down"></i>
+                </div>
 
-						<DropDownMenu v-if="!isdisabled" class="selected_dropdown" titleName="制单人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-						</DropDownMenu>
-						<div v-else class="selected_dropdown el-dropdown placeholder disabled">
-							<span class="el-dropdown-link">制单人</span>
-							<i class="iconfont icon-arrow-down"></i>
-						</div>
+                <span class="spaceMark">|</span>
 
-						<span class="spaceMark">|</span>
+                <DropDownMenu class="selected_dropdown" titleName="销售人" dataType="销售人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+                </DropDownMenu>
 
-						<DropDownMenu class="selected_dropdown" titleName="销售人" dataType="销售人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-						</DropDownMenu>
+                <DropDownMenu v-if="!isdisabled" class="selected_dropdown" titleName="收银人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+                </DropDownMenu>
+                <div v-else class="selected_dropdown el-dropdown placeholder disabled">
+                  <span class="el-dropdown-link">收银人</span>
+                  <i class="iconfont icon-arrow-down"></i>
+                </div>
+              </template>
 
-						<DropDownMenu v-if="!isdisabled" class="selected_dropdown" titleName="收银人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-						</DropDownMenu>
-						<div v-else class="selected_dropdown el-dropdown placeholder disabled">
-							<span class="el-dropdown-link">收银人</span>
-							<i class="iconfont icon-arrow-down"></i>
-						</div>
-					</template>
+              <div class="report-data">
+                <div class="block until" data-txt="至">
+                  <el-date-picker size="mini" v-model="beginTime" @change="getTimeData" type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
+                </div>
+                <div class="block">
+                  <el-date-picker size="mini" v-model="endTime" @change="overTimeDate" type="date" placeholder="选择结束时间" :picker-options="pickerOptions1"></el-date-picker>
+                </div>
+              </div>
+              <el-button type="primary" size="small" class="back-btn" @click.native="toHome">返回上一级</el-button>
+            </div>
+          </div>
 
-					<div class="report-data">
-						<div class="block until" data-txt="至">
-							<el-date-picker size="mini" v-model="beginTime" @change="getTimeData" type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
-						</div>
-						<div class="block">
-							<el-date-picker size="mini" v-model="endTime" @change="overTimeDate" type="date" placeholder="选择结束时间" :picker-options="pickerOptions1"></el-date-picker>
-						</div>
-					</div>
-					<el-button type="primary" size="small" class="back-btn" @click.native="toHome">返回上一级</el-button>
-				</div>
-			</div>
-
-      <!--收银统计跟销售统计切换-->
-      <ul class="sell-report-cut-nav-list">
-          <li v-for="item in cutList" @click="modleSwitchFn(item.id)" :class="{actions: modleSwitch == item.id}">{{item.name}}</li>
-      </ul>
+          <!--收银统计跟销售统计切换-->
+          <ul class="sell-report-cut-nav-list">
+              <li v-for="item in cutList" @click="modleSwitchFn(item.id)" :class="{actions: modleSwitch == item.id}">{{item.name}}</li>
+          </ul>
+      </div>
 
 			<!--销售统计-->
 			<div class="dataGrid_statistics_switch" v-if="modleSwitch == 2">
 
-				<div class="Rp_dataGrid_container last-table" v-loading="loading" element-loading-text="数据查询中">
+				<div class="Rp_dataGrid_container last-table mt-0 xj-report-table-wrap" v-loading="loading" element-loading-text="数据查询中">
 					<div class="rp_gridState">
 						<!--<p class="side-nav"><i class="iconfont icon-liebiao"></i>收银报表</p>-->
 						<div class="side-nav">
@@ -72,12 +74,13 @@
 								</div>
 							</div>
 						</template>
+          
 
-						<div class="xj-switch" v-if="sellShowId == 'sales'">
-							<span class="btn" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" :class="{active: tabSwitch}">专列项</span>
-						</div>
+            <filter-header v-if="sellShowId == 'sales' || sellShowId == 'buyback'" @complate="filterHeaderComplate" @reportSwitch="reportSwitch" :specialItem="sellShowId == 'sales'"></filter-header>
 
-						<template v-if="sellShowId == 'sales' || sellShowId == 'buyback' ">
+             <cut-bg class="cut-bg-btn-wrap ml-10" :showList="sellTypeList" :current="sellShowId" @pitchOn="madeUpOnSell"></cut-bg>
+
+<!-- 						<template v-if="sellShowId == 'sales' || sellShowId == 'buyback' ">
 							<div class="tab">
 								<span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span>
 								<span :class="1 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(1, 2)">智能分类</span>
@@ -176,10 +179,7 @@
               </div>
           </span>
 							</div>
-						</template>
-
-						<DropDownMenu class="selected_dropdown report-change" titleName="销售报表" dataType="收货人" :propList="sellChangeList" @dropReturn="shopDropReturn" @clearInfo="shopClearInfo">
-						</DropDownMenu>
+						</template> -->
 
 					</div>
 
@@ -242,6 +242,15 @@
 				</div>
 				
 			</div>
+
+
+
+
+
+
+
+
+
 			<!--收银统计-->
 			<div class="dataGrid_statistics_switch" v-else>
 				<com-statistics :selectDate="dataGridOptions" :printSelectDate="printSelectDate" :tradeStorage="tradeStorage" :sellStorage="sellStorage">
@@ -284,6 +293,8 @@ import {
 } from "./../../../../Api/commonality/seek.js";
 
 import ReportDetail from "./sell/newDataGrid/sell";
+import cutBg from "base/cut/cut-bg";
+import filterHeader from './base/filter-header'
 import ReportDetailTrade from "./sell/newDataGrid/buyback";
 import ReportDetailCollect from "./sell/collect";
 import DropDownMenu from "./../../../../components/template/DropDownMenu"
@@ -322,7 +333,9 @@ export default {
     intelligenceTypeTemplate,
     customTemplate,
     ReportLoad,
-    ZDYDropDownMenu
+    ZDYDropDownMenu,
+    filterHeader,
+    cutBg
   },
   data() {
     return {
@@ -378,6 +391,16 @@ export default {
           name: '销售统计',
           id: '2'
         }
+      ],
+      sellTypeList: [
+          {
+              name: '销售报表', 
+              id: 'sales'
+          },
+          {
+              name: '回购报表',
+              id: 'buyback'
+          }
       ],
       // modleSwitch: {
       //   title: "点击切换到销售统计",
@@ -656,6 +679,41 @@ export default {
 
   },
   methods: {
+    madeUpOnSell (parm) {
+      this.sellShowId = parm.id;
+
+      this.$set(this.dataGridOptions, "sortList", [
+        {
+          classTypeName: "1"
+        }
+      ]);
+      this.$set(this, "sortList", [
+        {
+          name: "产品类别",
+          value: "1"
+        }
+      ]);
+      this.$set(this, "newList", [
+        {
+          name: "产品类别",
+          value: "1"
+        }
+      ]);
+      
+      this.dataGridOptions.pageSize = 15
+      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+
+      this.send();
+
+    },
+    filterHeaderComplate (parm) {
+        Object.assign(this.dataGridOptions, parm)
+        this.send()
+    },
+    //成本控制
+    reportSwitch(parm){
+      this.tabSwitch = parm
+    },
     choseMenu(type) {
         if(this.tabSwitch) {
           this.dataGridOptions.specialId = ''
@@ -1170,7 +1228,7 @@ export default {
     getShopListByCo() {
       let options = {
         page: 1,
-        pageSize: "10"
+        pageSize: "9999"
       };
       seekGetShopListByCo(options).then(
         res => {
@@ -1610,7 +1668,9 @@ export default {
     }
   }
 }
-
+.mt-0{
+  margin-top: 0;
+}
 .utils-container-sell {
   position: absolute;
   right: -70px;
@@ -1734,5 +1794,9 @@ export default {
   li:last-child{
     border-right: none;
   }
+}
+.cut-bg-btn-wrap{
+  float: right;
+  margin-top: 10px;
 }
 </style>

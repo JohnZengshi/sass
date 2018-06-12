@@ -2,12 +2,12 @@
   <div class="report-filter-height-main">
 
     <!-- 成品旧料 -->
-    <cut-bg class="ml-10" :showList="madeUpList" :current="filterData.productClass" @pitchOn="madeUpOnProductClass"></cut-bg>
+    <cut-bg v-if="isOld" class="ml-10" :showList="madeUpList" :current="filterData.productClass" @pitchOn="madeUpOnProductClass"></cut-bg>
     
 
     <cut-segmentation class="ml-10" :showList="cutSegmentationList" :current="filterData.productClass" @pitchOn="madeUpOn"></cut-segmentation>
 
-    <div class="cost-btn ml-10" v-if="isShowCost == 'Y'" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu" :class="{active: tabSwitch}">
+    <div v-show="specialItem" class="cost-btn ml-10" v-if="isShowCost == 'Y'" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu" :class="{active: tabSwitch}">
       专列项
     </div>
     
@@ -18,6 +18,7 @@
   import cutSegmentation from "base/cut/cut-segmentation";
   import {seekSettingUserRole} from "Api/commonality/seek"
   export default {
+    props: ['isOld', 'specialItem'],
     components:{
       cutBg,
       cutSegmentation
