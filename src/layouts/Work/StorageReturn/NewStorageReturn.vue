@@ -633,7 +633,7 @@ export default {
                     name: "调库单",
                     type: "07"
                 }
-            ],
+            ],//单据类型
             enterOrderNum: '', //输入的单据号
             toRouterUrlName: '退库',
             //大、小类 tab切换
