@@ -1,7 +1,7 @@
 <template>
 <!--表尾-->
 <div class="ui-table_footer">
-  <div class="th_footer" v-for="(tab,f) in detailDataGridColumn" 
+  <div class="th_footer" v-for="(tab,f) in detailDataGridColumn" :key="f"
     :style="tableCell(tab.width)">
       <p class="totalNum" v-html="v_html(tab)"></p>
       <p class="total-more" v-if="f == 0 && reportType != 1">合计</p>

@@ -1,84 +1,74 @@
 <template>
-<div class="steps-path" :class="{remark: isRemark}">
-  <div class="steps-item" :class="item.statusClass"  v-for="(item,i) in stepItem" :key="i">
-      <div class="user">
-         
-      </div>
+<div class="steps-path">
+  <div class="steps-item">
+    <div class="item_title clearfix">
+      <div class="item_time fl">2010-03-26</div>
+      <div class="item_status fl">调库</div>
+      <ul class="fl">
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+  <div class="steps-item">
+    <div class="item_title">
+      <div class="item_time fl">2010-03-26</div>
+      <div class="item_status fl">调库</div>
+    </div>
+  </div>
+  <div class="steps-item">
+    <div class="item_title clearfix">
+      <div class="item_time fl">2010-03-26</div>
+      <div class="item_status fl">调库</div>
+      <ul class="fl">
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+        
+      </ul>
+    </div>
   </div>
 </div>
 </template>
 
 <script>
-import {seekReceiptStatusList} from 'Api/commonality/seek'
 export default {
   data () {
     return{
-      stepItem: [
-        {
-          createTime : '',
-          userName : '',
-          status: '1',
-          id: '1',
-          statusName : '待审核',
-          statuscurClass : 'auditing',
-          statusClass : 'ing'
-        },
-        {
-          createTime : '',
-          userName : '',
-          status: '2',
-          id: '2',
-          statusName : '审核中',
-          statuscurClass : 'alreadyAudit',
-          statusClass : ''
-        },
-        {
-          createTime : '',
-          userName : '',
-          status: '3',
-          id: '3',
-          statusName : '已审核', // 已审核
-          statuscurClass : 'compAudit',
-          statusClass : ''
-        },
-        {
-          createTime : '',
-          userName : '',
-          status: '4',
-          id: '4',
-          statusName : '待收货',
-          statuscurClass : 'compAudit',
-          statusClass : ''
-        },
-        {
-          createTime : '',
-          userName : '',
-          status: '5',
-          id: '5',
-          statusName : '已收货',
-          statuscurClass : 'compAudit',
-          statusClass : ''
-        },
-        {
-          createTime : '',
-          userName : '',
-          status: '6',
-          id: '6',
-          statusName : '锁定',
-          statuscurClass : 'lock',
-          statusClass : ''
-        }
-      ]
+     
     }
   },
-  props: ['orderNum', 'statusREfresh', 'isRemark'],
+  props: [],
   watch: {
-    'statusREfresh': function (val) {
-      //console.log(val)
-      if (val == true) {
-        this.fetchFootData()
-      }
-    }
+    
   },
   methods: {
     // 获取当前状态数据
@@ -163,98 +153,113 @@ export default {
   width: 100%;
   top:0;
   left: 0;
+
   min-height:400px;
-  &.remark {
-    right:-205px !important;
-  }
   
-  >.steps-item{
-    color: #d6d6d6;
-    height: 60px;
+  .steps-item{
     position: relative;
-    font-size: 12px;
     display: flex;
-    
-    >.user{
-      width: 105px;
-      padding-left: 15px;
-      text-align: left;
-      border-left:3px dashed #e5e5e5;
-      position: relative;
-      .time{ letter-spacing: -0.05em;}
-      &:after,&:before{
-        content: '';
-        display: block;
-        border-radius: 100%;
-        position: absolute;
-      }
-      &:after{
-        width: 14px;
-        height: 14px;
-        background-color: #d6d6d6;
-        left: -9px;
-        top: 0;
-        z-index: 3;
-      }
-      &:before{
-        width: 10px;
-        height: 10px;
-        background-color: #fff;
-        left: -7px;
-        top: 2px;
-        z-index: 4;
-      }
+    min-height: 80px;
+
+    padding-left: 20px;
+    padding-bottom: 50px;
+
+    font-size: 12px;
+    color: #d6d6d6;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 10px;
+      height: 10px;
+
+      border-radius: 100%;
+      border: 2px solid #2993f8;
+      background: #fff;
     }
-    
-    >.status{
-      display: block;
-      text-align: right;
-      width: 56px;
-      font-weight: bold;
-      padding-right: 10px;
-      position: relative;
-      white-space: nowrap;
+    &::after {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 4px;
+      width: 6px;
+      height: 100%;
+      background: #9bceff;
     }
-    /* 已经操作过的状态 */
-    &.past{
-      .user{
-        &:after{background-color: #2993f8;left: -10px;}
-        &:before{left: -8px;}
-        width: 107px;
-        border-left:6px solid #9bceff;
-        >.time{ color: #333;}
-        >.name{ color: #b3b4b3;}
+
+    .item_title {
+      // position: absolute;      
+      width: 172px;
+      // height: 100%;
+      border: 1px solid #eee;
+      border-top-left-radius: 22px;
+      border-bottom-right-radius: 22px;
+      background: #fff;
+      z-index: 9999;
+      .item_time {
+        width: 84px;
+        height: 30px;
+
+        font-size: 12px;
+        color: #fff;
+        text-align: center;
+        line-height: 30px;
+
+        background: #2993f8;
+        border-top-left-radius: 22px;
+        border-bottom-right-radius: 22px;
+        
+        cursor: pointer;
       }
-      >.status{color:#2993f8;}
-    }
-    
-    /* 进行中的状态 */
-    &.ing{
-      .user{
-        &:after{background-color: #ffbf42; width: 16px; height: 16px;}
-        &:before{left: -6px;top:3px;}
-        >.time{ color: #333; }
-        >.name{ color: #b3b4b3;}
+      .item_status {
+        width: 66px;
+        height: 30px;
+
+        margin-left: 10px;
+
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 30px;
+        color: #2993f8;
       }
-      >.status{
-        color:#2993f8;
-        &:after{
-          content: '';
-          border:7px solid transparent;
-          border-top-color:#ffbf42;
-          position: absolute;
-          right: -9px;
-          top: 13px;
-          z-index: 2;
+      >ul {
+        width: 100%;
+        padding-bottom: 14px;
+        li {
+          display: flex;
+          .label {
+            width: 60px;
+            height: 24px;
+
+            color: #999;
+            text-align: right;
+            line-height: 24px;
+          }
+          .message {
+            flex: 1;
+            margin-left: 15px;
+            line-height: 24px;
+            color: #333;
+          }
         }
       }
     }
-    
-    &:last-child{
-      >.user{
-        height: 30px;
-      }
+  }
+  .steps-item:nth-last-of-type(1) {
+    &::after {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 4px;
+      width: 6px;
+      height: 0;
+      background: #9bceff;
     }
+  }
+  .clearfix {
+    clear: both;
   }
 }
 </style>
