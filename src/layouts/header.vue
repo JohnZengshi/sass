@@ -46,13 +46,13 @@
                   <i v-if="iconShow" class="iconfont icon-sousuo" @click="goSearchPage" title="搜索"></i>
                   <i v-else class="iconfont el-icon-circle-cross" @click="closeIcon" title="清除"></i>
                   <!-- 搜索的列表 begin -->
-                  <div v-if="isSearch" class="searchList">
+                  <div v-if="isSearch && searchText.length >= 3" class="searchList">
                     <!-- 商品 -->
                     <div class="commodity">
                         <h1>商品</h1>
                         <div class="commodityList">
                           <div class="commodityItem">未匹配到相关商品信息，查看<span>所有商品</span></div>
-                          <div class="commodityItem">
+                          <div class="commodityItem" @click.stop="openListDeta">
                             <span class="gno">999888777444555</span><span class="gnn">千足银来宝手镯</span><span class="slocation fr">库位01</span>
                           </div>
                           <div class="commodityItem">
@@ -65,7 +65,7 @@
                         <h1>单据</h1>
                         <div class="receiptsList">
                           <div class="receiptsItem">未匹配到相关单据信息，查看<span>所有单据</span></div>
-                          <div class="receiptsItem">
+                          <div class="receiptsItem" @click.stop="openListDeta">
                             <span class="gno">RK20180609123456</span><span class="state">入库</span><span class="slocation fr">李发财</span>
                           </div>
                           <div class="receiptsItem">
@@ -78,7 +78,7 @@
                         <h1>会员</h1>
                         <div class="membersList">
                           <div class="membersItem">未匹配到相关会员信息，查看<span>所有会员</span></div>
-                          <div class="membersItem">
+                          <div class="membersItem" @click.stop="openListDeta">
                             <span class="gno">12345678901</span><span class="gnn">潘晓婷</span><span class="slocation fr">四季如春珠宝店</span>
                           </div>
                           <div class="membersItem">
@@ -138,6 +138,7 @@
         <div class="page-wrap">
 				  <component :is="panel" :panelType="panelType"></component>
 			  </div>
+        
       </el-dialog>
   </header>
 </transition>
@@ -178,7 +179,7 @@ export default {
       unreadNoticeNum: "", // 未读公告
 
       isSearch: false, // 搜索列表
-      ListDetails: true, // 列表弹框      
+      ListDetails: false, // 列表弹框      
       tabList: [
         '商品',
         '单据',
@@ -231,13 +232,19 @@ export default {
     }
   },
   methods: {
+    openListDeta() {
+      this.ListDetails = true
+      this.isSearch = false
+    },
     changesearchborder(val) {
       if (val == 1) {
         this.$refs.mysearch.style.border = "1px solid #2993f8";
         this.isSearch = true;
       } else {
-        this.$refs.mysearch.style.border = "1px solid #fff";
-        this.isSearch = false;
+        setTimeout(() => {
+          this.$refs.mysearch.style.border = "1px solid #fff";
+          this.isSearch = false
+        }, 200);
       }
     },
     unreadCount() {

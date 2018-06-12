@@ -4,7 +4,7 @@
         <filter-header :panelType="panelType" @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
         <!-- 表格主体 -->
         <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
-            <report-detail ref="reportDetailWrap" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow">
+            <report-detail ref="reportDetailWrap" :panelType="panelType" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow">
             </report-detail>
         </div>
     </div>

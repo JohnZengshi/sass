@@ -1,5 +1,6 @@
 <template>
   <div class="d-c-filter-header-main productList">
+
     <div class="operate-bar-bottom" v-if="panelType === 0">
       <div class="search">
           <input type="text" v-model="keyword" placeholder="请输入关键字" @keyup.enter="batchAddByOrderNum">
@@ -160,7 +161,29 @@
           
       </div>
 
+      <div class="itemType">
+          <alone-drop-down-colums 
+            ref="stateWrap"
+            :propsList="stateList"
+            titleData="单据类型"
+            @dataBack="dataBackProductTypeId"
+          ></alone-drop-down-colums>
+          <span class="divider">丨</span>
+          <div class="input_box">
+            <input class="input_box_before" type="text" name="" id="" placeholder="单据号范围">
+            <span>至</span>
+            <input class="input_box_end" type="text" name="" id="" placeholder="单据号范围">
+          </div>
+      </div>
       
+      <div class="report_data">
+            <div class="block until" data-txt="至">
+              <el-date-picker size="mini" v-model="beginTime" @change="getTimeData" type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
+            </div>
+            <div class="block">
+              <el-date-picker size="mini" v-model="endTime" @change="overTimeDate" type="date" placeholder="选择结束时间" :picker-options="pickerOptions1"></el-date-picker>
+            </div>
+      </div>
 
       <div class="reset">
         <div class="reset-btn" @click="resetData">
@@ -446,6 +469,30 @@ export default {
             type: "11"
           }
       ],
+      beginTime:'',
+      endTime:'',
+      pickerOptions1: {
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            }
+          }, {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }]
+        },
     }
   },
   created () {
@@ -681,6 +728,12 @@ export default {
             }
         })
     },
+    getTimeData(val) {
+      console.log(val)
+    },
+    overTimeDate(val) {
+      console.log(val)    
+    },
   }
 }
 </script>
@@ -746,7 +799,7 @@ export default {
           border-radius: 4px;
           color:#333;
           font-size: 12px;
-          line-height: 26px;
+          line-height: 28px;
           float: left;
           cursor: pointer;
           text-align: left;
@@ -776,13 +829,13 @@ export default {
               height: 100%;
           }
           .dropDown-wrap {
-              height: 26px;
+              height: 28px;
               &:hover {
                   color:#666;
                   background:#fff;
               }
               .title-name {
-                  height: 26px;
+                  height: 28px;
               }
           }
       }
@@ -803,7 +856,7 @@ export default {
           span {
               float: left;
               margin: 0 4px;
-              line-height: 26px;
+              line-height: 28px;
           }
       }
   }
@@ -882,12 +935,12 @@ export default {
     float: left;
     border: 1px solid #d6d6d6;
     color: #666;
-    height: 26px;
+    height: 28px;
     width: 60px;
     color: #2993f8;
     text-align: center;
     border-radius: 5px;
-    line-height: 26px;
+    line-height: 28px;
     font-size: 12px;
     cursor: pointer;
   }
@@ -897,9 +950,9 @@ export default {
     display: block;
     margin-left: 10px;
     width: 52px;
-    height: 26px;
+    height: 28px;
     text-align: center;
-    line-height: 26px;
+    line-height: 28px;
     color: #2993f8;
     background: #e0ecf7;
     border-radius: 4px;
@@ -916,5 +969,95 @@ export default {
     margin-left: 10px;
   }
 }
+.itemType {
+  float: left;
 
+  width: 302px;
+  height: 28px;
+
+  margin-left: 10px;
+
+  border: 1px solid #d6d6d6;
+  border-radius: 4px;
+
+  position: relative;
+  .dropColums-wrap {
+    width: 90px;
+    .tltle {
+      margin-left: 12px;
+    }
+  }
+  .divider {
+    position: absolute;
+    top: 3px;
+    left: 90px;
+    color: #d6d6d6;
+  }
+  .input_box {
+    float: left;
+    width: 200px;
+    height: 28px;
+    .input_box_before {
+      width: 88px;
+      height: 28px;
+      padding: 0 7px;
+      background: transparent;
+      
+    }
+    .input_box_end {
+      width: 88px;
+      height: 28px;
+      padding: 0 7px;
+      background: transparent;
+      
+    }
+  }
+}
+.report_data {
+  float: left;
+
+  width: 198px;
+  height: 28px;
+
+  margin-left: 10px;
+  border: 1px solid #d6d6d6;
+  border-radius: 4px;
+  
+  background-color: #fff;
+
+  vertical-align: middle;
+  overflow: hidden;
+
+  .block {
+    float: left;
+    width: 50%;
+    margin-top: 2px;
+    position: relative;
+    margin-left: 0 !important;
+    .el-date-editor {
+      width: 100%;
+    }
+    .el-input__inner {
+      padding: 0;
+      text-align: center;
+      color: #2993f8;
+      background-color: transparent;
+      font-weight: bold;
+      letter-spacing: -1px;
+    }
+    .el-input__icon {
+      display: none;
+    }
+  }
+  .block.until {
+    &::after {
+      content: attr(data-txt);
+      position: absolute;
+      right: -6px;
+      top: 2px;
+      font-size: 12px;
+      color: #666;
+    }
+  }
+}
 </style>

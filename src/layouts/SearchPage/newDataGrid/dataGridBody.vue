@@ -3,7 +3,7 @@
 <div class="ui-table-container default-line" ref="tableContainer">
 	<div>
 	  <template v-for="(tb, index) in dataGridStorage">
-			<div class="tb-tr" :key="index" :class="{'print-on': filterChange(index)}">
+			<div class="tb-tr" :key="index" :class="{'print-on': filterChange(index)}" @click="openDetails(index)">
 				<div class="tb-td"
 					v-for="(tab,num) in detailDataGridColumn" 
 					:style="tableCell(tab.width)" 
@@ -81,6 +81,9 @@ export default {
 		// this.tabCellHeight()
 	},
 	methods:{
+		openDetails(index) {
+			this.$emit("openDialog",this.dataGridStorage[index].productId)
+		},
     filterChange (Index) {
       if (this.printNum) {
         if (this.printNum.allChecked) {

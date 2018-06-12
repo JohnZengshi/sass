@@ -4,11 +4,12 @@
 <div class="ui-table-container default-line" ref="tableContainer" v-if="reportType == 1" :class="isEditReport == 'edit' ? 'edit' : ''">
 	<div>
 	  <template v-for="(tb, index) in tempArray">
-  		<div class="tb-tr" :class="index % 2 == 0 ? 'tb-tr-gray' : ''">
+  		<div class="tb-tr" :class="index % 2 == 0 ? 'tb-tr-gray' : ''" :key="index" @click="openDetails">
   			<div class="tb-td"
-  				v-for="tab in detailDataGridColumn" 
+  				v-for="(tab,i) in detailDataGridColumn" 
   				:style="tableCell(tab.width)" 
   				v-text = "tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"
+					:key="i"
   			></div>
   		</div>
   		
@@ -212,18 +213,18 @@ export default {
 	},
 	methods:{
 		//重置index
-	    resetIndex( index ){
+	  resetIndex( index ){
          if( index == 0 ) applyIndex = 0
         },
         //
         addIndex(){
          ++applyIndex
-        },
+    },
         
-        getIndex(){
+    getIndex(){
           this.$emit('getIndex',applyIndex)
           return applyIndex
-        },
+    },
 		tabCellHeight () {
 			this.heightArr = []
 			//console.log(this.dataGridStorage)
@@ -251,18 +252,18 @@ export default {
 				}
 			})
 			return _size
-       },
+    },
     
-     	//格式化
-     	storageFormatDate(){
+    //格式化
+    storageFormatDate(){
      		if( this.reportType == 1  && this.dataGridStorage ){
 				if(  this.dataGridStorage.detailList.length > 0 ){
 				     this.tempArray = this.dataGridStorage.detailList
 				}	
 			}
-     	},
+    },
      	
-     	cheackData(){
+    cheackData(){
      		if( this.dataGridStorage.productTypeList ){
 				  this.isDate = this.dataGridStorage.productTypeList.length == 0
   			}else if( this.dataGridStorage.buyBackList ){
@@ -272,11 +273,19 @@ export default {
             }else{
   				this.isDate = true;
   			}
-     	}
+		},
+		
+		// 点击事件
+		openDetails() {
+			console.log('打开详情')
+		}
      	
 	},
 	update(){
 		console.log('updata')
+	},
+	created () {
+		console.log('当前显示的类型',this.reportType)
 	}
 }
 </script>

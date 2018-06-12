@@ -137,7 +137,6 @@
 		methods: {
 			// 导出报表
 			exportTab(){
-				console.log(this.selectDate.beginTime)
 
 				let exportData = {
 					reportType: '3',
@@ -147,7 +146,7 @@
 					shopId: this.selectDate.shopId
 				}
 
-				//downLoaderFile('/v1/export/exportExcelByCash',exportData)
+				downLoaderFile('/v1/export/exportExcelByCash',exportData)
 			},
 			//打印表格 
 			tabPrin() {

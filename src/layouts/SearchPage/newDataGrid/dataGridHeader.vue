@@ -1,11 +1,11 @@
 <template>
 <!--表头-->
 <div class="ui-table_column">
-	<div @click="headSort(tab)" class="ui-table_th" v-for="tab in detailDataGridColumn" :style="tableCell(tab.width)">
+	<div class="ui-table_th" v-for="(tab,index) in detailDataGridColumn" :style="tableCell(tab.width)" :key="index">
 		{{tab.text }} <i v-if="tab.unit !=''">{{ tab.unit}}</i>
-        <img v-if="tab.sort == ''" src="~static/img/sort/default.png">
+        <!-- <img v-if="tab.sort == ''" src="~static/img/sort/default.png">
         <img v-if="tab.sort == '1'" src="~static/img/sort/up.png">
-        <img v-if="tab.sort == '2'" src="~static/img/sort/down.png">
+        <img v-if="tab.sort == '2'" src="~static/img/sort/down.png"> -->
 	</div>
 </div>
 </template>
@@ -231,7 +231,7 @@ export default {
         transition: all .1s;
         white-space: nowrap;
         text-overflow: ellipsis;
-        
+        cursor: default;
         >i{
           font-style:normal;
           color: #999;
