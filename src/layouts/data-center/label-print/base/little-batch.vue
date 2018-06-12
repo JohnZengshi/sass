@@ -55,7 +55,7 @@
                     <input type="text" v-model="endPrice" placeholder="售价" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
                 </div>
             </div>
-            <div class="label-table-main" @scroll="scrollFun1($event)">
+            <div class="label-table-main" v-loading = "isLoading" @scroll="scrollFun1($event)">
                 <el-checkbox-group v-model="checkList">
                     <img v-if="dataList.length ==0" style="display: block; margin:0 auto;" src="~static/img/space-page.png"/>
                     <ul v-else>
@@ -193,10 +193,7 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
                     break;
                     case "10":
                         return "修改"
-                    break;
-                    case "11":
-                        return "服务"
-                    break;
+                    break
                 }
             },
             changeState (parm) {
@@ -208,7 +205,7 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
                 this.batchAddByOrderNum()
             },
             scrollFun1 (el) {
-                if (el.target.scrollTop >= (el.target.scrollHeight - 440)) {
+                if (el.target.scrollTop >= (el.target.scrollHeight - 456)) {
                     if (this.dataList.length != this.totalNum) {
                         this._seekBatchAllByOrderNum()
                     }
@@ -216,7 +213,10 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
             },
             confirmClick () {
                 this.littleBatch = false
-                this.$emit('changeOrderId', this.checkList)
+                if (this.checkList.length) {
+                    this.$emit('changeOrderId', this.checkList)
+                }
+                this.checkList = []
                 // this.batchAddByProductList()
             },
             batchAddByOrderNum () { // 5.60批量添加-单据列表

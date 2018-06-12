@@ -270,8 +270,8 @@ export default {
       positionSwitch: false,
       customDialog: false, // 自定义列表弹窗
       resetFlag: false,
-      sortList: [{ name: '产品类别', value: '1' }],
-      newList: [{ name: '产品类别', value: '1' }],
+      sortList: [],
+      newList: [],
       paging: {
         page: 1,
         pageSize: '30'
@@ -398,7 +398,6 @@ export default {
   },
   methods: {
     resetData () {
-      debugger
       this.filterCondition = {
         keyWord: '',
         newOrderId: '',
@@ -736,6 +735,8 @@ export default {
         }
 
       })
+      this.dataGridStorage = []
+      this.paging.page = 1
       this.filterData()
     },
     diaInfoBack(val) { // 弹框信息返回
@@ -772,7 +773,6 @@ export default {
     },
     //成本控制
     reportSwitch(parm) {
-      debugger
       this.tabSwitch = parm
     },
     setPrintShowCompany(type) {
@@ -960,7 +960,6 @@ export default {
 
     //懒加载
     lazyloadSend() {
-      debugger
       if (this.dataGridStorage.length) {
         if (this.dataGridStorage.length != this.totalNum) {
           this.filterData()
