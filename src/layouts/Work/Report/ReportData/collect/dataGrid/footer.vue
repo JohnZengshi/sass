@@ -1,7 +1,7 @@
 <template>
 <!--表尾-->
 <div class="ui-table_footer">
-    <template  v-for="(tab,f) in detailDataGridColumn" >
+<!--     <template  v-for="(tab,f) in detailDataGridColumn" >
 
     	<div class="th_footer"
     		:key="tab.id" 
@@ -11,14 +11,41 @@
     		</p>
     		 <p v-if="f==1" class="total-more">合计</p>
     	</div>
-	</template>
+	</template> -->
+  <ul class="monny-list-wrap">
+      <li>
+        <p class="txt icon-container cash">{{cashierStatistics.cash ? cashierStatistics.cash : 0}}元</p>
+        <p class="gary">现金</p>
+      </li>
+      <li>
+        <p class="txt icon-container card">{{cashierStatistics.slotCard ? cashierStatistics.slotCard : 0}}元</p>
+        <p class="gary">刷卡</p>
+      </li>
+      <li>
+        <p class="txt icon-container weChat">{{cashierStatistics.weixin ? cashierStatistics.weixin : 0}}元</p>
+        <p class="gary">微信</p>
+      </li>
+      <li>
+        <p class="txt icon-container alipay">{{cashierStatistics.zhifubao ? cashierStatistics.zhifubao : 0}}元</p>
+        <p class="gary">支付宝</p>
+      </li>
+      <li>
+        <p class="txt icon-container other">{{cashierStatistics.other ? cashierStatistics.other : 0}}元</p>
+        <p class="gary">其他</p>
+      </li>
+
+      <li>
+        <p class="txt icon-container totalMoney">{{cashierStatistics.totalMoney ? cashierStatistics.totalMoney : 0}}元</p>
+        <p class="gary">实际收银</p>
+      </li>
+    </ul>
 </div>
 </template>
 
 <script>
 let width = 0
 export default{
-	props : ['detailDataGridColumn','dataGridStorage','tabCell'],
+	props : ['detailDataGridColumn','dataGridStorage','tabCell', 'cashierStatistics'],
 	
 	methods:{
 		tableCell( width ){
@@ -72,10 +99,24 @@ export default{
 
 <style lang="scss" scoped>
 .ui-table_footer{
+  position: relative!important;
+  >.monny-list-wrap{
+    padding-top: 5px;
+    font-size: 0;
+    li{
+      display: inline-block;
+      margin-left: 130px;
+      p{
+        font-size: 14px;
+        line-height: 14px;
+        margin-bottom: 2px;
+        color: #fff;
+      }
+    }
+  }
   .th_footer{
     position: relative;
     .total-more{
-      position:absolute;
       left: 0;
       top: 0;
       width: 100%;

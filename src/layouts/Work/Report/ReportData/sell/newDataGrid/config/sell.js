@@ -202,7 +202,7 @@ module.exports = {
     {
       id: '0h', //id 
       text: '产品类别', //头部title文字
-      width: '100', //单元格宽
+      width: '120', //单元格宽
       type: '', //合计类型值
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -216,7 +216,7 @@ module.exports = {
     {
       id: '13',
       text: '首饰名称',
-      width: '100',
+      width: '150',
       type: '',
       unit: '',
       footerUnit: '',
@@ -230,7 +230,7 @@ module.exports = {
     {
       id: '23f',
       text: '件数',
-      width: '60',
+      width: '70',
       type: 'totalNum',
       unit: '',
       footerUnit: '',
@@ -244,7 +244,7 @@ module.exports = {
     {
       id: '4s',
       text: '件重',
-      width: '80',
+      width: '90',
       type: 'totalWeight',
       unit: '(g)',
       footerUnit: '',
@@ -258,7 +258,7 @@ module.exports = {
     {
       id: '234s',
       text: '金重',
-      width: '80',
+      width: '90',
       type: 'totalGoldWeight',
       unit: '(g)',
       footerUnit: '',
@@ -272,7 +272,7 @@ module.exports = {
     {
       id: '5gh2',
       text: '金价',
-      width: '80',
+      width: '90',
       type: 'totalGoldPrice',
       unit: '(元/g)',
       footerUnit: '',
@@ -285,7 +285,7 @@ module.exports = {
     {
       id: '656n',
       text: '工费总额',
-      width: '80',
+      width: '90',
       type: 'totalWage',
       unit: '元',
       footerUnit: '',
@@ -298,7 +298,7 @@ module.exports = {
     {
       id: '173',
       text: '折扣',
-      width: '70',
+      width: '90',
       type: '',
       unit: '%',
       footerUnit: '',
@@ -311,7 +311,7 @@ module.exports = {
     {
       id: '7ns',
       text: '售价',
-      width: '80',
+      width: '90',
       type: 'totalSoldPrice',
       unit: '(元)',
       footerUnit: '',
@@ -325,7 +325,7 @@ module.exports = {
     {
       id: '1d7',
       text: '实售价',
-      width: '80',
+      width: '90',
       type: 'totalRealPrice',
       unit: '(元)',
       footerUnit: '',
@@ -339,7 +339,7 @@ module.exports = {
     {
       id: '135',
       text: '退换',
-      width: '80',
+      width: '90',
       type: 'totalExchange',
       unit: '(元)',
       footerUnit: '',
@@ -365,7 +365,7 @@ module.exports = {
     {
       id: '1bh8',
       text: '回收',
-      width: '80',
+      width: '90',
       type: 'totalRecycle',
       unit: '(元)',
       footerUnit: '',
@@ -378,7 +378,7 @@ module.exports = {
     {
       id: '24h0',
       text: '实收',
-      width: '80',
+      width: '90',
       type: 'totalActualPrice',
       unit: '(元)',
       footerUnit: '',
@@ -391,7 +391,7 @@ module.exports = {
     {
       id: '149',
       text: '成本',
-      width: '80',
+      width: '90',
       type: 'totalCost',
       unit: '(元)',
       footerUnit: '',
@@ -405,7 +405,7 @@ module.exports = {
     {
       id: '81s1',
       text: '毛利',
-      width: '80',
+      width: '90',
       type: 'totalMargin',
       unit: '(元)',
       footerUnit: '',
@@ -420,23 +420,23 @@ module.exports = {
 
   //产品分类
   productClassify: [
-    {
-      id: '0kl10',
-      text: '序号',
-      width: '50',
-      type: 'totalNum',
-      unit: '',
-      footerUnit: '',
-      totalName: '合计',
-      childType: '',
-      totalType: '',
-      toFixed: false,
-      countCut: 0
-    },
+    // {
+    //   id: '0kl10',
+    //   text: '序号',
+    //   width: '50',
+    //   type: 'totalNum',
+    //   unit: '',
+    //   footerUnit: '',
+    //   totalName: '合计',
+    //   childType: '',
+    //   totalType: '',
+    //   toFixed: false,
+    //   countCut: 0
+    // },
     {
       id: '0sdf3', //id 
       text: '产品类别', //头部title文字
-      width: '120', //单元格宽
+      width: '150', //单元格宽
       type: '', //合计类型值
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -451,7 +451,7 @@ module.exports = {
     {
       id: '21',
       text: '件数',
-      width: '80',
+      width: '90',
       type: 'totalNum',
       unit: '',
       footerUnit: '',
@@ -465,7 +465,7 @@ module.exports = {
     {
       id: '42',
       text: '件重',
-      width: '80',
+      width: '90',
       type: 'totalWeight',
       unit: '(g)',
       footerUnit: '',
@@ -479,7 +479,7 @@ module.exports = {
     {
       id: '234s',
       text: '金重',
-      width: '80',
+      width: '90',
       type: 'totalGoldWeight',
       unit: '(g)',
       footerUnit: '',
@@ -520,7 +520,7 @@ module.exports = {
     {
       id: 'f17',
       text: '折扣',
-      width: '80',
+      width: '90',
       type: '',
       unit: '%',
       footerUnit: '',
@@ -533,7 +533,7 @@ module.exports = {
     {
       id: 'f71',
       text: '售价',
-      width: '80',
+      width: '90',
       type: 'totalSoldPrice',
       unit: '(元)',
       footerUnit: '',
@@ -561,7 +561,7 @@ module.exports = {
     {
       id: 'vd15',
       text: '退换',
-      width: '80',
+      width: '90',
       type: 'totalExchange',
       unit: '(元)',
       footerUnit: '',
@@ -588,7 +588,7 @@ module.exports = {
     {
       id: 'g318',
       text: '回收',
-      width: '80',
+      width: '90',
       type: 'totalRecycle',
       unit: '(元)',
       footerUnit: '',
@@ -601,7 +601,7 @@ module.exports = {
     {
       id: 'sf20',
       text: '实收',
-      width: '80',
+      width: '90',
       type: 'totalActualPrice',
       unit: '(元)',
       footerUnit: '',
@@ -643,19 +643,19 @@ module.exports = {
 
   //自定义
   productCustom: [
-    {
-      id: '0kl10',
-      text: '序号',
-      width: '50',
-      type: 'totalNum',
-      unit: '',
-      footerUnit: '',
-      totalName: '合计',
-      childType: '',
-      totalType: '',
-      toFixed: false,
-      countCut: 0
-    },
+    // {
+    //   id: '0kl10',
+    //   text: '序号',
+    //   width: '50',
+    //   type: 'totalNum',
+    //   unit: '',
+    //   footerUnit: '',
+    //   totalName: '合计',
+    //   childType: '',
+    //   totalType: '',
+    //   toFixed: false,
+    //   countCut: 0
+    // },
     {
       id: '0sdf3', //id 
       text: '产品类别', //头部title文字
@@ -678,7 +678,7 @@ module.exports = {
       unit: '',
       footerUnit: '',
       totalName: '',
-      childType: 'className',
+      childType: 'jewelryName',
       totalType: '',
       toFixed: false,
       countCut: 0,

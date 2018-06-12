@@ -1,15 +1,18 @@
 <template>
 <!--表头-->
 <div class="ui-table_column">
-	<div  
-	  class="ui-table_th" 
-	  v-for="tab in detailDataGridColumn" 
-	  :key="tab.id" 
-	  :style="tableCell(tab.width)">
-	  
-		{{tab.text }} <i v-if="tab.unit !=''">{{ tab.unit}}</i>
+    <div class="ui-table_th" style="width: 148px;">销售类型</div>
+    <div style="width: 1100px; display: flex;">
+    	<div  
+    	  class="ui-table_th" 
+    	  v-for="tab in detailDataGridColumn" 
+    	  :key="tab.id" 
+    	  :style="tableCell(tab.width)">
+    	  
+    		{{tab.text }} <i v-if="tab.unit !=''">{{ tab.unit}}</i>
 
-	</div>
+    	</div>
+    </div>
 </div>
 </template>
 
