@@ -597,10 +597,10 @@ export default {
         seekGetShopListByCo(options).then((response) => {
             if (response.data.state === 200) {
                 console.log(response)
-               // _self.datas.shopList = response.data.data.shopList;
-               //  if (response.data.data.shopList.length === 1) { // 只有一个店铺的情况下
-               //      _self.onData.shopId = response.data.data.shopList[0].shopId;
-               //  }
+               _self.datas.shopList = response.data.data.shopList;
+                if (response.data.data.shopList.length == 1) { // 只有一个店铺的情况下
+                    _self.onData.shopId = response.data.data.shopList[0].shopId;
+                }
             } else {
                 this.$store.dispatch('workPopupError', response.data.msg);
             }

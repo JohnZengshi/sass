@@ -361,7 +361,7 @@
 	
 	.rp_dataGridTemp {
 		// width: 1210px;
-		margin: 10px auto;
+		margin: 0 auto;
 		height: 645px;
 	}
 </style>

@@ -71,11 +71,11 @@
         <div class="tb-category" v-for="(caty, ind) in buyBackDataList">
           <div v-for="(tb, index) in caty.productTypeList">
             <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()">
-              <template v-for="tab in detailDataGridColumn">
+              <template v-for="(tab, indexGrid) in detailDataGridColumn">
                 
                 <div 
                   class="tb-td category-td" 
-                  v-if="tab.text == '回购类型' && index == 0" 
+                  v-if="tab.text == '回购类型' && index == 0 && index1 == 0 && indexGrid == 0" 
                   :style="tableCell(tab.width)">
                   <i :style="sellTypeNameH(caty)">{{caty[tab.childType]}}</i>
 
@@ -107,7 +107,7 @@
         </div>
 
         <div class="tb-total" style="background:#ECF3FF;">
-          <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '' : buyBackStorage[tab.totalType]"></div>
+          <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '' : buyBackStorage[tab.type]"></div>
         </div>
 
       </div>
@@ -359,7 +359,7 @@
 </style>
 <style scoped lang="scss">
   .xj-report-table-container {
-    height: 575px;
+    height: 565px;
     overflow-y: auto;
     &.produc-line {
       .tb-tr:nth-child(even) {
@@ -455,6 +455,8 @@
     display: inline-block;
     vertical-align:top;
     width: 148px;
+    background-color: #f9f9f9;
+    border-right: 1px solid #f0f2f5;
     >p{
       position: absolute;
       top: 0;

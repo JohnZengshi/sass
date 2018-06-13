@@ -105,7 +105,9 @@ export default{
     font-size: 0;
     li{
       display: inline-block;
-      margin-left: 130px;
+      width: 205px;
+      overflow: hidden;
+      text-align:center;
       p{
         font-size: 14px;
         line-height: 14px;

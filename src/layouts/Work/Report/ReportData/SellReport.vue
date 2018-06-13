@@ -3,7 +3,7 @@
 
 		<div class="RP_report_wrapper ui-page-max-width " v-if="isPrint==0">
       
-      <div style="height: 71px;">
+      <div style="height: 41px;">
           <div class="Rp_title_container sell-report-header">
             <div class="Rp_selected_container">
          <!--      <span class="spaceMark">|</span> -->
@@ -82,7 +82,7 @@
               @reportSwitch="reportSwitch"
               @choseBuyBack="choseBuyBack"
               :specialItem="sellShowId == 'sales'"
-              :isBuy="true"
+              :isBuy="false"
               :customList="customList"
             ></filter-header>
 
@@ -970,8 +970,8 @@ export default {
       // 销售报表
       if (this.modleSwitch == '2') {
         //后台请求时间
-        this.dataGridOptions.beginTime = this.getDate(0,"start").fullData;
-        this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
+        // this.dataGridOptions.beginTime = this.getDate(0,"start").fullData;
+        // this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
         this.dataGridOptions.reportType = 3;
         //日期控件默认设置时间
         // this.beginTime = this.getDate(
@@ -1010,13 +1010,13 @@ export default {
         console.log('收银统计')
         //收银统计
         //后台请求时间
-        this.dataGridOptions.beginTime = this.getDate(0, "start").fullData;
-        this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
+        // this.dataGridOptions.beginTime = this.getDate(0, "start").fullData;
+        // this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
         this.dataGridOptions.reportType = 1;
         this.dataGridOptions.sellStatu = 1;
         //日期控件默认设置时间
-        this.beginTime = this.getDate(0, "start").format;
-        this.endTime = this.getDate(0, "end").format;
+        // this.beginTime = this.getDate(0, "start").format;
+        // this.endTime = this.getDate(0, "end").format;
 
         this.dataGridOptions.pageSize = 15
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
@@ -1136,6 +1136,14 @@ export default {
       } else if (val.type == "销售人") {
         this.printSelectDate.salesperson = val.item.operateNam;
         this.printSelectDate.operateId = val.item.operateId;
+        Object.assign(this.dataGridOptions, {
+          salesmenList: [
+            {
+              salesmenId: ""
+            }
+          ]
+        });
+        this.dataGridOptions.salesmenList[0].salesmenId = val.item.operateId;
       }
 
       this.currentPage = 1;
@@ -1805,8 +1813,8 @@ export default {
   overflow: hidden;
   box-shadow: 0 0 15px #e2e2e2;
   >li{
-    padding: 25px 20px;
-    font-size: 16px;
+    padding: 12px 12px;
+    font-size: 12px;
     font-weight: bold;
     float: left;
     color: #333;

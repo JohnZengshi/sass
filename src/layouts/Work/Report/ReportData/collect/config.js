@@ -191,6 +191,7 @@ module.exports = {
         text: '标价/原售价',
         width:'15%', 
         type:'totalSoldPrice', 
+        // type:'totalActualPrice', 
         unit: '(元)',
         footerUnit: '',
         totalName : '',

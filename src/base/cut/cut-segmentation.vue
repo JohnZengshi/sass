@@ -43,7 +43,7 @@ export default {
     display: inline-block;
     border: 1px solid #d6d6d6;
     font-size: 0;
-    border-radius: 5px;
+    border-radius: 4px;
     vertical-align: top;
     // overflow-x: hidden;
     >li{
@@ -53,6 +53,7 @@ export default {
         font-weight: bold;
         padding: 5px 8px;
         cursor: pointer;
+        color: #666;
         transition: all .3s;
         &:after{
           content: " ";

@@ -489,8 +489,8 @@ export default{
           || tab.type === 'deputyUnitPrice'
           || tab.type === 'deputyCalcMethod'
         ){
-        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
-        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	this.dgDataList[fIndex].old[tab.type] = tab.type == 'deputyCount' ? this.toNum(this.dgDataList[fIndex].old[tab.type]) : this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	tempArray[0][tab.type] = tab.type == 'deputyCount' ? this.toNum(this.dgDataList[fIndex].old[tab.type]) : this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
           tempArray.push({
             deputyPrice : item.old['deputyPrice'],
             productId: productId
@@ -528,8 +528,8 @@ export default{
           || tab.type === 'unitPrice'
           || tab.type === 'mainCalcMethod'
         ){
-        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
-        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	this.dgDataList[fIndex].old[tab.type] = tab.type == 'count' ? this.toNum(this.dgDataList[fIndex].old[tab.type]) : this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	tempArray[0][tab.type] = tab.type == 'count' ? this.toNum(this.dgDataList[fIndex].old[tab.type]) : this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
           tempArray.push({
             mainPrice : item.old['mainPrice'],
             productId: productId

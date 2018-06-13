@@ -7,7 +7,7 @@
 
     <cut-segmentation class="ml-10" :showList="cutSegmentationList" :current="filterData.productClass" @pitchOn="madeUpOn"></cut-segmentation>
 
-    <div v-show="specialItem" class="cost-btn ml-10" v-if="isBuy" :title="isBuyBack?'关闭成本' : '开启成本'" @click="choseBuyBack" :class="{active: isBuyBack}">
+    <div v-show="specialItem" class="cost-btn ml-10" v-if="isBuy" :title="isBuyBack?'隐藏退换、回收、购买、实收' : '显示退换、回收、购买、实收'" @click="choseBuyBack" :class="{active: isBuyBack}">
       回购额
     </div>
 

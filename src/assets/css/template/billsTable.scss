@@ -277,7 +277,7 @@
     bottom: 0;
     left: 0;
     display: flex;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 4px 4px;
     width: 100%;
     
     >.th_footer{
@@ -394,7 +394,7 @@
       height: 40px;
       display: flex;
       transition: all .3s;
-      border-top: 1px solid #dedede;
+      border-bottom: 1px solid #f0f2f5;
       &:nth-child(even){
         background-color: #fbfbfb;
       }
@@ -431,6 +431,7 @@
                 width: 98%;
                 left: 0;
                 top: 0;
+                z-index: 100;
                 text-align: center;
                 justify-content:center
             }
@@ -465,7 +466,7 @@
   }
 }
 .xj-report-table-wrap{
-    border-radius: 0 10px 10px 10px;
+    border-radius: 0 4px 4px 4px;
     border: 1px solid #dedede;
     box-shadow: none;
 }
