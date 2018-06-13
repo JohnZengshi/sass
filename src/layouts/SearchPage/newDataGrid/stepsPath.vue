@@ -1,6 +1,6 @@
 <template>
 <div class="steps-path">
-  <div class="steps-item">
+  <div class="steps-item" ref="itemBox">
     <div class="item_title clearfix">
       <div class="item_time fl">2010-03-26</div>
       <div class="item_status fl">调库</div>
@@ -142,6 +142,10 @@ export default {
     this.$nextTick(() => {
       this.fetchFootData()
     })
+
+    console.log('获取高度',this.$refs.itemBox)
+    let boxHeight = $('.item_title').height()
+    this.$refs.itemBox.style.height = boxHeight + 50 + 'px'
   }
 }
 </script>
@@ -190,7 +194,7 @@ export default {
     }
 
     .item_title {
-      // position: absolute;      
+      position: absolute;      
       width: 172px;
       // height: 100%;
       border: 1px solid #eee;
