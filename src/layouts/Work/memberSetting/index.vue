@@ -116,7 +116,7 @@
                         </div>
                         <div class="content">
                             <div class="item" v-for="(item,index) in templateInfoData.poductTypeList[1].typeList" :key="index">
-                                <p class="item-title">黄金(克)</p>
+                                <p class="item-title">{{ item.classesName }}</p>
                                 <p class="item-input">
                                     <input type="number" @blur="setConsumeTemplateUpdate(item)" v-model="item.yuan" :disabled="isDisabled">
                                     <input type="number" @blur="setConsumeTemplateUpdate(item)" v-model="item.score" :disabled="isDisabled">
