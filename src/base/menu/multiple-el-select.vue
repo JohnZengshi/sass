@@ -14,7 +14,7 @@
             </li>
           </el-checkbox-group>
           <el-checkbox-group v-model="leftIdList" @change="handleCheckedCitiesChange">
-            <li @mouseover="selLeftItem(item, index)" v-for="(item, index) in propsList">
+            <li @mouseover="selLeftItem(item, index)" v-for="(item, index) in leftList">
               <el-checkbox :indeterminate="false" :label="item.id" :style="filterStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
             </li>
           </el-checkbox-group>
@@ -48,24 +48,19 @@
   </div>
 </template>
 <script>
-  import {
-    seekGetReceiptList
-  } from "Api/commonality/seek"
-  import {
-    jurisdictionShopManageRole
-  } from '../../Api/commonality/jurisdiction';
   export default {
     data() {
       return {
-        isAll: '',
         allChecked: [], // 全部选中
         leftIdList: [], // 大类选中
+        leftList: this.propsList,
         // 中间数据
         middleIdList: [], // 小类选中
         middleList: [],
         // 最右边数据
         rightIdList: [],
         rightList: [],
+
         leftIndex: null,
         rightIndex: null,
         operateId: ''
@@ -78,21 +73,18 @@
       'keyName'
     ],
     watch: {
-      allChecked(newValue, oldValue) {
-        // console.log(newValue)
-      },
-    //   左边的列表发生变化
+      //左边的列表发生变化
       leftIdList(newValue, oldValue) {
-        //   console.log(newValue);
+        // console.log(newValue);
         // console.log(this.propsList);
         // console.log(newValue.slice(newValue.length - 1, newValue.length)[0])
-        // 新增
+        // 新增一项
         if (newValue.length > oldValue.length) {
-            // console.log(newValue.slice(newValue.length - 1, newValue.length)[0])
-            // console.log(this.middleList)
-            // console.log(this.middleIdList)
-            // console.log(newValue)
-            // console.log(this.propsList)
+          // console.log(newValue.slice(newValue.length - 1, newValue.length)[0])
+          // console.log(this.middleList)
+          // console.log(this.middleIdList)
+          // console.log(newValue)
+          // console.log(this.propsList)
           for (let i of this.propsList) {
             if (i.id == newValue.slice(newValue.length - 1, newValue.length)[0]) {
               for (let j of i.childrenList) {
@@ -103,7 +95,7 @@
             }
           }
         }
-        // 删除
+        // 减少一项
         else if (newValue.length < oldValue.length) {
           let amendValue = ''
           for (let k of oldValue) {
@@ -124,9 +116,7 @@
           }
         }
       },
-      middleList(newValue, oldValue) {
-        // console.log(newValue)
-      },
+      //中间的列表发生变化
       middleIdList(newValue, oldValue) {
         // console.log(this.leftIdList);
         // console.log(this.propsList);
@@ -175,9 +165,7 @@
 
         }
       },
-      rightList(newValue, oldValue) {
-        // console.log(newValue);
-      },
+      //右边的列表发生变化
       rightIdList(newValue, oldValue) {
         // console.log(this.middleIdList)
         // console.log(newValue)
@@ -266,13 +254,13 @@
       },
       //   鼠标移动到最左的选项时
       selLeftItem(item, index) {
-        // this.middleList = [];
-        // this.rightList = [];
         this.middleList = item.childrenList
       },
+      //   鼠标移动到中间的选项时
       selMiddleItem(item, index) {
         this.rightList = item.childrenList
       },
+      //   鼠标移动到最右的选项时
       selRightItem(item, index) {
         this.rightIndex = index
         this.operateId = item.id
@@ -282,7 +270,6 @@
         this.$emit('dataBack', {
           bigList: this.leftIdList,
           samllList: this.middleIdList,
-          isAll: this.isAll,
           keyName: this.keyName
         })
       },
@@ -299,6 +286,7 @@
       }
     }
   }
+
 </script>
 <style lang="scss">
   .dropColums-wrap {
@@ -325,6 +313,13 @@
     float: left;
     position: relative;
     margin: 0 4px;
+    &:hover {
+      .list-box {
+        z-index: 20;
+        opacity: 1;
+        top: 30px;
+      }
+    }
     .tltle {
       width: 100%;
       height: 100%;
@@ -475,20 +470,4 @@
       }
     }
   }
-
-  .dropColums-wrap:hover {
-    .list-box {
-      z-index: 20;
-      opacity: 1;
-      top: 30px;
-    }
-
-  }
-
-  .list-box:hover {
-    z-index: 20;
-    opacity: 1;
-    top: 30px;
-  }
-
 </style>
