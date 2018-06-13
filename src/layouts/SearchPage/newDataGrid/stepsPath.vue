@@ -1,7 +1,7 @@
 <template>
 <div class="steps-path">
-  <div class="steps-item" ref="itemBox">
-    <div class="item_title clearfix">
+  <div class="steps-item" ref="itemBox1" @click="openSmallPage">
+    <div class="item_title clearfix" v-if="isOpen">
       <div class="item_time fl">2010-03-26</div>
       <div class="item_status fl">调库</div>
       <ul class="fl">
@@ -24,14 +24,18 @@
         
       </ul>
     </div>
+    <div class="item_title_only clearfix" v-else>
+      <div class="item_time fl">2010-03-26</div>
+      <div class="item_status fl">调库</div>
+    </div>
   </div>
-  <div class="steps-item">
+  <div class="steps-item" ref="itemBox2">
     <div class="item_title">
       <div class="item_time fl">2010-03-26</div>
       <div class="item_status fl">调库</div>
     </div>
   </div>
-  <div class="steps-item">
+  <div class="steps-item" ref="itemBox3">
     <div class="item_title clearfix">
       <div class="item_time fl">2010-03-26</div>
       <div class="item_status fl">调库</div>
@@ -63,7 +67,8 @@
 export default {
   data () {
     return{
-      
+      isOpen: false,
+      isClose: true,
     }
   },
   props: [],
@@ -135,17 +140,28 @@ export default {
         }
       }
      
-   }
+    },
+    // 打开标签
+    openSmallPage() {
+      this.isOpen = !this.isOpen
+      this.$nextTick(() => {
+          let boxHeight = $('.item_title').height()
+          this.$refs.itemBox1.style.height = boxHeight + 50 + 'px'
+
+      })
+    }
   },
   
   mounted(){
     this.$nextTick(() => {
       this.fetchFootData()
+      // this.openSmallPage()
     })
 
     console.log('获取高度',this.$refs.itemBox)
-    let boxHeight = $('.item_title').height()
-    this.$refs.itemBox.style.height = boxHeight + 50 + 'px'
+    // let boxHeight = $('.item_title').height()
+    // this.$refs.itemBox1.style.height = boxHeight + 50 + 'px'
+    
   }
 }
 </script>
@@ -160,7 +176,7 @@ export default {
 
   min-height:400px;
   
-  .steps-item{
+  .steps-item,{
     position: relative;
     display: flex;
     min-height: 80px;
@@ -170,6 +186,8 @@ export default {
 
     font-size: 12px;
     color: #d6d6d6;
+
+    transition: all 2s;
 
     &::before {
       content: '';
@@ -192,11 +210,41 @@ export default {
       height: 100%;
       background: #9bceff;
     }
+    .item_title_only {
+      width: 172px;
+      // height: 100%;
+      background: #fff;
+      z-index: 9999;
+      .item_time {
+        width: 84px;
+        height: 30px;
 
+        font-size: 12px;
+        color: #fff;
+        text-align: center;
+        line-height: 30px;
+
+        background: #2993f8;
+        border-top-left-radius: 22px;
+        border-bottom-right-radius: 22px;
+        
+        cursor: pointer;
+      }
+      .item_status {
+        width: 66px;
+        height: 30px;
+
+        margin-left: 10px;
+
+        font-size: 12px;
+        font-weight: bold;
+        line-height: 30px;
+        color: #2993f8;
+      }
+    }
     .item_title {
       position: absolute;      
       width: 172px;
-      // height: 100%;
       border: 1px solid #eee;
       border-top-left-radius: 22px;
       border-bottom-right-radius: 22px;
@@ -231,6 +279,7 @@ export default {
       >ul {
         width: 100%;
         padding-bottom: 14px;
+
         li {
           display: flex;
           .label {
@@ -265,5 +314,9 @@ export default {
   .clearfix {
     clear: both;
   }
+}
+@keyframes openItem {
+  from {height:0px;}
+  to {height: 100%;}
 }
 </style>

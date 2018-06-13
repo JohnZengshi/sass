@@ -41,10 +41,9 @@ export const downLoaderFile = (url,data) => {
 
     let dataStr = ''
     for (const key in newData) {
-        if(key === 'sortList'){
+        if(key === 'sortList' || key === 'makeUserList' || key === 'checkUserList'){
             newData[key] = JSON.stringify(newData[key]) + ''
             // newData[key] = newData[key].join(',')
-            console.log('嘿嘿',newData[key])
             // let str = ''
             // console.log(newData[key].length)
             // for(let i = 0;i<newData[key].length;i++){
@@ -61,7 +60,6 @@ export const downLoaderFile = (url,data) => {
             //     }
             // }
             // newData[key] = str
-            console.log(newData[key])
         }
         dataStr+=key+'='+newData[key]+'&'
     }
