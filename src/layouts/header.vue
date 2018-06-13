@@ -51,12 +51,12 @@
                     <div class="commodity">
                         <h1>商品</h1>
                         <div class="commodityList">
-                          <div class="commodityItem">未匹配到相关商品信息，查看<span>所有商品</span></div>
-                          <div class="commodityItem" @click.stop="openListDeta">
-                            <span class="gno">999888777444555</span><span class="gnn">千足银来宝手镯</span><span class="slocation fr">库位01</span>
+                          <div class="commodityItem" v-if="productList.length == 0">未匹配到相关商品信息，查看<span @click.stop="openListDeta">所有商品</span></div>
+                          <div class="commodityItem" v-else v-for="(item,index) in productList" :key="index" @click.stop="openDialog">
+                            <span class="gno">{{ item.barcode }}</span><span class="gnn">{{ item.jewelryName }}</span><span class="slocation fr">{{ item.locationName }}</span>
                           </div>
-                          <div class="commodityItem">
-                            <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多商品</span><span class="more_num">(16)</span>
+                          <div class="commodityItem" v-if="productList.length > 5" @click.stop="openListDeta">
+                            <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多商品</span><span class="more_num">({{productTotalNum}})</span>
                           </div>
                         </div>
                     </div>
@@ -64,12 +64,12 @@
                     <div class="receipts">
                         <h1>单据</h1>
                         <div class="receiptsList">
-                          <div class="receiptsItem">未匹配到相关单据信息，查看<span>所有单据</span></div>
-                          <div class="receiptsItem" @click.stop="openListDeta">
-                            <span class="gno">RK20180609123456</span><span class="state">入库</span><span class="slocation fr">李发财</span>
+                          <div class="receiptsItem" v-if="orderList.length == 0">未匹配到相关单据信息，查看<span @click.stop="openListDeta">所有单据</span></div>
+                          <div class="receiptsItem" v-else @click.stop="openListDeta" v-for="(item,index) in orderList" :key="index">
+                            <span class="gno">{{ item.orderNum }}</span><span class="state">{{ getOrderType(item.orderType) }}</span><span class="slocation fr">{{ item.createName }}</span>
                           </div>
-                          <div class="receiptsItem">
-                            <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多单据</span><span class="more_num">(16)</span>
+                          <div class="receiptsItem" v-if="orderList.length > 5" @click.stop="openListDeta">
+                            <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多单据</span><span class="more_num">({{orderTotalNum}})</span>
                           </div>
                         </div>
                     </div>
@@ -77,12 +77,12 @@
                     <div class="members">
                         <h1>会员</h1>
                         <div class="membersList">
-                          <div class="membersItem">未匹配到相关会员信息，查看<span>所有会员</span></div>
-                          <div class="membersItem" @click.stop="openListDeta">
-                            <span class="gno">12345678901</span><span class="gnn">潘晓婷</span><span class="slocation fr">四季如春珠宝店</span>
+                          <div class="membersItem" v-if="memberList.length == 0">未匹配到相关会员信息，查看<span @click.stop="openListDeta">所有会员</span></div>
+                          <div class="membersItem" v-else @click.stop="openListDeta" v-for="(item,index) in orderList" :key="index">
+                            <span class="gno">{{item.memberId}}</span><span class="gnn">{{item.memberName}}</span><span class="slocation fr">四季如春珠宝店</span>
                           </div>
-                          <div class="membersItem">
-                            <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多会员</span><span class="more_num">(16)</span>
+                          <div class="membersItem" v-if="memberList.length > 5" @click.stop="openListDeta">
+                            <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多会员</span><span class="more_num">({{memberTotalNum}})</span>
                           </div>
                         </div>
                     </div>
@@ -136,10 +136,55 @@
 			  </div>
         <!-- tab栏切换的内容 -->
         <div class="page-wrap">
-				  <component :is="panel" :panelType="panelType"></component>
+				  <component :is="panel" :panelType="panelType" :dataGridStorage="productList"></component>
 			  </div>
         
       </el-dialog>
+      <!-- 点击了商品的弹窗 -->
+      <el-dialog title="皇家翡翠吊坠" top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="DataShow" customClass="ruleOption detailsBounced">
+          <div class="detailsInfo">
+            <div class="detailsInfo_left">
+              <div class="main-body">
+                <!-- <ul class="title-tab">
+                    <div class="slide" ref="slide"></div>
+                    <li @click="tabSwitch(item, index, $event)" :key="index" :class="{active: tabIndex==index}" v-for="(item, index) in tabList">
+                        <div>{{item.label}}</div>
+                    </li>
+
+                </ul> -->
+                <ul class="item-blobk">
+                    <li v-for="(item, index) in sortDataList" :key="index">
+                        <div class="main-name">
+                            <div class="name-wrap">
+                                <span class="line"></span>
+                                <span class="name">{{item.label}}</span>
+                            </div>
+                        </div>
+                        <div class="main-item-list">
+                            <div class="main-item" v-for="(f, i) in item.dataList" :key="i">
+                                <div class="title">{{f.itemName}}</div>
+                                <div class="value">{{f.itemVal}}<span v-if="f.unit">{{f.unit}}</span></div>
+                            </div>
+                        </div>
+                        <div class="clear"></div>
+                    </li>
+                </ul>
+              </div>
+            </div>
+            <div class="detailsInfo_right">
+              <div class="right_top">
+                <div><i class="icon-dian fl">●</i><p>商品位置</p></div>
+                <div><i class="icon-dian fl">●</i><p>商品状态</p></div>
+                <div><i class="icon-dian fl">●</i><p>商品属性</p></div>
+              </div>
+              <div class="right_bottom">
+                <!-- 步骤条 -->
+                <steps-path :orderNum="orderNum" :statusREfresh="statusREfresh">
+                </steps-path>
+              </div>
+            </div>
+          </div>
+        </el-dialog>
   </header>
 </transition>
 </template>
@@ -162,10 +207,19 @@ let skinConfig = require("./skinConfig");
 import ProductList from './SearchPage/ProductList'
 import DocumentsList from './SearchPage/DocumentsList'
 import memberList from './SearchPage/memberList'
+import stepsPath from './SearchPage/newDataGrid/stepsPath'
+
+import { homepageSearch } from 'Api/search'
+import { seekCommodityDetails } from "Api/commonality/seek";
+
+
 
 export default {
   data() {
     return {
+      statusREfresh: false,
+      orderNum:'TH20180509002',
+      
       skinConf: [],
       searchText: "",
       searchTypeText: "商品",
@@ -179,7 +233,10 @@ export default {
       unreadNoticeNum: "", // 未读公告
 
       isSearch: false, // 搜索列表
-      ListDetails: false, // 列表弹框      
+      ListDetails: false, // 列表弹框
+
+      DataShow: false,
+      
       tabList: [
         '商品',
         '单据',
@@ -187,7 +244,74 @@ export default {
       ],
       panel: ProductList,// 对应的页面
       actIndex:'0', // 对应选中的参数
-      panelType: 0,
+      panelType: 0, // 对应的页面
+
+      lastTitleName: '',
+      tabIndex: 0,
+      sortDataList: [], // 排序数组
+      dataModel: {
+        baseData: {
+          id: 0,
+          label: "基本信息",
+          dataList: []
+        },
+        weightData: {
+          id: 1,
+          label: "重量",
+          dataList: []
+        },
+        certificateData: {
+          id: 2,
+          label: "证书",
+          dataList: []
+        },
+        mainData: {
+          id: 3,
+          label: "主石",
+          dataList: []
+        },
+        deputyData: {
+          id: 4,
+          label: "副石",
+          dataList: []
+        },
+        feeData: {
+          id: 5,
+          label: "工费",
+          dataList: []
+        },
+        partData: {
+          id: 6,
+          label: "配件",
+          dataList: []
+        },
+        otherData: {
+          id: 6,
+          label: "其他费用",
+          dataList: []
+        },
+        priceData: {
+          id: 6,
+          label: "标价",
+          dataList: []
+        },
+        remarkData: {
+          id: 6,
+          label: "备注",
+          dataList: []
+        }
+      },
+
+        
+      orderList: [], // 对应的单据
+      productList: [], // 对应的商品
+      memberList: [], // 对应的会员
+
+      orderTotalNum:'', //对应的单据总数
+      productTotalNum:'', //对应的商品总数
+      memberTotalNum:'', //对应的会员总数
+
+      
     };
   },
   components: {
@@ -195,7 +319,8 @@ export default {
     menutabs, //加载头部页签组件
     ProductList,
     DocumentsList,
-    memberList
+    memberList,
+    stepsPath
   },
   props: ["companyInfo", "userInfo", "isAllowCreate"],
 
@@ -232,6 +357,533 @@ export default {
     }
   },
   methods: {
+    openDialog(parm) {
+      this.commodityDetails('00cdfacbfb844ed7bcb558981a4ca475')
+      this.DataShow = true
+    },
+    dataSortGroup() {
+      // 数据排序分组
+      if (this.tabIndex == 0) {
+        this.sortDataList = [
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData
+        ];
+      } else if (this.tabIndex == 1) {
+        this.sortDataList = [
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData
+        ];
+      } else if (this.tabIndex == 2) {
+        this.sortDataList = [
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData
+        ];
+      } else if (this.tabIndex == 3) {
+        this.sortDataList = [
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData
+        ];
+      } else if (this.tabIndex == 4) {
+        this.sortDataList = [
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData
+        ];
+      } else if (this.tabIndex == 5) {
+        this.sortDataList = [
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData
+        ];
+      } else if (this.tabIndex == 6) {
+        this.sortDataList = [
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData
+        ];
+      } else if (this.tabIndex == 7) {
+        this.sortDataList = [
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData
+        ];
+      } else if (this.tabIndex == 8) {
+        this.sortDataList = [
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData
+        ];
+      } else if (this.tabIndex == 9) {
+        this.sortDataList = [
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData
+        ];
+      }
+    },
+    dataClustering(data) {
+      // 数据分组
+      this.dataModel.baseData.dataList = [];
+      this.dataModel.weightData.dataList = [];
+      this.dataModel.certificateData.dataList = [];
+      this.dataModel.mainData.dataList = [];
+      this.dataModel.deputyData.dataList = [];
+      this.dataModel.feeData.dataList = [];
+      this.dataModel.partData.dataList = [];
+      this.dataModel.otherData.dataList = [];
+      this.dataModel.priceData.dataList = [];
+      this.dataModel.remarkData.dataList = [];
+      for (let i in data) {
+        // ******************************* 基本信息 *********************************************
+        if (i == "barcode") {
+          this.dataModel.baseData.dataList.push({
+            itemName: "条码号",
+            itemVal: data[i]
+          });
+        } else if (i == "productType") {
+          this.dataModel.baseData.dataList.push({
+            itemName: "产品类别",
+            itemVal: data[i]
+          });
+        } else if (i == "jewelryName") {
+          this.dataModel.baseData.dataList.push({
+            itemName: "首饰名称",
+            itemVal: data[i]
+          });
+        } else if (i == "brand") {
+          this.dataModel.baseData.dataList.push({
+            itemName: "品牌",
+            itemVal: data[i]
+          });
+        } else if (i == "brand") {
+          this.dataModel.baseData.dataList.push({
+            itemName: "款号",
+            itemVal: data[i]
+          });
+        } else if (i == "brand") {
+          this.dataModel.baseData.dataList.push({
+            itemName: "手寸",
+            itemVal: data[i]
+          });
+        } else if (i == "totalWeight") {
+          // ******************************* 重量 *********************************************
+          this.dataModel.weightData.dataList.push({
+            itemName: "总件重",
+            itemVal: data[i],
+            unit: "g"
+          });
+        } else if (i == "netWeight") {
+          this.dataModel.weightData.dataList.push({
+            itemName: "净金重",
+            itemVal: data[i],
+            unit: "g"
+          });
+        } else if (i == "heavyCode") {
+          this.dataModel.weightData.dataList.push({
+            itemName: "含配金重",
+            itemVal: data[i],
+            unit: "g"
+          });
+        } else if (i == "goldCost") {
+          this.dataModel.weightData.dataList.push({
+            itemName: "金耗",
+            itemVal: data[i],
+            unit: "%"
+          });
+        } else if (i == "goldPrice") {
+          this.dataModel.weightData.dataList.push({
+            itemName: "金价",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "goldColor") {
+          this.dataModel.weightData.dataList.push({
+            itemName: "金属颜色",
+            itemVal: data[i]
+          });
+        } else if (i == "goldE") {
+          this.dataModel.weightData.dataList.push({
+            itemName: "金料额",
+            itemVal: data[i],
+            unit: "元"
+          });
+          this.dataModel.priceData.dataList.push({
+            itemName: "金料额",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "certifiNo") {
+          // ******************************* 证书 *********************************************
+          this.dataModel.certificateData.dataList.push({
+            itemName: "证书号",
+            itemVal: data[i]
+          });
+        } else if (i == "authCode") {
+          this.dataModel.certificateData.dataList.push({
+            itemName: "验证码",
+            itemVal: data[i]
+          });
+        } else if (i == "certifiName") {
+          this.dataModel.certificateData.dataList.push({
+            itemName: "证书名",
+            itemVal: data[i]
+          });
+        } else if (i == "brand") {
+          this.dataModel.certificateData.dataList.push({
+            itemName: "检验机构",
+            itemVal: data[i]
+          });
+        } else if (i == "certifiFee") {
+          this.dataModel.certificateData.dataList.push({
+            itemName: "证书费",
+            itemVal: data[i],
+            unit: "元"
+          });
+          this.dataModel.priceData.dataList.push({
+            itemName: "证书费",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "mainName") {
+          // ******************************* 主石 *********************************************
+          this.dataModel.mainData.dataList.push({
+            itemName: "主石名",
+            itemVal: data[i]
+          });
+        } else if (i == "stand") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "主石规格",
+            itemVal: data[i]
+          });
+        } else if (i == "count") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "主石粒数",
+            itemVal: data[i]
+          });
+        } else if (i == "mainWeight") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "主石重",
+            itemVal: data[i],
+            unit: ""
+          });
+        } else if (i == "unit") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "主石单位",
+            itemVal: data[i]
+          });
+        } else if (i == "mainCalcMethod") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "计价方式",
+            itemVal: data[i]
+          });
+        } else if (i == "mainTPrice") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "主石额",
+            itemVal: data[i],
+            unit: "元"
+          });
+          this.dataModel.priceData.dataList.push({
+            itemName: "主石额",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "shape") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "形状",
+            itemVal: data[i]
+          });
+        } else if (i == "color") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "颜色",
+            itemVal: data[i]
+          });
+        } else if (i == "neatness") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "净度",
+            itemVal: data[i]
+          });
+        } else if (i == "blackout") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "切工",
+            itemVal: data[i]
+          });
+        } else if (i == "polishing") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "抛光",
+            itemVal: data[i]
+          });
+        } else if (i == "symmetry") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "对称",
+            itemVal: data[i]
+          });
+        } else if (i == "fluorescent") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "荧光",
+            itemVal: data[i]
+          });
+        } else if (i == "mainPrice") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "主石单价",
+            itemVal: data[i]
+          });
+        } else if (i == "deputyName") {
+          // ******************************* 副石 *********************************************
+          this.dataModel.deputyData.dataList.push({
+            itemName: "副石名",
+            itemVal: data[i]
+          });
+        } else if (i == "deputyStand") {
+          this.dataModel.deputyData.dataList.push({
+            itemName: "副石规格",
+            itemVal: data[i]
+          });
+        } else if (i == "deputyCount") {
+          this.dataModel.deputyData.dataList.push({
+            itemName: "副石粒数",
+            itemVal: data[i]
+          });
+        } else if (i == "deputyWeight") {
+          this.dataModel.deputyData.dataList.push({
+            itemName: "副石重",
+            itemVal: data[i],
+            unit: ""
+          });
+        } else if (i == "deputyUnitPrice") {
+          this.dataModel.deputyData.dataList.push({
+            itemName: "副石单价",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "deputyCalcMethod") {
+          this.dataModel.deputyData.dataList.push({
+            itemName: "计价方式",
+            itemVal: data[i]
+          });
+        } else if (i == "deputyPrice") {
+          this.dataModel.deputyData.dataList.push({
+            itemName: "副石额",
+            itemVal: data[i],
+            unit: "元"
+          });
+          this.dataModel.priceData.dataList.push({
+            itemName: "副石额",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "deputyUnit") {
+          this.dataModel.deputyData.dataList.push({
+            itemName: "副石单位",
+            itemVal: data[i],
+            unit: ""
+          });
+        } else if (i == "soldFee") {
+          // ******************************* 工费 *********************************************
+          this.dataModel.feeData.dataList.push({
+            itemName: "销售工费",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "soldMethod") {
+          this.dataModel.feeData.dataList.push({
+            itemName: "销售工费方式",
+            itemVal: data[i]
+          });
+        } else if (i == "inFee") {
+          this.dataModel.feeData.dataList.push({
+            itemName: "进货工费",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "inMethod") {
+          this.dataModel.feeData.dataList.push({
+            itemName: "进货工费方式",
+            itemVal: data[i]
+          });
+        } else if (i == "inMoney") {
+          this.dataModel.feeData.dataList.push({
+            itemName: "进货工费额",
+            itemVal: data[i],
+            unit: "元"
+          });
+          this.dataModel.priceData.dataList.push({
+            itemName: "进货工费额",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "partName") {
+          // ******************************* 配件 *********************************************
+          this.dataModel.partData.dataList.push({
+            itemName: "配件名",
+            itemVal: data[i]
+          });
+        } else if (i == "partCount") {
+          this.dataModel.partData.dataList.push({
+            itemName: "配件数",
+            itemVal: data[i]
+          });
+        } else if (i == "partWeight") {
+          this.dataModel.partData.dataList.push({
+            itemName: "配件重",
+            itemVal: data[i],
+            unit: "g"
+          });
+        } else if (i == "partPrice") {
+          this.dataModel.partData.dataList.push({
+            itemName: "单价",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "calcMethod") {
+          this.dataModel.partData.dataList.push({
+            itemName: "计费方式",
+            itemVal: data[i]
+          });
+        } else if (i == "price") {
+          this.dataModel.partData.dataList.push({
+            itemName: "配件额",
+            itemVal: data[i],
+            unit: "元"
+          });
+          this.dataModel.priceData.dataList.push({
+            itemName: "配件额",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "otherFeeName") {
+          // ******************************* 其他 *********************************************
+          this.dataModel.otherData.dataList.push({
+            itemName: "其他费用名",
+            itemVal: data[i]
+          });
+        } else if (i == "otherFee") {
+          this.dataModel.otherData.dataList.push({
+            itemName: "其他费用额",
+            itemVal: data[i],
+            unit: "元"
+          });
+          this.dataModel.priceData.dataList.push({
+            itemName: "其他费用额",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "costPrice") {
+          // ******************************* 标价 *********************************************
+          this.dataModel.priceData.dataList.push({
+            itemName: "成本",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "ratio") {
+          this.dataModel.priceData.dataList.push({
+            itemName: "倍率",
+            itemVal: data[i]
+          });
+        } else if (i == "soldPrice") {
+          this.dataModel.priceData.dataList.push({
+            itemName: "售价",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "remark") {
+          // ******************************* 备注 *********************************************
+          this.dataModel.remarkData.dataList.push({
+            itemName: "备注信息",
+            itemVal: data[i]
+          });
+        }
+      }
+      this.dataSortGroup();
+    },
+    commodityDetails(parm) {
+      // 商品明细数据
+      let options = {
+        productId: parm
+      };
+      seekCommodityDetails(options).then(
+        res => {
+          if (res.data.state == 200) {
+            console.log("商品搜索数据:", res.data.data);
+            this.dataClustering(res.data.data);
+          }
+        },
+        res => {}
+      );
+    },
     openListDeta() {
       this.ListDetails = true
       this.isSearch = false
@@ -261,12 +913,17 @@ export default {
       this.iconShow = true;
     },
     watchCloseIcon() {
-      console.log("键盘弹起的时候调用");
-      if (this.searchText != "") {
-        this.iconShow = false;
-      } else {
-        this.iconShow = true;
+      // if (this.searchText != "") {
+      //   this.iconShow = false;
+      // } else {
+      //   this.iconShow = true;
+      // }
+
+      // 字数大于3的时候请求
+      if(this.searchText.length >=3 ) {
+        this.getHomepageSearchData()
       }
+
     },
     createComp() {
       this.$emit("messageBack", { flag: true, type: 2 });
@@ -297,17 +954,21 @@ export default {
     },
     goSearchPage() {
       // 去搜索页面
-      if (this.searchTypeText == "单据") {
-        this.$router.push({
-          path: "/billSearch",
-          query: { text: this.searchText }
-        });
-      } else if (this.searchTypeText == "商品") {
-        this.$router.push({
-          path: "/goodsSearch",
-          query: { text: this.searchText }
-        });
-      }
+      // if (this.searchTypeText == "单据") {
+      //   this.$router.push({
+      //     path: "/billSearch",
+      //     query: { text: this.searchText }
+      //   });
+      // } else if (this.searchTypeText == "商品") {
+      //   this.$router.push({
+      //     path: "/goodsSearch",
+      //     query: { text: this.searchText }
+      //   });
+      // }
+
+      // 直接搜索
+      this.getHomepageSearchData()
+      this.isSearch = true
     },
     searchType(command) {
       //单击搜索类型切换
@@ -360,7 +1021,58 @@ export default {
 						break;
 				}
 		},
-    
+    // 获取搜索列表
+    getHomepageSearchData() {
+      let options = {
+        keyWord : this.searchText
+      }
+      homepageSearch(options).then(res => {
+        if(res.data.state == 200) {
+          this.orderList = res.data.data.orderList
+          this.productList = res.data.data.productList
+          this.memberList = res.data.data.memberList
+
+          this.orderTotalNum = res.data.data.orderTotalNum
+          this.productTotalNum = res.data.data.productTotalNum
+          this.memberTotalNum = res.data.data.memberTotalNum
+        }
+      })
+    },
+    // 获取订单状态
+    getOrderType(type) {
+      switch (type) {
+        case '1':
+          return '入库'
+          break;
+        case '2':
+          return '退库'
+          break;
+        case '3':
+          return '发货'
+          break;
+        case '4':
+          return '退货'
+          break;
+        case '5':
+          return '销售/回购'
+          break;
+        case '6':
+          return '调柜'
+          break;
+        case '7':
+          return '调库'
+          break;
+        case '10':
+          return '修改'
+          break;
+        case '11':
+          return '服务'
+          break;
+      
+        default:
+          break;
+      }
+    }
   }
 };
 </script>
@@ -819,3 +1531,182 @@ export default {
 }
 </style>
  
+<style lang="scss">
+@import "~assets/css/_fontManage.scss";
+
+.ruleOption.detailsBounced {
+  .el-dialog__header {
+    padding-left: 10px;
+    line-height: 40px;
+    .el-dialog__title {
+      color: #2993f8;
+    }
+  }
+  .el-dialog__body {
+    padding: 0;
+    padding-top: 40px;
+  }
+  .detailsInfo {
+    display: flex;
+    .detailsInfo_left {
+      width: 1010px;
+      .main-body {
+            width: 1010px;
+            height: 700px;
+            // margin: 0 auto;
+            overflow-y: auto;
+            .title-tab {
+                height: 32px;
+                position: relative;
+                &>li {
+                    width: 83px;
+                    height: 32px;
+                    float: left;
+                    cursor: pointer;
+                    @include F(12, #2993f8);
+                    line-height: 32px;
+                    font-weight: bold;
+                    position: relative;
+                    transition: all ease .3s;
+                    background: url("../../static/img/tab-default.png") no-repeat left center;
+                    div {
+                        width: 70px;
+                        text-align: center;
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: 5;
+                    }
+                }
+                .slide {
+                    width: 83px;
+                    height: 32px;
+                    background: url("../../static/img/tab-select.png") no-repeat left center;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    z-index:5;
+                    transition: left ease .3s;
+                }
+                &>li.active {
+                    color:#fff;
+                    background: transparent;
+                }
+            }
+            .item-blobk {
+                &>li {
+                    min-height: 52px;
+                    background:#f9f9f9;
+                    transition: all ease .3s;
+                    margin-bottom: 10px;
+                    padding-top: 6px;
+                    .main-name {
+                        width: 100px;
+                        float: left;
+                        // display: inline-block;
+                        height: 100%;
+
+                        min-height: 52px;
+                        .name-wrap {
+                            height: 16px;
+                            width: 100%;
+                            padding-left: 20px;
+                            .line {
+                                height: 100%;
+                                width: 4px;
+                                background:#d6d6d6;
+                                border-radius:2px;
+                                float: left;
+                                line-height: 16px;
+                                margin-right: 6px;
+                            }
+                            .name {
+                               float: left;
+                               @include F(14, #666666);
+                               line-height: 16px;
+                            }
+                        }
+
+                    }
+                    .main-item-list {
+                        float: left;
+                        width: 900px;
+                       // display: inline-block;
+                        .main-item {
+                            height: 40px;
+                            width: 136px;
+                            float: left;
+                            //display: inline-block;
+                            margin-bottom: 6px;
+                            .title {
+                                @include F(12, #999);
+                                margin-bottom: 6px;
+                            }
+                            .value {
+                                @include F(12, #333);
+                                span {
+                                    margin-left: 3px;
+                                    @include F(10, #b4b4b4);
+                                }
+                            }
+                        }
+                    }
+                    .clear {
+                        clear: both;
+                    }
+                }
+                &>li:first-child {
+                   .main-name {
+                       .name-wrap {
+                           .line {
+                               background:#d6d6d6;
+                           }
+                           .name {
+                               color:#666666;
+                           }
+                       }
+                   }
+                }
+                &>li:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+    .detailsInfo_right {
+      flex: 1;
+      height: 700px;
+      margin-left: 8px;
+      .right_top {
+        width: 140px;
+        // height: 106px;
+        padding: 18px 14px;
+
+        background: #f1f8ff;
+        border-radius: 4px;
+        &> div {
+          height: 23px;
+          &> p {
+            float: left;
+            width: 80%;
+          }
+        }
+        .icon-dian {
+          width: 16px;
+          height: 16px;
+          line-height: 18px;
+          color: #ffbf42;
+        }
+      }
+      // 时间轴
+      .right_bottom {
+        position: relative;
+        height: 100%;
+        margin-top: 30px;
+      }
+    }
+  }
+
+
+}
+</style>

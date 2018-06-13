@@ -80,6 +80,7 @@ export default {
       lastTitleName: "",
       tabIndex: 0,
       sortDataList: [], // 排序数组
+
       tabList: [
         {
           label: "基本信息"
@@ -166,7 +167,7 @@ export default {
       },
 
       statusREfresh: false,
-      orderNum:'TH20180509002'
+      orderNum:''
     };
   },
   components: {

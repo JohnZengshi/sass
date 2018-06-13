@@ -1,7 +1,63 @@
 <template>
 <div class="steps-path">
-  <div class="steps-item">
-    <div class="item_title clearfix">
+  <div class="steps-item" @click="openSmallPage(0)">
+    <div class="item_title clearfix" v-if="actionIndex == 0">
+      <div class="item_time fl">2010-03-26</div>
+      <div class="item_status fl">调库</div>
+      <ul class="fl">
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+      </ul>
+    </div>
+    <div class="item_title_only clearfix" v-else>
+      <div class="item_time fl">2010-03-26</div>
+      <div class="item_status fl">调库</div>
+    </div>
+  </div>
+  <div class="steps-item" @click="openSmallPage(1)">
+    <div class="item_title clearfix" v-if="actionIndex == 1">
+      <div class="item_time fl">2010-03-26</div>
+      <div class="item_status fl">调库</div>
+      <ul class="fl">
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+        <li>
+          <div class="label">操作人</div>
+          <div class="message">王微微</div>
+        </li>
+      </ul>
+    </div>
+    <div class="item_title_only clearfix" v-else>
+      <div class="item_time fl">2010-03-26</div>
+      <div class="item_status fl">调库</div>
+    </div>
+  </div>
+  <div class="steps-item" @click="openSmallPage(2)">
+    <div class="item_title clearfix" v-if="actionIndex == 2">
       <div class="item_time fl">2010-03-26</div>
       <div class="item_status fl">调库</div>
       <ul class="fl">
@@ -24,36 +80,9 @@
         
       </ul>
     </div>
-  </div>
-  <div class="steps-item">
-    <div class="item_title">
+    <div class="item_title_only clearfix" v-else>
       <div class="item_time fl">2010-03-26</div>
       <div class="item_status fl">调库</div>
-    </div>
-  </div>
-  <div class="steps-item">
-    <div class="item_title clearfix">
-      <div class="item_time fl">2010-03-26</div>
-      <div class="item_status fl">调库</div>
-      <ul class="fl">
-        <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
-        </li>
-        <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
-        </li>
-        <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
-        </li>
-        <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
-        </li>
-        
-      </ul>
     </div>
   </div>
 </div>
@@ -64,6 +93,8 @@ export default {
   data () {
     return{
       isOpen: true,
+      actionIndex: 0,
+      stepItem:[]
     }
   },
   props: [],
@@ -137,21 +168,26 @@ export default {
      
     },
     // 打开标签
-    openSmallPage() {
-      this.isOpen = !this.isOpen
+    openSmallPage(index) {
+      this.actionIndex = index
+
       this.$nextTick(() => {
-        
+        // $('.steps-item').eq(index).find('.item_title').height(30)
+        // $('.steps-item').eq(index).find('.item_title').animate({height: '170px'},()=> {
+          // 获取对应内容的高度
+          let itemHeight = $('.steps-item').eq(index).find('.item_title').height()
+          $('.steps-item').eq(index).height(itemHeight).siblings().height(30)
+        // })
       })
     }
   },
   
   mounted(){
     this.$nextTick(() => {
-      this.fetchFootData()
+      // this.fetchFootData()
     })
-
-    
-    
+    let itemHeight = $('.steps-item').eq(this.actionIndex).find('.item_title').height()
+    $('.steps-item').eq(this.actionIndex).height(itemHeight).siblings().height(30)
   }
 }
 </script>
@@ -168,7 +204,6 @@ export default {
   .steps-item,{
     display: flex;
     position: relative;
-    min-height: 80px;
 
     padding-left: 20px;
     padding-bottom: 50px;
@@ -214,8 +249,8 @@ export default {
         line-height: 30px;
 
         background: #2993f8;
-        border-top-left-radius: 22px;
-        border-bottom-right-radius: 22px;
+        border-top-left-radius: 24px;
+        border-bottom-right-radius: 15px;
         
         cursor: pointer;
       }
@@ -235,11 +270,12 @@ export default {
       position: absolute;      
       width: 172px;
       border: 1px solid #eee;
-      border-top-left-radius: 22px;
-      border-bottom-right-radius: 22px;
+      border-top-left-radius: 24px;
+      border-bottom-right-radius: 15px;
       background: #fff;
       z-index: 9999;
 
+      overflow: hidden;
       .item_time {
         width: 84px;
         height: 30px;
