@@ -457,7 +457,7 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
           nColorId: '',
           nGemId: '',
           nJewelryId: '1',
-          specialId:''
+          specialId: ''
         },
         dialogOptions: {
           conditionList: [

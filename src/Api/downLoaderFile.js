@@ -1,34 +1,3 @@
-import 'whatwg-fetch'
-import 'es6-promise'
-import axios from 'axios'
-
-export default function request(method, url, body) {
-    method = method.toUpperCase();
-    if (method === 'GET') {
-        body = undefined;
-    } else {
-        body = body && JSON.stringify(body);
-    }
-
-    return fetch(url, {
-        method,
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body
-    }).then((res) => {
-        if (res.status >= 200 && res.status < 300) {
-            return res;
-        } else {
-            return Promise.reject('请求失败！');
-        }
-    })
-}
-
-export const get = path => request('GET', path);
-export const post = (path, body) => request('POST', path, body);
-
 export const downLoaderFile = (url,data) => {
     let newData = data
     
@@ -40,11 +9,11 @@ export const downLoaderFile = (url,data) => {
     newData["tokenId"] = sessionStorage.getItem("tokenId")
 
     let dataStr = ''
+    console.log(data)
     for (const key in newData) {
-        if(key === 'sortList'){
+        if(key === 'sortList' || key === 'checkUserList' || key === 'makeUserList'){
             newData[key] = JSON.stringify(newData[key]) + ''
             // newData[key] = newData[key].join(',')
-            console.log('嘿嘿',newData[key])
             // let str = ''
             // console.log(newData[key].length)
             // for(let i = 0;i<newData[key].length;i++){
@@ -88,12 +57,11 @@ export const downLoaderFile = (url,data) => {
 //     // let serverHost = 'http://www.jzmsoft.com'
 //     // 正式
 //     // let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
-		var newStr = JSON.stringify(dataStr)
-		console.log(newStr)
+	var newStr = JSON.stringify(dataStr)
     let hrefurl = serverHost + url + '?' + dataStr
     
     let strurl = encodeURI(hrefurl)
-    console.log('啦啦啦啦',strurl)
+    console.log(strurl)
 
     var a = document.createElement('a');
     a.href = encodeURI(hrefurl);
