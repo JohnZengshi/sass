@@ -40,7 +40,7 @@ module.exports = {
     		totalName : '',
     		childType : 'weight',
     		totalType : 'totalWeight',
-        toFixed : true,
+        toFixed : false,
         countCut : 3 
     	},
     	
@@ -54,7 +54,7 @@ module.exports = {
         totalName : '',
         childType : 'goldWeight',
         totalType : 'totalGoldWeight' ,
-        toFixed : true,
+        toFixed : false,
         countCut : 3
       },
     	{ 
@@ -67,7 +67,7 @@ module.exports = {
     		totalName : '',
     		childType : 'soldPrice',
     		totalType : 'totalSoldPrice' ,
-        toFixed : true,
+        toFixed : false,
         countCut : 2
     	},
     	{ 
@@ -80,7 +80,7 @@ module.exports = {
     		totalName : '',
     		childType : 'realPrice',
     		totalType : 'totalRealPrice' ,
-        toFixed : true,
+        toFixed : false,
         countCut : 2
     	}
     ],
@@ -168,7 +168,7 @@ module.exports = {
         childType : 'weight',
         totalType : 'totalWeight',
         allType : 'allWeight',
-        toFixed : true,
+        toFixed : false,
         countCut : 3 
       },
       
@@ -183,7 +183,7 @@ module.exports = {
         childType : 'goldWeight',
         totalType : 'totalGoldWeight' ,
         allType : 'allGoldWeight',
-        toFixed : true,
+        toFixed : false,
         countCut : 3
       },
       { 
@@ -197,7 +197,7 @@ module.exports = {
         childType : 'soldPrice',
         totalType : 'totalSoldPrice',
         allType : 'allSoldPrice',
-        toFixed : true,
+        toFixed : false,
         countCut : 2
       },
       { 
@@ -211,7 +211,7 @@ module.exports = {
         childType : 'wage',
         totalType : 'totalWage' ,
         allType : 'allWage',
-            toFixed : true,
+            toFixed : false,
             countCut : 2
       },
       { 
@@ -225,7 +225,7 @@ module.exports = {
         childType : 'realPrice',
         totalType : 'totalRealPrice' ,
         allType : 'allBackPrice',
-        toFixed : true,
+        toFixed : false,
         countCut : 2
       }
     ]

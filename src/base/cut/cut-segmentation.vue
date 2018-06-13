@@ -25,9 +25,14 @@ export default {
       this.filterData.type = item.id
       this.$emit('pitchOn', this.filterData)
     },
-    complate (item) {
+    complate (parm) {
       this.filterData.type = 4
-      this.customData = item
+      this.customData = {}
+      for (let i in parm) {
+        if (parm[i].id) {
+          this.customData[i] = parm[i].id
+        }
+      }
       this.$emit('pitchOn', Object.assign({}, this.filterData, this.customData))
     }
   }

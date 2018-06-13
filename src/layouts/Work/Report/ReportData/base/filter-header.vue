@@ -7,6 +7,10 @@
 
     <cut-segmentation class="ml-10" :showList="cutSegmentationList" :current="filterData.productClass" @pitchOn="madeUpOn"></cut-segmentation>
 
+    <div v-show="specialItem" class="cost-btn ml-10" v-if="isBuy" :title="isBuyBack?'关闭成本' : '开启成本'" @click="choseBuyBack" :class="{active: isBuyBack}">
+      回购额
+    </div>
+
     <div v-show="specialItem" class="cost-btn ml-10" v-if="isShowCost == 'Y'" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu" :class="{active: tabSwitch}">
       专列项
     </div>
@@ -18,7 +22,7 @@
   import cutSegmentation from "base/cut/cut-segmentation";
   import {seekSettingUserRole} from "Api/commonality/seek"
   export default {
-    props: ['isOld', 'specialItem'],
+    props: ['isOld', 'isBuy', 'specialItem', 'customList'],
     components:{
       cutBg,
       cutSegmentation
@@ -32,6 +36,7 @@
 
         },
         tabSwitch: false, // 专列项
+        isBuyBack: false, // 回购额
         isShowCost: '',
         madeUpList: [
             {
@@ -57,6 +62,9 @@
     },
     created () {
       this.settingUserRole()
+      if (this.customList) {
+        this.cutSegmentationList = this.customList
+      }
     },
     methods: {
         madeUpOnProductClass (parm) {
@@ -71,6 +79,10 @@
         choseMenu () {
           this.tabSwitch = !this.tabSwitch
           this.$emit('reportSwitch', this.tabSwitch)
+        },
+        choseBuyBack () {
+          this.isBuyBack = !this.isBuyBack
+          this.$emit('choseBuyBack', this.isBuyBack)
         },
         settingUserRole () { // 用户查看成本权限
           let options = {

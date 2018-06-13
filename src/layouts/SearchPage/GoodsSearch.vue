@@ -418,7 +418,7 @@ export default {
         // console.log(e)
         // console.log(e.target.scrollHeight - e.target.scrollTop)
         if (e.target.scrollHeight - e.target.scrollTop == e.target.clientHeight) {
-            this.pageSize = Number(this.pageSize) + 30
+            this.pageSize = this.pageSize + 30
             console.log(this.pageSize)
             this.searchReceipt(this.pageSiZe)
         }
@@ -589,15 +589,18 @@ export default {
         })
     },
     getShopList () { // 店铺列表
-        let options = "";
+        let options = {
+            page: 1,
+            pageSize: 9999
+        };
         let _self = this;
         seekGetShopListByCo(options).then((response) => {
             if (response.data.state === 200) {
                 console.log(response)
-               _self.datas.shopList = response.data.data.shopList;
-                if (response.data.data.shopList.length === 1) { // 只有一个店铺的情况下
-                    _self.onData.shopId = response.data.data.shopList[0].shopId;
-                }
+               // _self.datas.shopList = response.data.data.shopList;
+               //  if (response.data.data.shopList.length === 1) { // 只有一个店铺的情况下
+               //      _self.onData.shopId = response.data.data.shopList[0].shopId;
+               //  }
             } else {
                 this.$store.dispatch('workPopupError', response.data.msg);
             }

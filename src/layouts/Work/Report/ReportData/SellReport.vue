@@ -76,7 +76,15 @@
 						</template>
           
 
-            <filter-header v-if="sellShowId == 'sales' || sellShowId == 'buyback'" @complate="filterHeaderComplate" @reportSwitch="reportSwitch" :specialItem="sellShowId == 'sales'"></filter-header>
+            <filter-header
+              v-if="sellShowId == 'sales' || sellShowId == 'buyback'"
+              @complate="filterHeaderComplate"
+              @reportSwitch="reportSwitch"
+              @choseBuyBack="choseBuyBack"
+              :specialItem="sellShowId == 'sales'"
+              :isBuy="true"
+              :customList="customList"
+            ></filter-header>
 
              <cut-bg class="cut-bg-btn-wrap ml-10" :showList="sellTypeList" :current="sellShowId" @pitchOn="madeUpOnSell"></cut-bg>
 
@@ -185,20 +193,20 @@
 
 					<!--收银报表-->
 					<div class="rp_dataGridTemp" style="padding-top: 0;" :class="tabShow" v-if="sellShowId == 'collect'">
-						<report-detail-collect :dataGridStorage="collectStorage" :tabSwitch="tabSwitch" @scrollClass="tabScrollShow" :reportType="getReportType()">
+						<report-detail-collect :dataGridStorage="collectStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" @scrollClass="tabScrollShow" :reportType="getReportType()">
 						</report-detail-collect>
 					</div>
 
 					<!--回购报表-->
 					<div class="rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
-						<report-detail-trade :dataGridStorage="tradeStorage" :tabSwitch="tabSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
+						<report-detail-trade :dataGridStorage="tradeStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
 						</report-detail-trade>
             <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1 && tradeStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>            
 					</div>
 
 					<!--销售报表-->
 					<div class="rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
-						<report-detail :dataGridStorage="sellStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
+						<report-detail :dataGridStorage="sellStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" :positionSwitch="positionSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
 						</report-detail>
             <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type === 1 && sellStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>                        
 					</div>
@@ -263,7 +271,7 @@
 
 		<!--打印模块-->
 		<div ref="tablePrint" v-else-if="isPrint==1" class="tablePrint_style">
-			<table-print-sell v-if="printSellShow" :tabSwitch="tabSwitch" :reportTypeHeaderData="reportTypeHeaderData.sell" :printSelectDate="printSelectDate" :reportType="getReportType()" :dataGridStorage="sellStorage">
+			<table-print-sell v-if="printSellShow" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" :reportTypeHeaderData="reportTypeHeaderData.sell" :printSelectDate="printSelectDate" :reportType="getReportType()" :dataGridStorage="sellStorage">
 			</table-print-sell>
 			<table-print-trade v-if="printBuybackShow" :printSelectDate="printSelectDate" :reportTypeHeaderData="reportTypeHeaderData.trade" :reportType="getReportType()" :dataGridStorage="tradeStorage">
 			</table-print-trade>
@@ -339,6 +347,20 @@ export default {
   },
   data() {
     return {
+      customList: [
+        {
+            name: '明细',
+            id: 1
+        },
+        {
+            name: '智能分类',
+            id: 2
+        },
+        {
+            name: '产品分类',
+            id: 3
+        }
+      ],
       sellList: [],
       buyBackList: [],
       headerData: {},
@@ -467,6 +489,9 @@ export default {
 
       //成本核算
       tabSwitch: false,
+
+      //回购额
+      isBuyBack: false,
 
       //产品类别
       productCategoryType: [],
@@ -713,6 +738,9 @@ export default {
     //成本控制
     reportSwitch(parm){
       this.tabSwitch = parm
+    },
+    choseBuyBack (parm) {
+      this.isBuyBack = parm
     },
     choseMenu(type) {
         if(this.tabSwitch) {

@@ -37,7 +37,7 @@ module.exports = {
       unit: '',
       footerUnit: '',
       totalName: '',
-      childType: 'jewelryName',
+      childType: 'className',
       totalType: '',
       toFixed: false,
       countCut: 0,
@@ -67,7 +67,7 @@ module.exports = {
       totalName: '',
       childType: 'weight',
       totalType: 'subtotalWeight',
-      toFixed: true,
+      toFixed: false,
       countCut: 3,
       sort: ''
     },
@@ -81,7 +81,7 @@ module.exports = {
       totalName: '',
       childType: 'goldPrice',
       totalType: 'subtotalMeanGoldPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2
     },
     {
@@ -94,7 +94,7 @@ module.exports = {
       totalName: '',
       childType: 'goldWeight',
       totalType: 'subtotalGoldWeight',
-      toFixed: true,
+      toFixed: false,
       countCut: 3,
       sort: ''
     },
@@ -108,7 +108,7 @@ module.exports = {
       totalName: '',
       childType: 'wage',
       totalType: 'subtotalWage',
-      toFixed: true,
+      toFixed: false,
       countCut: 2
     },
     {
@@ -134,7 +134,7 @@ module.exports = {
       totalName: '',
       childType: 'price',
       totalType: 'subtotalPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -148,7 +148,7 @@ module.exports = {
       totalName: '',
       childType: 'realPrice',
       totalType: 'subtotalRealPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -162,7 +162,7 @@ module.exports = {
       totalName: '',
       childType: 'cost',
       totalType: 'subtotalCost',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -176,7 +176,7 @@ module.exports = {
       totalName: '',
       childType: 'margin',
       totalType: 'subtotalMargin',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     }
@@ -251,7 +251,7 @@ module.exports = {
       totalName: '',
       childType: 'weight',
       totalType: 'totalWeight',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -265,7 +265,7 @@ module.exports = {
       totalName: '',
       childType: 'goldWeight',
       totalType: 'totalGoldWeight',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -279,7 +279,7 @@ module.exports = {
       totalName: '',
       childType: 'goldPrice',
       totalType: 'totalGoldPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2
     },
     {
@@ -292,7 +292,7 @@ module.exports = {
       totalName: '',
       childType: 'wage',
       totalType: 'totalWage',
-      toFixed: true,
+      toFixed: false,
       countCut: 2
     },
     {
@@ -318,7 +318,7 @@ module.exports = {
       totalName: '',
       childType: 'soldPrice',
       totalType: 'totalSoldPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -332,7 +332,7 @@ module.exports = {
       totalName: '',
       childType: 'realPrice',
       totalType: 'totalRealPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -346,7 +346,7 @@ module.exports = {
       totalName: '',
       childType: 'exchange',
       totalType: 'totalExchange',
-      toFixed: true,
+      toFixed: false,
       countCut: 2
     },
     // {
@@ -359,7 +359,7 @@ module.exports = {
     //   totalName: '',
     //   childType: 'buy',
     //   totalType: 'totalBuy',
-    //   toFixed: true,
+    //   toFixed: false,
     //   countCut: 2
     // },
     {
@@ -372,7 +372,7 @@ module.exports = {
       totalName: '',
       childType: 'recycle',
       totalType: 'totalRecycle',
-      toFixed: true,
+      toFixed: false,
       countCut: 2
     },
     {
@@ -385,7 +385,7 @@ module.exports = {
       totalName: '',
       childType: 'actualPrice',
       totalType: 'totalActualPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2
     },
     {
@@ -398,7 +398,7 @@ module.exports = {
       totalName: '',
       childType: 'cost',
       totalType: 'totalCost',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -412,7 +412,7 @@ module.exports = {
       totalName: '',
       childType: 'margin',
       totalType: 'totalMargin',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     }
@@ -472,7 +472,7 @@ module.exports = {
       totalName: '',
       childType: 'weight',
       totalType: 'totalWeight',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -486,7 +486,7 @@ module.exports = {
       totalName: '',
       childType: 'goldWeight',
       totalType: 'totalGoldWeight',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -500,7 +500,7 @@ module.exports = {
       totalName: '',
       childType: 'goldPrice',
       totalType: 'totalGoldPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -514,7 +514,7 @@ module.exports = {
       totalName: '',
       childType: 'wage',
       totalType: 'totalWage',
-      toFixed: true,
+      toFixed: false,
       countCut: 2
     },
     {
@@ -540,7 +540,7 @@ module.exports = {
       totalName: '',
       childType: 'soldPrice',
       totalType: 'totalSoldPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -554,7 +554,7 @@ module.exports = {
       totalName: '',
       childType: 'realPrice',
       totalType: 'totalRealPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -568,7 +568,7 @@ module.exports = {
       totalName: '',
       childType: 'exchange',
       totalType: 'totalExchange',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -582,7 +582,7 @@ module.exports = {
     //   totalName: '',
     //   childType: 'buy',
     //   totalType: 'totalBuy',
-    //   toFixed: true,
+    //   toFixed: false,
     //   countCut: 2
     // },
     {
@@ -595,7 +595,7 @@ module.exports = {
       totalName: '',
       childType: 'recycle',
       totalType: 'totalRecycle',
-      toFixed: true,
+      toFixed: false,
       countCut: 2
     },
     {
@@ -608,7 +608,7 @@ module.exports = {
       totalName: '',
       childType: 'actualPrice',
       totalType: 'totalActualPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2
     },
     {
@@ -621,7 +621,7 @@ module.exports = {
       totalName: '',
       childType: 'cost',
       totalType: 'totalCost',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -635,7 +635,7 @@ module.exports = {
       totalName: '',
       childType: 'margin',
       totalType: 'totalMargin',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     }
@@ -678,7 +678,7 @@ module.exports = {
       unit: '',
       footerUnit: '',
       totalName: '',
-      childType: 'jewelryName',
+      childType: 'className',
       totalType: '',
       toFixed: false,
       countCut: 0,
@@ -708,7 +708,7 @@ module.exports = {
       totalName: '',
       childType: 'weight',
       totalType: 'totalWeight',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -722,7 +722,7 @@ module.exports = {
       totalName: '',
       childType: 'goldWeight',
       totalType: 'totalGoldWeight',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -736,7 +736,7 @@ module.exports = {
       totalName: '',
       childType: 'goldPrice',
       totalType: 'totalGoldPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2
     },
     {
@@ -749,7 +749,7 @@ module.exports = {
       totalName: '',
       childType: 'wage',
       totalType: 'totalWage',
-      toFixed: true,
+      toFixed: false,
       countCut: 2
     },
     {
@@ -775,7 +775,7 @@ module.exports = {
       totalName: '',
       childType: 'soldPrice',
       totalType: 'totalSoldPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -789,7 +789,7 @@ module.exports = {
       totalName: '',
       childType: 'realPrice',
       totalType: 'totalRealPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -803,7 +803,7 @@ module.exports = {
       totalName: '',
       childType: 'exchange',
       totalType: 'totalExchange',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -817,7 +817,7 @@ module.exports = {
     //   totalName: '',
     //   childType: 'buy',
     //   totalType: 'totalBuy',
-    //   toFixed: true,
+    //   toFixed: false,
     //   countCut: 2
     // },
     {
@@ -830,7 +830,7 @@ module.exports = {
       totalName: '',
       childType: 'recycle',
       totalType: 'totalRecycle',
-      toFixed: true,
+      toFixed: false,
       countCut: 2
     },
     {
@@ -843,7 +843,7 @@ module.exports = {
       totalName: '',
       childType: 'actualPrice',
       totalType: 'totalActualPrice',
-      toFixed: true,
+      toFixed: false,
       countCut: 2
     },
     {
@@ -856,7 +856,7 @@ module.exports = {
       totalName: '',
       childType: 'cost',
       totalType: 'totalCost',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     },
@@ -870,7 +870,7 @@ module.exports = {
       totalName: '',
       childType: 'margin',
       totalType: 'totalMargin',
-      toFixed: true,
+      toFixed: false,
       countCut: 2,
       sort: ''
     }
