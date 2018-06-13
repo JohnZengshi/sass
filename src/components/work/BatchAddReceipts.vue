@@ -83,7 +83,7 @@
                       <el-checkbox class="checkbox-font" :label='scope.row.orderNo'></el-checkbox>
                     </el-col>
                     <el-col :span="16" style="line-height: 42px">
-                      <i class="detail iconfont icon-xiangqing2" @click="gotoDetails(tb)" title="查看详情"></i>
+                      <i class="detail iconfont icon-xiangqing2" @click="gotoGoods(scope.row.orderNo)" title="查看详情"></i>
                     </el-col>
                   </el-row>
                 </template>
@@ -113,9 +113,9 @@
       </div>
       <div class="batch-page-two" v-if="listType == '商品'">
         <div class="operate-bar-bottom">
-          <div @click="littleBatch = true" class="search-block">单据搜索
+          <!-- <div @click="littleBatch = true" class="search-block">单据搜索
             <i class="iconfont icon-sousuo"></i>
-          </div>
+          </div> -->
           <div class="class-btn-wrap">
             <dropDownColums :propsList="proList" dataType="1" titleData="产品类别" @dataBack="dataBack">
             </dropDownColums>
@@ -126,9 +126,18 @@
             <dropDownColums :propsList="jewelryList" dataType="4" titleData="首饰类别" @dataBack="dataBack">
             </dropDownColums>
           </div>
+          <!-- 商品属性 -->
           <div class="drop-block">
             <DropDownMenu titleName="商品属性" dataType="属性" :propList="productTypeList" @dropReturn="dropReturn" @clearInfo="clearInfo">
             </DropDownMenu>
+          </div>
+          <!-- 所在位置 -->
+          <div class="drop-block">
+            <!-- <checkboxDropDown ref="shopWrap" :propsList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
+            </checkboxDropDown> -->
+            <multipleSlesct ref="shopWrap" :propsList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
+            </multipleSlesct>
+            <!-- <multipleSlesct></multipleSlesct> -->
           </div>
           <!-- <div class="drop-block">
                         <DropDownMenu
@@ -281,7 +290,10 @@
     seekBatchAddByProductList,
     getProductTypeList,
     seekProductClassList,
-    seekMemberList
+    seekMemberList,
+    seekGetShopListByCo,
+    showCounterList,
+    seekRepositoryList
   } from "./../../Api/commonality/seek"
   import {
     statusModuleType
@@ -292,13 +304,18 @@
   } from "./../../Api/commonality/operate"
   import dropDownColums from './dropDownColums'
   import DropDownMenu from './../template/DropDownMenu'
+  // 可多选的筛选框
+  import checkboxDropDown from 'base/menu/drop-down-colums'
+  import multipleSlesct from 'base/menu/multiple-el-select'
   export default {
     props: [
       'isPopup', 'supplierListData'
     ],
     components: {
       dropDownColums,
-      DropDownMenu
+      DropDownMenu,
+      checkboxDropDown,
+      multipleSlesct
     },
     data() {
       return {
@@ -414,6 +431,10 @@
         ListPreson: "",
         //制单人列表(去重)
         makeSupplierListPreson: [],
+        // 当前点击单据的orderID
+        currentOrderId: "",
+        // 店铺列表
+        goodslocationList: []
       }
     },
     watch: {
@@ -683,7 +704,8 @@
         let options = {
           page: 1,
           pageSize: this.pageSize,
-          orderId: this.$route.query.orderNumber, // this.orderNo
+          // orderId: this.$route.query.orderNumber, // this.orderNo
+          orderId: this.currentOrderId,
           newOrderId: this.newOrderId,
           keyword: this.keyword,
           productTypeId: this.productTypeId,
@@ -740,7 +762,11 @@
           this.endPrice = ''
           this.modelType = ''
           this.newOrderId = ''
-          this.batchAddByProductList()
+          // 点击切换不需要查询商品
+          // this.batchAddByProductList()
+          this.receiptList = []
+          this.orderNo = ''
+          this.totalNum1 = res.data.data.totalNum
         }
       },
       dateChange() {
@@ -1036,6 +1062,73 @@
         this.seekProductTypeList()
         this.getPropList()
         this.getUserList()
+      },
+      // 点击单据展示商品列表
+      gotoGoods(orderId) {
+        console.log(orderId);
+        this.listType = "商品";
+        this.currentOrderId = orderId;
+        this.batchAddByProductList();
+        this.setGoodslocationList();
+      },
+      // 设置商品位置列表
+      setGoodslocationList() {
+        this.goodslocationList = [{
+          name: "库位",
+          id: 1,
+          childrenList: []
+        }, {
+          name: "店铺",
+          id: 2,
+          childrenList: []
+        }]
+        // 获取店铺列表
+        seekGetShopListByCo({
+          page: '1',
+          pageSize: 9999,
+          type: 1 // 1.可查看 2.所属 3.全部
+        }).then(res => {
+          // console.log(res)
+          if (res.data.state == 200) {
+            for (let i of res.data.data.shopList) {
+              // 获取每个店铺的库类型
+              showCounterList({
+                  shopId: i.shopId
+                })
+                .then(res => {
+                  // 设置二级项
+                  i.childrenList = res.data.data.counterList
+                  i.id = i.shopId
+                  i.name = i.shopName
+                  for (let j of i.childrenList) {
+                    j.name = j.counterName
+                    j.id = j.counterId
+                  }
+                  this.goodslocationList[1].childrenList.push(i)
+                  // console.log(this.goodslocationList[1]);
+                })
+            }
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: 'warning'
+            })
+          }
+
+        })
+        // 获取库位列表
+        seekRepositoryList().then((res) => {
+          // this.repositoryList = res.data.data.repositoryList;
+          // console.log(res.data.data.repositoryList);
+          res.data.data.repositoryList.forEach((val,index)=>{
+            val.name = val.repositoryName;
+            val.id = val.repositoryId;
+          })
+          this.goodslocationList[0].childrenList = res.data.data.repositoryList
+        }, (res) => {
+
+        })
+        console.log(this.goodslocationList);
       }
     }
   }
