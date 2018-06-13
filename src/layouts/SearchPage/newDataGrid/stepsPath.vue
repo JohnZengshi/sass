@@ -1,7 +1,7 @@
 <template>
 <div class="steps-path">
-  <div class="steps-item" ref="itemBox1" @click="openSmallPage">
-    <div class="item_title clearfix" v-if="isOpen">
+  <div class="steps-item">
+    <div class="item_title clearfix">
       <div class="item_time fl">2010-03-26</div>
       <div class="item_status fl">调库</div>
       <ul class="fl">
@@ -24,18 +24,14 @@
         
       </ul>
     </div>
-    <div class="item_title_only clearfix" v-else>
-      <div class="item_time fl">2010-03-26</div>
-      <div class="item_status fl">调库</div>
-    </div>
   </div>
-  <div class="steps-item" ref="itemBox2">
+  <div class="steps-item">
     <div class="item_title">
       <div class="item_time fl">2010-03-26</div>
       <div class="item_status fl">调库</div>
     </div>
   </div>
-  <div class="steps-item" ref="itemBox3">
+  <div class="steps-item">
     <div class="item_title clearfix">
       <div class="item_time fl">2010-03-26</div>
       <div class="item_status fl">调库</div>
@@ -67,8 +63,7 @@
 export default {
   data () {
     return{
-      isOpen: false,
-      isClose: true,
+      isOpen: true,
     }
   },
   props: [],
@@ -145,9 +140,7 @@ export default {
     openSmallPage() {
       this.isOpen = !this.isOpen
       this.$nextTick(() => {
-          let boxHeight = $('.item_title').height()
-          this.$refs.itemBox1.style.height = boxHeight + 50 + 'px'
-
+        
       })
     }
   },
@@ -155,19 +148,15 @@ export default {
   mounted(){
     this.$nextTick(() => {
       this.fetchFootData()
-      // this.openSmallPage()
     })
 
-    console.log('获取高度',this.$refs.itemBox)
-    // let boxHeight = $('.item_title').height()
-    // this.$refs.itemBox1.style.height = boxHeight + 50 + 'px'
+    
     
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
 .steps-path{
   position: absolute;
   width: 100%;
@@ -177,8 +166,8 @@ export default {
   min-height:400px;
   
   .steps-item,{
-    position: relative;
     display: flex;
+    position: relative;
     min-height: 80px;
 
     padding-left: 20px;
@@ -250,6 +239,7 @@ export default {
       border-bottom-right-radius: 22px;
       background: #fff;
       z-index: 9999;
+
       .item_time {
         width: 84px;
         height: 30px;
@@ -279,7 +269,8 @@ export default {
       >ul {
         width: 100%;
         padding-bottom: 14px;
-
+        // animation: openItem 1s;
+        
         li {
           display: flex;
           .label {
