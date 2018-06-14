@@ -97,6 +97,7 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
         props: ['supplierListData'],
         data () {
             return {
+                isLoading: false,
                 checkList: [],
                 // pickerOptions: {
                 //     disabledDate:(time) => {

@@ -156,7 +156,7 @@ export default {
       stateList: [
         {
             id: "10",
-            name: "在库位"
+            name: "已入库"
         },
         {
             id: "11",
@@ -179,7 +179,7 @@ export default {
             name: "修改中"
         },
         {
-            id: "40",
+            id: "40,101",
             name: "已调库"
         },
         {
@@ -187,7 +187,7 @@ export default {
             name: "调库中"
         },
         {
-            id: "50",
+            id: "50,100",
             name: "已发货"
         },
         {
@@ -206,10 +206,10 @@ export default {
             id: "70",
             name: "已调柜"
         },
-        {
-            id: "71",
-            name: "调柜中"
-        },
+        // {
+        //     id: "71",
+        //     name: "调柜中"
+        // },
         {
             id: "80",
             name: "已销售"

@@ -5,9 +5,10 @@
     <cut-bg v-if="isOld" class="ml-10" :showList="madeUpList" :current="filterData.productClass" @pitchOn="madeUpOnProductClass"></cut-bg>
     
 
-    <cut-segmentation class="ml-10" :showList="cutSegmentationList" :current="filterData.productClass" @pitchOn="madeUpOn"></cut-segmentation>
+    <cut-segmentation class="ml-10" :showList="cutSegmentationList" :current="segmentationFilter.type" @pitchOn="madeUpOn"></cut-segmentation>
 
-    <div v-show="specialItem" class="cost-btn ml-10" v-if="isBuy" :title="isBuyBack?'隐藏退换、回收、购买、实收' : '显示退换、回收、购买、实收'" @click="choseBuyBack" :class="{active: isBuyBack}">
+   <!--  <div v-show="specialItem" class="cost-btn ml-10" v-if="isBuy && filterData.productClass != '1'" :title="isBuyBack?'隐藏退换、回收、购买、实收' : '显示退换、回收、购买、实收'" @click="choseBuyBack" :class="{active: isBuyBack}"> -->
+    <div v-show="specialItem" class="cost-btn ml-10" v-if="isBuy && segmentationFilter.type != '1'" :title="isBuyBack?'隐藏退换、回收、购买、实收' : '显示退换、回收、购买、实收'" @click="choseBuyBack" :class="{active: isBuyBack}">
       回购额
     </div>
 
@@ -33,7 +34,7 @@
           productClass: '1' // 成品旧料
         },
         segmentationFilter: { // 主类切换
-
+          type: 2
         },
         tabSwitch: false, // 专列项
         isBuyBack: false, // 回购额

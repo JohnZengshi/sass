@@ -12,6 +12,7 @@
 	<data-grid-body 
 		:detailDataGridColumn="detailDataGridColumn" 
 		:dataGridStorage="dataGridStorage" 
+    :detailDataGridColumnTwo="detailDataGridColumnTwo"
     :buyBackStorage="buyBackStorage"
 		@tabCell="tabCell">
 	</data-grid-body>
@@ -38,7 +39,8 @@ export default{
 	data(){
 		return{
 			tempDatagrid : [],
-			detailDataGridColumn : []
+			detailDataGridColumn : [],
+      detailDataGridColumnTwo: []
 		}
 	},
 	watch:{
@@ -70,6 +72,7 @@ export default{
     
     setTableData(){
       this.$set(this,'detailDataGridColumn', config.trade)
+      this.$set(this,'detailDataGridColumnTwo', config.tradeTwo)
       // if( this.reportType == 1 ){
       //   this.$set(this,'detailDataGridColumn', config.sell)
       // }else{

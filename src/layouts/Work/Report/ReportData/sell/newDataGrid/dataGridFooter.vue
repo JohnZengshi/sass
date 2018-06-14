@@ -47,11 +47,11 @@ export default {
           return '<em style=\'color:#333\'>-</em>'
         }
         //小数点截取 ，合计精确到3位
-        if( tab.toFixed ){
-          return this.toFixed( this.datalist[tab.type] , tab.countCut + 1)
-        }else{
+        // if( tab.toFixed ){
+        //   return this.toFixed( this.datalist[tab.type] , tab.countCut + 1)
+        // }else{
           return this.dataGridStorage[tab.type]
-        }
+        // }
     },
     
     updataData (){

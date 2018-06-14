@@ -46,7 +46,7 @@ export const productDetailStatus = function (parm) { // 商品列表
 export const newProductDetailStatus = function (parm) { // 商品列表
     switch (parm) {
         case "10":
-            return '在库位'
+            return '已入库'
         case "11":
             return '入库中'
         case "20":
@@ -57,11 +57,11 @@ export const newProductDetailStatus = function (parm) { // 商品列表
             return '已修改'
         case "31":
             return '修改中'
-        case "40":
+        case "40,101":
             return '已调库'
         case "41":
             return '调库中'
-        case "50":
+        case "50,100":
             return '已发货'
         case "51":
             return '发货中'

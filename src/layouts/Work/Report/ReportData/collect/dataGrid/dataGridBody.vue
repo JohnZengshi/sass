@@ -44,7 +44,7 @@
           </div>
 
           <div class="tb-total" style="background:#ECF3FF;">
-            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '' : caty[tab.totalType]"></div>
+            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '' : dataGridStorage[tab.type]"></div>
           </div>
 
         </div>
@@ -71,7 +71,7 @@
         <div class="tb-category" v-for="(caty, ind) in buyBackDataList">
           <div v-for="(tb, index) in caty.productTypeList">
             <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()">
-              <template v-for="(tab, indexGrid) in detailDataGridColumn">
+              <template v-for="(tab, indexGrid) in detailDataGridColumnTwo">
                 
                 <div 
                   class="tb-td category-td" 
@@ -96,7 +96,7 @@
           <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
           <div class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
             <!-- 类型小计 -->
-            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : caty[tab.totalType]"></div>
+            <div class="tb-td" v-for="(tab,f) in detailDataGridColumnTwo" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : caty[tab.totalType]"></div>
           </div>
         </div>
       </div>
@@ -107,7 +107,7 @@
         </div>
 
         <div class="tb-total" style="background:#ECF3FF;">
-          <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '' : buyBackStorage[tab.type]"></div>
+          <div class="tb-td" v-for="(tab,f) in detailDataGridColumnTwo" :style="tableCell(tab.width)" v-html="f == 0 ? '' : buyBackStorage[tab.type]"></div>
         </div>
 
       </div>
@@ -132,7 +132,7 @@
         buyBackDataList: []
       }
     },
-    props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch', 'buyBackStorage'],
+    props: ['detailDataGridColumn', 'detailDataGridColumnTwo', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch', 'buyBackStorage'],
 
     watch: {
       'dataGridStorage': function() {

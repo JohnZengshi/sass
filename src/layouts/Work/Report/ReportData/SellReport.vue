@@ -82,7 +82,7 @@
               @reportSwitch="reportSwitch"
               @choseBuyBack="choseBuyBack"
               :specialItem="sellShowId == 'sales'"
-              :isBuy="false"
+              :isBuy="true"
               :customList="customList"
             ></filter-header>
 
@@ -1401,7 +1401,7 @@ export default {
           }
         ]);
       }
-      
+      tempOption.sellStatus = '1'
       seekSellList(tempOption).then(res => {
         if (res.data.state === 200) {
           //数据表格数据

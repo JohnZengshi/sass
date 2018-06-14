@@ -35,7 +35,7 @@
             </template>
           </div>
           <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
-          <div class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
+          <div v-show="tb.detailList.length" class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
             <!-- 类型小计 -->
             <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : tb[tab.totalType]"></div>
           </div>

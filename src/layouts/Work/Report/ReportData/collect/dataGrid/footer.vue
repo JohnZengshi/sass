@@ -82,11 +82,11 @@ export default{
        }
        
        //小数点截取 ，合计精确到3位
-       if( tab.toFixed ){
-         return this.toFixed( this.dataGridStorage[tab.type] , tab.countCut)
-       }else{
+       // if( tab.toFixed ){
+       //   return this.toFixed( this.dataGridStorage[tab.type] , tab.countCut)
+       // }else{
          return this.dataGridStorage[tab.type]
-       }
+       // }
     },
     
     //重置单元格宽度

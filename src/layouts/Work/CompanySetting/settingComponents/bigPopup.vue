@@ -104,7 +104,6 @@ export default {
     },
     methods: {
         openMargePopup () {
-            
             this.$emit("messageBack", {
                 type: 10,
                 status: false,

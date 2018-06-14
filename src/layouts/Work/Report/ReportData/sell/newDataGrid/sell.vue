@@ -10,13 +10,13 @@
 	  @tabCell="tabCell"></data-grid-header>
 	<!--表格内容区  -->
 	<data-grid-body 
-		:detailDataGridColumn="detailDataGridColumn" 
-		:dataGridStorage="dataGridStorage" 
-		:reportType="reportType"
-    :positionSwitch="positionSwitch"
-		@scrollClass = "scrollClass"
-    @lazyloadSend = "lazyloadSend"
-		@tabCell="tabCell">
+        :detailDataGridColumn="detailDataGridColumn" 
+        :dataGridStorage="dataGridStorage" 
+        :reportType="reportType"
+        :positionSwitch="positionSwitch"
+        @scrollClass = "scrollClass"
+        @lazyloadSend = "lazyloadSend"
+        @tabCell="tabCell">
 	</data-grid-body>
 	<!--表尾  -->
 	<data-grid-footer :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="dataGridStorage" :reportType = "reportType" @tabCell="tabCell"></data-grid-footer>
@@ -50,11 +50,15 @@ export default {
 		tabSwitch : function(){
 			this.tableSwitch()
     },
+    // 开关回购额
+    isBuyBack () {
+        this.tableSwitch()
+    },
     positionSwitch : function(){
 			this.posSwitch()
 		},
 	},
-	props : ['dataGridStorage','reportType','tabSwitch', 'positionSwitch','newList'],
+	props : ['dataGridStorage','reportType','tabSwitch', 'positionSwitch','newList', 'isBuyBack'],
 	methods:{
     sortList (val) {
       //console.log(val)
@@ -83,18 +87,39 @@ export default {
           this.configType()
           this.ObjectAssign()
           if (!this.tabSwitch) {
+            if (!this.isBuyBack) {
+                this.tempDatagrid.forEach((item)=>{
+                    let tempwidth, _item = Object.assign({},item)
+                    if(  _item.width && _item.text !='成本' && _item.width && _item.text !='毛利' && _item.width && _item.text !='购买额' && _item.text !='退换' && _item.text !='回收' && _item.text !='实收'){
+                        tempwidth = parseInt(_item.width)
+                        _item.width = tempwidth + 13
+                        temp.push( _item )
+                    }
+                })
+            } else {
+                this.tempDatagrid.forEach((item)=>{
+                    let tempwidth, _item = Object.assign({},item)
+                    if( _item.width && _item.text !='成本' && _item.width && _item.text !='毛利'){
+                      temp.push( _item )
+                    }
+                }) 
+            }
+          } else if (!this.isBuyBack) {
             this.tempDatagrid.forEach((item)=>{
                 let tempwidth, _item = Object.assign({},item)
-                if( _item.width && _item.text !='成本' && _item.width && _item.text !='毛利'){
-                  temp.push( _item )
+                if( _item.width && _item.text !='购买额' && _item.text !='退换' && _item.text !='回收' && _item.text !='实收'){
+                    tempwidth = parseInt(_item.width)
+                    _item.width = tempwidth + 13
+                    temp.push( _item )
                 }
-            }) 
-          }else{
+            })
+          } else {
             temp = this.tempDatagrid
           }
           this.detailDataGridColumn = temp;
         },
         posSwitch(){
+            debugger
             let temp = [];
             //this.setConfig()
             this.configType()
@@ -123,14 +148,23 @@ export default {
                 
             } else {
                 if (!this.tabSwitch) {
-                    this.tempDatagrid.forEach((item)=>{
+                    if (!this.isBuyBack) {
                         let tempwidth, _item = Object.assign({},item)
-                        if( _item.width && _item.text !='成本'){
-                            tempwidth = parseInt(_item.width)
-                            _item.width = tempwidth + 13
-                            temp.push( _item )
-                        }
-                    })
+                            if( _item.width && _item.text !='成本' && _item.width && _item.text !='购买额'){
+                                tempwidth = parseInt(_item.width)
+                                _item.width = tempwidth + 13
+                                temp.push( _item )
+                            }
+                    } else {
+                        this.tempDatagrid.forEach((item)=>{
+                            let tempwidth, _item = Object.assign({},item)
+                            if( _item.width && _item.text !='成本'){
+                                tempwidth = parseInt(_item.width)
+                                _item.width = tempwidth + 13
+                                temp.push( _item )
+                            }
+                        })
+                    }
                 } else {
                     temp = this.tempDatagrid
                 }

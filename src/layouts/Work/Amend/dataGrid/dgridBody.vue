@@ -373,8 +373,9 @@ export default{
 				 */
         // 修改配件数、计价方式 、单价需要同步更新配件额字段
         if (tab.type == 'partCount' || tab.type === 'calcMethod' || tab.type === 'partPrice') {
-        	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
-        	tempArray[0][tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+
+        	this.dgDataList[fIndex].old[tab.type] = tab.type == 'partCount' ? this.toNum(this.dgDataList[fIndex].old[tab.type]) : this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	tempArray[0][tab.type] = tab.type == 'partCount' ? this.toNum(this.dgDataList[fIndex].old[tab.type]) : this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
           tempArray.push({
             price : item.old['price'],
             productId: productId

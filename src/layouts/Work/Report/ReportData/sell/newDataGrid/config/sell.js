@@ -74,7 +74,7 @@ module.exports = {
     {
       id: '5',
       text: '金价',
-      width: '100',
+      width: '75',
       type: '',
       unit: '(元/g)',
       footerUnit: '',
@@ -101,9 +101,9 @@ module.exports = {
     {
       id: '17',
       text: '折扣',
-      width: '100',
+      width: '70',
       type: '',
-      unit: '%',
+      unit: '(%)',
       footerUnit: '',
       totalName: '',
       childType: 'discount',
@@ -116,7 +116,7 @@ module.exports = {
       text: '工费总额',
       width: '100',
       type: 'totalWage',
-      unit: '元',
+      unit: '(元)',
       footerUnit: '',
       totalName: '',
       childType: 'wage',
@@ -128,7 +128,7 @@ module.exports = {
       id: '7',
       text: '售价',
       width: '100',
-      type: 'totalPrice',
+      type: 'totalSoldPrice',
       unit: '(元)',
       footerUnit: '',
       totalName: '',
@@ -175,7 +175,8 @@ module.exports = {
       footerUnit: '',
       totalName: '',
       childType: 'margin',
-      totalType: 'subtotalMargin',
+      // totalType: 'subtotalMargin',
+      totalType: 'margin',
       toFixed: false,
       countCut: 2,
       sort: ''
@@ -272,20 +273,21 @@ module.exports = {
     {
       id: '173',
       text: '折扣',
-      width: '90',
+      width: '70',
       type: '',
-      unit: '%',
+      unit: '(%)',
       footerUnit: '',
       totalName: '',
       childType: 'discount',
-      totalType: 'totalDiscount',
+      // totalType: 'totalDiscount',
+      totalType: '',
       toFixed: false,
       countCut: 0
     },
     {
       id: '5gh2',
       text: '金价',
-      width: '90',
+      width: '75',
       // type: 'totalGoldPrice',
       type: '',
       unit: '(元/g)',
@@ -299,9 +301,9 @@ module.exports = {
     {
       id: '656n',
       text: '工费总额',
-      width: '90',
+      width: '80',
       type: 'totalWage',
-      unit: '元',
+      unit: '(元)',
       footerUnit: '',
       totalName: '',
       childType: 'wage',
@@ -376,6 +378,22 @@ module.exports = {
       toFixed: false,
       countCut: 2
     },
+
+    {
+      id: 'vs16',
+      text: '购买额',
+      width: '90',
+      type: 'totalBuy',
+      unit: '(元)',
+      footerUnit: '',
+      totalName: '',
+      childType: 'buy',
+      totalType: 'totalBuy',
+      toFixed: true,
+      countCut: 2
+    },
+
+
     {
       id: '24h0',
       text: '实收',
@@ -449,20 +467,20 @@ module.exports = {
       countCut: 0,
       sort: '1'
     },
-    {
-      id: '13',
-      text: '首饰名称',
-      width: '150',
-      type: '',
-      unit: '',
-      footerUnit: '',
-      totalName: '',
-      childType: 'className',
-      totalType: '',
-      toFixed: false,
-      countCut: 0,
-      sort: ''
-    },
+    // {
+    //   id: '13',
+    //   text: '首饰名称',
+    //   width: '150',
+    //   type: '',
+    //   unit: '',
+    //   footerUnit: '',
+    //   totalName: '',
+    //   childType: 'className',
+    //   totalType: '',
+    //   toFixed: false,
+    //   countCut: 0,
+    //   sort: ''
+    // },
     {
       id: '21',
       text: '件数',
@@ -508,7 +526,7 @@ module.exports = {
     {
       id: 'f17',
       text: '折扣',
-      width: '90',
+      width: '70',
       type: '',
       unit: '%',
       footerUnit: '',
@@ -521,7 +539,7 @@ module.exports = {
     {
       id: '53',
       text: '金价',
-      width: '120',
+      width: '75',
       // type: 'totalGoldPrice',
       type: '',
       unit: '(元/g)',
@@ -614,6 +632,19 @@ module.exports = {
       toFixed: false,
       countCut: 2
     },
+        {
+      id: 'vs16',
+      text: '购买额',
+      width: '90',
+      type: 'totalBuy',
+      unit: '(元)',
+      footerUnit: '',
+      totalName: '',
+      childType: 'buy',
+      totalType: 'totalBuy',
+      toFixed: true,
+      countCut: 2
+    },
     {
       id: 'sf20',
       text: '实收',
@@ -650,7 +681,7 @@ module.exports = {
       footerUnit: '',
       totalName: '',
       childType: 'margin',
-      totalType: 'totalMargin',
+      totalType: 'margin',
       toFixed: false,
       countCut: 2,
       sort: ''
@@ -745,9 +776,9 @@ module.exports = {
     {
       id: 'f17',
       text: '折扣',
-      width: '80',
+      width: '70',
       type: '',
-      unit: '%',
+      unit: '(%)',
       footerUnit: '',
       totalName: '',
       childType: 'discount',
@@ -758,7 +789,7 @@ module.exports = {
     {
       id: '53',
       text: '金价',
-      width: '80',
+      width: '75',
       // type: 'totalGoldPrice',
       type: '',
       unit: '(元/g)',
@@ -774,7 +805,7 @@ module.exports = {
       text: '工费总额',
       width: '80',
       type: 'totalWage',
-      unit: '元',
+      unit: '(元)',
       footerUnit: '',
       totalName: '',
       childType: 'wage',
@@ -850,6 +881,19 @@ module.exports = {
       toFixed: false,
       countCut: 2
     },
+        {
+      id: 'vs16',
+      text: '购买额',
+      width: '90',
+      type: 'totalBuy',
+      unit: '(元)',
+      footerUnit: '',
+      totalName: '',
+      childType: 'buy',
+      totalType: 'totalBuy',
+      toFixed: true,
+      countCut: 2
+    },
     {
       id: 'sf20',
       text: '实收',
@@ -886,7 +930,7 @@ module.exports = {
       footerUnit: '',
       totalName: '',
       childType: 'margin',
-      totalType: 'totalMargin',
+      totalType: 'margin',
       toFixed: false,
       countCut: 2,
       sort: ''
