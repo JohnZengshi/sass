@@ -1408,6 +1408,9 @@ export default {
         ]);
       }
      // tempOption.sellStatus = '1'
+      if (tempOption.type == 1) {
+        Object.assign(tempOption, {sellStatus: '1'})
+      }
       seekSellList(tempOption).then(res => {
         if (res.data.state === 200) {
           //数据表格数据

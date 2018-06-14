@@ -203,7 +203,7 @@
 <style lang="scss" scoped>
 	.container {
 		background-color: #fff;
-		border-radius: 0 10px 10px 10px;
+		border-radius: 0 4px 4px 4px;
 		// box-shadow: 0px 0 15px #e2e2e2;
 		border: 1px solid #dedede;
 		overflow: hidden;
