@@ -68,6 +68,7 @@ import stepsPath from './stepsPath'
 let configData = require("./config/dataGridConfig");
 
 import { seekCommodityDetails } from "Api/commonality/seek";
+// import { productLogRecord } from "Api/search"
 
 export default {
   data() {

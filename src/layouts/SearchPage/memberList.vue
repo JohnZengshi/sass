@@ -40,6 +40,8 @@ import {
   newProductDetailStatus
 } from "Api/commonality/status";
 
+import {memberListBySearch} from 'Api/search'
+
 export default {
   props: ["panelType"],
   components: {
@@ -430,7 +432,7 @@ export default {
       for (let i of this.addData) {
         barcode.barcode.push(i.barcode);
       }
-      seekGetPrintLabelList(
+      memberListBySearch(
         Object.assign(parm, barcode, { page: "1", pageSize: "30" })
       ).then(res => {
         if (res.data.state == 200) {
@@ -454,6 +456,7 @@ export default {
         this.loading = false;
       });
     },
+    
     filterData(parm) {
       if (parm) {
         this.dataGridStorage = [];
@@ -467,7 +470,7 @@ export default {
         barcode.barcode.push(i.barcode);
       }
       this.loading = true;
-      seekGetPrintLabelList(
+      memberListBySearch(
         Object.assign(this.filterCondition, barcode, this.paging, {})
       ).then(res => {
         if (res.data.state == 200) {

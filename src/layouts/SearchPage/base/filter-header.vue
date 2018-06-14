@@ -140,7 +140,7 @@
       <div class="search-block t-center">
         <alone-drop-down-colums 
             ref="stateWrap"
-            :propsList="stateList"
+            :propsList="userTypeListConfig"
             titleData="人员类型"
             @dataBack="dataBackProductTypeId"
         ></alone-drop-down-colums>
@@ -149,8 +149,8 @@
       <div class="search-block">
           <dropDownColums
               ref="shopWrap"
-              :propsList="shopDataList"
-              :keyName="'shopId'"
+              :propsList="selectPersonnelConfig"
+              :keyName="'operatorList'"
               titleData="选择人员"
               @dataBack="dataBack"
           >
@@ -161,15 +161,15 @@
       <div class="itemType">
           <alone-drop-down-colums 
             ref="stateWrap"
-            :propsList="stateList"
+            :propsList="orderTypeListConfig"
             titleData="单据类型"
             @dataBack="dataBackProductTypeId"
           ></alone-drop-down-colums>
           <span class="divider">丨</span>
           <div class="input_box">
-            <input class="input_box_before" type="text" name="" id="" placeholder="单据号范围">
+            <input class="input_box_before" @blur="rangeOfScreening" v-model="orderBegin" type="text" name="" id="" placeholder="单据号范围">
             <span>至</span>
-            <input class="input_box_end" type="text" name="" id="" placeholder="单据号范围">
+            <input class="input_box_end" @blur="rangeOfScreening" v-model="orderEnd" type="text" name="" id="" placeholder="单据号范围">
           </div>
       </div>
       
@@ -211,7 +211,7 @@
       <div class="search-block t-center">
         <alone-drop-down-colums 
             ref="storageLocationWrap"
-            :propsList="repositoryList"
+            :propsList="storePersonnel"
             :allName="'全部'"
             titleData="店铺人员"
             @dataBack="storageLocation"
@@ -221,45 +221,45 @@
       <div class="search-block t-center">
         <alone-drop-down-colums 
             ref="stateWrap"
-            :propsList="stateList"
+            :propsList="memberTypeConfig"
             titleData="会员类型"
-            @dataBack="dataBackProductTypeId"
+            @dataBack="dataBackmembermemberType"
         ></alone-drop-down-colums>
       </div>
 
       <div class="search-block t-center">
         <alone-drop-down-colums 
             ref="stateWrap"
-            :propsList="stateList"
+            :propsList="gradeListConfig"
             titleData="会员级别"
-            @dataBack="dataBackProductTypeId"
+            @dataBack="dataBackGrade"
         ></alone-drop-down-colums>
       </div>
 
       <div class="search-block t-center">
         <alone-drop-down-colums 
             ref="stateWrap"
-            :propsList="stateList"
+            :propsList="followTypeListConfig"
             titleData="跟进状态"
-            @dataBack="dataBackProductTypeId"
+            @dataBack="dataBackFollowType"
         ></alone-drop-down-colums>
       </div>
 
       <div class="search-block t-center">
         <alone-drop-down-colums 
             ref="stateWrap"
-            :propsList="stateList"
+            :propsList="memberOriginListConfig"
             titleData="会员来源"
-            @dataBack="dataBackProductTypeId"
+            @dataBack="dataBackMemberOrigin"
         ></alone-drop-down-colums>
       </div>
 
-      <down-input
+      <downInputMember
         ref="moreWrap"
         class="ml-10"
         @filterData="filterData"
         titleName="更多筛选"
-      ></down-input>
+      ></downInputMember>
 
       <div class="reset">
         <div class="reset-btn" @click="resetData">
@@ -273,12 +273,13 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList,seekSettingUserRole} from "Api/commonality/seek"
+import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList,seekSettingUserRole,seekGetDepUserList,seekGetShopUserList} from "Api/commonality/seek"
 import dropDownColums from 'base/menu/drop-down-colums'
 import aloneDropDownColums from 'base/menu/alone-drop-down-colums'
 import littleBatch from './little-batch'
 import DownMenu from 'base/menu/DownMenu'
 import downInput from 'base/menu/down-input'
+import downInputMember from 'base/menu/down-input-member'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
 export default {
@@ -289,7 +290,8 @@ export default {
     littleBatch,
     DownMenu,
     downInput,
-    aloneDropDownColums
+    aloneDropDownColums,
+    downInputMember
   },
   data () {
     return {
@@ -490,7 +492,8 @@ export default {
             }
           }]
       },
-      productClassListConfig:[
+      // 商品状态
+      "productClassListConfig":[
         {
           isDefault:'N',
           name: '成品',
@@ -500,6 +503,141 @@ export default {
           isDefault:'N',
           name: '旧料',
           id: '2'
+        }
+      ],
+      // 人员类型
+      "userTypeListConfig": [
+        {
+          id: '1',
+          name: '接待人'
+        },
+        {
+          id: '2',
+          name: '制单人'
+        },
+        {
+          id: '3',
+          name: '审核人'
+        },
+        {
+          id: '4',
+          name: '销售人'
+        },
+        {
+          id: '5',
+          name: '收货人'
+        },
+        {
+          id: '6',
+          name: '收银人'
+        },
+      ],
+      // 选择人员
+      selectPersonnelConfig: [],
+      // 单据类型
+      "orderTypeListConfig":[
+        {
+          id: '01',
+          name: '入库'
+        },
+        {
+          id: '02',
+          name: '退库'
+        },
+        {
+          id: '03',
+          name: '发货'
+        },
+        {
+          id: '04',
+          name: '退货'
+        },
+        {
+          id: '05',
+          name: '销售/回购'
+        },
+        {
+          id: '06',
+          name: '调柜'
+        },
+        {
+          id: '07',
+          name: '调库'
+        },
+        {
+          id: '10',
+          name: '修改'
+        },
+        {
+          id: '11',
+          name: '服务'
+        },
+      ],
+      // 单据起始结束时间
+      orderBegin: '',
+      orderEnd:'',
+
+      // 店铺人员列表
+      storePersonnel: [],
+      // 会员类型
+      "memberTypeConfig":[
+        {
+          id: '1',
+          name: '私有'
+        },
+        {
+          id: '2',
+          name: '共有'
+        },
+        {
+          id: '3',
+          name: '公共'
+        },
+      ],
+      // 会员级别
+      "gradeListConfig":[
+        {
+          id:'1',
+          name: '普通'
+        },
+        {
+          id:'2',
+          name: '中级'
+        },
+        {
+          id:'3',
+          name: '重要'
+        },
+      ],
+      // 跟进状态
+      "followTypeListConfig":[
+        {
+          id: '1',
+          name: '待跟进'
+        },
+        {
+          id: '2',
+          name: '已跟进'
+        },
+        {
+          id: '3',
+          name: '未跟进'
+        },
+        {
+          id: '4',
+          name: '已放弃'
+        },
+        
+      ],
+      // 会员来源
+      "memberOriginListConfig": [
+        {
+          id: '1',
+          name: '小程序'
+        },
+        {
+          id: '2',
+          name: '人工'
         }
       ]
     }
@@ -512,6 +650,8 @@ export default {
     this._seekGetShopListByCo()
     this._seekRepositoryList()
     this.settingUserRole()
+    this.getOperatorList()
+
   },
   computed: {
     ...mapGetters([
@@ -564,17 +704,19 @@ export default {
       })
     },
     resetData () {
-      this.keyword = ''
-      this.$refs.moreWrap.reset()
-      this.$refs.stateWrap.reset()
-      this.$refs.jewelryIdWrap.reset()
-      this.$refs.jeweIdWrap.reset()
-      this.$refs.colourIdWrap.reset()
-      this.$refs.productTypeIdWrap.reset()
-      this.$refs.shopWrap.reset()
-      this.$refs.storageLocationWrap.reset()
-      this.$refs.littleBatchWrap.reset()
-      this.$emit('resetData')
+      // this.keyword = ''
+      // this.$refs.moreWrap.reset()
+      // this.$refs.stateWrap.reset()
+      // this.$refs.jewelryIdWrap.reset()
+      // this.$refs.jeweIdWrap.reset()
+      // this.$refs.colourIdWrap.reset()
+      // this.$refs.productTypeIdWrap.reset()
+      // this.$refs.shopWrap.reset()
+      // this.$refs.storageLocationWrap.reset()
+      // this.$refs.littleBatchWrap.reset()
+      // this.$emit('resetData')
+
+      console.log('重置')
     },
     batchAddByOrderNum () {
       if (!this.keyword) {
@@ -620,6 +762,38 @@ export default {
               for (let i of res.data.data.shopList) {
                 this._showCounterList(i.shopId, i)
               }
+
+              let dpData = {
+                  id: '2',
+                  name:'店铺人员',
+                  childrenList: [],
+                }
+
+              // 获取店铺人员
+              res.data.data.shopList.forEach(item => {
+                
+                let shopData = {
+                  page: 1,
+                  pageSize: 9999,
+                  shopId:item.shopId
+                }
+                
+                seekGetShopUserList(shopData).then(res => {
+                  if(res.data.state == 200) {
+                    console.log('看看看这里的数据',res.data)
+                    res.data.data.shopUserList.forEach(i => {
+                      let option = {}                      
+                      option.id = i.userId
+                      option.name = i.userName
+                      dpData.childrenList.push(option)
+                      this.storePersonnel.push(option)
+                    })
+                  }
+                })
+              })
+
+              this.selectPersonnelConfig.push(dpData)
+              
               // this.shopDataList.childrenList = 
               // this.productCategory[1].children = res.data.data.repositoryList
             } else {
@@ -667,6 +841,9 @@ export default {
             j.id = j.counterId
           }
           this.shopDataList.push(item)
+
+          console.log('看看店铺传过去的数据',this.shopDataList)
+          
         })
     },
     changeStateData () {
@@ -739,15 +916,103 @@ export default {
     },
     getTimeData(val) {
       console.log(val)
+      let beginTime = val.substr(0, 10).split('-').join("") + "000000"
+      this.filterCondition['startTime'] = beginTime
+      this.$emit('filterData', this.filterCondition)
     },
     overTimeDate(val) {
-      console.log(val)    
+      console.log(val) 
+      let endTime = val.substr(0, 10).split('-').join("") + "000000"
+      this.filterCondition['endTime'] = endTime
+      this.$emit('filterData', this.filterCondition)
     },
 
     // 商品状态过滤
     dataBackProductClass (parm) {
       this.filterCondition.productClass = parm.bigList
       this.$emit('filterData', this.filterCondition)
+    },
+    // 单据人员类型过滤
+    dataUserType (parm) {
+      this.filterCondition.orderType = parm.bigList
+      
+      this.$emit('filterData', this.filterCondition)
+    },
+    // 获取人员列表
+    getOperatorList() {
+      let options = {
+          page: '1',
+          pageSize: "9999"
+        }
+        seekGetDepUserList(options)
+          .then(res =>{
+            if (res.data.state === 200) {
+              console.log(res.data.data.userList)
+              let data = res.data.data.userList
+              let gsData = {
+                id: '1',
+                name:'公司人员',
+                childrenList: [],
+              }
+              
+              data.forEach(item => {
+                let option = {}
+                if(item.role <= 3) {
+                  option.id = item.userId
+                  option.name = item.userName
+                  gsData.childrenList.push(option)
+                } else {
+                  
+                }
+              })
+              this.selectPersonnelConfig.push(gsData)
+
+            } else {
+              this.$store.dispatch('workPopupError', res.data.msg);
+            }
+          })
+    },
+    // 单据范围筛选
+    rangeOfScreening () {
+      this.filterCondition['orderBegin'] = this.orderBegin
+      this.filterCondition['orderEnd'] = this.orderEnd
+      this.$emit('filterData', this.filterCondition)
+    },
+    // 单据的时间筛选
+    timeToScreen () {
+      this.filterCondition['startTime'] = this.beginTime
+      this.filterCondition['endTime'] = this.endTime
+      this.$emit('filterData', this.filterCondition)
+    },
+    // 会员类型的筛选
+    dataBackmembermemberType(parm) {
+      this.filterCondition.memberTypeList = this.conversionData(parm.bigList,'memberType')
+      this.$emit('filterData', this.filterCondition)
+    },
+    // 会员级别的筛选
+    dataBackGrade(parm) {
+      this.filterCondition.gradeList = this.conversionData(parm.bigList,'grade')
+      this.$emit('filterData', this.filterCondition)
+    },
+    // 跟进状态
+    dataBackFollowType(parm) {
+      this.filterCondition.followTypeList = this.conversionData(parm.bigList,'followType')
+      this.$emit('filterData', this.filterCondition)
+    },
+    // 会员来源
+    dataBackMemberOrigin(parm) {
+      this.filterCondition.memberOriginList = this.conversionData(parm.bigList,'memberOrigin')
+      this.$emit('filterData', this.filterCondition)
+    },
+    // 把数组转成数组对象
+    conversionData(data=[],key) {
+      let newData = []
+      data.forEach(item => {
+        let option = {}
+        option[key] = item
+        newData.push(option)
+      })
+      return newData
     }
   }
 }

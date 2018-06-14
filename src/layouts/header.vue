@@ -1030,9 +1030,9 @@ export default {
       }
       homepageSearch(options).then(res => {
         if(res.data.state == 200) {
-          this.orderList = res.data.data.orderList
-          this.productList = res.data.data.productList
-          this.memberList = res.data.data.memberList
+          // this.orderList = res.data.data.orderList
+          // this.productList = res.data.data.productList
+          // this.memberList = res.data.data.memberList
 
           this.orderTotalNum = res.data.data.orderTotalNum
           this.productTotalNum = res.data.data.productTotalNum

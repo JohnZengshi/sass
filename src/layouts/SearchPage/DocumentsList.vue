@@ -40,6 +40,8 @@ import {
   newProductDetailStatus
 } from "Api/commonality/status";
 
+import { orderListBySearch } from 'Api/search'
+
 export default {
   props: ["panelType"],
   components: {
@@ -423,16 +425,19 @@ export default {
       this.printNum = parm;
     },
 
-    // 查询商品
+    // 查询单据
     seekProduct(parm) {
+      console.log(parm)
       this.loading = true;
+
       let barcode = {
         barcode: []
-      };
+      }
       for (let i of this.addData) {
         barcode.barcode.push(i.barcode);
       }
-      seekGetPrintLabelList(
+
+      orderListBySearch(
         Object.assign(parm, barcode, { page: "1", pageSize: "30" })
       ).then(res => {
         if (res.data.state == 200) {
@@ -456,8 +461,6 @@ export default {
         this.loading = false;
       });
     },
-    // 查询单据
-    
 
     filterData(parm) {
       if (parm) {
@@ -472,7 +475,7 @@ export default {
         barcode.barcode.push(i.barcode);
       }
       this.loading = true;
-      seekGetPrintLabelList(
+      orderListBySearch(
         Object.assign(this.filterCondition, barcode, this.paging, {})
       ).then(res => {
         if (res.data.state == 200) {
