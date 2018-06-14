@@ -8,31 +8,31 @@
       <div class="content">
         <!-- 选择器最左边部分 -->
         <ul class="list-left">
-          <el-checkbox-group v-if="allName" v-model="allChecked" @change="checkedAll">
+          <el-checkbox-group v-if="allName" v-model="allChecked">
             <li @mouseover="selAllItem([], 0)">
               <el-checkbox :indeterminate="false" :label="'allId'" :class="{active: allName[0]}" style="font-size: 14px;">{{allName}}</el-checkbox>
             </li>
           </el-checkbox-group>
           <el-checkbox-group v-model="leftIdList" @change="handleCheckedCitiesChange">
             <li @mouseover="selLeftItem(item, index)" v-for="(item, index) in leftList">
-              <el-checkbox :indeterminate="false" :label="item.id" :style="filterStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
+              <el-checkbox :indeterminate="false" :label="item" :style="filterStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
             </li>
           </el-checkbox-group>
         </ul>
         <!-- 选择器中间部分 -->
-        <ul v-if="middleList && middleList.length > 0" class="list-middle">
+        <ul v-show="middleList && middleList.length > 0" class="list-middle">
           <el-checkbox-group v-model="middleIdList" @change="changeMiddleId">
             <li @mouseover="selMiddleItem(item,index)" v-for="(item, index) in middleList">
-              <el-checkbox :indeterminate="false" :label="item.id" :style="filterSamllStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
+              <el-checkbox :indeterminate="false" :label="item" :style="filterSamllStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
             </li>
           </el-checkbox-group>
           <!-- <li @click="selRightItem(item, index)" :class="{active: item.id == operateId}" v-for="(item, index) in middleList">{{item.name}}</li> -->
         </ul>
         <!-- 选择器最右边部分 -->
-        <ul v-if="rightList && rightList.length > 0" class="list-right">
+        <ul v-show="rightList && rightList.length > 0" class="list-right">
           <el-checkbox-group v-model="rightIdList" @change="changeMiddleId">
             <li v-for="(item, index) in rightList">
-              <el-checkbox :indeterminate="false" :label="item.id" :style="filterSamllStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
+              <el-checkbox :indeterminate="false" :label="item" :style="filterSamllStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
             </li>
           </el-checkbox-group>
           <!-- <li @click="selRightItem(item, index)" :class="{active: item.id == operateId}" v-for="(item, index) in middleList">{{item.name}}</li> -->
@@ -53,7 +53,7 @@
       return {
         allChecked: [], // 全部选中
         leftIdList: [], // 大类选中
-        leftList: this.propsList,
+        // leftList: [],
         // 中间数据
         middleIdList: [], // 小类选中
         middleList: [],
@@ -67,150 +67,65 @@
       }
     },
     props: [
-      'propsList',
+      'leftList',
       'titleData',
       'allName',
       'keyName'
     ],
+    created() {
+      // console.log(123)
+      // this.leftList = this.propsList;
+    },
     watch: {
+      // 全选或全不选
+      allChecked(newValue, oldValue) {},
+      // -----------------
       //左边的列表发生变化
       leftIdList(newValue, oldValue) {
-        // console.log(newValue);
-        // console.log(this.propsList);
-        // console.log(newValue.slice(newValue.length - 1, newValue.length)[0])
-        // 新增一项
-        if (newValue.length > oldValue.length) {
-          // console.log(newValue.slice(newValue.length - 1, newValue.length)[0])
-          // console.log(this.middleList)
-          // console.log(this.middleIdList)
-          // console.log(newValue)
-          // console.log(this.propsList)
-          for (let i of this.propsList) {
-            if (i.id == newValue.slice(newValue.length - 1, newValue.length)[0]) {
-              for (let j of i.childrenList) {
-                if (!this.middleIdList.includes(j.id)) {
-                  this.middleIdList.push(j.id)
-                }
-              }
-            }
-          }
-        }
-        // 减少一项
-        else if (newValue.length < oldValue.length) {
-          let amendValue = ''
-          for (let k of oldValue) {
-            if (!newValue.includes(k)) {
-              amendValue = k
-            }
-          }
-          for (let i of this.propsList) {
-            if (i.id == amendValue) {
-              for (let j of i.childrenList) {
-                this.middleIdList.forEach((currentValue, index, arr) => {
-                  if (currentValue == j.id) {
-                    this.middleIdList.splice(index, index + 1)
-                  }
-                })
-              }
-            }
-          }
-        }
+        console.log(newValue);
+        // this.middleIdList = [];
+        // newValue.forEach((val, index) => {
+        //   this.middleIdList = this.middleIdList.concat(val.childrenList)
+        // })
+        // console.log(this.middleIdList)
+
       },
       //中间的列表发生变化
       middleIdList(newValue, oldValue) {
-        // console.log(this.leftIdList);
-        // console.log(this.propsList);
-        // console.log(newValue)
-        // console.log(newValue.slice(newValue.length - 1, newValue.length)[0])
-        // 减小了一个值
-        if (newValue.length < oldValue.length) {
-          for (let i of this.propsList) {
-            for (let j of i.childrenList) {
-              // 删除
-              if (!newValue.includes(j.id)) {
-                this.leftIdList.forEach((currentValue, index, arr) => {
-                  if (currentValue == i.id) {
-                    this.leftIdList.splice(index, index + 1)
-                    return
-                  }
-                })
-              }
+        // console.log(this.leftList)
+        // 遍历父项
+        this.leftList.forEach((val, index) => {
+          // 父项的Id
+          let parentId = val.id;
+          // 子项的总长度
+          let childNum = val.childrenList.length;
+          let selectedNum = 0;
+          // 遍历已选择的子项
+          newValue.forEach((val, index) => {
+            if(parentId == val.parentId){
+              selectedNum ++;
             }
+          })
+          console.log(parentId+"选了"+selectedNum+"个");
+          if(childNum == selectedNum){
+            // console.log(parentId + "全选了");
+            this.leftIdList.push(val);            
+            // console.log(this.leftIdList)
           }
-
-        }
-        // 新增一个值
-        else if (newValue.length > oldValue.length) {
-
-          for (let i of this.propsList) {
-
-            let isHas = true
-
-            for (let j of i.childrenList) {
-              // 删除
-              if (!newValue.includes(j.id)) {
-                isHas = false
+          else{
+            console.log(this.leftIdList)
+            this.leftIdList.forEach((val,index)=>{
+              if(val.id == parentId){
+                this.leftIdList.splice(this.leftIdList.indexOf(val),1);
               }
-            }
-
-            if (this.leftIdList.includes(i.id)) {
-              return
-            } else {
-              if (isHas) {
-                this.leftIdList.push(i.id)
-              }
-            }
-
+            })
+            // this.leftIdList.splice(this.leftIdList.indexOf(val),1);
           }
+        })
 
-        }
       },
       //右边的列表发生变化
-      rightIdList(newValue, oldValue) {
-        // console.log(this.middleIdList)
-        // console.log(newValue)
-        // console.log(this.propsList)
-        // 减小了一个值
-        if (newValue.length < oldValue.length) {
-          for (let i of this.propsList) {
-            for (let j of i.childrenList) {
-              // 删除
-              if (!newValue.includes(j.id)) { //店铺id
-                this.middleIdList.forEach((currentValue, index, arr) => {
-                  console.log(currentValue)
-                  if (currentValue == j.id) {
-                    this.middleIdList.splice(index, index + 1)
-                    return
-                  }
-                })
-              }
-            }
-          }
-        }
-        // 新增一个值
-        else if (newValue.length > oldValue.length) {
-
-          for (let i of this.propsList) {
-
-            let isHas = true
-
-            for (let j of i.childrenList) {
-              // 删除
-              //   if (!newValue.includes(j.id)) {
-              //     isHas = false
-              //   }
-              if (this.middleIdList.includes(j.id)) {
-                return
-              } else {
-                if (isHas) {
-                  this.middleIdList.push(j.id)
-                }
-              }
-            }
-          }
-
-        }
-      }
+      rightIdList(newValue, oldValue) {},
     },
     methods: {
       filterStyle(parm) {
@@ -225,25 +140,25 @@
       filterSamllStyle(parm) {
         this.middleIdList.includes(parm)
       },
-      checkedAll(parm) {
-        // console.log(123)
-        if (parm.length) {
-          for (let i of this.propsList) {
-            if (!this.leftIdList.includes(i.id)) {
-              this.leftIdList.push(i.id)
-            }
-            for (let j of i.childrenList) {
+      // checkedAll(parm) {
+      //   // console.log(123)
+      //   if (parm.length) {
+      //     for (let i of this.propsList) {
+      //       if (!this.leftIdList.includes(i.id)) {
+      //         this.leftIdList.push(i.id)
+      //       }
+      //       for (let j of i.childrenList) {
 
-              if (!this.middleIdList.includes(j.id)) {
-                this.middleIdList.push(j.id)
-              }
-            }
-          }
-        } else {
-          this.leftIdList = []
-          this.middleIdList = []
-        }
-      },
+      //         if (!this.middleIdList.includes(j.id)) {
+      //           this.middleIdList.push(j.id)
+      //         }
+      //       }
+      //     }
+      //   } else {
+      //     this.leftIdList = []
+      //     this.middleIdList = []
+      //   }
+      // },
       handleCheckedCitiesChange(parm) {
         //   console.log(123)
       },
@@ -255,10 +170,18 @@
       //   鼠标移动到最左的选项时
       selLeftItem(item, index) {
         this.middleList = item.childrenList
+        this.middleList.forEach((val, index) => {
+          val.parentId = item.id;
+        })
       },
       //   鼠标移动到中间的选项时
       selMiddleItem(item, index) {
-        this.rightList = item.childrenList
+        if (item.childrenList) {
+          this.rightList = item.childrenList
+          this.rightList.forEach((val, index) => {
+            val.parentId = item.id
+          })
+        }
       },
       //   鼠标移动到最右的选项时
       selRightItem(item, index) {
@@ -470,4 +393,5 @@
       }
     }
   }
+
 </style>
