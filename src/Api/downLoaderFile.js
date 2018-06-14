@@ -68,7 +68,7 @@ export const downLoaderFile = (url,data) => {
     a.download = "filename.xlsx";
     // $('a').click();
     // a.click();      
-    invokeClick(a)              
+    // invokeClick(a)              
 }
 // 兼容火狐
 function invokeClick(element) {
