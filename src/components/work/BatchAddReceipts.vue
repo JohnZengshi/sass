@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-      <div class="batch-page-one" v-if="listType == '单据'">
+      <div class="batch-page-one" v-show="listType == '单据'">
         <div class="operate-bar-bottom">
           <div class="batch-time-wrap">
             <div class="date-w81">
@@ -58,10 +58,11 @@
           </div>
           <el-button @click="reset" class="reset" title="重置">重置</el-button>
         </div>
-        <div class="table-main" @scroll="scrollFun1($event)">
+        <div class="table-main">
           <el-checkbox-group v-model="checkList" v-loading="isLoading">
             <img v-if="dataList.length ==0" style="display: block; margin:0 auto;" src="./../../../static/img/space-page.png" />
-            <el-table v-else :data="dataList" style="width: 100%" height="380" stripe ref="multipleTable" tooltip-effect="dark">
+            <el-table v-loadmore="loadMoreOrder" @scroll="scrollFun1($event)" v-else :data="dataList" style="width: 100%" height="380" stripe
+              ref="multipleTable" tooltip-effect="dark">
               <el-table-column prop="orderNo" label="单据号" width="">
               </el-table-column>
               <el-table-column prop="type" label="类型" width="" :formatter="formatterType">
@@ -111,7 +112,7 @@
           </el-checkbox-group>
         </div>
       </div>
-      <div class="batch-page-two" v-if="listType == '商品'">
+      <div class="batch-page-two" v-show="listType == '商品'">
         <div class="operate-bar-bottom">
           <!-- <div @click="littleBatch = true" class="search-block">单据搜索
             <i class="iconfont icon-sousuo"></i>
@@ -135,7 +136,7 @@
           <div class="drop-block">
             <!-- <checkboxDropDown ref="shopWrap" :propsList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
             </checkboxDropDown> -->
-            <multipleSlesct ref="shopWrap" :propsList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
+            <multipleSlesct ref="shopWrap" :leftList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
             </multipleSlesct>
             <!-- <multipleSlesct></multipleSlesct> -->
           </div>
@@ -166,7 +167,39 @@
           </div>
         </div>
         <div class="table-main" @scroll="scrollFun($event)">
-          <el-checkbox-group v-model="barcodeList">
+          <el-checkbox-group v-model="barcodeList" v-loading="isLoading">
+            <span class="float" v-show="receiptList.length > 0 && Float">{{currentOrderId}}
+              <i class="el-icon-circle-close" title="清除" @click="Float=false;receiptList=[]"></i>
+            </span>
+            <img v-if="receiptList.length ==0" style="display: block; margin:0 auto;" src="./../../../static/img/space-page.png" />
+            <el-table v-loadmore="loadMoreProduct" v-else :data="receiptList" style="width: 100%" height="380" stripe ref="multipleTable" tooltip-effect="dark">
+              <el-table-column prop="barcode" label="条码号" width="">
+              </el-table-column>
+              <el-table-column prop="productName" label="首饰名称" width="">
+              </el-table-column>
+              <el-table-column prop="productTypeName" label="产品类别" width="">
+              </el-table-column>
+              <el-table-column prop="productType" label="商品属性" width="" :formatter="formatterProductType">
+              </el-table-column>
+              <el-table-column prop="location" label="商品位置" width="">
+              </el-table-column>
+              <el-table-column prop="weight" label="件重(g)" width="">
+              </el-table-column>
+              <el-table-column prop="price" label="售价(元)" width="">
+              </el-table-column>
+              <el-table-column label="操作" width="">
+                <template scope="scope">
+                  <el-row type="flex" class="row-bg" justify="center">
+                    <el-col>
+                      <el-checkbox class="checkbox-font" :label='scope.row.barcode'></el-checkbox>
+                    </el-col>
+                  </el-row>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-checkbox-group>
+
+          <!-- <el-checkbox-group v-model="barcodeList">
             <img v-if="receiptList.length ==0" style="display: block; margin:0 auto;" src="./../../../static/img/space-page.png" />
             <ul v-else>
               <li v-for="(item, index) in receiptList" :key="index">
@@ -187,7 +220,7 @@
                 </div>
               </li>
             </ul>
-          </el-checkbox-group>
+          </el-checkbox-group> -->
         </div>
       </div>
       <div class="batch-footer">
@@ -434,7 +467,9 @@
         // 当前点击单据的orderID
         currentOrderId: "",
         // 店铺列表
-        goodslocationList: []
+        goodslocationList: [],
+        // 关闭显示单据号的浮层
+        Float: true,
       }
     },
     watch: {
@@ -496,7 +531,6 @@
         }
 
       });
-
     },
     methods: {
       handleEdit(index, row) {
@@ -693,6 +727,12 @@
             // 获取单据列表
             this.dataList = res.data.data.dataList
             this.totalNum = res.data.data.totalNum
+            // if (this.dataList.length < this.pageSize) {
+            //   this.$message({
+            //     message: '没有更多数据了',
+            //     type: 'warning'
+            //   });
+            // }
           }
         }, (res) => {
 
@@ -1046,6 +1086,14 @@
       formatterTime(row, column) {
         return this.formatTime(row.createTime)
       },
+      // 格式化商品属性值
+      formatterProductType(row,cloumn){
+        if(row.productType == 1){
+          return "成品"
+        }else if(row.productType == 2){
+          return "旧料"
+        }
+      },
       // 重置按钮
       reset() {
         this.startTime = ""
@@ -1070,6 +1118,8 @@
         this.currentOrderId = orderId;
         this.batchAddByProductList();
         this.setGoodslocationList();
+        // 显示单据号的浮层
+        this.Float = true;
       },
       // 设置商品位置列表
       setGoodslocationList() {
@@ -1120,7 +1170,7 @@
         seekRepositoryList().then((res) => {
           // this.repositoryList = res.data.data.repositoryList;
           // console.log(res.data.data.repositoryList);
-          res.data.data.repositoryList.forEach((val,index)=>{
+          res.data.data.repositoryList.forEach((val, index) => {
             val.name = val.repositoryName;
             val.id = val.repositoryId;
           })
@@ -1128,7 +1178,24 @@
         }, (res) => {
 
         })
-        console.log(this.goodslocationList);
+        // console.log(this.goodslocationList);
+      },
+      // 下拉加载更多单据
+      loadMoreOrder() {
+        console.log("滚动到底部")
+        this.isLoading = true;
+        setTimeout(() => {
+          this.pageSize += 10
+          this.batchAddByOrderNum()
+        }, 2000)
+      },
+      // 下拉加载更多商品
+      loadMoreProduct(){
+        this.isLoading = true;
+        setTimeout(() => {
+          this.pageSize += 10
+          this.batchAddByProductList()
+        }, 2000)
       }
     }
   }
@@ -1782,6 +1849,27 @@
   .detail {
     &:hover {
       color: blue;
+    }
+  }
+
+  .table-main {
+    position: relative;
+    .float {
+      width: 100%;
+      height: 20px;
+      background-color: #FFF1D9;
+      opacity: 0.8;
+      position: absolute;
+      top: 40px;
+      z-index: 1;
+      font-size: 10px;
+      text-align: center;
+      line-height: 20px;
+      color: #FFBE50;
+      i {
+        margin-left: 20px;
+        color: #DAD9D6;
+      }
     }
   }
 
