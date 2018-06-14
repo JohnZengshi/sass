@@ -23,13 +23,13 @@
 						<div class="tb-td category-td"
 							v-if="tab.text == '产品类别' && index1 == 0"  :key="tabindex"
 							:style="tableCell(tab.width)" >
-							<i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7; line-height: 20px;'">{{tb[tab.childType]}}</i>
+							<i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7; line-height: 20px;'">{{tb[tab.childType]}}</i>
 						</div>
 						<div class="tb-td category-td"  :key="tabindex"
 							v-else-if="tab.text == '位置名称' && index == 0 && index1 == 0"
 							:style="tableCell(tab.width)"
 						>	
-							<i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;'">{{caty[tab.childType]}}</i>
+							<i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;z-index: 100'">{{caty[tab.childType]}}</i>
 						</div>
 						<div class="tb-td"  :key="tabindex"
 							v-else
@@ -41,19 +41,33 @@
 					</template>
 				</div>
 				<div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
-				<div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch"><!-- 类型小计 -->
-					<div class="tb-td"
-						v-for="(tab,f) in detailDataGridColumn"  :key="f"
-						:style="tableCell(tab.width)" 
-						v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
-					></div>
+				<div class="tb-total" style="background:#e9f4fe;"><!-- 类型小计 -->
+
+          <template v-if="!positionSwitch">
+            <div class="tb-td"
+              v-for="(tab,f) in detailDataGridColumn" :key="f"
+              :style="tableCell(tab.width)" 
+              v-html = "f == 1 ? '<b>小计</b>' : tb[tab.totalType]"
+            ></div>
+          </template>
+          
+          <template v-else>
+            <div class="tb-td"
+              v-for="(tab,f) in detailDataGridColumn" :key="f"
+              :style="tableCell(tab.width)" 
+              v-html = "f == 0 ? '<b>小计+</b>' : tb[tab.totalType]"
+            ></div>
+          </template>
+
 				</div>
 			</div>
+      <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
 			<div class="tb-total" style="background:#e9f4fe;" v-if="positionSwitch"> <!-- 位置小计 -->
 				<div class="tb-td"
-					v-for="(tab,f) in detailDataGridColumn"  :key="f"
+					v-for="(tab,f) in detailDataGridColumn"
+          :key="f"
 					:style="tableCell(tab.width)" 
-					v-html = "f == 1 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"
+					v-html = "f == 1 ? '<b>小计-</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"
 				></div>
 			</div>
 		</div>
@@ -73,13 +87,13 @@
 						:style="tableCell(tab.width)"
 						v-text="tb[tab.childType]"
 						>
-						<!-- <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i> -->
+						<!-- <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i> -->
 					</div>
 					<div class="tb-td category-td"   :key="tabindex"
 						v-else-if="tab.text == '位置名称' && index == 0"
 						:style="tableCell(tab.width)"
 					>	
-						<i v-bind:class="catyindex%2 !=0 ? 'mytabstyle1':'mytabstyle2' " :style="'height:'+ caty.productTypeList.length * 50 +'px;  color: #2993f8;'">{{caty[tab.childType]}}</i>
+						<i v-bind:class="catyindex%2 !=0 ? 'mytabstyle1':'mytabstyle2' " :style="'height:'+ caty.productTypeList.length * 40 +'px;  color: #2993f8;'">{{caty[tab.childType]}}</i>
 					</div>
 					<div class="tb-td"
 						v-else  :key="tabindex"
@@ -181,9 +195,10 @@ export default {
 			//console.log(this.dataGridStorage)
 			if (this.dataGridStorage.dataList) {
 				for (let i = 0; i < this.dataGridStorage.dataList.length; i++) {
-					let data = 50
+					let data = 0
 					for (let j = 0; j < this.dataGridStorage.dataList[i].productTypeList.length; j++) {
-						data += this.dataGridStorage.dataList[i].productTypeList[j].detailList.length * 50
+            data += 42
+						data += this.dataGridStorage.dataList[i].productTypeList[j].detailList.length * 40
 						if (i == 0) {
 							//console.log(this.dataGridStorage.dataList[i].productTypeList[j].detailList.length)
 						}
@@ -266,16 +281,16 @@ export default {
 	
     
     .tb-tr{
-      height: 50px;
+      height: 40px;
       display: flex;
       .tb-td{
         float: left;
         display: inline-block;
-        height: 50px;
-        line-height: 50px;    
+        height: 40px;
+        line-height: 40px;    
         text-align: center;
         font-size: 14px; 
-        font-weight: 500;
+        font-weight: 400;
         transition: all .1s;
         white-space: nowrap;
         color: #333;
@@ -316,14 +331,14 @@ export default {
   
   .tb-total{
       background-color: #e9f4fe;
-      height: 50px;
+      height: 40px;
       display: flex;
       
       .tb-td{
         float: left;
         display: inline-block;
-        height: 50px;
-        line-height: 50px;    
+        height: 40px;
+        line-height: 40px;    
         text-align: center;
         font-size: 14px;
         font-weight: bold;
