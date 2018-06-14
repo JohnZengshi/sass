@@ -612,8 +612,9 @@ export default {
         nGemId: "",
         nJewelryId: "1",
         reportType: 1,
-        sellStatu:'',
-        specialId:''
+        sellStatus:'',
+        specialId:'',
+        // sellStatuss
       },
       dialogOptions: {
         conditionList: ["不选", "大类", "小类"],
@@ -738,20 +739,25 @@ export default {
     //成本控制
     reportSwitch(parm){
       this.tabSwitch = parm
+
+      if(this.tabSwitch) {
+        this.dataGridOptions.specialId = '1'
+      } else {
+        this.dataGridOptions.specialId = ''
+      }
+
     },
     choseBuyBack (parm) {
       this.isBuyBack = parm
     },
     choseMenu(type) {
-        if(this.tabSwitch) {
-          this.dataGridOptions.specialId = ''
-        } else {
-          this.dataGridOptions.specialId = '1'
-        }
+        
         if (type == 1) {
           this.positionSwitch = !this.positionSwitch;
+
         } else if (type == 2) {
           this.tabSwitch = !this.tabSwitch;
+          
         }
     },
     resetOption() {
@@ -1013,7 +1019,7 @@ export default {
         // this.dataGridOptions.beginTime = this.getDate(0, "start").fullData;
         // this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
         this.dataGridOptions.reportType = 1;
-        this.dataGridOptions.sellStatu = 1;
+        this.dataGridOptions.sellStatus = 1;
         //日期控件默认设置时间
         // this.beginTime = this.getDate(0, "start").format;
         // this.endTime = this.getDate(0, "end").format;
@@ -1358,7 +1364,7 @@ export default {
 
     send(type) {
       if (this.modleSwitch == '2') {
-        this.dataGridOptions.sellStatu = ''        
+        this.dataGridOptions.sellStatus = ''        
         this.sellSend();
         this.sellTradeSend();
         this.sellCollectSend();
@@ -1375,7 +1381,7 @@ export default {
         Object.assign(this.dataGridOptions, {
           page: 1,
           // pageSize: 15,
-          // sellStatu:'1'
+          // sellStatus:'1'
         });
       } else {
         delete this.dataGridOptions.page;
@@ -1586,8 +1592,10 @@ export default {
 
       if (this.sellShowId === "sales") {
         exportTabData["sellFlag"] = "1";
+        exportTabData["sellStatus"] = "1"
       } else if (this.sellShowId === "buyback") {
         exportTabData["sellFlag"] = "2";
+        exportTabData["sellStatus"] = ""
       } else {
         exportTabData["sellFlag"] = "1";
       }
