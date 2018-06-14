@@ -40,8 +40,12 @@ import {
   newProductDetailStatus
 } from "Api/commonality/status";
 
+import { homepageSearch } from 'Api/search'
+
+
+
 export default {
-  props: ['panelType'],
+  props: ['panelType','serchKey'],
   components: {
     ReportDetail,
     Cascade,
@@ -260,7 +264,8 @@ export default {
       paging: {
         page: 1,
         pageSize: "30"
-      }
+      },
+
     };
   },
   created() {
@@ -292,6 +297,11 @@ export default {
       type: 2,
       fieldType: "simple"
     });
+
+    // 获取列表内容
+    this.seekProduct(this.serchKey)
+
+
   },
   watch: {
     "printSelectDate.storage": function() {
@@ -423,6 +433,7 @@ export default {
     },
     // 查询商品
     seekProduct(parm) {
+      console.log(parm)
       this.loading = true;
       let barcode = {
         barcode: []
@@ -454,6 +465,7 @@ export default {
         this.loading = false;
       });
     },
+
     filterData(parm) {
       if (parm) {
         this.dataGridStorage = [];
@@ -978,7 +990,8 @@ export default {
           this.filterData();
         }
       }
-    }
+    },
+    // 
   },
 
   mounted() {

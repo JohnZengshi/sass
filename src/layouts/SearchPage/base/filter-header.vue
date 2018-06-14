@@ -72,16 +72,13 @@
 
       </div>
 
-      <div class="search-block t-centent">
-          <dropDownColums
-              ref="shopWrap"
-              :propsList="shopDataList"
-              :keyName="'shopId'"
-              titleData="商品属性"
-              @dataBack="dataBack"
-          >
-          </dropDownColums>
-          
+      <div class="search-block t-center">
+        <alone-drop-down-colums 
+            ref="stateWrap"
+            :propsList="productClassListConfig"
+            titleData="商品属性"
+            @dataBack="dataBackProductClass"
+        ></alone-drop-down-colums>
       </div>
 
       <div class="search-block t-center">
@@ -492,7 +489,19 @@ export default {
               picker.$emit('pick', date);
             }
           }]
+      },
+      productClassListConfig:[
+        {
+          isDefault:'N',
+          name: '成品',
+          id: '1'
         },
+        {
+          isDefault:'N',
+          name: '旧料',
+          id: '2'
+        }
+      ]
     }
   },
   created () {
@@ -734,6 +743,12 @@ export default {
     overTimeDate(val) {
       console.log(val)    
     },
+
+    // 商品状态过滤
+    dataBackProductClass (parm) {
+      this.filterCondition.productClass = parm.bigList
+      this.$emit('filterData', this.filterCondition)
+    }
   }
 }
 </script>

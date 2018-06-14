@@ -136,7 +136,7 @@
 			  </div>
         <!-- tab栏切换的内容 -->
         <div class="page-wrap">
-				  <component :is="panel" :panelType="panelType" :dataGridStorage="productList"></component>
+				  <component :is="panel" :panelType="panelType" :serchKey="searchText"></component>
 			  </div>
         
       </el-dialog>
@@ -311,6 +311,7 @@ export default {
       productTotalNum:'', //对应的商品总数
       memberTotalNum:'', //对应的会员总数
 
+      dataGridStorage: [], // 列表数据
       
     };
   },
@@ -357,6 +358,7 @@ export default {
     }
   },
   methods: {
+    // 打开详情的弹窗
     openDialog(parm) {
       this.commodityDetails('00cdfacbfb844ed7bcb558981a4ca475')
       this.DataShow = true
@@ -1035,6 +1037,7 @@ export default {
           this.orderTotalNum = res.data.data.orderTotalNum
           this.productTotalNum = res.data.data.productTotalNum
           this.memberTotalNum = res.data.data.memberTotalNum
+
         }
       })
     },
@@ -1072,7 +1075,8 @@ export default {
         default:
           break;
       }
-    }
+    },
+    // 
   }
 };
 </script>

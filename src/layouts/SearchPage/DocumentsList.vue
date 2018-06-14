@@ -292,6 +292,7 @@ export default {
       type: 2,
       fieldType: "simple"
     });
+
   },
   watch: {
     "printSelectDate.storage": function() {
@@ -421,6 +422,7 @@ export default {
     amendNum(parm) {
       this.printNum = parm;
     },
+
     // 查询商品
     seekProduct(parm) {
       this.loading = true;
@@ -454,6 +456,9 @@ export default {
         this.loading = false;
       });
     },
+    // 查询单据
+    
+
     filterData(parm) {
       if (parm) {
         this.dataGridStorage = [];
