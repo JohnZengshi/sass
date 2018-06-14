@@ -47,7 +47,7 @@
             <div class="tb-td"
               v-for="(tab,f) in detailDataGridColumn" :key="f"
               :style="tableCell(tab.width)" 
-              v-html = "f == 1 ? '<b>小计</b>' : tb[tab.totalType]"
+              v-html = "f == 0 ? '<b>小计</b>' : tb[tab.totalType]"
             ></div>
           </template>
           
@@ -55,7 +55,7 @@
             <div class="tb-td"
               v-for="(tab,f) in detailDataGridColumn" :key="f"
               :style="tableCell(tab.width)" 
-              v-html = "f == 0 ? '<b>小计+</b>' : tb[tab.totalType]"
+              v-html = "f == 1 ? '<b>小计</b>' : tb[tab.totalType]"
             ></div>
           </template>
 
@@ -67,7 +67,7 @@
 					v-for="(tab,f) in detailDataGridColumn"
           :key="f"
 					:style="tableCell(tab.width)" 
-					v-html = "f == 1 ? '<b>小计-</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"
+					v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"
 				></div>
 			</div>
 		</div>
