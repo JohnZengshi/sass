@@ -25,6 +25,14 @@
 
                 <div 
                   class="tb-td"
+                  v-else-if="tab.text == '产品类别'" 
+                  :class="{backLine:tab.childType != ''}" 
+                  :style="tableCell(tab.width)" 
+                  v-text="tab.childType == ''? getIndex() : tb[tab.childType]">
+                </div>
+
+                <div 
+                  class="tb-td"
                   v-else 
                   :class="{backLine:tab.childType != ''}" 
                   :style="tableCell(tab.width)" 
@@ -79,6 +87,14 @@
                   :style="tableCell(tab.width)">
                   <i :style="sellTypeNameH(caty)">{{caty[tab.childType]}}</i>
 
+                </div>
+
+                <div 
+                  class="tb-td"
+                  v-else-if="tab.text == '产品类别'" 
+                  :class="{backLine:tab.childType != ''}" 
+                  :style="tableCell(tab.width)" 
+                  v-text="tab.childType == ''? getIndex() : tb[tab.childType]">
                 </div>
                 
                 <div 

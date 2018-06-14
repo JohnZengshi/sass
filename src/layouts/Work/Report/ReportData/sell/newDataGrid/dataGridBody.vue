@@ -30,6 +30,10 @@
               <div class="tb-td category-td" :key="index" v-else-if="tab.text == '回购类型' && index1 == 0" :style="tableCell(tab.width)">
                 <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{caty[tab.childType]}}</i>
               </div>
+
+<!--               <div class="tb-td" :key="index" v-else-if="tab.text == '首饰名称'" :class="{backLine:tab.childType != ''}" :style="tableCell(tab.width)" v-text="tab.childType == ''? getIndex() : tb[tab.childType]">
+              </div>
+ -->
               <div class="tb-td" :key="index" v-else :class="{backLine:tab.childType != ''}" :style="tableCell(tab.width)" v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
               </div>
             </template>
