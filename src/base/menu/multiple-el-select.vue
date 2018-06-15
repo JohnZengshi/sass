@@ -15,33 +15,33 @@
           </el-checkbox-group>
           <el-checkbox-group v-model="leftIdList" @change="handleCheckedCitiesChange">
             <li @mouseover="selLeftItem(item, index)" v-for="(item, index) in leftList">
-              <!-- <ul> -->
+              <ul>
                 <el-checkbox :indeterminate="false" :label="item" :style="filterStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
-                <!-- <el-checkbox-group class="list-middle" v-model="middleIdList[item.id].length == item.childrenList.length">
+                <el-checkbox-group class="list-middle" v-model="middleIdList[item.id]">
                   <li v-for="(item,index) in item.childrenList">
                     <el-checkbox :label="item">{{item.name}}</el-checkbox>
                   </li>
-                </el-checkbox-group> -->
-              <!-- </ul> -->
+                </el-checkbox-group>
+              </ul>
             </li>
           </el-checkbox-group>
         </ul>
         <!-- 选择器中间部分 -->
-        <ul v-show="middleList && middleList.length > 0" class="list-middle">
+        <!-- <ul v-show="middleList && middleList.length > 0" class="list-middle">
           <el-checkbox-group v-model="middleIdList" @change="changeMiddleId">
             <li @mouseover="selMiddleItem(item,index)" v-for="(item, index) in middleList">
               <el-checkbox :indeterminate="false" :label="item" :style="filterSamllStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
             </li>
           </el-checkbox-group>
-        </ul>
+        </ul> -->
         <!-- 选择器最右边部分 -->
-        <ul v-show="rightList && rightList.length > 0" class="list-right">
+        <!-- <ul v-show="rightList && rightList.length > 0" class="list-right">
           <el-checkbox-group v-model="rightIdList" @change="changeMiddleId">
             <li v-for="(item, index) in rightList">
               <el-checkbox :indeterminate="false" :label="item" :style="filterSamllStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
             </li>
           </el-checkbox-group>
-        </ul>
+        </ul> -->
       </div>
       <div class="bottom">
         <div class="list-footer">
@@ -60,11 +60,11 @@
         leftIdList: [], // 大类选中
         // leftList: [],
         // 中间数据
-        // middleIdList: {
-        //   1:[],
-        //   2:[]
-        // }, 
-        middleIdList:[],
+        middleIdList: {
+          1: [],
+          2: []
+        },
+        // middleIdList:[],
         // 小类选中
         middleList: [],
         // 最右边数据
@@ -93,13 +93,16 @@
       //左边的列表发生变化
       leftIdList(newValue, oldValue) {
         console.log(newValue);
+        // newValue.forEach((val,index)=>{
+        //   this.middleIdList[val.id] = val.childrenList;
+        // })
         // this.middleIdList = [];
         // this.firstOperationSecond(newValue);
         // console.log(this.middleIdList)
       },
       //中间的列表发生变化
       middleIdList(newValue, oldValue) {
-        console.log(newValue)
+        // console.log(newValue)
         // 遍历父项
         // this.leftList.forEach((val, index) => {
         //   // 父项的Id
@@ -132,6 +135,34 @@
       },
       //右边的列表发生变化
       rightIdList(newValue, oldValue) {},
+      // 深度监听
+      middleIdList: {
+        handler(val, oldValue) {
+          // console.log(val)
+          this.leftList.forEach((v,index)=>{
+              let childNum = v.childrenList.length;
+              // console.log(v.id+"选中项的长度"+val[v.id].length)
+              // console.log(v.id+"总长度"+childNum)
+              // console.log("--------------------")
+              if(val[v.id].length == childNum){
+                // console.log(v.id+"全选了")
+                if(this.leftIdList.indexOf(v) < 0){
+                  this.leftIdList.push(v);
+                }
+                // console.log(this.leftIdList)
+                // console.log("--------------------")
+              }else{
+                // console.log(v.id+"没全选")
+                // console.log(v.id+"在leftIdlist的位置"+this.leftIdList.indexOf(v))
+                // console.log("--------------------")
+                if(this.leftIdList.indexOf(v) >= 0){
+                  this.leftIdList.splice(this.leftIdList.indexOf(v),1)
+                }
+              }
+          })
+        },
+        deep: true
+      }
     },
     methods: {
       filterStyle(parm) {
