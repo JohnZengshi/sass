@@ -111,20 +111,7 @@ module.exports = {
     //   toFixed: false,
     //   countCut: 0
     // },
-    {
-      id: '6',
-      text: '工费总额',
-      width: '140',
-      type: 'totalWage',
-      unit: '(元)',
-      footerUnit: '',
-      totalName: '',
-      childType: 'wage',
-      totalType: 'subtotalWage',
-      toFixed: false,
-      countCut: 2
-    },
-    {
+        {
       id: '7',
       text: '售价',
       width: '140',
@@ -137,6 +124,19 @@ module.exports = {
       toFixed: false,
       countCut: 2,
       sort: ''
+    },
+    {
+      id: '6',
+      text: '工费总额',
+      width: '140',
+      type: 'totalWage',
+      unit: '(元)',
+      footerUnit: '',
+      totalName: '',
+      childType: 'wage',
+      totalType: 'subtotalWage',
+      toFixed: false,
+      countCut: 2
     },
     {
       id: '127',
@@ -298,20 +298,7 @@ module.exports = {
     //   toFixed: false,
     //   countCut: 2
     // },
-    {
-      id: '656n',
-      text: '工费总额',
-      width: '140',
-      type: 'totalWage',
-      unit: '(元)',
-      footerUnit: '',
-      totalName: '',
-      childType: 'wage',
-      totalType: 'totalWage',
-      toFixed: false,
-      countCut: 2
-    },
-    {
+        {
       id: '7ns',
       text: '售价',
       width: '150',
@@ -324,6 +311,19 @@ module.exports = {
       toFixed: false,
       countCut: 2,
       sort: ''
+    },
+    {
+      id: '656n',
+      text: '工费总额',
+      width: '140',
+      type: 'totalWage',
+      unit: '(元)',
+      footerUnit: '',
+      totalName: '',
+      childType: 'wage',
+      totalType: 'totalWage',
+      toFixed: false,
+      countCut: 2
     },
     {
       id: '1d7',
@@ -551,20 +551,7 @@ module.exports = {
     //   countCut: 2,
     //   sort: ''
     // },
-    {
-      id: '63',
-      text: '工费总额',
-      width: '160',
-      type: 'totalWage',
-      unit: '元',
-      footerUnit: '',
-      totalName: '',
-      childType: 'wage',
-      totalType: 'totalWage',
-      toFixed: false,
-      countCut: 2
-    },
-    {
+        {
       id: 'f71',
       text: '售价',
       width: '180',
@@ -577,6 +564,19 @@ module.exports = {
       toFixed: false,
       countCut: 2,
       sort: ''
+    },
+    {
+      id: '63',
+      text: '工费总额',
+      width: '160',
+      type: 'totalWage',
+      unit: '元',
+      footerUnit: '',
+      totalName: '',
+      childType: 'wage',
+      totalType: 'totalWage',
+      toFixed: false,
+      countCut: 2
     },
     {
       id: 'g317',
@@ -800,20 +800,7 @@ module.exports = {
     //   toFixed: false,
     //   countCut: 2
     // },
-    {
-      id: '63',
-      text: '工费总额',
-      width: '160',
-      type: 'totalWage',
-      unit: '(元)',
-      footerUnit: '',
-      totalName: '',
-      childType: 'wage',
-      totalType: 'totalWage',
-      toFixed: false,
-      countCut: 2
-    },
-    {
+      {
       id: 'f71',
       text: '售价',
       width: '180',
@@ -826,6 +813,19 @@ module.exports = {
       toFixed: false,
       countCut: 2,
       sort: ''
+    },
+    {
+      id: '63',
+      text: '工费总额',
+      width: '160',
+      type: 'totalWage',
+      unit: '(元)',
+      footerUnit: '',
+      totalName: '',
+      childType: 'wage',
+      totalType: 'totalWage',
+      toFixed: false,
+      countCut: 2
     },
     {
       id: 'g317',
