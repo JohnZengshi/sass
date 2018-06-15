@@ -165,6 +165,7 @@
             <span>-</span>
             <input type="text" @keyup.enter="seekSearch" v-model="endPrice1" placeholder="售价" @blur="batchAddByProductList()">
           </div>
+          <el-button @click="reset" class="reset" title="重置">重置</el-button>
         </div>
         <div class="table-main" @scroll="scrollFun($event)">
           <el-checkbox-group v-model="barcodeList" v-loading="isLoading">
