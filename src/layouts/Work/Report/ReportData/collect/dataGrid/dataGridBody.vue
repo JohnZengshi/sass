@@ -15,18 +15,11 @@
             <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()">
               <template v-for="(tab, indexGrid) in detailDataGridColumn">
                 
-<!--                 <div 
-                  class="tb-td" 
-                  :class="{backLine:tab.childType != ''}" 
-                  :style="tableCell(tab.width)" 
-                  v-if="tab.text == '类型'">
-                  -
-                </div> -->
                 <div 
                   class="tb-td category-td" 
-                  v-if="tab.text == '类型' && index == 0 && index1 == 0 && indexGrid == 0" 
+                  v-if="tab.text == '类型' && index1 == 0 && indexGrid == 0" 
                   :style="tableCell(tab.width)">
-                  <i :style="sellTypeNameH(caty)">{{filterName(caty[tab.childType])}}</i>
+                  <i :style="sellTypeNameHT(tb)">{{filterName(tb[tab.childType])}}</i>
 
                 </div>
 
@@ -49,7 +42,10 @@
               </template>
             </div>
             <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
-
+            <div class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
+              <!-- 类型小计 -->
+              <div class="tb-td" v-for="(tab,f) in detailDataGridColumnTwo" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : tb[tab.totalType]"></div>
+            </div>
           </div>
         </div>
         
@@ -223,6 +219,7 @@
     },
     methods: {
       filterName (parm) {
+       // return '9000000'
         if (parm == '1') {
           return '计重'
         } else if (parm == '2'){
@@ -233,6 +230,7 @@
         let Num = 0
         if (parm) {
           for (let i of parm.productTypeList) {
+             Num += 40
             if (i) {
 
               // if (i.detailList.length) {
@@ -264,6 +262,19 @@
               }
 
             }
+          }
+        }
+
+        return {
+          'height': Num + 'px'
+        }
+      },
+      sellTypeNameHT (parm) {
+        let Num = 0
+        if (parm) {
+
+          for (let j of parm.detailList) {
+            Num += 40
           }
         }
 
