@@ -13,14 +13,21 @@
         <div class="right-type-inner-wrap">
           <div v-for="(tb, index) in caty.productTypeList">
             <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()">
-              <template v-for="tab in detailDataGridColumn">
+              <template v-for="(tab, indexGrid) in detailDataGridColumn">
                 
-                <div 
+<!--                 <div 
                   class="tb-td" 
                   :class="{backLine:tab.childType != ''}" 
                   :style="tableCell(tab.width)" 
-                  v-if="tab.text == '回购类型'">
+                  v-if="tab.text == '类型'">
                   -
+                </div> -->
+                <div 
+                  class="tb-td category-td" 
+                  v-if="tab.text == '类型' && index == 0 && index1 == 0 && indexGrid == 0" 
+                  :style="tableCell(tab.width)">
+                  <i :style="sellTypeNameH(caty)">{{filterName(caty[tab.childType])}}</i>
+
                 </div>
 
                 <div 
@@ -83,7 +90,7 @@
                 
                 <div 
                   class="tb-td category-td" 
-                  v-if="tab.text == '回购类型' && index == 0 && index1 == 0 && indexGrid == 0" 
+                  v-if="tab.text == '类型' && index == 0 && index1 == 0 && indexGrid == 0" 
                   :style="tableCell(tab.width)">
                   <i :style="sellTypeNameH(caty)">{{caty[tab.childType]}}</i>
 
@@ -215,6 +222,13 @@
       this.tabCellHeight()
     },
     methods: {
+      filterName (parm) {
+        if (parm == '1') {
+          return '计重'
+        } else if (parm == '2'){
+          return '计件'
+        }
+      },
       getRightH (parm) {
         let Num = 0
         if (parm) {
