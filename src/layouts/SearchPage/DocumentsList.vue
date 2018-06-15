@@ -39,7 +39,11 @@ import {
   productTpyeState,
   newProductDetailStatus,
   statusModuleType,
-  documentsState
+  documentsState,
+  memberTypeState,
+  memberFollowTypeState,
+  memberOriginState,
+  memberGradeState
 } from "Api/commonality/status";
 
 import { orderListBySearch } from 'Api/search'
@@ -315,6 +319,7 @@ export default {
               i.auditStatus = documentsState(i.auditStatus)
               // 制单时间
               i.createTime = this._formDataTimeYND(i.createTime)
+              //
             }
             this.addData = datas;
             this.dataGridStorage = datas;

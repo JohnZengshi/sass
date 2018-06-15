@@ -72,7 +72,7 @@
       </div>
       <div class="search-block t-center">
         <alone-drop-down-colums 
-            ref="stateWrap"
+            ref="productClassWrap"
             :propsList="productClassListConfig"
             titleData="商品属性"
             @dataBack="dataBackProductClass"
@@ -81,7 +81,7 @@
 
       <div class="search-block t-center">
         <alone-drop-down-colums 
-            ref="stateWrap"
+            ref="productStateWrap"
             :propsList="stateList"
             titleData="商品状态"
             @dataBack="dataBackProductTypeId"
@@ -202,23 +202,23 @@
             :propsList="repositoryList"
             :allName="'全部'"
             titleData="店铺名称"
-            @dataBack="storageLocation"
+            @dataBack="dataBackShopidList"
         ></alone-drop-down-colums>
       </div>
 
       <div class="search-block t-center">
         <alone-drop-down-colums 
-            ref="storageLocationWrap"
+            ref="shoppeopleWrap"
             :propsList="storePersonnel"
             :allName="'全部'"
             titleData="店铺人员"
-            @dataBack="storageLocation"
+            @dataBack="dataBackShopidPeopleList"
         ></alone-drop-down-colums>
       </div>
 
       <div class="search-block t-center">
         <alone-drop-down-colums 
-            ref="stateWrap"
+            ref="memberTypeWrap"
             :propsList="memberTypeConfig"
             titleData="会员类型"
             @dataBack="dataBackmembermemberType"
@@ -227,7 +227,7 @@
 
       <div class="search-block t-center">
         <alone-drop-down-colums 
-            ref="stateWrap"
+            ref="memberTypeGradeWrap"
             :propsList="gradeListConfig"
             titleData="会员级别"
             @dataBack="dataBackGrade"
@@ -236,7 +236,7 @@
 
       <div class="search-block t-center">
         <alone-drop-down-colums 
-            ref="stateWrap"
+            ref="memberFollowWrap"
             :propsList="followTypeListConfig"
             titleData="跟进状态"
             @dataBack="dataBackFollowType"
@@ -245,7 +245,7 @@
 
       <div class="search-block t-center">
         <alone-drop-down-colums 
-            ref="stateWrap"
+            ref="memberOriginWrap"
             :propsList="memberOriginListConfig"
             titleData="会员来源"
             @dataBack="dataBackMemberOrigin"
@@ -702,16 +702,38 @@ export default {
       })
     },
     resetData () {
-      // this.keyword = ''
-      // this.$refs.moreWrap.reset()
-      // this.$refs.jewelryIdWrap.reset()
-      // this.$refs.jeweIdWrap.reset()
-      // this.$refs.colourIdWrap.reset()
-      // this.$refs.productTypeIdWrap.reset()
-      this.$refs.peopleTypeWrap.reset()
-      this.$refs.shopWrap.reset()
-      this.$refs.storageLocationWrap.reset()
-      // this.$refs.littleBatchWrap.reset()
+      this.keyword = ''
+      if(this.panelType == 0) {
+        this.$refs.storageLocationWrap.reset()
+        this.$refs.shopWrap.reset()
+        this.$refs.moreWrap.reset()
+        this.$refs.jewelryIdWrap.reset()
+        this.$refs.jeweIdWrap.reset()
+        this.$refs.colourIdWrap.reset()
+        this.$refs.productTypeIdWrap.reset()
+        this.$refs.productClassWrap.reset()
+        this.$refs.productStateWrap.reset()
+      }      
+      if(this.panelType == 1) {
+        this.$refs.storageLocationWrap.reset()
+        this.$refs.shopWrap.reset()
+        this.$refs.peopleTypeWrap.reset()
+        this.$refs.peopleWrap.reset()
+        this.$refs.stateWrap.reset()
+        this.orderBegin = ''
+        this.orderEnd = ''
+        this.beginTime = ''
+        this.endTime = ''
+      }
+      if(this.panelType == 2) {
+        this.$refs.storageLocationWrap.reset()
+        this.$refs.shoppeopleWrap.reset()
+        this.$refs.memberTypeWrap.reset()
+        this.$refs.memberTypeGradeWrap.reset()
+        this.$refs.memberFollowWrap.reset()
+        this.$refs.memberOriginWrap.reset()
+        this.$refs.moreWrap.reset()
+      }
       this.$emit('resetData')
 
       console.log('重置')
@@ -920,15 +942,19 @@ export default {
     },
     getTimeData(val) {
       console.log(val)
-      let beginTime = val.substr(0, 10).split('-').join("") + "000000"
-      this.filterCondition['startTime'] = beginTime
-      this.$emit('filterData', this.filterCondition)
+      if(val) {
+        let beginTime = val.substr(0, 10).split('-').join("") + "000000"
+        this.filterCondition['startTime'] = beginTime
+        this.$emit('filterData', this.filterCondition)
+      }
     },
     overTimeDate(val) {
       console.log(val) 
-      let endTime = val.substr(0, 10).split('-').join("") + "000000"
-      this.filterCondition['endTime'] = endTime
-      this.$emit('filterData', this.filterCondition)
+      if(val) {
+        let endTime = val.substr(0, 10).split('-').join("") + "000000"
+        this.filterCondition['endTime'] = endTime
+        this.$emit('filterData', this.filterCondition)
+      }
     },
 
     // 商品状态过滤
@@ -1033,6 +1059,12 @@ export default {
       this.filterCondition.orderTypeList = this.conversionData(parm.bigList,'operatorId')
       this.$emit('filterData', this.filterCondition)
     },
+    // 店铺人员
+    dataBackShopidPeopleList(parm) {
+      this.filterCondition.operatorList = this.conversionData(parm.bigList,'operatorId')
+      this.$emit('filterData', this.filterCondition)
+    },
+
     // 把数组转成数组对象
     conversionData(data=[],key) {
       let newData = []

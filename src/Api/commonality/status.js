@@ -259,3 +259,47 @@ export const documentsState = function (parm) {
             return "未收货";
     }
 }
+
+export const memberTypeState = function (parm) {
+    switch (parm) {
+        case "1":
+            return "私有"
+        case "2":
+            return "共有";
+        case "3":
+            return "公共";
+    }
+}   
+
+export const memberFollowTypeState = function (parm) {
+    switch (parm) {
+        case "1":
+            return "待跟进"
+        case "2":
+            return "已跟进";
+        case "3":
+            return "未跟进";
+        case "4":
+            return "已放弃";
+    }
+}
+
+export const memberOriginState = function (parm) {
+    switch (parm) {
+        case "1":
+            return "小程序"
+        case "2":
+            return "人工";
+    }
+}
+
+export const memberGradeState = function (parm) {
+    switch (parm) {
+        case "1":
+            return "普通"
+        case "2":
+            return "中级";
+        case "3":
+            return "重要";
+    }
+}

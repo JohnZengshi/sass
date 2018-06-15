@@ -78,7 +78,7 @@
                         <h1>会员</h1>
                         <div class="membersList">
                           <div class="membersItem" v-if="memberListData.length == 0">未匹配到相关会员信息，查看<span @click.stop="openListDeta(2,true)">所有会员</span></div>
-                          <div class="membersItem" v-else @click.stop="openListDeta" v-for="(item,index) in memberListData" :key="index">
+                          <div class="membersItem" v-else @click.stop="openMember(item)" v-for="(item,index) in memberListData" :key="index">
                             <span class="gno">{{item.memberNum}}</span><span class="gnn">{{item.memberName}}</span><span class="slocation fr">{{item.shopName}}</span>
                             
                           </div>
@@ -126,7 +126,7 @@
       </div>
 
       <!-- 点击了搜索列表后的弹窗 -->
-      <el-dialog top="7%" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption serachList">
+      <el-dialog top="7%" :modal="false" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption serachList">
         <!-- tab栏 -->
         <div class="tab-list">
           <ul>
@@ -185,7 +185,14 @@
               </div>
             </div>
           </div>
-        </el-dialog>
+      </el-dialog>
+      <!-- 点击了会员列表 -->
+      <member-info
+        @closeReturn="closeEditReturn" 
+        :memberId="memberId"
+        :shopId="shopId"
+        :memberInfoFlag="editLeaguer">
+      </member-info>
   </header>
 </transition>
 </template>
@@ -213,7 +220,8 @@ import stepsPath from './SearchPage/newDataGrid/stepsPath'
 import { homepageSearch, productLogRecord,productStatusInfo } from 'Api/search'
 import { seekCommodityDetails } from "Api/commonality/seek"
 
-
+// 导入会员的弹窗
+import memberInfo from './Leaguer/components/memberInfo'
 
 export default {
   data() {
@@ -322,7 +330,11 @@ export default {
       locationName: '',
       productClass: '',
 
-      showAll: false
+      showAll: false,
+      editLeaguer: false,
+      memberId:'',
+      shopId:''
+
     };
   },
   components: {
@@ -331,7 +343,8 @@ export default {
     ProductList,
     DocumentsList,
     memberList,
-    stepsPath
+    stepsPath,
+    memberInfo, // 会员弹框
   },
   props: ["companyInfo", "userInfo", "isAllowCreate"],
 
@@ -368,6 +381,17 @@ export default {
     }
   },
   methods: {
+    openMember (item) {
+      this.editLeaguer = true
+      this.memberId = item.memberId
+      this.shopId = item.shopId
+      console.log('会员数据',item)
+    },
+    closeEditReturn (val) {
+      this.editLeaguer = val.status
+      // this.memberAllList()
+      // this.memberTotalNum()
+    },
     close(parm) {
       console.log('点击关闭',parm)
       this.ListDetails = parm

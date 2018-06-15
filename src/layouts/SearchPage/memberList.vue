@@ -37,10 +37,18 @@ import filterHeader from "./base/filter-header";
 import btnHeader from "./base/btn-header";
 import {
   productTpyeState,
-  newProductDetailStatus
+  newProductDetailStatus,
+  statusModuleType,
+  documentsState,
+  memberTypeState,
+  memberFollowTypeState,
+  memberOriginState,
+  memberGradeState
 } from "Api/commonality/status";
 
 import {memberListBySearch} from 'Api/search'
+import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
+
 
 export default {
   props: ["panelType","serchKey"],
@@ -294,6 +302,50 @@ export default {
       type: 2,
       fieldType: "simple"
     });
+
+    // 初始化所有的数据
+    if(this.showAll) {
+      memberListBySearch({}).then(res => {
+          if (res.data.state == 200) {
+            this.allData = res.data.data;
+            let datas = res.data.data.orderList;
+            for (let i of datas) {
+              // 属性
+              i.productClass = productTpyeState(i.productClass);
+              // 状态
+              i.status = newProductDetailStatus(i.status);
+              // 单据类型
+              i.orderType = statusModuleType(i.orderType)
+              // 制单状态
+              i.auditStatus = documentsState(i.auditStatus)
+              // 制单时间
+              i.createTime = this._formDataTimeYND(i.createTime)
+              // 会员类型
+              i.memberType = memberTypeState(i.memberType)
+              // 会员级别
+              i.grade = memberGradeState(i.grade)
+              // 跟进类型
+              i.followType = memberFollowTypeState(i.followType)
+              // 会员来源
+              i.memberOrigin = memberOriginState(i.memberOrigin)
+               // 注册时间
+            i.createTime = this._formDataTimeYND(i.createTime)
+            }
+            this.addData = datas;
+            this.dataGridStorage = datas;
+            this.loading = false;
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.msg
+            });
+          }
+          this.loading = false;
+        });
+    } else {
+      this.seekProduct(this.serchKey)
+    }
+
   },
   watch: {
     "printSelectDate.storage": function() {
@@ -406,19 +458,21 @@ export default {
     resetData() {
       this.filterCondition = {
         keyWord: "",
-        newOrderId: "",
-        storageId: [],
-        shopId: [],
-        productTypeId: [],
-        colourId: [],
-        jeweId: [],
-        jewelryId: [], // 首饰类别
-        sortList: [{ classTypeName: "1" }],
-        productStatus: [] // 产品状态
+        // newOrderId: "",
+        // storageId: [],
+        // shopId: [],
+        // productTypeId: [],
+        // colourId: [],
+        // jeweId: [],
+        // jewelryId: [], // 首饰类别
+        // sortList: [{ classTypeName: "1" }],
+        // productStatus: [] // 产品状态
       };
       this.addData = [];
       this.dataGridStorage = [];
       this.sortList = [{ name: "产品类别", value: "1" }];
+
+      this.filterData({})
     },
     amendNum(parm) {
       this.printNum = parm;
@@ -433,16 +487,27 @@ export default {
         barcode.barcode.push(i.barcode);
       }
       memberListBySearch(
-        Object.assign(parm, barcode, { page: "1", pageSize: "30" })
+        // Object.assign(parm, barcode, { page: "1", pageSize: "30" })
+        Object.assign(parm)
       ).then(res => {
         if (res.data.state == 200) {
           this.allData = res.data.data;
           let datas = res.data.data.dataList;
           for (let i of datas) {
-            // 属性
-            i.productClass = productTpyeState(i.productClass);
-            // 状态
-            i.status = newProductDetailStatus(i.status);
+              // 属性
+              i.productClass = productTpyeState(i.productClass);
+              // 状态
+              i.status = newProductDetailStatus(i.status);
+              // 会员类型
+              i.memberType = memberTypeState(i.memberType)
+              // 会员级别
+              i.grade = memberGradeState(i.grade)
+              // 跟进类型
+              i.followType = memberFollowTypeState(i.followType)
+              // 会员来源
+              i.memberOrigin = memberOriginState(i.memberOrigin)
+               // 注册时间
+              i.createTime = this._formDataTimeYND(i.createTime)
           }
           this.addData = datas;
           this.dataGridStorage = datas;
@@ -483,6 +548,16 @@ export default {
             i.productClass = productTpyeState(i.productClass);
             // 状态
             i.status = newProductDetailStatus(i.status);
+            // 会员类型
+            i.memberType = memberTypeState(i.memberType)
+              // 会员级别
+            i.grade = memberGradeState(i.grade)
+              // 跟进类型
+            i.followType = memberFollowTypeState(i.followType)
+              // 会员来源
+            i.memberOrigin = memberOriginState(i.memberOrigin)
+            // 注册时间
+            i.createTime = this._formDataTimeYND(i.createTime)
           }
           this.dataGridStorage.push(...datas);
           this.loading = false;
@@ -494,6 +569,10 @@ export default {
         }
         this.loading = false;
       });
+    },
+    // 格式化时间的方法
+    _formDataTimeYND(parm){
+        return GetNYR(parm)
     },
     checkedAll() {},
     // 提取有数据的值
