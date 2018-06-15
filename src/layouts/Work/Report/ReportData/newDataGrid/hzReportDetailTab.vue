@@ -5,33 +5,6 @@
   <data-grid-header-t :newList="newList" @sortList="sortList" :tabSwitch="tabSwitch" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header-t>
   <!--表头 start-->
 <!--   <data-grid-header v-else :newList="newList" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header> -->
-  
-  
-  
-  <template v-if="this.type == 'edit'">
-    <!--表格内容区  -->
-    <data-edit-body 
-      :detailDataGridColumn="detailDataGridColumn" 
-      :dataGridStorage="dataGridStorage" 
-      :reportType="reportType"
-      :isEditReport="type"
-      :tabSwitch="tabSwitch"
-      :positionSwitch="positionSwitch"
-      @scrollClass = "scrollClass"
-      @lazyloadSend = "lazyloadSend"
-      @tabCell="tabCell">
-    </data-edit-body>
-    
-    <!--表尾  -->
-    <data-edit-footer 
-      :detailDataGridColumn="detailDataGridColumn" 
-      :dataGridStorage="dataGridStorage" 
-      :reportType = "reportType" 
-      @tabCell="tabCell">
-    </data-edit-footer>
-  </template>
-    
-  <template v-else>
     <!--表格内容区  -->
     <div class="hz-report-detail-tab-scroll">
       <div>
@@ -56,7 +29,6 @@
       :configData="configData"
       @tabCell="tabCell">
     </data-grid-footer>
-  </template>
 </div>
 </transition>
 </template>

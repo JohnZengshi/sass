@@ -11,9 +11,19 @@
         <p class="top">修改后</p>-->
       </template>
       <template v-esle>
-        <p class="top" v-if="f != 1" v-html="oldHtml(tab)"></p>
-        <p class="bottom" v-if="f != 1" v-html="v_html(tab)"></p>
+
         <p class="bottom" v-if="f == 0">合计</p>
+
+        <template v-else-if="f == 1">
+          <p class="top tl">修改前</p>
+          <p class="bottom tl">修改后</p>
+        </template>
+        
+        <template v-else>
+          <p class="top" v-if="f != 1" v-html="oldHtml(tab)"></p>
+          <p class="bottom" v-if="f != 1" v-html="v_html(tab)"></p>
+        </template>
+
       </template>
     </div>
   </div>
@@ -109,6 +119,10 @@
         height: 20px;
         color: #fff;
         font-weight: bold;
+      }
+      .tl{
+        font-weight: normal;
+        text-align: left;
       }
     }
   }
