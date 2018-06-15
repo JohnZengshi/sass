@@ -51,11 +51,11 @@
                     <div class="commodity">
                         <h1>商品</h1>
                         <div class="commodityList">
-                          <div class="commodityItem" v-if="productList.length == 0">未匹配到相关商品信息，查看<span @click.stop="openListDeta">所有商品</span></div>
-                          <div class="commodityItem" v-else v-for="(item,index) in productList" :key="index" @click.stop="openDialog">
+                          <div class="commodityItem" v-if="productList.length == 0">未匹配到相关商品信息，查看<span @click.stop="openListDeta(0)">所有商品</span></div>
+                          <div class="commodityItem" v-else v-for="(item,index) in productList" :key="index" @click.stop="openDialog(productList[index].productId)">
                             <span class="gno">{{ item.barcode }}</span><span class="gnn">{{ item.jewelryName }}</span><span class="slocation fr">{{ item.locationName }}</span>
                           </div>
-                          <div class="commodityItem" v-if="productList.length > 5" @click.stop="openListDeta">
+                          <div class="commodityItem" v-if="productList.length > 5" @click.stop="openListDeta(0)">
                             <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多商品</span><span class="more_num">({{productTotalNum}})</span>
                           </div>
                         </div>
@@ -64,11 +64,11 @@
                     <div class="receipts">
                         <h1>单据</h1>
                         <div class="receiptsList">
-                          <div class="receiptsItem" v-if="orderList.length == 0">未匹配到相关单据信息，查看<span @click.stop="openListDeta">所有单据</span></div>
+                          <div class="receiptsItem" v-if="orderList.length == 0">未匹配到相关单据信息，查看<span @click.stop="openListDeta(1,true)">所有单据</span></div>
                           <div class="receiptsItem" v-else @click.stop="openListDeta" v-for="(item,index) in orderList" :key="index">
                             <span class="gno">{{ item.orderNum }}</span><span class="state">{{ getOrderType(item.orderType) }}</span><span class="slocation fr">{{ item.createName }}</span>
                           </div>
-                          <div class="receiptsItem" v-if="orderList.length > 5" @click.stop="openListDeta">
+                          <div class="receiptsItem" v-if="orderList.length > 5" @click.stop="openListDeta(1)">
                             <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多单据</span><span class="more_num">({{orderTotalNum}})</span>
                           </div>
                         </div>
@@ -77,11 +77,12 @@
                     <div class="members">
                         <h1>会员</h1>
                         <div class="membersList">
-                          <div class="membersItem" v-if="memberList.length == 0">未匹配到相关会员信息，查看<span @click.stop="openListDeta">所有会员</span></div>
-                          <div class="membersItem" v-else @click.stop="openListDeta" v-for="(item,index) in orderList" :key="index">
-                            <span class="gno">{{item.memberId}}</span><span class="gnn">{{item.memberName}}</span><span class="slocation fr">四季如春珠宝店</span>
+                          <div class="membersItem" v-if="memberListData.length == 0">未匹配到相关会员信息，查看<span @click.stop="openListDeta(2,true)">所有会员</span></div>
+                          <div class="membersItem" v-else @click.stop="openListDeta" v-for="(item,index) in memberListData" :key="index">
+                            <span class="gno">{{item.memberNum}}</span><span class="gnn">{{item.memberName}}</span><span class="slocation fr">{{item.shopName}}</span>
+                            
                           </div>
-                          <div class="membersItem" v-if="memberList.length > 5" @click.stop="openListDeta">
+                          <div class="membersItem" v-if="memberListData.length > 5" @click.stop="openListDeta(2)">
                             <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多会员</span><span class="more_num">({{memberTotalNum}})</span>
                           </div>
                         </div>
@@ -136,12 +137,12 @@
 			  </div>
         <!-- tab栏切换的内容 -->
         <div class="page-wrap">
-				  <component :is="panel" :panelType="panelType" :serchKey="searchText"></component>
+				  <component :showAll="showAll" :is="panel" :panelType="panelType" :serchKey="searchText" @close="close"></component>
 			  </div>
         
       </el-dialog>
       <!-- 点击了商品的弹窗 -->
-      <el-dialog title="皇家翡翠吊坠" top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="DataShow" customClass="ruleOption detailsBounced">
+      <el-dialog :title="productTypeName" top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="DataShow" customClass="ruleOption detailsBounced">
           <div class="detailsInfo">
             <div class="detailsInfo_left">
               <div class="main-body">
@@ -173,13 +174,13 @@
             </div>
             <div class="detailsInfo_right">
               <div class="right_top">
-                <div><i class="icon-dian fl">●</i><p>商品位置</p></div>
-                <div><i class="icon-dian fl">●</i><p>商品状态</p></div>
-                <div><i class="icon-dian fl">●</i><p>商品属性</p></div>
+                <div><i class="icon-dian fl">●</i><p>{{locationName}}</p></div>
+                <div><i class="icon-dian fl">●</i><p>{{getProductType(productType)}}</p></div>
+                <div><i class="icon-dian fl">●</i><p>{{getProductClass(productClass)}}</p></div>
               </div>
               <div class="right_bottom">
                 <!-- 步骤条 -->
-                <steps-path :orderNum="orderNum" :statusREfresh="statusREfresh">
+                <steps-path :orderListST="orderListST" :productId="productId" :statusREfresh="statusREfresh">
                 </steps-path>
               </div>
             </div>
@@ -209,8 +210,8 @@ import DocumentsList from './SearchPage/DocumentsList'
 import memberList from './SearchPage/memberList'
 import stepsPath from './SearchPage/newDataGrid/stepsPath'
 
-import { homepageSearch } from 'Api/search'
-import { seekCommodityDetails } from "Api/commonality/seek";
+import { homepageSearch, productLogRecord,productStatusInfo } from 'Api/search'
+import { seekCommodityDetails } from "Api/commonality/seek"
 
 
 
@@ -218,7 +219,7 @@ export default {
   data() {
     return {
       statusREfresh: false,
-      orderNum:'TH20180509002',
+      orderNum:'',
       
       skinConf: [],
       searchText: "",
@@ -305,14 +306,23 @@ export default {
         
       orderList: [], // 对应的单据
       productList: [], // 对应的商品
-      memberList: [], // 对应的会员
+      memberListData: [], // 对应的会员
 
       orderTotalNum:'', //对应的单据总数
       productTotalNum:'', //对应的商品总数
       memberTotalNum:'', //对应的会员总数
 
       dataGridStorage: [], // 列表数据
+      productTypeName: '', // 头部名
+      productId: '',
+
+      orderListST:[], // 数据列表
       
+      productType: '',
+      locationName: '',
+      productClass: '',
+
+      showAll: false
     };
   },
   components: {
@@ -358,9 +368,13 @@ export default {
     }
   },
   methods: {
+    close(parm) {
+      console.log('点击关闭',parm)
+      this.ListDetails = parm
+    },
     // 打开详情的弹窗
     openDialog(parm) {
-      this.commodityDetails('00cdfacbfb844ed7bcb558981a4ca475')
+      this.commodityDetails(parm)
       this.DataShow = true
     },
     dataSortGroup() {
@@ -872,21 +886,73 @@ export default {
       this.dataSortGroup();
     },
     commodityDetails(parm) {
+      this.productId = parm
       // 商品明细数据
       let options = {
         productId: parm
       };
-      seekCommodityDetails(options).then(
+      // 获取展示的数据
+      seekCommodityDetails(options).then((res) => {
+        if (res.data.state == 200) {
+            console.log('商品搜索数据:',res.data.data);
+            this.dataClustering(res.data.data)
+            this.productTypeName = res.data.data.jewelryName
+        }
+        }, (res) => {
+
+      })
+      // 获取商品数据
+      productLogRecord(options).then(
         res => {
           if (res.data.state == 200) {
-            console.log("商品搜索数据:", res.data.data);
-            this.dataClustering(res.data.data);
+            this.orderListST = res.data.data.orderList
           }
         },
         res => {}
       );
+      // 获取商品状态
+      productStatusInfo(options).then(res => {
+        if(res.data.state == 200) {
+          this.productType = res.data.data.productType
+          this.locationName = res.data.data.locationName
+          this.productClass = res.data.data.productClass
+        }
+      })
     },
-    openListDeta() {
+    openListDeta(type,showAll) {
+      switch (type) {
+        case 0:
+          this.panel = ProductList
+          this.panelType = type
+          this.actIndex = type + ''
+          break;
+        case 1:
+          this.panel = DocumentsList
+          this.panelType = type
+          this.actIndex = type + ''
+
+          if(showAll) {
+            this.showAll = true
+          } else {
+            this.showAll = false
+          }
+          break;
+        case 2:
+          this.panel = memberList
+          this.panelType = type
+          this.actIndex = type + '' 
+
+          if(showAll) {
+            this.showAll = true
+          } else {
+            this.showAll = false
+          }         
+          break;
+      
+        default:
+          break;
+      }
+
       this.ListDetails = true
       this.isSearch = false
     },
@@ -1030,9 +1096,9 @@ export default {
       }
       homepageSearch(options).then(res => {
         if(res.data.state == 200) {
-          // this.orderList = res.data.data.orderList
-          // this.productList = res.data.data.productList
-          // this.memberList = res.data.data.memberList
+          this.orderList = res.data.data.orderList || []
+          this.productList = res.data.data.productList || []
+          this.memberListData = res.data.data.memberList || []
 
           this.orderTotalNum = res.data.data.orderTotalNum
           this.productTotalNum = res.data.data.productTotalNum
@@ -1076,7 +1142,103 @@ export default {
           break;
       }
     },
-    // 
+    // 商品状态
+    getProductType(data) {
+      switch (data) {
+        case "10":
+          return '在库位'
+          break;
+        case "11":
+          return '入库中'
+          break;
+        case "20":
+          return '已退库'
+          break;
+        case "21":
+          return '退库中'
+          break;
+        case "30":
+          return '已修改'
+          break;
+        case "31":
+          return '修改中'
+          break;
+        case "40":
+          return '已调库'
+          break;
+        case "41":
+          return '调库中'
+          break;
+        case "50":
+          return '已发货'
+          break;
+        case "51":
+          return '发货中'
+          break;
+        case "52":
+          return '发货审核'
+          break;
+        case "60":
+          return '已退货'
+          break;
+        case "61":
+          return '退货中'
+          break;
+        case "62":
+          return '退货审核'
+          break;
+        case "70":
+          return '已调柜'
+          break;
+        case "71":
+          return '调柜中'
+          break;
+        case "80":
+          return '已销售'
+          break;
+        case "81":
+          return '销售中'
+          break;
+        case "90":
+          return '销退中'
+          break;
+        case "91":
+          return '已销退'
+          break;
+        case "92":
+          return '换货中'
+          break;
+        case "93":
+          return '已换货'
+          break;
+        case "94":
+          return '回收中'
+          break;
+        case "95":
+          return '已回收'
+          break;
+        case "100":
+          return '店铺收货'
+          break;
+        case "101":
+          return '仓库收货'
+          break;
+      }
+    },
+    // 商品属性
+    getProductClass(data) {
+      switch (data) {
+        case '1':
+          return '成品'
+          break;
+        case '2':
+          return '旧料'
+          break;
+      
+        default:
+          break;
+      }
+    }
   }
 };
 </script>

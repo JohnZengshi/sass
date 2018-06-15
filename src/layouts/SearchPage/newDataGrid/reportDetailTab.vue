@@ -12,7 +12,7 @@
         </template>
 
         <!-- 详情弹框 -->
-        <el-dialog title="皇家翡翠吊坠" top="0" :modal="false" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption detailsBounced">
+        <el-dialog :title="productTypeName" top="0" :modal="false" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption detailsBounced">
           <div class="detailsInfo">
             <div class="detailsInfo_left">
               <div class="main-body">
@@ -44,13 +44,13 @@
             </div>
             <div class="detailsInfo_right">
               <div class="right_top">
-                <div><i class="icon-dian fl">●</i><p>商品位置</p></div>
-                <div><i class="icon-dian fl">●</i><p>商品状态</p></div>
-                <div><i class="icon-dian fl">●</i><p>商品属性</p></div>
+                <div><i class="icon-dian fl">●</i><p>{{locationName}}</p></div>
+                <div><i class="icon-dian fl">●</i><p>{{getProductType(productType)}}</p></div>
+                <div><i class="icon-dian fl">●</i><p>{{getProductClass(productClass)}}</p></div>
               </div>
               <div class="right_bottom">
                 <!-- 步骤条 -->
-                <steps-path :orderNum="orderNum" :statusREfresh="statusREfresh">
+                <steps-path :orderListST="orderListST" :productId="productId" :statusREfresh="statusREfresh">
                 </steps-path>
               </div>
             </div>
@@ -67,8 +67,8 @@ import DataEditFooter from "./editFooter";
 import stepsPath from './stepsPath'
 let configData = require("./config/dataGridConfig");
 
-import { seekCommodityDetails } from "Api/commonality/seek";
-// import { productLogRecord } from "Api/search"
+import { homepageSearch, productLogRecord,productStatusInfo } from 'Api/search'
+import { seekCommodityDetails } from "Api/commonality/seek"
 
 export default {
   data() {
@@ -168,7 +168,17 @@ export default {
       },
 
       statusREfresh: false,
-      orderNum:''
+      orderNum:'',
+
+      productTypeName: '', // 头部名
+      productId: '',
+
+      orderListST:[], // 数据列表
+      
+      productType: '',
+      locationName: '',
+      productClass: '',
+
     };
   },
   components: {
@@ -189,7 +199,8 @@ export default {
     }
   },
   created() {
-    this.setColumn();
+    this.setColumn()
+    // this.commodityDetails()
   },
   props: [
     "dataGridStorage",
@@ -299,6 +310,16 @@ export default {
       }
     },
     openDialog(parm) {
+      console.log(parm)
+      if(this.panelType == 1) {
+        this.$emit('close')
+        
+        this.$router.push({path:'/work/sell'})
+        // this.$router.push({path:'/work/sell/sellReceiptsList?orderNumber='+parm})
+        return
+      }
+
+
       this.commodityDetails(parm)
       this.ListDetails = true;
     },
@@ -822,15 +843,165 @@ export default {
       let options = {
         productId: parm
       };
-      seekCommodityDetails(options).then(
+      // 获取展示的数据
+      seekCommodityDetails(options).then((res) => {
+        if (res.data.state == 200) {
+            console.log('商品搜索数据:',res.data.data);
+            this.dataClustering(res.data.data)
+            this.productTypeName = res.data.data.jewelryName
+        }
+        }, (res) => {
+
+      })
+      // 获取商品数据
+      productLogRecord(options).then(
         res => {
           if (res.data.state == 200) {
-            console.log("商品搜索数据:", res.data.data);
-            this.dataClustering(res.data.data);
+            this.orderListST = res.data.data.orderList
           }
         },
         res => {}
       );
+      // 获取商品状态
+      productStatusInfo(options).then(res => {
+        if(res.data.state == 200) {
+          this.productType = res.data.data.productType
+          this.locationName = res.data.data.locationName
+          this.productClass = res.data.data.productClass
+        }
+      })
+    },
+    // 获取订单状态
+    getOrderType(type) {
+      switch (type) {
+        case '1':
+          return '入库'
+          break;
+        case '2':
+          return '退库'
+          break;
+        case '3':
+          return '发货'
+          break;
+        case '4':
+          return '退货'
+          break;
+        case '5':
+          return '销售/回购'
+          break;
+        case '6':
+          return '调柜'
+          break;
+        case '7':
+          return '调库'
+          break;
+        case '10':
+          return '修改'
+          break;
+        case '11':
+          return '服务'
+          break;
+      
+        default:
+          break;
+      }
+    },
+    // 商品状态
+    getProductType(data) {
+      switch (data) {
+        case "10":
+          return '在库位'
+          break;
+        case "11":
+          return '入库中'
+          break;
+        case "20":
+          return '已退库'
+          break;
+        case "21":
+          return '退库中'
+          break;
+        case "30":
+          return '已修改'
+          break;
+        case "31":
+          return '修改中'
+          break;
+        case "40":
+          return '已调库'
+          break;
+        case "41":
+          return '调库中'
+          break;
+        case "50":
+          return '已发货'
+          break;
+        case "51":
+          return '发货中'
+          break;
+        case "52":
+          return '发货审核'
+          break;
+        case "60":
+          return '已退货'
+          break;
+        case "61":
+          return '退货中'
+          break;
+        case "62":
+          return '退货审核'
+          break;
+        case "70":
+          return '已调柜'
+          break;
+        case "71":
+          return '调柜中'
+          break;
+        case "80":
+          return '已销售'
+          break;
+        case "81":
+          return '销售中'
+          break;
+        case "90":
+          return '销退中'
+          break;
+        case "91":
+          return '已销退'
+          break;
+        case "92":
+          return '换货中'
+          break;
+        case "93":
+          return '已换货'
+          break;
+        case "94":
+          return '回收中'
+          break;
+        case "95":
+          return '已回收'
+          break;
+        case "100":
+          return '店铺收货'
+          break;
+        case "101":
+          return '仓库收货'
+          break;
+      }
+    },
+    // 商品属性
+    getProductClass(data) {
+      switch (data) {
+        case '1':
+          return '成品'
+          break;
+        case '2':
+          return '旧料'
+          break;
+      
+        default:
+          break;
+      }
     }
   },
   mounted() {

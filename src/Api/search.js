@@ -5,7 +5,7 @@ export const homepageSearch = function(data) {
     let URL = "/v1/public/homepageSearch"
     return apiCall(data, URL)
 }
-// 商品列表筛选
+// 商品状态
 export const productStatusInfo = function(data) {
     let URL = "/v1/public/productStatusInfo"
     return apiCall(data, URL)

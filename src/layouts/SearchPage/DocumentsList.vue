@@ -1,10 +1,10 @@
 <template>
     <div>
         <!-- 表头搜索 -->
-        <filter-header :panelType="panelType" @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
+        <filter-header :serchKey="serchKey" :panelType="panelType" @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
         <!-- 表格主体 -->
         <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
-            <report-detail ref="reportDetailWrap" :panelType="panelType" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow">
+            <report-detail ref="reportDetailWrap" :panelType="panelType" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow" @close="close">
             </report-detail>
         </div>
     </div>
@@ -37,13 +37,17 @@ import filterHeader from "./base/filter-header";
 import btnHeader from "./base/btn-header";
 import {
   productTpyeState,
-  newProductDetailStatus
+  newProductDetailStatus,
+  statusModuleType,
+  documentsState
 } from "Api/commonality/status";
 
 import { orderListBySearch } from 'Api/search'
+import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
+
 
 export default {
-  props: ["panelType"],
+  props: ["panelType","serchKey",'showAll'],
   components: {
     ReportDetail,
     Cascade,
@@ -295,6 +299,38 @@ export default {
       fieldType: "simple"
     });
 
+    if(this.showAll) {
+      orderListBySearch({}).then(res => {
+          if (res.data.state == 200) {
+            this.allData = res.data.data;
+            let datas = res.data.data.orderList;
+            for (let i of datas) {
+              // 属性
+              i.productClass = productTpyeState(i.productClass);
+              // 状态
+              i.status = newProductDetailStatus(i.status);
+              // 单据类型
+              i.orderType = statusModuleType(i.orderType)
+              // 制单状态
+              i.auditStatus = documentsState(i.auditStatus)
+              // 制单时间
+              i.createTime = this._formDataTimeYND(i.createTime)
+            }
+            this.addData = datas;
+            this.dataGridStorage = datas;
+            this.loading = false;
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.msg
+            });
+          }
+          this.loading = false;
+        });
+    } else {
+      this.seekProduct(this.serchKey)
+    }
+
   },
   watch: {
     "printSelectDate.storage": function() {
@@ -328,6 +364,11 @@ export default {
         this.dataGridOptions.sortFlag = 0;
       }
       // this.send()
+    },
+    showAll(val) {
+      if(val) {
+        
+      }
     }
   },
   computed: {
@@ -404,22 +445,28 @@ export default {
     // }
   },
   methods: {
+    close() {
+      this.$emit('close',false)
+    },
     resetData() {
       this.filterCondition = {
         keyWord: "",
-        newOrderId: "",
-        storageId: [],
-        shopId: [],
-        productTypeId: [],
-        colourId: [],
-        jeweId: [],
-        jewelryId: [], // 首饰类别
-        sortList: [{ classTypeName: "1" }],
-        productStatus: [] // 产品状态
+        // newOrderId: "",
+        // storageId: [],
+        // shopId: [],
+        // productTypeId: [],
+        // colourId: [],
+        // jeweId: [],
+        // jewelryId: [], // 首饰类别
+        // sortList: [{ classTypeName: "1" }],
+        // productStatus: [] // 产品状态
       };
       this.addData = [];
       this.dataGridStorage = [];
       this.sortList = [{ name: "产品类别", value: "1" }];
+
+      this.filterData({})
+
     },
     amendNum(parm) {
       this.printNum = parm;
@@ -442,12 +489,18 @@ export default {
       ).then(res => {
         if (res.data.state == 200) {
           this.allData = res.data.data;
-          let datas = res.data.data.dataList;
+          let datas = res.data.data.orderList;
           for (let i of datas) {
             // 属性
             i.productClass = productTpyeState(i.productClass);
             // 状态
             i.status = newProductDetailStatus(i.status);
+            // 单据类型
+            i.orderType = statusModuleType(i.orderType)
+            // 制单状态
+            i.auditStatus = documentsState(i.auditStatus)
+            // 制单时间
+            i.createTime = this._formDataTimeYND(i.createTime)
           }
           this.addData = datas;
           this.dataGridStorage = datas;
@@ -481,13 +534,19 @@ export default {
         if (res.data.state == 200) {
           this.paging.page += 1;
           this.allData = res.data.data;
-          let datas = res.data.data.dataList;
+          let datas = res.data.data.orderList;
           this.totalNum = res.data.data.totalNum;
           for (let i of datas) {
             // 属性
             i.productClass = productTpyeState(i.productClass);
             // 状态
             i.status = newProductDetailStatus(i.status);
+            // 单据类型
+            i.orderType = statusModuleType(i.orderType)
+            // 制单状态
+            i.auditStatus = documentsState(i.auditStatus)
+            // 制单时间
+            i.createTime = this._formDataTimeYND(i.createTime)
           }
           this.dataGridStorage.push(...datas);
           this.loading = false;
@@ -986,7 +1045,47 @@ export default {
           this.filterData();
         }
       }
-    }
+    },
+
+    // 格式化时间的方法
+    _formDataTimeYND(parm){
+        return GetNYR(parm)
+    },
+    // 获取订单状态
+    getOrderType(type) {
+      switch (type) {
+        case '01':
+          return '入库'
+          break;
+        case '02':
+          return '退库'
+          break;
+        case '03':
+          return '发货'
+          break;
+        case '04':
+          return '退货'
+          break;
+        case '05':
+          return '销售/回购'
+          break;
+        case '06':
+          return '调柜'
+          break;
+        case '07':
+          return '调库'
+          break;
+        case '10':
+          return '修改'
+          break;
+        case '11':
+          return '服务'
+          break;
+      
+        default:
+          break;
+      }
+    },
   },
 
   mounted() {

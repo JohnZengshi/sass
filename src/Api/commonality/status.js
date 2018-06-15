@@ -213,6 +213,10 @@ export const statusModuleType = function (parm) { // 模块类型
             return "调库";
         case "08":
             return "修改";
+        case "10":
+            return "修改";
+        case "11":
+            return "服务";
     }
 }
 export const statusSucceed = function (parm) {
@@ -239,5 +243,19 @@ export const statusPosition = function (parm) {
             return "店员";
         case "6":
             return "监察员";
+    }
+}
+export const documentsState = function (parm) {
+    switch (parm) {
+        case "1":
+            return "待审核"
+        case "2":
+            return "审核中";
+        case "3":
+            return "已审核";
+        case "4":
+            return "已锁定";
+        case "5":
+            return "未收货";
     }
 }

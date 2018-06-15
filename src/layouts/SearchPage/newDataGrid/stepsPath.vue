@@ -1,105 +1,74 @@
 <template>
 <div class="steps-path">
-  <div class="steps-item" @click="openSmallPage(0)">
-    <div class="item_title clearfix" v-if="actionIndex == 0">
-      <div class="item_time fl">2010-03-26</div>
-      <div class="item_status fl">调库</div>
+  <div class="steps-item" @click="openSmallPage(index)" v-for="(item,index) in orderListST" :key="index">
+    <div class="item_title clearfix" v-if="actionIndex == index">
+      <div class="item_time fl">{{_formDataTimeYND(item.rcvTime)}}</div>
+      <div class="item_status fl">{{item.outRepositoryName ? '调库':'入库'}}</div>
       <ul class="fl">
         <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
+          <div class="label">单据号</div>
+          <div class="message">{{item.orderNum}}</div>
         </li>
         <li>
           <div class="label">操作人</div>
-          <div class="message">王微微</div>
+          <div class="message">{{item.operatorName}}</div>
         </li>
         <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
+          <div class="label">入库库位</div>
+          <div class="message">{{item.inRepositoryName}}</div>
         </li>
         <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
+          <div class="label">供应商</div>
+          <div class="message">{{item.supplierName}}</div>
+        </li>
+        <li>
+          <div class="label">当前位置</div>
+          <div class="message">{{item.locationName}}</div>
+        </li>
+        <li>
+          <div class="label">调库位置</div>
+          <div class="message">{{item.outRepositoryName}}</div>
         </li>
       </ul>
     </div>
     <div class="item_title_only clearfix" v-else>
-      <div class="item_time fl">2010-03-26</div>
-      <div class="item_status fl">调库</div>
-    </div>
-  </div>
-  <div class="steps-item" @click="openSmallPage(1)">
-    <div class="item_title clearfix" v-if="actionIndex == 1">
-      <div class="item_time fl">2010-03-26</div>
-      <div class="item_status fl">调库</div>
-      <ul class="fl">
-        <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
-        </li>
-        <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
-        </li>
-        <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
-        </li>
-        <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
-        </li>
-      </ul>
-    </div>
-    <div class="item_title_only clearfix" v-else>
-      <div class="item_time fl">2010-03-26</div>
-      <div class="item_status fl">调库</div>
-    </div>
-  </div>
-  <div class="steps-item" @click="openSmallPage(2)">
-    <div class="item_title clearfix" v-if="actionIndex == 2">
-      <div class="item_time fl">2010-03-26</div>
-      <div class="item_status fl">调库</div>
-      <ul class="fl">
-        <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
-        </li>
-        <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
-        </li>
-        <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
-        </li>
-        <li>
-          <div class="label">操作人</div>
-          <div class="message">王微微</div>
-        </li>
-        
-      </ul>
-    </div>
-    <div class="item_title_only clearfix" v-else>
-      <div class="item_time fl">2010-03-26</div>
-      <div class="item_status fl">调库</div>
+      <div class="item_time fl">{{_formDataTimeYND(item.rcvTime)}}</div>
+      <div class="item_status fl">{{item.outRepositoryName ? '调库':'入库'}}</div>
     </div>
   </div>
 </div>
 </template>
 
 <script>
+import { homepageSearch, productLogRecord } from 'Api/search'
+import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
+
+
 export default {
   data () {
     return{
       isOpen: true,
       actionIndex: 0,
-      stepItem:[]
+      stepItem:[],
+      orderList: [],
     }
   },
-  props: [],
+  props: ['productId','orderListST'],
   watch: {
-    
+    productId(val) {
+      productLogRecord({productId:val}).then(res => {
+        console.log('我的数据',res.data)
+      })
+    },
+    orderListST(val) {
+      if(val) {
+        this.$nextTick(() => {
+          // this.fetchFootData()
+          let itemHeight = $('.steps-item').eq(this.actionIndex).find('.item_title').height()
+          $('.steps-item').eq(this.actionIndex).height(itemHeight).siblings().height(30)
+        })
+      }
+    }
   },
   methods: {
     // 获取当前状态数据
@@ -179,15 +148,23 @@ export default {
           $('.steps-item').eq(index).height(itemHeight).siblings().height(30)
         // })
       })
-    }
+    },
+    // 格式化时间的方法
+    _formDataTimeYND(parm){
+        return GetNYR(parm)
+    },
   },
+
+
   
   mounted(){
-    this.$nextTick(() => {
-      // this.fetchFootData()
-    })
-    let itemHeight = $('.steps-item').eq(this.actionIndex).find('.item_title').height()
-    $('.steps-item').eq(this.actionIndex).height(itemHeight).siblings().height(30)
+    // this.$nextTick(() => {
+    //   // this.fetchFootData()
+    //   let itemHeight = $('.steps-item').eq(this.actionIndex).find('.item_title').height()
+    //   $('.steps-item').eq(this.actionIndex).height(itemHeight).siblings().height(30)
+    // })
+
+    console.log('查看一下数据',this.orderListST)
   }
 }
 </script>

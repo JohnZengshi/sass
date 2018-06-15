@@ -1,6 +1,6 @@
 <template>
   <div class="d-c-filter-header-main productList">
-
+    <!-- 商品 -->
     <div class="operate-bar-bottom" v-if="panelType === 0">
       <div class="search">
           <input type="text" v-model="keyword" placeholder="请输入关键字" @keyup.enter="batchAddByOrderNum">
@@ -31,7 +31,6 @@
           </dropDownColums>
           
       </div>
-
       <div class="class-btn-wrap">
 
           <dropDownColums
@@ -71,7 +70,6 @@
           </dropDownColums>
 
       </div>
-
       <div class="search-block t-center">
         <alone-drop-down-colums 
             ref="stateWrap"
@@ -104,7 +102,7 @@
       </div>
 
     </div>
-
+    <!-- 单据 -->
     <div class="operate-bar-bottom" v-else-if="panelType === 1">
 
       <div class="search">
@@ -120,20 +118,20 @@
             :propsList="repositoryList"
             :allName="'全部库位'"
             titleData="库位名称"
-            @dataBack="storageLocation"
+            @dataBack="dataBackRepositoryList"
         ></alone-drop-down-colums>
       </div>
 
       <div class="search-block">
-          <dropDownColums
+          <alone-drop-down-colums
               ref="shopWrap"
               :propsList="shopDataList"
               :allName="'全部店铺'"
               :keyName="'shopId'"
               titleData="店铺名称"
-              @dataBack="dataBack"
+              @dataBack="dataBackShopidList"
           >
-          </dropDownColums>
+          </alone-drop-down-colums>
           
       </div>
       
@@ -142,7 +140,7 @@
             ref="stateWrap"
             :propsList="userTypeListConfig"
             titleData="人员类型"
-            @dataBack="dataBackProductTypeId"
+            @dataBack="dataBackUserTypeList"
         ></alone-drop-down-colums>
       </div>
 
@@ -152,7 +150,7 @@
               :propsList="selectPersonnelConfig"
               :keyName="'operatorList'"
               titleData="选择人员"
-              @dataBack="dataBack"
+              @dataBack="dataBackOperatorList"
           >
           </dropDownColums>
           
@@ -163,7 +161,7 @@
             ref="stateWrap"
             :propsList="orderTypeListConfig"
             titleData="单据类型"
-            @dataBack="dataBackProductTypeId"
+            @dataBack="dataBackOrderTypeList"
           ></alone-drop-down-colums>
           <span class="divider">丨</span>
           <div class="input_box">
@@ -189,7 +187,7 @@
       </div>
 
     </div>
-
+    <!-- 会员 -->
     <div class="operate-bar-bottom" v-else-if="panelType === 2">
       <div class="search">
           <input type="text" v-model="keyword" placeholder="请输入关键字" @keyup.enter="batchAddByOrderNum">
@@ -283,7 +281,7 @@ import downInputMember from 'base/menu/down-input-member'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
 export default {
-  props:['panelType'],
+  props:['panelType','serchKey'],
   components: {
     dropDownColums,
     DropDownMenu,
@@ -296,7 +294,7 @@ export default {
   data () {
     return {
       isShowCost: '',
-      keyword: '',
+      keyword: this.serchKey,
       tabSwitch: false,
       repositoryList: [], // 仓库列表
       shopDataList: [],
@@ -714,7 +712,7 @@ export default {
       // this.$refs.shopWrap.reset()
       // this.$refs.storageLocationWrap.reset()
       // this.$refs.littleBatchWrap.reset()
-      // this.$emit('resetData')
+      this.$emit('resetData')
 
       console.log('重置')
     },
@@ -734,6 +732,12 @@ export default {
     storageLocation (parm) {
       this.filterCondition.storageId = parm.bigList
       this.$emit('filterData', this.filterCondition)
+      console.log(parm,this.panelType)
+      console.log('diaoyong')
+      if(this.panelType === 1) {
+        this.filterCondition.repositoryList = this.conversionData(parm.bigList,'repositoryId')
+        this.$emit('filterData', this.filterCondition)
+      }
     },
     filterData (parm) {
       this.$emit('filterData', Object.assign(this.filterCondition, parm))
@@ -1002,6 +1006,31 @@ export default {
     // 会员来源
     dataBackMemberOrigin(parm) {
       this.filterCondition.memberOriginList = this.conversionData(parm.bigList,'memberOrigin')
+      this.$emit('filterData', this.filterCondition)
+    },
+    // 人员类型
+    dataBackUserTypeList(parm) {
+      this.filterCondition.userTypeList = this.conversionData(parm.bigList,'userType')
+      this.$emit('filterData', this.filterCondition)      
+    },
+    // 店铺id
+    dataBackShopidList(parm) {
+      this.filterCondition.shopIdList = this.conversionData(parm.bigList,'shopId')
+      this.$emit('filterData', this.filterCondition)  
+    },
+    // 库位id
+    dataBackRepositoryList(parm) {
+      this.filterCondition.repositoryList = this.conversionData(parm.bigList,'repositoryId')
+      this.$emit('filterData', this.filterCondition)  
+    },
+    // 选择人员
+    dataBackOperatorList(parm) {
+      this.filterCondition.operatorList = this.conversionData(parm.samllList,'operatorId')
+      this.$emit('filterData', this.filterCondition)  
+    },
+    // 单据类型
+    dataBackOrderTypeList(parm) {
+      this.filterCondition.orderTypeList = this.conversionData(parm.bigList,'operatorId')
       this.$emit('filterData', this.filterCondition)
     },
     // 把数组转成数组对象

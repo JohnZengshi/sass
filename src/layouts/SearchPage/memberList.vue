@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- 表头搜索 -->
-        <filter-header :panelType="panelType" @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
+        <filter-header :serchKey="serchKey" :panelType="panelType" @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
         <!-- 表格主体 -->
         <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
             <report-detail ref="reportDetailWrap" :panelType="panelType" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow">
@@ -43,7 +43,7 @@ import {
 import {memberListBySearch} from 'Api/search'
 
 export default {
-  props: ["panelType"],
+  props: ["panelType","serchKey"],
   components: {
     ReportDetail,
     Cascade,
