@@ -137,7 +137,7 @@
       
       <div class="search-block t-center">
         <alone-drop-down-colums 
-            ref="stateWrap"
+            ref="peopleTypeWrap"
             :propsList="userTypeListConfig"
             titleData="人员类型"
             @dataBack="dataBackUserTypeList"
@@ -146,7 +146,7 @@
 
       <div class="search-block">
           <dropDownColums
-              ref="shopWrap"
+              ref="peopleWrap"
               :propsList="selectPersonnelConfig"
               :keyName="'operatorList'"
               titleData="选择人员"
@@ -704,13 +704,13 @@ export default {
     resetData () {
       // this.keyword = ''
       // this.$refs.moreWrap.reset()
-      // this.$refs.stateWrap.reset()
       // this.$refs.jewelryIdWrap.reset()
       // this.$refs.jeweIdWrap.reset()
       // this.$refs.colourIdWrap.reset()
       // this.$refs.productTypeIdWrap.reset()
-      // this.$refs.shopWrap.reset()
-      // this.$refs.storageLocationWrap.reset()
+      this.$refs.peopleTypeWrap.reset()
+      this.$refs.shopWrap.reset()
+      this.$refs.storageLocationWrap.reset()
       // this.$refs.littleBatchWrap.reset()
       this.$emit('resetData')
 
