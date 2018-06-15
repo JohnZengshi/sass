@@ -371,8 +371,8 @@ module.exports = {
         unit: '(元)',
         footerUnit: '',
         totalName : '',
-        childType : 'buy',
-        totalType : 'totalBuy' ,
+        childType : 'actualPrice',
+        totalType : 'totalActualPrice' ,
         allType : 'totalBuy',
         toFixed : false,
         countCut : 2
