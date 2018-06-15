@@ -881,6 +881,7 @@ export default {
     },
 
     sortListAct(val) {
+      debugger
       // 列表排序
       this.dataGridOptions.sortList = val;
       this.send();

@@ -59,7 +59,7 @@ module.exports = {
     },
     {
       id: '4',
-      text: '总件重',
+      text: '件重',
       width: '120',
       type: 'totalWeight',
       unit: '(g)',
@@ -244,7 +244,7 @@ module.exports = {
     },
     {
       id: '4s',
-      text: '总件重',
+      text: '件重',
       width: '140',
       type: 'totalWeight',
       unit: '(g)',
@@ -497,7 +497,7 @@ module.exports = {
     },
     {
       id: '42',
-      text: '总件重',
+      text: '件重',
       width: '160',
       type: 'totalWeight',
       unit: '(g)',
@@ -747,7 +747,7 @@ module.exports = {
     },
     {
       id: '42',
-      text: '总件重',
+      text: '件重',
       width: '160',
       type: 'totalWeight',
       unit: '(g)',

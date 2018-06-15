@@ -85,6 +85,7 @@
             }
           })
         }
+        debugger
         this.$emit('sortList', this.sortList)
       }
     },
@@ -169,9 +170,13 @@
         if(tab.text == '成本') {
           this.$set(this.sortList[0], 'cost', '1')
         }
+        debugger
         this.$set(tab, 'sort', '1')
-        this.$emit('sortList', this.sortList)
-        console.log('升序', this.sortList[0])
+        let copyList = []
+        for (let i in this.sortList[0]) {
+            copyList.push({[i]: this.sortList[0][i]})
+        }
+        this.$emit('sortList', copyList)
       },
       clickClassDown(tab) { // 点击分类降序
         if(tab.text == '条码号') {
@@ -204,9 +209,13 @@
         if(tab.text == '成本') {
           this.$set(this.sortList[0], 'cost', '2')
         }
+        debugger
         this.$set(tab, 'sort', '2')
-        this.$emit('sortList', this.sortList)
-        console.log('降序', this.sortList[0])
+        let copyList = []
+        for (let i in this.sortList[0]) {
+            copyList.push({[i]: this.sortList[0][i]})
+        }
+        this.$emit('sortList', copyList)
       }
     }
   }

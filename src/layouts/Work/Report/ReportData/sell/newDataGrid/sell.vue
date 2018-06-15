@@ -61,6 +61,7 @@ export default {
 	props : ['dataGridStorage','reportType','tabSwitch', 'positionSwitch','newList', 'isBuyBack'],
 	methods:{
     sortList (val) {
+        debugger
       //console.log(val)
       this.$emit('sortList', val)
     },
