@@ -4,50 +4,54 @@
   <div class="xj-report-table-container con-line" ref="tableContainer">
     <div>
       <!-- 销售 -->
-      <div class="tb-category" v-for="(caty, ind) in otherDatagrid" :index="resetIndex(ind)">
+      <div class="tb-category" v-if="otherDatagrid.length">
 
-        <div class="left-type-name-wrap" :style="getRightH(caty)">
+        <div class="left-type-name-wrap" :style="getbuyBackRightH(otherDatagrid)">
           <p>销售</p>
         </div>
 
-        <div class="right-type-inner-wrap">
-          <div v-for="(tb, index) in caty.productTypeList">
-            <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()">
-              <template v-for="(tab, indexGrid) in detailDataGridColumn">
-                
-                <div 
-                  class="tb-td category-td" 
-                  v-if="tab.text == '类型' && index1 == 0 && indexGrid == 0" 
-                  :style="tableCell(tab.width)">
-                  <i :style="sellTypeNameHT(tb)">{{filterName(tb[tab.childType])}}</i>
+          <div class="right-type-inner-wrap">
+            <div :index="resetIndex(ind)" v-for="(caty, ind) in otherDatagrid">
+              <div v-for="(tb, index) in caty.productTypeList">
+                <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()">
+                  <template v-for="(tab, indexGrid) in detailDataGridColumn">
+                    
+                    <div 
+                      class="tb-td category-td" 
+                      v-if="tab.text == '类型' && index == 0 && index1 == 0 && indexGrid == 0" 
+                      :style="tableCell(tab.width)">
+                      <i :style="sellTypeNameH(caty)">{{filterName(caty[tab.childType])}}</i>
 
+                    </div>
+
+                    <div 
+                      class="tb-td"
+                      v-else-if="tab.text == '产品类别'" 
+                      :class="{backLine:tab.childType != ''}" 
+                      :style="tableCell(tab.width)" 
+                      v-text="tab.childType == ''? getIndex() : tb[tab.childType]">
+                    </div>
+                    
+                    <div 
+                      class="tb-td" 
+                      v-else 
+                      :class="{backLine:tab.childType != ''}" 
+                      :style="tableCell(tab.width)" 
+                      v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
+                      
+                    </div>
+                  </template>
                 </div>
 
-                <div 
-                  class="tb-td"
-                  v-else-if="tab.text == '产品类别'" 
-                  :class="{backLine:tab.childType != ''}" 
-                  :style="tableCell(tab.width)" 
-                  v-text="tab.childType == ''? getIndex() : tb[tab.childType]">
-                </div>
-
-                <div 
-                  class="tb-td"
-                  v-else 
-                  :class="{backLine:tab.childType != ''}" 
-                  :style="tableCell(tab.width)" 
-                  v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
-                </div>
-
-              </template>
-            </div>
-            <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
-            <div class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
-              <!-- 类型小计 -->
-              <div class="tb-td" v-for="(tab,f) in detailDataGridColumnTwo" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : tb[tab.totalType]"></div>
+              </div>
+              <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
+              <div class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
+                <!-- 类型小计 -->
+                <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : caty[tab.totalType]"></div>
+              </div>
             </div>
           </div>
-        </div>
+
         
         <div class="total-num-wrap" v-if="!positionSwitch">
           <div>
@@ -62,11 +66,6 @@
 
       </div>
       
-
-
-
-
-
 
 
 
@@ -133,7 +132,7 @@
 
     </div>
   
-    <div v-if="isDate" class="no-data"></div>
+    <div v-if="!otherDatagrid.length && !buyBackDataList.length" class="no-data"></div>
     </div>
   </div>
 
@@ -168,6 +167,7 @@
       },
       'buyBackStorage':  function() {
         this.reduceAssignbuyBack()
+        this.cheackData()
       }
       // 'reportType': function (val) {
       //  //console.log(this.positionSwitch)
@@ -370,7 +370,6 @@
         if(this.dataGridStorage.productTypeList) {
           if(this.dataGridStorage.productTypeList[0].productSellTypeList) {
             this.otherDatagrid = this.dataGridStorage.productTypeList[0].productSellTypeList
-            console.log('小鸡',this.otherDatagrid)
           }
         }
       },
@@ -378,7 +377,6 @@
         if(this.buyBackStorage.productTypeList) {
           if(this.buyBackStorage.productTypeList[0].productSellTypeList) {
             this.buyBackDataList = this.buyBackStorage.productTypeList[0].productSellTypeList
-            console.log('小鸡--',this.buyBackDataList)
           }
         }
       }
@@ -488,7 +486,7 @@
   }
   
   .no-data {
-    height: 100%;
+    height: 565px;
     background: url(~static/img/space-page.png) center center no-repeat;
   }
   .left-type-name-wrap{
