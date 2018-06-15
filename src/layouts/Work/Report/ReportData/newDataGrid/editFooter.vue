@@ -12,7 +12,7 @@
       </template>
       <template v-esle>
 
-        <p class="bottom" v-if="f == 0">合计</p>
+        <p class="bottom m-t-10" v-if="f == 0">合计</p>
 
         <template v-else-if="f == 1">
           <p class="top tl">修改前</p>
@@ -123,6 +123,9 @@
       .tl{
         font-weight: normal;
         text-align: left;
+      }
+      .m-t-10{
+        margin-top: 10px;
       }
     }
   }
