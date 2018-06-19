@@ -105,6 +105,7 @@ export default {
             }
         },
         dataMigration () { // 数据合并
+            debugger
             let opeType = ''
             if (this.classType == 1) {
                 opeType = 2

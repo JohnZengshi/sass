@@ -55,7 +55,7 @@ module.exports = {
     		unit: '',
     		footerUnit: '',
     		totalName : '',
-    		childType : 'jewelryName',
+    		childType : 'className',
     		totalType : '' ,
     		allType : '',
             toFixed : false,
@@ -168,20 +168,20 @@ module.exports = {
 	
 	//智能分类
 	capacityClassify : [
-    	{ 
-    		id: '0',  //id 
-    		text: '序号', //头部title文字
-    		width:'30', //单元格宽
-    		type:'', //合计类型值
-    		unit: '', //头部单位补充文字
-    		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
-    		totalName : '合计',//底部合计 提示文字
-    		childType : '', //单元格类型
-    		totalType : 'no', //小计
-    		allType : 'allNum',//全计
-            toFixed : false, //是否进行小数点精确截取
-            countCut : 0 //小数点截取位数
-    	},
+    	// { 
+    	// 	id: '0',  //id 
+    	// 	text: '序号', //头部title文字
+    	// 	width:'30', //单元格宽
+    	// 	type:'', //合计类型值
+    	// 	unit: '', //头部单位补充文字
+    	// 	footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
+    	// 	totalName : '合计',//底部合计 提示文字
+    	// 	childType : '', //单元格类型
+    	// 	totalType : 'no', //小计
+    	// 	allType : 'allNum',//全计
+     //        toFixed : false, //是否进行小数点精确截取
+     //        countCut : 0 //小数点截取位数
+    	// },
     	{ 
     		id: '11',  
     		text: '回购类型',
@@ -333,20 +333,20 @@ module.exports = {
 	
 	//产品分类
 	productClassify : [
-    	{ 
-    		id: '0',  //id 
-    		text: '序号', //头部title文字
-    		width:'30', //单元格宽
-    		type:'', //合计类型值
-    		unit: '', //头部单位补充文字
-    		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
-    		totalName : '合计',//底部合计 提示文字
-    		childType : '', //单元格类型
-    		totalType : 'no', //小计
-    		allType : 'allNum',//全计
-            toFixed : false, //是否进行小数点精确截取
-            countCut : 0 //小数点截取位数
-    	},
+    	// { 
+    	// 	id: '0',  //id 
+    	// 	text: '序号', //头部title文字
+    	// 	width:'30', //单元格宽
+    	// 	type:'', //合计类型值
+    	// 	unit: '', //头部单位补充文字
+    	// 	footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
+    	// 	totalName : '合计',//底部合计 提示文字
+    	// 	childType : '', //单元格类型
+    	// 	totalType : 'no', //小计
+    	// 	allType : 'allNum',//全计
+     //        toFixed : false, //是否进行小数点精确截取
+     //        countCut : 0 //小数点截取位数
+    	// },
     	{ 
     		id: '11',  
     		text: '回购类型',

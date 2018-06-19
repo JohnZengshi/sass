@@ -465,7 +465,6 @@
         this.dataGridOptions.pageSize = 9999999
         seekStockProductList(this.dataGridOptions).then((res) => {
           this.dataGridOptions.pageSize = 15
-          debugger
           if(res.data.state == 200) {
             this.printData = res.data.data
             this.currentPrint()
@@ -482,7 +481,6 @@
 
       // 打印
       currentPrint () {
-        debugger
         switch (this.tabClassActive.index){
           case 0:
             this.$refs.detailTemplate.print();

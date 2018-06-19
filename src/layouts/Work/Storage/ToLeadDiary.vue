@@ -95,12 +95,10 @@ export default {
     methods: {
         handleSizeChange (val) {
             this.pageSize = val;
-            console.log(`每页 ${val} 条`);
         },
         handleCurrentChange (val) {
             this.currentPage = val;
             this.getList();
-            console.log(`当前页: ${val}`);
         },
         preciseSun: function (parm) { // 年
             if (parm) {
@@ -147,7 +145,6 @@ export default {
                 "pageSize": this.pageSize
             }
             seekDiary(options).then((response) => {
-                console.log(response.data)
                 if (response.data.state === 200) {
                     this.totalNum = response.data.data.totalNum
                     this.diaryList = response.data.data.dataList;

@@ -388,7 +388,7 @@
 								data.suffix + '</span>' :
 								'')
 							html += '</div>'
-							debugger
+							
 							lodopContaier.ADD_PRINT_HTM(data.top + "mm", data.left + "mm", this.width + 'mm', this.height + 'mm', html);
 						}
 					}

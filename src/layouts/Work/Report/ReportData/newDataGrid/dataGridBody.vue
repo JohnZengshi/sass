@@ -77,7 +77,6 @@
 
 <!--产品分类-->
 <div class="ui-table-container produc-line" ref="tableContainer" v-else-if="reportType == 3">
-	123123
 	<div>
 		<div class="tb-category" v-for="(caty,index) in dataGridStorage.dataList" :key="index">
 		  <template v-for="(tb, index) in caty.productTypeList">
@@ -131,21 +130,12 @@ export default {
 			this.tempArray = []
 			this.cheackData()
 			this.storageFormatDate()
-			//console.log(1111)
 			this.tabCellHeight()
-
-			console.log(this.tempArray)
-			console.log(this.detailDataGridColumn)
-			console.log(this.dataGridStorage)
-			console.log(this.tabCell)
-			console.log(this.reportType)
 		},
 		// 'reportType': function (val) {
-		// 	//console.log(this.positionSwitch)
 		// 	this.tabCellHeight()
 		// },
 		// 'positionSwitch': function (val) {
-		// 	//console.log(val)
 		// 	this.tabCellHeight()
 		// }
 	},

@@ -6,10 +6,12 @@ import App from './App'
 import router from './router'
 import store from './vuex'
 import axios from 'axios'
-
+// 自定义指令
+import directives from './base/mineDirective/elm'
 Vue.use(elementUI)
 Vue.use(resource)
 Vue.use(store)
+Vue.use(directives)
 // Vue.use(axios)
 /* eslint-disable no-new */
 let vue = new Vue({

@@ -1,7 +1,8 @@
-。<template>
+<template>
   <div class="down-menu-main">
     <span class="title-name" :class="titleInfo ? '' : 'select'" :style="specialStyle">
-      {{titleInfo}}<i v-show="!isSolid" class="iconfont icon-arrow-down drop-triangle" v-if="noChange"></i><i v-show="isSolid" class="iconfont icon-xiala drop-triangle"></i><i class="el-icon-circle-close" title="清除" @click="clearTitleInfo"
+      {{titleInfo}}
+      <i v-show="!isSolid" class="iconfont icon-arrow-down drop-triangle" v-if="noChange"></i><i v-show="isSolid" class="iconfont icon-xiala drop-triangle"></i><i class="el-icon-circle-close" title="清除" @click="clearTitleInfo"
       v-if="!noChange && !noClear"></i>
     </span>
     <ul class="drop-list">
@@ -36,8 +37,7 @@ export default {
     },
     itemClick (item, index) {
       this.noChange = false
-      console.log('选中', item)
-      this.actIndex = index,
+      this.actIndex = index
       this.$emit("changeData", item)
     }
   }

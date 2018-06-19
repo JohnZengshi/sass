@@ -54,7 +54,6 @@ export default {
       this.$emit('sortListAct', val)
     },
     lazyloadSend(val) {
-      debugger
       this.$emit('lazyloadSend', val)
     },
     tableSwitch(){

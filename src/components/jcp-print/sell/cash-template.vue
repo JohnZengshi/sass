@@ -179,7 +179,7 @@
 	
 	.print-box{
 		font-size: 12px;
-		width: 208mm;
+		width: 197mm;
 		margin: 0 auto;
 		padding: 20px;
 	}
