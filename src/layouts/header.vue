@@ -328,7 +328,7 @@ export default {
 		
 		.button {
         	margin-top: 16px;
-        	display: inline-block;
+        	// display: inline-block;
         	float: right;
         	
             .search {
