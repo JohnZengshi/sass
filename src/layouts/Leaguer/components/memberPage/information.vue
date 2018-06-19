@@ -10,7 +10,8 @@
 
                 <div class="item">
                     <span class="item-star item-label">姓名</span>
-                    <span>{{oldMemberInfo.username}}</span>
+                    <!-- <span>{{oldMemberInfo.username}}</span> -->
+                    <input type="text" :disabled="!isShopMan" maxlength="20" v-model="dataInfo.username" @blur="setUsername">
                 </div>
 
                 <div class="item">
@@ -45,15 +46,26 @@
                 </div>
                 <div class="item">
                     <span class="item-label">性别</span>
-                    <span>{{ dataInfo.sex == '3' ? '无': dataInfo.sex == '1'? '男':'女' }}</span>
-                    <!-- <el-radio-group v-model="dataInfo.sex" @change="setSex" :disabled="!isShopMan">
+                    <!-- <span>{{ dataInfo.sex == '3' ? '无': dataInfo.sex == '1'? '男':'女' }}</span> -->
+                    <el-radio-group v-model="dataInfo.sex" @change="setSex" :disabled="!isShopMan">
                         <el-radio :label="'1'">男</el-radio>
                         <el-radio :label="'2'">女</el-radio>
-                    </el-radio-group> -->
+                    </el-radio-group>
                 </div>
                 <div class="item">
                     <span class="item-label">生日</span>
-                    <span>{{ _formDataTimeYND(oldMemberInfo.birthday) ? _formDataTimeYND(oldMemberInfo.birthday) : '-'}}</span>
+                    <!-- <span>{{ _formDataTimeYND(oldMemberInfo.birthday) ? _formDataTimeYND(oldMemberInfo.birthday) : '-'}}</span> -->
+                    
+                    <!-- 日期控件 -->
+                    <el-date-picker
+                        v-model="dataInfo.birthday"
+                        type="date"
+                        placeholder="选择日期"
+                        :disabled="!isShopMan"
+                        format="yyyy年MM月dd日"
+                        value-format="yyyy-MM-dd"
+                        @change="setBirthday">
+                    </el-date-picker>
                 </div>
                 <div class="item">
                     <span class="item-label">微信号</span>
@@ -180,6 +192,9 @@
                     border: 1px solid #2993f8;
                     background-color: #f4f9ff;
                 }
+            }
+            .el-date-editor.el-input {
+                width: 172px;
             }
         }
     }
@@ -342,7 +357,9 @@ export default {
                 totalMoney: '',
                 signList: [],
             },
-            isShopMan:false
+            isShopMan:false,
+            // 生日
+            birthday:''
         }
     },
     props:['oldMemberInfo','shopId','memberId','memberInfo'],
@@ -385,11 +402,16 @@ export default {
                     orderList[index] = {orderNo:item.orderNum}
                 })
             }
+
+            // 生日的时间格式
+            // this.dataInfo.birthday = this.timeFormat(this.dataInfo.birthday)
+
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
                 orderList,
-                type
+                type,
+                birthday: this.birthday                
             })
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
@@ -465,6 +487,10 @@ export default {
                     orderList[index] = {orderNo:item.orderNum}
                 })
             }
+
+            // 生日的时间格式
+            this.dataInfo.birthday = this.timeFormat(this.dataInfo.birthday)
+
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
@@ -502,10 +528,16 @@ export default {
                     orderList[index] = {orderNo:item.orderNum}
                 })
             }
+
+            // 生日的时间格式
+            // this.dataInfo.birthday = this.timeFormat(this.dataInfo.birthday)
+
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
                 orderList,
+                birthday: this.birthday
+                
             })
             operateMemberUpdateBy(options).then(res => {
                 if(res.data.state === 200) {
@@ -520,9 +552,14 @@ export default {
         },
         // 修改性别
         setSex(){
+            // 生日的时间格式
+            // this.dataInfo.birthday = this.timeFormat(this.dataInfo.birthday)
+
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
+                birthday: this.birthday
+                
             })
             console.log(options)
             operateMemberUpdateBy(options).then(res => {
@@ -553,10 +590,16 @@ export default {
                     orderList[index] = {orderNo:item.orderNum}
                 })
             }
+
+            // 生日的时间格式
+            // this.dataInfo.birthday = this.timeFormat(this.dataInfo.birthday)
+
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
                 orderList,
+                birthday: this.birthday
+                
             })
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
@@ -578,10 +621,16 @@ export default {
                     orderList[index] = {orderNo:item.orderNum}
                 })
             }
+
+            // 生日的时间格式
+            // this.dataInfo.birthday = this.timeFormat(this.dataInfo.birthday)
+
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
-                orderList
+                orderList,
+                birthday: this.birthday
+                
             })
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
@@ -663,10 +712,14 @@ export default {
             })
             }
 
+            // 生日的时间格式
+
             let optionsdata = Object.assign({},this.dataInfo,{
                         memberId: this.memberId,
                         shopId: this.shopId,
                         orderList,
+                        birthday: this.birthday
+                        
                     })
 
                     operateMemberUpdateBy(optionsdata).then(res => {
@@ -683,6 +736,73 @@ export default {
                         }
                     })
         },
+        // 修改生日
+        setBirthday (val){
+            // this.dataInfo.birthday = val
+            this.birthday = this.timeFormat(val)
+
+            console.log(this.dataInfo.birthday)
+            let options = Object.assign({},this.dataInfo,{
+                memberId: this.memberId,
+                shopId: this.shopId,
+                birthday: this.timeFormat(val)
+            })
+            operateMemberUpdateBy(options).then(res => {
+                console.log(res.data.state)
+                if(res.data.state === 200) {
+
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: res.data.msg
+                    })
+               }
+            })
+        },
+        // 格式化日期
+        timeFormat (parm) {
+        
+            if(parm) {
+                let year = parm.substring(0, 4)
+                let month = parm.substring(5, 7)
+                let data = parm.substring(8, 10)
+                return year + month + data + '000000'
+            }
+        },
+        // 修改姓名
+        setUsername() {
+            console.log(this.dataInfo)
+            // 生日的时间格式
+            // this.dataInfo.birthday = this.timeFormat(this.dataInfo.birthday)
+
+            let options = Object.assign({},this.dataInfo,{
+                memberId: this.memberId,
+                shopId: this.shopId,
+                birthday: this.birthday
+            })
+            console.log(options)
+            operateMemberUpdateBy(options).then(res => {
+                console.log(res.data.state)
+                if(res.data.state === 200) {
+
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: res.data.msg
+                    })
+               }
+            })
+        },
+        // 格式化获取的时间
+        formatData(parm) {
+            
+            if(parm) {
+                let year = parm.substring(0, 4)
+                let month = parm.substring(4, 6)
+                let data = parm.substring(6, 8)
+                return year + '-' + month + '-' + data
+            }
+        },
         isChoseLeaderbymember(){
             this.$emit("isChoseLeaderbymember",true)
         }
@@ -692,6 +812,7 @@ export default {
             this.dataInfo = Object.assign(this.dataInfo,this.oldMemberInfo)
             this.actionType = this.oldMemberInfo.type
             this.leaderStr = this.getHead(this.dataInfo.principalList)
+            this.dataInfo.birthday = this.formatData(this.dataInfo.birthday)
         },
         memberInfo(val) {
              // 获取用户权限
