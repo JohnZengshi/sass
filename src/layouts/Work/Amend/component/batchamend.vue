@@ -500,7 +500,7 @@
   }
 
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
   .amend-popup-wrap1 {
     // 批量修改
     padding: 0 24px;
@@ -652,6 +652,8 @@
     }
   }
 
+</style>
+<style lang="scss">
   .multiSelectBox {
     // left: 760px !important;
     transform: translateX(160px);
@@ -699,56 +701,6 @@
         background-color: #2993F8;
       }
     }
-  }
-
-</style>
-<style lang="scss" scoped>
-  .flex {
-    display: -webkit-box;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-  }
-
-  .flex-v {
-    -webkit-box-orient: vertical;
-    -webkit-flex-direction: column;
-    -ms-flex-direction: column;
-    flex-direction: column;
-  }
-
-  .flex-r {
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-  }
-
-  .flex-1 {
-    -webkit-box-flex: 1;
-    -webkit-flex: 1;
-    -ms-flex: 1;
-    flex: 1;
-  }
-
-  .flex-align-center {
-    -webkit-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-  }
-
-  .flex-pack-center {
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-  }
-
-  .flex-pack-justify {
-    -webkit-box-pack: justify;
-    -webkit-justify-content: space-between;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
   }
 
 </style>
