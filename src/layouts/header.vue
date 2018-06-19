@@ -46,14 +46,14 @@
                   <i v-if="iconShow" class="iconfont icon-sousuo" @click="goSearchPage" title="搜索"></i>
                   <i v-else class="iconfont el-icon-circle-cross" @click="closeIcon" title="清除"></i>
                   <!-- 搜索的列表 begin -->
-                  <div v-if="isSearch" class="searchList">
+                  <div v-if="isSearch && searchText" class="searchList">
                     <!-- 商品 -->
                     <div class="commodity">
                         <h1>商品</h1>
                         <div class="commodityList">
                           <div class="commodityItem" v-if="productList.length == 0">未匹配到相关商品信息，查看<span @click.stop="openListDeta(0)">所有商品</span></div>
                           <div class="commodityItem" v-else v-for="(item,index) in productList" :key="index" @click.stop="openDialog(productList[index].productId)">
-                            <span class="gno">{{ item.barcode }}</span><span class="gnn">{{ item.jewelryName }}</span><span class="slocation fr">{{ item.locationName }}</span>
+                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.barcode)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn">{{ item.jewelryName }}</span><span class="slocation fr">{{ item.locationName }}</span>
                           </div>
                           <div class="commodityItem" v-if="productList.length > 5" @click.stop="openListDeta(0)">
                             <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多商品</span><span class="more_num">({{productTotalNum}})</span>
@@ -66,7 +66,7 @@
                         <div class="receiptsList">
                           <div class="receiptsItem" v-if="orderList.length == 0">未匹配到相关单据信息，查看<span @click.stop="openListDeta(1,true)">所有单据</span></div>
                           <div class="receiptsItem" v-else @click.stop="openDocument" v-for="(item,index) in orderList" :key="index">
-                            <span class="gno">{{ item.orderNum }}</span><span class="state">{{ getOrderType(item.orderType) }}</span><span class="slocation fr">{{ item.createName }}</span>
+                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.orderNum)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="state">{{ getOrderType(item.orderType) }}</span><span class="slocation fr">{{ item.createName }}</span>
                           </div>
                           <div class="receiptsItem" v-if="orderList.length > 5" @click.stop="openListDeta(1)">
                             <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多单据</span><span class="more_num">({{orderTotalNum}})</span>
@@ -79,7 +79,7 @@
                         <div class="membersList">
                           <div class="membersItem" v-if="memberListData.length == 0">未匹配到相关会员信息，查看<span @click.stop="openListDeta(2,true)">所有会员</span></div>
                           <div class="membersItem" v-else @click.stop="openMember(item)" v-for="(item,index) in memberListData" :key="index">
-                            <span class="gno">{{item.memberNum}}</span><span class="gnn">{{item.memberName}}</span><span class="slocation fr">{{item.shopName}}</span>
+                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.memberNum)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn">{{item.memberName}}</span><span class="slocation fr">{{item.shopName}}</span>
                             
                           </div>
                           <div class="membersItem" v-if="memberListData.length > 5" @click.stop="openListDeta(2)">
@@ -1272,7 +1272,13 @@ export default {
           break;
       }
     },
-    // 单据详情
+    // 截取keyword
+    filterkeyWord (parm) {
+      let datas = parm.split(this.searchText)
+      datas.splice(1, 0, this.searchText)
+      console.log(parm)
+      return datas
+    },
     
   }
 };
@@ -1624,7 +1630,7 @@ export default {
 
   width: 420px;
   // height: 500px;
-  padding: 20px;
+  padding: 20px 0;
 
   border: 1px solid #d6d6d6;
   border-radius: 4px;
@@ -1637,6 +1643,8 @@ export default {
       width: 100%;
       height: 24px;
       padding-bottom: 10px;
+      padding-left: 20px;
+      padding-right: 20px;
 
       font-size: 14px;
       font-weight: bold;
@@ -1658,19 +1666,21 @@ export default {
         font-size: 14px;
         color: #999;
         line-height: 42px;
+        padding: 0 20px;
 
         span {
           color: #2993f8;
           cursor: pointer;
         }
-        .gno {
+        .gno span{
           color: #333;
         }
         .state {
           display: inline-block;
 
-          width: 40px;
+          // width: 40px;
           height: 20px;
+          padding: 0 5px;
           margin: 0 10px;
 
           font-size: 12px;
@@ -1696,6 +1706,20 @@ export default {
         }
         .more_num {
           color: #999;
+        }
+
+        &:hover {
+          .gno span{
+            color: #2993f8;
+          }
+          .gnn {
+            margin: 0 10px;
+            color: #2993f8;
+          }
+          .slocation {
+            color: #2993f8;
+          }
+          background: #f2f2f2;
         }
       }
     }
@@ -1729,6 +1753,9 @@ export default {
 .serachList .el-dialog__body .page-wrap {
   height: auto;
   overflow-y: visible;
+}
+.textIskey {
+  color: #ff6e88 !important;
 }
 </style>
  

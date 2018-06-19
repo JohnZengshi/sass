@@ -752,10 +752,12 @@ export default {
       this.$emit('seekProduct', options)
     },
     storageLocation (parm) {
-      this.filterCondition.storageId = parm.bigList
-      this.$emit('filterData', this.filterCondition)
-      console.log(parm,this.panelType)
-      console.log('diaoyong')
+      if(this.panelType === 0) {
+        this.filterCondition.repositoryList = this.conversionData(parm.bigList,'repositoryId')
+        this.$emit('filterData', this.filterCondition)
+      }
+      // this.filterCondition.storageId = parm.bigList
+      // this.$emit('filterData', this.filterCondition)
       if(this.panelType === 1) {
         this.filterCondition.repositoryList = this.conversionData(parm.bigList,'repositoryId')
         this.$emit('filterData', this.filterCondition)
@@ -889,7 +891,7 @@ export default {
 
     },
     dataBack (parm) {
-      this.filterCondition[parm.keyName] = parm.samllList
+      this.filterCondition[parm.keyName+'List'] = this.conversionData(parm.samllList,parm.keyName)
       this.$emit('filterData', this.filterCondition)
     },
     dataBackProductTypeId (parm) { // 产品类别过滤

@@ -304,48 +304,48 @@ export default {
     });
 
     // 初始化所有的数据
-    if(this.showAll) {
-      memberListBySearch({}).then(res => {
-          if (res.data.state == 200) {
-            this.allData = res.data.data;
-            let datas = res.data.data.orderList;
-            for (let i of datas) {
-              // 属性
-              i.productClass = productTpyeState(i.productClass);
-              // 状态
-              i.status = newProductDetailStatus(i.status);
-              // 单据类型
-              i.orderType = statusModuleType(i.orderType)
-              // 制单状态
-              i.auditStatus = documentsState(i.auditStatus)
-              // 制单时间
-              i.createTime = this._formDataTimeYND(i.createTime)
-              // 会员类型
-              i.memberType = memberTypeState(i.memberType)
-              // 会员级别
-              i.grade = memberGradeState(i.grade)
-              // 跟进类型
-              i.followType = memberFollowTypeState(i.followType)
-              // 会员来源
-              i.memberOrigin = memberOriginState(i.memberOrigin)
-               // 注册时间
-            i.createTime = this._formDataTimeYND(i.createTime)
-            }
-            this.addData = datas;
-            this.dataGridStorage = datas;
-            this.loading = false;
-          } else {
-            this.$message({
-              type: "error",
-              message: res.data.msg
-            });
-          }
-          this.loading = false;
-        });
-    } else {
-      this.seekProduct(this.serchKey)
-    }
+    // if(this.showAll) {
+    //   memberListBySearch({}).then(res => {
+    //       if (res.data.state == 200) {
+    //         this.allData = res.data.data;
+    //         let datas = res.data.data.orderList;
+    //         for (let i of datas) {
+    //           // 属性
+    //           i.productClass = productTpyeState(i.productClass);
+    //           // 状态
+    //           i.status = newProductDetailStatus(i.status);
+    //           // 单据类型
+    //           i.orderType = statusModuleType(i.orderType)
+    //           // 制单状态
+    //           i.auditStatus = documentsState(i.auditStatus)
+    //           // 制单时间
+    //           i.createTime = this._formDataTimeYND(i.createTime)
+    //           // 会员类型
+    //           i.memberType = memberTypeState(i.memberType)
+    //           // 会员级别
+    //           i.grade = memberGradeState(i.grade)
+    //           // 跟进类型
+    //           i.followType = memberFollowTypeState(i.followType)
+    //           // 会员来源
+    //           i.memberOrigin = memberOriginState(i.memberOrigin)
+    //            // 注册时间
+    //         i.createTime = this._formDataTimeYND(i.createTime)
+    //         }
+    //         this.addData = datas;
+    //         this.dataGridStorage = datas;
+    //         this.loading = false;
+    //       } else {
+    //         this.$message({
+    //           type: "error",
+    //           message: res.data.msg
+    //         });
+    //       }
+    //       this.loading = false;
+    //     });
+    // } else {
+    // }
 
+      this.seekProduct(this.serchKey || {})
   },
   watch: {
     "printSelectDate.storage": function() {
@@ -487,8 +487,8 @@ export default {
         barcode.barcode.push(i.barcode);
       }
       memberListBySearch(
-        // Object.assign(parm, barcode, { page: "1", pageSize: "30" })
-        Object.assign(parm)
+        Object.assign(parm, { page: "1", pageSize: "30" })
+        // Object.assign(parm)
       ).then(res => {
         if (res.data.state == 200) {
           this.allData = res.data.data;

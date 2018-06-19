@@ -303,38 +303,38 @@ export default {
       fieldType: "simple"
     });
 
-    if(this.showAll) {
-      orderListBySearch({}).then(res => {
-          if (res.data.state == 200) {
-            this.allData = res.data.data;
-            let datas = res.data.data.orderList;
-            for (let i of datas) {
-              // 属性
-              i.productClass = productTpyeState(i.productClass);
-              // 状态
-              i.status = newProductDetailStatus(i.status);
-              // 单据类型
-              i.orderType = statusModuleType(i.orderType)
-              // 制单状态
-              i.auditStatus = documentsState(i.auditStatus)
-              // 制单时间
-              i.createTime = this._formDataTimeYND(i.createTime)
-              //
-            }
-            this.addData = datas;
-            this.dataGridStorage = datas;
-            this.loading = false;
-          } else {
-            this.$message({
-              type: "error",
-              message: res.data.msg
-            });
-          }
-          this.loading = false;
-        });
-    } else {
-      this.seekProduct(this.serchKey)
-    }
+    // if(this.showAll) {
+    //   orderListBySearch({}).then(res => {
+    //       if (res.data.state == 200) {
+    //         this.allData = res.data.data;
+    //         let datas = res.data.data.orderList;
+    //         for (let i of datas) {
+    //           // 属性
+    //           i.productClass = productTpyeState(i.productClass);
+    //           // 状态
+    //           i.status = newProductDetailStatus(i.status);
+    //           // 单据类型
+    //           i.orderType = statusModuleType(i.orderType)
+    //           // 制单状态
+    //           i.auditStatus = documentsState(i.auditStatus)
+    //           // 制单时间
+    //           i.createTime = this._formDataTimeYND(i.createTime)
+    //           //
+    //         }
+    //         this.addData = datas;
+    //         this.dataGridStorage = datas;
+    //         this.loading = false;
+    //       } else {
+    //         this.$message({
+    //           type: "error",
+    //           message: res.data.msg
+    //         });
+    //       }
+    //       this.loading = false;
+    //     });
+    // } else {
+    // }
+      this.seekProduct(this.serchKey || {})
 
   },
   watch: {
