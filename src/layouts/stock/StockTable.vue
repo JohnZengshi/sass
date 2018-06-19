@@ -1261,14 +1261,17 @@ export default {
     // 懒加载
     sendlayLoad() {
       //初始化数据
-      this.dataGridOptions.pageSize += 15;
+      this.loading = true
+      // this.dataGridOptions.pageSize = 0;
       seekStockProductList(this.dataGridOptions).then(
         res => {
           if (res.data.state == 200) {
+            this.dataGridOptions.page += 1
             console.log("第一次加载数据:", res.data.data);
             this.dataGridStorage = res.data.data;
             this.loading = false;
           }
+          this.loading = false
         },
         res => {}
       );
