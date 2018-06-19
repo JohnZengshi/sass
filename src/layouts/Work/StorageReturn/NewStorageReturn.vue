@@ -2062,6 +2062,7 @@ export default {
           break;
       }
       this.send();
+      
     }
   }
 };
