@@ -11,7 +11,7 @@
                 <div class="item">
                     <span class="item-star item-label">姓名</span>
                     <!-- <span>{{oldMemberInfo.username}}</span> -->
-                    <input type="text" :disabled="!isShopMan" maxlength="20" v-model="dataInfo.username" @blur="setUsername">
+                    <input type="text" :disabled="!isShopMan" maxlength="4" v-model="dataInfo.username" @blur="setUsername">
                 </div>
 
                 <div class="item">
