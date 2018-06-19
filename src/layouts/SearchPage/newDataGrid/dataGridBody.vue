@@ -82,7 +82,7 @@ export default {
 	},
 	methods:{
 		openDetails(index) {
-			this.$emit("openDialog",this.dataGridStorage[index].productId || this.dataGridStorage[index].orderNum)
+			this.$emit("openDialog",this.dataGridStorage[index].productId || this.dataGridStorage[index].orderNum || this.dataGridStorage[index])
 		},
     filterChange (Index) {
       if (this.printNum) {

@@ -57,6 +57,13 @@
           </div>
         </el-dialog>
 
+        <!-- 会员弹窗 -->
+        <!-- <member-info
+          @closeReturn="closeEditReturn" 
+          :memberId="memberId"
+          :shopId="shopId"
+          :memberInfoFlag="editLeaguer">
+        </member-info> -->
     </div>
 </template>
 <script>
@@ -70,6 +77,9 @@ let configData = require("./config/dataGridConfig");
 
 import { homepageSearch, productLogRecord,productStatusInfo } from 'Api/search'
 import { seekCommodityDetails } from "Api/commonality/seek"
+
+// 导入会员的弹窗
+import memberInfo from '../../Leaguer/components/memberInfo'
 
 export default {
   data() {
@@ -180,6 +190,10 @@ export default {
       locationName: '',
       productClass: '',
 
+      memberId:'',
+      shopId:'',
+      editLeaguer:false
+
     };
   },
   components: {
@@ -188,7 +202,8 @@ export default {
     DataEditBody,
     DataGridHeader,
     DataEditFooter,
-    stepsPath
+    stepsPath,
+    memberInfo
   },
   watch: {
     reportType: function() {
@@ -216,6 +231,11 @@ export default {
     "panelType"
   ],
   methods: {
+    closeEditReturn (val) {
+      this.editLeaguer = val.status
+      // this.memberAllList()
+      // this.memberTotalNum()
+    },
     sortList(val) {
       this.$emit("sortListAct", val);
     },
@@ -320,9 +340,9 @@ export default {
       }
 
       if(this.panelType == 2) {
-        this.$emit('close')
-
-        
+        this.$emit('openMemberByList',parm)
+        // this.$emit('close')
+        return
       }
 
       this.commodityDetails(parm)

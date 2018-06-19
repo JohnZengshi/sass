@@ -199,7 +199,7 @@
       <div class="search-block t-center">
         <alone-drop-down-colums 
             ref="storageLocationWrap"
-            :propsList="repositoryList"
+            :propsList="shopDataList"
             :allName="'全部'"
             titleData="店铺名称"
             @dataBack="dataBackShopidList"

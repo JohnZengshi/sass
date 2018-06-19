@@ -330,7 +330,11 @@ export default {
     //     });
     // } else {
     // }
-      this.seekProduct(this.serchKey || {})
+      if(this.showAll) {
+        this.seekProduct({})
+      } else {
+        this.seekProduct(this.serchKey || {})
+      }
 
 
   },

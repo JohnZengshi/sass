@@ -4,7 +4,7 @@
         <filter-header :serchKey="serchKey" :panelType="panelType" @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
         <!-- 表格主体 -->
         <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
-            <report-detail ref="reportDetailWrap" :panelType="panelType" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow">
+            <report-detail ref="reportDetailWrap" :panelType="panelType" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow" @close="close" @openMemberByList="openMemberByList">
             </report-detail>
         </div>
     </div>
@@ -345,7 +345,11 @@ export default {
     // } else {
     // }
 
-      this.seekProduct(this.serchKey || {})
+      if(this.showAll) {
+        this.seekProduct({})
+      } else {
+        this.seekProduct(this.serchKey || {})
+      }
   },
   watch: {
     "printSelectDate.storage": function() {
@@ -455,6 +459,12 @@ export default {
     // }
   },
   methods: {
+    close() {
+      this.$emit('close',false)
+    },
+    openMemberByList(parm) {
+      this.$emit('openMemberByList',parm)
+    },
     resetData() {
       this.filterCondition = {
         keyWord: "",
@@ -492,9 +502,9 @@ export default {
       ).then(res => {
         if (res.data.state == 200) {
           this.allData = res.data.data;
-          let datas = res.data.data.dataList;
+          let datas = res.data.data.memberList
           for (let i of datas) {
-              // 属性
+              // // 属性
               i.productClass = productTpyeState(i.productClass);
               // 状态
               i.status = newProductDetailStatus(i.status);
@@ -508,6 +518,8 @@ export default {
               i.memberOrigin = memberOriginState(i.memberOrigin)
                // 注册时间
               i.createTime = this._formDataTimeYND(i.createTime)
+              // 负责人
+              i.principalList = this.getPrincipalName(i.principalList)
           }
           this.addData = datas;
           this.dataGridStorage = datas;
@@ -536,12 +548,12 @@ export default {
       }
       this.loading = true;
       memberListBySearch(
-        Object.assign(this.filterCondition, barcode, this.paging, {})
+        Object.assign(this.filterCondition, this.paging, {})
       ).then(res => {
         if (res.data.state == 200) {
           this.paging.page += 1;
           this.allData = res.data.data;
-          let datas = res.data.data.dataList;
+          let datas = res.data.data.memberList;
           this.totalNum = res.data.data.totalNum;
           for (let i of datas) {
             // 属性
@@ -558,6 +570,8 @@ export default {
             i.memberOrigin = memberOriginState(i.memberOrigin)
             // 注册时间
             i.createTime = this._formDataTimeYND(i.createTime)
+            // 负责人
+            i.principalList = this.getPrincipalName(i.principalList)
           }
           this.dataGridStorage.push(...datas);
           this.loading = false;
@@ -993,7 +1007,14 @@ export default {
     formatDate(d) {
       return d < 10 ? "0" + d : d + "";
     },
-
+    // 负责人
+    getPrincipalName(data) {
+      let arr = []
+      data.forEach(item => {
+        arr.push(item.principalName)
+      })
+      return arr.join(',')
+    },
     // send() {
     //   this.loading = true;
     //   seekGetPrintLabelList(this.dataGridOptions).then((res) => {

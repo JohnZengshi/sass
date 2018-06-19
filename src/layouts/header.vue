@@ -137,7 +137,7 @@
 			  </div>
         <!-- tab栏切换的内容 -->
         <div class="page-wrap">
-				  <component :showAll="showAll" :is="panel" :panelType="panelType" :serchKey="searchText" @close="close"></component>
+				  <component :showAll="showAll" :is="panel" :panelType="panelType" :serchKey="searchText" @close="close" @openMemberByList="openMemberByList"></component>
 			  </div>
         
       </el-dialog>
@@ -381,6 +381,10 @@ export default {
     }
   },
   methods: {
+    openMemberByList(parm) {
+      this.editLeaguer = true
+      
+    },
     openMember (item) {
       this.editLeaguer = true
       this.memberId = item.memberId
