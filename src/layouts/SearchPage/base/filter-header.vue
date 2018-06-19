@@ -741,7 +741,7 @@ export default {
     batchAddByOrderNum () {
       if (!this.keyword) {
         this.$message({
-          message: '请输入正确的条码号',
+          message: '请输入关键字',
           type: 'warning'
         })
         return

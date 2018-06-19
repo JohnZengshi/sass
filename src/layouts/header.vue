@@ -382,22 +382,20 @@ export default {
   },
   methods: {
     openMemberByList(parm) {
+      this.memberId = parm.memberId
+      this.shopId = parm.shopId
       this.editLeaguer = true
-      
     },
     openMember (item) {
-      this.editLeaguer = true
       this.memberId = item.memberId
       this.shopId = item.shopId
-      console.log('会员数据',item)
+      this.editLeaguer = true
     },
     openDocument() {
       this.$router.push({path:'/work/sell'})
     },
     closeEditReturn (val) {
       this.editLeaguer = val.status
-      // this.memberAllList()
-      // this.memberTotalNum()
     },
     close(parm) {
       console.log('点击关闭',parm)
