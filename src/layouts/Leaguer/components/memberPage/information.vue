@@ -95,7 +95,7 @@
                         <i v-if="isShopMan" @click.stop="delLabel(item, index)" class="iconfont icon-guanbi-copy"></i>
                         {{item.signName}}
                     </div>
-                    <input @blur="followCreateSign" :disabled="!isShopMan" v-model="signName" type="text" placeholder="添加标签" maxlength="6" class="bq-add fl" />
+                    <input @blur="followCreateSign" :disabled="!isShopMan" v-model="signName" type="text" placeholder="添加标签" maxlength="8" class="bq-add fl" />
                 </div>
             </div>
         </div>
@@ -660,10 +660,10 @@ export default {
         // 修改标签
         followCreateSign () { // 创建标签
             // 创建标签判断
-            if(this.dataInfo.signList.length > 7) {
+            if(this.dataInfo.signList.length > 9) {
                 this.$message({
                     type:'warning',
-                    message:'标签上限为八个'
+                    message:'标签上限为十个'
                 })
                 return
             }
@@ -690,6 +690,7 @@ export default {
                         memberId: this.memberId,
                         shopId: this.shopId,
                         orderList,
+                        birthday:this.birthday
                     })
 
                     operateMemberUpdateBy(optionsdata).then(res => {
