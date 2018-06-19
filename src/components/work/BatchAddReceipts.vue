@@ -133,13 +133,13 @@
             </DropDownMenu>
           </div>
           <!-- 所在位置 -->
-          <div class="drop-block">
+          <!-- <div class="drop-block"> -->
             <!-- <checkboxDropDown ref="shopWrap" :propsList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
             </checkboxDropDown> -->
-            <multipleSlesct ref="shopWrap" :leftList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
-            </multipleSlesct>
+            <!-- <multipleSlesct ref="shopWrap" :leftList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
+            </multipleSlesct> -->
             <!-- <multipleSlesct></multipleSlesct> -->
-          </div>
+          <!-- </div> -->
           <!-- <div class="drop-block">
                         <DropDownMenu
                             titleName="所在位置"
