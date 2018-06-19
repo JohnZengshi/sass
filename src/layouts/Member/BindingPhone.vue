@@ -38,10 +38,7 @@ export default {
                 phone: this.phones,
                 type: 'GET_LOGIN_CODE'
             }
-            console.log(data);
             getVcCode(data).then((res) => {
-                console.log("获取验证码")
-                console.log(res);
                 if (res.data.state === 200) { // 通过得到验证码
                     console.log(res);
                     _self.autoCode = res.data.msg + '';
@@ -50,7 +47,6 @@ export default {
                 }
             }, (err) => {
                 _self.autoCode = '0'
-                console.log(err);
             })
         },
         confirm () { // 确定
@@ -62,9 +58,6 @@ export default {
                 "type": JSON.parse(sessionStorage.getItem("uid")).type // 1:qq登录 2:微信登录
             }
             validateCode(data).then((response) => {
-                console.log("绑定手机号");
-                console.log(data);
-                console.log(response);
                 // 本地存储
                 sessionStorage.setItem("id", response.data.data.id)
                 sessionStorage.setItem("sig", response.data.data.sig)

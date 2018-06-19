@@ -119,14 +119,11 @@ export default {
 		  if( this.dataType != ''){
         this.send()
       }
-		  // console.log('watch', this.dataType)
 		}
 	},
 	props: ['dataType','shopId'],
 	
 	created(){
-      console.log('created', this.dataType)
-      console.log(this.dataType)
 	    if( this.dataType != ''){
         this.send()
       }
@@ -184,7 +181,6 @@ export default {
 	      }
 	      seekDataStatistics(options).then((res) => {
 	        let temp = this.tempData[1]
-          console.log(res)
 	        if( res.body.state === 200){
             if (res.data.data.dataList[0].totalPrice > 10000) {
               res.data.data.dataList[0].totalPrice = (res.data.data.dataList[0].totalPrice / 10000).toFixed(2)
@@ -192,7 +188,6 @@ export default {
             } else {
               this.tempData[1].isUnit = false
             }
-            //console.log(res.data.data.dataList[0])
             this.stopwatch(function(){
                 _assign( temp, res.data.data.dataList[0], { loading :false})
             })
@@ -225,7 +220,6 @@ export default {
 	      }
 	      seekDataStatistics(options).then((res) => {
 	        let temp = this.tempData[0]
-          console.log(res)
 	        if( res.body.state === 200){
               if (res.data.data.dataList[0].totalPrice > 10000) {
                 res.data.data.dataList[0].totalPrice = (res.data.data.dataList[0].totalPrice / 10000).toFixed(2)
@@ -426,7 +420,6 @@ export default {
             newDate.setDate( taday.getDate() + day )
             let Year = newDate.getFullYear()
             let month = newDate.getMonth()+1
-            //console.log((new Date()).getDate())
             let Day = newDate.getDate()
             let realTime = type ? '235959' : '000000'
             let newTime = Year +''+ ( month < 10 ? ('0' + month) : month ) + ( Day < 10 ? ('0' + Day ) : Day ) + realTime
@@ -453,7 +446,6 @@ export default {
 	mounted(){
     let self = this
 			this.timeOut = setTimeout(()=>{
-        // console.log(self.dataType)
 				if (self.dataType == 2) {
           self.tempData[2].title = '本月收货数据'
         } else {

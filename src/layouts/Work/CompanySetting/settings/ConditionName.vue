@@ -77,6 +77,7 @@
                     <marge-popup
                         classType='1'
                         :startId='startId'
+                        :startName="startName"
                         :itemId='itemId'
                         @margeBack="margeInfoBack"
                         @openDialog="openDialog"
@@ -110,6 +111,7 @@ export default {
             checked:false,
             successDialog: false,
             startId: '', // 交换的id
+            startName: '', // 交换的id的名字
             margeDialog: false,
             isLoading: true,
             type: null,
@@ -256,6 +258,7 @@ export default {
             if (val.type == 10) {
                 this.margeDialog = true
                 this.startId = val.operateId
+                this.startName = val.operateName
             }
         },
         operateItem (element, item, index) { // 修改操作
