@@ -51,7 +51,7 @@ import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
 
 
 export default {
-  props: ["panelType","serchKey"],
+  props: ["panelType","serchKey","showAll"],
   components: {
     ReportDetail,
     Cascade,
