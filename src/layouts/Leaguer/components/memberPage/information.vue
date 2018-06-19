@@ -195,6 +195,9 @@
             }
             .el-date-editor.el-input {
                 width: 172px;
+                .el-input__icon {
+                    display: none;
+                }
             }
         }
     }
