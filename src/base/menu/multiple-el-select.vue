@@ -6,8 +6,16 @@
     </div>
     <div class="list-box">
       <div class="content">
+        <ul v-show="index == 1" v-for="(item,index) in newlist" class="list-middle">
+          <el-checkbox-group>
+            <li @mouseover="selItem(items, index)" v-show="items.parentId == 1" v-for="(items, index) in item">
+              <el-checkbox :indeterminate="false" :label="items" :style="filterStyle(items.id)" :class="{active: true}" style="font-size: 14px;">{{items.name}}</el-checkbox>
+            </li>
+          </el-checkbox-group>
+        </ul>
+        <!-- --------------------------------------- -->
         <!-- 选择器最左边部分 -->
-        <ul class="list-left">
+        <!-- <ul class="list-left">
           <el-checkbox-group v-if="allName" v-model="allChecked">
             <li @mouseover="selAllItem([], 0)">
               <el-checkbox :indeterminate="false" :label="'allId'" :class="{active: allName[0]}" style="font-size: 14px;">{{allName}}</el-checkbox>
@@ -15,17 +23,10 @@
           </el-checkbox-group>
           <el-checkbox-group v-model="leftIdList" @change="handleCheckedCitiesChange">
             <li @mouseover="selLeftItem(item, index)" v-for="(item, index) in leftList">
-              <ul>
-                <el-checkbox :indeterminate="false" :label="item" :style="filterStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
-                <el-checkbox-group class="list-middle" v-model="middleIdList[item.id]">
-                  <li v-for="(item,index) in item.childrenList">
-                    <el-checkbox :label="item">{{item.name}}</el-checkbox>
-                  </li>
-                </el-checkbox-group>
-              </ul>
+              <el-checkbox :indeterminate="false" :label="item" :style="filterStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
             </li>
           </el-checkbox-group>
-        </ul>
+        </ul> -->
         <!-- 选择器中间部分 -->
         <!-- <ul v-show="middleList && middleList.length > 0" class="list-middle">
           <el-checkbox-group v-model="middleIdList" @change="changeMiddleId">
@@ -73,7 +74,9 @@
 
         leftIndex: null,
         rightIndex: null,
-        operateId: ''
+        operateId: '',
+        // ------------------------------
+        newlist: []
       }
     },
     props: [
@@ -85,6 +88,29 @@
     created() {
       // console.log(123)
       // this.leftList = this.propsList;
+      // console.log(this.leftList)
+      function getList(list, num, newlist) {
+        if (!newlist[num - 1]) {
+          newlist[num - 1] = [];
+        }
+        list.forEach((val, index) => {
+          // console.log("第" + num + "列：" + val.name);
+          newlist[num - 1].push(val);
+          if (val.childrenList) {
+            let childrenListNum = num;
+            childrenListNum++;
+            getList(val.childrenList, childrenListNum, newlist)
+          } else {
+            // console.log("最大层数为：" + num)
+          }
+        })
+        return newlist
+      }
+      getList(this.leftList, 1, this.newlist)
+      console.log(this.newlist)
+      this.newlist[0].forEach((val,index)=>{
+        val.isShow = true;
+      })
     },
     watch: {
       // 全选或全不选
@@ -139,26 +165,26 @@
       middleIdList: {
         handler(val, oldValue) {
           // console.log(val)
-          this.leftList.forEach((v,index)=>{
-              let childNum = v.childrenList.length;
-              // console.log(v.id+"选中项的长度"+val[v.id].length)
-              // console.log(v.id+"总长度"+childNum)
-              // console.log("--------------------")
-              if(val[v.id].length == childNum){
-                // console.log(v.id+"全选了")
-                if(this.leftIdList.indexOf(v) < 0){
-                  this.leftIdList.push(v);
-                }
-                // console.log(this.leftIdList)
-                // console.log("--------------------")
-              }else{
-                // console.log(v.id+"没全选")
-                // console.log(v.id+"在leftIdlist的位置"+this.leftIdList.indexOf(v))
-                // console.log("--------------------")
-                if(this.leftIdList.indexOf(v) >= 0){
-                  this.leftIdList.splice(this.leftIdList.indexOf(v),1)
-                }
+          this.leftList.forEach((v, index) => {
+            let childNum = v.childrenList.length;
+            // console.log(v.id+"选中项的长度"+val[v.id].length)
+            // console.log(v.id+"总长度"+childNum)
+            // console.log("--------------------")
+            if (val[v.id].length == childNum) {
+              // console.log(v.id+"全选了")
+              if (this.leftIdList.indexOf(v) < 0) {
+                this.leftIdList.push(v);
               }
+              // console.log(this.leftIdList)
+              // console.log("--------------------")
+            } else {
+              // console.log(v.id+"没全选")
+              // console.log(v.id+"在leftIdlist的位置"+this.leftIdList.indexOf(v))
+              // console.log("--------------------")
+              if (this.leftIdList.indexOf(v) >= 0) {
+                this.leftIdList.splice(this.leftIdList.indexOf(v), 1)
+              }
+            }
           })
         },
         deep: true
@@ -175,12 +201,20 @@
         return datas
       },
       filterSamllStyle(parm) {
-        this.middleIdList.includes(parm)
+        // this.middleIdList.includes(parm)
       },
       handleCheckedCitiesChange(parm) {
         //   console.log(123)
       },
       changeMiddleId(parm) {},
+      selItem(item, index){
+        let parentId = item.id;
+        if(item.childrenList){
+          item.childrenList.forEach((val,index)=>{
+            val.parentId = parentId;
+          })
+        }
+      },
       selAllItem() {
         this.middleList = [];
         this.rightList = [];
