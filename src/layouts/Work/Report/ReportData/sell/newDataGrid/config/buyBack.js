@@ -494,7 +494,7 @@ module.exports = {
             childType : 'depreciationDiscount',
             // totalType : 'totalDiscount' ,
             // totalType : 'totaldepreciationDiscount' ,
-            totalType : '' ,
+            totalType : 'totaldepreciationDiscount' ,
             allType : '',
             toFixed : false,
             countCut : 0

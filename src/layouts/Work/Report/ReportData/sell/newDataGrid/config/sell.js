@@ -910,7 +910,7 @@ module.exports = {
     {
       id: '319',
       text: '成本',
-      width: '180',
+      width: '140',
       type: 'totalCost',
       unit: '(元)',
       footerUnit: '',
@@ -924,7 +924,7 @@ module.exports = {
     {
       id: 'g811',
       text: '毛利',
-      width: '100',
+      width: '140',
       type: 'totalMargin',
       unit: '(元)',
       footerUnit: '',
