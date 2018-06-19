@@ -1076,6 +1076,7 @@ export default {
     searchType(command) {
       //单击搜索类型切换
       this.searchTypeText = command;
+      
     },
     //selectMenu
     selectMenu(command) {
