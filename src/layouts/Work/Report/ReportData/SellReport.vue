@@ -62,7 +62,7 @@
 							<i class="iconfont icon-liebiao"></i>{{currentReportName}}
 						</div>
 
-						<template v-if="sellShowId == 'sales' || sellShowId == 'buyback' ">
+<!-- 						<template v-if="sellShowId == 'sales' || sellShowId == 'buyback' ">
 
 							<div class="sort-wrap">
 								<label>排序:</label>
@@ -73,7 +73,7 @@
 									<i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
 								</div>
 							</div>
-						</template>
+						</template> -->
           
 
             <filter-header
