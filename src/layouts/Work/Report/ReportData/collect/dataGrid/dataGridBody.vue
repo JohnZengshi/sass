@@ -35,7 +35,7 @@
                     <div 
                       class="tb-td" 
                       v-else 
-                      :class="{backLine:tab.totalType != ''}" 
+                      :class="{backLine:tab.totalType != '', 'xj-report-text-right':tab.right}" 
                       :style="tableCell(tab.width)" 
                       v-text="tab.totalType == ''? getIndex() : tb[tab.totalType]">
                       
@@ -259,7 +259,6 @@
               // for (let j of j.detailList) {
               //   Num += 40
               // }
-
             }
           }
         }
