@@ -726,13 +726,13 @@ export default {
 </script>
 
 <style lang="scss">
-    .addmember {
-        width: 720px;
-        height: 730px;
-        background: #fff;
-        border-radius: 10px;
+.choseMemberDig.addmember {
+    width: 720px;
+    height: 730px;
+    background: #fff;
+    border-radius: 10px;
         
-    }
+}
 </style>
 
 <style scoped lang="scss">
