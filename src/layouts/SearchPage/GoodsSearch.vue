@@ -18,7 +18,7 @@
                                 <li @click="selectClass(2)" :class="{active: rightList == productClass[1].typeList}">计件类</li>
                             </ul>
                             <ul class="list-right">
-                                <li v-for="(item, index) in rightList" :key="index" @click="complateSel(item)" :class="{active: classId == item.classesId}">{{item.classesName}}</li>
+                                <li v-for="(item, index) in rightList" @click="complateSel(item)" :class="{active: classId == item.classesId}">{{item.classesName}}</li>
                             </ul>
                         </div>
                         <div class="drop-box-footer">
@@ -73,7 +73,7 @@
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command="全部">全部</el-dropdown-item>
-                            <el-dropdown-item v-for="(item, index) in supplierListData" :key="index" :command="item">{{item.supplierName}}</el-dropdown-item>
+                            <el-dropdown-item v-for="(item, index) in supplierListData" :command="item">{{item.supplierName}}</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                     <!-- <DropDownMenu
@@ -90,7 +90,7 @@
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command="全部">全部</el-dropdown-item>
-                            <el-dropdown-item v-for="(item, index) in datas.shopList" :key="index" :command="item">{{item.shopName}}</el-dropdown-item>
+                            <el-dropdown-item v-for="(item, index) in datas.shopList" :command="item">{{item.shopName}}</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                     <!-- <DropDownMenu

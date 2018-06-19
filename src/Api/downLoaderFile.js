@@ -30,6 +30,7 @@ export const downLoaderFile = (url,data) => {
             //     }
             // }
             // newData[key] = str
+            console.log(newData[key])
         }
         dataStr+=key+'='+newData[key]+'&'
     }

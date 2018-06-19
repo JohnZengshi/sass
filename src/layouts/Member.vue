@@ -5,7 +5,7 @@
 </template>
 
 <style scoped>
-.member-container {
+.member-container{
   height: 100%;
 }
 </style>

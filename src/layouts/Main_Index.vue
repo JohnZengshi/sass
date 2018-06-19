@@ -682,8 +682,6 @@
             float: right;
             color: #999;
             font-size: 14px;
-            color: #333;
-            margin-bottom: 8px;
             cursor: pointer;
             &:hover {
               color: #2993f8;
