@@ -1,6 +1,6 @@
 <template>
   <ul class="xj-cut-btn-wrap">
-    <li v-for="item in showList" @click="pitchOn(item)" :class="{actions: current == item.id}">{{item.name}}</li>
+    <li v-for="item in showList">{{item.name}}</li>
   </ul> 
 </template>     
 <script>
@@ -12,9 +12,7 @@ export default {
     }
   },
   methods: {
-    pitchOn (item) {
-      this.$emit('pitchOn', item)
-    }
+
   }
 }
 </script>
@@ -23,7 +21,7 @@ export default {
     display: inline-block;
     border: 1px solid #2993f8;
     font-size: 0;
-    border-radius: 4px;
+    border-radius: 5px;
     overflow: hidden;
     li{
         display: inline-block;
@@ -32,8 +30,7 @@ export default {
         padding: 5px 8px;
         cursor: pointer;
         transition: all .3s;
-        color: #666;
-        &:hover, &.actions{
+        &:hover, .actions{
             color: #fff;
             background-color: #2993f8;
         }
