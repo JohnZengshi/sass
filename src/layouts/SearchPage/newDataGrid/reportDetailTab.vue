@@ -56,6 +56,7 @@
             </div>
           </div>
         </el-dialog>
+
     </div>
 </template>
 <script>
@@ -310,7 +311,6 @@ export default {
       }
     },
     openDialog(parm) {
-      console.log(parm)
       if(this.panelType == 1) {
         this.$emit('close')
         
@@ -319,6 +319,11 @@ export default {
         return
       }
 
+      if(this.panelType == 2) {
+        this.$emit('close')
+
+        
+      }
 
       this.commodityDetails(parm)
       this.ListDetails = true;

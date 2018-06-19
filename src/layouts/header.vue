@@ -46,7 +46,7 @@
                   <i v-if="iconShow" class="iconfont icon-sousuo" @click="goSearchPage" title="搜索"></i>
                   <i v-else class="iconfont el-icon-circle-cross" @click="closeIcon" title="清除"></i>
                   <!-- 搜索的列表 begin -->
-                  <div v-if="isSearch && searchText.length >= 3" class="searchList">
+                  <div v-if="isSearch" class="searchList">
                     <!-- 商品 -->
                     <div class="commodity">
                         <h1>商品</h1>
@@ -65,7 +65,7 @@
                         <h1>单据</h1>
                         <div class="receiptsList">
                           <div class="receiptsItem" v-if="orderList.length == 0">未匹配到相关单据信息，查看<span @click.stop="openListDeta(1,true)">所有单据</span></div>
-                          <div class="receiptsItem" v-else @click.stop="openListDeta" v-for="(item,index) in orderList" :key="index">
+                          <div class="receiptsItem" v-else @click.stop="openDocument" v-for="(item,index) in orderList" :key="index">
                             <span class="gno">{{ item.orderNum }}</span><span class="state">{{ getOrderType(item.orderType) }}</span><span class="slocation fr">{{ item.createName }}</span>
                           </div>
                           <div class="receiptsItem" v-if="orderList.length > 5" @click.stop="openListDeta(1)">
@@ -386,6 +386,9 @@ export default {
       this.memberId = item.memberId
       this.shopId = item.shopId
       console.log('会员数据',item)
+    },
+    openDocument() {
+      this.$router.push({path:'/work/sell'})
     },
     closeEditReturn (val) {
       this.editLeaguer = val.status
@@ -1003,18 +1006,24 @@ export default {
     closeIcon() {
       this.searchText = "";
       this.iconShow = true;
+      this.productList = []
+      this.orderList = []
+      this.memberListData = []
     },
     watchCloseIcon() {
-      // if (this.searchText != "") {
-      //   this.iconShow = false;
-      // } else {
-      //   this.iconShow = true;
-      // }
+      if (this.searchText != "") {
+        this.iconShow = false;
+        this.getHomepageSearchData()        
+      } else {
+        this.iconShow = true;
+        this.orderList = []
+        this.memberListData = []
+        this.productList = []
+      }
 
       // 字数大于3的时候请求
-      if(this.searchText.length >=3 ) {
-        this.getHomepageSearchData()
-      }
+      // if(this.searchText.length >=3 ) {
+      // }
 
     },
     createComp() {
@@ -1134,25 +1143,25 @@ export default {
     // 获取订单状态
     getOrderType(type) {
       switch (type) {
-        case '1':
+        case '01':
           return '入库'
           break;
-        case '2':
+        case '02':
           return '退库'
           break;
-        case '3':
+        case '03':
           return '发货'
           break;
-        case '4':
+        case '04':
           return '退货'
           break;
-        case '5':
+        case '05':
           return '销售/回购'
           break;
-        case '6':
+        case '06':
           return '调柜'
           break;
-        case '7':
+        case '07':
           return '调库'
           break;
         case '10':
@@ -1262,7 +1271,9 @@ export default {
         default:
           break;
       }
-    }
+    },
+    // 单据详情
+    
   }
 };
 </script>
