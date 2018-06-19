@@ -731,7 +731,6 @@ export default {
     height: 730px;
     background: #fff;
     border-radius: 10px;
-        
 }
 </style>
 
