@@ -289,10 +289,646 @@ export default {
           label: "工费",
           dataList: []
         },
+<<<<<<< HEAD
         partData: {
           id: 6,
           label: "配件",
           dataList: []
+=======
+        remarkData: {
+          id: 6,
+          label: "备注",
+          dataList: []
+        }
+      },
+
+        
+      orderList: [], // 对应的单据
+      productList: [], // 对应的商品
+      memberListData: [], // 对应的会员
+
+      orderTotalNum:'', //对应的单据总数
+      productTotalNum:'', //对应的商品总数
+      memberTotalNum:'', //对应的会员总数
+
+      dataGridStorage: [], // 列表数据
+      productTypeName: '', // 头部名
+      productId: '',
+
+      orderListST:[], // 数据列表
+      
+      productType: '',
+      locationName: '',
+      productClass: '',
+
+      showAll: false,
+      editLeaguer: false,
+      memberId:'',
+      shopId:''
+
+    };
+  },
+  components: {
+    FormatImg,
+    menutabs, //加载头部页签组件
+    ProductList,
+    DocumentsList,
+    memberList,
+    stepsPath,
+    memberInfo, // 会员弹框
+  },
+  props: ["companyInfo", "userInfo", "isAllowCreate"],
+
+  created() {
+    this.companyList(); // 公司列表
+    this.skinConf = skinConfig.skinList;
+    this.unreadCount();
+  },
+  mounted() {
+    let body = document.getElementById("body");
+    // let aShield = document.getElementsByClassName('skin-shield')
+    //let aShield = document.getElementsByClassName('skin-shield')
+    if (localStorage.getItem("bgUrl")) {
+      let obj = JSON.parse(localStorage.getItem("bgUrl"));
+      body.style.background = obj.url;
+      this.skinIndex = obj.index;
+      if (obj.flag == "custom") {
+        $("#body").addClass("body-shield");
+        //this.$refs.switch_skin.style.background = obj.url
+      } else if (obj.flag == "static") {
+        $("#body").removeClass("body-shield");
+        //this.$refs.switch_skin.style.background = "#f5f8f7"
+      }
+    }
+  },
+  watch: {
+    companyInfo: function() {
+      if (this.companyInfo.companyName) {
+        localStorage.setItem("companyInfo", JSON.stringify(this.companyInfo));
+      }
+    },
+    $route: function() {
+      this.unreadCount();
+    }
+  },
+  methods: {
+    openMemberByList(parm) {
+      this.memberId = parm.memberId
+      this.shopId = parm.shopId
+      this.editLeaguer = true
+    },
+    openMember (item) {
+      this.memberId = item.memberId
+      this.shopId = item.shopId
+      this.editLeaguer = true
+    },
+    openDocument() {
+      this.$router.push({path:'/work/sell'})
+    },
+    closeEditReturn (val) {
+      this.editLeaguer = val.status
+    },
+    close(parm) {
+      console.log('点击关闭',parm)
+      console.log('关闭')
+      this.ListDetails = parm
+    },
+    // 打开详情的弹窗
+    openDialog(parm) {
+      this.commodityDetails(parm)
+      this.DataShow = true
+    },
+    dataSortGroup() {
+      // 数据排序分组
+      if (this.tabIndex == 0) {
+        this.sortDataList = [
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData
+        ];
+      } else if (this.tabIndex == 1) {
+        this.sortDataList = [
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData
+        ];
+      } else if (this.tabIndex == 2) {
+        this.sortDataList = [
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData
+        ];
+      } else if (this.tabIndex == 3) {
+        this.sortDataList = [
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData
+        ];
+      } else if (this.tabIndex == 4) {
+        this.sortDataList = [
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData
+        ];
+      } else if (this.tabIndex == 5) {
+        this.sortDataList = [
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData
+        ];
+      } else if (this.tabIndex == 6) {
+        this.sortDataList = [
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData
+        ];
+      } else if (this.tabIndex == 7) {
+        this.sortDataList = [
+          this.dataModel.otherData,
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData
+        ];
+      } else if (this.tabIndex == 8) {
+        this.sortDataList = [
+          this.dataModel.priceData,
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData
+        ];
+      } else if (this.tabIndex == 9) {
+        this.sortDataList = [
+          this.dataModel.remarkData,
+          this.dataModel.baseData,
+          this.dataModel.weightData,
+          this.dataModel.certificateData,
+          this.dataModel.mainData,
+          this.dataModel.deputyData,
+          this.dataModel.feeData,
+          this.dataModel.partData,
+          this.dataModel.otherData,
+          this.dataModel.priceData
+        ];
+      }
+    },
+    dataClustering(data) {
+      // 数据分组
+      this.dataModel.baseData.dataList = [];
+      this.dataModel.weightData.dataList = [];
+      this.dataModel.certificateData.dataList = [];
+      this.dataModel.mainData.dataList = [];
+      this.dataModel.deputyData.dataList = [];
+      this.dataModel.feeData.dataList = [];
+      this.dataModel.partData.dataList = [];
+      this.dataModel.otherData.dataList = [];
+      this.dataModel.priceData.dataList = [];
+      this.dataModel.remarkData.dataList = [];
+      for (let i in data) {
+        // ******************************* 基本信息 *********************************************
+        if (i == "barcode") {
+          this.dataModel.baseData.dataList.push({
+            itemName: "条码号",
+            itemVal: data[i]
+          });
+        } else if (i == "productType") {
+          this.dataModel.baseData.dataList.push({
+            itemName: "产品类别",
+            itemVal: data[i]
+          });
+        } else if (i == "jewelryName") {
+          this.dataModel.baseData.dataList.push({
+            itemName: "首饰名称",
+            itemVal: data[i]
+          });
+        } else if (i == "brand") {
+          this.dataModel.baseData.dataList.push({
+            itemName: "品牌",
+            itemVal: data[i]
+          });
+        } else if (i == "brand") {
+          this.dataModel.baseData.dataList.push({
+            itemName: "款号",
+            itemVal: data[i]
+          });
+        } else if (i == "brand") {
+          this.dataModel.baseData.dataList.push({
+            itemName: "手寸",
+            itemVal: data[i]
+          });
+        } else if (i == "totalWeight") {
+          // ******************************* 重量 *********************************************
+          this.dataModel.weightData.dataList.push({
+            itemName: "总件重",
+            itemVal: data[i],
+            unit: "g"
+          });
+        } else if (i == "netWeight") {
+          this.dataModel.weightData.dataList.push({
+            itemName: "净金重",
+            itemVal: data[i],
+            unit: "g"
+          });
+        } else if (i == "heavyCode") {
+          this.dataModel.weightData.dataList.push({
+            itemName: "含配金重",
+            itemVal: data[i],
+            unit: "g"
+          });
+        } else if (i == "goldCost") {
+          this.dataModel.weightData.dataList.push({
+            itemName: "金耗",
+            itemVal: data[i],
+            unit: "%"
+          });
+        } else if (i == "goldPrice") {
+          this.dataModel.weightData.dataList.push({
+            itemName: "金价",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "goldColor") {
+          this.dataModel.weightData.dataList.push({
+            itemName: "金属颜色",
+            itemVal: data[i]
+          });
+        } else if (i == "goldE") {
+          this.dataModel.weightData.dataList.push({
+            itemName: "金料额",
+            itemVal: data[i],
+            unit: "元"
+          });
+          this.dataModel.priceData.dataList.push({
+            itemName: "金料额",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "certifiNo") {
+          // ******************************* 证书 *********************************************
+          this.dataModel.certificateData.dataList.push({
+            itemName: "证书号",
+            itemVal: data[i]
+          });
+        } else if (i == "authCode") {
+          this.dataModel.certificateData.dataList.push({
+            itemName: "验证码",
+            itemVal: data[i]
+          });
+        } else if (i == "certifiName") {
+          this.dataModel.certificateData.dataList.push({
+            itemName: "证书名",
+            itemVal: data[i]
+          });
+        } else if (i == "brand") {
+          this.dataModel.certificateData.dataList.push({
+            itemName: "检验机构",
+            itemVal: data[i]
+          });
+        } else if (i == "certifiFee") {
+          this.dataModel.certificateData.dataList.push({
+            itemName: "证书费",
+            itemVal: data[i],
+            unit: "元"
+          });
+          this.dataModel.priceData.dataList.push({
+            itemName: "证书费",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "mainName") {
+          // ******************************* 主石 *********************************************
+          this.dataModel.mainData.dataList.push({
+            itemName: "主石名",
+            itemVal: data[i]
+          });
+        } else if (i == "stand") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "主石规格",
+            itemVal: data[i]
+          });
+        } else if (i == "count") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "主石粒数",
+            itemVal: data[i]
+          });
+        } else if (i == "mainWeight") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "主石重",
+            itemVal: data[i],
+            unit: ""
+          });
+        } else if (i == "unit") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "主石单位",
+            itemVal: data[i]
+          });
+        } else if (i == "mainCalcMethod") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "计价方式",
+            itemVal: data[i]
+          });
+        } else if (i == "mainTPrice") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "主石额",
+            itemVal: data[i],
+            unit: "元"
+          });
+          this.dataModel.priceData.dataList.push({
+            itemName: "主石额",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "shape") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "形状",
+            itemVal: data[i]
+          });
+        } else if (i == "color") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "颜色",
+            itemVal: data[i]
+          });
+        } else if (i == "neatness") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "净度",
+            itemVal: data[i]
+          });
+        } else if (i == "blackout") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "切工",
+            itemVal: data[i]
+          });
+        } else if (i == "polishing") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "抛光",
+            itemVal: data[i]
+          });
+        } else if (i == "symmetry") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "对称",
+            itemVal: data[i]
+          });
+        } else if (i == "fluorescent") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "荧光",
+            itemVal: data[i]
+          });
+        } else if (i == "mainPrice") {
+          this.dataModel.mainData.dataList.push({
+            itemName: "主石单价",
+            itemVal: data[i]
+          });
+        } else if (i == "deputyName") {
+          // ******************************* 副石 *********************************************
+          this.dataModel.deputyData.dataList.push({
+            itemName: "副石名",
+            itemVal: data[i]
+          });
+        } else if (i == "deputyStand") {
+          this.dataModel.deputyData.dataList.push({
+            itemName: "副石规格",
+            itemVal: data[i]
+          });
+        } else if (i == "deputyCount") {
+          this.dataModel.deputyData.dataList.push({
+            itemName: "副石粒数",
+            itemVal: data[i]
+          });
+        } else if (i == "deputyWeight") {
+          this.dataModel.deputyData.dataList.push({
+            itemName: "副石重",
+            itemVal: data[i],
+            unit: ""
+          });
+        } else if (i == "deputyUnitPrice") {
+          this.dataModel.deputyData.dataList.push({
+            itemName: "副石单价",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "deputyCalcMethod") {
+          this.dataModel.deputyData.dataList.push({
+            itemName: "计价方式",
+            itemVal: data[i]
+          });
+        } else if (i == "deputyPrice") {
+          this.dataModel.deputyData.dataList.push({
+            itemName: "副石额",
+            itemVal: data[i],
+            unit: "元"
+          });
+          this.dataModel.priceData.dataList.push({
+            itemName: "副石额",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "deputyUnit") {
+          this.dataModel.deputyData.dataList.push({
+            itemName: "副石单位",
+            itemVal: data[i],
+            unit: ""
+          });
+        } else if (i == "soldFee") {
+          // ******************************* 工费 *********************************************
+          this.dataModel.feeData.dataList.push({
+            itemName: "销售工费",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "soldMethod") {
+          this.dataModel.feeData.dataList.push({
+            itemName: "销售工费方式",
+            itemVal: data[i]
+          });
+        } else if (i == "inFee") {
+          this.dataModel.feeData.dataList.push({
+            itemName: "进货工费",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "inMethod") {
+          this.dataModel.feeData.dataList.push({
+            itemName: "进货工费方式",
+            itemVal: data[i]
+          });
+        } else if (i == "inMoney") {
+          this.dataModel.feeData.dataList.push({
+            itemName: "进货工费额",
+            itemVal: data[i],
+            unit: "元"
+          });
+          this.dataModel.priceData.dataList.push({
+            itemName: "进货工费额",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "partName") {
+          // ******************************* 配件 *********************************************
+          this.dataModel.partData.dataList.push({
+            itemName: "配件名",
+            itemVal: data[i]
+          });
+        } else if (i == "partCount") {
+          this.dataModel.partData.dataList.push({
+            itemName: "配件数",
+            itemVal: data[i]
+          });
+        } else if (i == "partWeight") {
+          this.dataModel.partData.dataList.push({
+            itemName: "配件重",
+            itemVal: data[i],
+            unit: "g"
+          });
+        } else if (i == "partPrice") {
+          this.dataModel.partData.dataList.push({
+            itemName: "单价",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "calcMethod") {
+          this.dataModel.partData.dataList.push({
+            itemName: "计费方式",
+            itemVal: data[i]
+          });
+        } else if (i == "price") {
+          this.dataModel.partData.dataList.push({
+            itemName: "配件额",
+            itemVal: data[i],
+            unit: "元"
+          });
+          this.dataModel.priceData.dataList.push({
+            itemName: "配件额",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "otherFeeName") {
+          // ******************************* 其他 *********************************************
+          this.dataModel.otherData.dataList.push({
+            itemName: "其他费用名",
+            itemVal: data[i]
+          });
+        } else if (i == "otherFee") {
+          this.dataModel.otherData.dataList.push({
+            itemName: "其他费用额",
+            itemVal: data[i],
+            unit: "元"
+          });
+          this.dataModel.priceData.dataList.push({
+            itemName: "其他费用额",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "costPrice") {
+          // ******************************* 标价 *********************************************
+          this.dataModel.priceData.dataList.push({
+            itemName: "成本",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "ratio") {
+          this.dataModel.priceData.dataList.push({
+            itemName: "倍率",
+            itemVal: data[i]
+          });
+        } else if (i == "soldPrice") {
+          this.dataModel.priceData.dataList.push({
+            itemName: "售价",
+            itemVal: data[i],
+            unit: "元"
+          });
+        } else if (i == "remark") {
+          // ******************************* 备注 *********************************************
+          this.dataModel.remarkData.dataList.push({
+            itemName: "备注信息",
+            itemVal: data[i]
+          });
+        }
+      }
+      this.dataSortGroup();
+    },
+    commodityDetails(parm) {
+      this.productId = parm
+      // 商品明细数据
+      let options = {
+        productId: parm
+      };
+      // 获取展示的数据
+      seekCommodityDetails(options).then((res) => {
+        if (res.data.state == 200) {
+            console.log('商品搜索数据:',res.data.data);
+            this.dataClustering(res.data.data)
+            this.productTypeName = res.data.data.jewelryName
+        }
+        }, (res) => {
+
+      })
+      // 获取商品数据
+      productLogRecord(options).then(
+        res => {
+          if (res.data.state == 200) {
+            this.orderListST = res.data.data.orderList
+          }
+>>>>>>> 57f3a5464507eb0a270fa9b2dbc636791801c8c6
         },
         otherData: {
           id: 6,
