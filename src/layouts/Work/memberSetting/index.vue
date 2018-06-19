@@ -49,7 +49,7 @@
                         <div class="integral-left th">退货</div>
                             <el-radio-group class="integral-right" v-model="templateInfoData.refundConfig" @change="addOrSubTemplate('2',templateInfoData.refundConfig)">
                                 <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="'2'">减少积分</el-radio>
                                 <el-radio class="intergral-item" :label="'3'">无</el-radio>
                             </el-radio-group>
                     </div>

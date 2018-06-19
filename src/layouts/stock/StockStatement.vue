@@ -185,7 +185,6 @@
         this._statisticalIndex();
       },
       dropReturn (val) {
-        //debugger
         if (val.type == "柜组") {
           this.changeCounter.counterId = val.item.operateId
           this.changeCounter.counterName = val.item.operateName

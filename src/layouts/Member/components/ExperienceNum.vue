@@ -67,7 +67,6 @@ export default {
             this.isSelect = false
         },
         handleRegIconClick () {
-            console.log(11112)
             let data = {
                 phone: this.experienceInfo.phoneNumber,
                 type: '06'
@@ -78,7 +77,6 @@ export default {
             } else {
                 let self = this;
                 getVcCode(data).then((res) => {
-                console.log(res.data);
                 if (res.data.state === 200) {
                     self.sended = true;
                     self.intersubsub = setInterval(() => {
@@ -101,7 +99,6 @@ export default {
                 phone: this.experienceInfo.phoneNumber
             }
             seekCreateTaste(options).then((res) => {
-                console.log(res)
                 if (res.data.state == 200) {
                     sessionStorage.setItem("experience", 'Y');
                     sessionStorage.setItem("id", res.data.data.Id);

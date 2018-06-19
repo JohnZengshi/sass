@@ -142,7 +142,6 @@ export default{
           /* 微信接口地址
            * https://open.weixin.qq.com/cgi-bin/showdocument?action=dir_list&t=resource/res_list&verify=1&id=open1419316505&token=0e446c79dc2d8e89bfed2e754a2a244b359e7ae6&lang=zh_CN
            * */
-          console.log(this.redirect_url)
           var obj = new WxLogin({
             id:"wxQCode",  //页面显示二维码ID
             appid: appid,

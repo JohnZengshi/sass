@@ -604,58 +604,240 @@ import {
 } from "Api/commonality/seek";
 
 export default {
-  components: {
-    StorageReturnReceiptsIntro,
-    receiptsRemark,
-    error,
-    affirm,
-    auditReceipts,
-    delectReceipts,
-    BatchAddReceipts,
-    ReportDetail,
-    TablePrint,
-    stepsPath,
-    orderRemark,
-    selectDrop,
-    DropDownMenu,
-    FormatImg,
-    detailTemplate,
-    projectTypeTemplate,
-    intelligenceTypeTemplate,
-    customTemplate,
-    dropDownColum
-  },
-  data() {
-    return {
-      inconspanactive1: true,
-      inconspanactive2: false,
-      isSelDelect: true, // 批量删除操作
-      deleteList1: [],
-      deleteList: [], // 批量删除列表
-      receiptInfoList: "",
-      isMakeMan: false,
-      receiptsIntroList: {}, // 单据简介
-      introListOption: false, // 关闭单据简介的编辑
-      supplierListData1: [
-        {
-          name: "全部",
-          type: ""
-        },
-        {
-          name: "入库单",
-          type: "01"
-        },
-        {
-          name: "修改单",
-          type: "10"
-        },
-        {
-          name: "退货单",
-          type: "04"
-        },
-        {
-          name: "调库单",
-          type: "07"
+	components:{
+      StorageReturnReceiptsIntro,
+      receiptsRemark,
+      error,
+      affirm,
+      auditReceipts,
+      delectReceipts,
+      BatchAddReceipts,
+      ReportDetail,
+      TablePrint,
+      stepsPath,
+      orderRemark,
+      selectDrop,
+      DropDownMenu,
+      FormatImg,
+      detailTemplate,
+	    projectTypeTemplate,
+	    intelligenceTypeTemplate,
+            customTemplate,
+            dropDownColum,
+    },
+    data() {
+        return {
+            inconspanactive1: true,
+            inconspanactive2: false,
+            isSelDelect: true, // 批量删除操作
+            deleteList1: [],
+            deleteList: [], // 批量删除列表
+            'receiptInfoList': '',
+            isMakeMan: false,
+            "receiptsIntroList": {}, // 单据简介
+            "introListOption": false, // 关闭单据简介的编辑
+            "supplierListData1": [
+                {
+                    name: "全部",
+                    type: ""
+                },
+                {
+                    name: "入库单",
+                    type: "01"
+                },
+                {
+                    name: "修改单",
+                    type: "10"
+                },
+                {
+                    name: "退货单",
+                    type: "04"
+                },
+                {
+                    name: "调库单",
+                    type: "07"
+                }
+            ],//单据类型
+            enterOrderNum: '', //输入的单据号
+            toRouterUrlName: '退库',
+            //大、小类 tab切换
+            tabData : [
+                { txt:'明细', fun : this.tabs, type:1},
+                { txt:'智能分类', fun : this.tabs, type:2},
+                { txt:'产品分类', fun : this.tabs, type:3},
+                { txt:'自定义', fun : this.tabs, type:4},
+            ],
+            tabClassActive :{
+                index : 0,
+                activeClass : 'active'
+            },
+            //
+            propOptons: {
+                reportType: 3, //报表类型 ，为1时代表成色大类，为2时是成色小类，为3时是明细 ,默认为明细
+                
+            },
+            //
+            tabShow: 'tabShow',
+            loading:false,
+            dataGridStorage : {},
+            printDataGrid : {}, //打印数据
+            dataGridDetailList : [],
+            //成本核算
+            tabSwitch : false,
+            positionSwitch: false,
+            value1: false,
+            newAddtableData: [], // 新添加的数据
+            amandTableData: [], //修改过后的数据
+            tableInitRowData: [], // 初始商品数据
+            newRowData: [], // 当前操作的一行数据
+            tableIndex: '',
+            value: [],
+            tableIndex: null,
+            refreshRemark: false, // 刷新备注
+            remarkText: '',
+            isDel: false,
+            remarkId: '',
+            isShowMask: false, // 备注弹窗
+            isREfresh: true,  // 是否刷新
+            scrollLeft: 0,  // 表格头部距离
+            tableRowData: [
+                // leftRowData: [],
+                // rightRowData: []
+            ],
+            isEditFlag: false,
+            receiptData: '', //单据创建时间
+            stepIndex: [], // 进度条index
+            "totalNumData": {
+                "totalNum": 1
+            },
+            "introListOption": false, // 关闭单据简介的编辑
+            "tittleThs": [
+                {"name": '序号'},
+                {"name": '商品编码'},
+                {"name": '产品类别'},
+                {"name": '首饰名称'},
+                {"name": '总件重（g）'},
+                {"name": '净金重'},
+                {"name": '证书号'},
+                {"name": '主石'},
+                {"name": '颜色'},
+                {"name": '净度'},
+                {"name": '副石'},
+                {"name": '售价'}
+            ],
+            "configData": {
+                "barcode": null, // 条形码
+                "productName": null, // 产品类别
+                "jewelry": null, // 首饰名称
+                "weight": null, // 总件重
+                "netWeight": null, // 净金重
+                "certifiNo": null, // 证书号
+                "jewelryName": null, // 主石
+                "color": null, // 颜色
+                "neatness": null, // 净度
+                "subJewelryName": null, // 副石
+                "price": null // 售价
+            },
+            "pageSize": 10,
+            "datas": {
+                "postDataList": [], // 请求回来的数据集合(配置好的)
+                "newGapDatas": [] // 新的空白数据
+            },
+            "popup": {
+                "fullscreenLoading": false, // 保存过程的过场动画
+                "successData": null, // 制单成功数据
+                "deleteReceipts": false, // 删除单据弹窗
+                "batchAddReceiptsPopup": false,
+                "auditPopup": false // 审核弹窗
+            },
+            "crudData": { // 增查更删数据
+                "currentPage": 1, // 当前页
+                "checked": false, // 监听全选
+                "checkList": [], // 选择按钮（选中的数据集合）删除
+                "operationCut": true // 操作按钮切换
+            },
+            stepInfo: {
+                step1: {
+                    stepMessage: '',
+                    stepFlag: false,
+                    stepStatus: 1
+                },
+                step2: {
+                    stepMessage: '',
+                    stepFlag: false,
+                    stepStatus: 2
+                },
+                step3: {
+                    stepMessage: '',
+                    stepFlag: false,
+                    stepStatus: 3
+                },
+                step4: {
+                    stepMessage: '',
+                    stepFlag: false,
+                    stepStatus: 6
+                }
+            },
+            nowStatus: '',
+            isRole: '',
+            auditShow: false,
+            textareaData: '',
+            isPrint : 0,
+            printSelectDate : {
+                shop :'', //店铺
+                orderNum : this.$route.query.orderNumber,
+                preparedBy: '',//制单人
+                headerData : '退库', //制单大标题
+                reportType : '2' //1代表入库、2退库、3调库、4发货、5调柜、6退货
+            },
+            statusREfresh: false,
+            curStatus : {
+                statusName: 'loading...',
+                statuscurClass: 'stayAudit',
+                status : -1,
+                //鼠标上、下滑操作
+                slipPointer: false 
+            },
+            isRemark : false,
+            remarkDialog: false,
+            //浏览器检测
+            browserType : false,
+            dataGridOptions: {
+                orderNum : this.$route.query.orderNumber,
+                productClass: '1',
+                sortFlag: '0',
+                sortList: [{barcode: '1'}],
+                type: 1,
+                page: 1,
+                pageSize: 15,
+                keyWord: '',
+                wColorId: '',
+                wGemId: '',
+                wJewelryId: '1',
+                nColorId: '',
+                nGemId: '',
+                nJewelryId: '1',
+                specialId: ''
+            },
+            dialogOptions: {
+            conditionList: [
+                '不选', '大类', '小类'
+            ],
+            jewelryList: [
+                '大类', '小类'
+            ]
+            },
+            positionSwitch: false,
+            customDialog: false, // 自定义列表弹窗
+            resetFlag: false,
+            isShowCost: '',
+            sortList: [{name: '条码号', value: '1'}],
+            newList: [{name: '条码号', value: '1'}],
+            // 假数据
+            proList:[],
+            conditionList:[],
+            jewelList:[],
+            jewelryList:[],
         }
       ],
       enterOrderNum: "", //输入的单据号

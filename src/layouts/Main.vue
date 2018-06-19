@@ -520,7 +520,22 @@ export default {
               query: {
                 id: datas.id
               }
-            });
+            })
+        },
+        // 创建连接
+        createdWebSocket (parm) {
+          let _self = this
+          let ws = new WebSocket(parm)
+          // 连接成功
+          ws.onopen = function(evt) {
+            // let datas = {
+            //     tokenId: sessionStorage.getItem("tokenId"),
+            //     userId: sessionStorage.getItem("id"),
+            //     msgType: '100',
+            //     os: 'web'
+            // }
+            // ws.send(JSON.stringify(datas))
+            console.log('测试连接成功', evt)
           }
         });
 

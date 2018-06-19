@@ -217,7 +217,11 @@
 
 					// 修改配件数、计价方式 、单价需要同步更新配件额字段
 					if(tab.type == 'partCount' || tab.type === 'calcMethod' || tab.type === 'partPrice') {
-						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+						if(tab.type == 'partCount') {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type])
+						} else {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+						}
 						tempArray.push({
 							price: item['price'],
 							productId: productId
@@ -328,11 +332,20 @@
 						tab.type === 'deputyUnitPrice' ||
 						tab.type === 'deputyCalcMethod'
 					) {
-						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
-						tempArray.push({
-							deputyPrice: item['deputyPrice'],
-							productId: productId
-						})
+						if(tab.type === 'deputyCount') {
+							debugger
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type])
+							tempArray.push({
+								deputyPrice: item['deputyPrice'],
+								productId: productId
+							})
+						} else {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+							tempArray.push({
+								deputyPrice: item['deputyPrice'],
+								productId: productId
+							})
+						}
 					}
 
 					// 修改副石重同步更新总件重
@@ -364,13 +377,22 @@
 						tab.type === 'unitPrice' ||
 						tab.type === 'mainCalcMethod'
 					) {
-						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
-						tempArray.push({
-							mainPrice: item['mainPrice'],
-							productId: productId
-						})
-					}
+						if(tab.type === 'count') {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type])
+							tempArray.push({
+								mainPrice: item['mainPrice'],
+								productId: productId
+							})
+						} else {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+							tempArray.push({
+								mainPrice: item['mainPrice'],
+								productId: productId
+							})
 
+						}
+					}
+					
 					//修改主石重同步更新总件重
 					if(tab.type === 'mainWeight') {
 						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)

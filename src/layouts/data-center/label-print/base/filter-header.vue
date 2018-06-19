@@ -156,7 +156,7 @@ export default {
       stateList: [
         {
             id: "10",
-            name: "在库位"
+            name: "已入库"
         },
         {
             id: "11",
@@ -179,7 +179,7 @@ export default {
             name: "修改中"
         },
         {
-            id: "40",
+            id: "40,101",
             name: "已调库"
         },
         {
@@ -187,16 +187,12 @@ export default {
             name: "调库中"
         },
         {
-            id: "50",
+            id: "50,100",
             name: "已发货"
         },
         {
             id: "51",
             name: "发货中"
-        },
-        {
-            id: "52",
-            name: "发货审核"
         },
         {
             id: "60",
@@ -207,17 +203,13 @@ export default {
             name: "退货中"
         },
         {
-            id: "62",
-            name: "退货审核"
-        },
-        {
             id: "70",
             name: "已调柜"
         },
-        {
-            id: "71",
-            name: "调柜中"
-        },
+        // {
+        //     id: "71",
+        //     name: "调柜中"
+        // },
         {
             id: "80",
             name: "已销售"
@@ -270,7 +262,7 @@ export default {
           },
           {
             name: "退库单",
-            type: "01"
+            type: "02"
           },
           {
             name: "发货单",
@@ -282,7 +274,7 @@ export default {
           },
           {
             name: "销售单",
-            type: "04"
+            type: "05"
           },
           {
             name: "调柜单",
@@ -295,10 +287,6 @@ export default {
           {
             name: "修改单",
             type: "10"
-          },
-          {
-            name: "服务单",
-            type: "11"
           }
       ],
     }
@@ -363,7 +351,16 @@ export default {
       })
     },
     resetData () {
-      this.keyword = ''
+      this.filterCondition.keyWord = ''
+      this.filterCondition.newOrderId = ''
+      this.filterCondition.storageId = []
+      this.filterCondition.shopId = []
+      this.filterCondition.productTypeId = []
+      this.filterCondition.colourId = []
+      this.filterCondition.jeweId = []
+      this.filterCondition.jewelryId = [] // 首饰类别
+      this.filterCondition.productStatus = [] // 产品状态
+      this.filterCondition.sortList = []
       this.$refs.moreWrap.reset()
       this.$refs.stateWrap.reset()
       this.$refs.jewelryIdWrap.reset()
