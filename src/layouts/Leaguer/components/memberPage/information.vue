@@ -554,11 +554,18 @@ export default {
         setSex(){
             // 生日的时间格式
             // this.dataInfo.birthday = this.timeFormat(this.dataInfo.birthday)
+            let orderList = []
+            if(this.dataInfo.orderList.length != 0){
+                this.dataInfo.orderList.forEach((item,index) => {
+                    orderList[index] = {orderNo:item.orderNum}
+                })
+            }
 
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
-                birthday: this.birthday
+                birthday: this.birthday,
+                orderList
                 
             })
             console.log(options)
@@ -738,6 +745,12 @@ export default {
         },
         // 修改生日
         setBirthday (val){
+            let orderList = []
+            if(this.dataInfo.orderList.length != 0){
+                this.dataInfo.orderList.forEach((item,index) => {
+                    orderList[index] = {orderNo:item.orderNum}
+                })
+            }
             // this.dataInfo.birthday = val
             this.birthday = this.timeFormat(val)
 
@@ -745,7 +758,8 @@ export default {
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
-                birthday: this.timeFormat(val)
+                birthday: this.timeFormat(val),
+                orderList
             })
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
@@ -771,14 +785,23 @@ export default {
         },
         // 修改姓名
         setUsername() {
-            console.log(this.dataInfo)
+
+            let orderList = []
+            if(this.dataInfo.orderList.length != 0){
+                this.dataInfo.orderList.forEach((item,index) => {
+                    orderList[index] = {orderNo:item.orderNum}
+                })
+            }
+
+            // console.log(this.dataInfo)
             // 生日的时间格式
             // this.dataInfo.birthday = this.timeFormat(this.dataInfo.birthday)
 
             let options = Object.assign({},this.dataInfo,{
                 memberId: this.memberId,
                 shopId: this.shopId,
-                birthday: this.birthday
+                birthday: this.birthday,
+                orderList
             })
             console.log(options)
             operateMemberUpdateBy(options).then(res => {
