@@ -30,7 +30,7 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 0,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '12',  
@@ -45,7 +45,7 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 0,
-            sort: '1'
+            //sort: '1'
     	},
     	{ 
     		id: '1',  
@@ -60,7 +60,7 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 0,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '2',  
@@ -75,7 +75,7 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 0,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '4',  
@@ -90,7 +90,7 @@ module.exports = {
     		allType : 'allWeight',
             toFixed : false,
             countCut : 2 ,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '5',  
@@ -120,7 +120,7 @@ module.exports = {
     		allType : 'allEstimatePrice',
             toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '17',  
@@ -164,7 +164,7 @@ module.exports = {
     		allType : 'allBackPrice',
             toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
     	}
     ],
 	
@@ -211,7 +211,7 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 0,
-            sort: '1'
+            //sort: '1'
     	},
     	{ 
     		id: '1',  
@@ -226,7 +226,7 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 0,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '2',  
@@ -241,7 +241,7 @@ module.exports = {
     		allType : 'allNum',
             toFixed : false,
             countCut : 0,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '4',  
@@ -256,7 +256,7 @@ module.exports = {
     		allType : 'allWeight' ,
             toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '5',  
@@ -289,7 +289,7 @@ module.exports = {
     		allType : 'allEstimatePrice',
             toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '17',  
@@ -338,7 +338,7 @@ module.exports = {
     		allType : 'allBackPrice',
             toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
     	}
     ],
 	
@@ -386,7 +386,7 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 0,
-            sort: '1'
+            //sort: '1'
     	},
     	{ 
     		id: '2',  
@@ -401,7 +401,7 @@ module.exports = {
     		allType : 'allNum',
             toFixed : false,
             countCut : 0,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '4',  
@@ -416,7 +416,7 @@ module.exports = {
     		allType : 'allWeight' ,
             toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '5',  
@@ -449,7 +449,7 @@ module.exports = {
             allType : 'allEstimatePrice',
             toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
         },
     	// { 
     	// 	id: '15',  
@@ -464,7 +464,7 @@ module.exports = {
     	// 	allType : 'allEstimatePrice',
      //        toFixed : false,
      //        countCut : 2,
-     //        sort: ''
+     //        //sort: ''
     	// },
     	// { 
     	// 	id: '17',  
@@ -527,7 +527,7 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
     	}
     ],
     
@@ -574,7 +574,7 @@ module.exports = {
         allType : '',
         toFixed : false,
         countCut : 0,
-            sort: '1'
+            //sort: '1'
       },
       { 
         id: '1',  
@@ -589,7 +589,7 @@ module.exports = {
         allType : '',
             toFixed : false,
             countCut : 0,
-            sort: ''
+            //sort: ''
       },
       { 
         id: '2',  
@@ -604,7 +604,7 @@ module.exports = {
         allType : 'allNum',
         toFixed : false,
         countCut : 0,
-            sort: ''
+            //sort: ''
       },
       { 
         id: '4',  
@@ -619,7 +619,7 @@ module.exports = {
         allType : 'allWeight' ,
             toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
       },
       { 
         id: '5',  
@@ -652,7 +652,7 @@ module.exports = {
             allType : 'allEstimatePrice',
             toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
         },
               { 
             id: '17',  
@@ -715,7 +715,7 @@ module.exports = {
         allType : 'allBackPrice',
             toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
       }
     ]
 }

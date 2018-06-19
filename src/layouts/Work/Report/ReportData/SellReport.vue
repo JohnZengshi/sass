@@ -1017,16 +1017,16 @@ export default {
           }
         ]);
         this.$set(this, "sortList", [
-          {
-            name: "产品类别",
-            value: "1"
-          }
+          // {
+          //   name: "产品类别",
+          //   value: "1"
+          // }
         ]);
         this.$set(this, "newList", [
-          {
-            name: "产品类别",
-            value: "1"
-          }
+          // {
+          //   name: "产品类别",
+          //   value: "1"
+          // }
         ]);
 
         this.dataGridOptions.pageSize = 15

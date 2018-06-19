@@ -27,7 +27,7 @@ module.exports = {
       totalType: '',
       toFixed: false,
       countCut: 0,
-      sort: '1'
+      //sort: '1'
     },
     {
       id: '1',
@@ -41,7 +41,7 @@ module.exports = {
       totalType: '',
       toFixed: false,
       countCut: 0,
-      sort: ''
+      //sort: ''
     },
     {
       id: '2',
@@ -55,7 +55,7 @@ module.exports = {
       totalType: '',
       toFixed: false,
       countCut: 0,
-      sort: ''
+      //sort: ''
     },
     {
       id: '4',
@@ -69,7 +69,7 @@ module.exports = {
       totalType: 'subtotalWeight',
       toFixed: false,
       countCut: 3,
-      sort: ''
+      //sort: ''
     },
     // {
     //   id: '5',
@@ -96,7 +96,7 @@ module.exports = {
       totalType: 'subtotalGoldWeight',
       toFixed: false,
       countCut: 3,
-      sort: ''
+      //sort: ''
     },
     // {
     //   id: '17',
@@ -123,7 +123,7 @@ module.exports = {
       totalType: 'subtotalPrice',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     {
       id: '6',
@@ -150,7 +150,7 @@ module.exports = {
       totalType: 'subtotalRealPrice',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     {
       id: '19',
@@ -164,7 +164,7 @@ module.exports = {
       totalType: 'subtotalCost',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     {
       id: '811',
@@ -179,7 +179,7 @@ module.exports = {
       totalType: 'margin',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     }
   ],
 
@@ -212,7 +212,7 @@ module.exports = {
       totalType: '',
       toFixed: false,
       countCut: 0,
-      sort: '1'
+      //sort: '1'
     },
     {
       id: '13',
@@ -226,7 +226,7 @@ module.exports = {
       totalType: '',
       toFixed: false,
       countCut: 0,
-      sort: ''
+      //sort: ''
     },
     {
       id: '23f',
@@ -240,7 +240,7 @@ module.exports = {
       totalType: 'totalNum',
       toFixed: false,
       countCut: 0,
-      sort: ''
+      //sort: ''
     },
     {
       id: '4s',
@@ -254,7 +254,7 @@ module.exports = {
       totalType: 'totalWeight',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     {
       id: '234s',
@@ -268,7 +268,7 @@ module.exports = {
       totalType: 'totalGoldWeight',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     // {
     //   id: '173',
@@ -310,7 +310,7 @@ module.exports = {
       totalType: 'totalSoldPrice',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     {
       id: '656n',
@@ -337,7 +337,7 @@ module.exports = {
       totalType: 'totalRealPrice',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     // {
     //   id: '135',
@@ -419,7 +419,7 @@ module.exports = {
       totalType: 'totalCost',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     {
       id: '81s1',
@@ -434,7 +434,7 @@ module.exports = {
       // totalType: 'totalMargin',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     }
   ],
 
@@ -465,7 +465,7 @@ module.exports = {
       totalType: '', //小计
       toFixed: false,
       countCut: 0,
-      sort: '1'
+      //sort: '1'
     },
     // {
     //   id: '13',
@@ -479,7 +479,7 @@ module.exports = {
     //   totalType: '',
     //   toFixed: false,
     //   countCut: 0,
-    //   sort: ''
+    //   //sort: ''
     // },
     {
       id: '21',
@@ -493,7 +493,7 @@ module.exports = {
       totalType: 'totalNum',
       toFixed: false,
       countCut: 0,
-      sort: ''
+      //sort: ''
     },
     {
       id: '42',
@@ -507,7 +507,7 @@ module.exports = {
       totalType: 'totalWeight',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     {
       id: '234s',
@@ -521,7 +521,7 @@ module.exports = {
       totalType: 'totalGoldWeight',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     // {
     //   id: 'f17',
@@ -549,7 +549,7 @@ module.exports = {
     //   totalType: 'totalGoldPrice',
     //   toFixed: false,
     //   countCut: 2,
-    //   sort: ''
+    //   //sort: ''
     // },
         {
       id: 'f71',
@@ -563,7 +563,7 @@ module.exports = {
       totalType: 'totalSoldPrice',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     {
       id: '63',
@@ -590,7 +590,7 @@ module.exports = {
       totalType: 'totalRealPrice',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     // {
     //   id: 'vd15',
@@ -604,7 +604,7 @@ module.exports = {
     //   totalType: 'totalExchange',
     //   toFixed: false,
     //   countCut: 2,
-    //   sort: ''
+    //   //sort: ''
     // },
     // {
     //   id: 'vs16',
@@ -670,7 +670,7 @@ module.exports = {
       totalType: 'totalCost',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     {
       id: 'g811',
@@ -684,7 +684,7 @@ module.exports = {
       totalType: 'margin',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     }
   ],
 
@@ -715,7 +715,7 @@ module.exports = {
       totalType: '', //小计
       toFixed: false,
       countCut: 0,
-      sort: '1'
+      //sort: '1'
     },
     {
       id: '13',
@@ -729,7 +729,7 @@ module.exports = {
       totalType: '',
       toFixed: false,
       countCut: 0,
-      sort: ''
+      //sort: ''
     },
     {
       id: '21',
@@ -743,7 +743,7 @@ module.exports = {
       totalType: 'totalNum',
       toFixed: false,
       countCut: 0,
-      sort: ''
+      //sort: ''
     },
     {
       id: '42',
@@ -757,7 +757,7 @@ module.exports = {
       totalType: 'totalWeight',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     {
       id: '234s',
@@ -771,7 +771,7 @@ module.exports = {
       totalType: 'totalGoldWeight',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     // {
     //   id: 'f17',
@@ -812,7 +812,7 @@ module.exports = {
       totalType: 'totalSoldPrice',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     {
       id: '63',
@@ -839,7 +839,7 @@ module.exports = {
       totalType: 'totalRealPrice',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     // {
     //   id: 'vd15',
@@ -853,7 +853,7 @@ module.exports = {
     //   totalType: 'totalExchange',
     //   toFixed: false,
     //   countCut: 2,
-    //   sort: ''
+    //   //sort: ''
     // },
     // {
     //   id: 'vs16',
@@ -919,7 +919,7 @@ module.exports = {
       totalType: 'totalCost',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     },
     {
       id: 'g811',
@@ -933,7 +933,7 @@ module.exports = {
       totalType: 'margin',
       toFixed: false,
       countCut: 2,
-      sort: ''
+      //sort: ''
     }
   ]
 
