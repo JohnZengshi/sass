@@ -1942,8 +1942,42 @@ export default {
             this.send()
         },
     },
-}
-        
+    dataBack(parm) {
+      console.log("回调", parm);
+      let optionsList = [];
+      switch (parm.keyName) {
+        case "productTypeId":
+          parm.samllList.forEach((item, index) => {
+            optionsList[index] = { productClassId: item };
+          });
+          this.dataGridOptions.productClassIdList = optionsList;
+          break;
+        case "colourId":
+          parm.samllList.forEach((item, index) => {
+            optionsList[index] = { colourNameId: item };
+          });
+          this.dataGridOptions.colourNameIdList = optionsList;
+          break;
+        case "jeweId":
+          parm.samllList.forEach((item, index) => {
+            optionsList[index] = { gemNameId: item };
+          });
+          this.dataGridOptions.gemNameIdList = optionsList;
+          break;
+        case "jewelryId":
+          parm.samllList.forEach((item, index) => {
+            optionsList[index] = { jewelNameId: item };
+          });
+          this.dataGridOptions.jewelNameIdList = optionsList;
+          break;
+        default:
+          break;
+      }
+      this.send();
+      
+    }
+  }
+};
 </script>
 <style lang="scss" src="./../../../assets/css/customDialog/customDialog.scss"></style>
 <style lang="scss" src="../../../assets/css/template/commodityList.scss" scoped></style>
