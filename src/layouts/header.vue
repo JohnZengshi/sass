@@ -399,6 +399,7 @@ export default {
     },
     close(parm) {
       console.log('点击关闭',parm)
+      console.log('关闭')
       this.ListDetails = parm
     },
     // 打开详情的弹窗
