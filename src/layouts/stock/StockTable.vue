@@ -1930,17 +1930,13 @@ export default {
   }
   // 多重筛选
   .class_btn_wrap {
-    float: left;
-    
     width: 300px;
     height: 26px;
-    
-    margin-left: 10px;
-    margin-top: 12px;
-
-    color: #666;
     border-radius: 4px;
     border: 1px solid #d6d6d6;
+    float: left;
+    margin-left: 10px;
+    margin-top: 12px;
   }
   // 表格筛选
   .tab_wrap {
