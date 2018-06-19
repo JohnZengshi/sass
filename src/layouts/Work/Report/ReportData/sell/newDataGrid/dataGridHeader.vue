@@ -27,7 +27,6 @@
       //   this.$emit('sortList', this.sortList)
       // },
       newList(val) {
-        debugger
         if(val.length == 0) {
           this.detailDataGridColumn.forEach((item, index) => {
             if(item.hasOwnProperty('sort')) {
@@ -141,7 +140,6 @@
 
       },
       clickClassUp(tab) { // 点击分类升序
-        debugger
         if(tab.text == '条码号') {
           this.$set(this.sortList[0], 'barcode', '1')
         }
@@ -189,7 +187,6 @@
         this.$emit('sortList', copyList)
       },
       clickClassDown(tab) { // 点击分类降序
-        debugger
         if(tab.text == '条码号') {
           this.$set(this.sortList[0], 'barcode', '2')
         }
