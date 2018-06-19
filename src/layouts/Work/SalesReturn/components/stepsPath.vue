@@ -1,10 +1,10 @@
 <template>
 <div class="steps-path" :class="{remark: isRemark}">
-  <div class="steps-item" :class="item.statusClass"  v-for="item,i in stepItem">
+  <div class="steps-item" :class="item.statusClass"  v-for="(item,i) in stepItem" :key="i">
       <span class="status">{{item.statusName}}</span>
       <div class="user">
           <p class="time" v-text="item.createTime"></p>
-          <p class="name"v-text="item.userName"></p>
+          <p class="name" v-text="item.userName"></p>
       </div>
   </div>
 </div>

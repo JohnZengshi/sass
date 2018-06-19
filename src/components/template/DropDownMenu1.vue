@@ -6,7 +6,7 @@
             <!-- <i class="el-icon-circle-close" title="清除" @click="clearTitleInfo" v-else></i> -->
         </span>
         <ul class="drop-list">
-            <li v-for="(item, index) in propList" @click.stop="itemClick(item, index)">{{getDataType(dataType, item)}}</li>
+            <li v-for="(item, index) in propList" @click.stop="itemClick(item, index)" :key="index">{{getDataType(dataType, item)}}</li>
         </ul>
     </div>
 </template>

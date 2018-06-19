@@ -38,7 +38,7 @@
                 </div>
             </div>
             <el-button type="primary" size="small" class="back-btn" @click.native="toHome">返回上一级</el-button>
-    </div>
+        </div>
   </div>
   
   <div class="Rp_dataGrid_container">
