@@ -1,7 +1,7 @@
 <template>
   <!--表格内容区-->
   <!--明细-->
-  <div class="xj-report-table-container default-line" ref="tableContainer" v-if="reportType == 1">
+  <div class="xj-report-table-container" ref="tableContainer" v-if="reportType == 1">
     <div>
       <div class="tb-tr" v-for="(tb,index) in tempArray" :key="index">
         <template v-for="(tab,indexs) in detailDataGridColumn">
@@ -18,7 +18,7 @@
     </div>
   </div>
 
-  <div class="xj-report-table-container con-line" ref="tableContainer" v-else>
+  <div class="xj-report-table-container" ref="tableContainer" v-else>
     <div>
         <div class="tb-category" v-for="(caty, ind) in otherDatagrid">
           <div v-for="(tb, index) in caty.productTypeList">
@@ -253,7 +253,9 @@
   }
 </style>
 <style scoped lang="scss">
-
+.xj-report-table-container {
+  height: 556px;
+}
   .no-data {
     height: 100%;
     background: url(~static/img/space-page.png) center center no-repeat;

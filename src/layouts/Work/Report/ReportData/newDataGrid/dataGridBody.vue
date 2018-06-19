@@ -77,7 +77,6 @@
 
 <!--产品分类-->
 <div class="ui-table-container produc-line" ref="tableContainer" v-else-if="reportType == 3">
-	123123
 	<div>
 		<div class="tb-category" v-for="(caty,index) in dataGridStorage.dataList" :key="index">
 		  <template v-for="(tb, index) in caty.productTypeList">

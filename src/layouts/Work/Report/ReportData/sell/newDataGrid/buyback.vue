@@ -18,6 +18,8 @@
         @lazyloadSend = "lazyloadSend"
 		@tabCell="tabCell">
 	</data-grid-body>
+    <slot>
+    </slot>
 	<!--表尾  -->
 	<data-grid-footer :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="dataGridStorage" :reportType = "reportType" @tabCell="tabCell"></data-grid-footer>
 </div>

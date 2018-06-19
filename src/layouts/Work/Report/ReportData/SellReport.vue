@@ -192,23 +192,23 @@
 					</div>
 
 					<!--收银报表-->
-					<div class="rp_dataGridTemp" style="padding-top: 0;" :class="tabShow" v-if="sellShowId == 'collect'">
+					<div class="xj-report-rp_dataGridTemp" style="padding-top: 0;" :class="tabShow" v-if="sellShowId == 'collect'">
 						<report-detail-collect :dataGridStorage="collectStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" @scrollClass="tabScrollShow" :reportType="getReportType()">
 						</report-detail-collect>
 					</div>
 
 					<!--回购报表-->
-					<div class="rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
+					<div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
 						<report-detail-trade :dataGridStorage="tradeStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
-						</report-detail-trade>
-            <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1 && tradeStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>            
+              <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1 && tradeStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>
+						</report-detail-trade>            
 					</div>
 
 					<!--销售报表-->
-					<div class="rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
+					<div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
 						<report-detail :dataGridStorage="sellStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" :positionSwitch="positionSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
-						</report-detail>
-            <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type === 1 && sellStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>                        
+               <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type === 1 && sellStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>
+						</report-detail>                      
 					</div>
 
 				</div>
@@ -624,18 +624,8 @@ export default {
       customDialog: false, // 自定义列表弹窗
       resetFlag: false,
       isShowCost: "",
-      sortList: [
-        {
-          name: "产品类别",
-          value: "1"
-        }
-      ],
-      newList: [
-        {
-          name: "产品类别",
-          value: "1"
-        }
-      ]
+      sortList: [],
+      newList: []
     };
   },
 
@@ -733,6 +723,8 @@ export default {
 
     },
     filterHeaderComplate (parm) {
+        this.sortList = []
+        this.dataGridOptions.sortList = []
         Object.assign(this.dataGridOptions, parm)
         this.send()
     },
@@ -881,7 +873,7 @@ export default {
     },
 
     sortListAct(val) {
-      debugger
+      
       // 列表排序
       this.dataGridOptions.sortList = val;
       this.send();
@@ -924,6 +916,12 @@ export default {
               value: item.price
             });
             break;
+          case "realPrice":
+            this.sortList.push({
+              name: "实售价",
+              value: item.realPrice
+            });
+            break;
           case "cost":
             this.sortList.push({
               name: "成本",
@@ -936,6 +934,29 @@ export default {
               value: item.num
             });
             break;
+          case "margin":
+          
+            this.sortList.push({
+              name: "毛利",
+              value: item.margin
+            });
+            break; 
+
+          case "estimatePrice":
+            this.sortList.push({
+              name: "旧料价",
+              value: item.estimatePrice
+            });
+            break; 
+
+          case "actualPrice":
+          
+            this.sortList.push({
+              name: "回购价",
+              value: item.actualPrice
+            });
+            break; 
+
         }
       });
     },
@@ -1364,6 +1385,7 @@ export default {
     },
 
     send(type) {
+      
       if (this.modleSwitch == '2') {
         this.dataGridOptions.sellStatus = ''        
         this.sellSend();
@@ -1445,11 +1467,11 @@ export default {
           delete this.dataGridOptions.cashierList;
         }
       }
+      
       seekBuyBackList(this.dataGridOptions).then(res => {
         if (res.data.state === 200) {
           //数据表格数据
           this.tradeStorage = res.data.data;
-          console.log('回购数据',this.tradeStorage)
         } else {
           this.$message({
             type: "error",

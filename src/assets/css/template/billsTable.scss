@@ -393,8 +393,8 @@
     .tb-tr{
       height: 40px;
       display: flex;
-      transition: all .3s;
       border-bottom: 1px solid #f0f2f5;
+      transition: background .3s;
       &:nth-child(even){
         background-color: #fbfbfb;
       }
@@ -464,6 +464,56 @@
         }
       }
   }
+}
+.xj-report-table-footer{
+    background-color: #2993f8;
+    height: 40px;
+    display: flex;
+    border-radius: 0 0 4px 4px;
+    width: 100%;
+    
+    >.th_footer{
+        display:inline-block;
+        text-align: center;
+        font-size:12px;
+        height: 40px;
+        overflow: hidden;
+        position: relative;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        color: #fff; 
+        p{
+           font-weight: normal;
+           color: #fff; 
+           font-weight: bold;
+           line-height: 40px;
+           height: 40px;
+           
+           >i{
+              font-style:normal;
+              color: #fff;
+              font-weight: normal;
+              margin-left: 2px;  
+            }
+        }
+        
+        .totalNum{
+            font-size: 15px;
+            font-weight: bold;
+        }
+          
+    }
+}
+.xj-report-rp_dataGridTemp{
+    position: relative;
+    height: 100%;
+    padding: 40px 0 0;
+    
+    .ui-table_column{
+        position: relative;
+        width: 100%;
+        margin-top: -40px;
+    }
 }
 .xj-report-table-wrap{
     border-radius: 0 4px 4px 4px;

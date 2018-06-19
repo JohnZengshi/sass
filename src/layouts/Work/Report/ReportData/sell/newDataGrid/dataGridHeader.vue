@@ -22,13 +22,12 @@
     },
     watch: {
       // 设置初始化排序
-      reportType(val) {
-        this.sortList = [{
-          classTypeName: '1'
-        }]
-        this.$emit('sortList', this.sortList)
-      },
+      // reportType(val) {
+      //   this.sortList = []
+      //   this.$emit('sortList', this.sortList)
+      // },
       newList(val) {
+        debugger
         if(val.length == 0) {
           this.detailDataGridColumn.forEach((item, index) => {
             if(item.hasOwnProperty('sort')) {
@@ -85,8 +84,11 @@
             }
           })
         }
-        debugger
-        this.$emit('sortList', this.sortList)
+        let copyList = []
+        for (let i in this.sortList[0]) {
+            copyList.push({[i]: this.sortList[0][i]})
+        }
+        this.$emit('sortList', copyList)
       }
     },
     methods: {
@@ -139,7 +141,7 @@
 
       },
       clickClassUp(tab) { // 点击分类升序
-
+        debugger
         if(tab.text == '条码号') {
           this.$set(this.sortList[0], 'barcode', '1')
         }
@@ -170,7 +172,15 @@
         if(tab.text == '成本') {
           this.$set(this.sortList[0], 'cost', '1')
         }
-        debugger
+        if(tab.text == '毛利') {
+          this.$set(this.sortList[0], 'margin', '1')
+        }
+        if(tab.text == '旧料价') {
+          this.$set(this.sortList[0], 'estimatePrice', '1')
+        }
+        if(tab.text == '回购价') {
+          this.$set(this.sortList[0], 'actualPrice', '1')
+        }
         this.$set(tab, 'sort', '1')
         let copyList = []
         for (let i in this.sortList[0]) {
@@ -179,6 +189,7 @@
         this.$emit('sortList', copyList)
       },
       clickClassDown(tab) { // 点击分类降序
+        debugger
         if(tab.text == '条码号') {
           this.$set(this.sortList[0], 'barcode', '2')
         }
@@ -209,7 +220,15 @@
         if(tab.text == '成本') {
           this.$set(this.sortList[0], 'cost', '2')
         }
-        debugger
+        if(tab.text == '毛利') {
+          this.$set(this.sortList[0], 'margin', '2')
+        }
+        if(tab.text == '旧料价') {
+          this.$set(this.sortList[0], 'estimatePrice', '2')
+        }
+        if(tab.text == '回购价') {
+          this.$set(this.sortList[0], 'actualPrice', '2')
+        }
         this.$set(tab, 'sort', '2')
         let copyList = []
         for (let i in this.sortList[0]) {

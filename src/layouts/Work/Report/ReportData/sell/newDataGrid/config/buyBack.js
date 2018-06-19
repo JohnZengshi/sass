@@ -376,7 +376,7 @@ module.exports = {
     	{ 
     		id: '12',  
     		text: '产品类别',
-    		width:'10%', 
+    		width:'12%', 
     		type:'', 
     		unit: '',
     		footerUnit: '',
@@ -391,7 +391,7 @@ module.exports = {
     	{ 
     		id: '2',  
     		text: '件数',
-    		width:'10%',
+    		width:'12%',
     		type:'totalNum', 
     		unit: '',
     		footerUnit: '',
@@ -502,7 +502,7 @@ module.exports = {
     	{ 
     		id: '6',  
     		text: '工费总额',
-    		width:'10%', 
+    		width:'14%', 
     		type:'totalWage', 
     		unit: '(元)',
     		footerUnit: '',
@@ -516,7 +516,7 @@ module.exports = {
     	{ 
     		id: '7',  
     		text: '回购价', 
-    		width:'10%', 
+    		width:'14%', 
     		// type:'totalBuy', 
             type: 'totalActualPrice',
     		unit: '(元)',

@@ -6,25 +6,25 @@
       <!-- 销售 -->
       <div class="tb-category" v-if="otherDatagrid.length">
 
-        <div class="left-type-name-wrap" :style="getbuyBackRightH(otherDatagrid)">
+        <div class="left-type-name-wrap" :style="getbuyBackRightHX(otherDatagrid)">
           <p>销售</p>
         </div>
 
           <div class="right-type-inner-wrap">
             <div :index="resetIndex(ind)" v-for="(caty, ind) in otherDatagrid">
-              <div v-for="(tb, index) in caty.productTypeList">
-                <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()">
+              <div class="tb-tr"  v-for="(tb, index) in caty.productTypeList">
+                <!-- <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()"> -->
                   <template v-for="(tab, indexGrid) in detailDataGridColumn">
                     
                     <div 
                       class="tb-td category-td" 
-                      v-if="tab.text == '类型' && index == 0 && index1 == 0 && indexGrid == 0" 
+                      v-if="tab.text == '类型' && index == 0 && indexGrid == 0" 
                       :style="tableCell(tab.width)">
-                      <i :style="sellTypeNameH(caty)">{{filterName(caty[tab.childType])}}</i>
+                      <i :style="sellTypeNameHX(caty)">{{filterName(caty[tab.childType])}}</i>
 
                     </div>
 
-                    <div 
+                    <div
                       class="tb-td"
                       v-else-if="tab.text == '产品类别'" 
                       :class="{backLine:tab.childType != ''}" 
@@ -35,13 +35,13 @@
                     <div 
                       class="tb-td" 
                       v-else 
-                      :class="{backLine:tab.childType != ''}" 
+                      :class="{backLine:tab.totalType != ''}" 
                       :style="tableCell(tab.width)" 
-                      v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
+                      v-text="tab.totalType == ''? getIndex() : tb[tab.totalType]">
                       
                     </div>
                   </template>
-                </div>
+        <!--         </div> -->
 
               </div>
               <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
@@ -73,51 +73,51 @@
 
     <div class="tb-category" v-if="buyBackDataList.length">
 
-      <div class="left-type-name-wrap" :style="getbuyBackRightH(buyBackDataList)">
+      <div class="left-type-name-wrap" :style="getbuyBackRightHX(buyBackDataList)">
         <p>回购</p>
       </div>
 
       <div class="right-type-inner-wrap">
-        <div class="tb-category" v-for="(caty, ind) in buyBackDataList">
-          <div v-for="(tb, index) in caty.productTypeList">
-            <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()">
-              <template v-for="(tab, indexGrid) in detailDataGridColumnTwo">
-                
-                <div 
-                  class="tb-td category-td" 
-                  v-if="tab.text == '类型' && index == 0 && index1 == 0 && indexGrid == 0" 
-                  :style="tableCell(tab.width)">
-                  <i :style="sellTypeNameH(caty)">{{caty[tab.childType]}}</i>
-
-                </div>
-
-                <div 
-                  class="tb-td"
-                  v-else-if="tab.text == '产品类别'" 
-                  :class="{backLine:tab.childType != ''}" 
-                  :style="tableCell(tab.width)" 
-                  v-text="tab.childType == ''? getIndex() : tb[tab.childType]">
-                </div>
-                
-                <div 
-                  class="tb-td" 
-                  v-else 
-                  :class="{backLine:tab.childType != ''}" 
-                  :style="tableCell(tab.width)" 
-                  v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
+          <div :index="resetIndex(ind)" v-for="(caty, ind) in buyBackDataList">
+            <div class="tb-tr"  v-for="(tb, index) in caty.productTypeList">
+              <!-- <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()"> -->
+                <template v-for="(tab, indexGrid) in detailDataGridColumnTwo">
                   
-                </div>
-              </template>
-            </div>
+                  <div 
+                    class="tb-td category-td" 
+                    v-if="tab.text == '类型' && index == 0 && indexGrid == 0" 
+                    :style="tableCell(tab.width)">
+                    <i :style="sellTypeNameHX(caty)">{{caty[tab.childType]}}</i>
 
-          </div>
-          <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
-          <div class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
-            <!-- 类型小计 -->
-            <div class="tb-td" v-for="(tab,f) in detailDataGridColumnTwo" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : caty[tab.totalType]"></div>
+                  </div>
+
+                  <div
+                    class="tb-td"
+                    v-else-if="tab.text == '产品类别'" 
+                    :class="{backLine:tab.childType != ''}" 
+                    :style="tableCell(tab.width)" 
+                    v-text="tab.childType == ''? getIndex() : tb[tab.childType]">
+                  </div>
+                  
+                  <div 
+                    class="tb-td" 
+                    v-else 
+                    :class="{backLine:tab.totalType != ''}" 
+                    :style="tableCell(tab.width)" 
+                    v-text="tab.totalType == ''? getIndex() : tb[tab.totalType]">
+                    
+                  </div>
+                </template>
+      <!--         </div> -->
+
+            </div>
+            <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
+            <div class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
+              <!-- 类型小计 -->
+              <div class="tb-td" v-for="(tab,f) in detailDataGridColumnTwo" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : caty[tab.totalType]"></div>
+            </div>
           </div>
         </div>
-      </div>
 
       <div class="total-num-wrap" v-if="!positionSwitch">
         <div>
@@ -249,6 +249,25 @@
           'height': Num + 'px'
         }
       },
+      getbuyBackRightHX (parm) {
+        let Num = 0
+        for (let i of parm) {
+          Num += 40
+          for (let j of i.productTypeList) {
+            if (j) {
+              Num += 40
+              // for (let j of j.detailList) {
+              //   Num += 40
+              // }
+
+            }
+          }
+        }
+
+        return {
+          'height': Num + 'px'
+        }
+      },
       // 提取高度
       getbuyBackRightH (parm) {
         let Num = 0
@@ -274,6 +293,20 @@
         if (parm) {
 
           for (let j of parm.detailList) {
+            Num += 40
+          }
+        }
+
+        return {
+          'height': Num + 'px'
+        }
+      },
+      sellTypeNameHX (parm) {
+        console.log('----------=======parm', parm)
+        let Num = 0
+        if (parm) {
+
+          for (let j of parm.productTypeList) {
             Num += 40
           }
         }

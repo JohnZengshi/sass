@@ -1,7 +1,7 @@
 <template>
   <!--表格内容区-->
   <!--明细-->
-  <div class="xj-report-table-container default-line" ref="tableContainer" v-if="reportType == 1">
+  <div class="xj-report-table-container" ref="tableContainer" v-if="reportType == 1">
     <div>
       <div class="tb-tr" v-for="(tb,index) in tempArray" :key="index">
         <template v-for="(tab,indexs) in detailDataGridColumn">
@@ -18,7 +18,44 @@
     </div>
   </div>
 
-  <div class="xj-report-table-container con-line" ref="tableContainer" v-else>
+
+    <!--产品分类-->
+    <div class="xj-report-table-container" ref="tableContainer" v-else-if="reportType == 3">
+      <div>
+        <div class="tb-category" v-for="(caty,index) in otherDatagrid" :key="index">
+          <template v-for="(tb, index) in caty.productTypeList">
+            <div class="tb-tr" :key="index">
+              <template v-for="(tab,index4) in detailDataGridColumn">
+                <div class="tb-td category-td"
+                  :key="index4"
+                  v-if="tab.text == '产品类别'" 
+                  :style="tableCell(tab.width)"
+                  >
+                  {{tb[tab.childType]}}
+                </div>
+                <div class="tb-td"
+                  v-else
+                  :key="index4"
+                  :style="tableCell(tab.width)" 
+                  v-text = "tab.totalType == ''? (index+1) : tb[tab.totalType]">
+                </div>
+              </template>
+            </div>
+          </template>
+          
+        </div>
+        <div v-if="isDate" class="no-data"></div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+  <div class="xj-report-table-container" ref="tableContainer" v-else>
     <div>
       <div class="tb-category" v-for="(caty, ind) in otherDatagrid" :key="ind" :index="resetIndex(ind)">
         <div v-for="(tb, index) in caty.productTypeList" :key="index">
@@ -107,7 +144,7 @@
           scrollAmount: 200,
                 preventDefault: false,
                 normalizeDelta: true,
-                scrollInertia : 40
+                scrollInertia : 50
         },
         callbacks: {
           onTotalScroll: function () {
@@ -220,6 +257,9 @@
   }
 </style>
 <style scoped lang="scss">
+.xj-report-table-container {
+  height: 556px;
+}
   // .xj-report-table-container {
   //   height: 515px;
   //   overflow-y: auto;
