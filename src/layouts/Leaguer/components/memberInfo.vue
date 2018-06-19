@@ -2,7 +2,6 @@
     <el-dialog
         :visible.sync="memberFlag"
         :title="titleMessage"
-        :modal="false"
         top="10%"
         customClass="member-info-dialog"
         :close-on-click-modal="false"

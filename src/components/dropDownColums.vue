@@ -180,14 +180,12 @@ export default {
             this.checkedCities = []
             this.smallIdList = []
             this.allChecked = []
-            this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll, keyName: this.keyName})            
         }
     }
 }
 </script>
 <style lang="scss">
 .dropColums-wrap{
-    color: #666;
   .el-checkbox{
     height: 20px!important;
     line-height: 20px!important;

@@ -187,7 +187,7 @@
                 <span style="color: #d6d6d6">丨</span>
                 <!-- 自定义 -->
                 <span style="position: relative" :class="3 == tabClassActive.index ? 'myspanactive' : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)" @click="tabs(3,4)">自定义
-                <div class="customDia site" ref="customDia" style="display: none;">
+                <div class="customDia site" ref="customDia" style="">
                     <div class="body">
                     <div class="list-wrap">
                         <ul>
@@ -684,6 +684,10 @@ export default {
             }
         },
         resetOption () {
+            // this.openReset = false
+            // setTimeout(() => {
+            //    this.openReset = true 
+            // }, 100)
             this.dataGridOptions.wColorId = ''
             this.dataGridOptions.wGemId = ''
             this.dataGridOptions.wJewelryId = '1'
@@ -691,7 +695,7 @@ export default {
             this.dataGridOptions.nGemId = ''
             this.dataGridOptions.nJewelryId = '1'
             this.resetFlag = true
-            this.send()
+            // this.send()
         },
         compOption () {
             if (this.dataGridOptions.type != 4) {
@@ -809,17 +813,15 @@ export default {
           //console.log(index)
           //if (this.dataGridOptions.type == 4 && index == 3) {
             //console.log(evt.target)
-            this.$refs.customDia.style.zIndex = "10";
-            this.$refs.customDia.style.opacity = "1";
-            this.$refs.customDia.style.display = "block";
+            this.$refs.customDia.style.zIndex = "10"
+            this.$refs.customDia.style.opacity = '1'
           //}
         },
         tabOut(index, evt) {
           //if (this.dataGridOptions.type == 4 && index == 3) {
             //console.log(evt.target)
-            this.$refs.customDia.style.zIndex = "-1";
-            this.$refs.customDia.style.opacity = "0";
-            this.$refs.customDia.style.display = "none";
+            this.$refs.customDia.style.zIndex = "-1"
+            this.$refs.customDia.style.opacity = '0'
           //}
         },
         cancelSort (item, index) { // 取消排序
@@ -1278,8 +1280,8 @@ export default {
           this.loading = true;
           seekOutStorageReport(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
-                this.loading = false
-                this.dataGridStorage = res.data.data
+              this.dataGridStorage = res.data.data
+              this.loading = false
             }
           }, (res) => {
 
