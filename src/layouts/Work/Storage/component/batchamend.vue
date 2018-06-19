@@ -49,8 +49,8 @@
         <!-- <div v-show="selectOrInput == 'input'" class="input-w200">
           <el-input v-model="popup.amendingData"></el-input>
         </div> -->
-		<!-- ------------------------------修改前 -->
-		<div v-show="selectOrInput == 'input'" class="input-w200">
+        <!-- ------------------------------修改前 -->
+        <div v-show="selectOrInput == 'input'" class="input-w200">
           <el-input v-model="amendingData"></el-input>
         </div>
         <!-- 选择框 -->
@@ -63,25 +63,25 @@
     </ul>
     <ul class="amending-scope">
       <el-radio-group v-model="popup.amendingPitchOn">
+        <li class="li-bottom">
+          <!--<el-radio :label='popup.amendingCustomRow'>修改范围</el-radio>-->
+          <span class="selTel">修改范围</span>
+          <div class="input-s82">
+            <el-input @input.native="selectInput($event,'amendingStartRow')" @blur="selectRange('sel1')" v-model="popup.amendingStartRow"
+              :disabled='popup.amendingPitchOn === "2" || switchType'></el-input>
+          </div>
+          <span class="m-lr-10 font14 conact">-</span>
+          <div class="input-s82">
+            <el-input @input.native="selectInput($event,'amendingEndRow')" @blur="selectRange('sel2')" v-model="popup.amendingEndRow"
+              :disabled='popup.amendingPitchOn === "2" || switchType'></el-input>
+          </div>
+          <span class="titleBox1" v-if="popup.editRanges">{{popup.blurTitle}}</span>
+        </li>
         <li class="all-check">
           <span class="selTel">全选</span>
           <!--<el-radio :label='popup.amendingAllRow'>全选</el-radio>-->
           <el-switch v-model="switchType" on-text="" off-text="" @change="switchAct">
           </el-switch>
-        </li>
-        <li class="li-bottom" v-show="!switchType">
-          <!--<el-radio :label='popup.amendingCustomRow'>修改范围</el-radio>-->
-          <span class="selTel">修改范围</span>
-          <div class="input-s82">
-            <el-input @input.native="selectInput($event,'amendingStartRow')" @blur="selectRange('sel1')" v-model="popup.amendingStartRow"
-              :disabled='popup.amendingPitchOn === "2"'></el-input>
-          </div>
-          <span class="m-lr-10 font14 conact">-</span>
-          <div class="input-s82">
-            <el-input @input.native="selectInput($event,'amendingEndRow')" @blur="selectRange('sel2')" v-model="popup.amendingEndRow"
-              :disabled='popup.amendingPitchOn === "2"'></el-input>
-          </div>
-          <span class="titleBox1" v-if="popup.editRanges">{{popup.blurTitle}}</span>
         </li>
       </el-radio-group>
     </ul>
@@ -156,7 +156,7 @@
         // 选择框可选的值
         selval: [],
         // 选择框或输入框中的值
-		amendingData: "",
+        amendingData: "",
       }
     },
 
@@ -201,8 +201,8 @@
     methods: {
       // 关闭弹窗
       hidebatchamend() {
-		this.$emit('updataBatchamend', false);
-		this.resetPopupData();
+        this.$emit('updataBatchamend', false);
+        this.resetPopupData();
       },
 
       littleClasschange(val) {
@@ -250,7 +250,7 @@
         //选择输入
         // this.$set(this.popup, 'isShowData', this.popup.amendingData == '')
         // <!-- -------------------------------- -->
-		
+
         // 非全选情况要对修改范围进行验证
         if (!this.switchType) {
           if (!this.selectRange('sel1')) {
@@ -300,8 +300,8 @@
             }).catch((res) => {})
           }
         }
-		
-		this.resetPopupData();
+
+        this.resetPopupData();
       },
 
       //选择范围错误提示
@@ -621,10 +621,9 @@
           color: red;
           font-size: 12px;
         }
-      }
-      li:nth-child(1) {
-        margin-bottom: 30px;
-      }
+      } // li:nth-child(1) {
+      //   margin-bottom: 30px;
+      // }
       li.all-check {
         height: 22px;
         &>span {
@@ -633,7 +632,7 @@
         }
       }
       li.li-bottom {
-        margin-bottom: 12px;
+        margin-bottom: 35px;
       }
     }
     .sure-btn {
@@ -652,37 +651,54 @@
       cursor: pointer;
     }
   }
+
   .multiSelectBox {
     // left: 760px !important;
-	transform: translateX(160px);
-	border-radius: 10px;
+    transform: translateX(160px);
+    border-radius: 10px;
     border: none;
-	height: 380px;
-	overflow: hidden;
-	ul{
-		width: 120px;
-		height: 100%;
-		padding: 0;
-		&:first-of-type{
-				li{
-				&:hover{
-				}
-			}
-		}
-		li{
-			line-height: 42px;
-			height: 42px;
-			padding-top: 0;
-			padding-bottom: 0;
-			.el-cascader-menu__item.is-active{
-				color: #48576a !important;
-    			background-color: #e4e8f1 !important;
-			}
-			.el-cascader-menu__item.is-active:hover{
-				background-color: #e4e8f1 !important;
-			}
-		}
-	}
+    height: 380px;
+    overflow: hidden;
+    ul {
+      width: 120px;
+      height: 100%;
+      padding: 0;
+      &:first-of-type {
+        li {
+          &:hover {}
+        }
+      }
+      li {
+        line-height: 42px;
+        height: 42px;
+        padding-top: 0;
+        padding-bottom: 0;
+        .el-cascader-menu__item.is-active {
+          color: #48576a !important;
+          background-color: #e4e8f1 !important;
+        }
+        .el-cascader-menu__item.is-active:hover {
+          background-color: #e4e8f1 !important;
+        }
+      }
+    }
+  }
+
+  .el-cascader-menu__item {
+    text-align: center;
+    &.is-active {
+      color: #2993F8;
+      background-color: #e4e8f1 !important;
+      &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        left: 0;
+        width: 3px;
+        height: 100%;
+        background-color: #2993F8;
+      }
+    }
   }
 
 </style>
