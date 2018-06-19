@@ -182,7 +182,6 @@
 				//生成对象
 				this.pageList = this.pageFactory(pageNumber, dataList, template);
 				sessionStorage.setItem('生成对象pageList', JSON.stringify(this.pageList))
-				debugger
 				this.print();
 			},
 			/**
@@ -223,19 +222,16 @@
 			getBaseList(dataList, template) {
 				let list = [];
 				for(let component of template.components) {
-						// debugger
 					// ItemListComponent（动态）  ContainerComponent（组合）
 					if(component.type != "ItemListComponent" && component.type != "ContainerComponent") {
 						// 获取基本信息时，默认把第一个产品信息当做基本信息使用-----用户非法输入 -start
 						let array = _.concat(dataList.baseInfoList, dataList.productList[0].codeList);
 						// let array = _.concat(dataList.baseInfoList);
 						let temp = _.find(array, (o) => {
-							// debugger
 							console.log('o.key', o.key)
 							return o.key == component.data.propertyCode
 						})
 
-						debugger
 
 						if(temp) component.lable = temp.value;
 						// -start

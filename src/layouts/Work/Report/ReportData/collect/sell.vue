@@ -12,13 +12,17 @@
 	<data-grid-body 
 		:detailDataGridColumn="detailDataGridColumn" 
 		:dataGridStorage="dataGridStorage" 
+    :detailDataGridColumnTwo="detailDataGridColumnTwo"
+    :buyBackStorage="buyBackStorage"
 		@tabCell="tabCell">
 	</data-grid-body>
 	
 	<!--表尾  -->
-	<data-grid-footer 
+	<data-grid-footer
+      :cashierStatistics="cashierStatistics"
 	    :detailDataGridColumn="detailDataGridColumn" 
-	    :dataGridStorage="dataGridStorage" 
+	    :dataGridStorage="dataGridStorage"
+      :buyBackStorage="buyBackStorage"
 	    @tabCell="tabCell">
 	</data-grid-footer>
 </div>
@@ -35,7 +39,8 @@ export default{
 	data(){
 		return{
 			tempDatagrid : [],
-			detailDataGridColumn : []
+			detailDataGridColumn : [],
+      detailDataGridColumnTwo: []
 		}
 	},
 	watch:{
@@ -48,7 +53,7 @@ export default{
 		DataGridBody,
 		DataGridHeader
 	},
-	props : ['dataGridStorage','reportType'],
+	props : ['dataGridStorage','reportType', 'buyBackStorage', 'cashierStatistics'],
 	
 	methods:{
 		//单元格宽度
@@ -66,11 +71,13 @@ export default{
     },
     
     setTableData(){
-      if( this.reportType == 1 ){
-        this.$set(this,'detailDataGridColumn', config.sell)
-      }else{
-        this.$set(this,'detailDataGridColumn', config.trade)
-      }
+      this.$set(this,'detailDataGridColumn', config.trade)
+      this.$set(this,'detailDataGridColumnTwo', config.tradeTwo)
+      // if( this.reportType == 1 ){
+      //   this.$set(this,'detailDataGridColumn', config.sell)
+      // }else{
+      //   this.$set(this,'detailDataGridColumn', config.trade)
+      // }
     }
 	},
 	

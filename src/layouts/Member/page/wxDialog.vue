@@ -69,7 +69,6 @@ export default{
       // 微信扫一扫登录 第一步 拿到state
       this.$http.get(serverHost + '/v1/auth/getQRAuthCode').then(res =>{
         
-        debugger
         if( res.data.state == 99){
             // 服务器错误
           this.$store.dispatch('workPopupError', res.data.msg)
@@ -92,7 +91,6 @@ export default{
           })
         }
       })
-      debugger
       console.log('二维码参数', location)
     }
     

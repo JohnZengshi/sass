@@ -1,24 +1,32 @@
 <template>
-  <div class="print-down-menu-main">
-    <span class="title-name" :class="titleInfo ? '' : 'select'" :style="specialStyle">
+  <div class="no-border-down-menu-main">
+    <span class="title-name" :class="titleInfo ? '' : 'select'">
       {{titleInfo}}
-      <i v-show="!isSolid" class="iconfont icon-arrow-down drop-triangle" v-if="noChange"></i>
-      <i v-show="isSolid" class="iconfont icon-xiala1 drop-triangle" style="margin-left: 5px;" v-if="noChange"></i>
-      <i v-show="!isSolid" class="el-icon-circle-close" title="清除" @click="clearTitleInfo"
+      <i v-show="!isSolid" class="iconfont icon-arrow-down drop-triangle" v-if="noChange"></i><i v-show="isSolid" class="iconfont icon-xiala drop-triangle"></i><i class="el-icon-circle-close" title="清除" @click="clearTitleInfo"
       v-if="!noChange && !noClear"></i>
     </span>
     <ul class="drop-list">
-      <li :class="{active: actIndex == index}" v-for="(item, index) in showList" @click="itemClick(item, index)">{{nameKey ? item[nameKey] : item.name || item.shopName || item.userName}}</li>
+      <li :class="{active: actIndex == index}" v-for="(item, index) in showList" @click="itemClick(item, index)">{{nameKey ? item[nameKey] : item.name}}</li>
     </ul>
   </div>
 </template>
 <script>
 export default {
-  props: ['titleInfo', 'showList', 'isSolid', 'specialStyle', 'noClear', 'nameKey'], // isSolid->实心 nameKey->取值的key
+  props: ['titleInfo', 'showList', 'isSolid', 'noClear', 'nameKey', 'keyName'], // isSolid->实心 nameKey->取值的key
   data () {
     return {
       actIndex: null,
       noChange: true // 选中标记
+      // showList: [
+      //   {
+      //     name: 123,
+      //     id: 789
+      //   },
+      //   {
+      //     name: 6666,
+      //     id: 7889
+      //   }
+      // ]
     }
   },
   methods: {
@@ -28,15 +36,15 @@ export default {
       this.noChange = true
     },
     itemClick (item, index) {
-      this.noChange = false
-      this.actIndex = null,
-      this.$emit("changeData", item)
+        this.$emit('changeData', {item: item, keyName: this.keyName})
+        this.noChange = false
+        this.actIndex = index
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.print-down-menu-main{
+.no-border-down-menu-main{
     display: inline-block;
     position: relative;
     cursor: pointer;
@@ -48,7 +56,7 @@ export default {
         height: 0;
         position: absolute;
         top: 38px;
-        right:0px;
+        right: 0px;
         z-index: 102;
         transition: all .3s;
         margin-left: -3px;
@@ -78,16 +86,18 @@ export default {
     }
     .title-name {
         padding: 0 8px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
         &.select{
             //color: #333;
         }
         color:#666;
         text-align: center;
         display: block;
-        height: 30px;
+        height: 28px;
         // font-weight: bold;
         font-size: 14px;
-        line-height: 30px;
+        line-height: 28px;
         .drop-triangle {
             font-size:12px;
             display: inline-block;
@@ -127,7 +137,7 @@ export default {
             text-align: center;
             height: 42px;
             line-height: 42px;
-            min-width: 200px;
+            min-width: 130px;
             font-size: 13px;
             color: #333;
             white-space: nowrap;

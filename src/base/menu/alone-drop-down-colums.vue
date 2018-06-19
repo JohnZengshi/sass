@@ -153,7 +153,6 @@ export default {
         font-size: 14px;
         text-align: left;
         line-height: 26px;
-        cursor: pointer;
         i {
             position: absolute;
             right: 0;

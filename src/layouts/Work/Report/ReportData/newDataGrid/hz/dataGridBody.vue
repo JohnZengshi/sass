@@ -23,7 +23,7 @@
    <!--  <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind"> -->
     <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in filterHasData(dataGridStorage.dataList)" :index="resetIndex(ind)" :key="ind">
       <div class="left-type-name-wrap" :style="getRightH(caty)">
-        <p>{{caty.typeName}}<span v-if="caty.typeName != '期初' && caty.typeName != '期末'">({{caty.totalReceiptNum0}})</span></p>
+        <p>{{caty.typeName}}</p>
       </div>
       <div class="right-type-inner-wrap">
 
@@ -36,7 +36,7 @@
                   :key="index2"
                   v-if="tab.text == '产品类别' && index1 == 0" 
                   :style="tableCell(tab.width)" >
-                  <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7; line-height: 20px;'">{{tb[tab.childType]}}</i>
+                  <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f9f9; line-height: 20px;'">{{tb[tab.childType]}}</i>
                 </div>
                 <div class="tb-td category-td"
                   :key="index2"
@@ -47,8 +47,8 @@
                 </div>
                 <div class="tb-td"
                   v-else
-                :key="index2"
-                style="overflow: hidden;"
+                  :key="index2"
+                  style="overflow: hidden;"
                   :class="{backLine:tab.childType != ''}"
                   :style="tableCell(tab.width)" 
                   v-text = "tab.childType == ''? getIndex() : tb1[tab.childType]">
@@ -60,43 +60,45 @@
           </template>
           
           <!-- <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div> -->
-<!--               <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch">
+              <div class="tb-total" style="background:#eee;" v-if="!positionSwitch">
           <div class="tb-td"
             v-for="(tab,f) in detailDataGridColumn" 
             :key="f"
             :style="tableCell(tab.width)" 
             v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
           ></div>
-        </div> -->
- <!--        <div>
-          {{tb}}
-        </div> -->
-          <!-- 类型小计 -->
+        </div>
         </div>
       </div>
+
+
       <div class="total-num-wrap" v-if="!positionSwitch">
         <div>
-          小计
+          {{caty.typeName}}合计
         </div>
-        <ul>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li>{{caty.totalNum0}}</li>
-          <li>{{caty.totalWeight0}}</li>
-          <li>{{caty.totalGoldWeight0}}</li>
-          <li>{{caty.totalPrice0}}</li>
-          <li v-if="tabSwitch">{{caty.totalCost0}}</li>
-        </ul>
-<!--         <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch">
+        <div class="tb-total" style="background:#e9f4fe;">
           <div class="tb-td"
             v-for="(tab,f) in detailDataGridColumn" 
             :key="f"
             :style="tableCell(tab.width)" 
-            v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType], tab.countCut) : caty[tab.totalType]"
-          ></div> -->
-
+            v-html = "caty[tab.totalType0]"
+          ></div>
         </div>
+      </div>
+
+<!--       <div class="total-num-wrap" v-if="!positionSwitch">
+        <div>
+          小计
+        </div>
+        <div class="tb-td"
+          v-for="(tab,f) in detailDataGridColumn" 
+          :key="f"
+          :style="tableCell(tab.width)" 
+          v-html = "f == 0 ? '<b></b>' : tab.toFixed ? toFixed(caty[tab.totalType], tab.countCut) : caty[tab.totalType]"
+        ></div>
+
+
+        </div> -->
 <!--         <div class="tb-td"
           v-for="(tab,f) in detailDataGridColumn" 
           :key="f"
@@ -122,7 +124,7 @@
   <div>
     <div class="tb-category hz-tb-category hz-tb-category-two" v-if="caty.productTypeList.length" v-for="(caty,index) in dataGridStorage.dataList" :key="index">
       <div class="left-type-name-wrap left-y" :style="getClassRightH(caty)">
-        <p>{{caty.typeName}}<span>({{caty.totalReceiptNum0}})</span></p>
+        <p>{{caty.typeName}}</p>
       </div>
       <div class="right-type-inner-wrap">
         <template v-for="(tb, index) in caty.productTypeList">
@@ -140,11 +142,11 @@
                 v-else-if="tab.text == '位置名称' && index == 0"
                 :style="tableCell(tab.width)"
               > 
-                <i :style="'height:'+ caty.productTypeList.length * 50 +'px;  color: #2993f8; background:#fff;'">{{caty[tab.childType]}}</i>
+                <i :style="'height:'+ caty.productTypeList.length * 40 +'px;  color: #2993f8; background:#fff;'">{{caty[tab.childType]}}</i>
               </div>
               <div class="tb-td"
                 v-else
-              :key="index4"
+                :key="index4"
                 :style="tableCell(tab.width)"
                 v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
                 >
@@ -155,6 +157,21 @@
           
         </template>
       </div>
+
+      <div class="total-num-wrap" v-if="!positionSwitch">
+        <div>
+          小计
+        </div>
+        <div class="tb-total" style="background:#e9f4fe;">
+          <div class="tb-td"
+            v-for="(tab,f) in detailDataGridColumn" 
+            :key="f"
+            :style="tableCell(tab.width)" 
+            v-html = "f == 0 ? '<b></b>' : tab.toFixed ? toFixed(caty[tab.totalType], tab.countCut) : caty[tab.totalType]"
+          ></div>
+        </div>
+      </div>
+
     </div>
     <div v-if="isDate" class="no-data"></div>
   </div>
@@ -300,8 +317,9 @@ export default {
       if (parm) {
         for (let i of parm.productTypeList) {
           if (i) {
+            Num += 40
             for (let j of i.detailList) {
-              Num += 50
+              Num += 40
             }
           }
         }
@@ -315,9 +333,10 @@ export default {
       let Num = 0
       if (parm) {
         for (let i of parm.productTypeList) {
-          if (i) {
-            Num += 50
-          }
+          Num += 40
+          // for (let j of i.detailList) {
+          //   Num += 40
+          // }
         }
       }
 
@@ -430,24 +449,25 @@ export default {
       }
     }
     .left-y{
-      background-color: rgb(249, 248, 231);
+      background-color: #f9f9f9;
     }
     .right-type-inner-wrap{
       // flex: 1;
       display: inline-block;
-      width: 1029px;
+      // width: 1029px;
+      width: 1040px;
       overflow: hidden;
     }
     .total-num-wrap{
-      height: 50px;
+      height: 40px;
       width: 100%;
       // font-size: 0;
       background: #e9f4fe;
-      >div{
+      >div:first-child{
         float: left;
         display: inline-block;
-        height: 50px;
-        line-height: 50px;
+        height: 40px;
+        line-height: 40px;
         text-align: center;
         font-size: 14px;
         font-weight: bold;
@@ -458,65 +478,52 @@ export default {
         text-overflow: ellipsis;
         width: 210px;
       }
-      >ul{
-        width: 1029px;
-        display: flex;
-        // font-size: 0;
-        li{
-          // float: left;
-          // display: inline-block;
-          // height: 50px;
-          // text-align: center;
-          // line-height: 50px;
-          // text-align: center;
-          // font-size: 14px;
-          // font-weight: bold;
-          // color: #2993f8;
-          // transition: all .3s;
-          // overflow: hidden;
-          // white-space: nowrap;
-          // text-overflow: ellipsis;
-          float: left;
-          display: inline-block;
-          height: 50px;
-          line-height: 50px;
-          text-align: center;
-          font-size: 14px;
-          font-weight: 500;
-          transition: all .1s;
-          white-space: nowrap;
-          color: #333;
-          -webkit-font-smoothing: subpixel-antialiased;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          // width: 106px;
+      // >ul{
+      //   width: 1029px;
+      //   display: flex;
+      //   // font-size: 0;
+      //   li{
+      //     border: 1px solid red;
+      //     float: left;
+      //     display: inline-block;
+      //     height: 50px;
+      //     line-height: 50px;
+      //     text-align: center;
+      //     font-size: 14px;
+      //     font-weight: 500;
+      //     transition: all .1s;
+      //     white-space: nowrap;
+      //     color: #333;
+      //     -webkit-font-smoothing: subpixel-antialiased;
+      //     text-overflow: ellipsis;
+      //     overflow: hidden;
 
-        }
-        li:nth-child(1){
-          width: 106px;
-        }
-        li:nth-child(2){
-          width: 236px;
-        }
-        li:nth-child(3){
-          width: 176px;
-        }
-        li:nth-child(4){
-          width: 146px;
-        }
-        li:nth-child(5){
-          width: 146px;
-        }
-        li:nth-child(6){
-          width: 146px;
-        }
-        li:nth-child(7){
-          width: 146px;
-        }
-        li:nth-child(8){
-          width: 146px;
-        }
-      }
+      //   }
+      //   li:nth-child(1){
+      //     width: 106px;
+      //   }
+      //   li:nth-child(2){
+      //     width: 236px;
+      //   }
+      //   li:nth-child(3){
+      //     width: 176px;
+      //   }
+      //   li:nth-child(4){
+      //     width: 146px;
+      //   }
+      //   li:nth-child(5){
+      //     width: 146px;
+      //   }
+      //   li:nth-child(6){
+      //     width: 146px;
+      //   }
+      //   li:nth-child(7){
+      //     width: 146px;
+      //   }
+      //   li:nth-child(8){
+      //     width: 146px;
+      //   }
+      // }
     }
     &.produc-line {
     .tb-tr:nth-child(even){
@@ -537,14 +544,14 @@ export default {
     }
   }
     .tb-tr{
-      height: 50px;
+      height: 40px;
       display: flex;
 
       .tb-td{
         float: left;
         display: inline-block;
-        height: 50px;
-        line-height: 50px;    
+        height: 40px;
+        line-height: 40px;    
         text-align: center;
         font-size: 14px; 
         font-weight: 500;
@@ -583,14 +590,14 @@ export default {
   
   .tb-total{
       background-color: #e9f4fe;
-      height: 50px;
+      height: 40px;
       display: flex;
       
       .tb-td{
         float: left;
         display: inline-block;
-        height: 50px;
-        line-height: 50px;    
+        height: 40px;
+        line-height: 40px;    
         text-align: center;
         font-size: 14px;
         font-weight: bold;

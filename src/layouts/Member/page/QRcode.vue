@@ -50,7 +50,6 @@
 
             this.loginKey = res.data.data.split("key=", 13)[1];
             this.qrCodeUrl = res.data.data + '&sessionId=' + this.sessionId;
-            console.log('this.qrCodeUrl', this.qrCodeUrl)
             this.smallUrl = serverHost + '/v1/web/createQRCode' + '?height=120&width=120&' + 'content=' + encodeURIComponent(this.qrCodeUrl)
             this.bigUrl = serverHost + '/v1/web/createQRCode' + '?height=580&width=580&' + 'content=' + encodeURIComponent(this.qrCodeUrl)
 
@@ -100,7 +99,7 @@
         let webSocket = new WebSocket(this.WebSocketUrl);
         let _self = this;
         webSocket.onopen = function(evt) {
-          console.log(' websocket 打开dddddddddddddddddddddddddd');
+          console.log(' websocket 打开');
         };
         webSocket.onerror = function(evt) {
           console.log('webSocket打开出错');

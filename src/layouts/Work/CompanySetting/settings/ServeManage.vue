@@ -108,7 +108,6 @@ export default {
     },
     methods: {
         delBack (val) { // 删除项目的返回
-            debugger
             let options = {
                 dataList: [
                     {
@@ -220,7 +219,6 @@ export default {
             })
         },
         insertProductType () { // 确定操作
-            debugger
             let options = {
                 dataList: [
                     {

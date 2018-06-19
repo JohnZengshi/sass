@@ -2,62 +2,60 @@
 	<transition name="tp-ani">
 
 		<div class="RP_report_wrapper ui-page-max-width " v-if="isPrint==0">
+      
+      <div style="height: 41px;">
+          <div class="Rp_title_container sell-report-header">
+            <div class="Rp_selected_container">
+         <!--      <span class="spaceMark">|</span> -->
+              <DropDownMenu class="selected_dropdown" :titleName="shopList[0].shopName" dataType="店铺" v-if="itemShow" :propList="shopList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+              </DropDownMenu>
+              <span v-else :style="{color:activeColor, fontSize:size,fontWeight:weight,marginRight:right,lineHeight:height,height:high}">{{printSelectDate.shop}}</span>
 
-			<div class="Rp_title_container">
-				<!--面包屑-->
-				<div class="Rp_crumbs">
-					<i class="iconfont icon-baobiao1"></i>
-					<router-link tag="span" to="/work/report/" class="path_crumbs">报表</router-link> > <span class="txt">销售</span>
-				</div>
-				<div class="Rp_selected_container">
+              <template v-if="modleSwitch == '2'">
+                <span class="spaceMark">|</span>
 
-					<!--收银统计跟销售统计切换-->
-					<span class="statistics-switch" :title="modleSwitch.title" @click="modleSwitchFn">{{modleSwitch.text}}<i class="iconfont icon-qiehuan"></i></span>
+                <DropDownMenu v-if="!isdisabled" class="selected_dropdown" titleName="制单人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+                </DropDownMenu>
+                <div v-else class="selected_dropdown el-dropdown placeholder disabled">
+                  <span class="el-dropdown-link">制单人</span>
+                  <i class="iconfont icon-arrow-down"></i>
+                </div>
 
-					<span class="spaceMark">|</span>
-					<DropDownMenu class="selected_dropdown" :titleName="shopList[0].shopName" dataType="店铺" v-if="itemShow" :propList="shopList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-					</DropDownMenu>
-					<span v-else :style="{color:activeColor, fontSize:size,fontWeight:weight,marginRight:right,lineHeight:height,height:high}">{{printSelectDate.shop}}</span>
+                <span class="spaceMark">|</span>
 
-					<template v-if="modleSwitch.type">
-						<span class="spaceMark">|</span>
+                <DropDownMenu class="selected_dropdown" titleName="销售人" dataType="销售人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+                </DropDownMenu>
 
-						<DropDownMenu v-if="!isdisabled" class="selected_dropdown" titleName="制单人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-						</DropDownMenu>
-						<div v-else class="selected_dropdown el-dropdown placeholder disabled">
-							<span class="el-dropdown-link">制单人</span>
-							<i class="iconfont icon-arrow-down"></i>
-						</div>
+                <DropDownMenu v-if="!isdisabled" class="selected_dropdown" titleName="收银人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+                </DropDownMenu>
+                <div v-else class="selected_dropdown el-dropdown placeholder disabled">
+                  <span class="el-dropdown-link">收银人</span>
+                  <i class="iconfont icon-arrow-down"></i>
+                </div>
+              </template>
 
-						<span class="spaceMark">|</span>
+              <div class="report-data">
+                <div class="block until" data-txt="至">
+                  <el-date-picker size="mini" v-model="beginTime" @change="getTimeData" type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
+                </div>
+                <div class="block">
+                  <el-date-picker size="mini" v-model="endTime" @change="overTimeDate" type="date" placeholder="选择结束时间" :picker-options="pickerOptions1"></el-date-picker>
+                </div>
+              </div>
+              <el-button type="primary" size="small" class="back-btn" @click.native="toHome">返回上一级</el-button>
+            </div>
+          </div>
 
-						<DropDownMenu class="selected_dropdown" titleName="销售人" dataType="销售人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-						</DropDownMenu>
-
-						<DropDownMenu v-if="!isdisabled" class="selected_dropdown" titleName="收银人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-						</DropDownMenu>
-						<div v-else class="selected_dropdown el-dropdown placeholder disabled">
-							<span class="el-dropdown-link">收银人</span>
-							<i class="iconfont icon-arrow-down"></i>
-						</div>
-					</template>
-
-					<div class="report-data">
-						<div class="block until" data-txt="至">
-							<el-date-picker size="mini" v-model="beginTime" @change="getTimeData" type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
-						</div>
-						<div class="block">
-							<el-date-picker size="mini" v-model="endTime" @change="overTimeDate" type="date" placeholder="选择结束时间" :picker-options="pickerOptions1"></el-date-picker>
-						</div>
-					</div>
-					<el-button type="primary" size="small" class="back-btn" @click.native="toHome">返回上一级</el-button>
-				</div>
-			</div>
+          <!--收银统计跟销售统计切换-->
+          <ul class="sell-report-cut-nav-list">
+              <li v-for="item in cutList" @click="modleSwitchFn(item.id)" :class="{actions: modleSwitch == item.id}">{{item.name}}</li>
+          </ul>
+      </div>
 
 			<!--销售统计-->
-			<div class="dataGrid_statistics_switch" v-if="modleSwitch.type">
+			<div class="dataGrid_statistics_switch" v-if="modleSwitch == 2">
 
-				<div class="Rp_dataGrid_container last-table" v-loading="loading" element-loading-text="数据查询中">
+				<div class="Rp_dataGrid_container last-table mt-0 xj-report-table-wrap" v-loading="loading" element-loading-text="数据查询中">
 					<div class="rp_gridState">
 						<!--<p class="side-nav"><i class="iconfont icon-liebiao"></i>收银报表</p>-->
 						<div class="side-nav">
@@ -76,12 +74,21 @@
 								</div>
 							</div>
 						</template>
+          
 
-						<div class="xj-switch" v-if="sellShowId == 'sales'">
-							<span class="btn" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" :class="{active: tabSwitch}">专列项</span>
-						</div>
+            <filter-header
+              v-if="sellShowId == 'sales' || sellShowId == 'buyback'"
+              @complate="filterHeaderComplate"
+              @reportSwitch="reportSwitch"
+              @choseBuyBack="choseBuyBack"
+              :specialItem="sellShowId == 'sales'"
+              :isBuy="true"
+              :customList="customList"
+            ></filter-header>
 
-						<template v-if="sellShowId == 'sales' || sellShowId == 'buyback' ">
+             <cut-bg class="cut-bg-btn-wrap ml-10" :showList="sellTypeList" :current="sellShowId" @pitchOn="madeUpOnSell"></cut-bg>
+
+<!-- 						<template v-if="sellShowId == 'sales' || sellShowId == 'buyback' ">
 							<div class="tab">
 								<span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span>
 								<span :class="1 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(1, 2)">智能分类</span>
@@ -180,31 +187,28 @@
               </div>
           </span>
 							</div>
-						</template>
-
-						<DropDownMenu class="selected_dropdown report-change" titleName="销售报表" dataType="收货人" :propList="sellChangeList" @dropReturn="shopDropReturn" @clearInfo="shopClearInfo">
-						</DropDownMenu>
+						</template> -->
 
 					</div>
 
 					<!--收银报表-->
-					<div class="rp_dataGridTemp" style="padding-top: 0;" :class="tabShow" v-if="sellShowId == 'collect'">
-						<report-detail-collect :dataGridStorage="collectStorage" :tabSwitch="tabSwitch" @scrollClass="tabScrollShow" :reportType="getReportType()">
+					<div class="xj-report-rp_dataGridTemp" style="padding-top: 0;" :class="tabShow" v-if="sellShowId == 'collect'">
+						<report-detail-collect :dataGridStorage="collectStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" @scrollClass="tabScrollShow" :reportType="getReportType()">
 						</report-detail-collect>
 					</div>
 
 					<!--回购报表-->
-					<div class="rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
-						<report-detail-trade :dataGridStorage="tradeStorage" :tabSwitch="tabSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
-						</report-detail-trade>
-            <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1 && tradeStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>            
+					<div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
+						<report-detail-trade :dataGridStorage="tradeStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
+              <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1 && tradeStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>
+						</report-detail-trade>            
 					</div>
 
 					<!--销售报表-->
-					<div class="rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
-						<report-detail :dataGridStorage="sellStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
-						</report-detail>
-            <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type === 1 && sellStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>                        
+					<div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
+						<report-detail :dataGridStorage="sellStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" :positionSwitch="positionSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
+               <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type === 1 && sellStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>
+						</report-detail>                      
 					</div>
 
 				</div>
@@ -246,6 +250,15 @@
 				</div>
 				
 			</div>
+
+
+
+
+
+
+
+
+
 			<!--收银统计-->
 			<div class="dataGrid_statistics_switch" v-else>
 				<com-statistics :selectDate="dataGridOptions" :printSelectDate="printSelectDate" :tradeStorage="tradeStorage" :sellStorage="sellStorage">
@@ -258,7 +271,7 @@
 
 		<!--打印模块-->
 		<div ref="tablePrint" v-else-if="isPrint==1" class="tablePrint_style">
-			<table-print-sell v-if="printSellShow" :tabSwitch="tabSwitch" :reportTypeHeaderData="reportTypeHeaderData.sell" :printSelectDate="printSelectDate" :reportType="getReportType()" :dataGridStorage="sellStorage">
+			<table-print-sell v-if="printSellShow" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" :reportTypeHeaderData="reportTypeHeaderData.sell" :printSelectDate="printSelectDate" :reportType="getReportType()" :dataGridStorage="sellStorage">
 			</table-print-sell>
 			<table-print-trade v-if="printBuybackShow" :printSelectDate="printSelectDate" :reportTypeHeaderData="reportTypeHeaderData.trade" :reportType="getReportType()" :dataGridStorage="tradeStorage">
 			</table-print-trade>
@@ -288,6 +301,8 @@ import {
 } from "./../../../../Api/commonality/seek.js";
 
 import ReportDetail from "./sell/newDataGrid/sell";
+import cutBg from "base/cut/cut-bg";
+import filterHeader from './base/filter-header'
 import ReportDetailTrade from "./sell/newDataGrid/buyback";
 import ReportDetailCollect from "./sell/collect";
 import DropDownMenu from "./../../../../components/template/DropDownMenu"
@@ -326,10 +341,26 @@ export default {
     intelligenceTypeTemplate,
     customTemplate,
     ReportLoad,
-    ZDYDropDownMenu
+    ZDYDropDownMenu,
+    filterHeader,
+    cutBg
   },
   data() {
     return {
+      customList: [
+        {
+            name: '明细',
+            id: 1
+        },
+        {
+            name: '智能分类',
+            id: 2
+        },
+        {
+            name: '产品分类',
+            id: 3
+        }
+      ],
       sellList: [],
       buyBackList: [],
       headerData: {},
@@ -370,11 +401,34 @@ export default {
       },
 
       // 销售统计 收银统计切换操作
-      modleSwitch: {
-        title: "点击切换到销售统计",
-        type: false, // true为收银统计 false为销售统计
-        text: "收银统计"
-      },
+      modleSwitch: '1',
+
+      //导航切换
+      cutList: [
+        {
+          name: '收银统计',
+          id: '1'
+        },
+        {
+          name: '销售统计',
+          id: '2'
+        }
+      ],
+      sellTypeList: [
+          {
+              name: '销售报表', 
+              id: 'sales'
+          },
+          {
+              name: '回购报表',
+              id: 'buyback'
+          }
+      ],
+      // modleSwitch: {
+      //   title: "点击切换到销售统计",
+      //   type: false, // true为收银统计 false为销售统计
+      //   text: "收银统计"
+      // },
 
       //打印select
       selectValue: selectParam,
@@ -435,6 +489,9 @@ export default {
 
       //成本核算
       tabSwitch: false,
+
+      //回购额
+      isBuyBack: false,
 
       //产品类别
       productCategoryType: [],
@@ -555,8 +612,9 @@ export default {
         nGemId: "",
         nJewelryId: "1",
         reportType: 1,
-        sellStatu:'',
-        specialId:''
+        sellStatus:'',
+        specialId:'',
+        // sellStatuss
       },
       dialogOptions: {
         conditionList: ["不选", "大类", "小类"],
@@ -566,18 +624,8 @@ export default {
       customDialog: false, // 自定义列表弹窗
       resetFlag: false,
       isShowCost: "",
-      sortList: [
-        {
-          name: "产品类别",
-          value: "1"
-        }
-      ],
-      newList: [
-        {
-          name: "产品类别",
-          value: "1"
-        }
-      ]
+      sortList: [],
+      newList: []
     };
   },
 
@@ -647,16 +695,61 @@ export default {
 
   },
   methods: {
-    choseMenu(type) {
-        if(this.tabSwitch) {
-          this.dataGridOptions.specialId = ''
-        } else {
-          this.dataGridOptions.specialId = '1'
+    madeUpOnSell (parm) {
+      this.sellShowId = parm.id;
+
+      this.$set(this.dataGridOptions, "sortList", [
+        {
+          classTypeName: "1"
         }
+      ]);
+      this.$set(this, "sortList", [
+        {
+          name: "产品类别",
+          value: "1"
+        }
+      ]);
+      this.$set(this, "newList", [
+        {
+          name: "产品类别",
+          value: "1"
+        }
+      ]);
+      
+      this.dataGridOptions.pageSize = 15
+      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+
+      this.send();
+
+    },
+    filterHeaderComplate (parm) {
+        this.sortList = []
+        this.dataGridOptions.sortList = []
+        Object.assign(this.dataGridOptions, parm)
+        this.send()
+    },
+    //成本控制
+    reportSwitch(parm){
+      this.tabSwitch = parm
+
+      if(this.tabSwitch) {
+        this.dataGridOptions.specialId = '1'
+      } else {
+        this.dataGridOptions.specialId = ''
+      }
+
+    },
+    choseBuyBack (parm) {
+      this.isBuyBack = parm
+    },
+    choseMenu(type) {
+        
         if (type == 1) {
           this.positionSwitch = !this.positionSwitch;
+
         } else if (type == 2) {
           this.tabSwitch = !this.tabSwitch;
+          
         }
     },
     resetOption() {
@@ -780,6 +873,7 @@ export default {
     },
 
     sortListAct(val) {
+      
       // 列表排序
       this.dataGridOptions.sortList = val;
       this.send();
@@ -822,6 +916,12 @@ export default {
               value: item.price
             });
             break;
+          case "realPrice":
+            this.sortList.push({
+              name: "实售价",
+              value: item.realPrice
+            });
+            break;
           case "cost":
             this.sortList.push({
               name: "成本",
@@ -834,6 +934,29 @@ export default {
               value: item.num
             });
             break;
+          case "margin":
+          
+            this.sortList.push({
+              name: "毛利",
+              value: item.margin
+            });
+            break; 
+
+          case "estimatePrice":
+            this.sortList.push({
+              name: "旧料价",
+              value: item.estimatePrice
+            });
+            break; 
+
+          case "actualPrice":
+          
+            this.sortList.push({
+              name: "回购价",
+              value: item.actualPrice
+            });
+            break; 
+
         }
       });
     },
@@ -863,19 +986,20 @@ export default {
       }
     },
 
-    modleSwitchFn() {
-      this.$set(this, "modleSwitch", {
-        title: this.modleSwitch.type
-          ? "点击切换到销售统计"
-          : "点击切换到收银统计",
-        type: !this.modleSwitch.type,
-        text: this.modleSwitch.type ? "收银统计" : "销售统计"
-      });
+    modleSwitchFn(parm) {
+      // this.$set(this, "modleSwitch", {
+      //   title: this.modleSwitch.type
+      //     ? "点击切换到销售统计"
+      //     : "点击切换到收银统计",
+      //   type: !this.modleSwitch.type,
+      //   text: this.modleSwitch.type ? "收银统计" : "销售统计"
+      // });
+      this.modleSwitch = parm
       // 销售报表
-      if (this.modleSwitch.type) {
+      if (this.modleSwitch == '2') {
         //后台请求时间
-        this.dataGridOptions.beginTime = this.getDate(0,"start").fullData;
-        this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
+        // this.dataGridOptions.beginTime = this.getDate(0,"start").fullData;
+        // this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
         this.dataGridOptions.reportType = 3;
         //日期控件默认设置时间
         // this.beginTime = this.getDate(
@@ -893,16 +1017,16 @@ export default {
           }
         ]);
         this.$set(this, "sortList", [
-          {
-            name: "产品类别",
-            value: "1"
-          }
+          // {
+          //   name: "产品类别",
+          //   value: "1"
+          // }
         ]);
         this.$set(this, "newList", [
-          {
-            name: "产品类别",
-            value: "1"
-          }
+          // {
+          //   name: "产品类别",
+          //   value: "1"
+          // }
         ]);
 
         this.dataGridOptions.pageSize = 15
@@ -914,13 +1038,13 @@ export default {
         console.log('收银统计')
         //收银统计
         //后台请求时间
-        this.dataGridOptions.beginTime = this.getDate(0, "start").fullData;
-        this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
+        // this.dataGridOptions.beginTime = this.getDate(0, "start").fullData;
+        // this.dataGridOptions.endTime = this.getDate(0, "end").fullData;
         this.dataGridOptions.reportType = 1;
-        this.dataGridOptions.sellStatu = 1;
+        this.dataGridOptions.sellStatus = 1;
         //日期控件默认设置时间
-        this.beginTime = this.getDate(0, "start").format;
-        this.endTime = this.getDate(0, "end").format;
+        // this.beginTime = this.getDate(0, "start").format;
+        // this.endTime = this.getDate(0, "end").format;
 
         this.dataGridOptions.pageSize = 15
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
@@ -1040,6 +1164,14 @@ export default {
       } else if (val.type == "销售人") {
         this.printSelectDate.salesperson = val.item.operateNam;
         this.printSelectDate.operateId = val.item.operateId;
+        Object.assign(this.dataGridOptions, {
+          salesmenList: [
+            {
+              salesmenId: ""
+            }
+          ]
+        });
+        this.dataGridOptions.salesmenList[0].salesmenId = val.item.operateId;
       }
 
       this.currentPage = 1;
@@ -1160,7 +1292,7 @@ export default {
     getShopListByCo() {
       let options = {
         page: 1,
-        pageSize: "10"
+        pageSize: "9999"
       };
       seekGetShopListByCo(options).then(
         res => {
@@ -1253,8 +1385,9 @@ export default {
     },
 
     send(type) {
-      if (this.modleSwitch.type) {
-        this.dataGridOptions.sellStatu = ''        
+      
+      if (this.modleSwitch == '2') {
+        this.dataGridOptions.sellStatus = ''        
         this.sellSend();
         this.sellTradeSend();
         this.sellCollectSend();
@@ -1271,7 +1404,7 @@ export default {
         Object.assign(this.dataGridOptions, {
           page: 1,
           // pageSize: 15,
-          // sellStatu:'1'
+          // sellStatus:'1'
         });
       } else {
         delete this.dataGridOptions.page;
@@ -1297,7 +1430,10 @@ export default {
           }
         ]);
       }
-      
+     // tempOption.sellStatus = '1'
+      if (tempOption.type == 1) {
+        Object.assign(tempOption, {sellStatus: '1'})
+      }
       seekSellList(tempOption).then(res => {
         if (res.data.state === 200) {
           //数据表格数据
@@ -1331,11 +1467,11 @@ export default {
           delete this.dataGridOptions.cashierList;
         }
       }
+      
       seekBuyBackList(this.dataGridOptions).then(res => {
         if (res.data.state === 200) {
           //数据表格数据
           this.tradeStorage = res.data.data;
-          console.log('回购数据',this.tradeStorage)
         } else {
           this.$message({
             type: "error",
@@ -1482,8 +1618,10 @@ export default {
 
       if (this.sellShowId === "sales") {
         exportTabData["sellFlag"] = "1";
+        exportTabData["sellStatus"] = "1"
       } else if (this.sellShowId === "buyback") {
         exportTabData["sellFlag"] = "2";
+        exportTabData["sellStatus"] = ""
       } else {
         exportTabData["sellFlag"] = "1";
       }
@@ -1578,7 +1716,7 @@ export default {
 
 .Rp_dataGrid_container {
   &.last-table {
-    margin-bottom: 150px;
+   // margin-bottom: 150px;
     // height: 645px !important;
   }
   .report-change {
@@ -1600,7 +1738,9 @@ export default {
     }
   }
 }
-
+.mt-0{
+  margin-top: 0;
+}
 .utils-container-sell {
   position: absolute;
   right: -70px;
@@ -1697,5 +1837,36 @@ export default {
 }
 .exportBtn {
 	bottom: 60px;
+}
+.sell-report-header{
+  float: right;
+}
+
+.sell-report-cut-nav-list{
+  float: left;
+  overflow: hidden;
+  box-shadow: 0 0 15px #e2e2e2;
+  >li{
+    padding: 12px 12px;
+    font-size: 12px;
+    font-weight: bold;
+    float: left;
+    color: #333;
+    border-right: 1px solid #fff;
+    background-color: #f1f2f3;
+    cursor: pointer;
+    transition: all 0.3s;
+    &.actions, &:hover{
+      background-color: #fff;
+      color: #2993f8;
+    }
+  }
+  li:last-child{
+    border-right: none;
+  }
+}
+.cut-bg-btn-wrap{
+  float: right;
+  margin-top: 10px;
 }
 </style>

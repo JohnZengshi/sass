@@ -1,7 +1,8 @@
 module.exports = {
 
   //明细
-  detailConfing: [{
+  detailConfing: [
+    {
       id: '01111', //id 
       text: '序号', //头部title文字
       width: '20', //单元格宽
@@ -418,19 +419,20 @@ module.exports = {
   ],
 
   //产品分类
-  productClassify: [{
-      id: '0kl10',
-      text: '序号',
-      width: '50',
-      type: 'totalNum',
-      unit: '',
-      footerUnit: '',
-      totalName: '合计',
-      childType: '',
-      totalType: '',
-      toFixed: false,
-      countCut: 0
-    },
+  productClassify: [
+    // {
+    //   id: '0kl10',
+    //   text: '序号',
+    //   width: '50',
+    //   type: 'totalNum',
+    //   unit: '',
+    //   footerUnit: '',
+    //   totalName: '合计',
+    //   childType: '',
+    //   totalType: '',
+    //   toFixed: false,
+    //   countCut: 0
+    // },
     {
       id: '0sdf3', //id 
       text: '产品类别', //头部title文字
@@ -640,19 +642,20 @@ module.exports = {
   ],
 
   //自定义
-  productCustom: [{
-      id: '0kl10',
-      text: '序号',
-      width: '50',
-      type: 'totalNum',
-      unit: '',
-      footerUnit: '',
-      totalName: '合计',
-      childType: '',
-      totalType: '',
-      toFixed: false,
-      countCut: 0
-    },
+  productCustom: [
+    // {
+    //   id: '0kl10',
+    //   text: '序号',
+    //   width: '50',
+    //   type: 'totalNum',
+    //   unit: '',
+    //   footerUnit: '',
+    //   totalName: '合计',
+    //   childType: '',
+    //   totalType: '',
+    //   toFixed: false,
+    //   countCut: 0
+    // },
     {
       id: '0sdf3', //id 
       text: '产品类别', //头部title文字

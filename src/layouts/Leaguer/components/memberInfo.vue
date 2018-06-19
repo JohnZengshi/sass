@@ -2,7 +2,6 @@
     <el-dialog
         :visible.sync="memberFlag"
         :title="titleMessage"
-        :modal="false"
         top="10%"
         customClass="member-info-dialog"
         :close-on-click-modal="false"
@@ -67,6 +66,19 @@
                     line-height: 30px;
                     color:#333;
                     position: relative;
+                    input{
+                        width: 50%;
+                        height: 28px;
+                        background-color:transparent;
+                        font-size: 14px;
+                        border-radius: 3px;
+                        &:active,
+                        &:hover,
+                        &:focus{
+                            border: 1px solid #2993f8;
+                            background-color: #f4f9ff;
+                        }
+                    }
                     .item-label {
                         display: inline-block;
                         width: 62px;
