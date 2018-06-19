@@ -23,7 +23,7 @@ export default {
     display: inline-block;
     border: 1px solid #2993f8;
     font-size: 0;
-    border-radius: 5px;
+    border-radius: 4px;
     overflow: hidden;
     li{
         display: inline-block;
@@ -32,6 +32,7 @@ export default {
         padding: 5px 8px;
         cursor: pointer;
         transition: all .3s;
+        color: #666;
         &:hover, &.actions{
             color: #fff;
             background-color: #2993f8;

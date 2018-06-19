@@ -103,7 +103,6 @@ export default {
 			return _size
         },
         headSort (tab) { // 排序点击事件
-            debugger
           if(tab.sort == null || tab.sort == undefined ) return
           
           if (this.reportType == 1) {

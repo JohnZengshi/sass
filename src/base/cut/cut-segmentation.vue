@@ -25,9 +25,14 @@ export default {
       this.filterData.type = item.id
       this.$emit('pitchOn', this.filterData)
     },
-    complate (item) {
+    complate (parm) {
       this.filterData.type = 4
-      this.customData = item
+      this.customData = {}
+      for (let i in parm) {
+        if (parm[i].id) {
+          this.customData[i] = parm[i].id
+        }
+      }
       this.$emit('pitchOn', Object.assign({}, this.filterData, this.customData))
     }
   }
@@ -38,7 +43,7 @@ export default {
     display: inline-block;
     border: 1px solid #d6d6d6;
     font-size: 0;
-    border-radius: 5px;
+    border-radius: 4px;
     vertical-align: top;
     // overflow-x: hidden;
     >li{
@@ -48,6 +53,7 @@ export default {
         font-weight: bold;
         padding: 5px 8px;
         cursor: pointer;
+        color: #666;
         transition: all .3s;
         &:after{
           content: " ";

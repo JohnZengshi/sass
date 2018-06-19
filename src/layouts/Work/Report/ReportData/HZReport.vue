@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <filter-header @complate="filterHeaderComplate" @reportSwitch="reportSwitch"></filter-header>
+            <filter-header :isOld="true" :specialItem="true" @complate="filterHeaderComplate" @reportSwitch="reportSwitch"></filter-header>
 
     </div>
     
@@ -454,7 +454,6 @@ export default {
         // 完成
         filterHeaderComplate (parm) {
             Object.assign(this.dataGridOptions, parm)
-            console.log('完成后过滤的值', parm)
             this.send()
         },
         //成本控制

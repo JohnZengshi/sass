@@ -34,7 +34,6 @@
           phone: this.phoneNumber
         }
         seekCreateTaste(options).then((res) => {
-          console.log(res)
           if(res.data.state == 200) {
             sessionStorage.setItem("experience", 'Y');
             sessionStorage.setItem("id", res.data.data.Id);

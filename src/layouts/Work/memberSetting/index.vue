@@ -49,7 +49,7 @@
                         <div class="integral-left th">退货</div>
                             <el-radio-group class="integral-right" v-model="templateInfoData.refundConfig" @change="addOrSubTemplate('2',templateInfoData.refundConfig)">
                                 <el-radio class="intergral-item" :label="'1'">增加积分</el-radio>
-                                <el-radio class="intergral-item" :label="'2'">返还积分</el-radio>
+                                <el-radio class="intergral-item" :label="'2'">减少积分</el-radio>
                                 <el-radio class="intergral-item" :label="'3'">无</el-radio>
                             </el-radio-group>
                     </div>
@@ -116,7 +116,7 @@
                         </div>
                         <div class="content">
                             <div class="item" v-for="(item,index) in templateInfoData.poductTypeList[1].typeList" :key="index">
-                                <p class="item-title">黄金(克)</p>
+                                <p class="item-title">{{ item.classesName }}</p>
                                 <p class="item-input">
                                     <input type="number" @blur="setConsumeTemplateUpdate(item)" v-model="item.yuan" :disabled="isDisabled">
                                     <input type="number" @blur="setConsumeTemplateUpdate(item)" v-model="item.score" :disabled="isDisabled">

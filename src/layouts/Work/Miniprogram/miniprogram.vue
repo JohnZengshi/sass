@@ -113,7 +113,6 @@ export default{
                 }
                 // if () {
                   
-                //   // debugger;
                   
                 //   console.log('this.shopListByCo[0].shopId', this.shopListByCo[0].shopId)
                 //   sessionStorage.setItem('miniprogram',this.shopId);

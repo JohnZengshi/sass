@@ -2,12 +2,17 @@
   <div class="report-filter-height-main">
 
     <!-- 成品旧料 -->
-    <cut-bg class="ml-10" :showList="madeUpList" :current="filterData.productClass" @pitchOn="madeUpOnProductClass"></cut-bg>
+    <cut-bg v-if="isOld" class="ml-10" :showList="madeUpList" :current="filterData.productClass" @pitchOn="madeUpOnProductClass"></cut-bg>
     
 
-    <cut-segmentation class="ml-10" :showList="cutSegmentationList" :current="filterData.productClass" @pitchOn="madeUpOn"></cut-segmentation>
+    <cut-segmentation class="ml-10" :showList="cutSegmentationList" :current="segmentationFilter.type" @pitchOn="madeUpOn"></cut-segmentation>
 
-    <div class="cost-btn ml-10" v-if="isShowCost == 'Y'" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu" :class="{active: tabSwitch}">
+   <!--  <div v-show="specialItem" class="cost-btn ml-10" v-if="isBuy && filterData.productClass != '1'" :title="isBuyBack?'隐藏退换、回收、购买、实收' : '显示退换、回收、购买、实收'" @click="choseBuyBack" :class="{active: isBuyBack}"> -->
+    <div v-show="specialItem" class="cost-btn ml-10" v-if="isBuy && segmentationFilter.type != '1'" :title="isBuyBack?'隐藏购买、实收' : '显示购买、实收'" @click="choseBuyBack" :class="{active: isBuyBack}">
+      回购额
+    </div>
+
+    <div v-show="specialItem" class="cost-btn ml-10" v-if="isShowCost == 'Y'" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu" :class="{active: tabSwitch}">
       专列项
     </div>
     
@@ -18,6 +23,7 @@
   import cutSegmentation from "base/cut/cut-segmentation";
   import {seekSettingUserRole} from "Api/commonality/seek"
   export default {
+    props: ['isOld', 'isBuy', 'specialItem', 'customList'],
     components:{
       cutBg,
       cutSegmentation
@@ -28,9 +34,10 @@
           productClass: '1' // 成品旧料
         },
         segmentationFilter: { // 主类切换
-
+          type: 2
         },
         tabSwitch: false, // 专列项
+        isBuyBack: false, // 回购额
         isShowCost: '',
         madeUpList: [
             {
@@ -56,6 +63,9 @@
     },
     created () {
       this.settingUserRole()
+      if (this.customList) {
+        this.cutSegmentationList = this.customList
+      }
     },
     methods: {
         madeUpOnProductClass (parm) {
@@ -70,6 +80,10 @@
         choseMenu () {
           this.tabSwitch = !this.tabSwitch
           this.$emit('reportSwitch', this.tabSwitch)
+        },
+        choseBuyBack () {
+          this.isBuyBack = !this.isBuyBack
+          this.$emit('choseBuyBack', this.isBuyBack)
         },
         settingUserRole () { // 用户查看成本权限
           let options = {

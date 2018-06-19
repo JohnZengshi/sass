@@ -90,12 +90,10 @@ export default {
     },
     // 获取打印模板
     _previewTemplate (parm) {
-      debugger
       let productId = []
       for (let i of this.dataGridStorage.slice(this.printNum.beginNum - 1, this.printNum.endNum)) {
         productId.push(i.productId)
       }
-      debugger
       if (!productId.length) {
         this.$message({
           type: 'error',
@@ -113,7 +111,6 @@ export default {
       this.$store.dispatch('previewTemplate', this.currentTemplate.templateId).then(json => {
         if(json.state == 200) {
           let canvas = json.data.content
-          debugger
           this._getPrintLabelData(JSON.parse(canvas), productId, parm)
           // this.$emit('getPrintLabelData', this.radio, this.orderNum,this.value1, this.value2, JSON.parse(canvas), selectedProducts, isPrint)
         }
@@ -136,7 +133,6 @@ export default {
     },
     //预览模板
     printTemplate(templateList, dataList, parm){
-      debugger
       if (parm == 'Y') {
         JaTools.print(templateList, dataList);
       } else {

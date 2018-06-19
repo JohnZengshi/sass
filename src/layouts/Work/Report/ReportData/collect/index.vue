@@ -1,62 +1,20 @@
 <template>
 	<transition name="tp-ani">
 		<div class="container" v-loading="sellloading" element-loading-text="数据查询中">
+
 			<div class="Rp_dataGrid_container">
 				<div class="rp_gridState">
 					<div class="side-nav">
 						<i class="iconfont icon-liebiao"></i>收银统计
 					</div>
 				</div>
-
-				<div class="sy-container">
-					<h4>收款统计</h4>
-					<div class="wrap">
-						<div class="fl">
-							<h3>收款方式与金额</h3>
-							<ul class="item">
-								<li>
-									<p class="txt icon-container cash">{{cashierStatistics.cash ? cashierStatistics.cash : 0}}<em class="unit">元</em></p>
-									<p class="gary">现金</p>
-								</li>
-								<li>
-									<p class="txt icon-container card">{{cashierStatistics.slotCard ? cashierStatistics.slotCard : 0}}<em class="unit">元</em></p>
-									<p class="gary">刷卡</p>
-								</li>
-								<li>
-									<p class="txt icon-container weChat">{{cashierStatistics.weixin ? cashierStatistics.weixin : 0}}<em class="unit">元</em></p>
-									<p class="gary">微信</p>
-								</li>
-								<li>
-									<p class="txt icon-container alipay">{{cashierStatistics.zhifubao ? cashierStatistics.zhifubao : 0}}<em class="unit">元</em></p>
-									<p class="gary">支付宝</p>
-								</li>
-								<li>
-									<p class="txt icon-container other">{{cashierStatistics.other ? cashierStatistics.other : 0}}<em class="unit">元</em></p>
-									<p class="gary">其他</p>
-								</li>
-							</ul>
-						</div>
-						<div class="fr">
-							<h3>实际收银 <span class="txt">(销售统计+回购统计)</span> </h3>
-							<h2>{{cashierStatistics.totalMoney ? cashierStatistics.totalMoney : 0}}</h2>元
-						</div>
-					</div>
-				</div>
-
-			</div>
-
-			<div class="Rp_dataGrid_container">
-				<div class="rp_gridState">
-					<div class="side-nav">
-						<i class="iconfont icon-liebiao"></i>销售统计
-					</div>
-				</div>
 				<div class="rp_dataGridTemp">
-					<sell-datagrid :dataGridStorage="sellStorage" reportType="1">
+					<sell-datagrid :dataGridStorage="sellStorage" :cashierStatistics="cashierStatistics" :buyBackStorage="buyBackStorage" reportType="1">
 					</sell-datagrid>
 				</div>
 			</div>
-			<div class="Rp_dataGrid_container" v-if="isbuyBackShow">
+
+<!-- 			<div class="Rp_dataGrid_container">
 				<div class="rp_gridState">
 					<div class="side-nav">
 						<i class="iconfont icon-liebiao"></i>回购统计
@@ -66,7 +24,7 @@
 					<trade-datagrid :dataGridStorage="buyBackStorage" reportType="2">
 					</trade-datagrid>
 				</div>
-			</div>
+			</div> -->
 
 			<!-- 导出表格 -->
 			<div class="printBtn exportBtn" @click="exportTab()">
@@ -105,8 +63,8 @@
 			return {
 				sellloading: false,
 				cashierStatistics: {},
-				sellStorage: {},
-				buyBackStorage: {},
+				sellStorage: {}, // 销售数据
+				buyBackStorage: {}, // 回购数据
 				isbuyBackShow: false,
 				//打印0,1
 			}
@@ -137,7 +95,6 @@
 		methods: {
 			// 导出报表
 			exportTab(){
-				console.log(this.selectDate.beginTime)
 
 				let exportData = {
 					reportType: '3',
@@ -147,7 +104,7 @@
 					shopId: this.selectDate.shopId
 				}
 
-				//downLoaderFile('/v1/export/exportExcelByCash',exportData)
+				downLoaderFile('/v1/export/exportExcelByCash',exportData)
 			},
 			//打印表格 
 			tabPrin() {
@@ -246,11 +203,12 @@
 <style lang="scss" scoped>
 	.container {
 		background-color: #fff;
-		border-radius: 10px;
-		box-shadow: 0px 0 15px #e2e2e2;
+		border-radius: 0 4px 4px 4px;
+		// box-shadow: 0px 0 15px #e2e2e2;
+		border: 1px solid #dedede;
 		overflow: hidden;
 		width: 1250px;
-		margin-top: 20px;
+		// margin-top: 20px;
 		//margin-bottom:120px;
 		>.Rp_dataGrid_container {
 			border-radius: 0;
@@ -402,8 +360,8 @@
 	}
 	
 	.rp_dataGridTemp {
-		width: 1210px;
-		margin: 10px auto;
-		height: 400px;
+		// width: 1210px;
+		margin: 0 auto;
+		height: 645px;
 	}
 </style>

@@ -119,7 +119,6 @@
               sessionStorage.setItem('sig', res.data.data.sig);
               sessionStorage.setItem("nickname", res.data.data.userName);
               sessionStorage.setItem("tokenId", res.data.data.tokenId);
-              debugger
               this.$router.push('/mainIndex');
             }
           }

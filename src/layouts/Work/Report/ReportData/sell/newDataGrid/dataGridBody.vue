@@ -1,14 +1,14 @@
 <template>
   <!--表格内容区-->
   <!--明细-->
-  <div class="ui-table-container default-line" ref="tableContainer" v-if="reportType == 1">
+  <div class="xj-report-table-container" ref="tableContainer" v-if="reportType == 1">
     <div>
       <div class="tb-tr" v-for="(tb,index) in tempArray" :key="index">
         <template v-for="(tab,indexs) in detailDataGridColumn">
           <!--<div class="tb-td category-td"
           v-if="tab.text == '回购类型'" 
           :style="tableCell(tab.width)" >
-          <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;'">{{caty[tab.childType]}}</i>
+          <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7;'">{{caty[tab.childType]}}</i>
         </div>-->
 
           <div class="tb-td" :key="indexs" :style="tableCell(tab.width)" v-text="tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"></div>
@@ -18,29 +18,70 @@
     </div>
   </div>
 
-  <div class="ui-table-container con-line" ref="tableContainer" v-else>
+
+    <!--产品分类-->
+    <div class="xj-report-table-container" ref="tableContainer" v-else-if="reportType == 3">
+      <div>
+        <div class="tb-category" v-for="(caty,index) in otherDatagrid" :key="index">
+          <template v-for="(tb, index) in caty.productTypeList">
+            <div class="tb-tr" :key="index">
+              <template v-for="(tab,index4) in detailDataGridColumn">
+                <div class="tb-td category-td"
+                  :key="index4"
+                  v-if="tab.text == '产品类别'" 
+                  :style="tableCell(tab.width)"
+                  >
+                  {{tb[tab.childType]}}
+                </div>
+                <div class="tb-td"
+                  v-else
+                  :key="index4"
+                  :style="tableCell(tab.width)" 
+                  v-text = "tab.totalType == ''? (index+1) : tb[tab.totalType]">
+                </div>
+              </template>
+            </div>
+          </template>
+          
+        </div>
+        <div v-if="isDate" class="no-data"></div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+  <div class="xj-report-table-container" ref="tableContainer" v-else>
     <div>
       <div class="tb-category" v-for="(caty, ind) in otherDatagrid" :key="ind" :index="resetIndex(ind)">
         <div v-for="(tb, index) in caty.productTypeList" :key="index">
           <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :key="index1" :index="addIndex()">
             <template v-for="(tab,index) in detailDataGridColumn">
               <div class="tb-td category-td" :key="index" v-if="tab.text == '产品类别' && index1 == 0" :style="tableCell(tab.width)">
-                <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i>
+                <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{tb[tab.childType]}}</i>
               </div>
               <div class="tb-td category-td" :key="index" v-else-if="tab.text == '回购类型' && index1 == 0" :style="tableCell(tab.width)">
-                <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;'">{{caty[tab.childType]}}</i>
+                <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{caty[tab.childType]}}</i>
               </div>
+
+<!--               <div class="tb-td" :key="index" v-else-if="tab.text == '首饰名称'" :class="{backLine:tab.childType != ''}" :style="tableCell(tab.width)" v-text="tab.childType == ''? getIndex() : tb[tab.childType]">
+              </div>
+ -->
               <div class="tb-td" :key="index" v-else :class="{backLine:tab.childType != ''}" :style="tableCell(tab.width)" v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
               </div>
             </template>
           </div>
           <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
-          <div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch">
+          <div v-show="tb.detailList.length" class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
             <!-- 类型小计 -->
             <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : tb[tab.totalType]"></div>
           </div>
         </div>
-        <div class="tb-total" style="background:#e9f4fe;" v-if="positionSwitch">
+        <div class="tb-total" style="background:#ECF3FF;" v-if="positionSwitch">
           <!-- 位置小计 -->
           <!--保留2位小数-->
           <!--<div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="tableCell(tab.width)" v-html="f == 1 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"></div>-->
@@ -95,7 +136,7 @@
         _this.$emit('lazyloadSend', 123)
       })
 
-      $(".ui-table-container").mCustomScrollbar({
+      $(".xj-report-table-container").mCustomScrollbar({
         theme: "minimal-dark",
         axis: 'y',
         scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
@@ -149,7 +190,7 @@
           for(let i = 0; i < this.dataGridStorage.dataList.length; i++) {
             let data = 0
             for(let j = 0; j < this.dataGridStorage.dataList[i].productTypeList.length; j++) {
-              data += this.dataGridStorage.dataList[i].productTypeList[j].detailList.length * 50
+              data += this.dataGridStorage.dataList[i].productTypeList[j].detailList.length * 40
               if(i == 0) {
                 //console.log(this.dataGridStorage.dataList[i].productTypeList[j].detailList.length)
               }
@@ -216,91 +257,94 @@
   }
 </style>
 <style scoped lang="scss">
-  .ui-table-container {
-    height: 515px;
-    overflow-y: auto;
-    &.produc-line {
-      .tb-tr:nth-child(even) {
-        background-color: #f9f9f9;
-      }
-    }
-    &.default-line {
-      .tb-tr:nth-child(even) {
-        background-color: #f9f9f9;
-      }
-    }
-    &.con-line {
-      .backLine {overflow: hidden;}
-      .tb-tr:nth-child(even) {
-        .backLine {
-          background-color: #f9f9f9;
+.xj-report-table-container {
+  height: 556px;
+}
+  // .xj-report-table-container {
+  //   height: 515px;
+  //   overflow-y: auto;
+  //   &.produc-line {
+  //     .tb-tr:nth-child(even) {
+  //       background-color: #f9f9f9;
+  //     }
+  //   }
+  //   &.default-line {
+  //     .tb-tr:nth-child(even) {
+  //       background-color: #f9f9f9;
+  //     }
+  //   }
+  //   &.con-line {
+  //     .backLine {overflow: hidden;}
+  //     .tb-tr:nth-child(even) {
+  //       .backLine {
+  //         background-color: #f9f9f9;
           
-        }
-      }
-    }
-    .tb-tr {
-      height: 50px;
-      display: flex;
-      .tb-td {
-        float: left;
-        display: inline-block;
-        height: 50px;
-        line-height: 50px;
-        text-align: center;
-        font-size: 14px;
-        font-weight: 500;
-        transition: all .1s;
-        white-space: nowrap;
-        color: #333;
-        -webkit-font-smoothing: subpixel-antialiased;
-        text-overflow: ellipsis;
-        &.category-td {
-          position: relative;
-          //overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: pre-wrap;
-          >i {
-            font-style: normal;
-            // font-weight: bold;
-            // color: #248efc;
-            color: #333;
-            font-size: 14px;
-            // font-size: 15px;
-            position: absolute;
-            display: flex;
-            align-items: center;
-            width: 100%;
-            left: 0;
-            top: 0;
-            text-align: center;
-            justify-content: center
-          }
-        }
-      }
-    }
-    .tb-total {
-      background-color: #e9f4fe;
-      height: 50px;
-      display: flex;
-      .tb-td {
-        float: left;
-        display: inline-block;
-        height: 50px;
-        line-height: 50px;
-        text-align: center;
-        font-size: 14px;
-        font-weight: bold;
-        color: #2993f8;
-        transition: all .3s;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        b {
-          color: #333 !important;
-        }
-      }
-    }
-  }
+  //       }
+  //     }
+  //   }
+  //   .tb-tr {
+  //     // height: 40px;
+  //     display: flex;
+  //     .tb-td {
+  //       float: left;
+  //       display: inline-block;
+  //       // height: 40px;
+  //       // line-height: 40px;
+  //       text-align: center;
+  //       font-size: 14px;
+  //       font-weight: 400;
+  //       transition: all .1s;
+  //       white-space: nowrap;
+  //       color: #333;
+  //       -webkit-font-smoothing: subpixel-antialiased;
+  //       text-overflow: ellipsis;
+  //       &.category-td {
+  //         position: relative;
+  //         //overflow: hidden;
+  //         text-overflow: ellipsis;
+  //         white-space: pre-wrap;
+  //         >i {
+  //           font-style: normal;
+  //           // font-weight: bold;
+  //           // color: #248efc;
+  //           color: #333;
+  //           font-size: 14px;
+  //           // font-size: 15px;
+  //           position: absolute;
+  //           display: flex;
+  //           align-items: center;
+  //           width: 100%;
+  //           left: 0;
+  //           top: 0;
+  //           text-align: center;
+  //           justify-content: center
+  //         }
+  //       }
+  //     }
+  //   }
+  //   .tb-total {
+  //     background-color: #e9f4fe;
+  //     height: 40px;
+  //     display: flex;
+  //     .tb-td {
+  //       float: left;
+  //       display: inline-block;
+  //       // height: 40px;
+  //       // line-height: 40px;
+  //       text-align: center;
+  //       font-size: 14px;
+  //       font-weight: bold;
+  //       color: #2993f8;
+  //       transition: all .3s;
+  //       overflow: hidden;
+  //       white-space: nowrap;
+  //       text-overflow: ellipsis;
+  //       b {
+  //         color: #333 !important;
+  //       }
+  //     }
+  //   }
+  // }
   
   .no-data {
     height: 100%;

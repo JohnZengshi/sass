@@ -46,7 +46,7 @@ export const productDetailStatus = function (parm) { // 商品列表
 export const newProductDetailStatus = function (parm) { // 商品列表
     switch (parm) {
         case "10":
-            return '在库位'
+            return '已入库'
         case "11":
             return '入库中'
         case "20":
@@ -59,20 +59,24 @@ export const newProductDetailStatus = function (parm) { // 商品列表
             return '修改中'
         case "40":
             return '已调库'
+        case "101":
+            return '已调库'
         case "41":
             return '调库中'
         case "50":
             return '已发货'
+        case "100":
+            return '已发货'
         case "51":
             return '发货中'
         case "52":
-            return '发货审核'
+            return '已收货'
         case "60":
             return '已退货'
         case "61":
             return '退货中'
         case "62":
-            return '退货审核'
+            return '已退货'
         case "70":
             return '已调柜'
         case "71":
@@ -93,10 +97,6 @@ export const newProductDetailStatus = function (parm) { // 商品列表
             return '已回收'
         case "95":
             return '回收中'
-        case "100":
-            return '店铺收货'
-        case "101":
-            return '店铺收货'
     }
 }
 export const receiptStatus = function (parm) { // 审核状态

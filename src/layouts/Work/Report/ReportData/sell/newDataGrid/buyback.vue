@@ -18,6 +18,8 @@
         @lazyloadSend = "lazyloadSend"
 		@tabCell="tabCell">
 	</data-grid-body>
+    <slot>
+    </slot>
 	<!--表尾  -->
 	<data-grid-footer :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="dataGridStorage" :reportType = "reportType" @tabCell="tabCell"></data-grid-footer>
 </div>
@@ -26,7 +28,7 @@
 
 <script>
 import DataGridHeader from './dataGridHeader'
-import DataGridBody from './dataGridBody'
+import DataGridBody from './buyback/dataGridBody'
 import DataGridFooter from './dataGridFooter'
 //let configData = null
 let configData = require('./config/buyBack')

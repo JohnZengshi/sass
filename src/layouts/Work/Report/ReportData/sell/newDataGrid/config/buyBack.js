@@ -30,7 +30,7 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 0,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '12',  
@@ -45,7 +45,7 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 0,
-            sort: '1'
+            //sort: '1'
     	},
     	{ 
     		id: '1',  
@@ -60,7 +60,7 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 0,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '2',  
@@ -75,7 +75,7 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 0,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '4',  
@@ -88,45 +88,46 @@ module.exports = {
     		childType : 'weight',
     		totalType : 'totalWeight',
     		allType : 'allWeight',
-            toFixed : true,
+            toFixed : false,
             countCut : 2 ,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '5',  
     		text: '回购金价',
     		width:'10%', 
-    		type:'totalGoldPrice', 
+    		// type:'totalGoldPrice', 
+            type: '', 
     		unit: '(元/g)',
     		footerUnit: '',
     		totalName : '',
     		childType : 'goldPrice',
     		totalType : 'totalGoldPrice' ,
     		allType : 'allBackGoldPrice',
-            toFixed : true,
+            toFixed : false,
             countCut : 2
     	},
     	{ 
     		id: '15',  
     		text: '旧料价',
     		width:'10%', 
-    		type:'totalEstimatePrice', 
+    		type:'totalestimatePrice', 
     		unit: '(元)',
     		footerUnit: '',
     		totalName : '',
     		childType : 'estimatePrice',
-    		totalType : 'totalEstimatePrice' ,
+    		totalType : 'totalestimatePrice' ,
     		allType : 'allEstimatePrice',
-            toFixed : true,
+            toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '17',  
     		text: '折旧', 
     		width:'10%', 
     		type:'', 
-    		unit: '%',
+    		unit: '(%)',
     		footerUnit: '',
     		totalName : '',
     		childType : 'depreciationDiscount',
@@ -140,52 +141,53 @@ module.exports = {
     		text: '工费总额',
     		width:'10%', 
     		type:'totalWage', 
-    		unit: '元',
+    		unit: '(元)',
     		footerUnit: '',
     		totalName : '',
     		childType : 'wage',
     		totalType : 'totalWage' ,
     		allType : 'allWage',
-            toFixed : true,
+            toFixed : false,
             countCut : 2
     	},
     	{ 
     		id: '7',  
     		text: '回购价', 
     		width:'10%', 
-    		type:'totalBuy', 
+            // type:'totalBuy', 
+            type: 'totalActualPrice',
     		unit: '(元)',
     		footerUnit: '',
     		totalName : '',
-    		childType : 'buy',
-    		totalType : 'totalBuy' ,
+    		childType : 'actualPrice',
+    		totalType : 'totalActualPrice' ,
     		allType : 'allBackPrice',
-            toFixed : true,
+            toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
     	}
     ],
 	
 	//智能分类
 	capacityClassify : [
-    	{ 
-    		id: '0',  //id 
-    		text: '序号', //头部title文字
-    		width:'5%', //单元格宽
-    		type:'', //合计类型值
-    		unit: '', //头部单位补充文字
-    		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
-    		totalName : '合计',//底部合计 提示文字
-    		childType : '', //单元格类型
-    		totalType : 'no', //小计
-    		allType : 'allNum',//全计
-            toFixed : false, //是否进行小数点精确截取
-            countCut : 0 //小数点截取位数
-    	},
+    	// { 
+    	// 	id: '0',  //id 
+    	// 	text: '序号', //头部title文字
+    	// 	width:'5%', //单元格宽
+    	// 	type:'', //合计类型值
+    	// 	unit: '', //头部单位补充文字
+    	// 	footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
+    	// 	totalName : '合计',//底部合计 提示文字
+    	// 	childType : '', //单元格类型
+    	// 	totalType : 'no', //小计
+    	// 	allType : 'allNum',//全计
+     //        toFixed : false, //是否进行小数点精确截取
+     //        countCut : 0 //小数点截取位数
+    	// },
     	{ 
     		id: '11',  
     		text: '回购类型',
-    		width:'10%', 
+    		width:'12%', 
     		type:'sellTypeName', 
     		unit: '',
     		footerUnit: '',
@@ -199,7 +201,7 @@ module.exports = {
     	{ 
     		id: '12',  
     		text: '产品类别',
-    		width:'10%', 
+    		width:'15%', 
     		type:'', 
     		unit: '',
     		footerUnit: '',
@@ -209,7 +211,7 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 0,
-            sort: '1'
+            //sort: '1'
     	},
     	{ 
     		id: '1',  
@@ -224,12 +226,12 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 0,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '2',  
     		text: '件数',
-    		width:'10%',
+    		width:'11%',
     		type:'totalNum', 
     		unit: '',
     		footerUnit: '',
@@ -239,12 +241,12 @@ module.exports = {
     		allType : 'allNum',
             toFixed : false,
             countCut : 0,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '4',  
     		text: '件重', 
-    		width:'10%',
+    		width:'11%',
     		type:'totalWeight', 
     		unit: '(g)',
     		footerUnit: '',
@@ -252,49 +254,58 @@ module.exports = {
     		childType : 'weight',
     		totalType : 'totalWeight',
     		allType : 'allWeight' ,
-            toFixed : true,
+            toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '5',  
     		text: '回购金价',
-    		width:'10%', 
-    		type:'totalGoldPrice', 
+    		width:'11%', 
+    		// type:'totalGoldPrice', 
+            type: '', 
     		unit: '(元/g)',
     		footerUnit: '',
     		totalName : '',
     		childType : 'goldPrice',
     		totalType : 'totalGoldPrice' ,
     		allType : 'allBackGoldPrice',
-            toFixed : true,
+            toFixed : false,
             countCut : 2
     	},
     	{ 
     		id: '15',  
     		text: '旧料价',
-    		width:'10%', 
-    		type:'totalEstimatePrice', 
+    		width:'11%', 
+            // type:'totalEstimatePrice', 
+    		type:'totalestimatePrice', 
     		unit: '(元)',
     		footerUnit: '',
     		totalName : '',
     		childType : 'estimatePrice',
-    		totalType : 'totalEstimatePrice' ,
+           // totalType : 'totalSoldPrice' ,
+            // totalType : 'estimatePrice' ,
+    		totalType : 'estimatePrice' ,
     		allType : 'allEstimatePrice',
-            toFixed : true,
+            toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '17',  
     		text: '折旧', 
     		width:'10%', 
-    		type:'totalDiscount', 
-    		unit: '%',
+            type:'', 
+            // type:'totalDiscount', 
+    		// type:'totaldepreciationDiscount', 
+    		unit: '(%)',
     		footerUnit: '',
     		totalName : '',
-    		childType : 'discount',
-    		totalType : 'totalDiscount' ,
+            // childType : 'discount',
+    		childType : 'depreciationDiscount',
+            // totalType : 'totalDiscount' ,
+            // totalType : 'totaldepreciationDiscount' ,
+    		totalType : '' ,
     		allType : '',
             toFixed : false,
             countCut : 0
@@ -304,49 +315,50 @@ module.exports = {
     		text: '工费总额',
     		width:'10%', 
     		type:'totalWage', 
-    		unit: '元',
+    		unit: '(元)',
     		footerUnit: '',
     		totalName : '',
     		childType : 'wage',
     		totalType : 'totalWage' ,
     		allType : 'allWage',
-            toFixed : true,
+            toFixed : false,
             countCut : 2
     	},
     	{ 
     		id: '7',  
     		text: '回购价', 
     		width:'10%', 
-    		type:'totalBuy', 
+    		// type:'totalBuy', 
+            type: 'totalActualPrice',
     		unit: '(元)',
     		footerUnit: '',
     		totalName : '',
-    		childType : 'buy',
-    		totalType : 'totalBuy' ,
+    		childType : 'actualPrice',
+    		totalType : 'totalActualPrice' ,
     		allType : 'allBackPrice',
-            toFixed : true,
+            toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
     	}
     ],
 	
 	
 	//产品分类
 	productClassify : [
-    	{ 
-    		id: '0',  //id 
-    		text: '序号', //头部title文字
-    		width:'5%', //单元格宽
-    		type:'', //合计类型值
-    		unit: '', //头部单位补充文字
-    		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
-    		totalName : '合计',//底部合计 提示文字
-    		childType : '', //单元格类型
-    		totalType : 'no', //小计
-    		allType : 'allNum',//全计
-            toFixed : false, //是否进行小数点精确截取
-            countCut : 0 //小数点截取位数
-    	},
+    	// { 
+    	// 	id: '0',  //id 
+    	// 	text: '序号', //头部title文字
+    	// 	width:'5%', //单元格宽
+    	// 	type:'', //合计类型值
+    	// 	unit: '', //头部单位补充文字
+    	// 	footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
+    	// 	totalName : '合计',//底部合计 提示文字
+    	// 	childType : '', //单元格类型
+    	// 	totalType : 'no', //小计
+    	// 	allType : 'allNum',//全计
+     //        toFixed : false, //是否进行小数点精确截取
+     //        countCut : 0 //小数点截取位数
+    	// },
     	{ 
     		id: '11',  
     		text: '回购类型',
@@ -364,7 +376,7 @@ module.exports = {
     	{ 
     		id: '12',  
     		text: '产品类别',
-    		width:'10%', 
+    		width:'12%', 
     		type:'', 
     		unit: '',
     		footerUnit: '',
@@ -374,12 +386,12 @@ module.exports = {
     		allType : '',
             toFixed : false,
             countCut : 0,
-            sort: '1'
+            //sort: '1'
     	},
     	{ 
     		id: '2',  
     		text: '件数',
-    		width:'10%',
+    		width:'12%',
     		type:'totalNum', 
     		unit: '',
     		footerUnit: '',
@@ -389,7 +401,7 @@ module.exports = {
     		allType : 'allNum',
             toFixed : false,
             countCut : 0,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '4',  
@@ -402,100 +414,139 @@ module.exports = {
     		childType : 'weight',
     		totalType : 'totalWeight',
     		allType : 'allWeight' ,
-            toFixed : true,
+            toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
     	},
     	{ 
     		id: '5',  
     		text: '回购金价',
     		width:'10%', 
-    		type:'totalGoldPrice', 
+    		// type:'totalGoldPrice', 
+            type: '', 
     		unit: '(元/g)',
     		footerUnit: '',
     		totalName : '',
     		childType : 'goldPrice',
     		totalType : 'totalGoldPrice' ,
     		allType : 'allBackGoldPrice',
-            toFixed : true,
+            toFixed : false,
             countCut : 2
     	},
-    	{ 
-    		id: '15',  
-    		text: '旧料价',
-    		width:'10%', 
-    		type:'totalEstimatePrice', 
-    		unit: '(元)',
-    		footerUnit: '',
-    		totalName : '',
-    		childType : 'estimatePrice',
-    		totalType : 'totalEstimatePrice' ,
-    		allType : 'allEstimatePrice',
-            toFixed : true,
+        { 
+            id: '15',  
+            text: '旧料价',
+            width:'11%', 
+            // type:'totalEstimatePrice', 
+            type:'totalestimatePrice', 
+            unit: '(元)',
+            footerUnit: '',
+            totalName : '',
+            childType : 'estimatePrice',
+           // totalType : 'totalSoldPrice' ,
+            // totalType : 'estimatePrice' ,
+            totalType : 'estimatePrice' ,
+            allType : 'allEstimatePrice',
+            toFixed : false,
             countCut : 2,
-            sort: ''
-    	},
-    	{ 
-    		id: '17',  
-    		text: '折旧', 
-    		width:'10%', 
-    		type:'', 
-    		unit: '%',
-    		footerUnit: '',
-    		totalName : '',
-    		childType : 'depreciationDiscount',
-    		totalType : '' ,
-    		allType : '',
+            //sort: ''
+        },
+    	// { 
+    	// 	id: '15',  
+    	// 	text: '旧料价',
+    	// 	width:'10%', 
+    	// 	type:'totalEstimatePrice', 
+    	// 	unit: '(元)',
+    	// 	footerUnit: '',
+    	// 	totalName : '',
+    	// 	childType : 'estimatePrice',
+    	// 	totalType : 'totalEstimatePrice' ,
+    	// 	allType : 'allEstimatePrice',
+     //        toFixed : false,
+     //        countCut : 2,
+     //        //sort: ''
+    	// },
+    	// { 
+    	// 	id: '17',  
+    	// 	text: '折旧', 
+    	// 	width:'10%', 
+    	// 	type:'', 
+    	// 	unit: '%',
+    	// 	footerUnit: '',
+    	// 	totalName : '',
+    	// 	childType : 'depreciationDiscount',
+    	// 	totalType : '' ,
+    	// 	allType : '',
+     //        toFixed : false,
+     //        countCut : 0
+    	// },
+        { 
+            id: '17',  
+            text: '折旧', 
+            width:'10%', 
+            type:'', 
+            // type:'totalDiscount', 
+            // type:'totaldepreciationDiscount', 
+            unit: '(%)',
+            footerUnit: '',
+            totalName : '',
+            // childType : 'discount',
+            childType : 'depreciationDiscount',
+            // totalType : 'totalDiscount' ,
+            // totalType : 'totaldepreciationDiscount' ,
+            totalType : '' ,
+            allType : '',
             toFixed : false,
             countCut : 0
-    	},
+        },
     	{ 
     		id: '6',  
     		text: '工费总额',
-    		width:'10%', 
+    		width:'14%', 
     		type:'totalWage', 
-    		unit: '元',
+    		unit: '(元)',
     		footerUnit: '',
     		totalName : '',
     		childType : 'wage',
     		totalType : 'totalWage' ,
     		allType : 'allWage',
-            toFixed : true,
+            toFixed : false,
             countCut : 2
     	},
     	{ 
     		id: '7',  
     		text: '回购价', 
-    		width:'10%', 
-    		type:'totalBuy', 
+    		width:'14%', 
+    		// type:'totalBuy', 
+            type: 'totalActualPrice',
     		unit: '(元)',
     		footerUnit: '',
     		totalName : '',
-    		childType : 'buy',
-    		totalType : 'totalBuy' ,
+    		childType : 'actualPrice',
+    		totalType : 'totalActualPrice' ,
     		allType : '',
-            toFixed : true,
+            toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
     	}
     ],
     
     //自定义
   productCustom : [
-      { 
-        id: '0',  //id 
-        text: '序号', //头部title文字
-        width:'5%', //单元格宽
-        type:'', //合计类型值
-        unit: '', //头部单位补充文字
-        footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
-        totalName : '合计',//底部合计 提示文字
-        childType : '', //单元格类型
-        totalType : 'no', //小计
-        allType : 'allNum',//全计
-            toFixed : false, //是否进行小数点精确截取
-            countCut : 0 //小数点截取位数
-      },
+      // { 
+      //   id: '0',  //id 
+      //   text: '序号', //头部title文字
+      //   width:'5%', //单元格宽
+      //   type:'', //合计类型值
+      //   unit: '', //头部单位补充文字
+      //   footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
+      //   totalName : '合计',//底部合计 提示文字
+      //   childType : '', //单元格类型
+      //   totalType : 'no', //小计
+      //   allType : 'allNum',//全计
+      //       toFixed : false, //是否进行小数点精确截取
+      //       countCut : 0 //小数点截取位数
+      // },
       { 
         id: '11',  
         text: '回购类型',
@@ -523,7 +574,7 @@ module.exports = {
         allType : '',
         toFixed : false,
         countCut : 0,
-            sort: '1'
+            //sort: '1'
       },
       { 
         id: '1',  
@@ -538,7 +589,7 @@ module.exports = {
         allType : '',
             toFixed : false,
             countCut : 0,
-            sort: ''
+            //sort: ''
       },
       { 
         id: '2',  
@@ -553,7 +604,7 @@ module.exports = {
         allType : 'allNum',
         toFixed : false,
         countCut : 0,
-            sort: ''
+            //sort: ''
       },
       { 
         id: '4',  
@@ -566,81 +617,105 @@ module.exports = {
         childType : 'weight',
         totalType : 'totalWeight',
         allType : 'allWeight' ,
-            toFixed : true,
+            toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
       },
       { 
         id: '5',  
         text: '回购金价',
         width:'10%', 
-        type:'totalGoldPrice', 
+        // type:'totalGoldPrice',
+        type: '', 
         unit: '(元/g)',
         footerUnit: '',
         totalName : '',
         childType : 'goldPrice',
         totalType : 'totalGoldPrice' ,
         allType : 'allBackGoldPrice',
-            toFixed : true,
+            toFixed : false,
             countCut : 2
       },
-      { 
-        id: '15',  
-        text: '旧料价',
-        width:'10%', 
-        type:'totalEstimatePrice', 
-        unit: '(元)',
-        footerUnit: '',
-        totalName : '',
-        childType : 'estimatePrice',
-        totalType : 'totalEstimatePrice' ,
-        allType : 'allEstimatePrice',
-            toFixed : true,
+        { 
+            id: '15',  
+            text: '旧料价',
+            width:'11%', 
+            // type:'totalEstimatePrice', 
+            type:'totalestimatePrice', 
+            unit: '(元)',
+            footerUnit: '',
+            totalName : '',
+            childType : 'estimatePrice',
+           // totalType : 'totalSoldPrice' ,
+            // totalType : 'estimatePrice' ,
+            totalType : 'estimatePrice' ,
+            allType : 'allEstimatePrice',
+            toFixed : false,
             countCut : 2,
-            sort: ''
-      },
-      { 
-        id: '17',  
-        text: '折旧', 
-        width:'10%', 
-        type:'', 
-        unit: '%',
-        footerUnit: '',
-        totalName : '',
-        childType : 'depreciationDiscount',
-        totalType : '' ,
-        allType : '',
+            //sort: ''
+        },
+              { 
+            id: '17',  
+            text: '折旧', 
+            width:'10%', 
+            type:'', 
+           // type:'totalDiscount', 
+            // type:'totaldepreciationDiscount', 
+            unit: '(%)',
+            footerUnit: '',
+            totalName : '',
+            // childType : 'discount',
+            childType : 'depreciationDiscount',
+            // totalType : 'totalDiscount' ,
+            // totalType : 'totaldepreciationDiscount' ,
+            totalType : '' ,
+            allType : '',
             toFixed : false,
             countCut : 0
-      },
+        },
+      // { 
+      //   id: '17',  
+      //   text: '折旧', 
+      //   width:'10%', 
+      //   type:'', 
+      //   unit: '%',
+      //   footerUnit: '',
+      //   totalName : '',
+      //   childType : 'depreciationDiscount',
+      //   totalType : '' ,
+      //   allType : '',
+      //       toFixed : false,
+      //       countCut : 0
+      // },
       { 
         id: '6',  
         text: '工费总额',
         width:'10%', 
         type:'totalWage', 
-        unit: '元',
+        unit: '(元)',
         footerUnit: '',
         totalName : '',
         childType : 'wage',
         totalType : 'totalWage' ,
         allType : 'allWage',
-            toFixed : true,
+            toFixed : false,
             countCut : 2
       },
       { 
-        id: '7',  
+        id: '7',
         text: '回购价', 
         width:'10%', 
-        type:'totalBuy', 
+        // type:'totalBuy', 
+        type: 'totalActualPrice',
         unit: '(元)',
         footerUnit: '',
         totalName : '',
-        childType : 'buy',
-        totalType : 'totalBuy' ,
+        childType : 'actualPrice',
+        totalType : 'totalActualPrice' ,
         allType : 'allBackPrice',
-            toFixed : true,
+            toFixed : false,
             countCut : 2,
-            sort: ''
+            //sort: ''
       }
     ]
 }
