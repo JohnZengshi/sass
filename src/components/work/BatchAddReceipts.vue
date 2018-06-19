@@ -1107,10 +1107,18 @@
         this.endWeight = ""
         this.beginPrice = ""
         this.endPrice = ""
+        // -------------------------
+        // 选项的参数
+        this.productTypeId = ""
+        this.colourId = ""
+        this.jewelId = ""
+        this.jewelryId = ""
+        // ---------------------------
         this.getDate(0)
         this.seekProductTypeList()
         this.getPropList()
         this.getUserList()
+        this.batchAddByProductList();
       },
       // 点击单据展示商品列表
       gotoGoods(orderId) {
