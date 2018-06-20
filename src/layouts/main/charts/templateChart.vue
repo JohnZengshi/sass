@@ -91,7 +91,8 @@ export default {
   
   mounted(){
   	this.$nextTick(()=>{
-  		this.load()
+		  this.load()
+		  console.log('图标节点',this.$refs.refsEcharts.children[1])
   	})
   }
 }
