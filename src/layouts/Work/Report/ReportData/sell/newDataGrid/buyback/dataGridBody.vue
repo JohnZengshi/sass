@@ -77,7 +77,7 @@
                   class="tb-td category-td" 
                   v-if="tab.text == '回购类型' && index == 0 && index1 == 0 && indexGrid == 0" 
                   :style="tableCell(tab.width)">
-                  <i :style="sellTypeNameH(caty)">{{caty[tab.childType]}}</i>
+                  <i :style="sellTypeNameHD(caty)">{{caty[tab.childType]}}</i>
 
                 </div>
 
@@ -204,6 +204,23 @@
               // for (let j of i.detailList) {
               //   Num += 40
               // }
+
+            }
+          }
+        }
+
+        return {
+          'height': Num + 'px'
+        }
+      },
+      sellTypeNameHD (parm) {
+        let Num = 0
+        if (parm) {
+          for (let i of parm.productTypeList) {
+            if (i) {
+              for (let j of i.detailList) {
+                Num += 40
+              }
 
             }
           }

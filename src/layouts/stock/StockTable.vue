@@ -526,9 +526,9 @@ export default {
         productClass: "1", //商品属性
         sortFlag: "0", //分位置 1=分，0=不分
         sortList: [
-          {
-            classTypeName: "1" //产品类别
-          }
+          // {
+          //   classTypeName: "1" //产品类别
+          // }
         ],
         type: 2, //类型
         page: 1,
@@ -544,16 +544,16 @@ export default {
       resetFlag: false,
       isShowCost: "",
       sortList: [
-        {
-          name: "产品类别",
-          value: "1"
-        }
+        // {
+        //   name: "产品类别",
+        //   value: "1"
+        // }
       ],
       newList: [
-        {
-          name: "产品类别",
-          value: "1"
-        }
+        // {
+        //   name: "产品类别",
+        //   value: "1"
+        // }
       ],
 
       // 假数据
