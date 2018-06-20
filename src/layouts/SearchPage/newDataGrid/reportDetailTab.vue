@@ -1227,6 +1227,7 @@ export default {
         border-radius: 4px;
         &> div {
           height: 23px;
+          margin-bottom: 5px;
           &> p {
             float: left;
             width: 80%;
