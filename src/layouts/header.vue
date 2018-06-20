@@ -79,7 +79,7 @@
                         <div class="membersList">
                           <div class="membersItem" v-if="memberListData.length == 0">未匹配到相关会员信息，查看<span @click.stop="openListDeta(2,true)">所有会员</span></div>
                           <div class="membersItem" v-else @click.stop="openMember(item)" v-for="(item,index) in memberListData" :key="index">
-                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.memberNum)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn">{{item.memberName}}</span><span class="slocation fr">{{item.shopName}}</span>
+                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.phone)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn">{{item.memberName}}</span><span class="slocation fr">{{item.shopName}}</span>
                             
                           </div>
                           <div class="membersItem" v-if="memberListData.length > 5" @click.stop="openListDeta(2)">
@@ -1105,6 +1105,10 @@ export default {
       // 直接搜索
       this.getHomepageSearchData()
       this.isSearch = true
+
+      // 点击跳转
+      this.openListDeta(0)
+
     },
     searchType(command) {
       //单击搜索类型切换
@@ -1310,10 +1314,12 @@ export default {
     },
     // 截取keyword
     filterkeyWord (parm) {
-      let datas = parm.split(this.searchText)
-      datas.splice(1, 0, this.searchText)
-      console.log(parm)
-      return datas
+      // console.log(parm)
+      if(parm) {
+        let datas = parm.split(this.searchText)
+        datas.splice(1, 0, this.searchText)
+        return datas
+      }
     },
     
   }

@@ -54,6 +54,7 @@
             <ul>
                 <li v-for="(item, index) in dataList" :key="index" v-if="item.operateType != 2">
                     <img :src="item.logo">
+                    
                     <div class="name">{{item.memberName}}</div>
                     <div class="label">
                         <span class="type" :class="{typeColor1: item.type == 1, typeColor2: item.type == 2,typeColor3: item.type == 3}">{{getType(item.type, item)}}</span>
