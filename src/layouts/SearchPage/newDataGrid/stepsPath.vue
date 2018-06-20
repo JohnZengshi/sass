@@ -29,6 +29,14 @@
           <div class="label">调库位置</div>
           <div class="message">{{item.outRepositoryName}}</div>
         </li>
+        <li v-if="item.inCounterName">
+          <div class="label">调入柜组</div>
+          <div class="message">{{item.inCounterName}}</div>
+        </li>
+        <li v-if="item.outCounterName">
+          <div class="label">调出柜组</div>
+          <div class="message">{{item.outCounterName}}</div>
+        </li>
       </ul>
     </div>
     <div class="item_title_only clearfix" v-else>
