@@ -471,14 +471,9 @@ export default {
     seekProduct(parm) {
       console.log(parm)
       this.loading = true;
-      let barcode = {
-        barcode: []
-      };
-      for (let i of this.addData) {
-        barcode.barcode.push(i.barcode);
-      }
+      
       seekGetPrintLabelList(
-        Object.assign(parm, barcode, { page: "1", pageSize: "30" })
+        Object.assign(parm, { page: "1", pageSize: "30" })
       ).then(res => {
         if (res.data.state == 200) {
           this.allData = res.data.data;
@@ -508,15 +503,10 @@ export default {
         this.paging.page = 1;
         this.filterCondition = Object.assign({}, this.filterCondition, parm);
       }
-      let barcode = {
-        barcode: []
-      };
-      for (let i of this.addData) {
-        barcode.barcode.push(i.barcode);
-      }
+      
       this.loading = true;
       seekGetPrintLabelList(
-        Object.assign(this.filterCondition, barcode, this.paging, {})
+        Object.assign(this.filterCondition, this.paging, {})
       ).then(res => {
         if (res.data.state == 200) {
           this.paging.page += 1;
