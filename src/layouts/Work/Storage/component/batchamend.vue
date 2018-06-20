@@ -110,6 +110,7 @@
   import {
     readOnly
   } from 'Api/commonality/filter' // 过滤器
+import threeLayersDownMenuVue from '../../../../base/menu/three-layers-down-menu.vue';
   export default {
 
     data() {
@@ -300,7 +301,6 @@
             }).catch((res) => {})
           }
         }
-
         this.resetPopupData();
       },
 
@@ -485,6 +485,9 @@
         this.selectValue = [];
         this.selval = [];
         this.amendingData = "";
+        // 清除修改范围记录
+        this.popup.amendingStartRow = "";
+        this.popup.amendingEndRow = "";
       }
 
     },
