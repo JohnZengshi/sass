@@ -67,7 +67,8 @@ export default {
   	
   	setSize(){
   		if( this.chartSize ) this.size = this.chartSize
-  		this.$refs.refsEcharts.style.height = this.size.y + 'px';
+		  this.$refs.refsEcharts.style.height = this.size.y + 'px';
+		  this.$refs.refsEcharts.style.zIndex = '99'
   	},
   	
   	load(){

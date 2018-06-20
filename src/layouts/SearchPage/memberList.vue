@@ -490,12 +490,12 @@ export default {
     // 查询商品
     seekProduct(parm) {
       this.loading = true;
-      let barcode = {
-        barcode: []
-      };
-      for (let i of this.addData) {
-        barcode.barcode.push(i.barcode);
-      }
+      // let barcode = {
+      //   barcode: []
+      // };
+      // for (let i of this.addData) {
+      //   barcode.barcode.push(i.barcode);
+      // }
       memberListBySearch(
         Object.assign(parm, { page: "1", pageSize: "30" })
         // Object.assign(parm)
@@ -540,12 +540,12 @@ export default {
         this.paging.page = 1;
         this.filterCondition = Object.assign({}, this.filterCondition, parm);
       }
-      let barcode = {
-        barcode: []
-      };
-      for (let i of this.addData) {
-        barcode.barcode.push(i.barcode);
-      }
+      // let barcode = {
+      //   barcode: []
+      // };
+      // for (let i of this.addData) {
+      //   barcode.barcode.push(i.barcode);
+      // }
       this.loading = true;
       memberListBySearch(
         Object.assign(this.filterCondition, this.paging, {})
