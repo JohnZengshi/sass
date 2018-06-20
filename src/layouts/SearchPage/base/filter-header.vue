@@ -1066,7 +1066,7 @@ export default {
     },
     // 单据类型
     dataBackOrderTypeList(parm) {
-      this.filterCondition.orderTypeList = this.conversionData(parm.bigList,'operatorId')
+      this.filterCondition.orderTypeList = this.conversionData(parm.bigList,'orderType')
       this.$emit('filterData', this.filterCondition)
     },
     // 店铺人员
