@@ -46,7 +46,7 @@
                   <i v-if="iconShow" class="iconfont icon-sousuo" @click="goSearchPage" title="搜索"></i>
                   <i v-else class="iconfont el-icon-circle-cross" @click="closeIcon" title="清除"></i>
                   <!-- 搜索的列表 begin -->
-                  <div v-if="isSearch || searchText" class="searchList">
+                  <div v-if="isSearch && searchText" class="searchList">
                     <!-- 商品 -->
                     <div class="commodity">
                         <h1>商品</h1>
