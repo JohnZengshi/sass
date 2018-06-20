@@ -248,11 +248,11 @@ export const statusPosition = function (parm) {
 export const documentsState = function (parm) {
     switch (parm) {
         case "1":
-            return "待审核"
+            return "待收银"
         case "2":
             return "审核中";
         case "3":
-            return "已审核";
+            return "已收银";
         case "4":
             return "已锁定";
         case "5":

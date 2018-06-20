@@ -332,12 +332,44 @@ export default {
     },
     openDialog(parm) {
       if(this.panelType == 1) {
+        console.log(parm)
         this.$emit('close')
-        
-        this.$router.push({path:'/work/sell'})
-        // this.$router.push({path:'/work/sell/sellReceiptsList?orderNumber='+parm})
+        // 入库详情页
+        if(parm.indexOf('RK') !== -1) {
+          this.$router.push({path:'/work/storage/detail',query:{ orderNumber: parm }})
+        }
+        // 修改详情页
+        if(parm.indexOf('XG') !== -1) {
+          this.$router.push({path:'/work/amend/index',query:{ orderNumber: parm }})
+        }
+        // 退库详情页
+        if(parm.indexOf('TK') !== -1) {
+          this.$router.push({path:'/work/storageReturn/NewStorageReturn',query:{ orderNumber: parm }})
+        }
+        // 调库详情页
+        if(parm.indexOf('DK') !== -1) {
+          this.$router.push({path:'/work/transferStorage/newTransferStorage',query:{ orderNumber: parm }})
+        }
+        // 发货详情页
+        if(parm.indexOf('FH') !== -1) {
+          this.$router.push({path:'/work/sipping/newSipping',query:{ orderNumber: parm }})
+        }
+        // 调柜详情页
+        if(parm.indexOf('DG') !== -1) {
+          this.$router.push({path:'/work/transferCabinet/newTransferCabinet',query:{ orderNumber: parm }})
+        }
+        // 退货详情页
+        if(parm.indexOf('TH') !== -1) {
+          this.$router.push({path:'/work/salesReturn/newSalesReturn',query:{ orderNumber: parm }})
+        }
+        // 销售详情页
+        if(parm.indexOf('XS') !== -1) {
+          this.$router.push({path:'/work/sell/sellReceiptsList',query:{ orderNumber: parm }})
+        } 
+          // this.$router.push({path:'/work/sell'})
+          // this.$router.push({path:'/work/sell/sellReceiptsList?orderNumber='+parm})
         return
-      }
+        }
 
       if(this.panelType == 2) {
         this.$emit('openMemberByList',parm)

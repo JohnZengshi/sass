@@ -3,37 +3,45 @@
   <div class="steps-item" @click="openSmallPage(index)" v-for="(item,index) in orderListST" :key="index">
     <div class="item_title clearfix" v-if="actionIndex == index">
       <div class="item_time fl">{{_formDataTimeYND(item.rcvTime)}}</div>
-      <div class="item_status fl">{{item.outRepositoryName ? '调库':'入库'}}</div>
+      <div class="item_status fl">{{ getOrderType(item.orderType) }}</div>
       <ul class="fl">
         <li>
           <div class="label">单据号</div>
           <div class="message">{{item.orderNum}}</div>
         </li>
-        <li>
+        <li v-if="item.operatorName">
           <div class="label">操作人</div>
           <div class="message">{{item.operatorName}}</div>
         </li>
-        <li>
+        <li v-if="item.inRepositoryName">
           <div class="label">入库库位</div>
           <div class="message">{{item.inRepositoryName}}</div>
         </li>
-        <li>
+        <li v-if="item.supplierName">
           <div class="label">供应商</div>
           <div class="message">{{item.supplierName}}</div>
         </li>
-        <li>
+        <li v-if="item.locationName">
           <div class="label">当前位置</div>
           <div class="message">{{item.locationName}}</div>
         </li>
-        <li>
+        <li v-if="item.outRepositoryName">
           <div class="label">调库位置</div>
           <div class="message">{{item.outRepositoryName}}</div>
+        </li>
+        <li v-if="item.inCounterName">
+          <div class="label">调入柜组</div>
+          <div class="message">{{item.inCounterName}}</div>
+        </li>
+        <li v-if="item.outCounterName">
+          <div class="label">调出柜组</div>
+          <div class="message">{{item.outCounterName}}</div>
         </li>
       </ul>
     </div>
     <div class="item_title_only clearfix" v-else>
-      <div class="item_time fl">{{_formDataTimeYND(item.rcvTime)}}</div>
-      <div class="item_status fl">{{item.outRepositoryName ? '调库':'入库'}}</div>
+      <div class="item_time fl">{{ _formDataTimeYND(item.rcvTime) }}</div>
+      <div class="item_status fl">{{ getOrderType(item.orderType) }}</div>
     </div>
   </div>
 </div>
@@ -71,6 +79,41 @@ export default {
     }
   },
   methods: {
+    // 获取状态
+    getOrderType(data) {
+      switch (data) {
+        case '01':
+          return '入库'
+          break;
+        case '02':
+          return '退库'
+          break;
+        case '03':
+          return '发货'
+          break;
+        case '04':
+          return '退货'
+          break;
+        case '05':
+          return '销售/回购'
+          break;
+        case '06':
+          return '调柜'
+          break;
+        case '07':
+          return '调库'
+          break;
+        case '10':
+          return '修改'
+          break;
+        case '11':
+          return '服务'
+          break;
+      
+        default:
+          break;
+      }
+    },
     // 获取当前状态数据
     fetchFootData (){
       this.stepItem.forEach((item, index) => {

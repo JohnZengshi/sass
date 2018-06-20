@@ -3,7 +3,7 @@
     <!-- 商品 -->
     <div class="operate-bar-bottom" v-if="panelType === 0">
       <div class="search">
-          <input type="text" v-model="keyword" placeholder="请输入关键字" @keyup.enter="batchAddByOrderNum">
+          <input type="text" v-model="keyWord" placeholder="请输入关键字" @keyup.enter="batchAddByOrderNum">
           <div class="search-btn" @click="batchAddByOrderNum">
               <i class="iconfont icon-sousuo"></i>
           </div>
@@ -106,7 +106,7 @@
     <div class="operate-bar-bottom" v-else-if="panelType === 1">
 
       <div class="search">
-          <input type="text" v-model="keyword" placeholder="请输入关键字" @keyup.enter="batchAddByOrderNum">
+          <input type="text" v-model="keyWord" placeholder="请输入关键字" @keyup.enter="batchAddByOrderNum">
           <div class="search-btn" @click="batchAddByOrderNum">
               <i class="iconfont icon-sousuo"></i>
           </div>
@@ -190,7 +190,7 @@
     <!-- 会员 -->
     <div class="operate-bar-bottom" v-else-if="panelType === 2">
       <div class="search">
-          <input type="text" v-model="keyword" placeholder="请输入关键字" @keyup.enter="batchAddByOrderNum">
+          <input type="text" v-model="keyWord" placeholder="请输入关键字" @keyup.enter="batchAddByOrderNum">
           <div class="search-btn" @click="batchAddByOrderNum">
               <i class="iconfont icon-sousuo"></i>
           </div>
@@ -294,7 +294,7 @@ export default {
   data () {
     return {
       isShowCost: '',
-      keyword: this.serchKey,
+      keyWord: this.serchKey,
       tabSwitch: false,
       repositoryList: [], // 仓库列表
       shopDataList: [],
@@ -702,7 +702,7 @@ export default {
       })
     },
     resetData () {
-      this.keyword = ''
+      this.keyWord = ''
       if(this.panelType == 0) {
         this.$refs.storageLocationWrap.reset()
         this.$refs.shopWrap.reset()
@@ -720,10 +720,18 @@ export default {
         this.$refs.peopleTypeWrap.reset()
         this.$refs.peopleWrap.reset()
         this.$refs.stateWrap.reset()
+
         this.orderBegin = ''
         this.orderEnd = ''
+
         this.beginTime = ''
         this.endTime = ''
+
+        this.filterCondition['startTime'] = ''
+        this.filterCondition['endTime'] = ''
+
+        this.filterCondition['orderBegin'] = ''
+        this.filterCondition['orderEnd'] = ''
       }
       if(this.panelType == 2) {
         this.$refs.storageLocationWrap.reset()
@@ -739,7 +747,7 @@ export default {
       console.log('重置')
     },
     batchAddByOrderNum () {
-      if (!this.keyword) {
+      if (!this.keyWord) {
         this.$message({
           message: '请输入关键字',
           type: 'warning'
@@ -747,7 +755,7 @@ export default {
         return
       }
       let options = {
-        keyword: this.keyword
+        keyWord: this.keyWord
       }
       this.$emit('seekProduct', options)
     },
@@ -953,7 +961,7 @@ export default {
     overTimeDate(val) {
       console.log(val) 
       if(val) {
-        let endTime = val.substr(0, 10).split('-').join("") + "000000"
+        let endTime = val.substr(0, 10).split('-').join("") + "235959"
         this.filterCondition['endTime'] = endTime
         this.$emit('filterData', this.filterCondition)
       }
@@ -1058,7 +1066,7 @@ export default {
     },
     // 单据类型
     dataBackOrderTypeList(parm) {
-      this.filterCondition.orderTypeList = this.conversionData(parm.bigList,'operatorId')
+      this.filterCondition.orderTypeList = this.conversionData(parm.bigList,'orderType')
       this.$emit('filterData', this.filterCondition)
     },
     // 店铺人员
