@@ -258,6 +258,7 @@ export default {
         left: -120px;
         top: 40px;
         transition: all .3s ease;
+        transform: translateX(45px);
         .list-left {
             height: 260px;
             width: 150px;
