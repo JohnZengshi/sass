@@ -18,7 +18,7 @@
                                 <li @click="selectClass(2)" :class="{active: rightList == productClass[1].typeList}">计件类</li>
                             </ul>
                             <ul class="list-right">
-                                <li v-for="(item, index) in rightList" @click="complateSel(item)" :class="{active: classId == item.classesId}">{{item.classesName}}</li>
+                                <li v-for="(item, index) in rightList" :key="index" @click="complateSel(item)" :class="{active: classId == item.classesId}">{{item.classesName}}</li>
                             </ul>
                         </div>
                         <div class="drop-box-footer">
@@ -73,7 +73,7 @@
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command="全部">全部</el-dropdown-item>
-                            <el-dropdown-item v-for="(item, index) in supplierListData" :command="item">{{item.supplierName}}</el-dropdown-item>
+                            <el-dropdown-item v-for="(item, index) in supplierListData" :key="index" :command="item">{{item.supplierName}}</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                     <!-- <DropDownMenu
@@ -90,7 +90,7 @@
                         </span>
                         <el-dropdown-menu slot="dropdown">
                             <el-dropdown-item command="全部">全部</el-dropdown-item>
-                            <el-dropdown-item v-for="(item, index) in datas.shopList" :command="item">{{item.shopName}}</el-dropdown-item>
+                            <el-dropdown-item v-for="(item, index) in datas.shopList" :key="index" :command="item">{{item.shopName}}</el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
                     <!-- <DropDownMenu
@@ -418,7 +418,7 @@ export default {
         // console.log(e)
         // console.log(e.target.scrollHeight - e.target.scrollTop)
         if (e.target.scrollHeight - e.target.scrollTop == e.target.clientHeight) {
-            this.pageSize = this.pageSize + 30
+            this.pageSize = Number(this.pageSize) + 30
             console.log(this.pageSize)
             this.searchReceipt(this.pageSiZe)
         }
@@ -589,16 +589,13 @@ export default {
         })
     },
     getShopList () { // 店铺列表
-        let options = {
-            page: 1,
-            pageSize: 9999
-        };
+        let options = "";
         let _self = this;
         seekGetShopListByCo(options).then((response) => {
             if (response.data.state === 200) {
                 console.log(response)
                _self.datas.shopList = response.data.data.shopList;
-                if (response.data.data.shopList.length == 1) { // 只有一个店铺的情况下
+                if (response.data.data.shopList.length === 1) { // 只有一个店铺的情况下
                     _self.onData.shopId = response.data.data.shopList[0].shopId;
                 }
             } else {

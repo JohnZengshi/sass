@@ -380,11 +380,11 @@
                                     </div>
                                     
                                      <!-- 成品旧料的切换 -->
-                                    <!-- <div class="iconfont_wrap fr">
+                                    <div class="iconfont_wrap fr">
                                         <span :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)">成品</span>
                                         <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
                                         <span :class="inconspanactive2 == true ? 'myspanactive' : ''" @click="toggleAttribute(2)">旧料</span>
-                                    </div> -->
+                                    </div>
 
                                     <ul class="header-wrap-btn">
                                     
@@ -633,7 +633,7 @@ export default {
                     name: "调库单",
                     type: "07"
                 }
-            ],//单据类型
+            ],
             enterOrderNum: '', //输入的单据号
             toRouterUrlName: '退库',
             //大、小类 tab切换

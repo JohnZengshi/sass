@@ -194,7 +194,7 @@
                 ></ChoseLeader>
             </el-dialog>
             <!-- 选择会员 -->
-            <el-dialog :visible.sync="isChoseMember" top="12%" customClass="choseMemberDig" :close-on-click-modal="false">
+            <el-dialog :visible.sync="isChoseMember" top="12%" customClass="choseMemberDig addmember" :close-on-click-modal="false">
                 <ChoseMember
                     :shopId="shopId"
                     :isChoseMember="isChoseMember"
@@ -725,6 +725,15 @@ export default {
 }
 </script>
 
+<style lang="scss">
+.choseMemberDig.addmember {
+    width: 720px;
+    height: 730px;
+    background: #fff;
+    border-radius: 10px;
+}
+</style>
+
 <style scoped lang="scss">
 .leaguer-wrap {
     width: 1270px;
@@ -1049,3 +1058,4 @@ export default {
     }
 }
 </style>
+

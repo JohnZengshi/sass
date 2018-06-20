@@ -133,13 +133,13 @@
             </DropDownMenu>
           </div>
           <!-- 所在位置 -->
-          <div class="drop-block">
+          <!-- <div class="drop-block"> -->
             <!-- <checkboxDropDown ref="shopWrap" :propsList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
             </checkboxDropDown> -->
-            <multipleSlesct ref="shopWrap" :leftList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
-            </multipleSlesct>
+            <!-- <multipleSlesct ref="shopWrap" :leftList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
+            </multipleSlesct> -->
             <!-- <multipleSlesct></multipleSlesct> -->
-          </div>
+          <!-- </div> -->
           <!-- <div class="drop-block">
                         <DropDownMenu
                             titleName="所在位置"
@@ -1107,10 +1107,18 @@
         this.endWeight = ""
         this.beginPrice = ""
         this.endPrice = ""
+        // -------------------------
+        // 选项的参数
+        this.productTypeId = ""
+        this.colourId = ""
+        this.jewelId = ""
+        this.jewelryId = ""
+        // ---------------------------
         this.getDate(0)
         this.seekProductTypeList()
         this.getPropList()
         this.getUserList()
+        this.batchAddByProductList();
       },
       // 点击单据展示商品列表
       gotoGoods(orderId) {

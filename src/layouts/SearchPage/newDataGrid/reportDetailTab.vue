@@ -1,148 +1,18 @@
 <template>
-<transition name="tp-ani">
-  <header class="app-header not-print">
-      
-      <h1 class="logo">
-          <img class="companyLogo" v-if='companyInfo' :src="companyInfo ? companyInfo.logo : ''">
-          <span class="company-name-now" v-if='companyInfo'>{{companyInfo.companyName}}</span>
-          <!--公司切换-->
-          <el-dropdown @command="switchCompany" trigger="click" v-if="companyList1.length>1">
-            <span class="el-dropdown-link"><i class="iconfont icon-icon_qiehuangongsi"></i></span>
-            
-                <el-dropdown-menu slot="dropdown"  class="layout-drop-item">
-                  <div class="header-layout">
-                      <el-dropdown-item
-                          :class="changeActive == index"
-                          :command="{item:item,index:index}"
-                          v-for="(item, index) in companyList1" :key="index">
-                          {{item.companyName}}
-                      </el-dropdown-item>
-                  </div>
-                      <el-dropdown-item v-if="isAllowCreate" @click.native="createComp"><i class="iconfont icon-jia2 icon-create-company"></i>创建公司</el-dropdown-item>
-                      
-                </el-dropdown-menu>
-          </el-dropdown>
-          
-      </h1>
+    <div class="tab_detail_table">
+        <!--表头 start-->
+        <data-grid-header :newList="newList" :tabSwitch="tabSwitch" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header>
+        <template>
+          <!--表格内容区  -->
+          <data-grid-body :printNum="printNum" :tabSwitch="tabSwitch" :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="dataGridStorage" :reportType="reportType" :positionSwitch="positionSwitch" @scrollClass="scrollClass" @lazyloadSend="lazyloadSend" @tabCell="tabCell" @openDialog="openDialog">
+          </data-grid-body>
+          <!--表尾  -->
+          <data-grid-footer  :tabSwitch="tabSwitch" :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="allData" :reportType="reportType" :configData="configData" @tabCell="tabCell">
+          </data-grid-footer>
+        </template>
 
-      <div class="page-side">
-          <div class="menuTabs">
-              <!--<menutabs></menutabs>-->
-          </div>
-          <div class="button">
-              <!-- 搜索模块 begin  -->
-              <div class="search" ref="mysearch">
-                  <!-- <div class="drop-search">单据<i class="el-icon-caret-bottom"></i></div> -->
-                  <!-- <el-dropdown class="drop-search" @command="searchType">
-                      <span class="el-dropdown-link">
-                          {{searchTypeText}}<i class="iconfont icon-xiala"></i>
-                      </span>
-                      <el-dropdown-menu slot="dropdown" class="layout-drop-item search-drop-item">
-                          <el-dropdown-item command="单据">单据</el-dropdown-item>
-                          <el-dropdown-item command="商品">商品</el-dropdown-item>
-                      </el-dropdown-menu>
-                  </el-dropdown> -->
-                  <input type="text" @focus="changesearchborder(1)" @blur="changesearchborder(2)" @keyup="watchCloseIcon" @keyup.enter="goSearchPage" v-model="searchText" placeholder="请输入关键字..." />
-                  <i v-if="iconShow" class="iconfont icon-sousuo" @click="goSearchPage" title="搜索"></i>
-                  <i v-else class="iconfont el-icon-circle-cross" @click="closeIcon" title="清除"></i>
-                  <!-- 搜索的列表 begin -->
-                  <div v-if="isSearch && searchText" class="searchList">
-                    <!-- 商品 -->
-                    <div class="commodity">
-                        <h1>商品</h1>
-                        <div class="commodityList">
-                          <div class="commodityItem" v-if="productList.length == 0">未匹配到相关商品信息，查看<span @click.stop="openListDeta(0)">所有商品</span></div>
-                          <div class="commodityItem" v-else v-for="(item,index) in productList" :key="index" @click.stop="openDialog(productList[index].productId)">
-                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.barcode)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn">{{ item.jewelryName }}</span><span class="slocation fr">{{ item.locationName }}</span>
-                          </div>
-                          <div class="commodityItem" v-if="productList.length > 5" @click.stop="openListDeta(0)">
-                            <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多商品</span><span class="more_num">({{productTotalNum}})</span>
-                          </div>
-                        </div>
-                    </div>
-                    <!-- 单据 -->
-                    <div class="receipts">
-                        <h1>单据</h1>
-                        <div class="receiptsList">
-                          <div class="receiptsItem" v-if="orderList.length == 0">未匹配到相关单据信息，查看<span @click.stop="openListDeta(1,true)">所有单据</span></div>
-                          <div class="receiptsItem" v-else @click.stop="openDocument(item)" v-for="(item,index) in orderList" :key="index">
-                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.orderNum)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="state">{{ getOrderType(item.orderType) }}</span><span class="slocation fr">{{ item.createName }}</span>
-                          </div>
-                          <div class="receiptsItem" v-if="orderList.length > 5" @click.stop="openListDeta(1)">
-                            <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多单据</span><span class="more_num">({{orderTotalNum}})</span>
-                          </div>
-                        </div>
-                    </div>
-                    <!-- 会员 -->
-                    <div class="members">
-                        <h1>会员</h1>
-                        <div class="membersList">
-                          <div class="membersItem" v-if="memberListData.length == 0">未匹配到相关会员信息，查看<span @click.stop="openListDeta(2,true)">所有会员</span></div>
-                          <div class="membersItem" v-else @click.stop="openMember(item)" v-for="(item,index) in memberListData" :key="index">
-                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.phone)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn">{{item.memberName}}</span><span class="slocation fr">{{item.shopName}}</span>
-                            
-                          </div>
-                          <div class="membersItem" v-if="memberListData.length > 5" @click.stop="openListDeta(2)">
-                            <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多会员</span><span class="more_num">({{memberTotalNum}})</span>
-                          </div>
-                        </div>
-                    </div>
-
-                  </div>
-                  <!-- 搜索的列表 end -->
-
-              </div>
-              <!-- 搜索模块 end  -->
-              <div class="info" @click="unreadNoticeNum = 0">
-                <el-badge :value="unreadNoticeNum" :hidden="unreadNoticeNum == 0" class="item" title="公告">
-                  <router-link class="iconfont icon-tixing" tag="i" to="/notice"></router-link>
-                </el-badge>
-              </div>
-              <div class="msg">
-                <!-- <i class="iconfont icon-xinxiang" title="消息"></i> -->
-                  <el-badge :value="unreadSystemMessageNum" :hidden="unreadSystemMessageNum == 0" class="item" title="消息">
-                      <router-link class="iconfont icon-xinxiang" tag="i" to="/message"></router-link>
-                  </el-badge>
-              </div>
-          </div>
-          <div class="user-info">
-              <!-- <img @click="goAdmin" v-if="userInfo" class="user-img" :src="userInfo.userLogo"> -->
-              <FormatImg :logo="userInfo.userLogo" @click.native="goAdmin" class="img" :userName="userInfo.userName || userInfo.phone" :size="40"></FormatImg>
-              <div v-if="userInfo" class="userInfo_silder">欢迎您！
-                  <el-dropdown @command="selectMenu">
-                      <span class="el-dropdown-link">
-                          {{userInfo.userName || userInfo.phone}}<i class="el-icon-caret-bottom el-icon--right"></i>
-                      </span>
-                      <el-dropdown-menu slot="dropdown" class="layout-drop-item">
-                          <!--<el-dropdown-item command="a">个人信息</el-dropdown-item>-->
-                          <!--<el-dropdown-item command="b">我的公司</el-dropdown-item>
-                          <el-dropdown-item command="c">店铺管理</el-dropdown-item>-->
-                          <!--<el-dropdown-item command="d">修改密码</el-dropdown-item>-->
-                          <el-dropdown-item command="e">退出登录</el-dropdown-item>
-                      </el-dropdown-menu>
-                  </el-dropdown>
-              </div>
-          </div>
-      </div>
-
-      <!-- 点击了搜索列表后的弹窗 -->
-      <el-dialog top="7%" :modal="false" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption serachList">
-        <!-- tab栏 -->
-        <div class="tab-list">
-          <ul>
-            <li @click="tabAction(index)" v-for="(item, index) in tabList" :key="index" :class="{active: actIndex == index}">
-              <div>{{item}}</div>
-            </li>
-          </ul>
-			  </div>
-        <!-- tab栏切换的内容 -->
-        <div class="page-wrap">
-				  <component :showAll="showAll" :is="panel" :panelType="panelType" :serchKey="searchText" @close="close" @openMemberByList="openMemberByList"></component>
-			  </div>
-        
-      </el-dialog>
-      <!-- 点击了商品的弹窗 -->
-      <el-dialog :title="productTypeName" top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="DataShow" customClass="ruleOption detailsBounced">
+        <!-- 详情弹框 -->
+        <el-dialog :title="productTypeName" top="0" :modal="false" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption detailsBounced">
           <div class="detailsInfo">
             <div class="detailsInfo_left">
               <div class="main-body">
@@ -185,79 +55,76 @@
               </div>
             </div>
           </div>
-      </el-dialog>
-      <!-- 点击了会员列表 -->
-      <member-info
-        @closeReturn="closeEditReturn" 
-        :memberId="memberId"
-        :shopId="shopId"
-        :memberInfoFlag="editLeaguer">
-      </member-info>
-  </header>
-</transition>
+        </el-dialog>
+
+        <!-- 会员弹窗 -->
+        <!-- <member-info
+          @closeReturn="closeEditReturn" 
+          :memberId="memberId"
+          :shopId="shopId"
+          :memberInfoFlag="editLeaguer">
+        </member-info> -->
+    </div>
 </template>
-
 <script>
-import {
-  seekMySelfWorkApplyList,
-  seekPermissionList,
-  seekCompanyList,
-  seekUnreadCount
-} from "../../src/Api/commonality/seek";
-import {
-  operateSwitchCompany,
-  operateLogout
-} from "../../src/Api/commonality/operate";
-import FormatImg from "components/template/DefaultHeadFormat.vue";
-import menutabs from "components/menuTab.vue";
-let skinConfig = require("./skinConfig");
-
-import ProductList from './SearchPage/ProductList'
-import DocumentsList from './SearchPage/DocumentsList'
-import memberList from './SearchPage/memberList'
-import stepsPath from './SearchPage/newDataGrid/stepsPath'
+import DataGridHeader from "./dataGridHeader";
+import DataGridBody from "./dataGridBody";
+import DataEditBody from "./editBody";
+import DataGridFooter from "./dataGridFooter";
+import DataEditFooter from "./editFooter";
+import stepsPath from './stepsPath'
+let configData = require("./config/dataGridConfig");
 
 import { homepageSearch, productLogRecord,productStatusInfo } from 'Api/search'
 import { seekCommodityDetails } from "Api/commonality/seek"
 
 // 导入会员的弹窗
-import memberInfo from './Leaguer/components/memberInfo'
+import memberInfo from '../../Leaguer/components/memberInfo'
 
 export default {
   data() {
     return {
-      statusREfresh: false,
-      orderNum:'',
-      
-      skinConf: [],
-      searchText: "",
-      searchTypeText: "商品",
-      companyList1: [],
-      changeActive: -1,
-      iconShow: true,
-      num: 1,
-      skinIndex: 0,
-      smallUrl: "",
-      unreadSystemMessageNum: "", // 未读系统消息
-      unreadNoticeNum: "", // 未读公告
+      tempDatagrid: [],
+      detailDataGridColumn: [],
+      configData: configData,
+      ListDetails: false,
 
-      isSearch: false, // 搜索列表
-      ListDetails: false, // 列表弹框
-
-      DataShow: false,
-      
-      tabList: [
-        '商品',
-        '单据',
-        '会员'	
-      ],
-      panel: ProductList,// 对应的页面
-      actIndex:'0', // 对应选中的参数
-      panelType: 0, // 对应的页面
-
-      lastTitleName: '',
+      lastTitleName: "",
       tabIndex: 0,
       sortDataList: [], // 排序数组
+
+      tabList: [
+        {
+          label: "基本信息"
+        },
+        {
+          label: "重量"
+        },
+        {
+          label: "证书"
+        },
+        {
+          label: "主石"
+        },
+        {
+          label: "副石"
+        },
+        {
+          label: "工费"
+        },
+        {
+          label: "配件"
+        },
+        {
+          label: "其他费用"
+        },
+        {
+          label: "标价"
+        },
+        {
+          label: "备注"
+        }
+      ],
       dataModel: {
         baseData: {
           id: 0,
@@ -311,16 +178,9 @@ export default {
         }
       },
 
-        
-      orderList: [], // 对应的单据
-      productList: [], // 对应的商品
-      memberListData: [], // 对应的会员
+      statusREfresh: false,
+      orderNum:'',
 
-      orderTotalNum:'', //对应的单据总数
-      productTotalNum:'', //对应的商品总数
-      memberTotalNum:'', //对应的会员总数
-
-      dataGridStorage: [], // 列表数据
       productTypeName: '', // 头部名
       productId: '',
 
@@ -330,115 +190,203 @@ export default {
       locationName: '',
       productClass: '',
 
-      showAll: false,
-      editLeaguer: false,
       memberId:'',
-      shopId:''
+      shopId:'',
+      editLeaguer:false
 
     };
   },
   components: {
-    FormatImg,
-    menutabs, //加载头部页签组件
-    ProductList,
-    DocumentsList,
-    memberList,
+    DataGridFooter,
+    DataGridBody,
+    DataEditBody,
+    DataGridHeader,
+    DataEditFooter,
     stepsPath,
-    memberInfo, // 会员弹框
-  },
-  props: ["companyInfo", "userInfo", "isAllowCreate"],
-
-  created() {
-    this.companyList(); // 公司列表
-    this.skinConf = skinConfig.skinList;
-    this.unreadCount();
-  },
-  mounted() {
-    let body = document.getElementById("body");
-    // let aShield = document.getElementsByClassName('skin-shield')
-    //let aShield = document.getElementsByClassName('skin-shield')
-    if (localStorage.getItem("bgUrl")) {
-      let obj = JSON.parse(localStorage.getItem("bgUrl"));
-      body.style.background = obj.url;
-      this.skinIndex = obj.index;
-      if (obj.flag == "custom") {
-        $("#body").addClass("body-shield");
-        //this.$refs.switch_skin.style.background = obj.url
-      } else if (obj.flag == "static") {
-        $("#body").removeClass("body-shield");
-        //this.$refs.switch_skin.style.background = "#f5f8f7"
-      }
-    }
+    memberInfo
   },
   watch: {
-    companyInfo: function() {
-      if (this.companyInfo.companyName) {
-        localStorage.setItem("companyInfo", JSON.stringify(this.companyInfo));
-      }
+    reportType: function() {
+      this.tableSwitch();
     },
-    $route: function() {
-      this.unreadCount();
+    //开关 成本列
+    tabSwitch: function() {
+      this.tableSwitch();
     }
   },
+  created() {
+    this.setColumn()
+    // this.commodityDetails()
+  },
+  props: [
+    "dataGridStorage",
+    "reportType",
+    "tabSwitch",
+    "isOld",
+    "positionSwitch",
+    "newList",
+    "type",
+    "printNum",
+    "allData",
+    "panelType"
+  ],
   methods: {
-    openMemberByList(parm) {
-      this.memberId = parm.memberId
-      this.shopId = parm.shopId
-      this.editLeaguer = true
-    },
-    openMember (item) {
-      this.memberId = item.memberId
-      this.shopId = item.shopId
-      this.editLeaguer = true
-    },
-    openDocument(item) {
-      console.log(item)
-      // 入库详情页
-      if(item.orderNum.indexOf('RK') !== -1) {
-        this.$router.push({path:'/work/storage/detail',query:{ orderNumber: item.orderNum }})
-      }
-      // 修改详情页
-      if(item.orderNum.indexOf('XG') !== -1) {
-        this.$router.push({path:'/work/amend/index',query:{ orderNumber: item.orderNum }})
-      }
-      // 退库详情页
-      if(item.orderNum.indexOf('TK') !== -1) {
-        this.$router.push({path:'/work/storageReturn/NewStorageReturn',query:{ orderNumber: item.orderNum }})
-      }
-      // 调库详情页
-      if(item.orderNum.indexOf('DK') !== -1) {
-        this.$router.push({path:'/work/transferStorage/newTransferStorage',query:{ orderNumber: item.orderNum }})
-      }
-      // 发货详情页
-      if(item.orderNum.indexOf('FH') !== -1) {
-        this.$router.push({path:'/work/sipping/newSipping',query:{ orderNumber: item.orderNum }})
-      }
-      // 调柜详情页
-      if(item.orderNum.indexOf('DG') !== -1) {
-        this.$router.push({path:'/work/transferCabinet/newTransferCabinet',query:{ orderNumber: item.orderNum }})
-      }
-      // 退货详情页
-      if(item.orderNum.indexOf('TH') !== -1) {
-        this.$router.push({path:'/work/salesReturn/newSalesReturn',query:{ orderNumber: item.orderNum }})
-      }
-      // 销售详情页
-      if(item.orderNum.indexOf('XS') !== -1) {
-        this.$router.push({path:'/work/sell/sellReceiptsList',query:{ orderNumber: item.orderNum }})
-      }
-    },
     closeEditReturn (val) {
       this.editLeaguer = val.status
+      // this.memberAllList()
+      // this.memberTotalNum()
     },
-    close(parm) {
-      console.log('点击关闭',parm)
-      console.log('关闭')
-      this.ListDetails = parm
+    sortList(val) {
+      this.$emit("sortListAct", val);
     },
-    // 打开详情的弹窗
+    lazyloadSend(val) {
+      this.$emit("lazyloadSend", val);
+    },
+    tableSwitch() {
+      let temp = [];
+      // this.setConfig()
+      this.configType();
+      this.ObjectAssign();
+      if (!this.tabSwitch) {
+        //console.log(11111)
+        if (!this.positionSwitch) {
+          this.tempDatagrid.forEach(item => {
+            let tempwidth,
+              _item = Object.assign({}, item);
+            if (
+              _item.width &&
+              _item.text != "成本" &&
+              _item.width &&
+              _item.text != "位置名称"
+            ) {
+              tempwidth = parseInt(_item.width);
+              _item.width = tempwidth + 26;
+              temp.push(_item);
+            }
+          });
+          //console.log(temp)
+        } else {
+          this.tempDatagrid.forEach(item => {
+            let tempwidth,
+              _item = Object.assign({}, item);
+            if (_item.width && _item.text != "成本") {
+              tempwidth = parseInt(_item.width);
+              _item.width = tempwidth + 13;
+              temp.push(_item);
+            }
+          });
+          //console.log(temp)
+        }
+      } else {
+        if (!this.positionSwitch) {
+          this.tempDatagrid.forEach(item => {
+            let tempwidth,
+              _item = Object.assign({}, item);
+            if (_item.width && _item.text != "位置名称") {
+              tempwidth = parseInt(_item.width);
+              _item.width = tempwidth + 13;
+              temp.push(_item);
+            }
+          });
+        } else {
+          temp = this.tempDatagrid;
+        }
+      }
+      this.detailDataGridColumn = temp;
+    },
+    ObjectAssign() {
+      this.tempDatagrid = [];
+      this.detailDataGridColumn.forEach(item => {
+        let tempItem = Object.assign({}, item);
+        this.tempDatagrid.push(tempItem);
+      });
+    },
+    //单元格宽度
+    tabCell(result) {
+      if (result.width) {
+        let w = "width:" + result.width + "px";
+        result.res && result.res.call(this, w);
+      }
+    },
+    configType() {
+      this.setColumn();
+    },
+    scrollClass(type) {
+      this.$emit("scrollClass", type);
+    },
+    setColumn(data) {
+      console.log(this.panelType);
+      switch (this.panelType) {
+        case 0:
+          this.detailDataGridColumn = this.configData.detailConfing;
+          break;
+        case 1:
+          this.detailDataGridColumn = this.configData.documentConfig;
+          break;
+        case 2:
+          this.detailDataGridColumn = this.configData.memberConfig;
+          break;
+        default:
+          break;
+      }
+    },
     openDialog(parm) {
+      if(this.panelType == 1) {
+        console.log(parm)
+        this.$emit('close')
+        // 入库详情页
+        if(parm.indexOf('RK') !== -1) {
+          this.$router.push({path:'/work/storage/detail',query:{ orderNumber: parm }})
+        }
+        // 修改详情页
+        if(parm.indexOf('XG') !== -1) {
+          this.$router.push({path:'/work/amend/index',query:{ orderNumber: parm }})
+        }
+        // 退库详情页
+        if(parm.indexOf('TK') !== -1) {
+          this.$router.push({path:'/work/storageReturn/NewStorageReturn',query:{ orderNumber: parm }})
+        }
+        // 调库详情页
+        if(parm.indexOf('DK') !== -1) {
+          this.$router.push({path:'/work/transferStorage/newTransferStorage',query:{ orderNumber: parm }})
+        }
+        // 发货详情页
+        if(parm.indexOf('FH') !== -1) {
+          this.$router.push({path:'/work/sipping/newSipping',query:{ orderNumber: parm }})
+        }
+        // 调柜详情页
+        if(parm.indexOf('DG') !== -1) {
+          this.$router.push({path:'/work/transferCabinet/newTransferCabinet',query:{ orderNumber: parm }})
+        }
+        // 退货详情页
+        if(parm.indexOf('TH') !== -1) {
+          this.$router.push({path:'/work/salesReturn/newSalesReturn',query:{ orderNumber: parm }})
+        }
+        // 销售详情页
+        if(parm.indexOf('XS') !== -1) {
+          this.$router.push({path:'/work/sell/sellReceiptsList',query:{ orderNumber: parm }})
+        } 
+          // this.$router.push({path:'/work/sell'})
+          // this.$router.push({path:'/work/sell/sellReceiptsList?orderNumber='+parm})
+        return
+        }
+
+      if(this.panelType == 2) {
+        this.$emit('openMemberByList',parm)
+        // this.$emit('close')
+        return
+      }
+
       this.commodityDetails(parm)
-      this.DataShow = true
+      this.ListDetails = true;
     },
+    goBack() {
+      window.history.back(-1);
+    },
+    // tabSwitch(item, index, el) {
+    //   this.tabIndex = index;
+    //   this.$refs.slide.style.left = index * 83 + "px";
+    // },
     dataSortGroup() {
       // 数据排序分组
       if (this.tabIndex == 0) {
@@ -948,7 +896,6 @@ export default {
       this.dataSortGroup();
     },
     commodityDetails(parm) {
-      this.productId = parm
       // 商品明细数据
       let options = {
         productId: parm
@@ -981,227 +928,28 @@ export default {
         }
       })
     },
-    openListDeta(type,showAll) {
-      switch (type) {
-        case 0:
-          this.panel = ProductList
-          this.panelType = type
-          this.actIndex = type + ''
-          break;
-        case 1:
-          this.panel = DocumentsList
-          this.panelType = type
-          this.actIndex = type + ''
-
-          if(showAll) {
-            this.showAll = true
-          } else {
-            this.showAll = false
-          }
-          break;
-        case 2:
-          this.panel = memberList
-          this.panelType = type
-          this.actIndex = type + '' 
-
-          if(showAll) {
-            this.showAll = true
-          } else {
-            this.showAll = false
-          }         
-          break;
-      
-        default:
-          break;
-      }
-
-      this.ListDetails = true
-      this.isSearch = false
-    },
-    changesearchborder(val) {
-      if (val == 1) {
-        this.$refs.mysearch.style.border = "1px solid #2993f8";
-        this.isSearch = true;
-      } else {
-        setTimeout(() => {
-          this.$refs.mysearch.style.border = "1px solid #fff";
-          this.isSearch = false
-        }, 200);
-      }
-    },
-    unreadCount() {
-      seekUnreadCount().then(
-        res => {
-          this.unreadSystemMessageNum = res.data.data.unreadSystemMessageNum;
-          this.unreadNoticeNum = res.data.data.unreadNoticeNum;
-        },
-        res => {}
-      );
-    },
-    closeIcon() {
-      this.searchText = "";
-      this.iconShow = true;
-      this.productList = []
-      this.orderList = []
-      this.memberListData = []
-    },
-    watchCloseIcon() {
-      if (this.searchText != "") {
-        this.iconShow = false;
-        this.getHomepageSearchData()        
-      } else {
-        this.iconShow = true;
-        this.orderList = []
-        this.memberListData = []
-        this.productList = []
-      }
-
-      // 字数大于3的时候请求
-      // if(this.searchText.length >=3 ) {
-      // }
-
-    },
-    createComp() {
-      this.$emit("messageBack", { flag: true, type: 2 });
-    },
-    companyList() {
-      seekCompanyList().then(
-        res => {
-          this.companyList1 = res.data.data.dataList;
-        },
-        res => {}
-      );
-    },
-    switchCompany(command) {
-      // 切换公司
-      let options = {
-        companyId: command.item.companyId
-      };
-      this.changeActive = command.index;
-
-      operateSwitchCompany(options).then(
-        res => {
-          this.$router.push({ path: "/mainIndex" });
-          sessionStorage.setItem("companyId", command.item.companyId);
-          location.reload();
-        },
-        res => {}
-      );
-    },
-    goSearchPage() {
-      // 去搜索页面
-      // if (this.searchTypeText == "单据") {
-      //   this.$router.push({
-      //     path: "/billSearch",
-      //     query: { text: this.searchText }
-      //   });
-      // } else if (this.searchTypeText == "商品") {
-      //   this.$router.push({
-      //     path: "/goodsSearch",
-      //     query: { text: this.searchText }
-      //   });
-      // }
-
-      // 直接搜索
-      this.getHomepageSearchData()
-      this.isSearch = true
-
-      // 点击跳转
-      this.openListDeta(0)
-
-    },
-    searchType(command) {
-      //单击搜索类型切换
-      this.searchTypeText = command;
-      
-    },
-    //selectMenu
-    selectMenu(command) {
-      if (command == "a") {
-        this.$router.push({ path: "/admin/personalInfo" });
-      } else if (command == "b") {
-        this.$router.push({ path: "/admin/myCompany" });
-      } else if (command == "c") {
-        this.$router.push({ path: "/admin/shopManage" });
-      } else if (command == "d") {
-        this.$router.push({ path: "/admin/pawdSetting" });
-      } else if (command == "e") {
-        operateLogout().then(res => {
-          if (res.data.state == 200) {
-            this.$router.push({ path: "/member/login" });
-            let body = document.getElementById("body");
-            body.style.background = "#f5f8f7";
-          } else {
-            this.$message({
-              message: res.data.msg,
-              type: "warning"
-            });
-          }
-        });
-      }
-    },
-
-    goAdmin() {
-      //this.$router.push({path: '/admin'})
-      this.$emit("goPersonalInfo", { flag: true });
-    },
-    // tab栏切换
-    tabAction(index) {
-        console.log(index)
-        this.actIndex = index + ''
-        this.panelType = index        
-				switch(index) {
-          case 0:
-            this.panel = ProductList
-						break;
-          case 1:
-            this.panel = DocumentsList
-						break;
-          case 2:
-            this.panel = memberList
-						break;
-				}
-		},
-    // 获取搜索列表
-    getHomepageSearchData() {
-      let options = {
-        keyWord : this.searchText
-      }
-      homepageSearch(options).then(res => {
-        if(res.data.state == 200) {
-          this.orderList = res.data.data.orderList || []
-          this.productList = res.data.data.productList || []
-          this.memberListData = res.data.data.memberList || []
-
-          this.orderTotalNum = res.data.data.orderTotalNum
-          this.productTotalNum = res.data.data.productTotalNum
-          this.memberTotalNum = res.data.data.memberTotalNum
-
-        }
-      })
-    },
     // 获取订单状态
     getOrderType(type) {
       switch (type) {
-        case '01':
+        case '1':
           return '入库'
           break;
-        case '02':
+        case '2':
           return '退库'
           break;
-        case '03':
+        case '3':
           return '发货'
           break;
-        case '04':
+        case '4':
           return '退货'
           break;
-        case '05':
+        case '5':
           return '销售/回购'
           break;
-        case '06':
+        case '6':
           return '调柜'
           break;
-        case '07':
+        case '7':
           return '调库'
           break;
         case '10':
@@ -1311,496 +1059,22 @@ export default {
         default:
           break;
       }
-    },
-    // 截取keyword
-    filterkeyWord (parm) {
-      // console.log(parm)
-      if(parm) {
-        let datas = parm.split(this.searchText)
-        datas.splice(1, 0, this.searchText)
-        return datas
-      }
-    },
-    
+    }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.tableSwitch();
+    });
   }
 };
 </script>
-
 <style lang="scss" scoped>
-.el-dropdown-menu__item {
-  .icon-create-company {
-    margin-right: 4px;
-    color: #999;
-    float: left;
-    margin-top: 1px;
-    font-size: 15px;
-  }
-
-  &:hover {
-    .icon-create-company {
-      color: #2993f8;
-    }
-  }
-}
-.app-header {
-  position: fixed;
-  color: #2993f8;
-  left: 0;
-  top: 0;
-  height: 64px;
-  width: 100%;
-  padding-left: 190px;
+.tab_detail_table {
   background-color: #fff;
-  border-bottom: 1px solid #edf0ef;
-  z-index: 1002;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-  display: flex;
-
-  .logo {
-    height: 59px;
-    position: absolute;
-    left: 20px;
-    top: 5px;
-    z-index: 10;
-
-    .companyLogo {
-      width: 35px;
-      height: 35px;
-      border-radius: 4px;
-      display: inline-block;
-      margin-right: 10px;
-      vertical-align: middle;
-      margin-top: 6px;
-    }
-    .company-name-now {
-      display: inline-block;
-      height: 35px;
-      line-height: 35px;
-      font-size: 18px;
-      font-weight: 600;
-    }
-    .change-company {
-      display: inline-block;
-      margin-right: 10px;
-      width: 20px;
-      height: 20px;
-      font-weight: bold;
-      color: #2993f8;
-      cursor: pointer;
-    }
-
-    .icon-icon_qiehuangongsi {
-      //color: #2993f8;
-      cursor: pointer;
-      font-size: 20px;
-    }
-  }
-
-  .page-side {
-    position: relative;
-    z-index: 1;
-    height: 64px;
-    padding-right: 50px;
-    display: flex;
-    justify-content: flex-end;
-    flex: 1;
-
-    .button {
-      margin-top: 16px;
-      display: inline-block;
-      float: right;
-
-      .search {
-        float: left;
-        width: 320px;
-        height: 32px;
-        background: #f1f2f3;
-        border-radius: 4px;
-        position: relative;
-        border: 1px solid #fff;
-        input {
-          width: 210px;
-          height: 32px;
-          font-size: 14px;
-          font-weight: bold;
-          padding: 4px 0 4px 0;
-          background-color: transparent;
-        }
-        input::-webkit-input-placeholder {
-          color: #d6d6d6;
-          font-weight: bold;
-        }
-        input::placeholder,
-        input::-moz-placeholder {
-          color: #d6d6d6;
-          font-weight: bold;
-        }
-        .drop-search {
-          width: 75px;
-          height: 32px;
-          line-height: 32px;
-          position: relative;
-          &:after {
-            content: "";
-            background: #d6d6d6;
-            width: 1px;
-            height: 14px;
-            position: absolute;
-            right: 0;
-            top: 9px;
-          }
-          .el-dropdown-link {
-            display: inline-block;
-            width: 75px;
-            text-align: right;
-            position: relative;
-            padding-right: 22px;
-            cursor: pointer;
-            color: #2993f8;
-            > .iconfont {
-              color: #2993f8;
-              font-size: 22px;
-              position: absolute;
-              right: 0;
-              top: 2px;
-            }
-          }
-        }
-        .iconfont {
-          position: absolute;
-          right: 10px;
-          top: 6px;
-          font-size: 18px;
-          color: #666;
-          transition: all 0.3s;
-          cursor: pointer;
-          &:hover {
-            color: #2993f8;
-          }
-        }
-      }
-      .search:hover {
-        border: 1px solid #2993f8;
-      }
-      .search:focus {
-        border: 1px solid #2993f8;
-      }
-      .info {
-        float: left;
-        min-width: 30px;
-        height: 32px;
-        margin-left: 24px;
-        .item {
-          display: block;
-          margin-top: 3px;
-          i {
-            cursor: pointer;
-            font-size: 23px;
-            font-weight: bold;
-            color: #333;
-            &:hover {
-              color: #2993f8;
-            }
-          }
-        }
-      }
-      .msg {
-        float: left;
-        font-size: 24px;
-        color: #686868;
-        margin-left: 24px;
-        .item {
-          display: block;
-          margin-top: 3px;
-          i {
-            cursor: pointer;
-            font-size: 23px;
-            font-weight: bold;
-            color: #333;
-            &:hover {
-              color: #2993f8;
-            }
-          }
-        }
-      }
-    }
-
-    .user-info {
-      height: 100%;
-      float: right;
-      min-width: 230px;
-      line-height: 64px;
-      .userInfo_silder {
-        min-width: 130px;
-        height: 40px;
-        line-height: 40px;
-        float: right;
-        color: #333;
-        font-size: 14px;
-        font-weight: bold;
-        margin: 12px 15px 0 12px;
-        .el-dropdown-link {
-          cursor: pointer;
-          > i {
-            font-size: 9px;
-            color: #999;
-          }
-          &:hover {
-            color: #2993f8;
-            i {
-              color: #2993f8;
-            }
-          }
-        }
-      }
-      .img {
-        width: 40px;
-        height: 40px;
-        float: right;
-        margin: 10px 0;
-        border-radius: 50%;
-        cursor: pointer;
-      }
-      img {
-        width: 40px;
-        height: 40px;
-        float: right;
-        margin: 10px 0;
-        border-radius: 50%;
-        cursor: pointer;
-      }
-    }
-  }
-  .switch-skin {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    font-size: 12px;
-    text-align: center;
-    color: #737373;
-    padding: 2px 4px;
-    //line-height: 20px;
-    border-radius: 10px;
-    border: 1px solid #d6d6d6;
-    font-weight: normal;
-    cursor: pointer;
-    position: absolute;
-    z-index: 5;
-    top: 20px;
-    right: 40px;
-    ul {
-      opacity: 0;
-      visibility: hidden;
-      position: absolute;
-      width: 160px;
-      height: 150px;
-      background: #fff;
-      transition: all 0.3s ease;
-      left: -55px;
-      top: 42px;
-      border-radius: 4px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-      overflow-y: auto;
-      li {
-        width: 100%;
-        height: 50px;
-        padding-top: 8px;
-        padding-left: 5px;
-        img {
-          width: 60px;
-          height: 34px;
-          float: left;
-          margin-right: 27px;
-          border-radius: 4px;
-        }
-        span {
-          float: left;
-          display: block;
-          font-size: 14px;
-          color: #333;
-          line-height: 34px;
-        }
-      }
-      li:hover {
-        background: #f6f7f8;
-        span {
-          color: #2993f8;
-        }
-      }
-      li.active {
-        span {
-          color: #2993f8;
-        }
-      }
-    }
-  }
-  .switch-skin:hover {
-    color: #2993f8;
-    ul {
-      opacity: 1;
-      visibility: visible;
-    }
-  }
 }
 </style>
 
-<style lang="scss">
-.item {
-  .is-fixed {
-    top: 4px;
-    right: 18px;
-    line-height: 15px;
-  }
-}
 
-.header-layout {
-  max-height: 300px;
-  //overflow: auto;
-}
-.menuTabs {
-  flex: 1;
-  padding: 0 40px;
-  position: relative;
-}
-</style>
-
-<style lang="scss" scoped>
-.searchList {
-  position: absolute;
-  top: 32px;
-  left: 0;
-
-  width: 420px;
-  // height: 500px;
-  padding: 20px 0;
-
-  border: 1px solid #d6d6d6;
-  border-radius: 4px;
-  background: #fff;
-
-  .commodity,
-  .receipts,
-  .members {
-    & > h1 {
-      width: 100%;
-      height: 24px;
-      padding-bottom: 10px;
-      padding-left: 20px;
-      padding-right: 20px;
-
-      font-size: 14px;
-      font-weight: bold;
-      color: #666;
-
-      border-bottom: 1px solid #eee;
-    }
-    .commodityList,
-    .receiptsList,
-    .membersList {
-      width: 100%;
-      margin-bottom: 20px;
-      .commodityItem,
-      .receiptsItem,
-      .membersItem {
-        width: 100%;
-        height: 42px;
-
-        font-size: 14px;
-        color: #999;
-        line-height: 42px;
-        padding: 0 20px;
-
-        span {
-          color: #2993f8;
-          cursor: pointer;
-        }
-        .gno span{
-          color: #333;
-        }
-        .state {
-          display: inline-block;
-
-          // width: 40px;
-          height: 20px;
-          padding: 0 5px;
-          margin: 0 10px;
-
-          font-size: 12px;
-          color: #999;
-          text-align: center;
-          line-height: 20px;
-
-          background: #eee;
-          border-radius: 4px;
-        }
-        .gnn {
-          margin: 0 10px;
-          color: #333;
-        }
-        .slocation {
-          color: #999;
-        }
-        .more {
-          margin: 0 10px;
-
-          font-size: 14px;
-          color: #333;
-        }
-        .more_num {
-          color: #999;
-        }
-
-        &:hover {
-          .gno span{
-            color: #2993f8;
-          }
-          .gnn {
-            margin: 0 10px;
-            color: #2993f8;
-          }
-          .slocation {
-            color: #2993f8;
-          }
-          background: #f2f2f2;
-        }
-      }
-    }
-  }
-
-  .receipts {
-  }
-  .members {
-    .membersList {
-      margin-bottom: 0;
-    }
-  }
-}
-</style>
-
-<style lang="scss">
-.serachList.ruleOption .el-dialog__header .el-dialog__headerbtn {
-  margin-top: 16px;
-  margin-right: 16px;
-}
-.serachList .el-dialog__body {
-  padding-top: 50px;
-  padding-left: 0;
-  padding-right: 0;
-  .tab-list {
-    position: absolute;
-    top: 10px;
-    left: 20px;
-  }
-}
-.serachList .el-dialog__body .page-wrap {
-  height: auto;
-  overflow-y: visible;
-}
-.textIskey {
-  color: #ff6e88 !important;
-}
-</style>
- 
 <style lang="scss">
 @import "~assets/css/_fontManage.scss";
 
@@ -1812,10 +1086,7 @@ export default {
       color: #2993f8;
     }
   }
-  .el-dialog__body {
-    padding: 0;
-    padding-top: 40px;
-  }
+
   .detailsInfo {
     display: flex;
     .detailsInfo_left {
@@ -1838,7 +1109,7 @@ export default {
                     font-weight: bold;
                     position: relative;
                     transition: all ease .3s;
-                    background: url("../../static/img/tab-default.png") no-repeat left center;
+                    background: url("../../../../static/img/tab-default.png") no-repeat left center;
                     div {
                         width: 70px;
                         text-align: center;
@@ -1851,7 +1122,7 @@ export default {
                 .slide {
                     width: 83px;
                     height: 32px;
-                    background: url("../../static/img/tab-select.png") no-repeat left center;
+                    background: url("../../../../static/img/tab-select.png") no-repeat left center;
                     position: absolute;
                     top: 0;
                     left: 0;

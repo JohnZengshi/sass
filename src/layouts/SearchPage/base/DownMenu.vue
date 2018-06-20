@@ -1,7 +1,10 @@
-。<template>
-  <div class="down-menu-main">
+<template>
+  <div class="print-down-menu-main">
     <span class="title-name" :class="titleInfo ? '' : 'select'" :style="specialStyle">
-      {{titleInfo}}<i v-show="!isSolid" class="iconfont icon-arrow-down drop-triangle" v-if="noChange"></i><i v-show="isSolid" class="iconfont icon-xiala drop-triangle"></i><i class="el-icon-circle-close" title="清除" @click="clearTitleInfo"
+      {{titleInfo}}
+      <i v-show="!isSolid" class="iconfont icon-arrow-down drop-triangle" v-if="noChange"></i>
+      <i v-show="isSolid" class="iconfont icon-xiala1 drop-triangle" style="margin-left: 5px;" v-if="noChange"></i>
+      <i v-show="!isSolid" class="el-icon-circle-close" title="清除" @click="clearTitleInfo"
       v-if="!noChange && !noClear"></i>
     </span>
     <ul class="drop-list">
@@ -16,16 +19,6 @@ export default {
     return {
       actIndex: null,
       noChange: true // 选中标记
-      // showList: [
-      //   {
-      //     name: 123,
-      //     id: 789
-      //   },
-      //   {
-      //     name: 6666,
-      //     id: 7889
-      //   }
-      // ]
     }
   },
   methods: {
@@ -36,15 +29,14 @@ export default {
     },
     itemClick (item, index) {
       this.noChange = false
-      console.log('选中', item)
-      this.actIndex = index,
+      this.actIndex = null,
       this.$emit("changeData", item)
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.down-menu-main{
+.print-down-menu-main{
     display: inline-block;
     position: relative;
     cursor: pointer;
@@ -62,7 +54,7 @@ export default {
         margin-left: -3px;
     }
     &:hover{
-        // background:#e0ecf7;
+        background:#e0ecf7;
         color:#3195f5;
         >ul{
             opacity: 1;
@@ -79,7 +71,6 @@ export default {
         }
         >.title-name {
             color:#3195f5;
-            border: 1px solid #3195f5;
         }
         .title-name .el-icon-circle-close {
             color:#2993f8;
@@ -87,24 +78,16 @@ export default {
     }
     .title-name {
         padding: 0 8px;
-        border: 1px solid #d6d6d6;
-        border-radius: 5px;
-        width: 100px;
-        margin-left: 10px;
-        overflow-x: hidden; 
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        background-color: #fff;
         &.select{
             //color: #333;
         }
         color:#666;
         text-align: center;
         display: block;
-        height: 28px;
+        height: 30px;
         // font-weight: bold;
         font-size: 14px;
-        line-height: 28px;
+        line-height: 30px;
         .drop-triangle {
             font-size:12px;
             display: inline-block;
@@ -144,7 +127,7 @@ export default {
             text-align: center;
             height: 42px;
             line-height: 42px;
-            min-width: 130px;
+            min-width: 200px;
             font-size: 13px;
             color: #333;
             white-space: nowrap;

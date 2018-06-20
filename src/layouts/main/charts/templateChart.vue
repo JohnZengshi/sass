@@ -67,7 +67,8 @@ export default {
   	
   	setSize(){
   		if( this.chartSize ) this.size = this.chartSize
-  		this.$refs.refsEcharts.style.height = this.size.y + 'px';
+		  this.$refs.refsEcharts.style.height = this.size.y + 'px';
+		  this.$refs.refsEcharts.style.zIndex = '99'
   	},
   	
   	load(){
@@ -90,7 +91,8 @@ export default {
   
   mounted(){
   	this.$nextTick(()=>{
-  		this.load()
+		  this.load()
+		  console.log('图标节点',this.$refs.refsEcharts.children[1])
   	})
   }
 }
