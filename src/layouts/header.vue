@@ -42,7 +42,7 @@
                           <el-dropdown-item command="商品">商品</el-dropdown-item>
                       </el-dropdown-menu>
                   </el-dropdown> -->
-                  <input type="text" @focus="changesearchborder(1)" @blur="changesearchborder(2)" @keyup="watchCloseIcon" @keyup.enter="goSearchPage" v-model="searchText" placeholder="请输入关键字..." />
+                  <input style="paddingLeft: 10px;" type="text" @focus="changesearchborder(1)" @blur="changesearchborder(2)" @keyup="watchCloseIcon" @keyup.enter="goSearchPage" v-model="searchText" placeholder="请输入关键字..." />
                   <i v-if="iconShow" class="iconfont icon-sousuo" @click="goSearchPage" title="搜索"></i>
                   <i v-else class="iconfont el-icon-circle-cross" @click="closeIcon" title="清除"></i>
                   <!-- 搜索的列表 begin -->
@@ -50,6 +50,7 @@
                     <!-- 商品 -->
                     <div class="commodity">
                         <h1>商品</h1>
+                        <div class="line"></div>
                         <div class="commodityList">
                           <div class="commodityItem" v-if="productList.length == 0">未匹配到相关商品信息，查看<span @click.stop="openListDeta(0)">所有商品</span></div>
                           <div class="commodityItem" v-else v-for="(item,index) in productList" :key="index" @click.stop="openDialog(productList[index].productId)">
@@ -63,6 +64,7 @@
                     <!-- 单据 -->
                     <div class="receipts">
                         <h1>单据</h1>
+                        <div class="line"></div>
                         <div class="receiptsList">
                           <div class="receiptsItem" v-if="orderList.length == 0">未匹配到相关单据信息，查看<span @click.stop="openListDeta(1,true)">所有单据</span></div>
                           <div class="receiptsItem" v-else @click.stop="openDocument(item)" v-for="(item,index) in orderList" :key="index">
@@ -76,6 +78,7 @@
                     <!-- 会员 -->
                     <div class="members">
                         <h1>会员</h1>
+                        <div class="line"></div>
                         <div class="membersList">
                           <div class="membersItem" v-if="memberListData.length == 0">未匹配到相关会员信息，查看<span @click.stop="openListDeta(2,true)">所有会员</span></div>
                           <div class="membersItem" v-else @click.stop="openMember(item)" v-for="(item,index) in memberListData" :key="index">
@@ -1421,10 +1424,12 @@ export default {
         input {
           width: 210px;
           height: 32px;
+          padding-left: 10px;
           font-size: 14px;
           font-weight: bold;
           padding: 4px 0 4px 0;
           background-color: transparent;
+        
         }
         input::-webkit-input-placeholder {
           color: #d6d6d6;
@@ -1678,12 +1683,14 @@ export default {
   border-radius: 4px;
   background: #fff;
 
+  box-shadow: 0 0 8px rgba(0,0,0,.1);
+
   .commodity,
   .receipts,
   .members {
     & > h1 {
       width: 100%;
-      height: 24px;
+      // height: 24px;
       padding-bottom: 10px;
       padding-left: 20px;
       padding-right: 20px;
@@ -1692,7 +1699,13 @@ export default {
       font-weight: bold;
       color: #666;
 
-      border-bottom: 1px solid #eee;
+      // border-bottom: 1px solid #eee;
+    }
+    .line {
+      width: 380px;
+      height: 1px;
+      margin-left: 20px;
+      background: #eee;
     }
     .commodityList,
     .receiptsList,
@@ -1814,7 +1827,7 @@ export default {
   }
   .el-dialog__body {
     padding: 0;
-    padding-top: 40px;
+    padding-top: 68px;
   }
   .detailsInfo {
     display: flex;
@@ -1956,6 +1969,7 @@ export default {
         border-radius: 4px;
         &> div {
           height: 23px;
+          margin-bottom: 5px;
           &> p {
             float: left;
             width: 80%;

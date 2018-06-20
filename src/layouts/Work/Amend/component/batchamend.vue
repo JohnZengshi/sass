@@ -485,6 +485,9 @@
         this.selectValue = [];
         this.selval = [];
         this.amendingData = "";
+        // 清除修改范围记录
+        this.popup.amendingStartRow = "";
+        this.popup.amendingEndRow = "";
       }
 
     },
