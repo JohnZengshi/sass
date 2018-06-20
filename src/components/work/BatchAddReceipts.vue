@@ -118,26 +118,30 @@
             <i class="iconfont icon-sousuo"></i>
           </div> -->
           <div class="class-btn-wrap">
-            <dropDownColums :propsList="proList" dataType="1" titleData="产品类别" @dataBack="dataBack">
-            </dropDownColums>
-            <dropDownColums :propsList="conditionList" dataType="2" titleData="成色名称" @dataBack="dataBack">
-            </dropDownColums>
-            <dropDownColums :propsList="jewelList" dataType="3" titleData="宝石名称" @dataBack="dataBack">
-            </dropDownColums>
-            <dropDownColums :propsList="jewelryList" dataType="4" titleData="首饰类别" @dataBack="dataBack">
-            </dropDownColums>
+            <dropDownColum :propsList="proList | listFilte" dataType="1" titleData="产品类别" @dataBack="dataBack">
+            </dropDownColum>
+            <dropDownColum :propsList="conditionList | listFilte" dataType="2" titleData="成色名称" @dataBack="dataBack">
+            </dropDownColum>
+            <dropDownColum :propsList="jewelList | listFilte" dataType="3" titleData="宝石名称" @dataBack="dataBack">
+            </dropDownColum>
+            <dropDownColum :propsList="jewelryList | listFilte" dataType="4" titleData="首饰类别" @dataBack="dataBack">
+            </dropDownColum>
           </div>
           <!-- 商品属性 -->
           <div class="drop-block">
-            <DropDownMenu titleName="商品属性" dataType="属性" :propList="productTypeList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-            </DropDownMenu>
+            <!-- <DropDownMenu titleName="商品属性" dataType="属性" :propList="productTypeList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+            </DropDownMenu> -->
+            <dropDownColum :propsList="productTypeList" dataType="属性" titleData="商品属性" @dataBack="dataBack" @dropReturn="dropReturn" @clearInfo="clearInfo">
+            </dropDownColum>
           </div>
           <!-- 所在位置 -->
           <div class="drop-block">
             <!-- <checkboxDropDown ref="shopWrap" :propsList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
             </checkboxDropDown> -->
-            <multipleSlesct ref="shopWrap" :leftList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
-            </multipleSlesct>
+            <!-- <multipleSlesct ref="shopWrap" :leftList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
+            </multipleSlesct> -->
+            <dropDownColum :propsList="goodslocationList" dataType="属性" titleData="全部位置" @dataBack="dataBack" @dropReturn="dropReturn" @clearInfo="clearInfo">
+            </dropDownColum>
           </div>
           <div title="条码" class="range-box" style="background:url(../../../static/img/batch/barcode.png) no-repeat 5px center;">
             <input type="text" @keyup.enter="seekSearch" v-model="beginBarcode1" placeholder="条码" @blur="batchAddByProductList()">
@@ -326,7 +330,7 @@
     operateCreatReceipt,
     operateProductList
   } from "./../../Api/commonality/operate"
-  import dropDownColums from './dropDownColums'
+  import dropDownColum from '@/components/dropDownColums'
   import DropDownMenu from './../template/DropDownMenu'
   // 可多选的筛选框
   import checkboxDropDown from 'base/menu/drop-down-colums'
@@ -336,7 +340,7 @@
       'isPopup', 'supplierListData'
     ],
     components: {
-      dropDownColums,
+      dropDownColum,
       DropDownMenu,
       checkboxDropDown,
       multipleSlesct
@@ -375,15 +379,11 @@
         dataList: [],
         productTypeList: [{
             name: "成品",
-            type: 1
+            id: 1
           },
           {
             name: "旧料",
-            type: 2
-          },
-          {
-            name: "全部",
-            type: ''
+            id: 2
           }
         ],
         locationList: [{
@@ -457,7 +457,7 @@
         makeSupplierListPreson: [],
         // 当前点击单据的orderID
         currentOrderId: "",
-        // 店铺列表
+        // 所在位置列表
         goodslocationList: [],
         // 关闭显示单据号的浮层
         Float: true,
@@ -594,7 +594,7 @@
 
       },
       dataBack(val) { // 级联数据返回
-        // console.log(val);
+        console.log(val);
         if (val.type == 1) {
           this.productTypeId = val.opeId
         } else if (val.type == 2) {
@@ -1207,6 +1207,30 @@
           this.pageSize += 10
           this.batchAddByProductList()
         }, 2000)
+      }
+    },
+    filters: {
+      // 过滤数据，增加类名
+      listFilte: (value) => {
+        value.forEach((val, index) => {
+          val.name = val.classesName;
+          if (val.typeList || val.childrenList) {
+            let lists = val.typeList || val.childrenList
+            lists.forEach((val, index) => {
+              val.name = val.classesName;
+              if (val.classesId) {
+                let listId = val.classesId;
+                val.id = listId;
+              }
+            })
+            val.childrenList = lists;
+          }
+          if (val.classesType || val.classesId) {
+            let listId = val.classesType || val.classesId;
+            val.id = listId;
+          }
+        })
+        return value;
       }
     }
   }
