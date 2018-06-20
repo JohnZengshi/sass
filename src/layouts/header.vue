@@ -65,7 +65,7 @@
                         <h1>单据</h1>
                         <div class="receiptsList">
                           <div class="receiptsItem" v-if="orderList.length == 0">未匹配到相关单据信息，查看<span @click.stop="openListDeta(1,true)">所有单据</span></div>
-                          <div class="receiptsItem" v-else @click.stop="openDocument" v-for="(item,index) in orderList" :key="index">
+                          <div class="receiptsItem" v-else @click.stop="openDocument(item)" v-for="(item,index) in orderList" :key="index">
                             <span class="gno"><span v-for="(text,i) in filterkeyWord(item.orderNum)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="state">{{ getOrderType(item.orderType) }}</span><span class="slocation fr">{{ item.createName }}</span>
                           </div>
                           <div class="receiptsItem" v-if="orderList.length > 5" @click.stop="openListDeta(1)">
@@ -391,8 +391,40 @@ export default {
       this.shopId = item.shopId
       this.editLeaguer = true
     },
-    openDocument() {
-      this.$router.push({path:'/work/sell'})
+    openDocument(item) {
+      console.log(item)
+      // 入库详情页
+      if(item.orderNum.indexOf('RK') !== -1) {
+        this.$router.push({path:'/work/storage/detail',query:{ orderNumber: item.orderNum }})
+      }
+      // 修改详情页
+      if(item.orderNum.indexOf('XG') !== -1) {
+        this.$router.push({path:'/work/amend/index',query:{ orderNumber: item.orderNum }})
+      }
+      // 退库详情页
+      if(item.orderNum.indexOf('TK') !== -1) {
+        this.$router.push({path:'/work/storageReturn/NewStorageReturn',query:{ orderNumber: item.orderNum }})
+      }
+      // 调库详情页
+      if(item.orderNum.indexOf('DK') !== -1) {
+        this.$router.push({path:'/work/transferStorage/newTransferStorage',query:{ orderNumber: item.orderNum }})
+      }
+      // 发货详情页
+      if(item.orderNum.indexOf('FH') !== -1) {
+        this.$router.push({path:'/work/sipping/newSipping',query:{ orderNumber: item.orderNum }})
+      }
+      // 调柜详情页
+      if(item.orderNum.indexOf('DG') !== -1) {
+        this.$router.push({path:'/work/transferCabinet/newTransferCabinet',query:{ orderNumber: item.orderNum }})
+      }
+      // 退货详情页
+      if(item.orderNum.indexOf('TH') !== -1) {
+        this.$router.push({path:'/work/salesReturn/newSalesReturn',query:{ orderNumber: item.orderNum }})
+      }
+      // 销售详情页
+      if(item.orderNum.indexOf('XS') !== -1) {
+        this.$router.push({path:'/work/sell/sellReceiptsList',query:{ orderNumber: item.orderNum }})
+      }
     },
     closeEditReturn (val) {
       this.editLeaguer = val.status
