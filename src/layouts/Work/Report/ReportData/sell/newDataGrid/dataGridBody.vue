@@ -206,7 +206,6 @@
         }
       },
       _styleWR (parm) {
-        debugger
         return styleWR(parm)
       },
       tableCell(width) {

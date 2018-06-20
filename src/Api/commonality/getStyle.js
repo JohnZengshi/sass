@@ -1,11 +1,10 @@
-export const styleWR = function (parm) { // 提取居左和宽度
-  debugger
+export const styleWR = function (parm, rN) { // 提取居左和宽度
     let datas = {}
     if (parm.width) {
-      datas.width = parm.width + ( parm.width.indexOf('%') >= 0 ? '' : 'px')
+      datas.width = parm.width + ( parm.width.toString().indexOf('%') >= 0 ? '' : 'px')
     }
     if (parm.right) {
-      datas.right = parm.right + ( parm.right.indexOf('%') >= 0 ? '' : 'px')
+      datas.right = rN ? rN : '20px'
     }
     console.log('----------------=============', datas)
     return datas
