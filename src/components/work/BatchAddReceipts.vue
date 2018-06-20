@@ -330,7 +330,8 @@
     operateCreatReceipt,
     operateProductList
   } from "./../../Api/commonality/operate"
-  import dropDownColum from '@/components/dropDownColums'
+  // import dropDownColum from '@/components/dropDownColums'
+  import dropDownColum from './demo'
   import DropDownMenu from './../template/DropDownMenu'
   // 可多选的筛选框
   import checkboxDropDown from 'base/menu/drop-down-colums'
