@@ -720,10 +720,18 @@ export default {
         this.$refs.peopleTypeWrap.reset()
         this.$refs.peopleWrap.reset()
         this.$refs.stateWrap.reset()
+
         this.orderBegin = ''
         this.orderEnd = ''
+
         this.beginTime = ''
         this.endTime = ''
+
+        this.filterCondition['startTime'] = ''
+        this.filterCondition['endTime'] = ''
+
+        this.filterCondition['orderBegin'] = ''
+        this.filterCondition['orderEnd'] = ''
       }
       if(this.panelType == 2) {
         this.$refs.storageLocationWrap.reset()
@@ -953,7 +961,7 @@ export default {
     overTimeDate(val) {
       console.log(val) 
       if(val) {
-        let endTime = val.substr(0, 10).split('-').join("") + "000000"
+        let endTime = val.substr(0, 10).split('-').join("") + "235959"
         this.filterCondition['endTime'] = endTime
         this.$emit('filterData', this.filterCondition)
       }
