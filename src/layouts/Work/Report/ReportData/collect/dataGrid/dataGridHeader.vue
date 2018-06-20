@@ -1,7 +1,7 @@
 <template>
 <!--表头-->
 <div class="xj-report-table-column">
-    <div class=".xj-report-table-th" style="width: 148px;">销售类型</div>
+    <div class="xj-report-table-th" style="width: 148px;">销售类型</div>
     <div style="width: 1100px; display: flex;">
     	<div  
     	  class="ui-table_th" 

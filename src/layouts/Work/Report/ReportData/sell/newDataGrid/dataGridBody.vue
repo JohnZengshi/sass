@@ -10,8 +10,12 @@
           :style="tableCell(tab.width)" >
           <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7;'">{{caty[tab.childType]}}</i>
         </div>-->
-
-          <div class="tb-td" :key="indexs" :style="tableCell(tab.width)" v-text="tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"></div>
+          <div
+            class="tb-td"
+            :key="indexs"
+            :style="_styleWR(tab)"
+            v-text="tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"
+          ></div>
         </template>
       </div>
       <div v-if="isDate" class="no-data"></div>
@@ -96,6 +100,7 @@
 
 <script>
   let applyIndex = 0
+  import {styleWR} from 'Api/commonality/getStyle'
   export default {
     data() {
       return {
@@ -199,6 +204,10 @@
           }
           //console.log(this.heightArr)
         }
+      },
+      _styleWR (parm) {
+        debugger
+        return styleWR(parm)
       },
       tableCell(width) {
         let _size = ''

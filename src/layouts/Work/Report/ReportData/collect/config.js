@@ -19,7 +19,7 @@ module.exports = {
     	{ 
         id: '2245',  
         text: '件数',
-        width:'15%',
+        width:'10%',
         type:'totalNum', 
         unit: '(件)',
         footerUnit: '',
@@ -146,7 +146,7 @@ module.exports = {
       { 
         id: '2245',  
         text: '件数',
-        width:'15%',
+        width:'10%',
         type:'totalNum', 
         unit: '(件)',
         footerUnit: '',
@@ -298,7 +298,7 @@ module.exports = {
       { 
         id: '2245',  
         text: '件数',
-        width:'15%',
+        width:'10%',
         type:'totalNum', 
         unit: '(件)',
         footerUnit: '',
@@ -307,7 +307,8 @@ module.exports = {
         totalType : 'totalNum' ,
         allType : 'allNum',
         toFixed : false, 
-        countCut : 0 
+        countCut : 0,
+        right: true
       },
       { 
         id: '4',  
@@ -321,7 +322,8 @@ module.exports = {
         totalType : 'totalWeight',
         allType : 'allWeight',
         toFixed : false,
-        countCut : 3 
+        countCut : 3,
+        right: true
       },
       
       { 
@@ -336,7 +338,8 @@ module.exports = {
         totalType : 'totalGoldWeight' ,
         allType : 'allGoldWeight',
         toFixed : false,
-        countCut : 3
+        countCut : 3,
+        right: true
       },
       { 
         id: '523',  
@@ -353,7 +356,8 @@ module.exports = {
         totalType : 'totalSoldPrice',
         allType : 'allSoldPrice',
         toFixed : false,
-        countCut : 2
+        countCut : 2,
+        right: true
       },
       { 
         id: '6',  
@@ -367,7 +371,8 @@ module.exports = {
         totalType : 'totalWage' ,
         allType : 'allWage',
             toFixed : false,
-            countCut : 2
+            countCut : 2,
+            right: true
       },
       { 
         id: '7',  
@@ -381,7 +386,8 @@ module.exports = {
         totalType : 'totalActualPrice' ,
         allType : 'totalBuy',
         toFixed : false,
-        countCut : 2
+        countCut : 2,
+        right: true
       }
     ]
 }

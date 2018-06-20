@@ -69,6 +69,7 @@ module.exports = {
       totalType: 'subtotalWeight',
       toFixed: false,
       countCut: 3,
+      right: true
       //sort: ''
     },
     // {
@@ -96,6 +97,7 @@ module.exports = {
       totalType: 'subtotalGoldWeight',
       toFixed: false,
       countCut: 3,
+      right: true
       //sort: ''
     },
     // {
@@ -123,6 +125,7 @@ module.exports = {
       totalType: 'subtotalPrice',
       toFixed: false,
       countCut: 2,
+      right: true
       //sort: ''
     },
     {
@@ -136,7 +139,8 @@ module.exports = {
       childType: 'wage',
       totalType: 'subtotalWage',
       toFixed: false,
-      countCut: 2
+      countCut: 2,
+      right: true
     },
     {
       id: '127',
@@ -150,6 +154,7 @@ module.exports = {
       totalType: 'subtotalRealPrice',
       toFixed: false,
       countCut: 2,
+      right: true
       //sort: ''
     },
     {
@@ -164,6 +169,7 @@ module.exports = {
       totalType: 'subtotalCost',
       toFixed: false,
       countCut: 2,
+      right: true
       //sort: ''
     },
     {
@@ -179,6 +185,7 @@ module.exports = {
       totalType: 'margin',
       toFixed: false,
       countCut: 2,
+      right: true
       //sort: ''
     }
   ],
