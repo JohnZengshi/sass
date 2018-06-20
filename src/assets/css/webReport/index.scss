@@ -382,3 +382,50 @@
 .exportBtn {
     bottom: 60px;
 }
+
+/* 日期控件 */
+.time-main{
+  .new-report-data{
+      display: inline-block;
+      width: 200px;
+      border:1px solid #d6d6d6;
+      border-radius: 5px;
+      height: 30px;
+      vertical-align: middle;
+      overflow: hidden;
+      background-color: #fff;
+      margin-left: 15px;
+      
+      >.block{
+          width: 50%;
+          float: left;
+          margin-top: 2px;
+          position: relative;
+          display: inline-block;
+          margin-left: 0!important;
+          
+          .el-input__icon{
+             display: none;
+          }
+          .el-input__inner{
+              padding: 0;
+              text-align: center;
+              color: #2993f8;
+              background-color:transparent;
+              font-weight: bold;
+              letter-spacing: -1px;
+          }
+          
+          &.until:after{
+              content: attr(data-txt);
+              position: absolute;
+              right : -6px;
+              top:4px;
+              font-size: 12px;
+              color: #666;
+          }
+      }
+      
+      .el-date-editor{ width: 100%;}
+  }
+}
