@@ -4,15 +4,22 @@
       {{titleData}}
       <i class="iconfont icon-xiala"></i>
     </div>
-    <div class="list-box">
-      <div class="content">
-        <ul v-show="index == 1" v-for="(item,index) in newlist" class="list-middle">
-          <el-checkbox-group>
-            <li @mouseover="selItem(items, index)" v-show="items.parentId == 1" v-for="(items, index) in item">
-              <el-checkbox :indeterminate="false" :label="items" :style="filterStyle(items.id)" :class="{active: true}" style="font-size: 14px;">{{items.name}}</el-checkbox>
-            </li>
-          </el-checkbox-group>
-        </ul>
+    <el-select v-model="value5" multiple placeholder="请选择" popper-class="selectBox">
+      <div style="transform: translateX(0px)">
+        <el-option v-for="item in leftList" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </div>
+      <div style="transform: translateX(76px)">
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </div>
+      <div style="transform: translateX(152px)">
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+        </el-option>
+      </div>
+    </el-select>
+    <!-- <div class="list-box"> -->
+      <!-- <div class="content"> -->
         <!-- --------------------------------------- -->
         <!-- 选择器最左边部分 -->
         <!-- <ul class="list-left">
@@ -23,7 +30,7 @@
           </el-checkbox-group>
           <el-checkbox-group v-model="leftIdList" @change="handleCheckedCitiesChange">
             <li @mouseover="selLeftItem(item, index)" v-for="(item, index) in leftList">
-              <el-checkbox :indeterminate="false" :label="item" :style="filterStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
+              <el-checkbox :indeterminate="false" :label="item.id" :style="filterStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
             </li>
           </el-checkbox-group>
         </ul> -->
@@ -31,7 +38,7 @@
         <!-- <ul v-show="middleList && middleList.length > 0" class="list-middle">
           <el-checkbox-group v-model="middleIdList" @change="changeMiddleId">
             <li @mouseover="selMiddleItem(item,index)" v-for="(item, index) in middleList">
-              <el-checkbox :indeterminate="false" :label="item" :style="filterSamllStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
+              <el-checkbox :indeterminate="false" :label="item.id" :style="filterSamllStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
             </li>
           </el-checkbox-group>
         </ul> -->
@@ -39,18 +46,18 @@
         <!-- <ul v-show="rightList && rightList.length > 0" class="list-right">
           <el-checkbox-group v-model="rightIdList" @change="changeMiddleId">
             <li v-for="(item, index) in rightList">
-              <el-checkbox :indeterminate="false" :label="item" :style="filterSamllStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
+              <el-checkbox :indeterminate="false" :label="item.id" :style="filterSamllStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
             </li>
           </el-checkbox-group>
         </ul> -->
-      </div>
+      <!-- </div>
       <div class="bottom">
         <div class="list-footer">
           <span @click="complate">完成</span>
           <span @click="reset">重置</span>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 <script>
@@ -61,10 +68,7 @@
         leftIdList: [], // 大类选中
         // leftList: [],
         // 中间数据
-        middleIdList: {
-          1: [],
-          2: []
-        },
+        middleIdList: [],
         // middleIdList:[],
         // 小类选中
         middleList: [],
@@ -76,7 +80,24 @@
         rightIndex: null,
         operateId: '',
         // ------------------------------
-        newlist: []
+        options: [{
+          value: '选项1',
+          label: '黄金糕'
+        }, {
+          value: '选项2',
+          label: '双皮奶'
+        }, {
+          value: '选项3',
+          label: '蚵仔煎'
+        }, {
+          value: '选项4',
+          label: '龙须面'
+        }, {
+          value: '选项5',
+          label: '北京烤鸭'
+        }],
+        value5: [],
+        value11: []
       }
     },
     props: [
@@ -85,110 +106,23 @@
       'allName',
       'keyName'
     ],
-    created() {
-      // console.log(123)
-      // this.leftList = this.propsList;
-      // console.log(this.leftList)
-      function getList(list, num, newlist) {
-        if (!newlist[num - 1]) {
-          newlist[num - 1] = [];
-        }
-        list.forEach((val, index) => {
-          // console.log("第" + num + "列：" + val.name);
-          newlist[num - 1].push(val);
-          if (val.childrenList) {
-            let childrenListNum = num;
-            childrenListNum++;
-            getList(val.childrenList, childrenListNum, newlist)
-          } else {
-            // console.log("最大层数为：" + num)
-          }
-        })
-        return newlist
-      }
-      getList(this.leftList, 1, this.newlist)
-      console.log(this.newlist)
-      this.newlist[0].forEach((val,index)=>{
-        val.isShow = true;
-      })
-    },
+    created() {},
     watch: {
       // 全选或全不选
       allChecked(newValue, oldValue) {},
       // -----------------
       //左边的列表发生变化
       leftIdList(newValue, oldValue) {
-        console.log(newValue);
-        // newValue.forEach((val,index)=>{
-        //   this.middleIdList[val.id] = val.childrenList;
-        // })
-        // this.middleIdList = [];
-        // this.firstOperationSecond(newValue);
-        // console.log(this.middleIdList)
+        console.log(newValue)
       },
       //中间的列表发生变化
       middleIdList(newValue, oldValue) {
-        // console.log(newValue)
-        // 遍历父项
-        // this.leftList.forEach((val, index) => {
-        //   // 父项的Id
-        //   let parentId = val.id;
-        //   // 子项的总长度
-        //   let childNum = val.childrenList.length;
-        //   let selectedNum = 0;
-        //   // 遍历已选择的子项
-        //   newValue.forEach((val, index) => {
-        //     if (parentId == val.parentId) {
-        //       selectedNum++;
-        //     }
-        //   })
-        //   console.log(parentId + "选了" + selectedNum + "个");
-        //   if (childNum == selectedNum) {
-        //     // console.log(parentId + "全选了");
-        //     this.leftIdList.push(val);
-        //     // console.log(this.leftIdList)
-        //   } else {
-        //     console.log(this.leftIdList)
-        //     this.leftIdList.forEach((val, index) => {
-        //       if (val.id == parentId) {
-        //         this.leftIdList.splice(this.leftIdList.indexOf(val), 1);
-        //       }
-        //     })
-        //     // this.leftIdList.splice(this.leftIdList.indexOf(val),1);
-        //   }
-        // })
-
+        console.log(newValue)
       },
       //右边的列表发生变化
-      rightIdList(newValue, oldValue) {},
-      // 深度监听
-      middleIdList: {
-        handler(val, oldValue) {
-          // console.log(val)
-          this.leftList.forEach((v, index) => {
-            let childNum = v.childrenList.length;
-            // console.log(v.id+"选中项的长度"+val[v.id].length)
-            // console.log(v.id+"总长度"+childNum)
-            // console.log("--------------------")
-            if (val[v.id].length == childNum) {
-              // console.log(v.id+"全选了")
-              if (this.leftIdList.indexOf(v) < 0) {
-                this.leftIdList.push(v);
-              }
-              // console.log(this.leftIdList)
-              // console.log("--------------------")
-            } else {
-              // console.log(v.id+"没全选")
-              // console.log(v.id+"在leftIdlist的位置"+this.leftIdList.indexOf(v))
-              // console.log("--------------------")
-              if (this.leftIdList.indexOf(v) >= 0) {
-                this.leftIdList.splice(this.leftIdList.indexOf(v), 1)
-              }
-            }
-          })
-        },
-        deep: true
-      }
+      rightIdList(newValue, oldValue) {
+        console.log(newValue)
+      },
     },
     methods: {
       filterStyle(parm) {
@@ -207,10 +141,10 @@
         //   console.log(123)
       },
       changeMiddleId(parm) {},
-      selItem(item, index){
+      selItem(item, index) {
         let parentId = item.id;
-        if(item.childrenList){
-          item.childrenList.forEach((val,index)=>{
+        if (item.childrenList) {
+          item.childrenList.forEach((val, index) => {
             val.parentId = parentId;
           })
         }
@@ -221,8 +155,9 @@
       },
       //   鼠标移动到最左的选项时
       selLeftItem(item, index) {
-        // console.log(item)
+        console.log(item)
         this.middleList = item.childrenList
+        this.rightList = [];
         // console.log(this.middleIdList)
         // this.middleList.forEach((val, index) => {
         //   val.parentId = item.id;
@@ -243,7 +178,6 @@
         this.operateId = item.id
       },
       complate() {
-        console.log(this)
         this.$emit('dataBack', {
           bigList: this.leftIdList,
           samllList: this.middleIdList,
@@ -255,19 +189,11 @@
         this.middleIdList = []
         this.rightList = []
         this.allChecked = []
-
       },
       resetList() {
         this.middleList = [];
         this.rightList = [];
       },
-      // ------------------------------
-      // 第一项操作第二项
-      firstOperationSecond(newValue) {
-        newValue.forEach((val, index) => {
-          this.middleIdList = this.middleIdList.concat(val.childrenList)
-        })
-      }
     }
   }
 
