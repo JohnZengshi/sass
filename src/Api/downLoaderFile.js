@@ -11,7 +11,8 @@ export const downLoaderFile = (url,data) => {
     let dataStr = ''
     console.log(data)
     for (const key in newData) {
-        if(key === 'sortList' || key === 'checkUserList' || key === 'makeUserList'){
+        // if(key === 'sortList' || key === 'checkUserList' || key === 'makeUserList'){
+        if(newData[key] instanceof Array){
             newData[key] = JSON.stringify(newData[key]) + ''
             // newData[key] = newData[key].join(',')
             // let str = ''
@@ -68,7 +69,7 @@ export const downLoaderFile = (url,data) => {
     a.download = "filename.xlsx";
     // $('a').click();
     // a.click();      
-    invokeClick(a)              
+    // invokeClick(a)              
 }
 // 兼容火狐
 function invokeClick(element) {
