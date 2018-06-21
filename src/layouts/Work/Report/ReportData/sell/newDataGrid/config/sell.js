@@ -185,7 +185,7 @@ module.exports = {
 
   //智能分类
   capacityClassify: [
-    //	    { 
+    //      { 
     //          id: '0f10',  
     //          text: '序号',
     //          width:'30', 

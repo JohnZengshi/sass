@@ -26,6 +26,7 @@
                                 type="date"
                                 placeholder="选择日期"
                                 @change="dateChange()"
+                                :picker-options="pickerOptions"
                             >
                             </el-date-picker>
                         </div>
@@ -213,9 +214,8 @@
                 </div>
                 <div class="menu-bottom">
                     <div class="batch-time-wrap">
-                        <div class="date-w81">
+                        <div class="date-w81" v-if="startTime">
                             <el-date-picker
-                                format
                                 v-model="startTime"
                                 type="date"
                                 placeholder="选择日期"
@@ -224,7 +224,7 @@
                             </el-date-picker>
                         </div>
                         <span>至</span>
-                        <div class="date-w81">
+                        <div class="date-w81" v-if="endTime">
                             <el-date-picker
                                 v-model="endTime"
                                 type="date"
@@ -311,10 +311,10 @@ export default {
         return {
             pickerOptions: {
                 // let _self = this
-                disabledDate:(time) => {
-                    // console.log(this.startTime)
-                    return time.getTime() < this.startTime;
-                }
+                // disabledDate:(time) => {
+                //     // console.log(this.startTime)
+                //     return time.getTime() < this.startTime;
+                // }
             },
             listType: '单据',
             littleBatch: false,
@@ -777,8 +777,14 @@ export default {
               hours = mins = seconds = '00'
             }
             //console.log(Day)
+            debugger
             this.endTime = Year + '-' + month + '-' + Day
-            this.startTime = Year + '-' + month + '-' + (Day- (Day-1))
+            let M = (Day- (Day-1))
+            if (M.toString().length == 1) {
+                M = `0${M}`
+            }
+            this.startTime = Year + '-' + month + '-' + M
+            // this.startTime = '2018' + '-' + '06' + '-' + '01'
             //this.seekReceipts()
             this.batchAddByOrderNum()
             // return {
@@ -1215,11 +1221,15 @@ export default {
                 border-radius: 4px;
                 border: 1px solid #2993f8;
                 float: left;
+                display: flex;
+                font-size: 0;
+                overflow: hidden;
                 margin-right: 16px;
                 span {
-                    //display: inline-block;
+                    display: inline-block;
                     height: 100%;
-                    width: 59px;
+                    flex: 1;
+                    // width: 58px;
                     float: left;
                     line-height: 28px;
                     text-align: center;
@@ -1412,7 +1422,7 @@ export default {
                 }
             }
             .class-btn-wrap {
-                width: 346px;
+                width: 348px;
                 height: 28px;
                 border-radius: 4px;
                 border: 1px solid #d6d6d6;
@@ -1420,7 +1430,7 @@ export default {
                 margin-right: 16px;
             }
             .drop-block {
-                width: 90px;
+                width: 96px;
                 height: 28px;
                 border-radius: 4px;
                 border: 1px solid #d6d6d6;

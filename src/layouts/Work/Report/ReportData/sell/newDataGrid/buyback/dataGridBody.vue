@@ -11,7 +11,7 @@
           <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7;'">{{caty[tab.childType]}}</i>
         </div>-->
 
-          <div class="tb-td" :key="indexs" :style="tableCell(tab.width)" v-text="tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"></div>
+          <div class="tb-td" :key="indexs" :style="tableCell(tab.width)" v-text="tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType] ? tb[tab.childType]: '-'"></div>
         </template>
       </div>
       <div v-if="isDate" class="no-data"></div>
@@ -49,7 +49,7 @@
                   v-else
                   :class="{backLine:tab.childType != ''}" 
                   :style="tableCell(tab.width)" 
-                  v-text="tab.childType == ''? getIndex() : tb[tab.totalType]">
+                  v-text="tab.childType == ''? getIndex() : tb[tab.totalType] ? tb[tab.totalType] : '-' ">
                   
                 </div>
               </template>
@@ -59,7 +59,7 @@
           <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
           <div class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
             <!-- 类型小计 -->
-            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : caty[tab.totalType]"></div>
+            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : caty[tab.allTotal]"></div>
           </div>
         </div>
       <div v-if="isDate" class="no-data"></div>
@@ -109,7 +109,7 @@
                   v-else 
                   :class="{backLine:tab.childType != ''}" 
                   :style="tableCell(tab.width)" 
-                  v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
+                  v-text="tab.childType == ''? getIndex() : tb1[tab.childType] ? tb1[tab.childType] : '-' ">
                   
                 </div>
               </template>
@@ -123,7 +123,7 @@
           <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
           <div class="tb-total" style="background:#ECF3FF;margin-top: 2px;" v-if="!positionSwitch">
             <!-- 类型小计 -->
-            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? `<b>${caty[tab.childType]}小计</b>` : caty[tab.totalType]"></div>
+            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? `<b>${caty[tab.childType]}小计</b>` : caty[tab.allTotal]"></div>
           </div>
         </div>
       <div v-if="isDate" class="no-data"></div>
