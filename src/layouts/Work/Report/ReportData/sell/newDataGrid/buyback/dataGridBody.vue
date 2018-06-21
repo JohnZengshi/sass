@@ -30,7 +30,7 @@
                   class="tb-td category-td" 
                   v-if="tab.text == '回购类型' && index == 0 && index1 == 0 && indexGrid == 0" 
                   :style="tableCell(tab.width)">
-                  <i :style="sellTypeNameH(caty)">{{caty[tab.childType]}}</i>
+                  <i :style="sellTypeNameH(caty)">{{caty[tab.childType]}}99</i>
 
                 </div>
 
@@ -85,7 +85,7 @@
                 <div 
                   class="tb-td" 
                   v-else-if="tab.text == '产品类别'"
-                  :class="{backLine:tab.childType != ''}" 
+                  :class="{backLine:tab.childType != ''}"
                   :style="tableCell(tab.width)" 
                   >
                   {{tb[tab.childType]}}
