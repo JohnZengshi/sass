@@ -7,19 +7,29 @@
         </span>
         <div class="input-drop-list">
             <h4>注册时间</h4>
-            <div title="件数" class="down-range-box" style="background:url(../../../static/img/batch/number.png) no-repeat 5px center;">
+            <!-- <div title="件数" class="down-range-box" style="background:url(../../../static/img/batch/number.png) no-repeat 5px center;">
                 <input type="text" placeholder="开始时间" v-model="moreChange.startTime">
                 <span>-</span>
                 <input type="text" placeholder="结束时间" v-model="moreChange.endTime">
+            </div> -->
+            <div class="report_data">
+                    <div class="block until" data-txt="至" style="background:url(../../../static/img/batch/number.png) no-repeat 5px center;">
+                        <el-date-picker size="mini" v-model="startTime" @change="getTimeData" type="date" placeholder="选择开始时间"></el-date-picker>
+                    </div>
+                    <div class="block">
+                        <el-date-picker size="mini" v-model="endTime" @change="overTimeDate" type="date" placeholder="选择结束时间"></el-date-picker>
+                    </div>
             </div>
+            
+
             <h4>积分范围</h4>
-            <div title="件重" class="down-range-box" style="background:url(../../../static/img/batch/weight.png) no-repeat 5px center;">
+            <div title="积分范围" class="down-range-box" style="background:url(../../../static/img/batch/weight.png) no-repeat 5px center;">
                 <input type="text" placeholder="积分值" v-model="moreChange.minScore">
                 <span>-</span>
                 <input type="text" placeholder="积分值" v-model="moreChange.maxScore">
             </div>
             <h4>交易额范围</h4>
-            <div title="售价" class="down-range-box" style="background:url(../../../static/img/batch/price.png) no-repeat 5px center;">
+            <div title="交易额范围" class="down-range-box" style="background:url(../../../static/img/batch/price.png) no-repeat 5px center;">
                 <input type="text" placeholder="交易额（元）" v-model="moreChange.mixPrice">
                 <span>-</span>
                 <input type="text" placeholder="交易额（元）" v-model="moreChange.maxPrice">
@@ -60,7 +70,9 @@ export default {
             customDiaData: {
                 type: '',
                 value: ''
-            }
+            },
+            startTime:'',
+            endTime:'',
         }
     },
     methods: {
@@ -81,6 +93,18 @@ export default {
         complate () {
             this.$emit('filterData', this.moreChange)
         },
+        getTimeData(val) {
+            if(val) {
+                let beginTime = val.substr(0, 10).split('-').join("") + "000000"
+                this.moreChange.startTime = beginTime
+            }
+        },
+        overTimeDate(val) {
+            if(val) {
+                let endTime = val.substr(0, 10).split('-').join("") + "235959"
+                this.moreChange.endTime = endTime
+            }
+        },
         reset () {
             this.moreChange.startTime = ''
             this.moreChange.endTime = ''
@@ -88,6 +112,8 @@ export default {
             this.moreChange.minScore = ''
             this.moreChange.maxPrice = ''
             this.moreChange.mixPrice = ''
+            this.startTime = ''
+            this.endTime = ''
         }
     }
 }
@@ -240,4 +266,14 @@ export default {
     }
 }
 
+</style>
+
+<style lang="scss">
+.input-drop-list {
+    .report_data {
+        float: none;
+        width: 290px;
+        margin-left: 28px;
+    }
+}
 </style>

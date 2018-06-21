@@ -300,17 +300,17 @@ export default {
       shopDataList: [],
       filterCondition: {
         keyWord: '',
-        newOrderId: '',
+        // newOrderId: '',
         // page: '1',
         // pageSize: '30',
-        storageId: [],
-        shopId: [],
-        productTypeId: [],
-        colourId: [],
-        jeweId: [],
-        jewelryId: [], // 首饰类别
-        productStatus: [], // 产品状态
-        sortList: []
+        // storageId: [],
+        // shopId: [],
+        // productTypeId: [],
+        // colourId: [],
+        // jeweId: [],
+        // jewelryId: [], // 首饰类别
+        // productStatus: [], // 产品状态
+        // sortList: []
       },
       littleBatch: false,
       isLoading: false,

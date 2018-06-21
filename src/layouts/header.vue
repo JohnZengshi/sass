@@ -986,31 +986,39 @@ export default {
     openListDeta(type,showAll) {
       switch (type) {
         case 0:
-          this.panel = ProductList
-          this.panelType = type
-          this.actIndex = type + ''
-          break;
-        case 1:
-          this.panel = DocumentsList
-          this.panelType = type
-          this.actIndex = type + ''
-
           if(showAll) {
             this.showAll = true
           } else {
             this.showAll = false
           }
-          break;
-        case 2:
-          this.panel = memberList
+          this.panel = ProductList
           this.panelType = type
-          this.actIndex = type + '' 
-
+          this.actIndex = type + ''
+          
+          break;
+        case 1:
           if(showAll) {
             this.showAll = true
           } else {
             this.showAll = false
-          }         
+          }
+          this.panel = DocumentsList
+          this.panelType = type
+          this.actIndex = type + ''
+
+          
+          break;
+        case 2:
+          if(showAll) {
+            this.showAll = true
+          } else {
+            this.showAll = false
+          } 
+          this.panel = memberList
+          this.panelType = type
+          this.actIndex = type + '' 
+
+                  
           break;
       
         default:
