@@ -1692,6 +1692,7 @@ export default {
   width: 420px;
   // height: 500px;
   padding: 20px 0;
+  padding-bottom: 0;
 
   border: 1px solid #d6d6d6;
   border-radius: 4px;
@@ -1730,11 +1731,11 @@ export default {
       .receiptsItem,
       .membersItem {
         width: 100%;
-        height: 42px;
+        height: 40px;
 
         font-size: 14px;
         color: #999;
-        line-height: 42px;
+        line-height: 40px;
         padding: 0 20px;
 
         span {
@@ -1768,6 +1769,7 @@ export default {
           color: #333;
         }
         .slocation {
+          font-size: 12px;
           color: #999;
         }
         .more {
@@ -1792,6 +1794,7 @@ export default {
             color: #2993f8;            
           }
           .slocation {
+            font-size: 12px;          
             color: #2993f8;
           }
           background: #f2f2f2;
@@ -1908,6 +1911,7 @@ export default {
                         float: left;
                         // display: inline-block;
                         height: 100%;
+                        padding-top: 10px;
 
                         min-height: 52px;
                         .name-wrap {
@@ -1926,6 +1930,7 @@ export default {
                             .name {
                                float: left;
                                @include F(14, #666666);
+                               font-weight: bold;
                                line-height: 16px;
                             }
                         }
@@ -1934,10 +1939,11 @@ export default {
                     .main-item-list {
                         float: left;
                         width: 900px;
+                        padding-top: 10px;
                        // display: inline-block;
                         .main-item {
                             height: 40px;
-                            width: 136px;
+                            width: 140px;
                             float: left;
                             //display: inline-block;
                             margin-bottom: 6px;
@@ -1962,10 +1968,10 @@ export default {
                    .main-name {
                        .name-wrap {
                            .line {
-                               background:#d6d6d6;
+                              background:#d6d6d6;
                            }
                            .name {
-                               color:#666666;
+                              color:#666666;
                            }
                        }
                    }
