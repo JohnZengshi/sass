@@ -1044,6 +1044,7 @@
 
 			//下拉选择 点击事件
 			selecChange(fg) {
+				debugger
 				fg.event.stopPropagation()
 
 				this.clearTime()

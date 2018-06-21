@@ -212,6 +212,7 @@
 
 			// select下拉配置项
 			updataSelectContainer(data) {
+				debugger
 				if(data) {
 					this.selectContainer = Object.assign({}, data)
 				}
