@@ -56,7 +56,7 @@
             <span>-</span>
             <input type="text" placeholder="售价" v-model="endPrice" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
           </div>
-          <el-button @click="reset" class="reset" title="重置">重置</el-button>
+          <el-button @click="resetInvoices" class="reset" title="重置">重置</el-button>
         </div>
         <div class="table-main">
           <el-checkbox-group v-model="checkList" v-loading="isLoading">
@@ -117,31 +117,25 @@
           <!-- <div @click="littleBatch = true" class="search-block">单据搜索
             <i class="iconfont icon-sousuo"></i>
           </div> -->
-          <div class="class-btn-wrap">
-            <dropDownColum :propsList="proList | listFilte" dataType="1" titleData="产品类别" @dataBack="dataBack">
-            </dropDownColum>
-            <dropDownColum :propsList="conditionList | listFilte" dataType="2" titleData="成色名称" @dataBack="dataBack">
-            </dropDownColum>
-            <dropDownColum :propsList="jewelList | listFilte" dataType="3" titleData="宝石名称" @dataBack="dataBack">
-            </dropDownColum>
-            <dropDownColum :propsList="jewelryList | listFilte" dataType="4" titleData="首饰类别" @dataBack="dataBack">
-            </dropDownColum>
+          <div class="class-btn-wrap flex flex-r flex-pack-justify">
+            <TreeDropDownColums :propsList="proList | listFilte" dataType="1" titleData="产品类别" @dataBack="dataBack">
+            </TreeDropDownColums>
+            <TreeDropDownColums :propsList="conditionList | listFilte" dataType="2" titleData="成色名称" @dataBack="dataBack">
+            </TreeDropDownColums>
+            <TreeDropDownColums :propsList="allJewelList | listFilte" dataType="3" titleData="宝石名称" @dataBack="dataBack">
+            </TreeDropDownColums>
+            <TreeDropDownColums :propsList="allJewelryList | listFilte" dataType="4" titleData="首饰类别" @dataBack="dataBack">
+            </TreeDropDownColums>
           </div>
           <!-- 商品属性 -->
           <div class="drop-block">
-            <!-- <DropDownMenu titleName="商品属性" dataType="属性" :propList="productTypeList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-            </DropDownMenu> -->
-            <dropDownColum :propsList="productTypeList" dataType="属性" titleData="商品属性" @dataBack="dataBack" @dropReturn="dropReturn" @clearInfo="clearInfo">
-            </dropDownColum>
+            <TreeDropDownColums :propsList="productList" dataType="5" titleData="商品属性" @dataBack="dataBack" @dropReturn="dropReturn"
+              @clearInfo="clearInfo">
+            </TreeDropDownColums>
           </div>
           <!-- 所在位置 -->
           <div class="drop-block">
-            <!-- <checkboxDropDown ref="shopWrap" :propsList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
-            </checkboxDropDown> -->
-            <!-- <multipleSlesct ref="shopWrap" :leftList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
-            </multipleSlesct> -->
-            <dropDownColum :propsList="goodslocationList" dataType="属性" titleData="全部位置" @dataBack="dataBack" @dropReturn="dropReturn" @clearInfo="clearInfo">
-            </dropDownColum>
+            <TreeDropDownColums :propsList="goodslocationList" dataType="6" titleData="产品位置" @dataBack="dataBack"></TreeDropDownColums>
           </div>
           <div title="条码" class="range-box" style="background:url(../../../static/img/batch/barcode.png) no-repeat 5px center;">
             <input type="text" @keyup.enter="seekSearch" v-model="beginBarcode1" placeholder="条码" @blur="batchAddByProductList()">
@@ -158,7 +152,8 @@
             <span>-</span>
             <input type="text" @keyup.enter="seekSearch" v-model="endPrice1" placeholder="售价" @blur="batchAddByProductList()">
           </div>
-          <el-button @click="reset" class="reset" title="重置">重置</el-button>
+          <!-- <el-button @click="batchAddByProductList" class="reset" title="完成">完成</el-button> -->
+          <el-button @click="resetGoods" class="reset" title="重置">重置</el-button>
         </div>
         <div class="table-main" @scroll="scrollFun($event)">
           <el-checkbox-group v-model="barcodeList" v-loading="isLoading">
@@ -330,21 +325,16 @@
     operateCreatReceipt,
     operateProductList
   } from "./../../Api/commonality/operate"
-  // import dropDownColum from '@/components/dropDownColums'
-  import dropDownColum from './demo'
-  import DropDownMenu from './../template/DropDownMenu'
-  // 可多选的筛选框
-  import checkboxDropDown from 'base/menu/drop-down-colums'
-  import multipleSlesct from 'base/menu/multiple-el-select'
+  import dropDownColum from '@/components/dropDownColums';
+  // 树形级联多选框组件
+  import TreeDropDownColums from '@/components/tree_dropDownColums';
   export default {
     props: [
       'isPopup', 'supplierListData'
     ],
     components: {
       dropDownColum,
-      DropDownMenu,
-      checkboxDropDown,
-      multipleSlesct
+      TreeDropDownColums
     },
     data() {
       return {
@@ -378,7 +368,7 @@
         totalNum1: 0,
         pageSize: 15,
         dataList: [],
-        productTypeList: [{
+        productList: [{
             name: "成品",
             id: 1
           },
@@ -387,23 +377,10 @@
             id: 2
           }
         ],
-        locationList: [{
-            name: "仓库",
-            type: 1
-          },
-          {
-            name: "店铺",
-            type: 1
-          },
-          {
-            name: "柜组",
-            type: 1
-          },
-        ],
         proList: [],
         conditionList: [], // 成色列表
-        jewelList: [], // 宝石列表
-        jewelryList: [], // 首饰列表
+        allJewelList: [], // 宝石列表
+        allJewelryList: [], // 首饰列表
         newOrderId: '',
         // ----------------------
         beginNum: '',
@@ -427,6 +404,18 @@
         endPrice1: '',
         beginBarcode1: '',
         endBarcode1: '',
+        // 选中的首饰名称id列表
+        jewelryList: [],
+        // 选中的宝石名称id列表
+        jewelList: [],
+        // 选中的成色名称id列表
+        colourList: [],
+        // 选中的产品类别id列表
+        productTypeList: [],
+        // 选中的商品属性id列表
+        productStatusList: [],
+        // 选中的商品位置id列表
+        locationList: [],
         //-------------------------单据筛选条件
         //单据类型默认值
         LierListType: "",
@@ -462,25 +451,6 @@
         goodslocationList: [],
         // 关闭显示单据号的浮层
         Float: true,
-        // -----------------------------------
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-        value5: [],
-        value11: []
       }
     },
     watch: {
@@ -595,15 +565,70 @@
 
       },
       dataBack(val) { // 级联数据返回
-        console.log(val);
+        // console.log(val);
+        // 产品类别
         if (val.type == 1) {
-          this.productTypeId = val.opeId
-        } else if (val.type == 2) {
-          this.colourId = val.opeId
-        } else if (val.type == 3) {
-          this.jewelId = val.opeId
-        } else if (val.type == 4) {
-          this.jewelryId = val.opeId
+          // this.productTypeId = val.opeId
+          let productTypeList = [];
+          val.selectedList.forEach((val, index) => {
+            productTypeList.push({
+              productTypeId: val.id
+            })
+          })
+          this.productTypeList = productTypeList;
+        }
+        // 成色名称
+        else if (val.type == 2) {
+          // this.colourId = val.opeId
+          let colourList = [];
+          val.selectedList.forEach((val, index) => {
+            colourList.push({
+              colourId: val.id
+            })
+          })
+          this.colourList = colourList;
+        }
+        // 宝石名称
+        else if (val.type == 3) {
+          // this.jewelId = val.opeId
+          let jewelList = [];
+          val.selectedList.forEach((val, index) => {
+            jewelList.push({
+              jewelId: val.id
+            })
+          })
+          this.jewelList = jewelList
+        }
+        // 首饰类别
+        else if (val.type == 4) {
+          // this.jewelryId = val.opeId
+          let jewelryList = [];
+          val.selectedList.forEach((val, index) => {
+            jewelryList.push({
+              jewelryId: val.id
+            })
+          })
+          this.jewelryList = jewelryList
+        }
+        // 商品属性
+        else if (val.type == 5) {
+          let productStatusList = [];
+          val.selectedList.forEach((val, index) => {
+            productStatusList.push({
+              productStatus: val.id
+            })
+          })
+          this.productStatusList = productStatusList
+        }
+        // 商品所在位置
+        else if (val.type == 6) {
+          let locationList = [];
+          val.selectedList.forEach((val, index) => {
+            locationList.push({
+              locationId: val.id
+            })
+          })
+          this.locationList = locationList;
         }
         this.batchAddByProductList()
       },
@@ -667,9 +692,9 @@
             if (type == 1) {
               this.conditionList = res.data.data.list
             } else if (type == 2) {
-              this.jewelList = res.data.data.list
+              this.allJewelList = res.data.data.list
             } else {
-              this.jewelryList = res.data.data.list
+              this.allJewelryList = res.data.data.list
             }
           }
         }, (res) => {
@@ -761,12 +786,18 @@
           newOrderId: this.newOrderId,
           keyword: this.keyword,
           productTypeId: this.productTypeId,
+          productTypeList: this.productTypeList,
           colourId: this.colourId,
+          colourList: this.colourList,
           jewelId: this.jewelId,
+          jewelList: this.jewelList,
           jewelryId: this.jewelryId,
+          jewelryList: this.jewelryList,
+          productStatusList: this.productStatusList,
           productType: this.productType,
           location: this.location,
           locationId: '',
+          locationList: this.locationList,
           beginBarcode: this.beginBarcode1,
           endBarcode: this.endBarcode1,
           beginWeight: this.beginWeight1,
@@ -774,6 +805,7 @@
           beginPrice: this.beginPrice1,
           endPrice: this.endPrice1
         }
+        console.log(options)
         seekBatchAddByProductList(options).then((res) => {
           console.log('发现请求数据的第二个位置:', res)
           if (res.data.state == 200) {
@@ -814,8 +846,8 @@
           this.endPrice = ''
           this.modelType = ''
           this.newOrderId = ''
-          // 点击切换不需要查询商品
-          // this.batchAddByProductList()
+          // 点击切换需要查询商品
+          this.batchAddByProductList()
           this.receiptList = []
           this.orderNo = ''
           this.totalNum1 = res.data.data.totalNum
@@ -1106,8 +1138,8 @@
           return "旧料"
         }
       },
-      // 重置按钮
-      reset() {
+      // 单据的重置按钮
+      resetInvoices(){
         this.startTime = ""
         this.endTime = ""
         this.LierListType = ""
@@ -1119,9 +1151,34 @@
         this.beginPrice = ""
         this.endPrice = ""
         this.getDate(0)
+        // 获取产品类型列表
         this.seekProductTypeList()
+        // 获取产品类
         this.getPropList()
+        // 获取制单人列表
         this.getUserList()
+      },
+      // 商品的重置按钮
+      resetGoods() {
+        console.log("商品的重置按钮")
+        // 获取产品类型列表
+        this.seekProductTypeList()
+        // 获取产品类
+        this.getPropList()
+        // 重新赋值一遍即可重置商品属性
+        this.productList = [{
+            name: "成品",
+            id: 1
+          },
+          {
+            name: "旧料",
+            id: 2
+          }
+        ];
+        // 设置商品位置列表
+        this.setGoodslocationList();
+        // 重新通过单据号查询商品
+        this.gotoGoods(this.currentOrderId);
       },
       // 点击单据展示商品列表
       gotoGoods(orderId) {
@@ -1150,7 +1207,6 @@
           pageSize: 9999,
           type: 1 // 1.可查看 2.所属 3.全部
         }).then(res => {
-          // console.log(res)
           if (res.data.state == 200) {
             for (let i of res.data.data.shopList) {
               // 获取每个店铺的库类型
@@ -1167,7 +1223,7 @@
                     j.id = j.counterId
                   }
                   this.goodslocationList[1].childrenList.push(i)
-                  // console.log(this.goodslocationList[1]);
+                  console.log(this.goodslocationList)
                 })
             }
           } else {
@@ -1710,7 +1766,7 @@
           margin-right: 16px;
         }
         .drop-block {
-          width: 90px;
+          width: 80px;
           height: 28px;
           border-radius: 4px;
           border: 1px solid #d6d6d6;
