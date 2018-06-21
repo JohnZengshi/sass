@@ -26,7 +26,7 @@
               :allName="'全部店铺'"
               :keyName="'shopId'"
               titleData="店铺名称"
-              @dataBack="dataBack"
+              @dataBack="dataBackShopList"
           >
           </dropDownColums>
           
@@ -761,11 +761,10 @@ export default {
     },
     storageLocation (parm) {
       if(this.panelType === 0) {
-        this.filterCondition.repositoryList = this.conversionData(parm.bigList,'repositoryId')
+        this.filterCondition.storageList = this.conversionData(parm.bigList,'storageId')
         this.$emit('filterData', this.filterCondition)
       }
-      // this.filterCondition.storageId = parm.bigList
-      // this.$emit('filterData', this.filterCondition)
+      
       if(this.panelType === 1) {
         this.filterCondition.repositoryList = this.conversionData(parm.bigList,'repositoryId')
         this.$emit('filterData', this.filterCondition)
@@ -899,11 +898,20 @@ export default {
 
     },
     dataBack (parm) {
-      this.filterCondition[parm.keyName+'List'] = this.conversionData(parm.samllList,parm.keyName)
+      // 字符串的 截取 因为 知道 字段不会出现Id
+      let len = parm.keyName.length
+      let key = parm.keyName.slice(0,len-2) + 'List'
+      
+      this.filterCondition[key] = this.conversionData(parm.samllList,parm.keyName)
+      this.$emit('filterData', this.filterCondition)
+    },
+    // 店铺id
+    dataBackShopList (parm) {
+      this.filterCondition.shopList = this.conversionData(parm.bigList,'shopId')
       this.$emit('filterData', this.filterCondition)
     },
     dataBackProductTypeId (parm) { // 产品类别过滤
-      this.filterCondition.productStatus = parm.bigList
+      this.filterCondition.productStatusList = this.conversionData(parm.bigList,'productStatusList')
       this.$emit('filterData', this.filterCondition)
     },
     seekProductTypeList () { // 产品类别列表
@@ -969,13 +977,7 @@ export default {
 
     // 商品状态过滤
     dataBackProductClass (parm) {
-      this.filterCondition.productClass = parm.bigList
-      this.$emit('filterData', this.filterCondition)
-    },
-    // 单据人员类型过滤
-    dataUserType (parm) {
-      this.filterCondition.orderType = parm.bigList
-      
+      this.filterCondition.productClassList  = this.conversionData(parm.bigList,'productClass')
       this.$emit('filterData', this.filterCondition)
     },
     // 获取人员列表

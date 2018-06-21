@@ -145,6 +145,7 @@
       </el-dialog>
       <!-- 点击了商品的弹窗 -->
       <el-dialog :title="productTypeName" top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="DataShow" customClass="ruleOption detailsBounced">
+          <i class="iconfont icon-shangpin"></i>
           <div class="detailsInfo">
             <div class="detailsInfo_left">
               <div class="main-body">
@@ -1841,9 +1842,10 @@ export default {
 @import "~assets/css/_fontManage.scss";
 
 .ruleOption.detailsBounced {
+  
   .el-dialog__header {
-    padding-left: 10px;
-    line-height: 40px;
+    padding-left: 44px;
+    line-height: 68px;
     .el-dialog__title {
       color: #2993f8;
     }
@@ -1851,6 +1853,12 @@ export default {
   .el-dialog__body {
     padding: 0;
     padding-top: 68px;
+    &>i {
+      position: absolute;
+      top: 25px;
+      left: 20px;
+      color: #2993f8;
+    }
   }
   .detailsInfo {
     display: flex;

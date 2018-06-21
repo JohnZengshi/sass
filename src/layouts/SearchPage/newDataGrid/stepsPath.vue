@@ -295,6 +295,7 @@ export default {
       border-bottom-right-radius: 15px;
       background: #fff;
       z-index: 9999;
+      box-shadow: 0 0 8px rgba(0,0,0,.1);
 
       overflow: hidden;
       .item_time {
