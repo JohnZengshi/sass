@@ -56,18 +56,18 @@ export default{
         let w = 'width:' + result.width + ( result.width.indexOf('%') >= 0 ? '' : 'px')
         result.res && result.res.call(this, w)
       }
-       },
+    },
        
-       ObjectAssign(){
-            this.tempDatagrid = [];
+      ObjectAssign(){
+          this.tempDatagrid = [];
           this.detailDataGridColumn.forEach((item)=>{
-        let tempItem = Object.assign({},item)
-        this.tempDatagrid.push(tempItem)
-      })
-       },
+              let tempItem = Object.assign({},item)
+              this.tempDatagrid.push(tempItem)
+          })
+      },
       
 
-       scrollClass( type ){
+      scrollClass( type ){
          this.$emit('scrollClass', type )
       },
       
