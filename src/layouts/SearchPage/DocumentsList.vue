@@ -501,9 +501,9 @@ export default {
           let datas = res.data.data.orderList;
           for (let i of datas) {
             // 属性
-            i.productClass = productTpyeState(i.productClass);
+            i.productClass = productTpyeState(i.productClass)
             // 状态
-            i.status = newProductDetailStatus(i.status);
+            i.status = newProductDetailStatus(i.status)
             // 单据类型
             i.orderType = statusModuleType(i.orderType)
             // 制单状态

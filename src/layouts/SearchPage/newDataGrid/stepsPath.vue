@@ -236,7 +236,7 @@ export default {
     &::before {
       content: '';
       position: absolute;
-      top: 0;
+      top: 10px;
       left: 0;
       width: 10px;
       height: 10px;
@@ -248,7 +248,7 @@ export default {
     &::after {
       content: '';
       position: absolute;
-      top: 14px;
+      top: 24px;
       left: 4px;
       width: 6px;
       height: 100%;
@@ -264,6 +264,7 @@ export default {
         height: 30px;
 
         font-size: 12px;
+        font-weight: bold;
         color: #fff;
         text-align: center;
         line-height: 30px;
@@ -294,6 +295,7 @@ export default {
       border-bottom-right-radius: 15px;
       background: #fff;
       z-index: 9999;
+      box-shadow: 0 0 8px rgba(0,0,0,.1);
 
       overflow: hidden;
       .item_time {
@@ -304,6 +306,7 @@ export default {
         color: #fff;
         text-align: center;
         line-height: 30px;
+        font-weight: bold;
 
         background: #2993f8;
         border-top-left-radius: 22px;

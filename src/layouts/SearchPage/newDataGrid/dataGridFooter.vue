@@ -50,7 +50,8 @@ export default {
   .th_footer{
     height: 40px;
     position: relative;
-    
+    overflow: visible;
+    margin: 0 2px;
     .total-more{
       position:absolute;
       left: 0;

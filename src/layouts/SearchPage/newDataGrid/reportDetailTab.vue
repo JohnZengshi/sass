@@ -13,6 +13,7 @@
 
         <!-- 详情弹框 -->
         <el-dialog :title="productTypeName" top="0" :modal="false" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption detailsBounced">
+          <i class="iconfont icon-shangpin"></i>          
           <div class="detailsInfo">
             <div class="detailsInfo_left">
               <div class="main-body">
@@ -1079,14 +1080,24 @@ export default {
 @import "~assets/css/_fontManage.scss";
 
 .ruleOption.detailsBounced {
+  
   .el-dialog__header {
-    padding-left: 10px;
-    line-height: 40px;
+    padding-left: 44px;
+    line-height: 68px;
     .el-dialog__title {
       color: #2993f8;
     }
   }
-
+  .el-dialog__body {
+    padding: 0;
+    padding-top: 68px;
+    &>i {
+      position: absolute;
+      top: 25px;
+      left: 20px;
+      color: #2993f8;
+    }
+  }
   .detailsInfo {
     display: flex;
     .detailsInfo_left {
@@ -1146,6 +1157,7 @@ export default {
                         float: left;
                         // display: inline-block;
                         height: 100%;
+                        padding-top: 10px;
 
                         min-height: 52px;
                         .name-wrap {
@@ -1164,6 +1176,7 @@ export default {
                             .name {
                                float: left;
                                @include F(14, #666666);
+                               font-weight: bold;
                                line-height: 16px;
                             }
                         }
@@ -1172,10 +1185,11 @@ export default {
                     .main-item-list {
                         float: left;
                         width: 900px;
+                        padding-top: 10px;
                        // display: inline-block;
                         .main-item {
                             height: 40px;
-                            width: 136px;
+                            width: 140px;
                             float: left;
                             //display: inline-block;
                             margin-bottom: 6px;
@@ -1200,10 +1214,10 @@ export default {
                    .main-name {
                        .name-wrap {
                            .line {
-                               background:#d6d6d6;
+                              background:#d6d6d6;
                            }
                            .name {
-                               color:#666666;
+                              color:#666666;
                            }
                        }
                    }

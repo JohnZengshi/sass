@@ -52,9 +52,9 @@
                         <h1>商品</h1>
                         <div class="line"></div>
                         <div class="commodityList">
-                          <div class="commodityItem" v-if="productList.length == 0">未匹配到相关商品信息，查看<span @click.stop="openListDeta(0)">所有商品</span></div>
+                          <div class="commodityItem" v-if="productList.length == 0">未匹配到相关商品信息，查看<span @click.stop="openListDeta(0,true)">所有商品</span></div>
                           <div class="commodityItem" v-else v-for="(item,index) in productList" :key="index" @click.stop="openDialog(productList[index].productId)">
-                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.barcode)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn">{{ item.jewelryName }}</span><span class="slocation fr">{{ item.locationName }}</span>
+                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.barcode)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn"><span v-for="(text,i) in filterkeyWord(item.jewelryName)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="slocation fr">{{ item.locationName }}</span>
                           </div>
                           <div class="commodityItem" v-if="productList.length > 5" @click.stop="openListDeta(0)">
                             <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多商品</span><span class="more_num">({{productTotalNum}})</span>
@@ -82,8 +82,7 @@
                         <div class="membersList">
                           <div class="membersItem" v-if="memberListData.length == 0">未匹配到相关会员信息，查看<span @click.stop="openListDeta(2,true)">所有会员</span></div>
                           <div class="membersItem" v-else @click.stop="openMember(item)" v-for="(item,index) in memberListData" :key="index">
-                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.phone)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn">{{item.memberName}}</span><span class="slocation fr">{{item.shopName}}</span>
-                            
+                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.phone)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn"><span v-for="(text,i) in filterkeyWord(item.memberName)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="slocation fr">{{item.shopName}}</span>
                           </div>
                           <div class="membersItem" v-if="memberListData.length > 5" @click.stop="openListDeta(2)">
                             <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多会员</span><span class="more_num">({{memberTotalNum}})</span>
@@ -146,6 +145,7 @@
       </el-dialog>
       <!-- 点击了商品的弹窗 -->
       <el-dialog :title="productTypeName" top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="DataShow" customClass="ruleOption detailsBounced">
+          <i class="iconfont icon-shangpin"></i>
           <div class="detailsInfo">
             <div class="detailsInfo_left">
               <div class="main-body">
@@ -987,31 +987,39 @@ export default {
     openListDeta(type,showAll) {
       switch (type) {
         case 0:
-          this.panel = ProductList
-          this.panelType = type
-          this.actIndex = type + ''
-          break;
-        case 1:
-          this.panel = DocumentsList
-          this.panelType = type
-          this.actIndex = type + ''
-
           if(showAll) {
             this.showAll = true
           } else {
             this.showAll = false
           }
-          break;
-        case 2:
-          this.panel = memberList
+          this.panel = ProductList
           this.panelType = type
-          this.actIndex = type + '' 
-
+          this.actIndex = type + ''
+          
+          break;
+        case 1:
           if(showAll) {
             this.showAll = true
           } else {
             this.showAll = false
-          }         
+          }
+          this.panel = DocumentsList
+          this.panelType = type
+          this.actIndex = type + ''
+
+          
+          break;
+        case 2:
+          if(showAll) {
+            this.showAll = true
+          } else {
+            this.showAll = false
+          } 
+          this.panel = memberList
+          this.panelType = type
+          this.actIndex = type + '' 
+
+                  
           break;
       
         default:
@@ -1025,6 +1033,7 @@ export default {
       if (val == 1) {
         this.$refs.mysearch.style.border = "1px solid #2993f8";
         this.isSearch = true;
+        this.watchCloseIcon()
       } else {
         setTimeout(() => {
           this.$refs.mysearch.style.border = "1px solid #fff";
@@ -1106,11 +1115,13 @@ export default {
       // }
 
       // 直接搜索
-      this.getHomepageSearchData()
-      this.isSearch = true
+      // this.getHomepageSearchData()
+      // this.isSearch = true
 
       // 点击跳转
-      this.openListDeta(0)
+      if(!this.searchText) {
+        this.openListDeta(0)
+      }
 
     },
     searchType(command) {
@@ -1319,9 +1330,13 @@ export default {
     filterkeyWord (parm) {
       // console.log(parm)
       if(parm) {
-        let datas = parm.split(this.searchText)
-        datas.splice(1, 0, this.searchText)
-        return datas
+        if(parm.indexOf(this.searchText) !== -1) {
+          let datas = parm.split(this.searchText)
+          datas.splice(1, 0, this.searchText)
+          return datas
+        } else {
+          return parm
+        }
       }
     },
     
@@ -1678,6 +1693,7 @@ export default {
   width: 420px;
   // height: 500px;
   padding: 20px 0;
+  padding-bottom: 0;
 
   border: 1px solid #d6d6d6;
   border-radius: 4px;
@@ -1716,11 +1732,11 @@ export default {
       .receiptsItem,
       .membersItem {
         width: 100%;
-        height: 42px;
+        height: 40px;
 
         font-size: 14px;
         color: #999;
-        line-height: 42px;
+        line-height: 40px;
         padding: 0 20px;
 
         span {
@@ -1750,7 +1766,11 @@ export default {
           margin: 0 10px;
           color: #333;
         }
+        .gnn span {
+          color: #333;
+        }
         .slocation {
+          font-size: 12px;
           color: #999;
         }
         .more {
@@ -1771,7 +1791,11 @@ export default {
             margin: 0 10px;
             color: #2993f8;
           }
+          .gnn span {
+            color: #2993f8;            
+          }
           .slocation {
+            font-size: 12px;          
             color: #2993f8;
           }
           background: #f2f2f2;
@@ -1818,9 +1842,10 @@ export default {
 @import "~assets/css/_fontManage.scss";
 
 .ruleOption.detailsBounced {
+  
   .el-dialog__header {
-    padding-left: 10px;
-    line-height: 40px;
+    padding-left: 44px;
+    line-height: 68px;
     .el-dialog__title {
       color: #2993f8;
     }
@@ -1828,6 +1853,12 @@ export default {
   .el-dialog__body {
     padding: 0;
     padding-top: 68px;
+    &>i {
+      position: absolute;
+      top: 25px;
+      left: 20px;
+      color: #2993f8;
+    }
   }
   .detailsInfo {
     display: flex;
@@ -1888,6 +1919,7 @@ export default {
                         float: left;
                         // display: inline-block;
                         height: 100%;
+                        padding-top: 10px;
 
                         min-height: 52px;
                         .name-wrap {
@@ -1906,6 +1938,7 @@ export default {
                             .name {
                                float: left;
                                @include F(14, #666666);
+                               font-weight: bold;
                                line-height: 16px;
                             }
                         }
@@ -1914,10 +1947,11 @@ export default {
                     .main-item-list {
                         float: left;
                         width: 900px;
+                        padding-top: 10px;
                        // display: inline-block;
                         .main-item {
                             height: 40px;
-                            width: 136px;
+                            width: 140px;
                             float: left;
                             //display: inline-block;
                             margin-bottom: 6px;
@@ -1942,10 +1976,10 @@ export default {
                    .main-name {
                        .name-wrap {
                            .line {
-                               background:#d6d6d6;
+                              background:#d6d6d6;
                            }
                            .name {
-                               color:#666666;
+                              color:#666666;
                            }
                        }
                    }

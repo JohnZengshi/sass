@@ -967,16 +967,18 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
         this.receiptStatusList();
       },
       choseMenu(type) {
-          if(this.tabSwitch) {
-              this.dataGridOptions.specialId = ''
-          } else {
-              this.dataGridOptions.specialId = '1'
-          }
+          
 
           if(type == 1) {
             this.positionSwitch = !this.positionSwitch
           } else if(type == 2) {
             this.tabSwitch = !this.tabSwitch
+          }
+
+          if(this.tabSwitch) {
+              this.dataGridOptions.specialId = '1'
+          } else {
+              this.dataGridOptions.specialId = ''
           }
       },
       resetOption() {

@@ -66,15 +66,15 @@ export default {
       },
       filterCondition: {
         keyWord: "",
-        newOrderId: "",
-        storageId: [],
-        shopId: [],
-        productTypeId: [],
-        colourId: [],
-        jeweId: [],
-        jewelryId: [], // 首饰类别
-        sortList: [{ classTypeName: "1" }],
-        productStatus: [] // 产品状态
+        // newOrderId: "",
+        // storageId: [],
+        // shopId: [],
+        // productTypeId: [],
+        // colourId: [],
+        // jeweId: [],
+        // jewelryId: [], // 首饰类别
+        // sortList: [{ classTypeName: "1" }],
+        // productStatus: [] // 产品状态
       },
       openReset: true,
       shopDataList: [],
@@ -449,15 +449,15 @@ export default {
     resetData() {
       this.filterCondition = {
         keyWord: "",
-        newOrderId: "",
-        storageId: [],
-        shopId: [],
-        productTypeId: [],
-        colourId: [],
-        jeweId: [],
-        jewelryId: [], // 首饰类别
-        sortList: [{ classTypeName: "1" }],
-        productStatus: [] // 产品状态
+        // newOrderId: "",
+        // storageId: [],
+        // shopId: [],
+        // productTypeId: [],
+        // colourId: [],
+        // jeweId: [],
+        // jewelryId: [], // 首饰类别
+        // sortList: [{ classTypeName: "1" }],
+        // productStatus: [] // 产品状态
       };
       this.addData = [];
       this.dataGridStorage = [];
@@ -503,7 +503,7 @@ export default {
         this.paging.page = 1;
         this.filterCondition = Object.assign({}, this.filterCondition, parm);
       }
-      
+      console.log(this.filterCondition)
       this.loading = true;
       seekGetPrintLabelList(
         Object.assign(this.filterCondition, this.paging, {})
