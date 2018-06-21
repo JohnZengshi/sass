@@ -84,6 +84,7 @@
               :specialItem="sellShowId == 'sales'"
               :isBuy="true"
               :customList="customList"
+              :type="dataGridOptions.type"
             ></filter-header>
 
              <cut-bg class="cut-bg-btn-wrap ml-10" :showList="sellTypeList" :current="sellShowId" @pitchOn="madeUpOnSell"></cut-bg>
@@ -741,6 +742,7 @@ export default {
     },
     choseBuyBack (parm) {
       this.isBuyBack = parm
+      this.sellSend()
     },
     choseMenu(type) {
         
@@ -1442,8 +1444,14 @@ export default {
       //   ]);
       // }
      // tempOption.sellStatus = '1'
+      if (this.isBuyBack) {
+        delete tempOption.sellStatus
+      } else {
+        tempOption.sellStatus = '1'
+      }
       if (tempOption.type == 1) {
         Object.assign(tempOption, {sellStatus: '1'})
+        tempOption.sellStatus = '1'
       }
       seekSellList(tempOption).then(res => {
         if (res.data.state === 200) {

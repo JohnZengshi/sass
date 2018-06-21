@@ -267,6 +267,8 @@ export default {
         changeDate(parm) {
             this.optionData.beginTime = parm.beginTime
             this.optionData.endTime = parm.endTime
+            this.page = 1
+            this.showList = []
             this.filterFun(this.cbFun); // 获取单据列表
         },
         delectOptions (parm, isRole) { // 删除权限

@@ -288,7 +288,8 @@
             if (res.data.state === 200) {
               this.repositoryList = [...res.data.data.repositoryList, {
                 isDefault: "Y",
-                repositoryId: "0",
+                // repositoryId: "0",
+                repositoryId: "",
                 repositoryName: "全部仓库"
               }]
             }
@@ -303,7 +304,8 @@
           .then(res => {
             if (res.data.state === 200) {
               this.shopList = [...res.data.data.shopList, {
-                shopId: '0',
+                // shopId: '0',
+                shopId: '',
                 shopName: '全部店铺'
               }]
             }

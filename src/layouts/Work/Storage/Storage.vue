@@ -644,6 +644,8 @@
 			changeDate(parm) {
 				this.optionData.beginTime = parm.beginTime
       	this.optionData.endTime = parm.endTime
+      	this.page = 1;
+				this.showList = []
 				this.getList();
 			},
 			setParams(){

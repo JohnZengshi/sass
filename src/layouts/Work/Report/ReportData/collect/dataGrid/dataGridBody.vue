@@ -545,7 +545,6 @@
   .right-type-inner-wrap{
     display: inline-block;
     width: 1098px;
-    // border: 1px solid red;
     overflow: hidden;
   }
 
