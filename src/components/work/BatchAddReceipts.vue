@@ -803,8 +803,8 @@
           this.endPrice = ''
           this.modelType = ''
           this.newOrderId = ''
-          // 点击切换不需要查询商品
-          // this.batchAddByProductList()
+          // 点击切换需要查询商品
+          this.batchAddByProductList()
           this.receiptList = []
           this.orderNo = ''
           this.totalNum1 = res.data.data.totalNum
