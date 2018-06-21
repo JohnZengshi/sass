@@ -52,9 +52,9 @@
                         <h1>商品</h1>
                         <div class="line"></div>
                         <div class="commodityList">
-                          <div class="commodityItem" v-if="productList.length == 0">未匹配到相关商品信息，查看<span @click.stop="openListDeta(0)">所有商品</span></div>
+                          <div class="commodityItem" v-if="productList.length == 0">未匹配到相关商品信息，查看<span @click.stop="openListDeta(0,true)">所有商品</span></div>
                           <div class="commodityItem" v-else v-for="(item,index) in productList" :key="index" @click.stop="openDialog(productList[index].productId)">
-                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.barcode)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn">{{ item.jewelryName }}</span><span class="slocation fr">{{ item.locationName }}</span>
+                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.barcode)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn"><span v-for="(text,i) in filterkeyWord(item.jewelryName)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="slocation fr">{{ item.locationName }}</span>
                           </div>
                           <div class="commodityItem" v-if="productList.length > 5" @click.stop="openListDeta(0)">
                             <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多商品</span><span class="more_num">({{productTotalNum}})</span>
@@ -82,8 +82,7 @@
                         <div class="membersList">
                           <div class="membersItem" v-if="memberListData.length == 0">未匹配到相关会员信息，查看<span @click.stop="openListDeta(2,true)">所有会员</span></div>
                           <div class="membersItem" v-else @click.stop="openMember(item)" v-for="(item,index) in memberListData" :key="index">
-                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.phone)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn">{{item.memberName}}</span><span class="slocation fr">{{item.shopName}}</span>
-                            
+                            <span class="gno"><span v-for="(text,i) in filterkeyWord(item.phone)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn"><span v-for="(text,i) in filterkeyWord(item.memberName)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="slocation fr">{{item.shopName}}</span>
                           </div>
                           <div class="membersItem" v-if="memberListData.length > 5" @click.stop="openListDeta(2)">
                             <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多会员</span><span class="more_num">({{memberTotalNum}})</span>
@@ -1025,6 +1024,7 @@ export default {
       if (val == 1) {
         this.$refs.mysearch.style.border = "1px solid #2993f8";
         this.isSearch = true;
+        this.watchCloseIcon()
       } else {
         setTimeout(() => {
           this.$refs.mysearch.style.border = "1px solid #fff";
@@ -1106,11 +1106,13 @@ export default {
       // }
 
       // 直接搜索
-      this.getHomepageSearchData()
-      this.isSearch = true
+      // this.getHomepageSearchData()
+      // this.isSearch = true
 
       // 点击跳转
-      this.openListDeta(0)
+      if(!this.searchText) {
+        this.openListDeta(0)
+      }
 
     },
     searchType(command) {
@@ -1319,9 +1321,13 @@ export default {
     filterkeyWord (parm) {
       // console.log(parm)
       if(parm) {
-        let datas = parm.split(this.searchText)
-        datas.splice(1, 0, this.searchText)
-        return datas
+        if(parm.indexOf(this.searchText) !== -1) {
+          let datas = parm.split(this.searchText)
+          datas.splice(1, 0, this.searchText)
+          return datas
+        } else {
+          return parm
+        }
       }
     },
     
@@ -1750,6 +1756,9 @@ export default {
           margin: 0 10px;
           color: #333;
         }
+        .gnn span {
+          color: #333;
+        }
         .slocation {
           color: #999;
         }
@@ -1770,6 +1779,9 @@ export default {
           .gnn {
             margin: 0 10px;
             color: #2993f8;
+          }
+          .gnn span {
+            color: #2993f8;            
           }
           .slocation {
             color: #2993f8;
