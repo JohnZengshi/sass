@@ -1121,6 +1121,13 @@ export default {
       } else if (val.type == "销售人") {
         this.printSelectDate.salesperson = "’";
         this.printSelectDate.operateId = "";
+        Object.assign(this.dataGridOptions, {
+          salesmenList: [
+            {
+              salesmenId: ""
+            }
+          ]
+        });
       }
       this.dataGridOptions.pageSize = 15
       $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
@@ -1421,15 +1428,19 @@ export default {
           delete this.dataGridOptions.cashierList;
         }
       }
-
-      let tempOption = Object.assign({}, this.dataGridOptions);
-      if (this.printSelectDate.operateId != "") {
-        this.$set(tempOption, "salesmenList", [
-          {
-            salesmenId: this.printSelectDate.operateId
-          }
-        ]);
+      if (this.dataGridOptions.salesmenList) {
+        if (this.dataGridOptions.salesmenList[0].salesmenId == "") {
+          delete this.dataGridOptions.salesmenList;
+        }
       }
+      let tempOption = Object.assign({}, this.dataGridOptions);
+      // if (this.printSelectDate.operateId != "") {
+      //   this.$set(tempOption, "salesmenList", [
+      //     {
+      //       salesmenId: this.printSelectDate.operateId
+      //     }
+      //   ]);
+      // }
      // tempOption.sellStatus = '1'
       if (tempOption.type == 1) {
         Object.assign(tempOption, {sellStatus: '1'})
@@ -1467,7 +1478,11 @@ export default {
           delete this.dataGridOptions.cashierList;
         }
       }
-      
+      if (this.dataGridOptions.salesmenList) {
+        if (this.dataGridOptions.salesmenList[0].salesmenId == "") {
+          delete this.dataGridOptions.salesmenList;
+        }
+      }
       seekBuyBackList(this.dataGridOptions).then(res => {
         if (res.data.state === 200) {
           //数据表格数据
@@ -1496,7 +1511,11 @@ export default {
           delete this.dataGridOptions.cashierList;
         }
       }
-
+      if (this.dataGridOptions.salesmenList) {
+        if (this.dataGridOptions.salesmenList[0].salesmenId == "") {
+          delete this.dataGridOptions.salesmenList;
+        }
+      }
       seekReportsCashList(this.dataGridOptions).then(res => {
         if (res.data.state === 200) {
           //数据表格数据

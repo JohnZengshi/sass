@@ -56,6 +56,11 @@
                             </li>
                         </ul>
                     </div>
+
+                    <div class="optionDiv selected Rp_title_container">
+                        <xj-time @change="changeDate"></xj-time>
+                    </div>
+
                     <div class="optionDiv sell-new-data oper-btn" @click="newReceipt" v-if="userType && userType != 'undefined' && (userType != 1 || multipleIdentities == 'Y')">
                         <span>新建调柜单</span>
                     </div>
@@ -101,6 +106,7 @@ import newTransferCabinetReceipts from '../../../components/work/NewTransferCabi
 import EmptyReceiptsTemplate from '../../../components/EmptyDataTemplate/EmptyReceiptsTemplate.vue'
 import * as jurisdictions from '../../../Api/commonality/jurisdiction'
 import receiptsList from './ReceiptsList'
+import xjTime from 'base/time/xj-time'
 export default {
     data () {
         return {
@@ -203,7 +209,9 @@ export default {
             optionData : {
                shop : '', //店铺 
                toCounter :'',  //调入柜组
-               outCounter :''  //调出柜组
+               outCounter :'',  //调出柜组
+                beginTime: '',
+                endTime: '',
             },
             multipleIdentities: ''
         }
@@ -211,10 +219,11 @@ export default {
     components: {
         newTransferCabinetReceipts,
         receiptsList,
-        EmptyReceiptsTemplate
+        EmptyReceiptsTemplate,
+        xjTime
     },
     created () {
-        this.filterFun(this.cbFun); // 获取单据列表
+        // this.filterFun(this.cbFun); // 获取单据列表
         // this.workRepositoryList(); // 库位列表
         this.getShopListByCo(); // 店铺列表
         // this.workProductClass(); // 产品类别
@@ -285,6 +294,11 @@ export default {
             "getShopListByCo", // 店铺列表
             "workProductClass", // 产品类别
         ]),
+        changeDate(parm) {
+            this.optionData.beginTime = parm.beginTime
+            this.optionData.endTime = parm.endTime
+            this.filterFun(this.cbFun); // 获取单据列表
+        },
         preciseSun (parm) { // 年
             if (parm) {
                 var Year = parm.slice(0, 4);
@@ -452,6 +466,8 @@ export default {
                 "groupId2": warehouse || "-1", // 调出柜组
                 "shopId": warehouseOut || "-1", // 店铺ID
                 "orderNum": this.seekNumber || "",
+                "beginTime": this.optionData.beginTime,
+                "endTime": this.optionData.endTime,
                 "page": this.page || "1",
                 "pageSize": "30"
             }

@@ -195,7 +195,7 @@ module.exports = {
 			totalType0 : '' , //小计1
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: '1'
+			sort: ''
         },
         
         { 
@@ -357,7 +357,7 @@ module.exports = {
     		totalType : '' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: '1',
+			sort: '',
         },
 		{
     		id: '2',  //id 
@@ -501,7 +501,7 @@ module.exports = {
 			totalType0 : '' , //小计1
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: '1'
+			sort: ''
 		},
 		{
     		id: '2',  //id 

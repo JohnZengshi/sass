@@ -29,7 +29,7 @@
 						</div>
 						<!--<span v-else-if="f.type=='heavyCode' || f.readonly" :style="'width: '+f.width+'px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;'" :title="item[f.type]">{{item[f.type]}}</span>-->
 						<span v-else-if="f.readonly" :style="'width: '+f.width+'px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;'" :title="item[f.type]">{{item[f.type]}}</span>
-						<input :id="f.type+k" maxlength="12" type="text" @mousemove="inputMousemove($event,item, f)" @focusin="inputFocusin($event, item[f.type])" @keypress="dataGridkeyInput($event, item, f,k)" @input="inputChange(item, f)" @keydown="limitNumber($event, f.limitNumber)" :disabled="f.readonly" @focusout="inputFocusout($event, item, f, k)" class="dg-select-edit-ipt" :title="item[f.type]" v-model="item[f.type]" v-else />
+						<input :id="f.type+k" maxlength="32" type="text" @mousemove="inputMousemove($event,item, f)" @focusin="inputFocusin($event, item[f.type])" @keypress="dataGridkeyInput($event, item, f,k)" @input="inputChange(item, f)" @keydown="limitNumber($event, f.limitNumber)" :disabled="f.readonly" @focusout="inputFocusout($event, item, f, k)" class="dg-select-edit-ipt" :title="item[f.type]" v-model="item[f.type]" v-else />
 					</template>
 					<template v-else>{{item[f.type]}}</template>
 				</div>

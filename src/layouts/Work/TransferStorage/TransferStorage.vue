@@ -71,6 +71,9 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="optionDiv selected Rp_title_container">
+                        <xj-time @change="changeDate"></xj-time>
+                    </div>
                     <div class="optionDiv sell-new-data oper-btn" @click="newReceipt">
                         <span>新建调库单</span>
                     </div>
@@ -116,13 +119,15 @@ import auditReceipts from './../../Work/CommonalityComponent/popupTemplate/Audit
 import newTransferStorageReceipts from '../../../components/work/NewTransferStorageReceipts' // 新建单据
 import EmptyReceiptsTemplate from '../../../components/EmptyDataTemplate/EmptyReceiptsTemplate.vue'
 import * as jurisdictions from '../../../Api/commonality/jurisdiction'
+import xjTime from 'base/time/xj-time'
 import receiptsList from './ReceiptsList.vue'
 export default {
     components: {
         auditReceipts,
         newTransferStorageReceipts,
         receiptsList,
-        EmptyReceiptsTemplate
+        EmptyReceiptsTemplate,
+        xjTime
     },
     data () {
         return {
@@ -195,15 +200,17 @@ export default {
             "page": 1,
             
             optionData : {
-               storage : '', //调入库位 
-               storageOut :'',  //调出库位
-               commodityAttr :'',  //商品属性
-               reStatus: '', // 收货状态
+                storage : '', //调入库位 
+                storageOut :'',  //调出库位
+                commodityAttr :'',  //商品属性
+                reStatus: '', // 收货状态
+                beginTime: '',
+                endTime: '',
             }
         }
     },
     created () {
-        this.filterFun(this.cbFun); // 获取单据列表
+        // this.filterFun(this.cbFun); // 获取单据列表
         this.workRepositoryList(); // 库位列表
         this.getShopListByCo(); // 店铺列表
         this.workProductClass(); // 产品类别
@@ -257,6 +264,11 @@ export default {
             "workProductClass", // 产品类别
             "workSupplierList" // 商品属性
         ]),
+        changeDate(parm) {
+            this.optionData.beginTime = parm.beginTime
+            this.optionData.endTime = parm.endTime
+            this.filterFun(this.cbFun); // 获取单据列表
+        },
         delectOptions (parm, isRole) { // 删除权限
             return jurisdictions.jurisdictionDelectOptions(parm, isRole);
         },
@@ -358,6 +370,8 @@ export default {
                 "productProperty": productType || "-1", // 1成品2旧料
                 "receiptStatus": reStatus || "-1", // 1未收货2已收货
                 "orderNum": this.seekNumber || "",
+                "beginTime": this.optionData.beginTime,
+                "endTime": this.optionData.endTime,
                 "page": this.page || "1",
                 "pageSize": "30"
             }

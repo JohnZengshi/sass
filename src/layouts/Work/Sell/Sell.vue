@@ -55,6 +55,9 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="optionDiv selected Rp_title_container">
+                        <xj-time @change="changeDate"></xj-time>
+                    </div>
                     <div class="optionDiv sell-new-data oper-btn" @click="newReceipt" v-if="userType && userType != 'undefined' && (multipleIdentities == 'Y' || userType != 1)">
                         <span>新建销售单</span>
                     </div>
@@ -105,6 +108,7 @@ import {seekGetShopListByCo, seekGoodsSellOrder} from 'Api/commonality/seek'
 import {operateDelReceipt, operateCreateSellOrder} from 'Api/commonality/operate'
 import {statusCashStatus} from 'Api/commonality/status'
 import receiptsList from './receiptsList'
+import xjTime from 'base/time/xj-time'
 import EmptyReceiptsTemplate from 'components/EmptyDataTemplate/EmptyReceiptsTemplate.vue'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 export default {
@@ -198,18 +202,21 @@ export default {
             peoType: '',
             totalNum:'',
             optionData : {
-               shop : '', //店铺 
-               sort :'',  //排序
-               collect :''  //收银
+                shop : '', //店铺 
+                sort :'',  //排序
+                collect :'',  //收银
+                beginTime: '',
+                endTime: '',
             }
         }
     },
     components: {
         receiptsList,
-        EmptyReceiptsTemplate
+        EmptyReceiptsTemplate,
+        xjTime
     },
     created () {
-        this.filterFun(this.cbFun); // 获取单据列表
+        // this.filterFun(this.cbFun); // 获取单据列表
         this.workRepositoryList(); // 库位列表
         this.getShopListByCo(); // 店铺列表
         this.workProductClass(); // 产品类别
@@ -270,6 +277,11 @@ export default {
             "workProductClass", // 产品类别
             "workSupplierList" // 供应商
         ]),
+        changeDate(parm) {
+            this.optionData.beginTime = parm.beginTime
+            this.optionData.endTime = parm.endTime
+            this.filterFun(this.cbFun); // 获取单据列表
+        },
         sureAct (parm) {
             var options = {
                 "shopId": parm.shopId
@@ -432,6 +444,8 @@ export default {
                 "cashStatus": monnyState || "-1", // 收银状态：-1全部1 已收银2 未收银
                 "orderBy": sortSelect || "2",
                 "orderNum": this.seekNumber || "",
+                "beginTime": this.optionData.beginTime,
+                "endTime": this.optionData.endTime,
                 "page": this.page || "1",
                 "pageSize": "30"
             }
