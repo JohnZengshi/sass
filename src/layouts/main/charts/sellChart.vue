@@ -140,7 +140,7 @@ export default{
 	background-color: #fff;
 	box-shadow: 0 0 15px #dedede;
 	border-radius: 10px;
-	
+	z-index: 99 !important;
 	&+ .rp_chart_item{
 		margin-left: 23px;
 	}

@@ -20,7 +20,7 @@
       </div>
 
       <div class="search-block">
-          <dropDownColums
+          <alone-drop-down-colums
               ref="shopWrap"
               :propsList="shopDataList"
               :allName="'全部店铺'"
@@ -28,7 +28,7 @@
               titleData="店铺名称"
               @dataBack="dataBackShopList"
           >
-          </dropDownColums>
+          </alone-drop-down-colums>
           
       </div>
       <div class="class-btn-wrap">
