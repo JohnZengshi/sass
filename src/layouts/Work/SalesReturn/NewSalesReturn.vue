@@ -809,26 +809,15 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
         jewelryList:[],
       }
     },
+    watch: {
+      $route(to, from) { 
+            if(from.path === to.path) {
+                this.update()   
+            }
+        }
+    },
     created() {
-      // 简单检测浏览器 表格底部高度填充，主要对firefox进行操作
-      this.$store.dispatch('checkBrowser', (type) => {
-        this.browserType = type
-      })
-      this.selectConfig = fetch.Select
-      this.getSeekSellReceiptsIntro(); // 单据简介
-      this.send();
-      this.receiptStatusList();
-      // this.getReceiptRemark(); // 单据备注
-      this.settingUserRole()
-      this.userType = sessionStorage.getItem('userType')
-      this.multipleIdentities = sessionStorage.getItem('multipleIdentities')
-      this.companyPosition = sessionStorage.getItem('companyPosition')
-
-      // 初始化筛选列表
-      this.seekProductTypeList()
-      this.productClassList(1)
-      this.productClassList(2)
-      this.productClassList(3)
+      this.update()
     },
     mounted() {
       let self = this
@@ -958,6 +947,27 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
       }
     },
     methods: {
+      update() {
+         // 简单检测浏览器 表格底部高度填充，主要对firefox进行操作
+      this.$store.dispatch('checkBrowser', (type) => {
+        this.browserType = type
+      })
+      this.selectConfig = fetch.Select
+      this.getSeekSellReceiptsIntro(); // 单据简介
+      this.send();
+      this.receiptStatusList();
+      // this.getReceiptRemark(); // 单据备注
+      this.settingUserRole()
+      this.userType = sessionStorage.getItem('userType')
+      this.multipleIdentities = sessionStorage.getItem('multipleIdentities')
+      this.companyPosition = sessionStorage.getItem('companyPosition')
+
+      // 初始化筛选列表
+      this.seekProductTypeList()
+      this.productClassList(1)
+      this.productClassList(2)
+      this.productClassList(3)
+      },
       ...mapActions([
         "workPopupError" // 错误弹窗
       ]),
