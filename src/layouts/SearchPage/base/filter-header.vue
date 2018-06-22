@@ -651,6 +651,48 @@ export default {
     this.settingUserRole()
     this.getOperatorList()
 
+    // 判断店铺人员 还有监察员
+    if(this.shopRole || this.isJrole) {
+      this.orderTypeListConfig = [
+        // {
+        //   id: '01',
+        //   name: '入库'
+        // },
+        // {
+        //   id: '02',
+        //   name: '退库'
+        // },
+        {
+          id: '03',
+          name: '发货'
+        },
+        {
+          id: '04',
+          name: '退货'
+        },
+        {
+          id: '05',
+          name: '销售/回购'
+        },
+        {
+          id: '06',
+          name: '调柜'
+        },
+        // {
+        //   id: '07',
+        //   name: '调库'
+        // },
+        {
+          id: '10',
+          name: '修改'
+        },
+        // {
+        //   id: '11',
+        //   name: '服务'
+        // },
+      ]
+    }
+
   },
   computed: {
     ...mapGetters([
@@ -702,9 +744,20 @@ export default {
         }
       })
     },
+    // 重置
     resetData () {
       this.keyWord = ''
       if(this.panelType == 0) {
+        this.filterData.keyword = ''
+        this.filterData.colourList = []
+        this.filterData.jeweList = []
+        this.filterData.jewelryList = []
+        this.filterData.productClassList = []
+        this.filterData.productStatusList = []
+        this.filterData.productTypeList = []
+        this.filterData.shopList = []
+        this.filterData.storageList = []
+
         this.$refs.storageLocationWrap.reset()
         this.$refs.shopWrap.reset()
         this.$refs.moreWrap.reset()
@@ -742,12 +795,17 @@ export default {
         this.$refs.memberFollowWrap.reset()
         this.$refs.memberOriginWrap.reset()
         this.$refs.moreWrap.reset()
+
+        this.filterData.followTypeList = []
+        this.filterData.memberOriginList = []
+        this.filterData.memberTypeList = []
+        this.filterData.operatorList = []
+        this.filterData.shopIdList = []
       }
       this.$emit('resetData')
-
-      console.log('重置')
     },
     batchAddByOrderNum () {
+      
       if (!this.keyWord) {
         this.$message({
           message: '请输入关键字',
@@ -755,8 +813,17 @@ export default {
         })
         return
       }
-      let options = {
-        keyWord: this.keyWord
+      
+      let options = {}
+      // 如果 是商品 
+      if(this.panelType === 0) {
+        options = {
+          keyword: this.keyWord
+        }
+      } else {
+        options = {
+          keyWord: this.keyWord
+        }
       }
       this.$emit('seekProduct', options)
     },

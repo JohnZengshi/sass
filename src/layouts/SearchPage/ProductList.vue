@@ -448,7 +448,7 @@ export default {
   methods: {
     resetData() {
       this.filterCondition = {
-        keyWord: "",
+        keyword: "",
         // newOrderId: "",
         // storageId: [],
         // shopId: [],

@@ -367,6 +367,10 @@ export default {
         if(parm.indexOf('XS') !== -1) {
           this.$router.push({path:'/work/sell/sellReceiptsList',query:{ orderNumber: parm }})
         } 
+        // 服务详情页
+        if(parm.indexOf('FW') !== -1) {
+          this.$router.push({path:'/work/serve/serveReceiptsList',query:{ orderNumber: parm }})
+        } 
           // this.$router.push({path:'/work/sell'})
           // this.$router.push({path:'/work/sell/sellReceiptsList?orderNumber='+parm})
         return

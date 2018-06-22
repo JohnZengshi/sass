@@ -1,6 +1,6 @@
 // 状态
 export const productDetailStatus = function (parm) { // 商品列表
-    
+
     switch (parm) {
         case "1":
             return "入库中";
@@ -262,6 +262,14 @@ export const documentsState = function (parm) {
             return "待收银";
         case "7":
             return "已收银";
+        case "8":
+            return "待收货";
+        case "9":
+            return "处理中";
+        case "10":
+            return "已处理";
+        case "11":
+            return "未锁定";
     }
 }
 
