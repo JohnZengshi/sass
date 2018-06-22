@@ -7,7 +7,7 @@
         <div class="list-box">
             <ul class="list-left">
                 <el-checkbox-group v-if="allName" v-model="allChecked" @change="checkedAll">
-                    <li @mouseover="selLeftItem([], 0)">
+                    <li  @mouseover="selLeftItem([], 0)">
                         <el-checkbox :indeterminate="false" :label="'allId'" :class="{active: allName[0]}" style="font-size: 14px;">{{allName}}</el-checkbox>
                     </li>
                 </el-checkbox-group>
@@ -235,7 +235,9 @@ export default {
         width: 100%;
         height: 100%;
         font-size: 14px;
+        font-weight: bold;
         line-height: 26px;
+        cursor: pointer;
         i {
             position: absolute;
             right: 0;

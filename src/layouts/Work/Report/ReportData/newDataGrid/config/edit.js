@@ -51,48 +51,48 @@ module.exports = {
       id: '8', //id 
       text: '件重', //头部title文字
       width: '120', //单元格宽
-      type: 'totalWeight', //合计类型值
-      type1: 'afTotalWeight', //合计类型值
+      type: 'afTotalWeight', //合计类型值
+      type1: 'totalWeight', //合计类型值
       unit: '(g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afWeight', //单元格类型
+      childType: 'weight', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType : 'weight'
+      editOldType : 'afWeight'
     },
     {
       id: '8', //id 
       text: '金重', //头部title文字
       width: '120', //单元格宽
-      type: 'totalGoldWeight', //合计类型值
-      type1: 'afTotalGoldWeight', //合计类型值
+      type: 'afTotalGoldWeight', //合计类型值
+      type1: 'totalGoldWeight', //合计类型值
       unit: '(g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afGoldWeight', //单元格类型
+      childType: 'goldWeight', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType : 'goldWeight'
+      editOldType : 'afGoldWeight'
     },
     {
       id: '4', //id 
       text: '主石', //头部title文字
       width: '120', //单元格宽
-      type: 'totalMain', //合计类型值
-      type1: 'afTotalMain', //合计类型值
+      type: 'afTotalMain', //合计类型值
+      type1: 'totalMain', //合计类型值
       unit: '(ct、g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afMain', //单元格类型
+      childType: 'main', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
-      editOldType : 'main'
+      editOldType : 'afMain'
     },
     // { 
     // 	id: '5',  //id 
@@ -111,16 +111,16 @@ module.exports = {
       id: '6', //id 
       text: '副石', //头部title文字
       width: '120', //单元格宽
-      type: 'totalDeputy', //合计类型值
-      type1: 'afTotalDeputy', //合计类型值
+      type: 'afTotalDeputy', //合计类型值
+      type1: 'totalDeputy', //合计类型值
       unit: '(ct、g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afDeputy', //单元格类型
+      childType: 'deputy', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
-      editOldType : 'deputy'
+      editOldType : 'afDeputy'
     },
     // { 
     // 	id: '7',  //id 
@@ -140,33 +140,33 @@ module.exports = {
       id: '9', //id 
       text: '售价', //头部title文字
       width: '120', //单元格宽
-      type: 'totalPrice', //合计类型值
-      type1: 'afTotalPrice', //合计类型值
+      type: 'afTotalPrice', //合计类型值
+      type1: 'totalPrice', //合计类型值
       unit: '(元)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afPrice', //单元格类型
+      childType: 'price', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType : 'price'
+      editOldType : 'afPrice'
     },
     {
       id: '10', //id 
       text: '成本', //头部title文字
       width: '120', //单元格宽
-      type: 'totalCost', //合计类型值
-      type1: 'afTotalCost', //合计类型值
+      type: 'afTotalCost', //合计类型值
+      type1: 'totalCost', //合计类型值
       unit: '(元)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afCost', //单元格类型
+      childType: 'cost', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType : 'cost'
+      editOldType : 'afCost'
     },
   ],
   //智能列表
@@ -241,84 +241,84 @@ module.exports = {
       id: '2', //id 
       text: '件数', //头部title文字
       width: '120', //单元格宽
-      type: 'totalNum', //合计类型值
-      type1: 'afTotalNum', //合计类型值
+      type: 'afTotalNum', //合计类型值
+      type1: 'totalNum', //合计类型值
       unit: '(件)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afNum', //单元格类型
+      childType: 'num', //单元格类型
       totalType: 'totalNum1', //小计
       totalType0: 'totalNum0', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType : 'num'
+      editOldType : 'afNum'
     },
     {
       id: '3', //id 
       text: '件重', //头部title文字
       width: '120', //单元格宽
-      type: 'totalWeight', //合计类型值
-      type1: 'afTotalWeight', //合计类型值
+      type: 'afTotalWeight', //合计类型值
+      type1: 'totalWeight', //合计类型值
       unit: '(g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afWeight', //单元格类型
+      childType: 'weight', //单元格类型
       totalType: 'totalWeight1', //小计
       totalType0: 'totalWeight0', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType : 'weight'
+      editOldType : 'afWeight'
     },
     {
       id: '3', //id 
       text: '金重', //头部title文字
       width: '120', //单元格宽
-      type: 'totalGoldWeight', //合计类型值
-      type1: 'afTotalGoldWeight', //合计类型值
+      type: 'afTotalGoldWeight', //合计类型值
+      type1: 'totalGoldWeight', //合计类型值
       unit: '(g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afGoldWeight', //单元格类型
+      childType: 'goldWeight', //单元格类型
       totalType: 'totalGoldWeight1', //小计
       totalType0: 'totalGoldWeight0', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType : 'goldWeight'
+      editOldType : 'afGoldWeight'
     },
     {
       id: '4', //id 
       text: '主石', //头部title文字
       width: '130', //单元格宽
-      type: 'totalMain', //合计类型值
-      type1: 'afTotalMain', //合计类型值
+      type: 'afTotalMain', //合计类型值
+      type1: 'totalMain', //合计类型值
       unit: '(ct、g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afMain', //单元格类型
+      childType: 'main', //单元格类型
       totalType: 'totalMain1', //小计
       totalType0: 'totalMain0', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0,
-      editOldType : 'main'
+      editOldType : 'afMain'
     },
     {
       id: '6', //id 
       text: '副石', //头部title文字
       width: '130', //单元格宽
-      type: 'totalDeputy', //合计类型值
-      type1: 'afTotalDeputy', //合计类型值
+      type: 'afTotalDeputy', //合计类型值
+      type1: 'totalDeputy', //合计类型值
       unit: '(ct、g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afDeputy', //单元格类型
+      childType: 'deputy', //单元格类型
       totalType: 'totalDeputy1', //小计
       totalType0: 'totalDeputy0', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0,
-      editOldType : 'deputy'
+      editOldType : 'afDeputy'
     },
     {
       id: '9', //id 
@@ -329,30 +329,30 @@ module.exports = {
       unit: '(元)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afPrice', //单元格类型
+      childType: 'price', //单元格类型
       totalType: 'totalPrice1', //小计
       totalType0: 'totalPrice0', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType : 'price'
+      editOldType : 'afPrice'
     },
     {
       id: '10', //id 
       text: '成本', //头部title文字
       width: '120', //单元格宽
-      type: 'totalCost', //合计类型值
-      type1: 'afTotalCost', //合计类型值
+      type: 'afTotalCost', //合计类型值
+      type1: 'totalCost', //合计类型值
       unit: '(元)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afCost', //单元格类型
+      childType: 'cost', //单元格类型
       totalType: 'totalCost1', //小计
       totalType0: 'totalCost0', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType : 'cost'
+      editOldType : 'afCost'
     },
   ],
   //产品分类
@@ -406,8 +406,8 @@ module.exports = {
       id: '2', //id 
       text: '件数', //头部title文字
       width: '120', //单元格宽
-      type: 'totalNum', //合计类型值
-      type1: 'afTotalNum', //合计类型值
+      type: 'afTotalNum', //合计类型值
+      type1: 'totalNum', //合计类型值
       unit: '(件)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
@@ -422,97 +422,97 @@ module.exports = {
       id: '8', //id 
       text: '件重', //头部title文字
       width: '150', //单元格宽
-      type: 'totalWeight', //合计类型值
-      type1: 'afTotalWeight', //合计类型值
+      type: 'afTotalWeight', //合计类型值
+      type1: 'totalWeight', //合计类型值
       unit: '(g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afTotalWeight1', //单元格类型
+      childType: 'totalWeight1', //单元格类型
       totalType: 'totalWeight0', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType : 'totalWeight1'
+      editOldType : 'afTotalWeight1'
     },
     {
       id: '3', //id 
       text: '金重', //头部title文字
       width: '120', //单元格宽
-      type: 'totalGoldWeight', //合计类型值
-      type1: 'afTotalGoldWeight', //合计类型值
+      type: 'afTotalGoldWeight', //合计类型值
+      type1: 'totalGoldWeight', //合计类型值
       unit: '(g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afTotalGoldWeight1', //单元格类型
+      childType: 'totalGoldWeight1', //单元格类型
       totalType: 'totalGoldWeight1', //小计
       totalType0: 'totalGoldWeight0', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType : 'totalGoldWeight1'
+      editOldType : 'afTotalGoldWeight1'
     },
     {
       id: '4', //id 
       text: '主石', //头部title文字
       width: '150', //单元格宽
-      type: 'totalMain', //合计类型值
-      type1: 'afTotalMain', //合计类型值
+      type: 'afTotalMain', //合计类型值
+      type1: 'totalMain', //合计类型值
       unit: '(ct、g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afMain', //单元格类型
+      childType: 'totalMain1', //单元格类型
       totalType: 'totalMain0', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0,
-      editOldType : 'totalMain1'
+      editOldType : 'afMain'
     },
     {
       id: '6', //id 
       text: '副石', //头部title文字
       width: '150', //单元格宽
-      type: 'totalDeputy', //合计类型值
-      type1: 'afTotalDeputy', //合计类型值
+      type: 'afTotalDeputy', //合计类型值
+      type1: 'totalDeputy', //合计类型值
       unit: '(ct、g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afDeputy', //单元格类型
+      childType: 'totalDeputy1', //单元格类型
       totalType: 'totalDeputy0', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0,
-      editOldType : 'totalDeputy1'
+      editOldType : 'afDeputy'
     },
 
     {
       id: '9', //id 
       text: '售价', //头部title文字
       width: '150', //单元格宽
-      type: 'totalPrice', //合计类型值
-      type1: 'afTotalPrice', //合计类型值
+      type: 'afTotalPrice', //合计类型值
+      type1: 'totalPrice', //合计类型值
       unit: '(元)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afTotalPrice1', //单元格类型
+      childType: 'totalPrice1', //单元格类型
       totalType: 'totalPrice0', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType : 'totalPrice1'
+      editOldType : 'afTotalPrice1'
     },
     {
       id: '10', //id 
       text: '成本', //头部title文字
       width: '150', //单元格宽
-      type: 'totalCost', //合计类型值
-      type1: 'afTotalCost', //合计类型值
+      type: 'afTotalCost', //合计类型值
+      type1: 'totalCost', //合计类型值
       unit: '(元)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afTotalCost1', //单元格类型
+      childType: 'totalCost1', //单元格类型
       totalType: 'totalCost0', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType : 'totalCost1'
+      editOldType : 'afTotalCost1'
     },
   ],
   //自定义分类
@@ -586,119 +586,119 @@ module.exports = {
       id: '2', //id 
       text: '件数', //头部title文字
       width: '120', //单元格宽
-      type: 'totalNum', //合计类型值
-      type1: 'afTotalNum', //合计类型值
+      type: 'afTotalNum', //合计类型值
+      type1: 'totalNum', //合计类型值
       unit: '(件)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afNum', //单元格类型
+      childType: 'num', //单元格类型
       totalType: 'totalNum1', //小计
       totalType0: 'totalNum0', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType:'num'
+      editOldType:'afNum'
     },
     {
       id: '8', //id 
       text: '件重', //头部title文字
       width: '150', //单元格宽
-      type: 'totalWeight', //合计类型值
-      type1: 'afTotalWeight', //合计类型值
+      type: 'afTotalWeight', //合计类型值
+      type1: 'totalWeight', //合计类型值
       unit: '(g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afWeight', //单元格类型
+      childType: 'weight', //单元格类型
       totalType: 'totalWeight1', //小计
       totalType0: 'totalWeight0', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType:'weight'
+      editOldType:'afWeight'
     },
     {
       id: '3', //id 
       text: '金重', //头部title文字
       width: '120', //单元格宽
-      type: 'totalGoldWeight', //合计类型值
-      type1: 'afTotalGoldWeight', //合计类型值
+      type: 'afTotalGoldWeight', //合计类型值
+      type1: 'totalGoldWeight', //合计类型值
       unit: '(g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afGoldWeight', //单元格类型
+      childType: 'goldWeight', //单元格类型
       totalType: 'totalGoldWeight1', //小计
       totalType0: 'totalGoldWeight0', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType:'goldWeight'
+      editOldType:'afGoldWeight'
     },
     {
       id: '4', //id 
       text: '主石', //头部title文字
       width: '150', //单元格宽
-      type: 'totalMain', //合计类型值
-      type1: 'afTotalMain', //合计类型值
+      type: 'afTotalMain', //合计类型值
+      type1: 'totalMain', //合计类型值
       unit: '(ct、g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afMain', //单元格类型
+      childType: 'main', //单元格类型
       totalType: 'totalMain1', //小计
       totalType0: 'totalMain0', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0,
-      editOldType:'main'
+      editOldType:'afMain'
     },
     {
       id: '6', //id 
       text: '副石', //头部title文字
       width: '150', //单元格宽
-      type: 'totalDeputy', //合计类型值
-      type1: 'afTotalDeputy', //合计类型值
+      type: 'afTotalDeputy', //合计类型值
+      type1: 'totalDeputy', //合计类型值
       unit: '(ct、g)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afDeputy', //单元格类型
+      childType: 'deputy', //单元格类型
       totalType: 'totalDeputy1', //小计
       totalType0: 'totalDeputy0', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0 ,
-      editOldType:'deputy'
+      editOldType:'afDeputy'
     },
 
     {
       id: '9', //id 
       text: '售价', //头部title文字
       width: '150', //单元格宽
-      type: 'totalPrice', //合计类型值
-      type1: 'afTotalPrice', //合计类型值
+      type: 'afTotalPrice', //合计类型值
+      type1: 'totalPrice', //合计类型值
       unit: '(元)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afPrice', //单元格类型
+      childType: 'price', //单元格类型
       totalType: 'totalPrice1', //小计
       totalType0: 'totalPrice0', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType: 'price'
+      editOldType: 'afPrice'
     },
     {
       id: '10', //id 
       text: '成本', //头部title文字
       width: '150', //单元格宽
-      type: 'totalCost', //合计类型值
-      type1: 'afTotalCost', //合计类型值
+      type: 'afTotalCost', //合计类型值
+      type1: 'totalCost', //合计类型值
       unit: '(元)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'afCost', //单元格类型
+      childType: 'cost', //单元格类型
       totalType: 'totalCost1', //小计
       totalType0: 'totalCost0', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      editOldType:'cost'
+      editOldType:'afCost'
     },
   ]
 }

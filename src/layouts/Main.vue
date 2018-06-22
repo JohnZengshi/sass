@@ -349,13 +349,6 @@ export default {
           let ws = new WebSocket(parm)
           // 连接成功
           ws.onopen = function(evt) {
-            // let datas = {
-            //     tokenId: sessionStorage.getItem("tokenId"),
-            //     userId: sessionStorage.getItem("id"),
-            //     msgType: '100',
-            //     os: 'web'
-            // }
-            // ws.send(JSON.stringify(datas))
             console.log('测试连接成功', evt)
           }
           // 有新消息来

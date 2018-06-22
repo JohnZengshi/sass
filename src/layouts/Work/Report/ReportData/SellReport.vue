@@ -743,6 +743,11 @@ export default {
     choseBuyBack (parm) {
       this.isBuyBack = parm
       this.sellSend()
+      if(this.isBuyBack) {
+        this.dataGridOptions.backId = '1'
+      } else {
+        this.dataGridOptions.backId = ''
+      }
     },
     choseMenu(type) {
         

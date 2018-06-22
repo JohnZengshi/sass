@@ -3,5 +3,6 @@ node_modules/
 dist/
 npm-debug.log
 .idea/
+.vscode/
 src/Api/commonality/ApiCall.js
 src/Api/ApiCall.js

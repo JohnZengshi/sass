@@ -554,16 +554,17 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
     },
     methods: {
       choseMenu(type) {
-          if(this.tabSwitch) {
-              this.dataGridOptions.specialId = ''
-          } else {
-              this.dataGridOptions.specialId = '1'
-          }
+         
           console.log(this.dataGridOptions)
           if(type == 1) {
             this.positionSwitch = !this.positionSwitch
           } else if(type == 2) {
             this.tabSwitch = !this.tabSwitch
+          }
+          if(this.tabSwitch) {
+              this.dataGridOptions.specialId = '1'
+          } else {
+              this.dataGridOptions.specialId = ''
           }
       },
       resetOption() {
