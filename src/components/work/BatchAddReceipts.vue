@@ -644,6 +644,9 @@ export default {
                     this.dataList = res.data.data.dataList
                     this.totalNum = res.data.data.totalNum
                 }
+                else{
+                  this.$message.error(res.data.msg);
+                }
             }, (res) => {
 
             })
@@ -678,6 +681,8 @@ export default {
                     this.receiptList = res.data.data.dataList
                     this.orderNo = ''
                     this.totalNum1 = res.data.data.totalNum
+                }else{
+                  this.$message.error(res.data.msg);
                 }
             }, (res) => {
 
