@@ -1202,6 +1202,28 @@
         // 重新通过单据号查询商品
         this.gotoGoods(this.currentOrderId);
       },
+      // 商品的重置按钮
+      resetGoods() {
+        console.log("商品的重置按钮")
+        // 获取产品类型列表
+        this.seekProductTypeList()
+        // 获取产品类
+        this.getPropList()
+        // 重新赋值一遍即可重置商品属性
+        this.productList = [{
+            name: "成品",
+            id: 1
+          },
+          {
+            name: "旧料",
+            id: 2
+          }
+        ];
+        // 设置商品位置列表
+        this.setGoodslocationList();
+        // 重新通过单据号查询商品
+        this.gotoGoods(this.currentOrderId);
+      },
       // 点击单据展示商品列表
       gotoGoods(orderId) {
         console.log(orderId);
