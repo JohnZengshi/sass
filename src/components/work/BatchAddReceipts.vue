@@ -1,5 +1,8 @@
 <template>
   <el-dialog class="dialog-w1300-h700-hn" title="" v-model="saveSuccess" show-close>
+    <span class="closeDialog" @click="close">
+      <i class="el-icon-close"></i>
+    </span>
     <div class="batch-main">
       <div class="batch-header">
         <div class="title">批量添加</div>
@@ -56,13 +59,13 @@
             <span>-</span>
             <input type="text" placeholder="售价" v-model="endPrice" @keyup.enter="batchAddByOrderNum()" @blur="batchAddByOrderNum()">
           </div>
-          <el-button @click="reset" class="reset" title="重置">重置</el-button>
+          <el-button @click="resetInvoices" class="reset" title="重置">重置</el-button>
         </div>
         <div class="table-main">
-          <el-checkbox-group v-model="checkList" v-loading="isLoading">
+          <el-checkbox-group class="checkboxGroup" v-model="checkList" v-loading="isLoading">
             <img v-if="dataList.length ==0" style="display: block; margin:0 auto;" src="./../../../static/img/space-page.png" />
-            <el-table v-loadmore="loadMoreOrder" @scroll="scrollFun1($event)" v-else :data="dataList" style="width: 100%" height="380" stripe
-              ref="multipleTable" tooltip-effect="dark">
+            <el-table v-loadmore="loadMoreOrder" @scroll="scrollFun1($event)" v-else :data="dataList" style="width: 100%" height="425"
+              stripe ref="multipleTable" tooltip-effect="dark">
               <el-table-column prop="orderNo" label="单据号" width="">
               </el-table-column>
               <el-table-column prop="type" label="类型" width="" :formatter="formatterType">
@@ -117,39 +120,34 @@
           <!-- <div @click="littleBatch = true" class="search-block">单据搜索
             <i class="iconfont icon-sousuo"></i>
           </div> -->
-          <div class="class-btn-wrap">
-            <dropDownColums :propsList="proList" dataType="1" titleData="产品类别" @dataBack="dataBack">
-            </dropDownColums>
-            <dropDownColums :propsList="conditionList" dataType="2" titleData="成色名称" @dataBack="dataBack">
-            </dropDownColums>
-            <dropDownColums :propsList="jewelList" dataType="3" titleData="宝石名称" @dataBack="dataBack">
-            </dropDownColums>
-            <dropDownColums :propsList="jewelryList" dataType="4" titleData="首饰类别" @dataBack="dataBack">
-            </dropDownColums>
+          <div class="class-btn-wrap flex flex-r flex-pack-justify">
+            <div @click="open('1')">
+              <TreeDropDownColums ref="1" :propsList="proList | listFilte" dataType="1" titleData="产品类别" @dataBack="dataBack">
+              </TreeDropDownColums>
+            </div>
+            <div @click="open('2')">
+              <TreeDropDownColums ref="2" :propsList="conditionList | listFilte" dataType="2" titleData="成色名称" @dataBack="dataBack">
+              </TreeDropDownColums>
+            </div>
+            <div @click="open('3')">
+              <TreeDropDownColums ref="3" :propsList="allJewelList | listFilte" dataType="3" titleData="宝石名称" @dataBack="dataBack">
+              </TreeDropDownColums>
+            </div>
+            <div @click="open('4')">
+              <TreeDropDownColums ref="4" :propsList="allJewelryList | listFilte" dataType="4" titleData="首饰类别" @dataBack="dataBack">
+              </TreeDropDownColums>
+            </div>
           </div>
           <!-- 商品属性 -->
-          <div class="drop-block">
-            <DropDownMenu titleName="商品属性" dataType="属性" :propList="productTypeList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-            </DropDownMenu>
+          <div class="drop-block" @click="open('5')">
+            <TreeDropDownColums ref="5" :propsList="productList" dataType="5" titleData="商品属性" @dataBack="dataBack" @dropReturn="dropReturn"
+              @clearInfo="clearInfo">
+            </TreeDropDownColums>
           </div>
           <!-- 所在位置 -->
-          <!-- <div class="drop-block"> -->
-            <!-- <checkboxDropDown ref="shopWrap" :propsList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
-            </checkboxDropDown> -->
-            <!-- <multipleSlesct ref="shopWrap" :leftList="goodslocationList" :allName="'全部位置'" :keyName="'shopId'" titleData="所在位置" @dataBack="dataBack">
-            </multipleSlesct> -->
-            <!-- <multipleSlesct></multipleSlesct> -->
-          <!-- </div> -->
-          <!-- <div class="drop-block">
-                        <DropDownMenu
-                            titleName="所在位置"
-                            dataType="位置"
-                            :propList="locationList"
-                            @dropReturn="dropReturn"
-                            @clearInfo="clearInfo"
-                        >
-                        </DropDownMenu>
-                    </div> -->
+          <div class="drop-block" @click="open('6')">
+            <TreeDropDownColums ref="6" :propsList="goodslocationList" dataType="6" titleData="产品位置" @dataBack="dataBack"></TreeDropDownColums>
+          </div>
           <div title="条码" class="range-box" style="background:url(../../../static/img/batch/barcode.png) no-repeat 5px center;">
             <input type="text" @keyup.enter="seekSearch" v-model="beginBarcode1" placeholder="条码" @blur="batchAddByProductList()">
             <span>-</span>
@@ -165,15 +163,17 @@
             <span>-</span>
             <input type="text" @keyup.enter="seekSearch" v-model="endPrice1" placeholder="售价" @blur="batchAddByProductList()">
           </div>
-          <el-button @click="reset" class="reset" title="重置">重置</el-button>
+          <!-- <el-button @click="batchAddByProductList" class="reset" title="完成">完成</el-button> -->
+          <el-button @click="resetGoods" class="reset" title="重置">重置</el-button>
         </div>
         <div class="table-main" @scroll="scrollFun($event)">
-          <el-checkbox-group v-model="barcodeList" v-loading="isLoading">
+          <el-checkbox-group class="checkboxGroup" v-model="barcodeList" v-loading="isLoading">
             <span class="float" v-show="receiptList.length > 0 && Float">{{currentOrderId}}
               <i class="el-icon-circle-close" title="清除" @click="Float=false;receiptList=[]"></i>
             </span>
             <img v-if="receiptList.length ==0" style="display: block; margin:0 auto;" src="./../../../static/img/space-page.png" />
-            <el-table v-loadmore="loadMoreProduct" v-else :data="receiptList" style="width: 100%" height="380" stripe ref="multipleTable" tooltip-effect="dark">
+            <el-table v-loadmore="loadMoreProduct" v-else :data="receiptList" style="width: 100%" height="425" stripe ref="multipleTable"
+              tooltip-effect="dark">
               <el-table-column prop="barcode" label="条码号" width="">
               </el-table-column>
               <el-table-column prop="productName" label="首饰名称" width="">
@@ -242,6 +242,7 @@
         </div>
       </div>
     </div>
+    <!-- ------------------------------------- -->
     <el-dialog top="30px" :append-to-body="true" v-model="littleBatch" customClass="litBatch" :modal="false">
       <div class="little-batch-title">
         <div class="search">
@@ -336,20 +337,16 @@
     operateCreatReceipt,
     operateProductList
   } from "./../../Api/commonality/operate"
-  import dropDownColums from './dropDownColums'
-  import DropDownMenu from './../template/DropDownMenu'
-  // 可多选的筛选框
-  import checkboxDropDown from 'base/menu/drop-down-colums'
-  import multipleSlesct from 'base/menu/multiple-el-select'
+  import dropDownColum from '@/components/dropDownColums';
+  // 树形级联多选框组件
+  import TreeDropDownColums from '@/components/tree_dropDownColums';
   export default {
     props: [
       'isPopup', 'supplierListData'
     ],
     components: {
-      dropDownColums,
-      DropDownMenu,
-      checkboxDropDown,
-      multipleSlesct
+      dropDownColum,
+      TreeDropDownColums
     },
     data() {
       return {
@@ -383,36 +380,21 @@
         totalNum1: 0,
         pageSize: 15,
         dataList: [],
-        productTypeList: [{
+        //------------------------------- 筛选条件
+        proList: [], //产品类别
+        conditionList: [], // 成色列表
+        allJewelList: [], // 宝石列表
+        allJewelryList: [], // 首饰列表
+        productList: [{ //商品属性
             name: "成品",
-            type: 1
+            id: 1
           },
           {
             name: "旧料",
-            type: 2
-          },
-          {
-            name: "全部",
-            type: ''
+            id: 2
           }
         ],
-        locationList: [{
-            name: "仓库",
-            type: 1
-          },
-          {
-            name: "店铺",
-            type: 1
-          },
-          {
-            name: "柜组",
-            type: 1
-          },
-        ],
-        proList: [],
-        conditionList: [], // 成色列表
-        jewelList: [], // 宝石列表
-        jewelryList: [], // 首饰列表
+        goodslocationList: [], // 所在位置列表
         newOrderId: '',
         // ----------------------
         beginNum: '',
@@ -436,6 +418,18 @@
         endPrice1: '',
         beginBarcode1: '',
         endBarcode1: '',
+        // 选中的首饰名称id列表
+        jewelryList: [],
+        // 选中的宝石名称id列表
+        jewelList: [],
+        // 选中的成色名称id列表
+        colourList: [],
+        // 选中的产品类别id列表
+        productTypeList: [],
+        // 选中的商品属性id列表
+        productStatusList: [],
+        // 选中的商品位置id列表
+        locationList: [],
         //-------------------------单据筛选条件
         //单据类型默认值
         LierListType: "",
@@ -467,10 +461,12 @@
         makeSupplierListPreson: [],
         // 当前点击单据的orderID
         currentOrderId: "",
-        // 店铺列表
-        goodslocationList: [],
         // 关闭显示单据号的浮层
         Float: true,
+        // 没有更多单据数据
+        noMoreOrderNum: false,
+        // 没有更多商品数据
+        noMoreProductList: false,
       }
     },
     watch: {
@@ -485,7 +481,7 @@
         }
       },
       'checkList': function (val) { // 监听全选
-        //console.log(val)
+        // console.log(val)
         //this.pageJudgeFun();
         if (this.checkList.length === this.dataList.length) {
           this.checked = true;
@@ -511,6 +507,7 @@
       this.seekProductTypeList()
       this.getPropList()
       this.getUserList()
+      console.log(this)
     },
     mounted() {
       $(".new-template-table").mCustomScrollbar({
@@ -534,15 +531,7 @@
       });
     },
     methods: {
-      handleEdit(index, row) {
-        console.log(index, row);
-      },
-      handleDelete(index, row) {
-        console.log(index, row);
-      },
       formatTime(val) {
-        //console.log(this.receiptsIntroList)
-        // console.log(this.receiptsIntroList)
         let year = val.substring(0, 4)
         let month = val.substring(4, 6)
         let data = val.substring(6, 8)
@@ -585,14 +574,70 @@
 
       },
       dataBack(val) { // 级联数据返回
+        // console.log(val);
+        // 产品类别
         if (val.type == 1) {
-          this.productTypeId = val.opeId
-        } else if (val.type == 2) {
-          this.colourId = val.opeId
-        } else if (val.type == 3) {
-          this.jewelId = val.opeId
-        } else if (val.type == 4) {
-          this.jewelryId = val.opeId
+          // this.productTypeId = val.opeId
+          let productTypeList = [];
+          val.selectedList.forEach((val, index) => {
+            productTypeList.push({
+              productTypeId: val.id
+            })
+          })
+          this.productTypeList = productTypeList;
+        }
+        // 成色名称
+        else if (val.type == 2) {
+          // this.colourId = val.opeId
+          let colourList = [];
+          val.selectedList.forEach((val, index) => {
+            colourList.push({
+              colourId: val.id
+            })
+          })
+          this.colourList = colourList;
+        }
+        // 宝石名称
+        else if (val.type == 3) {
+          // this.jewelId = val.opeId
+          let jewelList = [];
+          val.selectedList.forEach((val, index) => {
+            jewelList.push({
+              jewelId: val.id
+            })
+          })
+          this.jewelList = jewelList
+        }
+        // 首饰类别
+        else if (val.type == 4) {
+          // this.jewelryId = val.opeId
+          let jewelryList = [];
+          val.selectedList.forEach((val, index) => {
+            jewelryList.push({
+              jewelryId: val.id
+            })
+          })
+          this.jewelryList = jewelryList
+        }
+        // 商品属性
+        else if (val.type == 5) {
+          let productStatusList = [];
+          val.selectedList.forEach((val, index) => {
+            productStatusList.push({
+              productStatus: val.id
+            })
+          })
+          this.productStatusList = productStatusList
+        }
+        // 商品所在位置
+        else if (val.type == 6) {
+          let locationList = [];
+          val.selectedList.forEach((val, index) => {
+            locationList.push({
+              locationId: val.id
+            })
+          })
+          this.locationList = locationList;
         }
         this.batchAddByProductList()
       },
@@ -656,9 +701,9 @@
             if (type == 1) {
               this.conditionList = res.data.data.list
             } else if (type == 2) {
-              this.jewelList = res.data.data.list
+              this.allJewelList = res.data.data.list
             } else {
-              this.jewelryList = res.data.data.list
+              this.allJewelryList = res.data.data.list
             }
           }
         }, (res) => {
@@ -721,23 +766,23 @@
           pageSize: this.pageSize
         }
         seekBatchAddByOrderNum(options).then((res) => {
-          console.log('看啥时候会请求数据:', res)
-          console.log(this.ListPreson);
+          // console.log('看啥时候会请求数据:', res)
+          // console.log(this.ListPreson);
           if (res.data.state == 200) {
             this.isLoading = false
             // 获取单据列表
             this.dataList = res.data.data.dataList
-            this.totalNum = res.data.data.totalNum
-            // if (this.dataList.length < this.pageSize) {
-            //   this.$message({
-            //     message: '没有更多数据了',
-            //     type: 'warning'
-            //   });
-            // }
+            // 判断页数
+            if (this.totalNum == res.data.data.totalNum) {
+              // 没有更多单据数据
+              this.noMoreOrderNum = true;
+            } else {
+              this.totalNum = res.data.data.totalNum;
+            }
+          } else {
+            this.$message.error(res.data.msg)
           }
-        }, (res) => {
-
-        })
+        }, (res) => {})
       },
       batchAddByProductList() { // 5.61批量添加-商品列表
         this.littleBatch = false
@@ -750,12 +795,18 @@
           newOrderId: this.newOrderId,
           keyword: this.keyword,
           productTypeId: this.productTypeId,
+          productTypeList: this.productTypeList,
           colourId: this.colourId,
+          colourList: this.colourList,
           jewelId: this.jewelId,
+          jewelList: this.jewelList,
           jewelryId: this.jewelryId,
+          jewelryList: this.jewelryList,
+          productStatusList: this.productStatusList,
           productType: this.productType,
           location: this.location,
           locationId: '',
+          locationList: this.locationList,
           beginBarcode: this.beginBarcode1,
           endBarcode: this.endBarcode1,
           beginWeight: this.beginWeight1,
@@ -763,13 +814,23 @@
           beginPrice: this.beginPrice1,
           endPrice: this.endPrice1
         }
+        console.log(options)
         seekBatchAddByProductList(options).then((res) => {
           console.log('发现请求数据的第二个位置:', res)
           if (res.data.state == 200) {
             this.isLoading = false
             this.receiptList = res.data.data.dataList
+            let currentPageNum = res.data.data.dataList.length;
             this.orderNo = ''
-            this.totalNum1 = res.data.data.totalNum
+            // 判断页数
+            if (currentPageNum == res.data.data.totalNum) {
+              // 没有更多商品数据
+              this.noMoreProductList = true;
+            } else {
+              this.totalNum1 = currentPageNum;
+            }
+          } else {
+            this.$message.error(res.data.msg)
           }
         }, (res) => {
 
@@ -794,6 +855,8 @@
           this.productType = ''
           this.location = ''
           this.newOrderId = ''
+          // 切换回单据要重置单据号
+          this.orderId = ''
         } else {
           this.beginNum = ''
           this.endNum = ''
@@ -804,10 +867,11 @@
           this.modelType = ''
           this.newOrderId = ''
           // 点击切换需要查询商品
+          this.currentOrderId = this.$route.query.orderNumber;
           this.batchAddByProductList()
           this.receiptList = []
           this.orderNo = ''
-          this.totalNum1 = res.data.data.totalNum
+          // this.totalNum1 = res.data.data.totalNum
         }
       },
       dateChange() {
@@ -921,7 +985,6 @@
         }
         this.$emit('addReceiptsState', states)
       },
-
       saveReceipts() {
         let orderNumList = [];
         for (let i of this.checkList) {
@@ -1092,15 +1155,15 @@
         return this.formatTime(row.createTime)
       },
       // 格式化商品属性值
-      formatterProductType(row,cloumn){
-        if(row.productType == 1){
+      formatterProductType(row, cloumn) {
+        if (row.productType == 1) {
           return "成品"
-        }else if(row.productType == 2){
+        } else if (row.productType == 2) {
           return "旧料"
         }
       },
-      // 重置按钮
-      reset() {
+      // 单据的重置按钮
+      resetInvoices() {
         this.startTime = ""
         this.endTime = ""
         this.LierListType = ""
@@ -1119,10 +1182,37 @@
         this.jewelryId = ""
         // ---------------------------
         this.getDate(0)
+        // 获取产品类型列表
         this.seekProductTypeList()
+        // 获取产品类
         this.getPropList()
+        // 获取制单人列表
         this.getUserList()
         this.batchAddByProductList();
+      },
+      // 商品的重置按钮
+      resetGoods() {
+        console.log("商品的重置按钮")
+        this.goodslocationList = [], // 所在位置列表
+          // 获取产品类型列表
+          this.seekProductTypeList()
+        // 获取产品类
+        this.getPropList()
+        // 重新赋值一遍即可重置商品属性
+        this.productList = [{
+            name: "成品",
+            id: 1
+          },
+          {
+            name: "旧料",
+            id: 2
+          }
+        ];
+        // 设置商品位置列表
+        this.locationList = [];
+        // this.setGoodslocationList();
+        // 重新通过单据号查询商品
+        this.gotoGoods(this.currentOrderId);
       },
       // 点击单据展示商品列表
       gotoGoods(orderId) {
@@ -1151,7 +1241,6 @@
           pageSize: 9999,
           type: 1 // 1.可查看 2.所属 3.全部
         }).then(res => {
-          // console.log(res)
           if (res.data.state == 200) {
             for (let i of res.data.data.shopList) {
               // 获取每个店铺的库类型
@@ -1168,7 +1257,7 @@
                     j.id = j.counterId
                   }
                   this.goodslocationList[1].childrenList.push(i)
-                  // console.log(this.goodslocationList[1]);
+                  console.log(this.goodslocationList)
                 })
             }
           } else {
@@ -1200,57 +1289,73 @@
         setTimeout(() => {
           this.pageSize += 10
           this.batchAddByOrderNum()
+          if (this.noMoreOrderNum) {
+            this.$message({
+              message: '没有更多数据了',
+              type: 'warning'
+            });
+          }
         }, 2000)
       },
       // 下拉加载更多商品
-      loadMoreProduct(){
+      loadMoreProduct() {
         this.isLoading = true;
         setTimeout(() => {
           this.pageSize += 10
           this.batchAddByProductList()
+          if (this.noMoreProductList) {
+            this.$message({
+              message: '没有更多数据了',
+              type: 'warning'
+            });
+          }
         }, 2000)
+      },
+      // 下拉框切换
+      open(dataType) {
+        // console.log(!this.$refs[dataType].isOpen)
+        for (let key in this.$refs) {
+          // console.log(this.$refs[key].isOpen)
+          if (key == dataType) {
+            if (this.$refs[key].isOpen) {
+              this.$refs[key].isOpen = false
+            } else {
+              this.$refs[key].isOpen = true
+            }
+          } else {
+            this.$refs[key].isOpen = false;
+          }
+        }
       }
-    }
+    },
+    filters: {
+      // 过滤数据，增加类名
+      listFilte: (value) => {
+        value.forEach((val, index) => {
+          val.name = val.classesName;
+          if (val.typeList || val.childrenList) {
+            let lists = val.typeList || val.childrenList
+            lists.forEach((val, index) => {
+              val.name = val.classesName;
+              if (val.classesId) {
+                let listId = val.classesId;
+                val.id = listId;
+              }
+            })
+            val.childrenList = lists;
+          }
+          if (val.classesType || val.classesId) {
+            let listId = val.classesType || val.classesId;
+            val.id = listId;
+          }
+        })
+        return value;
+      }
+    },
   }
 
 </script>
 <style lang="scss">
-  .batch-main .batch-page-one .operate-bar-bottom .batch-time-wrap:hover {
-    border: 1px solid #2993f8 !important;
-  }
-
-  .batch-main .batch-page-one .operate-bar-bottom .batch-time-wrap:focus {
-    border: 1px solid #2993f8 !important;
-  }
-
-  .check-all {
-    margin-left: 16px;
-    text-align: center;
-  }
-
-  .checkbox-font {
-    width: 30px;
-    .el-checkbox__input {
-      border-radius: 4px !important;
-      overflow: hidden;
-      height: 20px;
-      width: 20px;
-      .el-checkbox__inner {
-        border-radius: 4px !important;
-        overflow: hidden;
-      }
-
-    }
-    .el-checkbox__input.is-checked {
-      background-color: #2993f8 !important;
-      border-color: #2993f8 !important;
-      .el-checkbox__inner {
-        background-color: #2993f8 !important;
-        border-color: #2993f8 !important;
-      }
-    }
-  }
-
   .litBatch {
     width: 990px !important;
     height: 624px !important;
@@ -1449,11 +1554,6 @@
     }
   }
 
-  .el-dialog__header {
-    display: block !important;
-    border-bottom: none;
-  }
-
 </style>
 <style lang="scss" scoped>
   @import "~assets/css/template/fonts.scss";
@@ -1556,6 +1656,12 @@
             line-height: 28px;
             font-size: 14px;
           }
+          &:hover {
+            border: 1px solid #2993f8 !important;
+          }
+          &:focus {
+            border: 1px solid #2993f8 !important;
+          }
         }
         .batch-select-wrap {
           float: left;
@@ -1584,8 +1690,14 @@
       }
       .table-main {
         width: 100%;
-        height: 440px;
         overflow-y: auto;
+        .checkboxGroup {
+          .el-table {
+            .el-table__body-wrapper {
+              // height: 435px !important;
+            }
+          }
+        }
         ul {
           li {
             width: 100%;
@@ -1649,6 +1761,11 @@
 
           }
         }
+        .detail {
+          &:hover {
+            color: #2993f8;
+          }
+        }
       }
     }
     .batch-page-two {
@@ -1683,7 +1800,7 @@
           margin-right: 16px;
         }
         .drop-block {
-          width: 90px;
+          width: 80px;
           height: 28px;
           border-radius: 4px;
           border: 1px solid #d6d6d6;
@@ -1729,8 +1846,9 @@
       }
       .table-main {
         width: 100%;
-        height: 440px;
+        height: 435px;
         overflow-y: auto;
+        position: relative;
         ul {
           li {
             width: 100%;
@@ -1793,6 +1911,23 @@
 
           }
         }
+        .float {
+          width: 100%;
+          height: 20px;
+          background-color: #FFF1D9;
+          opacity: 0.8;
+          position: absolute;
+          top: 40px;
+          z-index: 1;
+          font-size: 10px;
+          text-align: center;
+          line-height: 20px;
+          color: #FFBE50;
+          i {
+            margin-left: 20px;
+            color: #DAD9D6;
+          }
+        }
       }
     }
     .batch-footer {
@@ -1833,21 +1968,49 @@
         color: #b5b5b5; //width: 150px;
         em {
           font-style: normal;
+          span {
+            color: #2993f8;
+          }
+          .check-all {
+            // margin-left: 16px;
+            // text-align: center;
+          }
+          .checkbox-font {
+            width: 30px;
+            .el-checkbox__input {
+              border-radius: 4px !important;
+              overflow: hidden;
+              height: 20px;
+              width: 20px;
+              .el-checkbox__inner {
+                border-radius: 4px !important;
+                overflow: hidden;
+              }
+
+            }
+            .el-checkbox__input.is-checked {
+              background-color: #2993f8 !important;
+              border-color: #2993f8 !important;
+              .el-checkbox__inner {
+                background-color: #2993f8 !important;
+                border-color: #2993f8 !important;
+              }
+            }
+          }
         }
-        span {
-          color: #2993f8;
-        }
+
       }
     }
-  }
-
-  .batch-footer {
-    width: 100%;
-    height: 90px;
-  }
-
-</style>
-<style lang="scss" scoped>
+  } // 关闭XX
+  .closeDialog {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+  } // 重置按钮
   .reset {
     float: left;
     margin-left: 16px;
@@ -1857,33 +2020,6 @@
     text-align: center;
     line-height: 28px;
     padding: 0 5px;
-  }
-
-  .detail {
-    &:hover {
-      color: blue;
-    }
-  }
-
-  .table-main {
-    position: relative;
-    .float {
-      width: 100%;
-      height: 20px;
-      background-color: #FFF1D9;
-      opacity: 0.8;
-      position: absolute;
-      top: 40px;
-      z-index: 1;
-      font-size: 10px;
-      text-align: center;
-      line-height: 20px;
-      color: #FFBE50;
-      i {
-        margin-left: 20px;
-        color: #DAD9D6;
-      }
-    }
   }
 
 </style>
