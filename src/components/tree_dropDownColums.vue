@@ -44,7 +44,7 @@
       selectedList(newValue,oldValue){
         if(newValue.length != oldValue.length){
           console.log("变化了")
-          // this.complate();
+          this.complate();
         }
       }
     },

@@ -231,6 +231,8 @@
         </div>
       </div>
     </div>
+
+    <!-- ------------------------------------- -->
     <el-dialog top="30px" :append-to-body="true" v-model="littleBatch" customClass="litBatch" :modal="false">
       <div class="little-batch-title">
         <div class="search">
@@ -451,6 +453,10 @@
         goodslocationList: [],
         // 关闭显示单据号的浮层
         Float: true,
+        // 没有更多单据数据
+        noMoreOrderNum : false,
+        // 没有更多商品数据
+        noMoreProductList : false
       }
     },
     watch: {
@@ -465,7 +471,7 @@
         }
       },
       'checkList': function (val) { // 监听全选
-        //console.log(val)
+        // console.log(val)
         //this.pageJudgeFun();
         if (this.checkList.length === this.dataList.length) {
           this.checked = true;
@@ -757,23 +763,21 @@
           pageSize: this.pageSize
         }
         seekBatchAddByOrderNum(options).then((res) => {
-          console.log('看啥时候会请求数据:', res)
-          console.log(this.ListPreson);
+          // console.log('看啥时候会请求数据:', res)
+          // console.log(this.ListPreson);
           if (res.data.state == 200) {
             this.isLoading = false
             // 获取单据列表
             this.dataList = res.data.data.dataList
-            this.totalNum = res.data.data.totalNum
-            // if (this.dataList.length < this.pageSize) {
-            //   this.$message({
-            //     message: '没有更多数据了',
-            //     type: 'warning'
-            //   });
-            // }
+            // 判断页数
+            if (this.totalNum == res.data.data.totalNum) {
+              // 没有更多单据数据
+              this.noMoreOrderNum = true;
+            } else {
+              this.totalNum = res.data.data.totalNum;
+            }
           }
-        }, (res) => {
-
-        })
+        }, (res) => {})
       },
       batchAddByProductList() { // 5.61批量添加-商品列表
         this.littleBatch = false
@@ -811,8 +815,15 @@
           if (res.data.state == 200) {
             this.isLoading = false
             this.receiptList = res.data.data.dataList
+            let currentPageNum = res.data.data.dataList.length;
             this.orderNo = ''
-            this.totalNum1 = res.data.data.totalNum
+            // 判断页数
+            if (currentPageNum == res.data.data.totalNum) {
+              // 没有更多商品数据
+              this.noMoreProductList = true;
+            } else {
+              this.totalNum1 = currentPageNum;
+            }
           }
         }, (res) => {
 
@@ -837,6 +848,8 @@
           this.productType = ''
           this.location = ''
           this.newOrderId = ''
+          // 切换回单据要重置单据号
+          this.orderId = ''
         } else {
           this.beginNum = ''
           this.endNum = ''
@@ -847,10 +860,11 @@
           this.modelType = ''
           this.newOrderId = ''
           // 点击切换需要查询商品
+          this.currentOrderId = this.$route.query.orderNumber;
           this.batchAddByProductList()
           this.receiptList = []
           this.orderNo = ''
-          this.totalNum1 = res.data.data.totalNum
+          // this.totalNum1 = res.data.data.totalNum
         }
       },
       dateChange() {
@@ -1139,7 +1153,7 @@
         }
       },
       // 单据的重置按钮
-      resetInvoices(){
+      resetInvoices() {
         this.startTime = ""
         this.endTime = ""
         this.LierListType = ""
@@ -1255,6 +1269,12 @@
         setTimeout(() => {
           this.pageSize += 10
           this.batchAddByOrderNum()
+          if (this.noMoreOrderNum) {
+            this.$message({
+              message: '没有更多数据了',
+              type: 'warning'
+            });
+          }
         }, 2000)
       },
       // 下拉加载更多商品
@@ -1263,6 +1283,12 @@
         setTimeout(() => {
           this.pageSize += 10
           this.batchAddByProductList()
+          if (noMoreProductList) {
+            this.$message({
+              message: '没有更多数据了',
+              type: 'warning'
+            });
+          }
         }, 2000)
       }
     },
