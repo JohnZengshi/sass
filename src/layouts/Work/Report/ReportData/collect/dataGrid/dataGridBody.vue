@@ -544,7 +544,7 @@
   }
   .right-type-inner-wrap{
     display: inline-block;
-    width: 1100px;
+    width: 1098px;
     overflow: hidden;
   }
 

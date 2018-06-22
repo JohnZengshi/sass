@@ -185,7 +185,7 @@ module.exports = {
 
   //智能分类
   capacityClassify: [
-    //	    { 
+    //      { 
     //          id: '0f10',  
     //          text: '序号',
     //          width:'30', 
@@ -910,7 +910,7 @@ module.exports = {
     {
       id: '319',
       text: '成本',
-      width: '180',
+      width: '140',
       type: 'totalCost',
       unit: '(元)',
       footerUnit: '',
@@ -924,7 +924,7 @@ module.exports = {
     {
       id: 'g811',
       text: '毛利',
-      width: '100',
+      width: '140',
       type: 'totalMargin',
       unit: '(元)',
       footerUnit: '',

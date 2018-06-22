@@ -72,15 +72,15 @@ export default {
       },
       filterCondition: {
         keyWord: "",
-        newOrderId: "",
-        storageId: [],
-        shopId: [],
-        productTypeId: [],
-        colourId: [],
-        jeweId: [],
-        jewelryId: [], // 首饰类别
-        sortList: [{ classTypeName: "1" }],
-        productStatus: [] // 产品状态
+        // newOrderId: "",
+        // storageId: [],
+        // shopId: [],
+        // productTypeId: [],
+        // colourId: [],
+        // jeweId: [],
+        // jewelryId: [], // 首饰类别
+        // sortList: [{ classTypeName: "1" }],
+        // productStatus: [] // 产品状态
       },
       openReset: true,
       shopDataList: [],
@@ -337,7 +337,7 @@ export default {
       if(this.showAll) {
         this.seekProduct({})
       } else {
-        this.seekProduct(this.serchKey || {})
+        this.seekProduct({keyWord:this.serchKey} || {})        
       }
 
   },

@@ -780,7 +780,7 @@ export default {
             browserType : false,
             dataGridOptions: {
                 orderNum : this.$route.query.orderNumber,
-                productClass: '1',
+                // productClass: '1',
                 sortFlag: '0',
                 sortList: [{barcode: '1'}],
                 type: 1,

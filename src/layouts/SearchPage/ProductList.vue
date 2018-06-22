@@ -65,7 +65,7 @@ export default {
         endNum: ""
       },
       filterCondition: {
-        keyWord: "",
+        // keyWord: "",
         // newOrderId: "",
         // storageId: [],
         // shopId: [],
@@ -333,7 +333,7 @@ export default {
       if(this.showAll) {
         this.seekProduct({})
       } else {
-        this.seekProduct(this.serchKey || {})
+        this.seekProduct({keyword:this.serchKey} || {})
       }
 
 
@@ -448,7 +448,7 @@ export default {
   methods: {
     resetData() {
       this.filterCondition = {
-        keyWord: "",
+        keyword: "",
         // newOrderId: "",
         // storageId: [],
         // shopId: [],

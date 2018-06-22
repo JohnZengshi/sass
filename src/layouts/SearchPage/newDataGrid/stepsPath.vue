@@ -1,6 +1,6 @@
 <template>
 <div class="steps-path">
-  <div class="steps-item" @click="openSmallPage(index)" v-for="(item,index) in orderListST" :key="index">
+  <div class="steps-item" @click="openSmallPage(index)" v-for="(item,index) in orderListST" :key="index" :class="actionIndex == index ? 'changeColor':''">
     <div class="item_title clearfix" v-if="actionIndex == index">
       <div class="item_time fl">{{_formDataTimeYND(item.rcvTime)}}</div>
       <div class="item_status fl">{{ getOrderType(item.orderType) }}</div>
@@ -348,6 +348,20 @@ export default {
           }
         }
       }
+    }
+  }
+  .steps-item.changeColor {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 0;
+      width: 10px;
+      height: 10px;
+
+      border-radius: 100%;
+      border: 2px solid #ffb54a;
+      background: #fff;
     }
   }
   .steps-item:nth-last-of-type(1) {

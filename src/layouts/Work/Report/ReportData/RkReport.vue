@@ -162,7 +162,7 @@
             </span>
           </div>
            <!-- 新增的一些筛选 -->
-          <div class="class_btn_wrap">
+          <div class="xj-report-multi-select-wrap">
             <dropDownColum
                 ref="productTypeIdWrap"
                 :propsList="proList"
@@ -295,7 +295,8 @@
   import ReportLoad from './LoadOptions/ReportLoadOption'
 
   // 筛选的组件
-import dropDownColum from '@/components/dropDownColums'
+// import dropDownColum from '@/components/dropDownColums'
+import dropDownColum from 'base/menu/drop-down-colums'
 import {seekProductClassList,showCounterList} from "Api/commonality/seek"
 
   export default {

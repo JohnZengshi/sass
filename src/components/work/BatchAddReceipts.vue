@@ -933,8 +933,12 @@
           hours = mins = seconds = '00'
         }
         //console.log(Day)
+        let M = (Day- (Day-1))
+        if (M.toString().length == 1) {
+            M = `0${M}`
+        }
         this.endTime = Year + '-' + month + '-' + Day
-        this.startTime = Year + '-' + month + '-' + (Day - (Day - 1))
+        this.startTime = Year + '-' + month + '-' + M
         //this.seekReceipts()
         this.batchAddByOrderNum()
         // return {
@@ -1573,24 +1577,24 @@
           border-radius: 4px;
           border: 1px solid #2993f8;
           float: left;
+          display: flex;
+          font-size: 0;
+          overflow: hidden;
           margin-right: 16px;
           span {
-            //display: inline-block;
-            height: 100%;
-            width: 59px;
-            float: left;
-            line-height: 28px;
-            text-align: center;
-            color: #2993f8;
-            font-size: 12px;
-            cursor: pointer;
-          } // span:hover {
-          //     color:#fff;
-          //     background: #2993f8;
-          // }
+              display: inline-block;
+              height: 100%;
+              flex: 1;
+              float: left;
+              line-height: 28px;
+              text-align: center;
+              color:#2993f8;
+              font-size: 12px;
+              cursor: pointer;
+          }
           span.active {
-            color: #fff;
-            background: #2993f8;
+              color:#fff;
+              background: #2993f8;
           }
         }
         .search {

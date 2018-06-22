@@ -62,14 +62,15 @@
 					</div>
 					<span class="spaceMark">|</span>
 					<div class="optionDiv selected Rp_title_container">
-						<div class="report-data">
+						<xj-time @change="changeDate"></xj-time>
+<!-- 						<div class="report-data">
 							<div class="block until" data-txt="至">
 								<el-date-picker class="mydatepicker" size="mini" type="date" @change="changeDate" v-model="optionData.beginTime" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
 							</div>
 							<div class="block">
 								<el-date-picker class="mydatepicker" size="mini" type="date" @change="changeDate" v-model="optionData.endTime" placeholder="选择结束时间" :picker-options="pickerOptions1"></el-date-picker>
 							</div>
-						</div>
+						</div> -->
 
 					</div>
 
@@ -134,32 +135,33 @@
 	import receiptsList from './ReceiptsList'
 	import ToLeadDiary from './ToLeadDiary'
 	import ProductLabel from './productLabel'
+	import xjTime from 'base/time/xj-time'
 	import * as jurisdictions from '../../../Api/commonality/jurisdiction'
 	export default {
 		data() {
 			return {
-				pickerOptions1: {
-					shortcuts: [{
-						text: '今天',
-						onClick(picker) {
-							picker.$emit('pick', new Date());
-						}
-					}, {
-						text: '昨天',
-						onClick(picker) {
-							const date = new Date();
-							date.setTime(date.getTime() - 3600 * 1000 * 24);
-							picker.$emit('pick', date);
-						}
-					}, {
-						text: '一周前',
-						onClick(picker) {
-							const date = new Date();
-							date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-							picker.$emit('pick', date);
-						}
-					}]
-				},
+				// pickerOptions1: {
+				// 	shortcuts: [{
+				// 		text: '今天',
+				// 		onClick(picker) {
+				// 			picker.$emit('pick', new Date());
+				// 		}
+				// 	}, {
+				// 		text: '昨天',
+				// 		onClick(picker) {
+				// 			const date = new Date();
+				// 			date.setTime(date.getTime() - 3600 * 1000 * 24);
+				// 			picker.$emit('pick', date);
+				// 		}
+				// 	}, {
+				// 		text: '一周前',
+				// 		onClick(picker) {
+				// 			const date = new Date();
+				// 			date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+				// 			picker.$emit('pick', date);
+				// 		}
+				// 	}]
+				// },
 				"selectPopup": false, // 选择下拉框
 				"JinBaiFuSelect": false,
 				"isSeslectBody": false, // 移入选择内容框
@@ -291,12 +293,13 @@
 			ProductLabel,
 			TemplatePreviewDialog,
 			TemplatePreviewCanvasComponent,
-			PrintCanvasTemplate
+			PrintCanvasTemplate,
+			xjTime
 		},
 		created() {
-			this.optionData.beginTime = moment().startOf("month").format("YYYY-MM-DD") + " 00:00:00";
-			this.optionData.endTime = moment().format("YYYY-MM-DD") + " 23:59:59";
-			this.getList(); // 获取单据列表
+			// this.optionData.beginTime = moment().startOf("month").format("YYYY-MM-DD") + " 00:00:00";
+			// this.optionData.endTime = moment().format("YYYY-MM-DD") + " 23:59:59";
+			// this.getList(); // 获取单据列表
 			this.workRepositoryList(); // 库位列表
 			this.getShopListByCo(); // 店铺列表//日期控件默认设置时间
 			this.getShopList()
@@ -638,7 +641,11 @@
 			/**
 			 * 日期改变事件
 			 */
-			changeDate() {
+			changeDate(parm) {
+				this.optionData.beginTime = parm.beginTime
+      	this.optionData.endTime = parm.endTime
+      	this.page = 1;
+				this.showList = []
 				this.getList();
 			},
 			setParams(){
@@ -665,8 +672,8 @@
 					"supplierId": supplier || "-1", // 供应商ID；若为-1，则为全部供应商
 					"planSoldId": shoper || "-1", // 分销商ID；若为-1，则为全部供应商
 					"productTypeId": "-1", // 产品类别ID；若为-1，则为全部产品
-					"beginTime": moment(this.optionData.beginTime).format("YYYYMMDD") + "000000",
-					"endTime": moment(this.optionData.endTime).format("YYYYMMDD") + "235959",
+					"beginTime": this.optionData.beginTime,
+					"endTime": this.optionData.endTime,
 					"orderNum": this.seekNumber || "",
 					"page": this.page || "1",
 					"pageSize": "50"

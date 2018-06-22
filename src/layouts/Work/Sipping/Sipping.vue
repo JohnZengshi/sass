@@ -71,6 +71,9 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="optionDiv selected Rp_title_container">
+                        <xj-time @change="changeDate"></xj-time>
+                    </div>
                     <div class="optionDiv sell-new-data oper-btn" @click="newReceipt" v-if="companyPosition && (companyPosition != 4 && companyPosition != 5 || multipleIdentities == 'Y')">
                         <span>新建发货单</span>
                     </div>
@@ -116,11 +119,13 @@ import * as jurisdictions from 'Api/commonality/jurisdiction'
 import newSippingReceipts from 'components/work/NewSippingReceipts'
 import EmptyReceiptsTemplate from 'components/EmptyDataTemplate/EmptyReceiptsTemplate.vue'
 import receiptsList from './ReceiptsList'
+import xjTime from 'base/time/xj-time'
 export default {
     components: {
         newSippingReceipts,
         receiptsList,
-        EmptyReceiptsTemplate
+        EmptyReceiptsTemplate,
+        xjTime
     },
     data () {
         return {
@@ -204,12 +209,14 @@ export default {
                storage : '', //发货库位 
                auditStatus :'',  //审核状态
                receivingStatus :'',  //收货状态
-               receivingShop : ''//收货店铺
+               receivingShop : '',//收货店铺
+                beginTime: '',
+                endTime: '',
             }
         }
     },
     created () {
-        this.filterFun(this.cbFun); // 获取单据列表
+        // this.filterFun(this.cbFun); // 获取单据列表
         this.workRepositoryList(); // 库位列表
         this.getShopListByCo(); // 店铺列表
         this.workProductClass(); // 产品类别
@@ -276,6 +283,17 @@ export default {
             "workProductClass", // 产品类别
             "workSupplierList" // 供应商
         ]),
+        /**
+         * 日期改变事件
+         */
+        changeDate(parm) {
+            this.optionData.beginTime = parm.beginTime
+            this.optionData.endTime = parm.endTime
+            this.page = 1
+            this.showList = []
+            this.filterFun(this.cbFun); // 获取单据列表
+            // this.getList();
+        },
         closePopup (parm) { // 关闭新建弹窗
             this.newPopup.main = parm;
         },
@@ -401,6 +419,8 @@ export default {
                 "storageId": warehouse || "-1", // 发货库位
                 "receiptStatus": receiptStatus || "-1", // 收货状态
                 "orderNum": this.seekNumber || "",
+                "beginTime": this.optionData.beginTime,
+                "endTime": this.optionData.endTime,
                 "page": this.page || "1",
                 "pageSize": "30"
             }

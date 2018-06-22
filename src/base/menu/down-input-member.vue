@@ -167,11 +167,12 @@ export default {
         &.select{
             //color: #333;
         }
-        color:#666;
+        color:#333;
         text-align: right;
         display: block;
         height: 25px;
         font-size: 14px;
+        font-weight: bold;
         line-height: 25px;
         .drop-triangle {
             font-size:12px;

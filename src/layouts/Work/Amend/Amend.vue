@@ -41,7 +41,9 @@
                             </li>
                         </ul>
                     </div>
-                    
+                    <div class="optionDiv selected Rp_title_container">
+                        <xj-time @change="changeDate"></xj-time>
+                    </div>
                     <div class="optionDiv sell-new-data oper-btn" @click="newReceipt">
                         <span>新建修改单</span>
                     </div>
@@ -106,6 +108,7 @@ import auditReceipts from './../../Work/CommonalityComponent/popupTemplate/Audit
 import EmptyReceiptsTemplate from '../../../components/EmptyDataTemplate/EmptyReceiptsTemplate.vue'
 import NewAmendReceipts from '../../../components/work/NewAmendReceipts' // 产品类别
 import receiptsList from './ReceiptsList'
+import xjTime from 'base/time/xj-time'
 import * as jurisdictions from '../../../Api/commonality/jurisdiction'
 export default {
     data () {
@@ -194,8 +197,10 @@ export default {
             "page": 1,
             
             optionData : {
-               storage : '', //库位 
-               auditStatus :''  //审核状态
+                storage : '', //库位 
+                auditStatus :'',  //审核状态
+                beginTime: '',
+                endTime: '',
             }
         }
     },
@@ -204,10 +209,11 @@ export default {
         auditReceipts,
         NewAmendReceipts,
         receiptsList,
-        EmptyReceiptsTemplate
+        EmptyReceiptsTemplate,
+        xjTime
     },
     created () {
-        this.filterFun(this.cbFun); // 获取单据列表
+        // this.filterFun(this.cbFun); // 获取单据列表
         this.workRepositoryList(); // 库位列表
         this.getShopListByCo(); // 店铺列表
         this.workProductClass(); // 产品类别
@@ -267,6 +273,16 @@ export default {
             "workProductClass", // 产品类别
             "workSupplierList" // 供应商
         ]),
+                /**
+         * 日期改变事件
+         */
+        changeDate(parm) {
+            this.optionData.beginTime = parm.beginTime
+            this.optionData.endTime = parm.endTime
+            this.page = 1;
+            this.showList = []
+            this.filterFun(this.cbFun); // 获取单据列表
+        },
         preciseSun (parm) { // 年
             var Year = parm.slice(0, 4);
             var Month = parm.slice(4, 6);
@@ -452,6 +468,8 @@ export default {
                 "supplierId": supplier || "-1", // 供应商ID；若为-1，则为全部供应商
                 "productTypeId": "-1", // 产品类别ID；若为-1，则为全部产品
                 "orderNum": this.seekNumber || "",
+                "beginTime": this.optionData.beginTime,
+                "endTime": this.optionData.endTime,
                 "page": this.page || "1",
                 "pageSize": "30"
             }

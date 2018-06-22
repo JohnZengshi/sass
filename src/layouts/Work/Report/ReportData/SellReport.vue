@@ -62,7 +62,7 @@
 							<i class="iconfont icon-liebiao"></i>{{currentReportName}}
 						</div>
 
-						<template v-if="sellShowId == 'sales' || sellShowId == 'buyback' ">
+<!-- 						<template v-if="sellShowId == 'sales' || sellShowId == 'buyback' ">
 
 							<div class="sort-wrap">
 								<label>排序:</label>
@@ -73,7 +73,7 @@
 									<i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
 								</div>
 							</div>
-						</template>
+						</template> -->
           
 
             <filter-header
@@ -84,6 +84,7 @@
               :specialItem="sellShowId == 'sales'"
               :isBuy="true"
               :customList="customList"
+              :type="dataGridOptions.type"
             ></filter-header>
 
              <cut-bg class="cut-bg-btn-wrap ml-10" :showList="sellTypeList" :current="sellShowId" @pitchOn="madeUpOnSell"></cut-bg>
@@ -741,7 +742,7 @@ export default {
     },
     choseBuyBack (parm) {
       this.isBuyBack = parm
-
+      this.sellSend()
       if(this.isBuyBack) {
         this.dataGridOptions.backId = '1'
       } else {
@@ -1127,6 +1128,13 @@ export default {
       } else if (val.type == "销售人") {
         this.printSelectDate.salesperson = "’";
         this.printSelectDate.operateId = "";
+        Object.assign(this.dataGridOptions, {
+          salesmenList: [
+            {
+              salesmenId: ""
+            }
+          ]
+        });
       }
       this.dataGridOptions.pageSize = 15
       $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
@@ -1427,18 +1435,28 @@ export default {
           delete this.dataGridOptions.cashierList;
         }
       }
-
-      let tempOption = Object.assign({}, this.dataGridOptions);
-      if (this.printSelectDate.operateId != "") {
-        this.$set(tempOption, "salesmenList", [
-          {
-            salesmenId: this.printSelectDate.operateId
-          }
-        ]);
+      if (this.dataGridOptions.salesmenList) {
+        if (this.dataGridOptions.salesmenList[0].salesmenId == "") {
+          delete this.dataGridOptions.salesmenList;
+        }
       }
+      let tempOption = Object.assign({}, this.dataGridOptions);
+      // if (this.printSelectDate.operateId != "") {
+      //   this.$set(tempOption, "salesmenList", [
+      //     {
+      //       salesmenId: this.printSelectDate.operateId
+      //     }
+      //   ]);
+      // }
      // tempOption.sellStatus = '1'
+      if (this.isBuyBack) {
+        delete tempOption.sellStatus
+      } else {
+        tempOption.sellStatus = '1'
+      }
       if (tempOption.type == 1) {
         Object.assign(tempOption, {sellStatus: '1'})
+        tempOption.sellStatus = '1'
       }
       seekSellList(tempOption).then(res => {
         if (res.data.state === 200) {
@@ -1473,7 +1491,11 @@ export default {
           delete this.dataGridOptions.cashierList;
         }
       }
-      
+      if (this.dataGridOptions.salesmenList) {
+        if (this.dataGridOptions.salesmenList[0].salesmenId == "") {
+          delete this.dataGridOptions.salesmenList;
+        }
+      }
       seekBuyBackList(this.dataGridOptions).then(res => {
         if (res.data.state === 200) {
           //数据表格数据
@@ -1502,7 +1524,11 @@ export default {
           delete this.dataGridOptions.cashierList;
         }
       }
-
+      if (this.dataGridOptions.salesmenList) {
+        if (this.dataGridOptions.salesmenList[0].salesmenId == "") {
+          delete this.dataGridOptions.salesmenList;
+        }
+      }
       seekReportsCashList(this.dataGridOptions).then(res => {
         if (res.data.state === 200) {
           //数据表格数据

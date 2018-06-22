@@ -26,10 +26,12 @@
                 </div>
                 <div class="data-item">
                     <div class="item-top">{{(item.totalWeight || 0).toFixed(3)}}<span> g</span></div>
+                    <!-- <div class="item-bottom">变化件重</div> -->
                     <div class="item-bottom">件重</div>
                 </div>
                 <div class="data-item">
                     <div class="item-top">{{(item.totalPrice || 0).toFixed(2)}}<span> 元</span></div>
+  <!--                   <div class="item-bottom">变化售价</div> -->
                     <div class="item-bottom">售价</div>
                 </div>
             </div>

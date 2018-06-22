@@ -55,6 +55,9 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="optionDiv selected Rp_title_container">
+                        <xj-time @change="changeDate"></xj-time>
+                    </div>
                     <div class="optionDiv sell-new-data oper-btn" @click="newReceipt" v-if="shopRole">
                         <span>新建退货单</span>
                     </div>
@@ -101,11 +104,13 @@ import newSalesReturnReceipts from '../../../components/work/NewSalesReturnRecei
 import EmptyReceiptsTemplate from '../../../components/EmptyDataTemplate/EmptyReceiptsTemplate.vue'
 import * as jurisdictions from '../../../Api/commonality/jurisdiction'
 import receiptsList from './receiptsList'
+import xjTime from 'base/time/xj-time'
 export default {
     components: {
         newSalesReturnReceipts,
         receiptsList,
-        EmptyReceiptsTemplate
+        EmptyReceiptsTemplate,
+        xjTime
     },
     data () {
         return {
@@ -207,12 +212,14 @@ export default {
             optionData : {
                storage : '', //收货库位 
                returnShop :'',  //退货店铺
-               documentStatus :''  //单据状态
+               documentStatus :'',  //单据状态
+                beginTime: '',
+                endTime: '',
             }
         }
     },
     created () {
-        this.filterFun(this.cbFun); // 获取单据列表
+        // this.filterFun(this.cbFun); // 获取单据列表
         this.getShopListByCo(); // 店铺列表
         this.userType = sessionStorage.getItem('userType')
         this.companyPosition = sessionStorage.getItem('companyPosition')
@@ -275,6 +282,13 @@ export default {
             "workProductClass", // 产品类别
             "workSupplierList" // 单据状态
         ]),
+        changeDate(parm) {
+            this.optionData.beginTime = parm.beginTime
+            this.optionData.endTime = parm.endTime
+            this.page = 1
+            this.showList = []
+            this.filterFun(this.cbFun); // 获取单据列表
+        },
         preciseSun (parm) { // 年
             if (parm) {
                 var Year = parm.slice(0, 4);
@@ -418,6 +432,8 @@ export default {
                 "storageId": warehouse || "-1", // 库位ID
                 "receiptStatus": productType || "-1", // 收货状态
                 "orderNum": this.seekNumber || "",
+                "beginTime": this.optionData.beginTime,
+                "endTime": this.optionData.endTime,
                 "page": this.page || "1",
                 "pageSize": "30",
                 "productProperty": '-1'

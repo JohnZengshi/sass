@@ -54,6 +54,10 @@
                         @clearInfo="clearOrderByName">
                     </DropDownMenu>
 
+                    <div class="optionDiv selected Rp_title_container">
+                        <xj-time @change="changeDate"></xj-time>
+                    </div>
+
                     <div class="search">
                         <input @keyup.enter="inputSeek" v-model="keyword" type="text" placeholder="请输入会员名/手机号">
                         <div class="search-btn" @click="inputSeek">
@@ -112,6 +116,7 @@ import {operateDelReceipt, operateCreateFWReceipt} from 'Api/commonality/operate
 import {statusCashStatus} from 'Api/commonality/status'
 import receiptsList from './receiptsList'
 import DropDownMenu from 'base/menu/DownMenu'
+import xjTime from 'base/time/xj-time'
 import EmptyReceiptsTemplate from 'components/EmptyDataTemplate/EmptyReceiptsTemplate.vue'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 export default {
@@ -246,10 +251,11 @@ export default {
     components: {
         receiptsList,
         DropDownMenu,
+        xjTime,
         EmptyReceiptsTemplate
     },
     created () {
-        this.filterFun(this.cbFun); // 获取单据列表
+        // this.filterFun(this.cbFun); // 获取单据列表
         // this.workRepositoryList(); // 库位列表
         this.getShopListByCo(); // 店铺列表
         this.workProductClass(); // 产品类别
@@ -315,6 +321,13 @@ export default {
             "workProductClass", // 产品类别
             "workSupplierList" // 供应商
         ]),
+        changeDate(parm) {
+            this.optionData.beginTime = parm.beginTime
+            this.optionData.endTime = parm.endTime
+            this.page = 1
+            this.showList = []
+            this.filterFun(this.cbFun); // 获取单据列表
+        },
         productPropertyList () {
             seekGetServiceTypeList().then((res) => {
                 if (res.data.state == 200) {
@@ -570,6 +583,8 @@ export default {
                 afterType: this.filterData.afterType,
                 receptionId: this.filterData.receptionId,
                 afterStatus: this.filterData.afterStatus,
+                "beginTime": this.optionData.beginTime,
+                "endTime": this.optionData.endTime,
                 "page": this.page || "1",
                 "pageSize": "30"
             }

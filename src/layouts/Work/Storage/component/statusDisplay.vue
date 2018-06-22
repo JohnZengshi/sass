@@ -65,7 +65,7 @@
            </div>
            <div class="fixed">
                <p><span>{{(orderData.totalPrice || 0).toFixed(2)}}</span>元</p>
-               <p>金额 </p>
+               <p>售价 </p>
            </div>
                
        </div>

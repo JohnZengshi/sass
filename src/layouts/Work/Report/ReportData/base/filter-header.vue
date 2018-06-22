@@ -23,7 +23,7 @@
   import cutSegmentation from "base/cut/cut-segmentation";
   import {seekSettingUserRole} from "Api/commonality/seek"
   export default {
-    props: ['isOld', 'isBuy', 'specialItem', 'customList'],
+    props: ['isOld', 'isBuy', 'specialItem', 'customList', 'type'],
     components:{
       cutBg,
       cutSegmentation
@@ -65,6 +65,9 @@
       this.settingUserRole()
       if (this.customList) {
         this.cutSegmentationList = this.customList
+      }
+      if (this.type) {
+        this.segmentationFilter.type = this.type
       }
     },
     methods: {
