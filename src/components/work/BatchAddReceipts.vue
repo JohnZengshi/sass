@@ -1552,9 +1552,6 @@
 </style>
 <style lang="scss" scoped>
   @import "~assets/css/template/fonts.scss";
-  .dialog-w1300-h700-hn .el-dialog--small .el-dialog__header{
-    display: block !important;
-  }
   .batch-main {
     width: 100%;
     height: 700px;
