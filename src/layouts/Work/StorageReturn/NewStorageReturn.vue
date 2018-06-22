@@ -341,7 +341,7 @@
                                     <!-- 表格位置的筛选 end -->
 
                                     <!-- 新增的一些筛选 -->
-                                    <div class="class_btn_wrap">
+                                    <div class="xj-report-multi-select-wrap">
                                                             <dropDownColum
                                                                 ref="productTypeIdWrap"
                                                                 :propsList="proList"
@@ -575,7 +575,7 @@ import customTemplate from "@/components/jcp-print/bill/commons/intelligence-typ
 import {downLoaderFile} from 'Api/downLoaderFile'
 
   // 筛选的组件
-import dropDownColum from '@/components/dropDownColums'
+import dropDownColum from 'base/menu/drop-down-colums'
 
 import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList} from "Api/commonality/seek"
 
