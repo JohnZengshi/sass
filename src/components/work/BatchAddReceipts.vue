@@ -59,9 +59,9 @@
           <el-button @click="resetInvoices" class="reset" title="重置">重置</el-button>
         </div>
         <div class="table-main">
-          <el-checkbox-group v-model="checkList" v-loading="isLoading">
+          <el-checkbox-group class="checkboxGroup" v-model="checkList" v-loading="isLoading">
             <img v-if="dataList.length ==0" style="display: block; margin:0 auto;" src="./../../../static/img/space-page.png" />
-            <el-table v-loadmore="loadMoreOrder" @scroll="scrollFun1($event)" v-else :data="dataList" style="width: 100%" height="380"
+            <el-table v-loadmore="loadMoreOrder" @scroll="scrollFun1($event)" v-else :data="dataList" style="width: 100%" height="425"
               stripe ref="multipleTable" tooltip-effect="dark">
               <el-table-column prop="orderNo" label="单据号" width="">
               </el-table-column>
@@ -156,12 +156,12 @@
           <el-button @click="resetGoods" class="reset" title="重置">重置</el-button>
         </div>
         <div class="table-main" @scroll="scrollFun($event)">
-          <el-checkbox-group v-model="barcodeList" v-loading="isLoading">
+          <el-checkbox-group class="checkboxGroup" v-model="barcodeList" v-loading="isLoading">
             <span class="float" v-show="receiptList.length > 0 && Float">{{currentOrderId}}
               <i class="el-icon-circle-close" title="清除" @click="Float=false;receiptList=[]"></i>
             </span>
             <img v-if="receiptList.length ==0" style="display: block; margin:0 auto;" src="./../../../static/img/space-page.png" />
-            <el-table v-loadmore="loadMoreProduct" v-else :data="receiptList" style="width: 100%" height="380" stripe ref="multipleTable"
+            <el-table v-loadmore="loadMoreProduct" v-else :data="receiptList" style="width: 100%" height="425" stripe ref="multipleTable"
               tooltip-effect="dark">
               <el-table-column prop="barcode" label="条码号" width="">
               </el-table-column>
@@ -454,9 +454,9 @@
         // 关闭显示单据号的浮层
         Float: true,
         // 没有更多单据数据
-        noMoreOrderNum : false,
+        noMoreOrderNum: false,
         // 没有更多商品数据
-        noMoreProductList : false
+        noMoreProductList: false
       }
     },
     watch: {
@@ -1350,42 +1350,6 @@
 
 </script>
 <style lang="scss">
-  .batch-main .batch-page-one .operate-bar-bottom .batch-time-wrap:hover {
-    border: 1px solid #2993f8 !important;
-  }
-
-  .batch-main .batch-page-one .operate-bar-bottom .batch-time-wrap:focus {
-    border: 1px solid #2993f8 !important;
-  }
-
-  .check-all {
-    margin-left: 16px;
-    text-align: center;
-  }
-
-  .checkbox-font {
-    width: 30px;
-    .el-checkbox__input {
-      border-radius: 4px !important;
-      overflow: hidden;
-      height: 20px;
-      width: 20px;
-      .el-checkbox__inner {
-        border-radius: 4px !important;
-        overflow: hidden;
-      }
-
-    }
-    .el-checkbox__input.is-checked {
-      background-color: #2993f8 !important;
-      border-color: #2993f8 !important;
-      .el-checkbox__inner {
-        background-color: #2993f8 !important;
-        border-color: #2993f8 !important;
-      }
-    }
-  }
-
   .litBatch {
     width: 990px !important;
     height: 624px !important;
@@ -1583,16 +1547,6 @@
       }
     }
   }
-
-  .el-dialog__header {
-    display: block !important;
-    border-bottom: none;
-  }
-
-  .selectBox {
-    width: 500px;
-  }
-
 </style>
 <style lang="scss" scoped>
   @import "~assets/css/template/fonts.scss";
@@ -1695,6 +1649,12 @@
             line-height: 28px;
             font-size: 14px;
           }
+          &:hover {
+            border: 1px solid #2993f8 !important;
+          }
+          &:focus {
+            border: 1px solid #2993f8 !important;
+          }
         }
         .batch-select-wrap {
           float: left;
@@ -1723,8 +1683,14 @@
       }
       .table-main {
         width: 100%;
-        height: 440px;
         overflow-y: auto;
+        .checkboxGroup{
+          .el-table{
+            .el-table__body-wrapper{
+              // height: 435px !important;
+            }
+          }
+        }
         ul {
           li {
             width: 100%;
@@ -1786,6 +1752,11 @@
               }
             }
 
+          }
+        }
+        .detail {
+          &:hover {
+            color: #2993f8;
           }
         }
       }
@@ -1868,8 +1839,9 @@
       }
       .table-main {
         width: 100%;
-        height: 440px;
+        height: 435px;
         overflow-y: auto;
+        position: relative;
         ul {
           li {
             width: 100%;
@@ -1932,6 +1904,23 @@
 
           }
         }
+        .float {
+          width: 100%;
+          height: 20px;
+          background-color: #FFF1D9;
+          opacity: 0.8;
+          position: absolute;
+          top: 40px;
+          z-index: 1;
+          font-size: 10px;
+          text-align: center;
+          line-height: 20px;
+          color: #FFBE50;
+          i {
+            margin-left: 20px;
+            color: #DAD9D6;
+          }
+        }
       }
     }
     .batch-footer {
@@ -1972,21 +1961,40 @@
         color: #b5b5b5; //width: 150px;
         em {
           font-style: normal;
+          span {
+            color: #2993f8;
+          }
+          .check-all {
+            // margin-left: 16px;
+            // text-align: center;
+          }
+          .checkbox-font {
+            width: 30px;
+            .el-checkbox__input {
+              border-radius: 4px !important;
+              overflow: hidden;
+              height: 20px;
+              width: 20px;
+              .el-checkbox__inner {
+                border-radius: 4px !important;
+                overflow: hidden;
+              }
+
+            }
+            .el-checkbox__input.is-checked {
+              background-color: #2993f8 !important;
+              border-color: #2993f8 !important;
+              .el-checkbox__inner {
+                background-color: #2993f8 !important;
+                border-color: #2993f8 !important;
+              }
+            }
+          }
         }
-        span {
-          color: #2993f8;
-        }
+
       }
     }
-  }
-
-  .batch-footer {
-    width: 100%;
-    height: 90px;
-  }
-
-</style>
-<style lang="scss" scoped>
+  } // 重置按钮
   .reset {
     float: left;
     margin-left: 16px;
@@ -1996,33 +2004,6 @@
     text-align: center;
     line-height: 28px;
     padding: 0 5px;
-  }
-
-  .detail {
-    &:hover {
-      color: blue;
-    }
-  }
-
-  .table-main {
-    position: relative;
-    .float {
-      width: 100%;
-      height: 20px;
-      background-color: #FFF1D9;
-      opacity: 0.8;
-      position: absolute;
-      top: 40px;
-      z-index: 1;
-      font-size: 10px;
-      text-align: center;
-      line-height: 20px;
-      color: #FFBE50;
-      i {
-        margin-left: 20px;
-        color: #DAD9D6;
-      }
-    }
   }
 
 </style>
