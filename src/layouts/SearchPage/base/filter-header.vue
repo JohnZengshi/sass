@@ -280,6 +280,7 @@ import downInput from 'base/menu/down-input'
 import downInputMember from 'base/menu/down-input-member'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
+import { productDetailStatus } from '../../../../../../\u5907\u4EFD/test\u7684\u4EE3\u7801/src/Api/commonality/status';
 export default {
   props:['panelType','serchKey'],
   components: {
@@ -912,6 +913,7 @@ export default {
     },
     dataBackProductTypeId (parm) { // 产品类别过滤
       this.filterCondition.productStatusList = this.conversionData(parm.bigList,'productStatus')
+      console.log(productStatusList)
       this.$emit('filterData', this.filterCondition)
     },
     seekProductTypeList () { // 产品类别列表
