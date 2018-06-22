@@ -280,7 +280,7 @@ import downInput from 'base/menu/down-input'
 import downInputMember from 'base/menu/down-input-member'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
-import { productDetailStatus } from '../../../../../../\u5907\u4EFD/test\u7684\u4EE3\u7801/src/Api/commonality/status';
+import { productDetailStatus } from 'Api/commonality/status';
 export default {
   props:['panelType','serchKey'],
   components: {
