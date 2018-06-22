@@ -56,7 +56,7 @@
                           <div class="commodityItem" v-else v-for="(item,index) in productList" :key="index" @click.stop="openDialog(productList[index].productId)">
                             <span class="gno"><span v-for="(text,i) in filterkeyWord(item.barcode)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn"><span v-for="(text,i) in filterkeyWord(item.jewelryName)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="slocation fr">{{ item.locationName }}</span>
                           </div>
-                          <div class="commodityItem" v-if="productList.length > 5" @click.stop="openListDeta(0)">
+                          <div class="commodityItem" v-if="productTotalNum > 5" @click.stop="openListDeta(0)">
                             <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多商品</span><span class="more_num">({{productTotalNum}})</span>
                           </div>
                         </div>
@@ -70,7 +70,7 @@
                           <div class="receiptsItem" v-else @click.stop="openDocument(item)" v-for="(item,index) in orderList" :key="index">
                             <span class="gno"><span v-for="(text,i) in filterkeyWord(item.orderNum)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="state">{{ getOrderType(item.orderType) }}</span><span class="slocation fr">{{ item.createName }}</span>
                           </div>
-                          <div class="receiptsItem" v-if="orderList.length > 5" @click.stop="openListDeta(1)">
+                          <div class="receiptsItem" v-if="orderTotalNum > 5" @click.stop="openListDeta(1)">
                             <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多单据</span><span class="more_num">({{orderTotalNum}})</span>
                           </div>
                         </div>
@@ -84,7 +84,7 @@
                           <div class="membersItem" v-else @click.stop="openMember(item)" v-for="(item,index) in memberListData" :key="index">
                             <span class="gno"><span v-for="(text,i) in filterkeyWord(item.phone)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="gnn"><span v-for="(text,i) in filterkeyWord(item.memberName)" :key="i" :class="text == searchText ? 'textIskey' : ''">{{ text }}</span></span><span class="slocation fr">{{item.shopName}}</span>
                           </div>
-                          <div class="membersItem" v-if="memberListData.length > 5" @click.stop="openListDeta(2)">
+                          <div class="membersItem" v-if="memberTotalNum > 5" @click.stop="openListDeta(2)">
                             <i style="font-size: 1em; position: static;" class="iconfont icon-sousuo"></i><span class="more">更多会员</span><span class="more_num">({{memberTotalNum}})</span>
                           </div>
                         </div>
