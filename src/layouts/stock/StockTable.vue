@@ -1261,6 +1261,7 @@ export default {
     // 懒加载
     sendlayLoad() {
       //初始化数据
+      this.loading = true;
       this.dataGridOptions.pageSize += 15;
       seekStockProductList(this.dataGridOptions).then(
         res => {
@@ -1276,6 +1277,7 @@ export default {
     // 请求获取数据
     send() {
       this.loading = true;
+      this.dataGridStorage = false
       seekStockProductList(this.dataGridOptions).then(
         res => {
           console.log("库存统计数据加位置:", res);

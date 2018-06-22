@@ -1,6 +1,6 @@
 <template>
-    <div class="dropColums-wrap">
-        <div class="tltle">
+    <div class="drop-down-colums-main">
+        <div class="tltle" :class="{actions: isChecked}">
             {{titleData}}
             <i class="iconfont icon-xiala"></i>
         </div>
@@ -41,6 +41,7 @@ import {seekGetReceiptList} from "Api/commonality/seek"
 export default {
     data () {
         return {
+            isChecked: false, // 选中
             isAll: '',
             allChecked: [], // 全部选中
             checkedCities: [], // 大类选中
@@ -175,20 +176,27 @@ export default {
         },
         complate () {
             this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll, keyName: this.keyName})
+            if (this.checkedCities.length || this.smallIdList.length) {
+                this.isChecked = true
+            } else {
+                this.isChecked = false
+            }
         },
         reset () {
+            this.isChecked = false
             this.checkedCities = []
             this.smallIdList = []
             this.allChecked = []
+            this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll, keyName: this.keyName})
         }
     }
 }
 </script>
 <style lang="scss">
-.dropColums-wrap{
+.drop-down-colums-main{
   .el-checkbox{
-    height: 20px!important;
-    line-height: 20px!important;
+    height: 40px!important;
+    line-height: 40px!important;
   }
   .el-checkbox-group .el-checkbox__inner{
     border-radius: 5px!important;
@@ -200,30 +208,8 @@ export default {
   }
 }
 </style>
-<style lang="scss">
-// .checkbox-font {
-//     width: 30px;
-//     .el-checkbox__input{
-//         border-radius: 4px;
-//         height: 20px;
-//         width: 20px;
-//         .el-checkbox__inner{
-//             border-radius: 4px;
-//         }
-        
-//     }
-//     .el-checkbox__input.is-checked {
-//         background-color: #2993f8 !important;
-//         border-color: #2993f8 !important;
-//         .el-checkbox__inner{
-//             background-color: #2993f8 !important;
-//             border-color: #2993f8 !important;
-//         }
-//     }
-// }
-</style>
 <style scoped lang="scss">
-.dropColums-wrap {
+.drop-down-colums-main {
     width: 78px;
     height: 28px;
     //border: 1px solid #d6d6d6;
@@ -238,11 +224,15 @@ export default {
         font-weight: bold;
         line-height: 26px;
         cursor: pointer;
+        color: #666;
         i {
             position: absolute;
             right: 0;
             top: 0;
             line-height: 28px;
+        }
+        &.actions{
+            color: #2993f8;
         }
     }
     .list-box {
@@ -342,7 +332,7 @@ export default {
         }
     }
 }
-.dropColums-wrap:hover {
+.drop-down-colums-main:hover {
     .list-box {
         z-index: 20;
         opacity: 1;
