@@ -181,6 +181,23 @@
   flex-direction: column;
 }
 
+
+// -----------------------
+// 全局共用的flex布局
+.flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.flex-v {
+  -webkit-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+}
+
 .flex-r {
   -webkit-flex-direction: row;
   -ms-flex-direction: row;
