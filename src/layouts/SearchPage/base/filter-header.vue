@@ -911,7 +911,7 @@ export default {
       this.$emit('filterData', this.filterCondition)
     },
     dataBackProductTypeId (parm) { // 产品类别过滤
-      this.filterCondition.productStatusList = this.conversionData(parm.bigList,'productStatusList')
+      this.filterCondition.productStatusList = this.conversionData(parm.bigList,'productStatus')
       this.$emit('filterData', this.filterCondition)
     },
     seekProductTypeList () { // 产品类别列表

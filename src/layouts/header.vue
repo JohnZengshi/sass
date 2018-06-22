@@ -2006,7 +2006,7 @@ export default {
         padding: 18px 14px;
 
         background: #f1f8ff;
-        border-radius: 4px;
+        border-radius: 10px;
         &> div {
           height: 23px;
           margin-bottom: 5px;
