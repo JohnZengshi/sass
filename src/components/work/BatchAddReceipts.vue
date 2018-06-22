@@ -1302,7 +1302,7 @@
         setTimeout(() => {
           this.pageSize += 10
           this.batchAddByProductList()
-          if (noMoreProductList) {
+          if (this.noMoreProductList) {
             this.$message({
               message: '没有更多数据了',
               type: 'warning'
