@@ -235,6 +235,7 @@ export default {
         width: 100%;
         height: 100%;
         font-size: 14px;
+        font-weight: bold;
         line-height: 26px;
         cursor: pointer;
         i {

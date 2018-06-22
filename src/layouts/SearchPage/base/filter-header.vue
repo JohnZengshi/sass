@@ -1152,6 +1152,7 @@ export default {
           border-radius: 4px;
           color:#333;
           font-size: 12px;
+          font-weight: bold;
           line-height: 28px;
           float: left;
           cursor: pointer;

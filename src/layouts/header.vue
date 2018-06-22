@@ -1693,6 +1693,7 @@ export default {
   width: 420px;
   // height: 500px;
   padding: 20px 0;
+  padding-top: 17px;
   padding-bottom: 0;
 
   border: 1px solid #d6d6d6;
@@ -1841,10 +1842,15 @@ export default {
 <style lang="scss">
 @import "~assets/css/_fontManage.scss";
 
+.ruleOption.detailsBounced .el-dialog__header .el-dialog__headerbtn {
+  margin-top: 18px;
+  margin-right: 20px;
+}
+
 .ruleOption.detailsBounced {
   
   .el-dialog__header {
-    padding-left: 44px;
+    padding-left: 4px;
     line-height: 68px;
     .el-dialog__title {
       color: #2993f8;
