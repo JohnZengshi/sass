@@ -385,7 +385,7 @@
         conditionList: [], // 成色列表
         allJewelList: [], // 宝石列表
         allJewelryList: [], // 首饰列表
-        productList: [{  //商品属性
+        productList: [{ //商品属性
             name: "成品",
             id: 1
           },
@@ -507,6 +507,7 @@
       this.seekProductTypeList()
       this.getPropList()
       this.getUserList()
+      console.log(this)
     },
     mounted() {
       $(".new-template-table").mCustomScrollbar({
@@ -530,15 +531,7 @@
       });
     },
     methods: {
-      handleEdit(index, row) {
-        console.log(index, row);
-      },
-      handleDelete(index, row) {
-        console.log(index, row);
-      },
       formatTime(val) {
-        //console.log(this.receiptsIntroList)
-        // console.log(this.receiptsIntroList)
         let year = val.substring(0, 4)
         let month = val.substring(4, 6)
         let data = val.substring(6, 8)
@@ -786,6 +779,8 @@
             } else {
               this.totalNum = res.data.data.totalNum;
             }
+          } else {
+            this.$message.error(res.data.msg)
           }
         }, (res) => {})
       },
@@ -834,6 +829,8 @@
             } else {
               this.totalNum1 = currentPageNum;
             }
+          } else {
+            this.$message.error(res.data.msg)
           }
         }, (res) => {
 
@@ -1192,9 +1189,9 @@
       // 商品的重置按钮
       resetGoods() {
         console.log("商品的重置按钮")
-        this.goodslocationList= [], // 所在位置列表
-        // 获取产品类型列表
-        this.seekProductTypeList()
+        this.goodslocationList = [], // 所在位置列表
+          // 获取产品类型列表
+          this.seekProductTypeList()
         // 获取产品类
         this.getPropList()
         // 重新赋值一遍即可重置商品属性
@@ -1311,18 +1308,17 @@
         }, 2000)
       },
       // 下拉框切换
-      open(dataType){
+      open(dataType) {
         // console.log(!this.$refs[dataType].isOpen)
-        for(let key in this.$refs){
+        for (let key in this.$refs) {
           // console.log(this.$refs[key].isOpen)
-          if(key == dataType){
-            if(this.$refs[key].isOpen){
+          if (key == dataType) {
+            if (this.$refs[key].isOpen) {
               this.$refs[key].isOpen = false
-            }else{
+            } else {
               this.$refs[key].isOpen = true
             }
-          }
-          else{
+          } else {
             this.$refs[key].isOpen = false;
           }
         }
@@ -1351,7 +1347,7 @@
         })
         return value;
       }
-    }
+    },
   }
 
 </script>
