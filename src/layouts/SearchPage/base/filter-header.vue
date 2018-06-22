@@ -652,7 +652,7 @@ export default {
     this.getOperatorList()
 
     // 判断店铺人员 还有监察员
-    if(this.shopRole || this.isJrole) {
+    if(this.shopRole &&  !this.computedRole || this.isJrole) {
       this.orderTypeListConfig = [
         // {
         //   id: '01',
@@ -786,6 +786,13 @@ export default {
 
         this.filterCondition['orderBegin'] = ''
         this.filterCondition['orderEnd'] = ''
+
+        this.filterData.repositoryList = []
+        this.filterData.shopIdList = []
+        this.filterData.userTypeList = []
+        this.filterData.operatorList = []
+        this.filterData.orderTypeList = []
+
       }
       if(this.panelType == 2) {
         this.$refs.storageLocationWrap.reset()
