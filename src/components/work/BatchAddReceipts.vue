@@ -1,5 +1,8 @@
 <template>
   <el-dialog class="dialog-w1300-h700-hn" title="" v-model="saveSuccess" show-close>
+    <span class="closeDialog" @click="close">
+      <i class="el-icon-close"></i>
+    </span>
     <div class="batch-main">
       <div class="batch-header">
         <div class="title">批量添加</div>
@@ -231,7 +234,6 @@
         </div>
       </div>
     </div>
-
     <!-- ------------------------------------- -->
     <el-dialog top="30px" :append-to-body="true" v-model="littleBatch" customClass="litBatch" :modal="false">
       <div class="little-batch-title">
@@ -974,7 +976,6 @@
         }
         this.$emit('addReceiptsState', states)
       },
-
       saveReceipts() {
         let orderNumList = [];
         for (let i of this.checkList) {
@@ -1547,9 +1548,13 @@
       }
     }
   }
+
 </style>
 <style lang="scss" scoped>
   @import "~assets/css/template/fonts.scss";
+  .dialog-w1300-h700-hn .el-dialog--small .el-dialog__header{
+    display: block !important;
+  }
   .batch-main {
     width: 100%;
     height: 700px;
@@ -1684,9 +1689,9 @@
       .table-main {
         width: 100%;
         overflow-y: auto;
-        .checkboxGroup{
-          .el-table{
-            .el-table__body-wrapper{
+        .checkboxGroup {
+          .el-table {
+            .el-table__body-wrapper {
               // height: 435px !important;
             }
           }
@@ -1994,6 +1999,15 @@
 
       }
     }
+  } // 关闭XX
+  .closeDialog {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
   } // 重置按钮
   .reset {
     float: left;
