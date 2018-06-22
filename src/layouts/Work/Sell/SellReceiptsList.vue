@@ -89,7 +89,7 @@
 											</div>
 										</div>
 										<div class="right-main-last">
-											<div class="creat-time">{{receiptData}}</div>
+											<div class="creat-time">{{formatTime(receiptsIntroList.createDate)}}</div>
 											<div class="creat-man">
 												<!-- <img :src="receiptsIntroList.makeOrderManLog"> -->
 												<FormatImg :logo="receiptsIntroList.makeOrderManLog" class="img" :userName="receiptsIntroList.makeOrderManName" :size="24"></FormatImg>
@@ -1106,7 +1106,6 @@
 				this.Inteval = setInterval(() => {
 					if(this.receiptsIntroList) {
 						clearInterval(this.Inteval)
-						this.formatTime()
 					}
 				}, 10)
 				eventBus.$on('update-data-sell-List', () => {
@@ -2302,6 +2301,7 @@
 					orderNum: 　this.$route.query.orderNumber
 				}
 				seekSellcollectMoney(options).then((res) => {
+					debugger
 					if(res.data.data.createDate) {
 						let year = res.data.data.createDate.substring(0, 4)
 						let month = res.data.data.createDate.substring(4, 6)
@@ -2366,13 +2366,16 @@
 				this.send()
 				this.sellData()
 			},
-			formatTime() {
-				let year = this.receiptsIntroList.createDate.substring(0, 4)
-				let month = this.receiptsIntroList.createDate.substring(4, 6)
-				let data = this.receiptsIntroList.createDate.substring(6, 8)
-				let hour = this.receiptsIntroList.createDate.substring(8, 10)
-				let time = this.receiptsIntroList.createDate.substring(10, 12)
-				this.receiptData = year + "-" + month + "-" + data + " " + hour + ":" + time
+			formatTime(parm) {
+				if (parm) {
+					let year = parm.substring(0, 4)
+					let month = parm.substring(4, 6)
+					let data = parm.substring(6, 8)
+					let hour = parm.substring(8, 10)
+					let time = parm.substring(10, 12)
+					return year + "-" + month + "-" + data + " " + hour + ":" + time
+				}
+				return ''
 			},
 			delOrder() {
 				let options = {
