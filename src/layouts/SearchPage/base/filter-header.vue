@@ -863,7 +863,7 @@ export default {
         } else if (this.shopRole) { // 店员
           options.type = 1
         } else if (this.isJrole) { // 监察员
-          options.type = 2
+          options.type = 1
         }
 
         seekGetShopListByCo(options)

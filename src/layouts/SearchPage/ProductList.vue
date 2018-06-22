@@ -65,7 +65,7 @@ export default {
         endNum: ""
       },
       filterCondition: {
-        keyWord: "",
+        // keyWord: "",
         // newOrderId: "",
         // storageId: [],
         // shopId: [],
