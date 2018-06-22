@@ -337,7 +337,7 @@ export default {
       if(this.showAll) {
         this.seekProduct({})
       } else {
-        this.seekProduct(this.serchKey || {})
+        this.seekProduct({keyWord:this.serchKey} || {})        
       }
 
   },
