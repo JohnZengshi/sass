@@ -336,40 +336,40 @@ export default {
         console.log(parm)
         this.$emit('close')
         // 入库详情页
-        if(parm.indexOf('RK') !== -1) {
-          this.$router.push({path:'/work/storage/detail',query:{ orderNumber: parm }})
+        if(parm.orderNum.indexOf('RK') !== -1) {
+          this.$router.push({path:'/work/storage/detail',query:{ orderNumber: parm.orderNum }})
         }
         // 修改详情页
-        if(parm.indexOf('XG') !== -1) {
-          this.$router.push({path:'/work/amend/index',query:{ orderNumber: parm }})
+        if(parm.orderNum.indexOf('XG') !== -1) {
+          this.$router.push({path:'/work/amend/index',query:{ orderNumber: parm.orderNum }})
         }
         // 退库详情页
-        if(parm.indexOf('TK') !== -1) {
-          this.$router.push({path:'/work/storageReturn/NewStorageReturn',query:{ orderNumber: parm }})
+        if(parm.orderNum.indexOf('TK') !== -1) {
+          this.$router.push({path:'/work/storageReturn/NewStorageReturn',query:{ orderNumber: parm.orderNum }})
         }
         // 调库详情页
-        if(parm.indexOf('DK') !== -1) {
-          this.$router.push({path:'/work/transferStorage/newTransferStorage',query:{ orderNumber: parm }})
+        if(parm.orderNum.indexOf('DK') !== -1) {
+          this.$router.push({path:'/work/transferStorage/newTransferStorage',query:{ orderNumber: parm.orderNum }})
         }
         // 发货详情页
-        if(parm.indexOf('FH') !== -1) {
-          this.$router.push({path:'/work/sipping/newSipping',query:{ orderNumber: parm }})
+        if(parm.orderNum.indexOf('FH') !== -1) {
+          this.$router.push({path:'/work/sipping/newSipping',query:{ orderNumber: parm.orderNum }})
         }
         // 调柜详情页
-        if(parm.indexOf('DG') !== -1) {
-          this.$router.push({path:'/work/transferCabinet/newTransferCabinet',query:{ orderNumber: parm }})
+        if(parm.orderNum.indexOf('DG') !== -1) {
+          this.$router.push({path:'/work/transferCabinet/newTransferCabinet',query:{ orderNumber: parm.orderNum }})
         }
         // 退货详情页
-        if(parm.indexOf('TH') !== -1) {
-          this.$router.push({path:'/work/salesReturn/newSalesReturn',query:{ orderNumber: parm }})
+        if(parm.orderNum.indexOf('TH') !== -1) {
+          this.$router.push({path:'/work/salesReturn/newSalesReturn',query:{ orderNumber: parm.orderNum }})
         }
         // 销售详情页
-        if(parm.indexOf('XS') !== -1) {
-          this.$router.push({path:'/work/sell/sellReceiptsList',query:{ orderNumber: parm }})
+        if(parm.orderNum.indexOf('XS') !== -1) {
+          this.$router.push({path:'/work/sell/sellReceiptsList',query:{ orderNumber: parm.orderNum }})
         } 
         // 服务详情页
-        if(parm.indexOf('FW') !== -1) {
-          this.$router.push({path:'/work/serve/serveReceiptsList',query:{ orderNumber: parm }})
+        if(parm.orderNum.indexOf('FW') !== -1) {
+          this.$router.push({path:'/work/serve/serveReceiptsList',query:{ orderNumber: parm.orderNum, shopId: parm.shopId }})
         } 
           // this.$router.push({path:'/work/sell'})
           // this.$router.push({path:'/work/sell/sellReceiptsList?orderNumber='+parm})
