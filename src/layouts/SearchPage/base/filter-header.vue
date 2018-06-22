@@ -913,7 +913,6 @@ export default {
     },
     dataBackProductTypeId (parm) { // 产品类别过滤
       this.filterCondition.productStatusList = this.conversionData(parm.bigList,'productStatus')
-      console.log(productStatusList)
       this.$emit('filterData', this.filterCondition)
     },
     seekProductTypeList () { // 产品类别列表

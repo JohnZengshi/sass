@@ -1,5 +1,6 @@
 // 状态
 export const productDetailStatus = function (parm) { // 商品列表
+    
     switch (parm) {
         case "1":
             return "入库中";
