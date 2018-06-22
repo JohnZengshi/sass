@@ -333,7 +333,6 @@
 						tab.type === 'deputyCalcMethod'
 					) {
 						if(tab.type === 'deputyCount') {
-							debugger
 							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type])
 							tempArray.push({
 								deputyPrice: item['deputyPrice'],
@@ -447,6 +446,7 @@
 					}
 					this.$emit('updataEditApi', tempArray)
 				}
+				this.updateAmend(item, this.activeSelectOn)
 			},
 
 			toNum(str) {
@@ -910,6 +910,17 @@
 					})
 					
 				}
+				this.updateAmend(item, this.activeSelectOn)
+			},
+
+			// 更新复制数据
+			updateAmend (item, index) {
+				if (this.activeSelectOn != -1) {
+					this.$emit('updateActiveSelectOn', {
+						item: item,
+						index: index
+					})
+				}
 			},
 
 			// keypress 监听回车
@@ -1044,7 +1055,6 @@
 
 			//下拉选择 点击事件
 			selecChange(fg) {
-				debugger
 				fg.event.stopPropagation()
 
 				this.clearTime()

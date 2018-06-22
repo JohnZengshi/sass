@@ -4,6 +4,36 @@ import resource from 'vue-resource'
 Vue.use(resource)
 
 // 创建api接口方法
+// function apiCall (parm, URL) {
+//     let data = {
+//         "data": parm || {},
+//         "unit": {
+//             "companyId": sessionStorage.getItem("companyId"),
+//             "channel": 3,
+//             "OS": "web",
+//             "ip": "string",
+//             "userId": sessionStorage.getItem("id"),
+//             "tokenId": sessionStorage.getItem("tokenId")
+//         }
+//     }
+//     // 内网
+//     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8083/yunzhubao' : ''
+//     // uat
+//     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8099' : ''
+//     // 正式
+//     let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
+//     // 本地
+//     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.109:8080/yunzhubao' : ''
+//     let url = serverHost + URL
+//     return Vue.http.post(url, data).then(res => {
+//         return Promise.resolve(res)
+//     })
+
+//     // let foo = function* (data) {
+//     //     yield Vue.http.post(url, data)
+//     // }
+// }
+// export default apiCall
 function apiCall (parm, URL) {
     let data = {
         "data": parm || {},
