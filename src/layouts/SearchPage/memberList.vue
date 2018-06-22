@@ -539,6 +539,8 @@ export default {
         this.dataGridStorage = [];
         this.paging.page = 1;
         this.filterCondition = Object.assign({}, this.filterCondition, parm);
+      } else {
+        this.paging.page += 1
       }
       // let barcode = {
       //   barcode: []
