@@ -332,10 +332,10 @@
             </span>
           </div>
           <!-- 位置与专列项 -->
-          <div class="position_group fr">
+          <div class="position_group fl">
               <span :title="positionSwitch ? '取消位置' : '选择位置'" @click="choseMenu(1)" class="btn" :class="{active: positionSwitch}" v-if="dataGridOptions.type != 1">位置</span>
           </div>
-          <div class="xj_switch fr" v-if="isShowCost == 'Y'">
+          <div class="xj_switch fl" v-if="isShowCost == 'Y'">
               <span :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" class="btn" :class="{active: tabSwitch}">专列项</span>
           </div>
         </div>
@@ -1969,7 +1969,8 @@ export default {
   // 位置与专列项
   .position_group {
     margin-top: 12px;
-    margin-right: 10px;
+    // margin-right: 10px;
+    margin-left: 10px;
     & > .btn {
       display: block;
       width: 52px;
@@ -1990,7 +1991,8 @@ export default {
   }
   .xj_switch {
     margin-top: 12px;
-    margin-right: 10px;
+    // margin-right: 10px;
+    margin-left: 10px;
     & > .btn {
       font-size: 12px;
       display: block;
