@@ -6,42 +6,42 @@
     <div class="RP_report_wrapper ui-page-max-width xj-stock-print-table-main" v-loading="loading" element-loading-text="数据查询中">
       <!-- v-loading = "loading" -->
 
-			<div class="Rp_dataGrid_container">
+      <div class="Rp_dataGrid_container">
         <!-- 表头筛选 begin -->
-				<!-- <div class="rp_gridState"> -->
-					<!-- <p class="side-nav"><i class="iconfont icon-baobiao"></i>商品列表</p> -->
-					<!-- <div class="sort-wrap"> -->
-						<!-- <label>排序:</label> -->
+        <!-- <div class="rp_gridState"> -->
+          <!-- <p class="side-nav"><i class="iconfont icon-baobiao"></i>商品列表</p> -->
+          <!-- <div class="sort-wrap"> -->
+            <!-- <label>排序:</label> -->
             <!-- 排序的标签 begin -->
-						<!-- <div class="sortwrap-text" v-for="(item, index) in sortList" :key="index">
-							{{item.name}}
-							<img class="sortwrap-img" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
-							<img class="sortwrap-img" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
-							<i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
-						</div> -->
+            <!-- <div class="sortwrap-text" v-for="(item, index) in sortList" :key="index">
+              {{item.name}}
+              <img class="sortwrap-img" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
+              <img class="sortwrap-img" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
+              <i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
+            </div> -->
             <!-- 排序的标签 end -->
-					<!-- </div> -->
-					<!-- <div class="right-wrap"> -->
-						<!-- <div class="search-wrap"> -->
-							<!-- <input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" /> -->
-							<!--<i class="iconfont icon-sousuo" @click="send"></i>-->
-						<!-- </div> -->
-						<!-- <div @click="toggleAttribute" class="iconfont-wrap">
-							<span v-if="dataGridOptions.productClass == 1">成品</span>
-							<span v-if="dataGridOptions.productClass == 2">旧料</span>
-							<i class="iconfont icon-qiehuan"></i>
-						</div> -->
+          <!-- </div> -->
+          <!-- <div class="right-wrap"> -->
+            <!-- <div class="search-wrap"> -->
+              <!-- <input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" /> -->
+              <!--<i class="iconfont icon-sousuo" @click="send"></i>-->
+            <!-- </div> -->
+            <!-- <div @click="toggleAttribute" class="iconfont-wrap">
+              <span v-if="dataGridOptions.productClass == 1">成品</span>
+              <span v-if="dataGridOptions.productClass == 2">旧料</span>
+              <i class="iconfont icon-qiehuan"></i>
+            </div> -->
              <!-- 修改样式位置 -->
-						<!-- <div class="iconfont-wrap"> -->
-							<!-- <span style="margin-right:25px;" :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)" >成品</span> -->
-							<!-- <span style="margin-right:25px;" :class="inconspanactive2 == true ? 'myspanactive' : ''"  @click="toggleAttribute(2)" >旧料</span> -->
-						<!-- </div> -->
-						<!-- <div class="tab"> -->
-							<!-- <span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span> -->
-							<!-- <span :class="1 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(1, 2)">智能分类</span> -->
-							<!-- <span :class="2 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(2, 3)">产品分类</span> -->
-							<!--自定原点击事件：@click="tabs(3, 4)"-->
-							<!-- <span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义 -->
+            <!-- <div class="iconfont-wrap"> -->
+              <!-- <span style="margin-right:25px;" :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)" >成品</span> -->
+              <!-- <span style="margin-right:25px;" :class="inconspanactive2 == true ? 'myspanactive' : ''"  @click="toggleAttribute(2)" >旧料</span> -->
+            <!-- </div> -->
+            <!-- <div class="tab"> -->
+              <!-- <span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span> -->
+              <!-- <span :class="1 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(1, 2)">智能分类</span> -->
+              <!-- <span :class="2 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(2, 3)">产品分类</span> -->
+              <!--自定原点击事件：@click="tabs(3, 4)"-->
+              <!-- <span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义 -->
                                 <!-- <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i> -->
                                 <!-- <div class="customDia" ref="customDia" style="display: none;"> -->
                                     <!-- <div class="body"> -->
@@ -162,8 +162,8 @@
             <div class="sortwrap_text" v-if="index<3" v-for="(item, index) in sortList" :key="index">
               <span class="fl">{{item.name}}</span>
               <img class="sortwrap_img fl" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
-							<img class="sortwrap_img fl" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
-							<i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
+              <img class="sortwrap_img fl" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
+              <i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
             </div>
             <!-- 大于三个的显示 -->
             <i class="el-icon-caret-bottom arrow" v-if="sortList.length > 3">
@@ -172,8 +172,8 @@
                 <li v-for="(item, index) in sortList" :key="index">
                   <span class="fl">{{item.name}}</span>
                   <img class="sortwrap_img fl" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
-    							<img class="sortwrap_img fl" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
-							    <i class="el-icon-circle-cross fr" @click="cancelSort(item, index)"></i>                  
+                  <img class="sortwrap_img fl" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
+                  <i class="el-icon-circle-cross fr" @click="cancelSort(item, index)"></i>                  
                 </li>
               </ul>
             </i>
@@ -190,7 +190,7 @@
             <span :class="inconspanactive2 == true ? 'myspanactive' : ''" @click="toggleAttribute(2)">旧料</span>
           </div>
           <!-- 新增的一些筛选 -->
-          <div class="class_btn_wrap">
+          <div class="xj-report-multi-select-wrap">
             <dropDownColum
                 ref="productTypeIdWrap"
                 :propsList="proList"
@@ -230,10 +230,10 @@
           <!-- 表格的筛选 -->
           <div class="tab_wrap">
             <span :class="0 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(0, 1)">明细</span>
-            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>						
+            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>           
             <span :class="1 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(1, 2)">智能分类</span>
             <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
-						<span :class="2 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(2, 3)">产品分类</span>
+            <span :class="2 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(2, 3)">产品分类</span>
             <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
             <!-- 自定义 -->
             <span style="position: relative" :class="3 == tabClassActive.index ? 'myspanactive' : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)" @click="tabs(3,4)">自定义
@@ -420,7 +420,7 @@ import customTemplate from "@/components/jcp-print/kc/intelligence-type-template
 import { downLoaderFile } from "Api/downLoaderFile";
 
 // 筛选的组件
-import dropDownColum from './base/dropDownColums'
+import dropDownColum from 'base/menu/drop-down-colums'
 
 import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList} from "Api/commonality/seek"
 
@@ -1260,14 +1260,17 @@ export default {
     },
     // 懒加载
     sendlayLoad() {
-      //初始化数据
       this.loading = true;
-      this.dataGridOptions.pageSize += 15;
+      //初始化数据
       seekStockProductList(this.dataGridOptions).then(
         res => {
           if (res.data.state == 200) {
-            console.log("第一次加载数据:", res.data.data);
-            this.dataGridStorage = res.data.data;
+            this.dataGridOptions.page += 1;
+            if (this.dataGridStorage.detailList ? this.dataGridStorage.detailList.length : '') {
+              this.dataGridStorage.detailList.push(...res.data.data.detailList)
+            } else {
+              this.dataGridStorage = res.data.data;
+            }     
             this.loading = false;
           }
         },
@@ -1277,11 +1280,14 @@ export default {
     // 请求获取数据
     send() {
       this.loading = true;
-      this.dataGridStorage = false
+      this.dataGridStorage = []
       seekStockProductList(this.dataGridOptions).then(
         res => {
           console.log("库存统计数据加位置:", res);
           if (res.data.state == 200) {
+            if (this.dataGridOptions.type == 1) {
+              this.dataGridOptions.page = 2;
+            }
             this.dataGridStorage = res.data.data;
             this.loading = false;
           } else {

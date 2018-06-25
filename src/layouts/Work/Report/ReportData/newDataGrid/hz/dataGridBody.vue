@@ -455,7 +455,7 @@ export default {
       // flex: 1;
       display: inline-block;
       // width: 1029px;
-      width: 1040px;
+      width: 1038px;
       overflow: hidden;
     }
     .total-num-wrap{

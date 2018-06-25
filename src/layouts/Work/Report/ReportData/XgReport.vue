@@ -205,13 +205,13 @@
           <report-detail 
             :dataGridStorage="dataGridStorage" 
             :tabSwitch="tabSwitch"
-            @scrollClass="tabScrollShow" 
-            @sortList="sortListAct" 
             :positionSwitch="positionSwitch" 
             :newList="newList" 
             :type = "'edit'"
+            :reportType="getReportType()"
             @lazyloadSend="lazyloadSend" 
-            :reportType="getReportType()">
+            @scrollClass="tabScrollShow" 
+            @sortList="sortListAct">
           </report-detail>
           <!-- 数据加载控件 end-->
           <report-load v-if="dataGridStorage.totalNum != '0' && dataGridOptions.type === 1 && dataGridStorage.totalNum > 15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>
