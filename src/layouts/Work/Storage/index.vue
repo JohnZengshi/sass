@@ -211,7 +211,11 @@ export default {
     },
     orderData: function(){
       this.isShow = this.delectOptionRole()
-    }
+    },
+		// $route(to, from) {
+		// 		debugger  
+		// 	 this.receiptRKSynopsis()
+    // }
   },
   created () {
     this.receiptRKSynopsis()

@@ -333,6 +333,8 @@ export default {
     },
     openDialog(parm) {
       if(this.panelType == 1) {
+        
+
         console.log(parm)
         this.$emit('close')
         // 入库详情页

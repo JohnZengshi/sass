@@ -866,34 +866,19 @@ export default {
         }
     },
     created () {
-        this.gtShopListByCo()
-        this.getRepositoryList()
-        // 简单检测浏览器 表格底部高度填充，主要对firefox进行操作
-        this.$store.dispatch('checkBrowser',(type)=>{
-            this.browserType = type
-        }) 
-        this.selectConfig = fetch.Select
-        this.multipleIdentities = sessionStorage.getItem('multipleIdentities')
-        this.userType = sessionStorage.getItem('userType')
-        this.companyPosition = sessionStorage.getItem('companyPosition')
-        this.getSeekSellReceiptsIntro(); // 单据简介
-        // this.send();
-        this.settingUserRole()
-        this.receiptStatusList();
-        this.userRoleList()
-        // this.getReceiptRemark(); // 单据备注
-
-         // 初始化筛选列表
-        this.seekProductTypeList()
-        this.productClassList(1)
-        this.productClassList(2)
-        this.productClassList(3)
         
+        this.update()
     },
     watch: {
 	  	receiptsIntroList:function(){
 	      this.isSinglePerson = (sessionStorage.id == this.receiptsIntroList.makeOrderManId)
-	   	}
+        },
+       $route(to, from) { 
+            if(from.path === to.path) {
+                this.update()   
+            }
+        }
+           
     },
     mounted () {
         let self = this;
@@ -1040,6 +1025,30 @@ export default {
         }
     },
     methods: {
+        update() {
+            this.gtShopListByCo()
+        this.getRepositoryList()
+        // 简单检测浏览器 表格底部高度填充，主要对firefox进行操作
+        this.$store.dispatch('checkBrowser',(type)=>{
+            this.browserType = type
+        }) 
+        this.selectConfig = fetch.Select
+        this.multipleIdentities = sessionStorage.getItem('multipleIdentities')
+        this.userType = sessionStorage.getItem('userType')
+        this.companyPosition = sessionStorage.getItem('companyPosition')
+        this.getSeekSellReceiptsIntro(); // 单据简介
+        // this.send();
+        this.settingUserRole()
+        this.receiptStatusList();
+        this.userRoleList()
+        // this.getReceiptRemark(); // 单据备注
+
+         // 初始化筛选列表
+        this.seekProductTypeList()
+        this.productClassList(1)
+        this.productClassList(2)
+        this.productClassList(3)
+        },
         ...mapActions([
             "workPopupError", // 错误弹窗
             // "getShopListByCo", // 店铺列表
