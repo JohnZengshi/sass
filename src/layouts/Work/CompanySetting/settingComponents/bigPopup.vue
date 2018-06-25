@@ -128,7 +128,8 @@ export default {
                     y: 'center',
                     textStyle: {
                         fontSize: 16,
-                        color: '#ff8d43'
+                        color: '#333',
+                        fontWeight:'bold'
                     }
                 },
                 series: [{
