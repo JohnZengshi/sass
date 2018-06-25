@@ -276,10 +276,11 @@ export default {
     },
     // 更新选中数据 以便进行复制
     updataCopyOrderObject(data){
-    	console.log(data)
+    	console.log('复制的数据', data)
       if(data){
       	this.copyOrderObject = Object.assign({}, data)
       }
+      console.log('得值数据', this.copyOrderObject)
     },
     // loading
     updataLoader (type) {
@@ -401,6 +402,7 @@ export default {
 	          })
           }else{
           	//复制未保存的
+            debugger
           	for(let i = 0; i < Number(num); i++){
 	            let copyObj = Object.assign({}, this.copyOrderObject, { barcode:''})
 	            console.log(this.copyOrderObject)

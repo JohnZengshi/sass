@@ -333,7 +333,6 @@
 						tab.type === 'deputyCalcMethod'
 					) {
 						if(tab.type === 'deputyCount') {
-							debugger
 							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type])
 							tempArray.push({
 								deputyPrice: item['deputyPrice'],
@@ -447,6 +446,7 @@
 					}
 					this.$emit('updataEditApi', tempArray)
 				}
+				this.updateAmend(item, this.activeSelectOn)
 			},
 
 			toNum(str) {
@@ -909,6 +909,17 @@
 						soldPrice: this.toNum(item['ratio']) * this.toNum(item['costPrice'])
 					})
 					
+				}
+				this.updateAmend(item, this.activeSelectOn)
+			},
+
+			// 更新复制数据
+			updateAmend (item, index) {
+				if (this.activeSelectOn != -1) {
+					this.$emit('updateActiveSelectOn', {
+						item: item,
+						index: index
+					})
 				}
 			},
 

@@ -35,7 +35,7 @@
                     <div 
                       class="tb-td" 
                       v-else 
-                      :class="{backLine:tab.totalType != ''}" 
+                      :class="{backLine:tab.totalType != '', 'xj-report-text-right':tab.right}" 
                       :style="tableCell(tab.width)" 
                       v-text="tab.totalType == ''? getIndex() : tb[tab.totalType]">
                       
@@ -44,32 +44,25 @@
         <!--         </div> -->
 
               </div>
+
               <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
-              <div class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
-                <!-- 类型小计 -->
-                <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : caty[tab.totalType]"></div>
-              </div>
+
+              <subtotal :detailDataGridColumn="detailDataGridColumn" :caty="caty" :totalType="'totalType'" :name="'小计'"></subtotal>
+
             </div>
           </div>
 
-        
         <div class="total-num-wrap" v-if="!positionSwitch">
           <div>
             销售合计
           </div>
 
-          <div class="tb-total" style="background:#ECF3FF;">
-            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '' : dataGridStorage[tab.type]"></div>
-          </div>
+          <subtotal :detailDataGridColumn="detailDataGridColumn" :caty="dataGridStorage" :totalType="'type'" :name="''"></subtotal>
 
         </div>
 
       </div>
       
-
-
-
-
 
     <div class="tb-category" v-if="buyBackDataList.length">
 
@@ -102,7 +95,7 @@
                   <div 
                     class="tb-td" 
                     v-else 
-                    :class="{backLine:tab.totalType != ''}" 
+                    :class="{backLine:tab.totalType != '', 'xj-report-text-right':tab.right}" 
                     :style="tableCell(tab.width)" 
                     v-text="tab.totalType == ''? getIndex() : tb[tab.totalType]">
                     
@@ -112,10 +105,10 @@
 
             </div>
             <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
-            <div class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
-              <!-- 类型小计 -->
-              <div class="tb-td" v-for="(tab,f) in detailDataGridColumnTwo" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : caty[tab.totalType]"></div>
-            </div>
+
+            <!-- 类型小计 -->
+            <subtotal v-if="!positionSwitch" :detailDataGridColumn="detailDataGridColumnTwo" :caty="caty" :totalType="'totalType'" :name="'小计'"></subtotal>
+
           </div>
         </div>
 
@@ -124,9 +117,7 @@
           回购合计
         </div>
 
-        <div class="tb-total" style="background:#ECF3FF;">
-          <div class="tb-td" v-for="(tab,f) in detailDataGridColumnTwo" :style="tableCell(tab.width)" v-html="f == 0 ? '' : buyBackStorage[tab.type]"></div>
-        </div>
+        <subtotal v-if="!positionSwitch" :detailDataGridColumn="detailDataGridColumnTwo" :caty="buyBackStorage" :totalType="'type'" :name="''"></subtotal>
 
       </div>
 
@@ -139,8 +130,12 @@
 </template>
 
 <script>
+  import subtotal from './../../base/subtotal'
   let applyIndex = 0
   export default {
+    components: {
+      subtotal
+    },
     data() {
       return {
         isDate: false,
@@ -259,7 +254,6 @@
               // for (let j of j.detailList) {
               //   Num += 40
               // }
-
             }
           }
         }
@@ -367,6 +361,7 @@
           //console.log(this.heightArr)
         }
       },
+
       tableCell(width) {
         let _size = ''
 
@@ -527,7 +522,8 @@
     display: inline-block;
     vertical-align:top;
     width: 148px;
-    background-color: #f9f9f9;
+    // background-color: #f9f9f9;
+    background-color: #fff;
     border-right: 1px solid #f0f2f5;
     >p{
       position: absolute;
@@ -535,8 +531,8 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 16px;
-      font-size: 16px;
+      height: 15px;
+      font-size: 15px;
       // color: #2993f8;
       text-align: center;
       margin: auto;
@@ -548,26 +544,26 @@
     overflow: hidden;
   }
 
-  .total-num-wrap{
-      height: 40px;
-      width: 100%;
-      background: #ECF3FF;
-      margin-top: 1px;
-      // border-top: 1px solid #fff;
-      >div:first-child{
-        float: left;
-        display: inline-block;
-        height: 40px;
-        line-height: 40px;
-        text-align: center;
-        font-size: 14px;
-        font-weight: bold;
-        color: #2993f8;
-        transition: all .3s;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        width: 148px;
-      }
-    }
+  // .total-num-wrap{
+  //     height: 40px;
+  //     width: 100%;
+  //     background: #ECF3FF;
+  //     margin-top: 1px;
+  //     // border-top: 1px solid #fff;
+  //     >div:first-child{
+  //       float: left;
+  //       display: inline-block;
+  //       height: 40px;
+  //       line-height: 40px;
+  //       text-align: center;
+  //       font-size: 14px;
+  //       font-weight: bold;
+  //       color: #2993f8;
+  //       transition: all .3s;
+  //       overflow: hidden;
+  //       white-space: nowrap;
+  //       text-overflow: ellipsis;
+  //       width: 148px;
+  //     }
+  //   }
 </style>
