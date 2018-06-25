@@ -1028,23 +1028,24 @@
 			}
 		},
 		created() {
-			this.getSeekSellReceiptsIntro(); // 单据简介
-			this.send();
-			this.sellData()
-			this.getUserInfo()
-			this.sellcollectMoney(); // 收银信息
-			this.receiptStatusList()
-			// this.getReceiptRemark(); // 单据备注
-			this.productTypeList() // 获取产品大类
-			this.productClassList() // 获取成色大类
-			this.JewelleryClassList() // 珠宝名称
-			this.jewelryClassList() // 首饰名称
-			this.companyPosition = sessionStorage.getItem('companyPosition')
-			this.multipleIdentities = sessionStorage.getItem('multipleIdentities')
-			this.isFocus = true
+			// this.getSeekSellReceiptsIntro(); // 单据简介
+			// this.send();
+			// this.sellData()
+			// this.getUserInfo()
+			// this.sellcollectMoney(); // 收银信息
+			// this.receiptStatusList()
+			// // this.getReceiptRemark(); // 单据备注
+			// this.productTypeList() // 获取产品大类
+			// this.productClassList() // 获取成色大类
+			// this.JewelleryClassList() // 珠宝名称
+			// this.jewelryClassList() // 首饰名称
+			// this.companyPosition = sessionStorage.getItem('companyPosition')
+			// this.multipleIdentities = sessionStorage.getItem('multipleIdentities')
+			// this.isFocus = true
 
 			// 获取抵限积分
 			
+			this.update()
 		},
 		mounted() {
 			console.log('权限',this.shopManageRole)
@@ -1390,9 +1391,30 @@
 						}
 					})
 				}
+			},
+			$route(to, from) { 
+				if(from.path === to.path) {
+					this.update()   
+				}
 			}
 		},
 		methods: {
+			update() {
+				this.getSeekSellReceiptsIntro(); // 单据简介
+				this.send();
+				this.sellData()
+				this.getUserInfo()
+				this.sellcollectMoney(); // 收银信息
+				this.receiptStatusList()
+				// this.getReceiptRemark(); // 单据备注
+				this.productTypeList() // 获取产品大类
+				this.productClassList() // 获取成色大类
+				this.JewelleryClassList() // 珠宝名称
+				this.jewelryClassList() // 首饰名称
+				this.companyPosition = sessionStorage.getItem('companyPosition')
+				this.multipleIdentities = sessionStorage.getItem('multipleIdentities')
+				this.isFocus = true
+			},
 			...mapActions([
 				"workPopupError" // 错误弹窗
 			]),

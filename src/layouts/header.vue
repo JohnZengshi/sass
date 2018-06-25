@@ -430,7 +430,7 @@ export default {
       }
       // 服务详情页
       if(item.orderNum.indexOf('FW') !== -1) {
-        this.$router.push({path:'/work/serve/serveReceiptsList',query:{ orderNumber: item.orderNum }})
+        this.$router.push({path:'/work/serve/serveReceiptsList',query:{ orderNumber: item.orderNum, shopId: item.shopId }})
       }
     },
     closeEditReturn (val) {

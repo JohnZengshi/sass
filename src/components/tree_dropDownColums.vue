@@ -1,12 +1,13 @@
 // 树形级联多选框组件
 <template>
-  <div class="dropColums-wrap" @mouseover="open" @mouseleave="close">
+  <div class="dropColums-wrap">
     <div class="tltle flex flex-r flex-pack-justify" :class="{'active':isOpen}">
       {{titleData}}
       <i class="iconfont icon-xiala"></i>
     </div>
     <div class="list-box" :class="{'active':isOpen}">
-      <el-tree ref="tree" :data="propsList" show-checkbox :props="defaultProps" :highlight-current="highlightCurrent" accordion @check-change="handleCheckChange">
+      <el-tree ref="tree" :data="propsList" show-checkbox :props="defaultProps" :highlight-current="highlightCurrent" accordion
+        @check-change="handleCheckChange">
       </el-tree>
       <!-- <div class="list-footer">
         <span @click="complate">完成</span>
@@ -28,9 +29,9 @@
           children: 'childrenList',
           label: 'name'
         },
-        isOpen:false,
-        highlightCurrent:true,
-        selectedList:[],
+        isOpen: false,
+        highlightCurrent: true,
+        selectedList: [],
       }
     },
     props: [
@@ -38,15 +39,15 @@
       'titleData',
       'allName',
       'keyName',
-      'dataType'
+      'dataType',
     ],
     watch: {
-      selectedList(newValue,oldValue){
-        if(newValue.length != oldValue.length){
+      selectedList(newValue, oldValue) {
+        if (newValue.length != oldValue.length) {
           console.log("变化了")
           this.complate();
         }
-      }
+      },
     },
     methods: {
       // 完成按钮
@@ -60,17 +61,16 @@
       reset() {
         this.$refs.tree.setCheckedKeys([]);
       },
-      handleCheckChange(data,isSelect,childrenIsSelect){
+      handleCheckChange(data, isSelect, childrenIsSelect) {
         this.selectedList = this.$refs.tree.getCheckedNodes(true);
       },
-      open(){
-        this.isOpen = true 
+      taggleOpen() {
+        this.isOpen = !this.isOpen
       },
-      close(){
-        this.isOpen = false
-      }
     },
-    created() {}
+    created() {
+
+    }
   }
 
 </script>
@@ -117,7 +117,7 @@
         width: 150px;
         line-height: 40px;
         text-align: left;
-        padding-left: 14px !important;
+        padding-left: 5px !important;
         font-size: 14px;
         border-bottom: 1px solid #f1f2f3;
         cursor: pointer;
@@ -146,8 +146,7 @@
         -o-transition: height 0s;
         /* Opera */
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        background: #fff;
-        // max-height: 300px;
+        background: #fff; // max-height: 300px;
         // overflow-y: scroll;
       }
     }
@@ -170,8 +169,8 @@
       line-height: 26px;
       font-weight: bold;
       cursor: pointer;
-      &.active{
-        color:#2993F8
+      &.active {
+        color: #2993F8
       }
       i {
         position: absolute;
@@ -192,7 +191,7 @@
       top: 40px;
       left: -5px;
       transition: all .3s ease;
-      &.active{
+      &.active {
         z-index: 20;
         opacity: 1;
         top: 26px;
@@ -288,9 +287,7 @@
     //   opacity: 1;
     //   top: 30px;
     // }
-  }
-
-  // .list-box:hover {
+  } // .list-box:hover {
   //   z-index: 20;
   //   opacity: 1;
   //   top: 30px;

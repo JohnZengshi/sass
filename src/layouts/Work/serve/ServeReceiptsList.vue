@@ -242,7 +242,14 @@ export default{
     remarkOut() {
       this.$refs.remarkTitWrap.remarkOut()
     },
-	}
+  },
+  watch: {
+    $route(to, from) { 
+            if(from.path === to.path) {
+                this.updataApi()   
+            }
+        }
+  }
 }
 </script>
 <style lang="scss" src="../../../assets/css/template/commodityList.scss" scoped></style>

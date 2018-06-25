@@ -121,24 +121,32 @@
             <i class="iconfont icon-sousuo"></i>
           </div> -->
           <div class="class-btn-wrap flex flex-r flex-pack-justify">
-            <TreeDropDownColums :propsList="proList | listFilte" dataType="1" titleData="产品类别" @dataBack="dataBack">
-            </TreeDropDownColums>
-            <TreeDropDownColums :propsList="conditionList | listFilte" dataType="2" titleData="成色名称" @dataBack="dataBack">
-            </TreeDropDownColums>
-            <TreeDropDownColums :propsList="allJewelList | listFilte" dataType="3" titleData="宝石名称" @dataBack="dataBack">
-            </TreeDropDownColums>
-            <TreeDropDownColums :propsList="allJewelryList | listFilte" dataType="4" titleData="首饰类别" @dataBack="dataBack">
-            </TreeDropDownColums>
+            <div @click="open('1')">
+              <TreeDropDownColums ref="1" :propsList="proList | listFilte" dataType="1" titleData="产品类别" @dataBack="dataBack">
+              </TreeDropDownColums>
+            </div>
+            <div @click="open('2')">
+              <TreeDropDownColums ref="2" :propsList="conditionList | listFilte" dataType="2" titleData="成色名称" @dataBack="dataBack">
+              </TreeDropDownColums>
+            </div>
+            <div @click="open('3')">
+              <TreeDropDownColums ref="3" :propsList="allJewelList | listFilte" dataType="3" titleData="宝石名称" @dataBack="dataBack">
+              </TreeDropDownColums>
+            </div>
+            <div @click="open('4')">
+              <TreeDropDownColums ref="4" :propsList="allJewelryList | listFilte" dataType="4" titleData="首饰类别" @dataBack="dataBack">
+              </TreeDropDownColums>
+            </div>
           </div>
           <!-- 商品属性 -->
-          <div class="drop-block">
-            <TreeDropDownColums :propsList="productList" dataType="5" titleData="商品属性" @dataBack="dataBack" @dropReturn="dropReturn"
+          <div class="drop-block" @click="open('5')">
+            <TreeDropDownColums ref="5" :propsList="productList" dataType="5" titleData="商品属性" @dataBack="dataBack" @dropReturn="dropReturn"
               @clearInfo="clearInfo">
             </TreeDropDownColums>
           </div>
           <!-- 所在位置 -->
-          <div class="drop-block">
-            <TreeDropDownColums :propsList="goodslocationList" dataType="6" titleData="产品位置" @dataBack="dataBack"></TreeDropDownColums>
+          <div class="drop-block" @click="open('6')">
+            <TreeDropDownColums ref="6" :propsList="goodslocationList" dataType="6" titleData="产品位置" @dataBack="dataBack"></TreeDropDownColums>
           </div>
           <div title="条码" class="range-box" style="background:url(../../../static/img/batch/barcode.png) no-repeat 5px center;">
             <input type="text" @keyup.enter="seekSearch" v-model="beginBarcode1" placeholder="条码" @blur="batchAddByProductList()">
@@ -372,7 +380,12 @@
         totalNum1: 0,
         pageSize: 15,
         dataList: [],
-        productList: [{
+        //------------------------------- 筛选条件
+        proList: [], //产品类别
+        conditionList: [], // 成色列表
+        allJewelList: [], // 宝石列表
+        allJewelryList: [], // 首饰列表
+        productList: [{ //商品属性
             name: "成品",
             id: 1
           },
@@ -381,10 +394,7 @@
             id: 2
           }
         ],
-        proList: [],
-        conditionList: [], // 成色列表
-        allJewelList: [], // 宝石列表
-        allJewelryList: [], // 首饰列表
+        goodslocationList: [], // 所在位置列表
         newOrderId: '',
         // ----------------------
         beginNum: '',
@@ -451,14 +461,12 @@
         makeSupplierListPreson: [],
         // 当前点击单据的orderID
         currentOrderId: "",
-        // 所在位置列表
-        goodslocationList: [],
         // 关闭显示单据号的浮层
         Float: true,
         // 没有更多单据数据
         noMoreOrderNum: false,
         // 没有更多商品数据
-        noMoreProductList: false
+        noMoreProductList: false,
       }
     },
     watch: {
@@ -499,6 +507,7 @@
       this.seekProductTypeList()
       this.getPropList()
       this.getUserList()
+      console.log(this)
     },
     mounted() {
       $(".new-template-table").mCustomScrollbar({
@@ -522,15 +531,7 @@
       });
     },
     methods: {
-      handleEdit(index, row) {
-        console.log(index, row);
-      },
-      handleDelete(index, row) {
-        console.log(index, row);
-      },
       formatTime(val) {
-        //console.log(this.receiptsIntroList)
-        // console.log(this.receiptsIntroList)
         let year = val.substring(0, 4)
         let month = val.substring(4, 6)
         let data = val.substring(6, 8)
@@ -778,6 +779,8 @@
             } else {
               this.totalNum = res.data.data.totalNum;
             }
+          } else {
+            this.$message.error(res.data.msg)
           }
         }, (res) => {})
       },
@@ -826,6 +829,8 @@
             } else {
               this.totalNum1 = currentPageNum;
             }
+          } else {
+            this.$message.error(res.data.msg)
           }
         }, (res) => {
 
@@ -1188,8 +1193,9 @@
       // 商品的重置按钮
       resetGoods() {
         console.log("商品的重置按钮")
-        // 获取产品类型列表
-        this.seekProductTypeList()
+        this.goodslocationList = [], // 所在位置列表
+          // 获取产品类型列表
+          this.seekProductTypeList()
         // 获取产品类
         this.getPropList()
         // 重新赋值一遍即可重置商品属性
@@ -1203,29 +1209,8 @@
           }
         ];
         // 设置商品位置列表
-        this.setGoodslocationList();
-        // 重新通过单据号查询商品
-        this.gotoGoods(this.currentOrderId);
-      },
-      // 商品的重置按钮
-      resetGoods() {
-        console.log("商品的重置按钮")
-        // 获取产品类型列表
-        this.seekProductTypeList()
-        // 获取产品类
-        this.getPropList()
-        // 重新赋值一遍即可重置商品属性
-        this.productList = [{
-            name: "成品",
-            id: 1
-          },
-          {
-            name: "旧料",
-            id: 2
-          }
-        ];
-        // 设置商品位置列表
-        this.setGoodslocationList();
+        this.locationList = [];
+        // this.setGoodslocationList();
         // 重新通过单据号查询商品
         this.gotoGoods(this.currentOrderId);
       },
@@ -1318,13 +1303,29 @@
         setTimeout(() => {
           this.pageSize += 10
           this.batchAddByProductList()
-          if (noMoreProductList) {
+          if (this.noMoreProductList) {
             this.$message({
               message: '没有更多数据了',
               type: 'warning'
             });
           }
         }, 2000)
+      },
+      // 下拉框切换
+      open(dataType) {
+        // console.log(!this.$refs[dataType].isOpen)
+        for (let key in this.$refs) {
+          // console.log(this.$refs[key].isOpen)
+          if (key == dataType) {
+            if (this.$refs[key].isOpen) {
+              this.$refs[key].isOpen = false
+            } else {
+              this.$refs[key].isOpen = true
+            }
+          } else {
+            this.$refs[key].isOpen = false;
+          }
+        }
       }
     },
     filters: {
@@ -1350,7 +1351,7 @@
         })
         return value;
       }
-    }
+    },
   }
 
 </script>
