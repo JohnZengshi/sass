@@ -121,32 +121,35 @@
             <i class="iconfont icon-sousuo"></i>
           </div> -->
           <div class="class-btn-wrap flex flex-r flex-pack-justify">
-            <div @click="open('1')">
-              <TreeDropDownColums ref="1" :propsList="proList | listFilte" dataType="1" titleData="产品类别" @dataBack="dataBack">
-              </TreeDropDownColums>
+            <div>
+              <dropDownColum ref="1" :propsList="proList | listFilte" :dataType="1" titleData="产品类别" @dataBack="dataBack">
+              </dropDownColum>
             </div>
-            <div @click="open('2')">
-              <TreeDropDownColums ref="2" :propsList="conditionList | listFilte" dataType="2" titleData="成色名称" @dataBack="dataBack">
-              </TreeDropDownColums>
+            <div>
+              <dropDownColum ref="2" :propsList="conditionList | listFilte" :dataType="2" titleData="成色名称" @dataBack="dataBack">
+              </dropDownColum>
             </div>
-            <div @click="open('3')">
-              <TreeDropDownColums ref="3" :propsList="allJewelList | listFilte" dataType="3" titleData="宝石名称" @dataBack="dataBack">
-              </TreeDropDownColums>
+            <div>
+              <dropDownColum ref="3" :propsList="allJewelList | listFilte" :dataType="3" titleData="宝石名称" @dataBack="dataBack">
+              </dropDownColum>
             </div>
-            <div @click="open('4')">
-              <TreeDropDownColums ref="4" :propsList="allJewelryList | listFilte" dataType="4" titleData="首饰类别" @dataBack="dataBack">
-              </TreeDropDownColums>
+            <div>
+              <dropDownColum ref="4" :propsList="allJewelryList | listFilte" :dataType="4" titleData="首饰类别" @dataBack="dataBack">
+              </dropDownColum>
             </div>
           </div>
           <!-- 商品属性 -->
-          <div class="drop-block" @click="open('5')">
-            <TreeDropDownColums ref="5" :propsList="productList" dataType="5" titleData="商品属性" @dataBack="dataBack" @dropReturn="dropReturn"
+          <div class="drop-block">
+            <dropDownColum ref="5" :propsList="productList" :dataType="5" titleData="商品属性" @dataBack="dataBack" @dropReturn="dropReturn"
               @clearInfo="clearInfo">
-            </TreeDropDownColums>
+            </dropDownColum>
           </div>
           <!-- 所在位置 -->
-          <div class="drop-block" @click="open('6')">
-            <TreeDropDownColums ref="6" :propsList="goodslocationList" dataType="6" titleData="产品位置" @dataBack="dataBack"></TreeDropDownColums>
+          <div class="drop-block">
+              <dropDownColum ref="6" :propsList="storagelocationList" :dataType="6" titleData="库位位置" @dataBack="dataBack"></dropDownColum>
+          </div>
+          <div class="drop-block">
+            <dropDownColum ref="7" :propsList="shoplocationList" :dataType="7" titleData="店铺位置" @dataBack="dataBack"></dropDownColum>
           </div>
           <div title="条码" class="range-box" style="background:url(../../../static/img/batch/barcode.png) no-repeat 5px center;">
             <input type="text" @keyup.enter="seekSearch" v-model="beginBarcode1" placeholder="条码" @blur="batchAddByProductList()">
@@ -338,6 +341,7 @@
     operateProductList
   } from "./../../Api/commonality/operate"
   import dropDownColum from '@/components/dropDownColums';
+  // import dropDownColum from 'base/menu/drop-down-colums'
   // 树形级联多选框组件
   import TreeDropDownColums from '@/components/tree_dropDownColums';
   export default {
@@ -467,6 +471,9 @@
         noMoreOrderNum: false,
         // 没有更多商品数据
         noMoreProductList: false,
+        storagelocationList:[],
+        shoplocationList:[]
+
       }
     },
     watch: {
@@ -574,14 +581,14 @@
 
       },
       dataBack(val) { // 级联数据返回
-        // console.log(val);
+        console.log(val);
         // 产品类别
         if (val.type == 1) {
           // this.productTypeId = val.opeId
           let productTypeList = [];
-          val.selectedList.forEach((val, index) => {
+          val.samllList.forEach((val, index) => {
             productTypeList.push({
-              productTypeId: val.id
+              productTypeId: val
             })
           })
           this.productTypeList = productTypeList;
@@ -590,9 +597,9 @@
         else if (val.type == 2) {
           // this.colourId = val.opeId
           let colourList = [];
-          val.selectedList.forEach((val, index) => {
+          val.samllList.forEach((val, index) => {
             colourList.push({
-              colourId: val.id
+              colourId: val
             })
           })
           this.colourList = colourList;
@@ -601,9 +608,9 @@
         else if (val.type == 3) {
           // this.jewelId = val.opeId
           let jewelList = [];
-          val.selectedList.forEach((val, index) => {
+          val.samllList.forEach((val, index) => {
             jewelList.push({
-              jewelId: val.id
+              jewelId: val
             })
           })
           this.jewelList = jewelList
@@ -612,9 +619,9 @@
         else if (val.type == 4) {
           // this.jewelryId = val.opeId
           let jewelryList = [];
-          val.selectedList.forEach((val, index) => {
+          val.samllList.forEach((val, index) => {
             jewelryList.push({
-              jewelryId: val.id
+              jewelryId: val
             })
           })
           this.jewelryList = jewelryList
@@ -622,9 +629,9 @@
         // 商品属性
         else if (val.type == 5) {
           let productStatusList = [];
-          val.selectedList.forEach((val, index) => {
+          val.bigList.forEach((val, index) => {
             productStatusList.push({
-              productStatus: val.id
+              productStatus: val
             })
           })
           this.productStatusList = productStatusList
@@ -632,9 +639,18 @@
         // 商品所在位置
         else if (val.type == 6) {
           let locationList = [];
-          val.selectedList.forEach((val, index) => {
+          val.bigList.forEach((val, index) => {
             locationList.push({
-              locationId: val.id
+              locationId: val
+            })
+          })
+          this.locationList = locationList;
+        }
+        else if (val.type == 7) {
+          let locationList = [];
+          val.bigList.forEach((val, index) => {
+            locationList.push({
+              locationId: val
             })
           })
           this.locationList = locationList;
@@ -868,7 +884,9 @@
           this.newOrderId = ''
           // 点击切换需要查询商品
           this.currentOrderId = this.$route.query.orderNumber;
-          this.batchAddByProductList()
+          this.batchAddByProductList();
+          // 设置商品的位置
+          this.setGoodslocationList();
           this.receiptList = []
           this.orderNo = ''
           // this.totalNum1 = res.data.data.totalNum
@@ -1193,25 +1211,19 @@
       // 商品的重置按钮
       resetGoods() {
         console.log("商品的重置按钮")
-        this.goodslocationList = [], // 所在位置列表
-          // 获取产品类型列表
-          this.seekProductTypeList()
-        // 获取产品类
-        this.getPropList()
-        // 重新赋值一遍即可重置商品属性
-        this.productList = [{
-            name: "成品",
-            id: 1
-          },
-          {
-            name: "旧料",
-            id: 2
-          }
-        ];
-        // 设置商品位置列表
+        this.$refs['1'].reset();
+        this.$refs['2'].reset();
+        this.$refs['3'].reset();
+        this.$refs['4'].reset();
+        this.$refs['5'].reset();
+        this.$refs['6'].reset();
+        this.$refs['7'].reset();
+        this.productTypeList = [];
+        this.colourList = [];
+        this.jewelList = [];
+        this.jewelryList = [];
+        this.productStatusList = [];
         this.locationList = [];
-        // this.setGoodslocationList();
-        // 重新通过单据号查询商品
         this.gotoGoods(this.currentOrderId);
       },
       // 点击单据展示商品列表
@@ -1226,15 +1238,17 @@
       },
       // 设置商品位置列表
       setGoodslocationList() {
-        this.goodslocationList = [{
-          name: "库位",
-          id: 1,
-          childrenList: []
-        }, {
-          name: "店铺",
-          id: 2,
-          childrenList: []
-        }]
+        // this.goodslocationList = [{
+        //   name: "库位",
+        //   id: 1,
+        //   childrenList: []
+        // }, {
+        //   name: "店铺",
+        //   id: 2,
+        //   childrenList: []
+        // }]
+        this.storagelocationList = []
+        this.shoplocationList = []
         // 获取店铺列表
         seekGetShopListByCo({
           page: '1',
@@ -1256,8 +1270,7 @@
                     j.name = j.counterName
                     j.id = j.counterId
                   }
-                  this.goodslocationList[1].childrenList.push(i)
-                  console.log(this.goodslocationList)
+                  this.shoplocationList.push(i)
                 })
             }
           } else {
@@ -1271,12 +1284,11 @@
         // 获取库位列表
         seekRepositoryList().then((res) => {
           // this.repositoryList = res.data.data.repositoryList;
-          // console.log(res.data.data.repositoryList);
           res.data.data.repositoryList.forEach((val, index) => {
             val.name = val.repositoryName;
             val.id = val.repositoryId;
           })
-          this.goodslocationList[0].childrenList = res.data.data.repositoryList
+          this.storagelocationList = res.data.data.repositoryList
         }, (res) => {
 
         })
@@ -1311,22 +1323,6 @@
           }
         }, 2000)
       },
-      // 下拉框切换
-      open(dataType) {
-        // console.log(!this.$refs[dataType].isOpen)
-        for (let key in this.$refs) {
-          // console.log(this.$refs[key].isOpen)
-          if (key == dataType) {
-            if (this.$refs[key].isOpen) {
-              this.$refs[key].isOpen = false
-            } else {
-              this.$refs[key].isOpen = true
-            }
-          } else {
-            this.$refs[key].isOpen = false;
-          }
-        }
-      }
     },
     filters: {
       // 过滤数据，增加类名
