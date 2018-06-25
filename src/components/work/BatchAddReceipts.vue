@@ -770,7 +770,7 @@
           keyword: this.keyword,
           beginTime: startTime,
           endTime: endTime,
-          type: this.LierListType,
+          type: this.LierListType != "00" ? this.LierListType : "",
           makeUserId: this.ListPreson,
           beginNum: this.beginNum,
           endNum: this.endNum,
