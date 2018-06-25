@@ -40,7 +40,7 @@
           </div>
           <div class="batch-select-wrap select-w100">
             <el-select @change="filtrateByUser" filterable clearable v-model="ListPreson" placeholder="制单人">
-              <el-option v-for="(item,index) in this.makeSupplierListPreson" :key="index" :label="item.username" :value="item.userId">
+              <el-option v-for="(item,index) in makeSupplierListPreson" :key="index" :label="item.username" :value="item.userId">
               </el-option>
             </el-select>
           </div>
@@ -172,7 +172,7 @@
         <div class="table-main" @scroll="scrollFun($event)">
           <el-checkbox-group class="checkboxGroup" v-model="barcodeList" v-loading="isLoading">
             <span class="float" v-show="receiptList.length > 0 && Float">{{currentOrderId}}
-              <i class="el-icon-circle-close" title="清除" @click="Float=false;receiptList=[]"></i>
+              <i class="el-icon-circle-close" title="清除" @click="clearFloat"></i>
             </span>
             <img v-if="receiptList.length ==0" style="display: block; margin:0 auto;" src="./../../../static/img/space-page.png" />
             <el-table v-loadmore="loadMoreProduct" v-else :data="receiptList" style="width: 100%" height="425" stripe ref="multipleTable"
@@ -440,7 +440,7 @@
         //单据类型
         supplierListType: [{
             name: "全部",
-            type: ""
+            type: "00"
           },
           {
             name: "入库单",
@@ -1323,6 +1323,13 @@
           }
         }, 2000)
       },
+      // 清空浮条
+      clearFloat(){
+        console.log(123)
+        this.Float = false;
+        this.currentOrderId = this.$route.query.orderNumber;
+        this.batchAddByProductList();
+      }
     },
     filters: {
       // 过滤数据，增加类名
@@ -1422,7 +1429,7 @@
         }
         .range-box {
           float: left;
-          margin-left: 16px;
+          margin-right: 16px;
           width: 168px;
           height: 28px;
           border-radius: 4px;
@@ -1665,7 +1672,7 @@
         }
         .range-box {
           float: left;
-          margin-left: 16px;
+          margin-right: 16px;
           width: 168px;
           height: 28px;
           border-radius: 4px;
@@ -1821,7 +1828,7 @@
         }
         .range-box {
           float: left;
-          margin-left: 16px;
+          margin-right: 16px;
           width: 168px;
           height: 28px;
           border-radius: 4px;
@@ -2009,7 +2016,7 @@
   } // 重置按钮
   .reset {
     float: left;
-    margin-left: 16px;
+    margin-right: 16px;
     height: 28px;
     border-radius: 4px;
     border: 1px solid #d6d6d6;
