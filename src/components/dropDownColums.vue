@@ -1,6 +1,6 @@
 <template>
   <div class="dropColums-wrap">
-    <div class="tltle">
+    <div class="tltle flex flex-r">
       {{titleData}}
       <i class="iconfont icon-xiala"></i>
     </div>
@@ -226,7 +226,7 @@
     //border-radius: 4px;
     float: left;
     position: relative;
-    margin: 0 4px;
+    margin: 0 8px;
     .tltle {
       width: 100%;
       height: 100%;
