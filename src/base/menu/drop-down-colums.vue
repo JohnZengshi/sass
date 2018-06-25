@@ -4,7 +4,6 @@
             {{titleData}}
             <i class="iconfont icon-xiala"></i>
         </div>
-        <!-- :class="{close:!dropDowmopen,open:dropDowmopen}" -->
         <div class="list-box">
             <ul class="list-left">
                 <el-checkbox-group v-if="allName" v-model="allChecked" @change="checkedAll">
@@ -191,12 +190,6 @@ export default {
             this.smallIdList = []
             this.allChecked = []
             this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll, keyName: this.keyName})
-        },
-        dropOpen(){
-            this.dropDowmopen = true
-        },
-        dropColse(){
-            this.dropDowmopen = false
         }
     }
 }
@@ -250,7 +243,7 @@ export default {
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         position: absolute;
-
+        // 下拉框隐藏
         z-index: -1;
         opacity: 0;
         top: 40px;
@@ -340,17 +333,6 @@ export default {
                 color:#fff;
                 border-radius: 4px;
             }
-        }
-        // 下拉框收回
-        &.close{
-            z-index: -1;
-            opacity: 0;
-            top: 40px;
-        }
-        &.open{
-            z-index: 999;
-            opacity: 1;
-            top:30px
         }
     }
     &:hover{
