@@ -2,7 +2,7 @@
 <!--表头-->
 <div class="ui-table_column-hz">
   <div class="ui-table_th" style="width: 210px;">模块</div>
-  <div style="width: 1029px; display: flex;">
+  <div style="width: 1038px; display: flex;">
     <div @click="headSort(tab)" class="ui-table_th" v-for="tab in detailDataGridColumn" :style="tableCell(tab.width)">
       {{tab.text }} <i v-if="tab.unit !=''">{{ tab.unit}}</i>
           <!-- <em v-if="tab.sort == ''" class="iconfont icon-sort-copy"></em>

@@ -47,7 +47,7 @@
                   <i class="triangle-icon" :title="isOpen[index] ?'点击收起':'点击展开'" :class="{'close-triangle-icon': isOpen[index] && mark == 'person', 'open-triangle-icon': !isOpen[index]}"></i>
                   <span class="little-title-left">店员</span>
        <!--            <span v-if="isAddShopManager" class="add-tit" style="margin-right: 10px;" @click="addAdministrator(item.shopId, 4)"><i>+</i>店员</span> -->
-                    <a @click="addAdministrator(item.shopId, 4)" v-if="isAddShopManager" href="javascript: void(0)" class="add-btn">+添加</a>
+                    <a @click="addAdministrator(item.shopId, 4)" v-if="isAddShopManager && item.shopManagerId == userId" href="javascript: void(0)" class="add-btn">+添加</a>
                 </h6>
                 <ul :id="'person' + item.shopId" style="height: 0;">
                   <template v-for="(storeManagerData,index) in item.shopAssistant">
@@ -80,6 +80,7 @@
     },
     data () {
       return {
+        userId: sessionStorage.id,
         isOpen: [],
         newPopup: false,
         userIndex: null,

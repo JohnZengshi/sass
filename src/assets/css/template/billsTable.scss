@@ -1,4 +1,4 @@
-
+$report-p-r: 20px;
 /* 模块切换 */
 .tp-ani-enter-active {
   transition: all 1s ease;
@@ -37,8 +37,9 @@
  * 数据表格 模块
  * */
 .Rp_dataGrid_container{
-    border-radius: 10px;
-    box-shadow:0px 0 15px #ddd;
+    border-radius: 4px;
+    border: 1px solid #dedede;
+    // box-shadow:0px 0 15px #ddd;
     position: relative;
     background-color: #fff;
     padding: 50px 0 0 0;
@@ -387,6 +388,9 @@
   }
 }
 
+.xj-report-text-right{
+    text-align: right!important;
+}
 .xj-report-table-container{
     height: 515px;
     //overflow-y: auto;
@@ -408,10 +412,10 @@
         float: left;
         display: inline-block;
         height: 40px;
-        //line-height: 40px;    
+        line-height: 40px;    
         text-align: center;
         font-size: 14px; 
-        display: flex;
+        // display: flex;
         -webkit-align-items: center;
         align-items: center;
         -webkit-justify-content: center;
@@ -421,6 +425,7 @@
         
         &.category-td{
             position: relative;
+            border-right: 1px solid #f0f2f5;
             >i{
                 font-style: normal;
                 font-size: 15px;
@@ -437,10 +442,33 @@
             }
         }
       }
+      .tb-td:last-child{
+        padding-right: $report-p-r;
+      }
     }
-  
+  .total-num-wrap{
+    height: 40px;
+    width: 100%;
+    margin-top: 2px;
+    background: #ECF3FF;
+    >div:first-child{
+        float: left;
+        display: inline-block;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-size: 14px;
+        // font-weight: bold;
+        color: #2993f8;
+        transition: all .3s;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 148px;
+    }
+  }
   .tb-total{
-      background-color: #e9f4fe;
+      background-color: #ECF3FF;
       height: 40px;
       display: flex;
       position: relative;
@@ -460,11 +488,46 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         b {
+            font-weight: normal;
             color: #2993f8;
         }
       }
+      .tb-td:last-child{
+        padding-right: $report-p-r;
+      }
   }
 }
+// 小计
+.subtotal-main{
+    background-color: #ECF3FF;
+    height: 40px;
+    display: flex;
+    position: relative;
+    z-index: 1;
+
+    .tb-td{
+        float: left;
+        display: inline-block;
+        height: 40px;
+        line-height: 40px;   
+        // font-weight: bold; 
+        text-align: center;
+        font-size: 14px; 
+        color: #333;
+        transition: all .3s;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        b {
+            font-weight: normal;
+            color: #2993f8;
+        }
+    }
+    .tb-td:last-child{
+        padding-right: $report-p-r;
+    }
+}
+
 .xj-report-table-footer{
     background-color: #2993f8;
     height: 40px;
@@ -504,6 +567,7 @@
           
     }
 }
+
 .xj-report-rp_dataGridTemp{
     position: relative;
     height: 100%;
@@ -515,6 +579,7 @@
         margin-top: -40px;
     }
 }
+
 .xj-report-table-wrap{
     border-radius: 0 4px 4px 4px;
     border: 1px solid #dedede;
@@ -529,4 +594,47 @@
     float: right;
     margin-right: 10px;
     margin-top: 12px;
+}
+// 所有的表格头部
+.xj-report-table-column{
+    height: 40px;
+    margin-top: -40px;
+    background-color: #f5f5f5;
+    overflow: hidden;
+    display: flex;
+    border-bottom: 2px solid #e7e7e7;
+    .xj-report-table-th{
+        display:inline-block;
+        line-height: 40px;
+        text-align: center;
+        color: #666;
+        font-size:12px;
+        float: left;
+        font-weight: bold;
+        transition: all .3s;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .ui-table_th{
+        display:inline-block;
+        line-height: 40px;
+        text-align: center;
+        color: #686868;
+        font-size:12px;
+        float: left;
+        font-weight: bold;
+        transition: all .3s;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        
+        >i{
+            font-style:normal;
+            color: #999;
+            font-weight: normal;
+            font-size: 10px;
+        }
+    }
+    .ui-table_th:last-child{
+        padding-right: $report-p-r;
+    }
 }
