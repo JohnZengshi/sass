@@ -1946,6 +1946,12 @@ export default {
     margin-left: 10px;
     margin-top: 12px;
   }
+  // 新增的一些筛选
+  .xj-report-multi-select-wrap{
+    margin-left: 10px;
+    margin-right:0px;
+    float: left;
+  }
   // 表格筛选
   .tab_wrap {
     width: 232px;
