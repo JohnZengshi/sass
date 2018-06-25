@@ -9,10 +9,10 @@
       <el-tree ref="tree" :data="propsList" show-checkbox :props="defaultProps" :highlight-current="highlightCurrent" accordion
         @check-change="handleCheckChange">
       </el-tree>
-      <!-- <div class="list-footer">
+      <div class="list-footer">
         <span @click="complate">完成</span>
         <span @click="reset">重置</span>
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
@@ -93,6 +93,7 @@
 </style>
 <style lang="scss">
   .el-tree {
+    border:none;
     position: relative; // height: 100%;
     .el-tree-node {
       display: flex;
@@ -122,7 +123,7 @@
         border-bottom: 1px solid #f1f2f3;
         cursor: pointer;
         .el-tree-node__expand-icon {
-          // display: none;
+          display: none;
           &.is-leaf {
             display: none;
           }
@@ -169,9 +170,9 @@
       line-height: 26px;
       font-weight: bold;
       cursor: pointer;
-      &.active {
-        color: #2993F8
-      }
+      // &.active {
+      //   color: #2993F8
+      // }
       i {
         position: absolute;
         right: 0;
@@ -181,7 +182,7 @@
     }
     .list-box {
       //   width: 300px;
-      // height: 300px;
+      height: 300px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       position: absolute;
@@ -191,11 +192,11 @@
       top: 40px;
       left: -5px;
       transition: all .3s ease;
-      &.active {
-        z-index: 20;
-        opacity: 1;
-        top: 26px;
-      }
+      // &.active {
+      //   z-index: 20;
+      //   opacity: 1;
+      //   top: 26px;
+      // }
       .list-left {
         height: 260px; // width: 150px;
         float: left;
@@ -250,7 +251,7 @@
         }
       }
       .list-footer {
-        // position: absolute;
+        position: absolute;
         height: 40px;
         width: 100%;
         background: #f6f7f8;
@@ -277,6 +278,16 @@
           color: #fff;
           border-radius: 4px;
         }
+      }
+    }
+    &:hover{
+        .tltle{
+          color: #2993F8
+        }
+        .list-box {
+          z-index: 99999;
+          opacity: 1;
+          top: 30px;
       }
     }
   }
