@@ -553,7 +553,7 @@ export default {
         Object.assign(this.filterCondition, this.paging, {})
       ).then(res => {
         if (res.data.state == 200) {
-          this.paging.page += 1;
+          // this.paging.page += 1;
           this.allData = res.data.data;
           let datas = res.data.data.memberList;
           this.totalNum = res.data.data.totalNum;
