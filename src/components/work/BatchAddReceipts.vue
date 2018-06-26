@@ -1238,19 +1238,19 @@
       // 商品的重置按钮
       resetGoods() {
         console.log("商品的重置按钮")
-        this.$refs['1'].reset();
-        this.$refs['2'].reset();
-        this.$refs['3'].reset();
-        this.$refs['4'].reset();
-        this.$refs['5'].reset();
-        this.$refs['6'].reset();
-        this.$refs['7'].reset();
-        this.beginWeight1= '';
-        this.endWeight1= '';
-        this.beginPrice1= '';
-        this.endPrice1= '';
-        this.beginBarcode1= '';
-        this.endBarcode1= '';
+        this.$refs['1'].resetData();
+        this.$refs['2'].resetData();
+        this.$refs['3'].resetData();
+        this.$refs['4'].resetData();
+        this.$refs['5'].resetData();
+        this.$refs['6'].resetData();
+        this.$refs['7'].resetData();
+        this.beginWeight1 = '';
+        this.endWeight1 = '';
+        this.beginPrice1 = '';
+        this.endPrice1 = '';
+        this.beginBarcode1 = '';
+        this.endBarcode1 = '';
         this.productTypeList = [];
         this.colourList = [];
         this.jewelList = [];
@@ -1848,6 +1848,204 @@
     line-height: 28px;
     padding: 0 5px;
   }
+  .litBatch {
+    width: 990px !important;
+    height: 624px !important;
+    padding: 0 20px;
+    .little-batch-title {
+      height: 72px;
+      width: 100%;
+      margin-top: 30px;
+      .search {
+        width: 190px;
+        height: 28px;
+        border-radius: 4px;
+        float: left;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 16px;
+
+        input {
+          border-radius: 4px;
+          width: 188px;
+          height: 28px;
+          border: 1px solid #d6d6d6;
+          padding-left: 10px;
+          &:hover {
+            border: 1px solid #2993f8;
+          }
+          &:focus {
+            border: 1px solid #2993f8;
+          }
+          &:blur {
+            border: 1px solid #ededed;
+          }
+        }
+
+        .search-btn {
+          position: absolute;
+          width: 30px;
+          height: 28px;
+          right: 0;
+          top: 0;
+          background: #2993f8;
+          text-align: center;
+          cursor: pointer;
+          i {
+            color: #fff;
+            line-height: 28px;
+          }
+        }
+      }
+      .menu-bottom {
+        height: 28px;
+        float: left;
+        .batch-time-wrap {
+          float: left;
+          height: 28px;
+          width: 188px;
+          border: 1px solid #d6d6d6;
+          border-radius: 4px;
+          margin-right: 16px;
+          &>span {
+            line-height: 28px;
+            font-size: 14px;
+          }
+        }
+        .batch-select-wrap {
+          // float: left;
+          // margin-right: 16px;
+        }
+        .range-box {
+          float: left;
+          margin-right: 16px;
+          width: 168px;
+          height: 28px;
+          border-radius: 4px;
+          border: 1px solid #d6d6d6;
+          padding-left: 20px;
+          input {
+            width: 65px;
+            height: 100%;
+            float: left;
+            text-align: center;
+          }
+          span {
+            float: left;
+            margin: 0 4px;
+            line-height: 26px;
+          }
+        }
+      }
+      .table-main {
+        width: 100%;
+        height: 300px;
+        overflow-y: auto;
+        ul {
+          li {
+            width: 100%;
+            height: 44px;
+            padding-right: 20px;
+            cursor: pointer;
+            &:hover {
+              background-color: #ededed;
+            }
+            .list {
+              //line-height: 44px;
+              height: 44px;
+              div {
+                margin-top: 13px;
+                float: left;
+                height: 14px;
+                text-align: center;
+                line-height: 14px;
+              }
+
+            }
+            .left-list {
+              float: left;
+              div:nth-child(1) {
+                width: 30px;
+              }
+              div:nth-child(2) {
+                width: 120px;
+              }
+              div:nth-child(3) {
+                width: 74px;
+                border-right: 1px solid #d6d6d6;
+              }
+              div:nth-child(4) {
+                width: 95px;
+              }
+              div:nth-child(5) {
+                // width: 30px;
+              }
+            }
+            .right-list {
+              float: right;
+              div:nth-child(1) {
+                width: 80px;
+              }
+              div:nth-child(2) {
+                width: 102px;
+                border-left: 1px solid #d6d6d6;
+                border-right: 1px solid #d6d6d6;
+              }
+              div:nth-child(3) {
+                width: 110px;
+              }
+              .el-radio {
+                margin-top: 10px;
+                &>span {
+                  font-size: 0;
+                }
+              } // div:nth-child(4) {
+              //     width: 18px;
+              //     height: 18px;
+              //     margin: 0;
+              //     line-height: 44px;
+              //     margin-left: 70px;
+              // }
+            }
+
+          }
+        }
+      }
+    }
+    .little-batch-footer {
+      width: 990px;
+      height: 90px;
+      box-shadow: 0 -2px 2px 2px rgba(0, 0, 0, 0.1);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      background: #fbfbfb;
+      .btn-wrap {
+        width: 236px;
+        height: 36px;
+        margin: 27px auto; //margin-top: 27px;
+        .btn {
+          width: 90px;
+          height: 36px;
+          text-align: center;
+          border-radius: 4px;
+          line-height: 36px;
+          float: left;
+          cursor: pointer;
+        }
+        .cenl-btn {
+          border: 1px solid #d6d6d6;
+          color: #999999;
+          margin-right: 56px;
+        }
+        .add-btn {
+          background: #2993f8;
+          color: #fff;
+        }
+      }
+    }
+  }
+
   .litBatch {
     width: 990px !important;
     height: 624px !important;
