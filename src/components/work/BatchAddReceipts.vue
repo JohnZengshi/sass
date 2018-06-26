@@ -874,6 +874,7 @@
           this.newOrderId = ''
           // 切换回单据要重置单据号
           this.orderId = ''
+          this.noMoreOrderNum = false;
         } else {
           this.beginNum = ''
           this.endNum = ''
@@ -890,7 +891,7 @@
           this.setGoodslocationList();
           this.receiptList = []
           this.orderNo = ''
-          this.noMoreOrderNum = false;
+          this.noMoreProductList = false
           // this.totalNum1 = res.data.data.totalNum
         }
       },
@@ -1232,7 +1233,7 @@
       gotoGoods(orderId) {
         console.log(orderId);
         this.listType = "商品";
-        this.noMoreOrderNum = false;
+        this.noMoreProductList = false
         this.currentOrderId = orderId;
         this.batchAddByProductList();
         this.setGoodslocationList();
