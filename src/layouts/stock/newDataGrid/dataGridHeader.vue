@@ -19,7 +19,7 @@ export default {
 	data () {
         return {
             isOld: '1',
-            sortList: []
+            sortList: [{}]
         }
     },
     watch: {

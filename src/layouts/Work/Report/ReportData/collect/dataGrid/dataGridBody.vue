@@ -10,7 +10,7 @@
           <p>销售</p>
         </div>
 
-          <div class="right-type-inner-wrap">
+          <div class="c-right-type-inner-wrap">
             <div :index="resetIndex(ind)" v-for="(caty, ind) in otherDatagrid">
               <div class="tb-tr"  v-for="(tb, index) in caty.productTypeList">
                 <!-- <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()"> -->
@@ -70,7 +70,7 @@
         <p>回购</p>
       </div>
 
-      <div class="right-type-inner-wrap">
+      <div class="c-right-type-inner-wrap">
           <div :index="resetIndex(ind)" v-for="(caty, ind) in buyBackDataList">
             <div class="tb-tr"  v-for="(tb, index) in caty.productTypeList">
               <!-- <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()"> -->
@@ -538,9 +538,9 @@
       margin: auto;
     }
   }
-  .right-type-inner-wrap{
+  .c-right-type-inner-wrap{
     display: inline-block;
-    width: 1098px;
+    width: 1095px;
     overflow: hidden;
   }
 

@@ -179,10 +179,6 @@
             </i>
             
           </div>
-          <!-- 输入框 -->
-          <div class="search_wrap">
-            <input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" />
-          </div>
           <!-- 成品旧料的切换 -->
 <!--           <div class="iconfont_wrap fl">
             <span :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)">成品</span>
@@ -292,7 +288,7 @@
               </div>
             </span>
           </div> -->
-            <filter-header
+          <filter-header
             @complate="filterHeaderComplate"
             @reportSwitch="reportSwitch"
             @choseBuyBack="choseBuyBack"
@@ -342,12 +338,13 @@
             >
             </dropDownColum>
           </div>
+                    <!-- 输入框 -->
+          <div class="search_wrap">
+            <input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" />
+          </div>
           <!-- 位置与专列项 -->
-<<<<<<< HEAD
+
 <!--           <div class="position_group fl">
-=======
-          <div class="position_group fl">
->>>>>>> 6742200c07a864bf661fadc3f8f4a462d6fa0496
               <span :title="positionSwitch ? '取消位置' : '选择位置'" @click="choseMenu(1)" class="btn" :class="{active: positionSwitch}" v-if="dataGridOptions.type != 1">位置</span>
           </div>
           <div class="xj_switch fl" v-if="isShowCost == 'Y'">
@@ -654,6 +651,7 @@ export default {
   },
   methods: {
     filterHeaderComplate (parm) {
+        this.dataGridOptions.page = 1;
         this.sortList = []
         this.dataGridOptions.sortList = []
         Object.assign(this.dataGridOptions, parm)
@@ -723,7 +721,6 @@ export default {
     },
     sortListAct(val) {
       // 列表排序
-      console.log("回来的列表排序", val);
       this.dataGridOptions.sortList = val;
       this.send();
       this.sortList = [];
@@ -797,7 +794,6 @@ export default {
       this.loading = true;
       this.dataGridOptions.pageSize = 0;
       seekStockProductList(this.dataGridOptions).then(res => {
-        console.log("打印响应数据", res);
         this.dataGridOptions.pageSize = 15;
         if (res.data.state == 200) {
           if (res.data.data.detailList) {
@@ -810,7 +806,6 @@ export default {
               datas.detailList = allData;
               this.printData = datas;
             } else {
-              console.log('-aaaa', res.data.data)
               this.printData = res.data.data;
             }
           } else {
@@ -1448,6 +1443,7 @@ export default {
 <style lang="scss" scoped>
 .stock-table-multi-select{
   margin-right: 0;
+  float: right;
 }
 /* 
  * 数据表格 模块
@@ -1835,7 +1831,7 @@ export default {
   }
   // 标签
   .sort_wrap {
-    width: 200px;
+    // width: 250px;
     height: 50px;
     margin-left: 20px;
     padding-top: 12px;
@@ -1936,9 +1932,9 @@ export default {
     height: 32px;
     margin-top: 12px;
     margin-left: 10px;
-    margin-right: 10px;
+    // margin-right: 10px;
     // display: inline-block;
-    float: left;
+    float: right;
     vertical-align: top;
     input {
       width: 100px;
@@ -2017,7 +2013,7 @@ export default {
   .xj-report-multi-select-wrap{
     margin-left: 10px;
     margin-right:0px;
-    float: left;
+    float: right;
   }
   // 表格筛选
   .tab_wrap {

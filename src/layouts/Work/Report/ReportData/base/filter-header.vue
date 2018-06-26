@@ -87,7 +87,7 @@
         madeUpOn (parm) {
           let datas = parm
           this.segmentationFilter = parm
-          this.$emit('complate', Object.assign({}, this.filterData, this.segmentationFilter))
+          this.$emit('complate', Object.assign({}, this.filterData, {page: '1'}, this.segmentationFilter))
         },
         choseMenu () {
           this.tabSwitch = !this.tabSwitch
