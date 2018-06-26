@@ -1332,7 +1332,7 @@
       }
     },
     filters: {
-      // 过滤数据，增加类名
+      // 过滤数据，增加字段
       listFilte: (value) => {
         value.forEach((val, index) => {
           val.name = val.classesName;
