@@ -506,7 +506,8 @@
       },
       'dataList': (val) => {
         console.log("改变了")
-      }
+      },
+      'listType':(val)=>{}
     },
     created() {
       this.getDate(0)
@@ -889,6 +890,7 @@
           this.setGoodslocationList();
           this.receiptList = []
           this.orderNo = ''
+          this.noMoreOrderNum = false;
           // this.totalNum1 = res.data.data.totalNum
         }
       },
@@ -1230,6 +1232,7 @@
       gotoGoods(orderId) {
         console.log(orderId);
         this.listType = "商品";
+        this.noMoreOrderNum = false;
         this.currentOrderId = orderId;
         this.batchAddByProductList();
         this.setGoodslocationList();
