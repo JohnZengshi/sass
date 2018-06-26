@@ -30,7 +30,7 @@
             </ul>
             <div class="list-footer">
                 <span @click="complate">完成</span>
-                <span @click="reset">重置</span>
+                <span @click="resetData">重置</span>
             </div>
         </div>
     </div>
@@ -182,12 +182,18 @@ export default {
                 this.isChecked = false
             }
         },
-        reset () {
+        resetData () {
             this.isChecked = false
             this.checkedCities = []
             this.smallIdList = []
             this.allChecked = []
             this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll, keyName: this.keyName})
+        },
+        reset () {
+            this.isChecked = false
+            this.checkedCities = []
+            this.smallIdList = []
+            this.allChecked = []
         }
     }
 }

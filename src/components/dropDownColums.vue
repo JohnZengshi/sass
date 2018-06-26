@@ -1,6 +1,6 @@
 <template>
   <div class="dropColums-wrap">
-    <div class="tltle">
+    <div class="tltle flex flex-r">
       {{titleData}}
       <i class="iconfont icon-xiala"></i>
     </div>
@@ -57,7 +57,8 @@
       'propsList',
       'titleData',
       'allName',
-      'keyName'
+      'keyName',
+      'dataType'
     ],
     watch: {
       checkedCities(newValue, oldValue) {
@@ -75,7 +76,7 @@
               }
             }
           }
-        } 
+        }
         // 删除
         else if (newValue.length < oldValue.length) {
           let amendValue = ''
@@ -101,7 +102,7 @@
         }
       },
       smallIdList(newValue, oldValue) {
-        //   console.log(newValue)
+        // console.log(newValue)
         if (newValue.length < oldValue.length) { // 减小了一个值
           for (let i of this.propsList) {
             for (let j of i.childrenList) {
@@ -118,7 +119,7 @@
             }
           }
         } else if (newValue.length > oldValue.length) { // 新增一个值
-
+          // console.log(this.propsList)
           for (let i of this.propsList) {
 
             let isHas = true
@@ -187,13 +188,15 @@
           bigList: this.checkedCities,
           samllList: this.smallIdList,
           isAll: this.isAll,
-          keyName: this.keyName
+          keyName: this.keyName,
+          type: this.dataType
         })
       },
       reset() {
         this.checkedCities = []
         this.smallIdList = []
         this.allChecked = []
+        this.complate();
       }
     }
   }
@@ -214,38 +217,16 @@
       }
     }
   }
-
-</style>
-<style lang="scss">
-  // .checkbox-font {
-  //     width: 30px;
-  //     .el-checkbox__input{
-  //         border-radius: 4px;
-  //         height: 20px;
-  //         width: 20px;
-  //         .el-checkbox__inner{
-  //             border-radius: 4px;
-  //         }
-  //     }
-  //     .el-checkbox__input.is-checked {
-  //         background-color: #2993f8 !important;
-  //         border-color: #2993f8 !important;
-  //         .el-checkbox__inner{
-  //             background-color: #2993f8 !important;
-  //             border-color: #2993f8 !important;
-  //         }
-  //     }
-  // }
-
 </style>
 <style scoped lang="scss">
   .dropColums-wrap {
     width: 66px;
-    height: 26px; //border: 1px solid #d6d6d6;
+    height: 26px; 
+    //border: 1px solid #d6d6d6;
     //border-radius: 4px;
     float: left;
     position: relative;
-    margin: 0 4px;
+    margin: 0 8px;
     .tltle {
       width: 100%;
       height: 100%;
@@ -261,7 +242,6 @@
       }
     }
     .list-box {
-    //   width: 300px;
       height: 300px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -270,12 +250,10 @@
       opacity: 0;
       background: #fff;
       overflow: hidden;
-    //   left: -120px;
       top: 40px;
       transition: all .3s ease;
       .list-left {
-        height: 260px;
-        // width: 150px;
+        height: 260px; // width: 150px;
         float: left;
         border-right: 1px solid #d6d6d6;
         overflow-y: auto;
@@ -298,8 +276,7 @@
         }
       }
       .list-right {
-        height: 260px;
-        // width: 150px;
+        height: 260px; // width: 150px;
         float: left;
         overflow-y: auto;
         li {
@@ -334,7 +311,7 @@
         width: 100%;
         background: #f6f7f8;
         float: left;
-        bottom:0;
+        bottom: 0;
         span {
           margin-top: 7px;
           font-size: 14px;
@@ -358,21 +335,13 @@
         }
       }
     }
-  }
-
-  .dropColums-wrap:hover {
-    .list-box {
-      z-index: 20;
-      opacity: 1;
-      top: 30px;
+    &:hover {
+      .list-box {
+        z-index: 9999;
+        opacity: 1;
+        top: 30px;
+      }
     }
-
-  }
-
-  .list-box:hover {
-    z-index: 20;
-    opacity: 1;
-    top: 30px;
   }
 
 </style>

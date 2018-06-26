@@ -24,8 +24,7 @@ import {
   seekGetUserList,
   // seekGetShopListByCo,
   seekGetUserInfo,
-  seekMemberList,
-  seekGetPrintLabelList
+  seekMemberList
 } from "Api/commonality/seek.js";
 import Cascade from "./base/Cascade";
 import * as jurisdictions from "Api/commonality/jurisdiction";
@@ -39,7 +38,7 @@ import {
   productTpyeState,
   newProductDetailStatus,
   statusModuleType,
-  documentsState,
+  searchProductStatus,
   memberTypeState,
   memberFollowTypeState,
   memberOriginState,
@@ -316,7 +315,7 @@ export default {
     //           // 单据类型
     //           i.orderType = statusModuleType(i.orderType)
     //           // 制单状态
-    //           i.auditStatus = documentsState(i.auditStatus)
+    //           i.auditStatus = searchProductStatus(i.auditStatus)
     //           // 制单时间
     //           i.createTime = this._formDataTimeYND(i.createTime)
     //           //
@@ -507,7 +506,7 @@ export default {
             // 单据类型
             i.orderType = statusModuleType(i.orderType)
             // 制单状态
-            i.auditStatus = documentsState(i.auditStatus)
+            i.auditStatus = searchProductStatus(i.auditStatus)
             // 制单时间
             i.createTime = this._formDataTimeYND(i.createTime)
           }
@@ -555,7 +554,7 @@ export default {
             // 单据类型
             i.orderType = statusModuleType(i.orderType)
             // 制单状态
-            i.auditStatus = documentsState(i.auditStatus)
+            i.auditStatus = searchProductStatus(i.auditStatus)
             // 制单时间
             i.createTime = this._formDataTimeYND(i.createTime)
           }
@@ -990,64 +989,6 @@ export default {
       return d < 10 ? "0" + d : d + "";
     },
 
-    // send() {
-    //   this.loading = true;
-    //   seekGetPrintLabelList(this.dataGridOptions).then((res) => {
-    //     if (res.data.state == 200) {
-    //       this.dataGridStorage = [
-    //         {
-    //             barcode: '100',
-    //             productTypeName: '100',
-    //             className: '100',
-    //             weight: '100',
-    //             GoldWeight: '100',
-    //             main: '100',
-    //             deputy: '100',
-    //             soldPrice: '100',
-    //             orderNum: '100',
-    //             productClass: '100',
-    //             locationName: '100',
-    //             productStatus: '100'
-    //           },
-    //           {
-    //             barcode: '100',
-    //             productTypeName: '100',
-    //             className: '100',
-    //             weight: '100',
-    //             GoldWeight: '100',
-    //             main: '100',
-    //             deputy: '100',
-    //             soldPrice: '100',
-    //             orderNum: '100',
-    //             productClass: '100',
-    //             locationName: '100',
-    //             productStatus: '100'
-    //           },
-    //           {
-    //             barcode: '100',
-    //             productTypeName: '100',
-    //             className: '100',
-    //             weight: '100',
-    //             GoldWeight: '100',
-    //             main: '100',
-    //             deputy: '100',
-    //             soldPrice: '100',
-    //             orderNum: '100',
-    //             productClass: '100',
-    //             locationName: '100',
-    //             productStatus: '100'
-    //           }
-    //         ]
-    //       this.loading = false
-    //     } else {
-    //       this.$message({
-    //         type: 'error',
-    //         message: res.data.msg
-    //       })
-    //     }
-    //     this.loading = false
-    //   })
-    // },
 
     //懒加载
     lazyloadSend() {

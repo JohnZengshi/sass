@@ -146,28 +146,6 @@ export default {
                 //"counterId": parm
             }
             this.isLoading = true;
-            sessionStorage.setItem("确定新建发货", JSON.stringify(options));
-            operateCreateFHReceipt(options).then((response) => { // 新建单据
-                this.isLoading = false;
-                if (response.data.state === 200) {     
-                    if (this.isLoading == false) {
-                        this.cutData.two = false;
-                        this.$router.push({
-                            path: "/work/sipping/newSipping",
-                            query: {
-                                "orderNumber": response.data.data.orderNum,
-                                "isRole": "Y",
-                                "isCheckOrderMan": "N"
-                            }
-                        })
-                    }
-                } else {
-                    this.$store.dispatch('workPopupError', response.data.msg)
-                }
-            }, (response) => {
-                this.isLoading = false;
-                console.log(response);
-            })
             operateCreateFHReceipt(options).then((response) => { // 新建单据
                 this.isLoading = false;
                 if (response.data.state === 200) {     
