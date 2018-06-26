@@ -88,10 +88,10 @@ export default {
         newOrderId: '',
         storageId: [],
         shopId: [],
-        productTypeId: [],
-        colourId: [],
-        jeweId: [],
-        jewelryId: [], // 首饰类别
+        // productTypeId: [],
+        // colourId: [],
+        // jeweId: [],
+        // jewelryId: [], // 首饰类别
         sortList: [{ classTypeName: '1' }],
         productStatus: [], // 产品状态
       },
@@ -403,10 +403,10 @@ export default {
         newOrderId: '',
         storageId: [],
         shopId: [],
-        productTypeId: [],
-        colourId: [],
-        jeweId: [],
-        jewelryId: [], // 首饰类别
+        // productTypeId: [],
+        // colourId: [],
+        // jeweId: [],
+        // jewelryId: [], // 首饰类别
         sortList: [{ classTypeName: '1' }],
         productStatus: [], // 产品状态
       }
@@ -421,11 +421,14 @@ export default {
     seekProduct (parm) {
       this.loading = true
       let barcode = {
-        barcode: []
+        barcodeList: []
       }
       for (let i of this.addData) {
-        barcode.barcode.push(i.barcode)
+        barcode.barcodeList.push({
+          barcode: i.barcode
+        })
       }
+
       seekGetPrintLabelList(Object.assign(parm, barcode, {page: '1', pageSize: '30'}))
         .then(res => {
           if (res.data.state == 200) {
@@ -453,15 +456,40 @@ export default {
       if (parm) {
         this.dataGridStorage = []
         this.paging.page = 1
-        this.filterCondition = Object.assign({}, this.filterCondition, parm)
+        this.filterCondition = this.formattingData(parm)
+        // 产品类别
+        // if (datas.productTypeId.length) {
+        //   let productTypeId = []
+        //   for (let i of datas.productTypeId) {
+        //     productTypeId.push({
+        //       id: 1
+        //     })
+        //   }
+        // }
+        // this.filterCondition = Object.assign({}, this.filterCondition, datas)
       }
       let barcode = {
-        barcode: []
+        barcodeList: []
       }
       for (let i of this.addData) {
-        barcode.barcode.push(i.barcode)
+        barcode.barcodeList.push({barcode: i.barcode})
       }
       this.loading = true
+
+      // this.filterCondition = {
+      //   keyWord: '',
+      //   newOrderId: '',
+      //   storageId: [],
+      //   shopId: [],
+      //   productTypeId: [],
+      //   colourId: [],
+      //   jeweId: [],
+      //   jewelryId: [], // 首饰类别
+      //   sortList: [{ classTypeName: '1' }],
+      //   productStatus: [], // 产品状态
+      // }
+      // let datas = this.filterCondition
+      // this.formattingData(datas.productTypeId)
       seekGetPrintLabelList(Object.assign(this.filterCondition, barcode, this.paging, {}))
         .then(res => {
           if (res.data.state == 200) {
@@ -485,6 +513,91 @@ export default {
           }
           this.loading = false
         })
+    },
+    formattingData (parm) {
+        let datas = parm
+        // 产品类别
+        if (datas.productTypeId) {
+          if (datas.productTypeId.length) {
+            datas.productTypeList = this.filterSeekData(datas.productTypeId, 'productTypeId')
+            delete datas.productTypeId
+          } else {
+            delete datas.productTypeId
+          }
+        }
+        // 成色名称
+        if (datas.colourId) {
+          if (datas.colourId.length) {
+            datas.colourList = this.filterSeekData(datas.colourId, 'colourId')
+            delete datas.colourId
+          } else {
+            delete datas.colourId
+          }
+        }
+        // 宝石名称
+        if (datas.jeweId) {
+          if (datas.jeweId.length) {
+            datas.jeweList = this.filterSeekData(datas.jeweId, 'jeweId')
+            delete datas.jeweId
+          } else {
+            delete datas.jeweId
+          }
+        }
+        // 产品类别
+        if (datas.jewelryId) {
+          if (datas.jewelryId.length) {
+            datas.jewelryList = this.filterSeekData(datas.jewelryId, 'jewelryId')
+            delete datas.jewelryId
+          } else {
+            delete datas.jewelryId
+          }
+        }
+        // 单据id
+        if (datas.newOrderId) {
+          if (datas.newOrderId.length) {
+            datas.newOrderList = this.filterSeekData(datas.newOrderId, 'newOrderId')
+            delete datas.newOrderId
+          } else {
+            delete datas.newOrderId
+          }
+        }
+        // 库位id
+        if (datas.storageId) {
+          if (datas.storageId.length) {
+            datas.storageList = this.filterSeekData(datas.storageId, 'storageId')
+            delete datas.storageId
+          } else {
+            delete datas.storageId
+          }
+        }
+        // 店铺id
+        if (datas.shopId) {
+          if (datas.shopId.length) {
+            datas.shopList = this.filterSeekData(datas.shopId, 'shopId')
+            delete datas.shopId
+          } else {
+            delete datas.shopId
+          }
+        }
+        // 当前状态
+        if (datas.productStatus) {
+          if (datas.productStatus.length) {
+            datas.productStatusList = this.filterSeekData(datas.productStatus, 'productStatus')
+            delete datas.productStatus
+          } else {
+            delete datas.productStatus
+          }
+        }
+        return datas
+    },
+    filterSeekData (parm, aaa) {
+      let datas = []
+      for (let i of parm) {
+        datas.push({
+          [aaa]: i
+        })
+      }
+      return datas
     },
     checkedAll () {
 
