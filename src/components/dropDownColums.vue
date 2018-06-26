@@ -192,12 +192,18 @@
           type: this.dataType
         })
       },
+      // 重置按钮
       reset() {
+        this.resetData();
+        this.complate();
+      },
+      // 重置选项数据
+      resetData(){
         this.checkedCities = []
         this.smallIdList = []
         this.allChecked = []
-        this.complate();
       }
+
     }
   }
 
