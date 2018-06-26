@@ -24,8 +24,7 @@ import {
   seekGetUserList,
   // seekGetShopListByCo,
   seekGetUserInfo,
-  seekMemberList,
-  seekGetPrintLabelList
+  seekMemberList
 } from "Api/commonality/seek.js";
 import Cascade from "./base/Cascade";
 import * as jurisdictions from "Api/commonality/jurisdiction";
@@ -1017,64 +1016,6 @@ export default {
       })
       return arr.join(',')
     },
-    // send() {
-    //   this.loading = true;
-    //   seekGetPrintLabelList(this.dataGridOptions).then((res) => {
-    //     if (res.data.state == 200) {
-    //       this.dataGridStorage = [
-    //         {
-    //             barcode: '100',
-    //             productTypeName: '100',
-    //             className: '100',
-    //             weight: '100',
-    //             GoldWeight: '100',
-    //             main: '100',
-    //             deputy: '100',
-    //             soldPrice: '100',
-    //             orderNum: '100',
-    //             productClass: '100',
-    //             locationName: '100',
-    //             productStatus: '100'
-    //           },
-    //           {
-    //             barcode: '100',
-    //             productTypeName: '100',
-    //             className: '100',
-    //             weight: '100',
-    //             GoldWeight: '100',
-    //             main: '100',
-    //             deputy: '100',
-    //             soldPrice: '100',
-    //             orderNum: '100',
-    //             productClass: '100',
-    //             locationName: '100',
-    //             productStatus: '100'
-    //           },
-    //           {
-    //             barcode: '100',
-    //             productTypeName: '100',
-    //             className: '100',
-    //             weight: '100',
-    //             GoldWeight: '100',
-    //             main: '100',
-    //             deputy: '100',
-    //             soldPrice: '100',
-    //             orderNum: '100',
-    //             productClass: '100',
-    //             locationName: '100',
-    //             productStatus: '100'
-    //           }
-    //         ]
-    //       this.loading = false
-    //     } else {
-    //       this.$message({
-    //         type: 'error',
-    //         message: res.data.msg
-    //       })
-    //     }
-    //     this.loading = false
-    //   })
-    // },
 
     //懒加载
     lazyloadSend() {

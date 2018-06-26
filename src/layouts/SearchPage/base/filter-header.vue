@@ -686,10 +686,10 @@ export default {
         //   id: '10',
         //   name: '修改'
         // },
-        // {
-        //   id: '11',
-        //   name: '服务'
-        // },
+        {
+          id: '11',
+          name: '服务'
+        },
       ]
     }
 
@@ -747,16 +747,19 @@ export default {
     // 重置
     resetData () {
       this.keyWord = ''
+      this.filterCondition = {
+        keyWord: ''
+      }
       if(this.panelType == 0) {
-        this.filterData.keyword = ''
-        this.filterData.colourList = []
-        this.filterData.jeweList = []
-        this.filterData.jewelryList = []
-        this.filterData.productClassList = []
-        this.filterData.productStatusList = []
-        this.filterData.productTypeList = []
-        this.filterData.shopList = []
-        this.filterData.storageList = []
+        // this.filterData.keyword = ''
+        // this.filterData.colourList = []
+        // this.filterData.jeweList = []
+        // this.filterData.jewelryList = []
+        // this.filterData.productClassList = []
+        // this.filterData.productStatusList = []
+        // this.filterData.productTypeList = []
+        // this.filterData.shopList = []
+        // this.filterData.storageList = []
 
         this.$refs.storageLocationWrap.reset()
         this.$refs.shopWrap.reset()
@@ -787,11 +790,11 @@ export default {
         this.filterCondition['orderBegin'] = ''
         this.filterCondition['orderEnd'] = ''
 
-        this.filterData.repositoryList = []
-        this.filterData.shopIdList = []
-        this.filterData.userTypeList = []
-        this.filterData.operatorList = []
-        this.filterData.orderTypeList = []
+        // this.filterData.repositoryList = []
+        // this.filterData.shopIdList = []
+        // this.filterData.userTypeList = []
+        // this.filterData.operatorList = []
+        // this.filterData.orderTypeList = []
 
       }
       if(this.panelType == 2) {
@@ -803,12 +806,13 @@ export default {
         this.$refs.memberOriginWrap.reset()
         this.$refs.moreWrap.reset()
 
-        this.filterData.followTypeList = []
-        this.filterData.memberOriginList = []
-        this.filterData.memberTypeList = []
-        this.filterData.operatorList = []
-        this.filterData.shopIdList = []
+        // this.filterData.followTypeList = []
+        // this.filterData.memberOriginList = []
+        // this.filterData.memberTypeList = []
+        // this.filterData.operatorList = []
+        // this.filterData.shopIdList = []
       }
+      debugger
       this.$emit('resetData')
     },
     batchAddByOrderNum () {
@@ -837,15 +841,18 @@ export default {
     storageLocation (parm) {
       if(this.panelType === 0) {
         this.filterCondition.storageList = this.conversionData(parm.bigList,'storageId')
+        debugger
         this.$emit('filterData', this.filterCondition)
       }
       
       if(this.panelType === 1) {
         this.filterCondition.repositoryList = this.conversionData(parm.bigList,'repositoryId')
+        debugger
         this.$emit('filterData', this.filterCondition)
       }
     },
     filterData (parm) {
+      debugger
       this.$emit('filterData', Object.assign(this.filterCondition, parm))
     },
     _seekGetShopListByCo() {
@@ -865,7 +872,8 @@ export default {
         } else if (this.isJrole) { // 监察员
           options.type = 1
         }
-
+        this.selectPersonnelConfig = []
+        this.storePersonnel = []
         seekGetShopListByCo(options)
           .then(res => {
             if (res.data.state == 200) {
@@ -873,13 +881,8 @@ export default {
                 this._showCounterList(i.shopId, i)
               }
 
-              let dpData = {
-                  id: '2',
-                  name:'店铺人员',
-                  childrenList: [],
-                }
-
               // 获取店铺人员
+              debugger
               res.data.data.shopList.forEach(item => {
                 
                 let shopData = {
@@ -890,7 +893,13 @@ export default {
                 
                 seekGetShopUserList(shopData).then(res => {
                   if(res.data.state == 200) {
+                    debugger
                     console.log('看看看这里的数据',res.data)
+                      let dpData = {
+                        id: '2',
+                        name:'店铺人员',
+                        childrenList: [],
+                      }
                     res.data.data.shopUserList.forEach(i => {
                       let option = {}                      
                       option.id = i.userId
@@ -898,11 +907,12 @@ export default {
                       dpData.childrenList.push(option)
                       this.storePersonnel.push(option)
                     })
+                    this.selectPersonnelConfig.push(dpData)
                   }
                 })
               })
-
-              this.selectPersonnelConfig.push(dpData)
+              debugger
+              
               
               // this.shopDataList.childrenList = 
               // this.productCategory[1].children = res.data.data.repositoryList
@@ -963,6 +973,7 @@ export default {
 
     },
     changeOrderId (parm) {
+      debugger
       this.filterCondition.newOrderId = parm
       this.$emit('filterData', this.filterCondition)
     },
@@ -973,6 +984,7 @@ export default {
 
     },
     dataBack (parm) {
+      debugger
       // 字符串的 截取 因为 知道 字段不会出现Id
       let len = parm.keyName.length
       let key = parm.keyName.slice(0,len-2) + 'List'
@@ -982,10 +994,12 @@ export default {
     },
     // 店铺id
     dataBackShopList (parm) {
+      debugger
       this.filterCondition.shopList = this.conversionData(parm.bigList,'shopId')
       this.$emit('filterData', this.filterCondition)
     },
     dataBackProductTypeId (parm) { // 产品类别过滤
+      debugger
       this.filterCondition.productStatusList = this.conversionData(parm.bigList,'productStatus')
       this.$emit('filterData', this.filterCondition)
     },
@@ -1038,6 +1052,7 @@ export default {
       if(val) {
         let beginTime = val.substr(0, 10).split('-').join("") + "000000"
         this.filterCondition['startTime'] = beginTime
+        debugger
         this.$emit('filterData', this.filterCondition)
       }
     },
@@ -1046,6 +1061,7 @@ export default {
       if(val) {
         let endTime = val.substr(0, 10).split('-').join("") + "235959"
         this.filterCondition['endTime'] = endTime
+        debugger
         this.$emit('filterData', this.filterCondition)
       }
     },
@@ -1053,6 +1069,7 @@ export default {
     // 商品状态过滤
     dataBackProductClass (parm) {
       this.filterCondition.productClassList  = this.conversionData(parm.bigList,'productClass')
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 获取人员列表
@@ -1093,62 +1110,74 @@ export default {
     rangeOfScreening () {
       this.filterCondition['orderBegin'] = this.orderBegin
       this.filterCondition['orderEnd'] = this.orderEnd
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 单据的时间筛选
     timeToScreen () {
       this.filterCondition['startTime'] = this.beginTime
       this.filterCondition['endTime'] = this.endTime
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 会员类型的筛选
     dataBackmembermemberType(parm) {
       this.filterCondition.memberTypeList = this.conversionData(parm.bigList,'memberType')
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 会员级别的筛选
     dataBackGrade(parm) {
       this.filterCondition.gradeList = this.conversionData(parm.bigList,'grade')
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 跟进状态
     dataBackFollowType(parm) {
       this.filterCondition.followTypeList = this.conversionData(parm.bigList,'followType')
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 会员来源
     dataBackMemberOrigin(parm) {
       this.filterCondition.memberOriginList = this.conversionData(parm.bigList,'memberOrigin')
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 人员类型
     dataBackUserTypeList(parm) {
       this.filterCondition.userTypeList = this.conversionData(parm.bigList,'userType')
+      debugger
       this.$emit('filterData', this.filterCondition)      
     },
     // 店铺id
     dataBackShopidList(parm) {
       this.filterCondition.shopIdList = this.conversionData(parm.bigList,'shopId')
+      debugger
       this.$emit('filterData', this.filterCondition)  
     },
     // 库位id
     dataBackRepositoryList(parm) {
       this.filterCondition.repositoryList = this.conversionData(parm.bigList,'repositoryId')
+      debugger
       this.$emit('filterData', this.filterCondition)  
     },
     // 选择人员
     dataBackOperatorList(parm) {
       this.filterCondition.operatorList = this.conversionData(parm.samllList,'operatorId')
+      debugger
       this.$emit('filterData', this.filterCondition)  
     },
     // 单据类型
     dataBackOrderTypeList(parm) {
       this.filterCondition.orderTypeList = this.conversionData(parm.bigList,'orderType')
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 店铺人员
     dataBackShopidPeopleList(parm) {
       this.filterCondition.operatorList = this.conversionData(parm.bigList,'operatorId')
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
 

@@ -139,7 +139,7 @@
 			  </div>
         <!-- tab栏切换的内容 -->
         <div class="page-wrap">
-				  <component :showAll="showAll" :is="panel" :panelType="panelType" :serchKey="searchText" @close="close" @openMemberByList="openMemberByList"></component>
+				  <component :showAll="showAll" :listDetails="ListDetails" :is="panel" :panelType="panelType" :serchKey="searchText" @close="close" @openMemberByList="openMemberByList"></component>
 			  </div>
         
       </el-dialog>

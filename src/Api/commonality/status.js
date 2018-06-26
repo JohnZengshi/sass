@@ -44,7 +44,8 @@ export const productDetailStatus = function (parm) { // 商品列表
             return "退换中";
     }
 }
-export const newProductDetailStatus = function (parm) { // 商品列表
+
+export const searchProductDetailStatus = function (parm) { // 商品列表
     switch (parm) {
         case "10":
             return '在库位'
@@ -98,6 +99,62 @@ export const newProductDetailStatus = function (parm) { // 商品列表
             return '店铺收货'
         case "101":
             return '店铺收货'
+    }
+}
+export const newProductDetailStatus = function (parm) { // 商品列表
+    switch (parm) {
+        case "10":
+            return '已入库'
+        case "11":
+            return '入库中'
+        case "20":
+            return '已退库'
+        case "21":
+            return '退库中'
+        case "30":
+            return '已修改'
+        case "31":
+            return '修改中'
+        case "40":
+            return '已调库'
+        case "101":
+            return '已调库'
+        case "41":
+            return '调库中'
+        case "50":
+            return '已发货'
+        case "100":
+            return '已发货'
+        case "51":
+            return '发货中'
+        case "52":
+            return '已收货'
+        case "60":
+            return '已退货'
+        case "61":
+            return '退货中'
+        case "62":
+            return '已退货'
+        case "70":
+            return '已调柜'
+        case "71":
+            return '调柜中'
+        case "80":
+            return '已销售'
+        case "81":
+            return '销售中'
+        case "90":
+            return '已销退'
+        case "91":
+            return '销退中'
+        case "92":
+            return '已换货'
+        case "93":
+            return '换货中'
+        case "94":
+            return '已回收'
+        case "95":
+            return '回收中'
     }
 }
 export const receiptStatus = function (parm) { // 审核状态
@@ -244,6 +301,36 @@ export const statusPosition = function (parm) {
             return "店员";
         case "6":
             return "监察员";
+    }
+}
+
+
+export const searchProductStatus = function (parm) {
+    switch (parm) {
+        case "1":
+            return "待审核"
+        case "2":
+            return "审核中";
+        case "3":
+            return "已审核";
+        case "4":
+            return "已锁定";
+        case "5":
+            return "已收货";
+        case "6":
+            return "待收银";
+        case "7":
+            return "已收银";
+        case "8":
+            return "待收货";
+        case "9":
+            return "处理中";
+        case "10":
+            return "已完成";
+        case "11":
+            return "未锁定";
+        case "12":
+            return "未发货";
     }
 }
 export const documentsState = function (parm) {

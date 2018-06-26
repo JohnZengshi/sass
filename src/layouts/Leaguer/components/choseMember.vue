@@ -53,9 +53,29 @@
         <div class="member-list">
             <ul>
                 <li v-for="(item, index) in dataList" :key="index" v-if="item.operateType != 2">
-                    <img :src="item.logo">
+     <!--                <img :src="item.logo"> -->
+                    <div class="member-list-item">
+                        <FormatImg :logo="item.logo" @click.native="goAdmin" :userName="item.memberName" :size="40"></FormatImg>
+                    </div>
+
+                    <div class="member-list-item">{{item.memberName}}</div>
                     
-                    <div class="name">{{item.memberName}}</div>
+                    <div class="member-list-item">
+                        <span class="type" :class="{typeColor1: item.type == 1, typeColor2: item.type == 2,typeColor3: item.type == 3}">{{getType(item.type, item)}}</span>
+                        <span class="level" :class="{lvColor1:item.grade == 1, lvColor2:item.grade == 2, lvColor3:item.grade == 3}">{{getLevel(item.grade)}}</span>
+                    </div>
+                    <div class="member-list-item">
+                        <img src="~static/img/member/new/phone.png" />
+                        {{item.phone}}
+                    </div>
+                    <div class="member-list-item">
+                        <el-checkbox-group v-model="checkList" @change="checkChange">
+                            <el-checkbox :label="item.memberId"></el-checkbox>
+                        </el-checkbox-group>
+                    </div>
+
+
+<!-- 
                     <div class="label">
                         <span class="type" :class="{typeColor1: item.type == 1, typeColor2: item.type == 2,typeColor3: item.type == 3}">{{getType(item.type, item)}}</span>
                         <span class="level" :class="{lvColor1:item.grade == 1, lvColor2:item.grade == 2, lvColor3:item.grade == 3}">{{getLevel(item.grade)}}</span>
@@ -68,7 +88,7 @@
                         <el-checkbox-group v-model="checkList" @change="checkChange">
                             <el-checkbox :label="item.memberId"></el-checkbox>
                         </el-checkbox-group>
-                    </div>
+                    </div> -->
                 </li>
             </ul>
         </div>
@@ -81,6 +101,7 @@
 import {seekMemberAllList} from 'Api/commonality/seek'
 import {operateOpIntention, operateRelateFaceMember} from 'Api/commonality/operate'
 import DropDownMenu from './../../../components/template/DropDownMenu'
+import FormatImg from "components/template/DefaultHeadFormat.vue";
 export default {
     props: [
         'isAddIntention',
@@ -95,7 +116,8 @@ export default {
         }
     },
     components: {
-        DropDownMenu
+        DropDownMenu,
+        FormatImg
     },
     data () {
         return {
@@ -418,17 +440,65 @@ export default {
         ul {
             height: 100%;
             li {
+                display: flex;
                 height: 50px;
-                line-height: 50px;
-                img {
-                    width: 34px;
-                    height: 34px;
+                // line-height: 50px;
+                .member-list-item{
+                    height: 50px;
+                    margin-right: 5px;
+                    overflow: hidden;
                     float: left;
-                    margin-top: 8px;
-                    margin-left: 20px;
-                    margin-right: 20px;
-                    border-radius: 50%;
                 }
+                .member-list-item:nth-child(1){
+                    
+                }
+                .member-list-item:nth-child(2){
+                    text-overflow:ellipsis;
+                    white-space: nowrap;
+                    width: 100px;
+                    text-align: center;
+                }
+                .member-list-item:nth-child(3){
+                    padding-top: 17px;
+                    &>span {
+                        width: 34px;
+                        height: 16px;
+                        border-radius: 4px;
+                        float: left;
+                        font-size: 12px;
+                        text-align: center;
+                        line-height: 16px;
+                        color:#fff;
+                    }
+                    .type {
+                        margin-right: 15px;
+                    }
+                    .typeColor1 { background:#0078f2;}
+                    .typeColor2 { background:#009dff;}
+                    .typeColor3 { background:#96d7ff;}
+                    .lvColor1 {background:#ffc62e;}
+                    .lvColor2 {background:#ffa200;}
+                    .lvColor3 {background:#f27200;}
+                }
+                .member-list-item:nth-child(4){
+                    flex: 1;
+                    >img {
+                        width: 14px;
+                        height: 14px;
+                        margin-top: 18px;
+                        margin-right: 7px;
+                        border-radius: 0;
+                    }
+                }
+                // img {
+                //     width: 34px;
+                //     height: 34px;
+                //     float: left;
+                //     margin-top: 8px;
+                //     margin-left: 20px;
+                //     margin-right: 20px;
+                //     border-radius: 50%;
+                // }
                 .name {
                     float: left;
                     margin-right: 20px;

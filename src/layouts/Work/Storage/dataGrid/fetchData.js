@@ -33,12 +33,12 @@ export const classlist = (config, resolve) =>{
   seekProductClassList(config.option)
   .then((res) => {
     let datas = res.data.data.list
-    if (config.option.type == 1) {
+    // if (config.option.type == 1) {
       for (let i of datas) {
         i.typeList = i.childrenList
         delete i.childrenList
       }
-    }
+    // }
     // 宝石属性
     if (config.option.type && config.option.type == 4) {
       localStorage.setItem('jewelProperty',encodeURIComponent(JSON.stringify(datas)))
