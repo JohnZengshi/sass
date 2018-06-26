@@ -343,7 +343,11 @@
             </dropDownColum>
           </div>
           <!-- 位置与专列项 -->
+<<<<<<< HEAD
 <!--           <div class="position_group fl">
+=======
+          <div class="position_group fl">
+>>>>>>> 6742200c07a864bf661fadc3f8f4a462d6fa0496
               <span :title="positionSwitch ? '取消位置' : '选择位置'" @click="choseMenu(1)" class="btn" :class="{active: positionSwitch}" v-if="dataGridOptions.type != 1">位置</span>
           </div>
           <div class="xj_switch fl" v-if="isShowCost == 'Y'">
@@ -2009,6 +2013,12 @@ export default {
     margin-left: 10px;
     margin-top: 12px;
   }
+  // 新增的一些筛选
+  .xj-report-multi-select-wrap{
+    margin-left: 10px;
+    margin-right:0px;
+    float: left;
+  }
   // 表格筛选
   .tab_wrap {
     width: 232px;
@@ -2038,7 +2048,8 @@ export default {
   // 位置与专列项
   .position_group {
     margin-top: 12px;
-    margin-right: 10px;
+    // margin-right: 10px;
+    margin-left: 10px;
     & > .btn {
       display: block;
       width: 52px;
@@ -2059,7 +2070,8 @@ export default {
   }
   .xj_switch {
     margin-top: 12px;
-    margin-right: 10px;
+    // margin-right: 10px;
+    margin-left: 10px;
     & > .btn {
       font-size: 12px;
       display: block;

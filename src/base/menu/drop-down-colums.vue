@@ -49,7 +49,9 @@ export default {
             rightList: [],
             leftIndex: null,
             rightIndex: null,
-            operateId: ''
+            operateId: '',
+            // 下拉框收回和打开
+            dropDowmopen:false
         }
     },
     props: [
@@ -247,12 +249,14 @@ export default {
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         position: absolute;
+        // 下拉框隐藏
         z-index: -1;
         opacity: 0;
+        top: 40px;
+
         background:#fff;
         overflow: hidden;
         left: -120px;
-        top: 40px;
         transition: all .3s ease;
         .list-left {
             height: 260px;
@@ -337,18 +341,12 @@ export default {
             }
         }
     }
-}
-.drop-down-colums-main:hover {
-    .list-box {
-        z-index: 20;
-        opacity: 1;
-        top: 30px;
+    &:hover{
+        .list-box {
+            z-index: 999;
+            opacity: 1;
+            top: 30px;
+        }
     }
-    
-}
-.list-box:hover {
-    z-index: 20;
-    opacity: 1;
-    top: 30px;
 }
 </style>

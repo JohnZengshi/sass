@@ -6,8 +6,9 @@
 					<div class="new-table-template">
 						<section class="body-box" ref="body_box">
 							<div class="body-header skin-shield" ref="body_header">
-								<ul class="header-nav">
+								<ul class="header-nav Rp_crumbs">
 									<li @click="goPreviousPage"><i style="font-size: 20px; margin-right: 10px;" class="iconfont icon-xiaoshou"></i>销售<span>&nbsp;&nbsp;</span></li>
+									>
 									<li class="on">单据详情</li>
 								</ul>
 
@@ -207,8 +208,8 @@
 										<!-- <span v-show="haveTem && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">(总积分{{ integralNow.totalScore || 0 }})</span> -->
 
 										<span v-show="priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">详情说明</span>
-										<input v-show="priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0" ref="detailInputWrap" v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
-										<span v-show="priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0" class="tooltip" v-if="isShowTooltip">输入/扫描条码号</span>
+										<input v-show="priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0" :class="{borderColor:isFocusinput}" ref="detailInputWrap" v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @focus="taggleChangeBorder" @blur="taggleChangeBorder" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
+										<span v-show="priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0" class="tooltip" v-if="isShowTooltip" >输入/扫描条码号</span>
 									</div>
 								</div>
 								<div class="row4-data-main">
@@ -1014,6 +1015,8 @@
 				daiding:'',
 				isShouyin: false,
 				haveTem: true,
+				// 得到焦点时输入框边框状态
+				isFocusinput:false
 			}
 		},
 		directives: {
@@ -1767,7 +1770,7 @@
 				});
 			},
 			print(){
-				debugger
+				// debugger
 				this.cashierDialog = false
 				let selectedTemplate = find(this.qualityTemplateList, {
 					templateId: this.templateId
@@ -2323,7 +2326,7 @@
 					orderNum: 　this.$route.query.orderNumber
 				}
 				seekSellcollectMoney(options).then((res) => {
-					debugger
+					// debugger
 					if(res.data.data.createDate) {
 						let year = res.data.data.createDate.substring(0, 4)
 						let month = res.data.data.createDate.substring(4, 6)
@@ -2893,6 +2896,10 @@
 						})
 					}
 				})
+			},
+			// 输入框获得和失去焦点时触发
+			taggleChangeBorder(){
+				this.isFocusinput = !this.isFocusinput;
 			}
 		}
 	}
@@ -4136,6 +4143,10 @@
 							text-align: center;
 							font-size: 12px;
 							color: #999;
+							transition: all .5s;
+							&.borderColor{
+								border-color: #2993f8;
+							}
 						}
 						.tooltip {
 							position: absolute;
