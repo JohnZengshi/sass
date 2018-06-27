@@ -417,6 +417,7 @@ export default {
   },
   methods: {
     resetData() {
+      debugger
       this.filterCondition = {
         keyword: "",
         // newOrderId: "",
@@ -432,7 +433,7 @@ export default {
       this.addData = [];
       this.dataGridStorage = [];
       this.sortList = [{ name: "产品类别", value: "1" }];
-      this.filterData()
+      this.filterData({page: 1})
     },
     amendNum(parm) {
       this.printNum = parm;

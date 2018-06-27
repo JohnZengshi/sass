@@ -746,6 +746,7 @@ export default {
     },
     // 重置
     resetData () {
+      debugger
       this.keyWord = ''
       this.filterCondition = {
         keyWord: ''
@@ -774,8 +775,8 @@ export default {
       if(this.panelType == 1) {
         this.$refs.storageLocationWrap.reset()
         this.$refs.shopWrap.reset()
-        this.$refs.peopleTypeWrap.reset()
-        this.$refs.peopleWrap.reset()
+        // this.$refs.peopleTypeWrap.reset()
+        // this.$refs.peopleWrap.reset()
         this.$refs.stateWrap.reset()
 
         this.orderBegin = ''
@@ -805,7 +806,6 @@ export default {
         this.$refs.memberFollowWrap.reset()
         this.$refs.memberOriginWrap.reset()
         this.$refs.moreWrap.reset()
-
         // this.filterData.followTypeList = []
         // this.filterData.memberOriginList = []
         // this.filterData.memberTypeList = []
