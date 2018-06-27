@@ -1,47 +1,49 @@
 <template>
-<div class="steps-path">
-  <div class="steps-item" @click="openSmallPage(index)" v-for="(item,index) in orderListST" :key="index" :class="actionIndex == index ? 'changeColor':''">
-    <div class="item_title clearfix" v-if="actionIndex == index">
-      <div class="item_time fl">{{_formDataTimeYND(item.rcvTime)}}</div>
-      <div class="item_status fl">{{ getOrderType(item.orderType) }}</div>
-      <ul class="fl">
-        <li>
-          <div class="label">单据号</div>
-          <div class="message">{{item.orderNum}}</div>
-        </li>
-        <li v-if="item.operatorName">
-          <div class="label">操作人</div>
-          <div class="message">{{item.operatorName}}</div>
-        </li>
-        <li v-if="item.inRepositoryName">
-          <div class="label">入库库位</div>
-          <div class="message">{{item.inRepositoryName}}</div>
-        </li>
-        <li v-if="item.supplierName">
-          <div class="label">供应商</div>
-          <div class="message">{{item.supplierName}}</div>
-        </li>
-        <li v-if="item.locationName">
-          <div class="label">当前位置</div>
-          <div class="message">{{item.locationName}}</div>
-        </li>
-        <li v-if="item.outRepositoryName">
-          <div class="label">调库位置</div>
-          <div class="message">{{item.outRepositoryName}}</div>
-        </li>
-        <li v-if="item.inCounterName">
-          <div class="label">调入柜组</div>
-          <div class="message">{{item.inCounterName}}</div>
-        </li>
-        <li v-if="item.outCounterName">
-          <div class="label">调出柜组</div>
-          <div class="message">{{item.outCounterName}}</div>
-        </li>
-      </ul>
-    </div>
-    <div class="item_title_only clearfix" v-else>
-      <div class="item_time fl">{{ _formDataTimeYND(item.rcvTime) }}</div>
-      <div class="item_status fl">{{ getOrderType(item.orderType) }}</div>
+<div class="s-steps-path">
+  <div>
+        <div class="steps-item" @click="openSmallPage(index)" v-for="(item,index) in orderListST" :key="index" :class="actionIndex == index ? 'changeColor':''">
+      <div class="item_title clearfix" v-if="actionIndex == index">
+        <div class="item_time fl">{{_formDataTimeYND(item.rcvTime)}}</div>
+        <div class="item_status fl">{{ getOrderType(item.orderType) }}</div>
+        <ul class="fl">
+          <li>
+            <div class="label">单据号</div>
+            <div class="message">{{item.orderNum}}</div>
+          </li>
+          <li v-if="item.operatorName">
+            <div class="label">操作人</div>
+            <div class="message">{{item.operatorName}}</div>
+          </li>
+          <li v-if="item.inRepositoryName">
+            <div class="label">入库库位</div>
+            <div class="message">{{item.inRepositoryName}}</div>
+          </li>
+          <li v-if="item.supplierName">
+            <div class="label">供应商</div>
+            <div class="message">{{item.supplierName}}</div>
+          </li>
+          <li v-if="item.locationName">
+            <div class="label">当前位置</div>
+            <div class="message">{{item.locationName}}</div>
+          </li>
+          <li v-if="item.outRepositoryName">
+            <div class="label">调库位置</div>
+            <div class="message">{{item.outRepositoryName}}</div>
+          </li>
+          <li v-if="item.inCounterName">
+            <div class="label">调入柜组</div>
+            <div class="message">{{item.inCounterName}}</div>
+          </li>
+          <li v-if="item.outCounterName">
+            <div class="label">调出柜组</div>
+            <div class="message">{{item.outCounterName}}</div>
+          </li>
+        </ul>
+      </div>
+      <div class="item_title_only clearfix" v-else>
+        <div class="item_time fl">{{ _formDataTimeYND(item.rcvTime) }}</div>
+        <div class="item_status fl">{{ getOrderType(item.orderType) }}</div>
+      </div>
     </div>
   </div>
 </div>
@@ -75,8 +77,14 @@ export default {
           let itemHeight = $('.steps-item').eq(this.actionIndex).find('.item_title').height()
           $('.steps-item').eq(this.actionIndex).height(itemHeight).siblings().height(30)
         })
+        setTimeout(()=> {
+          $(".s-steps-path").mCustomScrollbar({
+              theme: "minimal-dark"
+          });
+        }, 100)
       }
     }
+
   },
   methods: {
     // 获取状态
@@ -206,20 +214,22 @@ export default {
     //   let itemHeight = $('.steps-item').eq(this.actionIndex).find('.item_title').height()
     //   $('.steps-item').eq(this.actionIndex).height(itemHeight).siblings().height(30)
     // })
-
+    $(".s-steps-path").mCustomScrollbar({
+            theme: "minimal-dark"
+    });
+    
     console.log('查看一下数据',this.orderListST)
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.steps-path{
+.s-steps-path{
   position: absolute;
-  width: 100%;
+  width: 110%;
   top:0;
   left: 0;
-
-  min-height:400px;
+  height: 550px;
   
   .steps-item,{
     display: flex;

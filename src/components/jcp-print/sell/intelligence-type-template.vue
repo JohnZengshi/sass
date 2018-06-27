@@ -35,7 +35,7 @@
       <div v-show="types.indexOf('销售')>=0">
         <table class="table-box" header-rows="2">
           <tr>
-            <td colspan="16" class="center font-bold" style="border-top: 0px;">销售报表</td>
+            <td colspan="12" class="center font-bold" style="border-top: 0px;">销售报表</td>
           </tr>
           <tr>
             <td>产品类别</td>
@@ -48,11 +48,11 @@
             <!-- <td>折扣(%)</td> -->
             <td>实售价(元)</td>
             <!-- <td>退换(元)</td> -->
-            <td>购买(元)</td>
+            <td v-if="isBuyBack">购买额(元)</td>
             <!-- <td>回收(元)</td> -->
             <td>实收(元)</td>
-            <td>成本(元)</td>
-            <td>毛利(元)</td>
+            <td v-if="tabSwitch">成本(元)</td>
+            <td v-if="tabSwitch">毛利(元)</td>
           </tr>
           <template v-for="productTypeList in sellList.productTypeList">
             <template v-for="productSellTypeList in productTypeList.productSellTypeList">
@@ -70,10 +70,10 @@
                   <!-- <td>{{item.exchange}}</td> -->
                   <!-- <td>{{Number(item.realPrice)+Number(item.exchange)}}</td> -->
                   <td class="tr">{{item.buy}}</td>
-                  <td class="tr">{{item.actualPrice}}</td>
+                  <td class="tr" v-if="isBuyBack">{{item.actualPrice}}</td>
                   <!-- <td>{{(Number(item.realPrice)+Number(item.exchange)-item.buy)}}</td> -->
-                  <td class="tr">{{item.cost}}</td>
-                  <td class="tr">{{item.margin}}</td>
+                  <td class="tr" v-if="tabSwitch">{{item.cost}}</td>
+                  <td class="tr" v-if="tabSwitch">{{item.margin}}</td>
                   <!-- <td>{{Number(item.realPrice)-Number(item.cost)}}</td> -->
                 </tr>
                 <tr>
@@ -87,11 +87,11 @@
                   <td class="tr">{{productType.totalRealPrice}}</td>
                   <!-- <td>{{productType.totalExchange}}</td> -->
                   <!-- <td>{{Number(productType.totalRealPrice)+Number(productType.totalExchange)}}</td> -->
-                  <td class="tr">{{productType.totalBuy}}</td>
+                  <td class="tr" v-if="isBuyBack">{{productType.totalBuy}}</td>
                   <!-- <td>{{Number(productType.totalRealPrice)+Number(productType.totalExchange)-productType.totalBuy}}</td> -->
                   <td class="tr">{{productType.totalActualPrice}}</td>
-                  <td class="tr">{{productType.totalCost}}</td>
-                  <td class="tr">{{productType.margin}}</td>
+                  <td class="tr" v-if="tabSwitch">{{productType.totalCost}}</td>
+                  <td class="tr" v-if="tabSwitch">{{productType.margin}}</td>
                   <!-- <td>{{Number(productType.totalRealPrice)-Number(productType.totalCost)}}</td> -->
                 </tr>
               </template>
@@ -107,11 +107,11 @@
               <td class="tr">{{productTypeList.totalRealPrice}}</td>
               <!-- <td>{{productTypeList.totalExchange}}</td> -->
               <!-- <td>{{Number(productTypeList.totalRealPrice)+Number(productTypeList.totalExchange)}}</td> -->
-              <td class="tr">{{productTypeList.totalBuy}}</td>
+              <td class="tr" v-if="isBuyBack">{{productTypeList.totalBuy}}</td>
               <td class="tr">{{productTypeList.totalActualPrice}}</td>
               <!-- <td>{{Number(productTypeList.totalRealPrice)+Number(productTypeList.totalExchange)-productTypeList.totalBuy}}</td> -->
-              <td class="tr">{{productTypeList.totalCost}}</td>
-              <td class="tr">{{productTypeList.margin}}</td>
+              <td class="tr" v-if="tabSwitch">{{productTypeList.totalCost}}</td>
+              <td class="tr" v-if="tabSwitch">{{productTypeList.margin}}</td>
               <!-- <td>{{productTypeList.totalCost}}</td> -->
             </tr>
           </template>
@@ -222,6 +222,12 @@
         type: Array
       },
       title: {
+        type: String
+      },
+      tabSwitch: {
+        type: String
+      },
+      isBuyBack: {
         type: String
       }
     },

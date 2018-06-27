@@ -135,14 +135,14 @@
           
       </div>
       
-      <div class="search-block t-center">
+<!--       <div class="search-block t-center">
         <alone-drop-down-colums 
             ref="peopleTypeWrap"
             :propsList="userTypeListConfig"
             titleData="人员类型"
             @dataBack="dataBackUserTypeList"
         ></alone-drop-down-colums>
-      </div>
+      </div> -->
 
 <!--       <div class="search-block">
           <dropDownColums

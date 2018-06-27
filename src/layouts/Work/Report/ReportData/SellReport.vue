@@ -129,13 +129,24 @@
 				</div>
 
 <!--         <intelligence-type-template v-if="this.tabClassActive.index==1" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :title="'智能分类'" :headerData="printSelectDate"></intelligence-type-template> -->
-<project-type-template v-if="dataGridOptions.type==3" ref="projectTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></project-type-template>
 				<!--打印模块-->
 				<div style="display: none;">
-						<detail-template v-if="dataGridOptions.type==1" ref="detailTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></detail-template>
-						<intelligence-type-template v-if="dataGridOptions.type==2" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></intelligence-type-template>
-						<project-type-template v-if="dataGridOptions.type==3" ref="projectTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></project-type-template>
-						<custom-template v-if="dataGridOptions.type==4" ref="customTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"></custom-template>
+						<detail-template v-if="dataGridOptions.type==1" ref="detailTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
+            :title="'明细'"
+            ></detail-template>
+						<intelligence-type-template v-if="dataGridOptions.type==2" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"
+            :isBuyBack="isBuyBack"
+            :title="'智能分类'"
+            ></intelligence-type-template>
+						<project-type-template v-if="dataGridOptions.type==3" ref="projectTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
+            :title="'产品分类'"
+            ></project-type-template>
+						<custom-template v-if="dataGridOptions.type==4" ref="customTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
+            :title="'自定义'"
+            :tabSwitch="tabSwitch"
+            :isBuyBack="isBuyBack"
+            ></custom-template>
 				</div>
 				
 			</div>
