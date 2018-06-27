@@ -1,5 +1,5 @@
 <template>
-  <div class="print-box" id="page1">
+  <div class="print-box breakable" id="page1">
     <div class="print-header">
       <h1 class="title center">收银统计</h1>
       <div class="head-option">
@@ -13,11 +13,8 @@
 				班组名称：{{printSelectDate.}}
 			</div>-->
     </div>
-    <div>
+    <div id="win">
       <table class="table-box">
-        <!-- <tr>
-          <td colspan="7" class="center font-bold" style="border-top: 0px;">销售统计</td>
-        </tr> -->
         <tr>
           <!-- <td>序号</td> -->
           <td class="tm">销售类型</td>
@@ -26,9 +23,9 @@
           <td class="tm">件数(件)</td>
           <td class="tm">件重(g)</td>
           <td class="tm">金重(g)</td>
-          <td class="tm">标价(元)</td>
+          <td class="tm">标价/原售价 (元)</td>
           <td class="tm">工费总额(元)</td>
-          <td class="tm">实售价(元)</td>
+          <td class="tm">实售价/回购价(元)</td>
         </tr>
         <template v-if="sellStorage.productTypeList" v-for="(productTypeList,j) in sellStorage.productTypeList">
           <template v-if="productTypeList.productSellTypeList" v-for="(productSellTypeList,i) in productTypeList.productSellTypeList">
@@ -125,6 +122,9 @@
   </div>
 </template>
 <script>
+  import {
+    jcpPrint
+  } from "@/tools/jcp-print";
   export default {
     components: {},
     props: {
@@ -157,37 +157,7 @@
         buyBackStorageLength: 0
       }
     },
-    mounted() {
-
-    },
-    created() {
-      // 	const sellProductTypeList = this.sellStorage["productTypeList"];
-      //   sellProductTypeList.forEach((val, index) => {
-      //     const productSellTypeList = val["productSellTypeList"]
-      //     productSellTypeList.forEach((val, index) => {
-      //       this.sellStorageLength += val["productTypeList"].length
-      //     })
-      //   })
-      //   console.log(this.sellStorageLength)
-      //   const buyBackProductTypeList = this.buyBackStorage["productTypeList"]
-      //   buyBackProductTypeList.forEach((val, index) => {
-      //     const productSellTypeList = val["productSellTypeList"]
-      //     productSellTypeList.forEach((val, index) => {
-      //       this.buyBackStorageLength += val["productTypeList"].length;
-      //     })
-      //   })
-      //   console.log(this.buyBackStorageLength)
-    },
     methods: {
-      print() {
-        var myDoc = {
-          documents: document,
-          copyrights: '杰创软件拥有版权  www.jatools.com',
-          paperName: "A4",
-        };
-        var jcp = getJCP();
-        jcp.printPreview(myDoc, true);
-      },
       computedTotalRealPrice() {
         this.totalRealPrice = this.sellStorage.productTypeList[0].totalRealPrice;
       },
@@ -205,13 +175,19 @@
           }
         })
         return length;
+      },
+      print() {
+        let doc = {
+          documents: document,
+        };
+        jcpPrint.printPreview(doc);
       }
     }
   }
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss" scoped>
   .center {
     text-align: center;
   }

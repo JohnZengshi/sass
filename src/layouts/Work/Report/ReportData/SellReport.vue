@@ -133,6 +133,7 @@
 				<div style="display: none;">
 						<detail-template v-if="dataGridOptions.type==1" ref="detailTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :title="'明细'"
+            :tabSwitch="tabSwitch"
             ></detail-template>
 						<intelligence-type-template v-if="dataGridOptions.type==2" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :tabSwitch="tabSwitch"

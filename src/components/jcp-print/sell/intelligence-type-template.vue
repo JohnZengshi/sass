@@ -35,7 +35,7 @@
       <div v-show="types.indexOf('销售')>=0">
         <table class="table-box" header-rows="2">
           <tr>
-            <td colspan="12" class="center font-bold" style="border-top: 0px;">销售报表</td>
+            <td :colspan="numLength" class="center font-bold" style="border-top: 0px;">销售报表</td>
           </tr>
           <tr>
             <td>产品类别</td>
@@ -50,7 +50,7 @@
             <!-- <td>退换(元)</td> -->
             <td v-if="isBuyBack">购买额(元)</td>
             <!-- <td>回收(元)</td> -->
-            <td>实收(元)</td>
+            <td v-if="isBuyBack">实收(元)</td>
             <td v-if="tabSwitch">成本(元)</td>
             <td v-if="tabSwitch">毛利(元)</td>
           </tr>
@@ -69,7 +69,7 @@
                   <td class="tr">{{item.realPrice}}</td>
                   <!-- <td>{{item.exchange}}</td> -->
                   <!-- <td>{{Number(item.realPrice)+Number(item.exchange)}}</td> -->
-                  <td class="tr">{{item.buy}}</td>
+                  <td class="tr" v-if="isBuyBack">{{item.buy}}</td>
                   <td class="tr" v-if="isBuyBack">{{item.actualPrice}}</td>
                   <!-- <td>{{(Number(item.realPrice)+Number(item.exchange)-item.buy)}}</td> -->
                   <td class="tr" v-if="tabSwitch">{{item.cost}}</td>
@@ -89,7 +89,7 @@
                   <!-- <td>{{Number(productType.totalRealPrice)+Number(productType.totalExchange)}}</td> -->
                   <td class="tr" v-if="isBuyBack">{{productType.totalBuy}}</td>
                   <!-- <td>{{Number(productType.totalRealPrice)+Number(productType.totalExchange)-productType.totalBuy}}</td> -->
-                  <td class="tr">{{productType.totalActualPrice}}</td>
+                  <td class="tr" v-if="isBuyBack">{{productType.totalActualPrice}}</td>
                   <td class="tr" v-if="tabSwitch">{{productType.totalCost}}</td>
                   <td class="tr" v-if="tabSwitch">{{productType.margin}}</td>
                   <!-- <td>{{Number(productType.totalRealPrice)-Number(productType.totalCost)}}</td> -->
@@ -108,7 +108,7 @@
               <!-- <td>{{productTypeList.totalExchange}}</td> -->
               <!-- <td>{{Number(productTypeList.totalRealPrice)+Number(productTypeList.totalExchange)}}</td> -->
               <td class="tr" v-if="isBuyBack">{{productTypeList.totalBuy}}</td>
-              <td class="tr">{{productTypeList.totalActualPrice}}</td>
+              <td class="tr" v-if="isBuyBack">{{productTypeList.totalActualPrice}}</td>
               <!-- <td>{{Number(productTypeList.totalRealPrice)+Number(productTypeList.totalExchange)-productTypeList.totalBuy}}</td> -->
               <td class="tr" v-if="tabSwitch">{{productTypeList.totalCost}}</td>
               <td class="tr" v-if="tabSwitch">{{productTypeList.margin}}</td>
@@ -118,10 +118,10 @@
         </table>
       </div>
 
-      <div v-show="types.indexOf('回购')>=0">
+      <div style="width: 100%;" v-show="types.indexOf('回购')>=0">
         <table class="table-box" header-rows="2">
           <tr>
-            <td colspan="11" class="center font-bold" style="border-top: 0px;">回购报表</td>
+            <td colspan="10" class="center font-bold" style="border-top: 0px;">回购报表</td>
           </tr>
           <tr>
             <td>回购类型</td>
@@ -156,14 +156,14 @@
                 </tr>
                 <tr>
                   <td class="tm" colspan="2">小计</td>
-                  <td class="tr">{{productSellTypeList.totalNum}}</td>
-                  <td class="tr">{{productSellTypeList.totalWeight}}</td>
-                  <td class="tr">{{productSellTypeList.totalGoldPrice}}</td>
-                  <!-- <td>{{productSellTypeList.totalGoldWeight}}元/g</td> -->
-                  <td class="tr">{{productSellTypeList.estimatePrice}}</td>
-                  <td class="tr">{{productSellTypeList.totaldepreciationDiscount}}</td>
-                  <td class="tr">{{productSellTypeList.totalWage}}</td>
-                  <td class="tr">{{productSellTypeList.totalActualPrice}}</td>
+                  <td class="tr">{{productType.totalNum}}</td>
+                  <td class="tr">{{productType.totalWeight}}</td>
+                  <td class="tr">{{productType.totalGoldPrice}}</td>
+                  <!-- <td>{{productType.totalGoldWeight}}元/g</td> -->
+                  <td class="tr">{{productType.estimatePrice}}</td>
+                  <td class="tr">{{productType.totaldepreciationDiscount}}</td>
+                  <td class="tr">{{productType.totalWage}}</td>
+                  <td class="tr">{{productType.totalActualPrice}}</td>
                 </tr>
               </template>
               <tr>
@@ -225,10 +225,10 @@
         type: String
       },
       tabSwitch: {
-        type: String
+        type: Boolean
       },
       isBuyBack: {
-        type: String
+        type: Boolean
       }
     },
     filters: {
@@ -283,7 +283,11 @@
         printDate: ""
       }
     },
-    computed: {},
+    computed: {
+      numLength () {
+        return 12 - ((this.isBuyBack ? 2 : 0) + (this.tabSwitch ? 2 : 0))
+      }
+    },
     mounted() {
       this.printDate = moment().format("YYYY-MM-DD HH:mm");
     },

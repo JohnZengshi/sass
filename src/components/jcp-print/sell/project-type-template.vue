@@ -24,7 +24,7 @@
 		<div v-show="types.indexOf('销售')>=0">
 			<table class="table-box">
 				<tr>
-					<td colspan="19" class="center font-bold" style="border-top: 0px;">销售报表</td>
+					<td colspan="12" class="center font-bold" style="border-top: 0px;">销售报表</td>
 				</tr>
 				<tr>
 					<td>序号</td>
@@ -87,7 +87,7 @@
 		<div v-show="types.indexOf('回购')>=0">
 			<table class="table-box">
 				<tr>
-					<td colspan="19" class="center font-bold" style="border-top: 0px;">回购报表</td>
+					<td colspan="10" class="center font-bold" style="border-top: 0px;">回购报表</td>
 				</tr>
 				<tr>
 					<td>序号</td>

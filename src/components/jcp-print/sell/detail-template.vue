@@ -24,7 +24,7 @@
 		<div v-show="types.indexOf('销售')>=0">
 			<table class="table-box">
 				<tr>
-					<td colspan="13" class="center font-bold" style="border-top: 0px;">销售报表</td>
+					<td :colspan="numLength" class="center font-bold" style="border-top: 0px;">销售报表</td>
 				</tr>
 				<tr>
 					<td>序号</td>
@@ -38,8 +38,8 @@
 					<td>工费总额(元)</td>
 					<!-- <td>折扣(%)</td> -->
 					<td>实售价(元)</td>
-					<td>成本(元)</td>
-					<td>毛利(元)</td>
+					<td v-if="tabSwitch">成本(元)</td>
+					<td v-if="tabSwitch">毛利(元)</td>
 				</tr>
 				<tr v-for="(item,index) in sellList.detailList" :key="index">
 					<td>{{index+1}}</td>
@@ -53,8 +53,8 @@
 					<td>{{item.wage}}</td>
 					<!-- <td>{{item.discount}}</td> -->
 					<td>{{item.realPrice}}</td>
-					<td>{{item.cost}}</td>
-					<td>{{item.margin}}</td>
+					<td v-if="tabSwitch">{{item.cost}}</td>
+					<td v-if="tabSwitch">{{item.margin}}</td>
 				</tr>
 				<tr>
 					<td colspan="2">合计</td>
@@ -65,15 +65,15 @@
 					<td>{{sellList.totalPrice}}</td>
 					<td>{{sellList.totalWage}}</td>
 					<td>{{sellList.totalRealPrice}}</td>
-					<td>{{sellList.totalCost}}</td>
-					<td>{{sellList.totalMargin}}</td>
+					<td v-if="tabSwitch">{{sellList.totalCost}}</td>
+					<td v-if="tabSwitch">{{sellList.totalMargin}}</td>
 				</tr>
 			</table>
 		</div>
 		<div v-show="types.indexOf('回购')>=0">
 			<table class="table-box">
 				<tr>
-					<td colspan="13" class="center font-bold" style="border-top: 0px;">回购报表</td>
+					<td colspan="11" class="center font-bold" style="border-top: 0px;">回购报表</td>
 				</tr>
 				<tr>
 					<td>序号</td>
@@ -137,16 +137,24 @@
 			},
 			types:{
 				type:Array
-			}
+			},
+			isBuyBack: {
+        type: Boolean
+      }
 		},
 		data() {
 			return {
-				printDate:""
+				printDate: ""
 			}
 		},
 		mounted() {
 			this.printDate = moment().format("YYYY-MM-DD HH:mm");
 		},
+		computed: {
+      numLength () {
+        return 11 - (this.isBuyBack ? 2 : 0)
+      }
+    },
 		methods: {
 			print() {
 				let doc = {
