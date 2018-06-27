@@ -63,7 +63,7 @@ export default {
 	props : ['dataGridStorage','reportType','tabSwitch', 'positionSwitch','newList', 'isBuyBack'],
 	methods:{
     sortList (val) {
-        debugger
+        // debugger
       //console.log(val)
       this.$emit('sortList', val)
     },
@@ -122,7 +122,7 @@ export default {
           this.detailDataGridColumn = temp;
         },
         posSwitch(){
-            debugger
+            // debugger
             let temp = [];
             //this.setConfig()
             this.configType()

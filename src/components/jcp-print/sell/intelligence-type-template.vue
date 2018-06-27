@@ -58,60 +58,60 @@
             <template v-for="productSellTypeList in productTypeList.productSellTypeList">
               <template v-for="(productType, rowNum) in productSellTypeList.productTypeList">
                 <tr v-for="(item,index) in productType.detailList">
-                  <td v-if="index==0" :rowspan="productType.detailList.length">{{productType.className}}</td>
-                  <td>{{item.className}}</td>
-                  <td>{{item.num}}</td>
-                  <td>{{item.weight}}</td>
-                  <td>{{item.goldWeight}}</td>
-                  <td>{{item.soldPrice}}</td>
-                  <td>{{item.wage}}</td>
+                  <td class="tm" v-if="index==0" :rowspan="productType.detailList.length">{{productType.className}}</td>
+                  <td class="tl">{{item.className}}</td>
+                  <td class="tr">{{item.num}}</td>
+                  <td class="tr">{{item.weight}}</td>
+                  <td class="tr">{{item.goldWeight}}</td>
+                  <td class="tr">{{item.soldPrice}}</td>
+                  <td class="tr">{{item.wage}}</td>
                   <!-- <td>{{item.discount}}</td> -->
-                  <td>{{item.realPrice}}</td>
+                  <td class="tr">{{item.realPrice}}</td>
                   <!-- <td>{{item.exchange}}</td> -->
                   <!-- <td>{{Number(item.realPrice)+Number(item.exchange)}}</td> -->
-                  <td>{{item.buy}}</td>
-                  <td>{{item.actualPrice}}</td>
+                  <td class="tr">{{item.buy}}</td>
+                  <td class="tr">{{item.actualPrice}}</td>
                   <!-- <td>{{(Number(item.realPrice)+Number(item.exchange)-item.buy)}}</td> -->
-                  <td>{{item.cost}}</td>
-                  <td>{{item.margin}}</td>
+                  <td class="tr">{{item.cost}}</td>
+                  <td class="tr">{{item.margin}}</td>
                   <!-- <td>{{Number(item.realPrice)-Number(item.cost)}}</td> -->
                 </tr>
                 <tr>
-                  <td colspan="2">小计</td>
-                  <td>{{productType.totalNum}}</td>
-                  <td>{{productType.totalWeight}}</td>
-                  <td>{{productType.totalGoldWeight}}</td>
-                  <td>{{productType.totalSoldPrice}}</td>
-                  <td>{{productType.totalWage}}</td>
+                  <td class="tm" colspan="2">小计</td>
+                  <td class="tr">{{productType.totalNum}}</td>
+                  <td class="tr">{{productType.totalWeight}}</td>
+                  <td class="tr">{{productType.totalGoldWeight}}</td>
+                  <td class="tr">{{productType.totalSoldPrice}}</td>
+                  <td class="tr">{{productType.totalWage}}</td>
                   <!-- <td>{{productType.totalDiscount}}</td> -->
-                  <td>{{productType.totalRealPrice}}</td>
+                  <td class="tr">{{productType.totalRealPrice}}</td>
                   <!-- <td>{{productType.totalExchange}}</td> -->
                   <!-- <td>{{Number(productType.totalRealPrice)+Number(productType.totalExchange)}}</td> -->
-                  <td>{{productType.totalBuy}}</td>
+                  <td class="tr">{{productType.totalBuy}}</td>
                   <!-- <td>{{Number(productType.totalRealPrice)+Number(productType.totalExchange)-productType.totalBuy}}</td> -->
-                  <td>{{productType.totalActualPrice}}</td>
-                  <td>{{productType.totalCost}}</td>
-                  <td>{{productType.margin}}</td>
+                  <td class="tr">{{productType.totalActualPrice}}</td>
+                  <td class="tr">{{productType.totalCost}}</td>
+                  <td class="tr">{{productType.margin}}</td>
                   <!-- <td>{{Number(productType.totalRealPrice)-Number(productType.totalCost)}}</td> -->
                 </tr>
               </template>
             </template>
             <tr>
-              <td colspan="2">合计</td>
-              <td>{{productTypeList.totalNum}}</td>
-              <td>{{productTypeList.totalWeight}}</td>
-              <td>{{productTypeList.totalGoldWeight}}</td>
-              <td>{{productTypeList.totalSoldPrice}}</td>
-              <td>{{productTypeList.totalWage}}</td>
+              <td class="tm" colspan="2">合计</td>
+              <td class="tr">{{productTypeList.totalNum}}</td>
+              <td class="tr">{{productTypeList.totalWeight}}</td>
+              <td class="tr">{{productTypeList.totalGoldWeight}}</td>
+              <td class="tr">{{productTypeList.totalSoldPrice}}</td>
+              <td class="tr">{{productTypeList.totalWage}}</td>
               <!-- <td>{{productTypeList.totalDiscount}}</td> -->
-              <td>{{productTypeList.totalRealPrice}}</td>
+              <td class="tr">{{productTypeList.totalRealPrice}}</td>
               <!-- <td>{{productTypeList.totalExchange}}</td> -->
               <!-- <td>{{Number(productTypeList.totalRealPrice)+Number(productTypeList.totalExchange)}}</td> -->
-              <td>{{productTypeList.totalBuy}}</td>
-              <td>{{productTypeList.totalActualPrice}}</td>
+              <td class="tr">{{productTypeList.totalBuy}}</td>
+              <td class="tr">{{productTypeList.totalActualPrice}}</td>
               <!-- <td>{{Number(productTypeList.totalRealPrice)+Number(productTypeList.totalExchange)-productTypeList.totalBuy}}</td> -->
-              <td>{{productTypeList.totalCost}}</td>
-              <td>{{productTypeList.margin}}</td>
+              <td class="tr">{{productTypeList.totalCost}}</td>
+              <td class="tr">{{productTypeList.margin}}</td>
               <!-- <td>{{productTypeList.totalCost}}</td> -->
             </tr>
           </template>
@@ -139,58 +139,58 @@
             <template v-for="productSellTypeList in productTypeList.productSellTypeList">
               <template v-for="(productType, rowNum) in productSellTypeList.productTypeList">
                 <tr v-for="(item,index) in productType.detailList">
-                  <td v-if="rowNum==0 && index==0" :rowspan="(productSellTypeList.rows)+(productSellTypeList.productTypeList.length)">
+                  <td class="tm" v-if="rowNum==0 && index==0" :rowspan="(productSellTypeList.rows)+(productSellTypeList.productTypeList.length)">
                     {{productSellTypeList.sellTypeName}}
                   </td>
-                  <td v-if="index==0" :rowspan="productType.detailList.length">
+                  <td class="tl" v-if="index==0" :rowspan="productType.detailList.length">
                     {{productType.className}}
                   </td>
-                  <td>{{item.className}}</td>
-                  <td>{{item.num}}</td>
-                  <td>{{item.weight}}</td>
-                  <td>{{item.goldPrice}}</td>
-                  <td>{{item.estimatePrice}}</td>
-                  <td>{{item.depreciationDiscount}}</td>
-                  <td>{{item.wage}}</td>
-                  <td>{{item.actualPrice}}</td>
+                  <td class="tl">{{item.className}}</td>
+                  <td class="tr">{{item.num}}</td>
+                  <td class="tr">{{item.weight}}</td>
+                  <td class="tr">{{item.goldPrice}}</td>
+                  <td class="tr">{{item.estimatePrice}}</td>
+                  <td class="tr">{{item.depreciationDiscount}}</td>
+                  <td class="tr">{{item.wage}}</td>
+                  <td class="tr">{{item.actualPrice}}</td>
                 </tr>
                 <tr>
-                  <td colspan="2">小计</td>
-                  <td>{{productSellTypeList.totalNum}}</td>
-                  <td>{{productSellTypeList.totalWeight}}</td>
-                  <td>{{productSellTypeList.totalGoldPrice}}</td>
+                  <td class="tm" colspan="2">小计</td>
+                  <td class="tr">{{productSellTypeList.totalNum}}</td>
+                  <td class="tr">{{productSellTypeList.totalWeight}}</td>
+                  <td class="tr">{{productSellTypeList.totalGoldPrice}}</td>
                   <!-- <td>{{productSellTypeList.totalGoldWeight}}元/g</td> -->
-                  <td>{{productSellTypeList.estimatePrice}}</td>
-                  <td>{{productSellTypeList.totaldepreciationDiscount}}</td>
-                  <td>{{productSellTypeList.totalWage}}</td>
-                  <td>{{productSellTypeList.totalActualPrice}}</td>
+                  <td class="tr">{{productSellTypeList.estimatePrice}}</td>
+                  <td class="tr">{{productSellTypeList.totaldepreciationDiscount}}</td>
+                  <td class="tr">{{productSellTypeList.totalWage}}</td>
+                  <td class="tr">{{productSellTypeList.totalActualPrice}}</td>
                 </tr>
               </template>
               <tr>
-                <td colspan="3">{{productSellTypeList.sellTypeName}}小计</td>
-                <td>{{productSellTypeList.totalNum}}</td>
-                <td>{{productSellTypeList.totalWeight}}</td>
+                <td class="tm" colspan="3">{{productSellTypeList.sellTypeName}}小计</td>
+                <td class="tr">{{productSellTypeList.totalNum}}</td>
+                <td class="tr">{{productSellTypeList.totalWeight}}</td>
                 <!-- <td>{{productSellTypeList.totalGoldPrice}}</td> -->
                 <td></td>
                 <!-- <td>{{productSellTypeList.totalGoldWeight}}元/g</td> -->
-                <td>{{productSellTypeList.estimatePrice}}</td>
+                <td class="tr">{{productSellTypeList.estimatePrice}}</td>
                 <!-- <td>{{productSellTypeList.totaldepreciationDiscount}}</td> -->
                 <td></td>
-                <td>{{productSellTypeList.totalWage}}</td>
-                <td>{{productSellTypeList.totalActualPrice}}</td>
+                <td class="tr">{{productSellTypeList.totalWage}}</td>
+                <td class="tr">{{productSellTypeList.totalActualPrice}}</td>
               </tr>
             </template>
             <tr>
-              <td colspan="3">合计</td>
-              <td>{{productTypeList.totalNum}}</td>
-              <td>{{productTypeList.totalWeight}}</td>
+              <td class="tm" colspan="3">合计</td>
+              <td class="tr">{{productTypeList.totalNum}}</td>
+              <td class="tr">{{productTypeList.totalWeight}}</td>
               <!-- <td>{{productTypeList.totalGoldPrice}}</td> -->
               <td></td>
-              <td>{{productTypeList.totalestimatePrice}}</td>
+              <td class="tr">{{productTypeList.totalestimatePrice}}</td>
               <!-- <td>{{productTypeList.totaldepreciationDiscount}}</td> -->
               <td></td>
-              <td>{{productTypeList.totalWage}}</td>
-              <td>{{productTypeList.totalActualPrice}}</td>
+              <td class="tr">{{productTypeList.totalWage}}</td>
+              <td class="tr">{{productTypeList.totalActualPrice}}</td>
             </tr>
           </template>
         </table>
@@ -356,12 +356,24 @@
     font-size: 12px;
     border: 1px solid;
     line-height: 25px;
-    text-align: center;
+	padding: 5px;
   }
 
   .printDate {
     text-align: right;
     padding: 15px 0;
+  }
+
+  .tl{
+	text-align: left;
+  }
+
+  .tr{
+	text-align: right;
+  }
+
+  .tm{
+	  text-align: center;
   }
 
 </style>
