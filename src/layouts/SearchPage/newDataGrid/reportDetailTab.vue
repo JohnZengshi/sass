@@ -16,31 +16,26 @@
           <i class="iconfont icon-shangpin"></i>          
           <div class="detailsInfo">
             <div class="detailsInfo_left">
-              <div class="main-body">
-                <!-- <ul class="title-tab">
-                    <div class="slide" ref="slide"></div>
-                    <li @click="tabSwitch(item, index, $event)" :key="index" :class="{active: tabIndex==index}" v-for="(item, index) in tabList">
-                        <div>{{item.label}}</div>
-                    </li>
-
-                </ul> -->
-                <ul class="item-blobk">
-                    <li v-for="(item, index) in sortDataList" :key="index">
-                        <div class="main-name">
-                            <div class="name-wrap">
-                                <span class="line"></span>
-                                <span class="name">{{item.label}}</span>
-                            </div>
-                        </div>
-                        <div class="main-item-list">
-                            <div class="main-item" v-for="(f, i) in item.dataList" :key="i">
-                                <div class="title">{{f.itemName}}</div>
-                                <div class="value">{{f.itemVal}}<span v-if="f.unit">{{f.unit}}</span></div>
-                            </div>
-                        </div>
-                        <div class="clear"></div>
-                    </li>
-                </ul>
+              <div class="d-main-body">
+                <div>
+                  <ul class="item-blobk">
+                      <li v-for="(item, index) in sortDataList" :key="index">
+                          <div class="main-name">
+                              <div class="name-wrap">
+                                  <span class="line"></span>
+                                  <span class="name">{{item.label}}</span>
+                              </div>
+                          </div>
+                          <div class="main-item-list">
+                              <div class="main-item" v-for="(f, i) in item.dataList" :key="i">
+                                  <div class="title">{{f.itemName}}</div>
+                                  <div class="value">{{f.itemVal}}<span v-if="f.unit">{{f.unit}}</span></div>
+                              </div>
+                          </div>
+                          <div class="clear"></div>
+                      </li>
+                  </ul>
+                </div>
               </div>
             </div>
             <div class="detailsInfo_right">
@@ -50,9 +45,9 @@
                 <div><i class="icon-dian fl">●</i><p>{{getProductClass(productClass)}}</p></div>
               </div>
               <div class="right_bottom">
-                <!-- 步骤条 -->
-                <steps-path :orderListST="orderListST" :productId="productId" :statusREfresh="statusREfresh">
-                </steps-path>
+                  <!-- 步骤条 -->
+                  <stepsPath :orderListST="orderListST" :productId="productId" :statusREfresh="statusREfresh">
+                  </stepsPath>
               </div>
             </div>
           </div>
@@ -213,6 +208,11 @@ export default {
     //开关 成本列
     tabSwitch: function() {
       this.tableSwitch();
+    },
+    sortDataList () {
+      $(".d-main-body").mCustomScrollbar({
+          theme: "minimal-dark"
+      });
     }
   },
   created() {
@@ -1069,6 +1069,10 @@ export default {
     }
   },
   mounted() {
+    $(".d-main-body").mCustomScrollbar({
+            theme: "minimal-dark"
+    });
+    
     this.$nextTick(() => {
       this.tableSwitch();
     });
@@ -1108,11 +1112,10 @@ export default {
     display: flex;
     .detailsInfo_left {
       width: 1010px;
-      .main-body {
+      .d-main-body {
             width: 1010px;
             height: 700px;
             // margin: 0 auto;
-            overflow-y: auto;
             .title-tab {
                 height: 32px;
                 position: relative;
@@ -1263,7 +1266,7 @@ export default {
       // 时间轴
       .right_bottom {
         position: relative;
-        height: 100%;
+        height: 550px;
         margin-top: 30px;
       }
     }

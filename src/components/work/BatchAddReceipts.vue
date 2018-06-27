@@ -245,7 +245,6 @@
         </div>
       </div>
     </div>
-    <!-- ------------------------------------- -->
     <el-dialog top="30px" :append-to-body="true" v-model="littleBatch" customClass="litBatch" :modal="false">
       <div class="little-batch-title">
         <div class="search">

@@ -372,6 +372,25 @@ export default {
         //this.$refs.switch_skin.style.background = "#f5f8f7"
       }
     }
+    $(".main-body").mCustomScrollbar({
+        theme: "minimal-dark",
+        autoHideScrollbar: true,
+        scrollInertia: 500,
+        mouseWheel: {
+          scrollAmount: 200,
+          preventDefault: false,
+          normalizeDelta: false
+        },
+        callbacks: {
+          onTotalScroll: function () {
+            //console.log(111)
+          },
+          onScroll: function () {
+            //console.log(222)
+          }
+        }
+
+      });
   },
   watch: {
     companyInfo: function() {
@@ -1878,7 +1897,7 @@ export default {
             width: 1010px;
             height: 700px;
             // margin: 0 auto;
-            overflow-y: auto;
+            // overflow-y: auto;
             .title-tab {
                 height: 32px;
                 position: relative;
