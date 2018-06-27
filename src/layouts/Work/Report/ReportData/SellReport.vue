@@ -26,7 +26,7 @@
                 <DropDownMenu class="selected_dropdown" titleName="销售人" dataType="销售人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
                 </DropDownMenu>
 
-                <DropDownMenu v-if="!isdisabled" class="selected_dropdown" titleName="收银人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+                <DropDownMenu v-if="!isdisabled" class="selected_dropdown" titleName="收银人" dataType="收银人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
                 </DropDownMenu>
                 <div v-else class="selected_dropdown el-dropdown placeholder disabled">
                   <span class="el-dropdown-link">收银人</span>
@@ -62,20 +62,6 @@
 							<i class="iconfont icon-liebiao"></i>{{currentReportName}}
 						</div>
 
-<!-- 						<template v-if="sellShowId == 'sales' || sellShowId == 'buyback' ">
-
-							<div class="sort-wrap">
-								<label>排序:</label>
-								<div v-for="(item, index) in sortList" :key="index">
-									{{item.name}}
-									<img v-if="item.value == '2'" src="./../../../../../static/img/sort/down1.png">
-									<img v-if="item.value == '1'" src="./../../../../../static/img/sort/up1.png">
-									<i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
-								</div>
-							</div>
-						</template> -->
-          
-
             <filter-header
               v-if="sellShowId == 'sales' || sellShowId == 'buyback'"
               @complate="filterHeaderComplate"
@@ -89,106 +75,6 @@
 
              <cut-bg class="cut-bg-btn-wrap ml-10" :showList="sellTypeList" :current="sellShowId" @pitchOn="madeUpOnSell"></cut-bg>
 
-<!-- 						<template v-if="sellShowId == 'sales' || sellShowId == 'buyback' ">
-							<div class="tab">
-								<span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span>
-								<span :class="1 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(1, 2)">智能分类</span>
-								<span :class="2 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(2, 3)">产品分类</span>
-								<span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(3, 4)" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义
-              <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i>
-              <div class="customDia" ref="customDia">
-              <div class="body">
-                  <div class="list-wrap">
-                  <ul>
-                      <li></li>
-                      <li>成色名称</li>
-                      <li>宝石名称</li>
-                      <li>首饰类别</li>
-                  </ul>
-                  <ul>
-                      <li>计重类</li>
-                      <li>
-                      <ZDYDropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="成色名称-计重"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                      >
-                      </ZDYDropDownMenu>
-                      </li>
-                      <li>
-                      <ZDYDropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="宝石名称-计重"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                      >
-                      </ZDYDropDownMenu>
-                      </li>
-                      <li>
-                      <ZDYDropDownMenu
-                          titleName="大类"
-                          dataType="customDia"
-                          dataDataType="首饰类别-计重"
-                          :propList="dialogOptions.jewelryList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                      >
-                      </ZDYDropDownMenu>
-                      </li>
-                  </ul>
-                  <ul>
-                      <li>计件类</li>
-                      <li>
-                      <ZDYDropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="成色名称-计件"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                      >
-                      </ZDYDropDownMenu>
-                      </li>
-                      <li>
-                      <ZDYDropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="宝石名称-计件"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                      >
-                      </ZDYDropDownMenu>
-                      </li>
-                      <li>
-                      <ZDYDropDownMenu
-                          titleName="大类"
-                          dataType="customDia"
-                          dataDataType="首饰类别-计件"
-                          :propList="dialogOptions.jewelryList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                      >
-                      </ZDYDropDownMenu>
-                      </li>
-                  </ul>
-                  </div>
-              </div>
-              <div class="foot" solt="footer">
-                  <div class="btn-wrap">
-                  <div @click.stop="resetOption" class="reset btn">重置</div>
-                  <div @click.stop="compOption" class="comp btn">完成</div>
-                  </div>
-              </div>
-              </div>
-          </span>
-							</div>
-						</template> -->
 
 					</div>
 
@@ -241,6 +127,8 @@
 						<i class="iconfont icon-dayin"></i>
 					</el-button>
 				</div>
+
+        <intelligence-type-template v-if="this.tabClassActive.index==1" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :title="'智能分类'" :headerData="printSelectDate"></intelligence-type-template>
 
 				<!--打印模块-->
 				<div style="display: none;">
@@ -1126,7 +1014,7 @@ export default {
           ]
         });
       } else if (val.type == "销售人") {
-        this.printSelectDate.salesperson = "’";
+        this.printSelectDate.salesperson = "";
         this.printSelectDate.operateId = "";
         Object.assign(this.dataGridOptions, {
           salesmenList: [
@@ -1156,6 +1044,7 @@ export default {
         this.dataGridOptions.supplierId = val.item.operateId;
         this.printSelectDate.supplier = val.item.operateName;
       } else if (val.type == "制单人") {
+        debugger
         this.printSelectDate.preparedBy = val.item.operateName;
         Object.assign(this.dataGridOptions, {
           makeUserList: [
@@ -1166,7 +1055,8 @@ export default {
         });
         this.dataGridOptions.makeUserList[0].makeUserId = val.item.operateId;
       } else if (val.type == "收银人") {
-        this.printSelectDate.payee = val.item.operateNam;
+        debugger
+        this.printSelectDate.payee = val.item.operateName;
         Object.assign(this.dataGridOptions, {
           cashierList: [
             {
@@ -1176,7 +1066,7 @@ export default {
         });
         this.dataGridOptions.cashierList[0].cashierId = val.item.operateId;
       } else if (val.type == "销售人") {
-        this.printSelectDate.salesperson = val.item.operateNam;
+        this.printSelectDate.salesperson = val.item.operateName;
         this.printSelectDate.operateId = val.item.operateId;
         Object.assign(this.dataGridOptions, {
           salesmenList: [
@@ -1550,6 +1440,7 @@ export default {
 
     //打印表格
     tabPrin() {
+      debugger
       if (
         _.indexOf(this.selectValue, "销售") >= 0 ||
         _.indexOf(this.selectValue, "回购") >= 0
@@ -1571,75 +1462,7 @@ export default {
             break;
         }
       }
-      //				if(this.selectValue.indexOf('销售') >= 0) {
-      //					if(this.getReportType() == 1) { //明细
-      //						this.printSellShow = this.sellStorage.detailList.length > 0
-      //					} else {
-      //						this.printSellShow = this.sellStorage.productTypeList.length > 0 && this.tradeStorage.productTypeList[0].totalNum == '0'
-      //					}
-      //				}
-      //				if(this.selectValue.indexOf('回购') >= 0) {
-      //					if(this.getReportType() == 1) { //明细
-      //						this.printBuybackShow = this.tradeStorage.detailList.length > 0
-      //					} else {
-      //						this.printBuybackShow = this.tradeStorage.productTypeList.length > 0 && this.tradeStorage.productTypeList[0].totalNum == '0'
-      //					}
-      //				}
-      //				if(this.selectValue.indexOf('收银') >= 0) {
-      //					this.printCollectShow = this.collectStorage.shopList.length > 0
-      //				}
-      //				if(!this.printCollectShow &&
-      //					!this.printBuybackShow &&
-      //					!this.printSellShow
-      //				) {
-      //					this.$message({
-      //						type: 'error',
-      //						message: '暂无可打印数据'
-      //					})
-      //					this.visible2 = false;
-      //					return
-      //				}
-      //				this.visible2 = false;
-      //
-      //				this.isPrint = 1;
-      //				let print = null;
-      //
-      //				this.appPrint = document.getElementById('appPrint')
-      //
-      //				if(this.IntervalOut) clearInterval(this.IntervalOut)
-      //				document.getElementById('app').style.display = 'none';
-      //
-      //				setTimeout(() => {
-      //					this.appPrint.innerHTML = this.$refs.tablePrint.innerHTML
-      //				}, 1000)
-      //
-      //				setTimeout(() => {
-      //					print = document.execCommand('print');
-      //				}, 1500)
-      //
-      //				this.IntervalOut = setInterval(() => {
-      //					if(print) {
-      //						document.getElementById('app').style.display = 'block';
-      //						this.isPrint = 0;
-      //						if(this.IntervalOut) clearInterval(this.IntervalOut)
-      //						this.IntervalOut = null;
-      //						this.appPrint.innerHTML = '';
-      //						this.printCollectShow = false;
-      //						this.printBuybackShow = false;
-      //						this.printSellShow = false;
-      //					} else if(print == false) {
-      //						if(this.IntervalOut) clearInterval(this.IntervalOut)
-      //						if(!window.print()) {
-      //							document.getElementById('app').style.display = 'block';
-      //							this.isPrint = 0;
-      //							this.IntervalOut = null;
-      //							this.appPrint.innerHTML = '';
-      //							this.printCollectShow = false;
-      //							this.printBuybackShow = false;
-      //							this.printSellShow = false;
-      //						}
-      //					}
-      //				}, 10)
+
     },
     // 导出报表
     exportTab() {

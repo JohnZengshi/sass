@@ -322,7 +322,7 @@ export default {
       stateList: [
         {
             id: "10",
-            name: "在库位"
+            name: "已入库"
         },
         {
             id: "11",

@@ -118,7 +118,7 @@
 			getStatus(status) {
 				switch(status) {
 					case '10':
-						return '在库位';
+						return '已入库';
 					case '11':
 						return '入库中';
 					case '20':

@@ -974,7 +974,7 @@ export default {
     getProductType(data) {
       switch (data) {
         case "10":
-          return '在库位'
+          return '已入库'
           break;
         case "11":
           return '入库中'
