@@ -32,11 +32,11 @@
 					<td>首饰名称</td>
 					<td>条码号</td>
 					<td>件重(g)</td>
-					<td>金价(元/g)</td>
+					<!-- <td>金价(元/g)</td> -->
 					<td>金重(g)</td>
-					<td>工费总额(元)</td>
-					<td>折扣(%)</td>
 					<td>售价(元)</td>
+					<td>工费总额(元)</td>
+					<!-- <td>折扣(%)</td> -->
 					<td>实售价(元)</td>
 					<td>成本(元)</td>
 					<td>毛利(元)</td>
@@ -47,11 +47,11 @@
 					<td>{{item.jewelryName}}</td>
 					<td>{{item.barcode}}</td>
 					<td>{{item.weight}}</td>
-					<td>{{item.goldPrice}}</td>
+					<!-- <td>{{item.goldPrice}}</td> -->
 					<td>{{item.goldWeight}}</td>
-					<td>{{item.wage}}</td>
-					<td>{{item.discount}}</td>
 					<td>{{item.price}}</td>
+					<td>{{item.wage}}</td>
+					<!-- <td>{{item.discount}}</td> -->
 					<td>{{item.realPrice}}</td>
 					<td>{{item.cost}}</td>
 					<td>{{item.margin}}</td>
@@ -61,11 +61,9 @@
 					<td>{{sellList.totalNum}}</td>
 					<td>-</td>
 					<td>{{sellList.totalWeight}}</td>
-					<td>-</td>
 					<td>{{sellList.totalGoldWeight}}</td>
-					<td>{{sellList.totalWage}}</td>
-					<td>-</td>
 					<td>{{sellList.totalPrice}}</td>
+					<td>{{sellList.totalWage}}</td>
 					<td>{{sellList.totalRealPrice}}</td>
 					<td>{{sellList.totalCost}}</td>
 					<td>{{sellList.totalMargin}}</td>
@@ -98,7 +96,7 @@
 					<td>{{item.barcode}}</td>
 					<td>{{item.weight}}</td>
 					<td>{{item.goldPrice}}</td>
-					<td>-</td>
+					<td>{{item.estimatePrice}}</td>
 					<td>{{item.depreciationDiscount}}</td>
 					<td>{{item.wage}}</td>
 					<td>{{item.buy}}</td>
@@ -108,11 +106,12 @@
 					<td>{{buyBackList.totalNum}}</td>
 					<td>-</td>
 					<td>{{buyBackList.totalWeight}}</td>
-					<td>{{buyBackList.totalGoldPrice}}</td>
+					<!-- <td>{{buyBackList.totalGoldPrice}}</td> -->
 					<td>-</td>
+					<td>{{buyBackList.totalestimatePrice}}</td>
 					<td>-</td>
 					<td>{{buyBackList.totalWage}}</td>
-					<td>{{buyBackList.totalPrice}}</td>
+					<td>{{buyBackList.totalActualPrice}}</td>
 				</tr>
 			</table>
 		</div>
