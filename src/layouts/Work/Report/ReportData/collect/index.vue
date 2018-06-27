@@ -40,7 +40,8 @@
 				</el-button>
 			</div>
 			<!--打印模块-->
-			<div style="display: none;">
+			<!-- <div style="display: none;"> -->
+			<div>
 				<cash-template ref="cashTemplate" :cashierStatistics="cashierStatistics" :sellStorage="sellStorage" :buyBackStorage="buyBackStorage" :printSelectDate="printSelectDate"></cash-template>
 			</div>
 		</div>
