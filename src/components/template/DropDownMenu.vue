@@ -79,6 +79,8 @@ export default {
                     return item.username
                 case '销售人':
                     return item.username
+                case '收银人':
+                    return item.username
                 case '审核人':
                     return item.username
                 case '收货人':
@@ -171,6 +173,11 @@ export default {
                     this.returnData.operateName = item.supplierName
                     break;
                 case '制单人':
+                    this.optionData.titleInfo = item.username
+                    this.returnData.operateId = item.userId
+                    this.returnData.operateName = item.username
+                    break;
+                case '收银人':
                     this.optionData.titleInfo = item.username
                     this.returnData.operateId = item.userId
                     this.returnData.operateName = item.username

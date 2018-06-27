@@ -26,7 +26,7 @@
                 <DropDownMenu class="selected_dropdown" titleName="销售人" dataType="销售人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
                 </DropDownMenu>
 
-                <DropDownMenu v-if="!isdisabled" class="selected_dropdown" titleName="收银人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+                <DropDownMenu v-if="!isdisabled" class="selected_dropdown" titleName="收银人" dataType="收银人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
                 </DropDownMenu>
                 <div v-else class="selected_dropdown el-dropdown placeholder disabled">
                   <span class="el-dropdown-link">收银人</span>
@@ -127,6 +127,8 @@
 						<i class="iconfont icon-dayin"></i>
 					</el-button>
 				</div>
+
+        <intelligence-type-template v-if="this.tabClassActive.index==1" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :title="'智能分类'" :headerData="printSelectDate"></intelligence-type-template>
 
 				<!--打印模块-->
 				<div style="display: none;">
@@ -1012,7 +1014,7 @@ export default {
           ]
         });
       } else if (val.type == "销售人") {
-        this.printSelectDate.salesperson = "’";
+        this.printSelectDate.salesperson = "";
         this.printSelectDate.operateId = "";
         Object.assign(this.dataGridOptions, {
           salesmenList: [
@@ -1042,6 +1044,7 @@ export default {
         this.dataGridOptions.supplierId = val.item.operateId;
         this.printSelectDate.supplier = val.item.operateName;
       } else if (val.type == "制单人") {
+        debugger
         this.printSelectDate.preparedBy = val.item.operateName;
         Object.assign(this.dataGridOptions, {
           makeUserList: [
@@ -1052,7 +1055,8 @@ export default {
         });
         this.dataGridOptions.makeUserList[0].makeUserId = val.item.operateId;
       } else if (val.type == "收银人") {
-        this.printSelectDate.payee = val.item.operateNam;
+        debugger
+        this.printSelectDate.payee = val.item.operateName;
         Object.assign(this.dataGridOptions, {
           cashierList: [
             {
@@ -1062,7 +1066,7 @@ export default {
         });
         this.dataGridOptions.cashierList[0].cashierId = val.item.operateId;
       } else if (val.type == "销售人") {
-        this.printSelectDate.salesperson = val.item.operateNam;
+        this.printSelectDate.salesperson = val.item.operateName;
         this.printSelectDate.operateId = val.item.operateId;
         Object.assign(this.dataGridOptions, {
           salesmenList: [
@@ -1436,6 +1440,7 @@ export default {
 
     //打印表格
     tabPrin() {
+      debugger
       if (
         _.indexOf(this.selectValue, "销售") >= 0 ||
         _.indexOf(this.selectValue, "回购") >= 0
