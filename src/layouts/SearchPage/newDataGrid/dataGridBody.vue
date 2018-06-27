@@ -176,7 +176,7 @@ export default {
 </style>
 <style scoped lang="scss">
 .ui-table-container{
-    height: 685px;
+    height: 595px;
     overflow-y: auto;
     &.produc-line {
 		.tb-tr:nth-child(even){

@@ -73,7 +73,7 @@ module.exports = {
         { 
     		id: '4',  //id 
     		text: '主石', //头部title文字
-    		width:'120', //单元格宽
+    		width:'130', //单元格宽
     		type:'totalMain', //合计类型值
     		unit: '(ct、g)', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -99,7 +99,7 @@ module.exports = {
         { 
     		id: '6',  //id 
     		text: '副石', //头部title文字
-    		width:'120', //单元格宽
+    		width:'130', //单元格宽
     		type:'totalDeputy', //合计类型值
     		unit: '(ct、g)', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -126,7 +126,7 @@ module.exports = {
         { 
     		id: '9',  //id 
     		text: '售价', //头部title文字
-    		width:'120', //单元格宽
+    		width:'150', //单元格宽
     		type:'totalPrice', //合计类型值
     		unit: '(元)', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位

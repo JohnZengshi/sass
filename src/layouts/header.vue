@@ -128,7 +128,7 @@
       </div>
 
       <!-- 点击了搜索列表后的弹窗 -->
-      <el-dialog top="7%" :modal="false" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption serachList">
+      <el-dialog top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption serachList">
         <!-- tab栏 -->
         <div class="tab-list">
           <ul>

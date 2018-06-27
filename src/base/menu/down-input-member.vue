@@ -1,6 +1,6 @@
 <template>
     <div class="dropDown-wrap">
-        <span class="title-name" :class="optionData.titleInfo == '' ? '' : 'select'">
+        <span class="title-name" :class="{actions: isChecked, select: optionData.titleInfo}">
             {{titleName}}
             <i class="iconfont icon-arrow-down drop-triangle" v-if="optionData.titleInfo ==''"></i>
             <i v-else-if="isClear == undefined ? true : isClear == true ? true : false" class="el-icon-circle-close" title="清除" @click="clearTitleInfo"></i>
@@ -50,6 +50,7 @@ export default {
     ],
     data () {
         return {
+            isChecked: false,
             moreChange: {
                 startTime: '', // 开始件数
                 endTime: '', // 结束件数
@@ -78,7 +79,6 @@ export default {
     methods: {
         clearTitleInfo () {
             this.optionData.titleInfo = '';
-            //console.log('查看取消类型：'+this.dataType);
             console.log(this.dataType)
             this.$emit("clearInfo", {type: this.dataType})
             this.actIndex = null
@@ -86,11 +86,16 @@ export default {
         clearTitletext(){
             //只清除掉 第二次选择的  选项，，不再走请求
             this.optionData.titleInfo = '';
-            console.log('查看清除类型：'+this.dataType);
             this.$emit("clearTitletext", {type: this.dataType})
             this.actIndex = null
         },
         complate () {
+            debugger
+            if (this.moreChange.startTime || this.moreChange.endTime || this.moreChange.maxScore || this.moreChange.minScore || this.moreChange.maxPrice || this.moreChange.mixPrice) {
+                this.isChecked = true
+            } else {
+                this.isChecked = false
+            }
             this.$emit('filterData', this.moreChange)
         },
         getTimeData(val) {
@@ -114,6 +119,7 @@ export default {
             this.moreChange.mixPrice = ''
             this.startTime = ''
             this.endTime = ''
+            this.isChecked = false
         }
     }
 }
@@ -164,16 +170,19 @@ export default {
     }
     .title-name {
         padding: 0 4px;
+        &.actions{
+            color: #2993f8;
+        }
         &.select{
             //color: #333;
         }
-        color:#333;
+        color:#666;
         text-align: right;
         display: block;
         height: 25px;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
-        line-height: 25px;
+        line-height: 27px;
         .drop-triangle {
             font-size:12px;
             display: inline-block;

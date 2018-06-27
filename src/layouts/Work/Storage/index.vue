@@ -834,7 +834,7 @@ export default {
 <style lang="scss">
 	.ruleOption {
 		width: 1200px;
-		height: 860px;
+		height: 770px;
 		background: #fff;
 		border-radius: 10px;
 		.el-dialog__header {

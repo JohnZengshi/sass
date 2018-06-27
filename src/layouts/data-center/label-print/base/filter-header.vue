@@ -591,7 +591,9 @@ export default {
           }
       }
       .search-block {
-          width: 85px;
+          // width: 85px;
+          min-width: 70px;
+          width: auto;
           height: 28px;
           margin-left: 10px;
           border: 1px solid #d6d6d6;
@@ -605,6 +607,9 @@ export default {
       }
       .t-center{
         text-align: center;
+        color: #666;
+        font-weight: bold;
+        font-size: 12px;
       }
       .class-btn-wrap {
           width: 346px;
