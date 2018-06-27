@@ -17,7 +17,7 @@ module.exports = {
         {
     		id: '2',  //id 
     		text: '条码号', //头部title文字
-    		width:'50', //单元格宽
+    		width:'60', //单元格宽
     		type:'', //合计类型值
     		unit: '', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位

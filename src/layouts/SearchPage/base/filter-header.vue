@@ -144,7 +144,7 @@
         ></alone-drop-down-colums>
       </div>
 
-      <div class="search-block">
+<!--       <div class="search-block">
           <dropDownColums
               ref="peopleWrap"
               :propsList="selectPersonnelConfig"
@@ -154,7 +154,7 @@
           >
           </dropDownColums>
           
-      </div>
+      </div> -->
 
       <div class="itemType">
           <alone-drop-down-colums 
@@ -812,7 +812,6 @@ export default {
         // this.filterData.operatorList = []
         // this.filterData.shopIdList = []
       }
-      debugger
       this.$emit('resetData')
     },
     batchAddByOrderNum () {
@@ -841,18 +840,15 @@ export default {
     storageLocation (parm) {
       if(this.panelType === 0) {
         this.filterCondition.storageList = this.conversionData(parm.bigList,'storageId')
-        debugger
         this.$emit('filterData', this.filterCondition)
       }
       
       if(this.panelType === 1) {
         this.filterCondition.repositoryList = this.conversionData(parm.bigList,'repositoryId')
-        debugger
         this.$emit('filterData', this.filterCondition)
       }
     },
     filterData (parm) {
-      debugger
       this.$emit('filterData', Object.assign(this.filterCondition, parm))
     },
     _seekGetShopListByCo() {
@@ -882,7 +878,6 @@ export default {
               }
 
               // 获取店铺人员
-              debugger
               res.data.data.shopList.forEach(item => {
                 
                 let shopData = {
@@ -893,19 +888,24 @@ export default {
                 
                 seekGetShopUserList(shopData).then(res => {
                   if(res.data.state == 200) {
-                    debugger
-                    console.log('看看看这里的数据',res.data)
                       let dpData = {
                         id: '2',
                         name:'店铺人员',
                         childrenList: [],
                       }
+
                     res.data.data.shopUserList.forEach(i => {
                       let option = {}                      
                       option.id = i.userId
                       option.name = i.userName
                       dpData.childrenList.push(option)
-                      this.storePersonnel.push(option)
+                      // this.storePersonnel.push(option)
+                      let isHas = this.storePersonnel.filter((currentValue, index, arr) => {
+                        return currentValue.id == i.userId
+                      })
+                      if (!isHas.length) {
+                        this.storePersonnel.push(option)
+                      } 
                     })
                     this.selectPersonnelConfig.push(dpData)
                   }
@@ -1249,7 +1249,8 @@ export default {
           }
       }
       .search-block {
-          width: 85px;
+          min-width: 70px;
+          width: auto;
           height: 28px;
           margin-left: 10px;
           border: 1px solid #d6d6d6;
