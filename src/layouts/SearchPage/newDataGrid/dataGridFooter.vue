@@ -3,7 +3,7 @@
 <div class="ui-table_footer">
   <div class="th_footer" v-for="(tab,f) in detailDataGridColumn" :key="f"
     :style="tableCell(tab.width)">
-      <p class="totalNum" v-html="v_html(tab)"></p>
+      <p class="totalNum">{{v_html(tab)}}</p>
       <p class="total-more" v-if="f == 0 && reportType != 1">合计</p>
   </div>
 </div>
@@ -27,16 +27,19 @@ export default {
       return _size
         },
     v_html( tab ){
-        if( tab.type =='' ) return ''
-        if( this.dataGridStorage[tab.type] == ''){
-          return '<em style=\'color:#333\'>-</em>'
-        }
+        // if( tab.type =='' ) return ''
+        // if( this.dataGridStorage[tab.type] == ''){
+        //   return '<em style=\'color:#333\'>-</em>'
+        // }
         //小数点截取 ，合计精确到3位
-        if( tab.toFixed ){
-          return this.toFixed( this.dataGridStorage[tab.type] , tab.countCut + 1)
-        }else{
-          return this.dataGridStorage[tab.type]
+        // if( tab.toFixed ){
+        //   return this.toFixed( this.dataGridStorage[tab.type] , tab.countCut + 1)
+        // }else{
+        if( this.dataGridStorage[tab.type] == ''){
+          return '-'
         }
+          return this.dataGridStorage[tab.type]
+        // }
     }
   }
 }
