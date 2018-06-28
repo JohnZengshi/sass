@@ -89,7 +89,7 @@
             </tr>
           </template>
           <tr>
-            <td class="tm" colspan="3">销售合计</td>
+            <td class="tm" colspan="3">回购合计</td>
             <td class="tr">{{productTypeList.totalNum}}</td>
             <td class="tr">{{productTypeList.totalWeight}}</td>
             <td class="tr">{{productTypeList.totalGoldWeight}}</td>
