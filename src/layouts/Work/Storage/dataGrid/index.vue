@@ -83,7 +83,7 @@
 					fixedcIndex: -1
 				},
 				pageNum: 1,
-				pageSize: 100,
+				pageSize: 30,
 				emptyAddClass: '',
 			}
 		},
@@ -183,7 +183,8 @@
 					orderNum: this.orderNum
 				}).then((res) => {
 					if(res.data.state == 200) {
-						this.dgDataList = _.concat(this.dgDataList, res.data.data.rowDataList)
+						// this.dgDataList = _.concat(this.dgDataList, res.data.data.rowDataList)
+						this.dgDataList = res.data.data.rowDataList;
 						this.allSynopsiData = res.data.data
 						this.$emit('updataData', {
 							key: 'dgDataList',
@@ -338,13 +339,19 @@
 			readMoreData() {
 			  let totalNum = this.allSynopsiData.totalNum;
 			  let length = this.dgDataList.length;
-			  this.pageNum += 1;
-			  if (totalNum - length < this.upDataNum) {
-			    this.pageSize = totalNum - length;
+			  this.pageNum = 1;
+			//   this.dgDataList = [];
+			  console.log(this.upDataNum)
+			  if (Number(this.upDataNum)) {
+			    this.upDataNum = Number(this.upDataNum);
+			    if (totalNum - length < this.upDataNum) {
+			      this.pageSize = 0
+			    } else {
+			      this.pageSize = length + this.upDataNum
+			    }
 			  } else {
-			    this.pageSize = this.upDataNum;
+			    this.pageSize = 0
 			  }
-			  console.log(this.pageSize)
 			  this.fetchGoodList();
 			}
 

@@ -32,20 +32,20 @@
 
     <span class="lorderNum">
       <span>{{pageSize}}</span>
-      <span>条</span>
+      <span v-if="Number(pageSize)">条</span>
       <el-radio-group class="floatBox" v-model="pageSize" @change="changeUpdataPageSize">
         <ul>
+          <li>
+            <el-radio label="30">30</el-radio>
+          </li>
+          <li>
+            <el-radio label="50">50</el-radio>
+          </li>
           <li>
             <el-radio label="100">100</el-radio>
           </li>
           <li>
-            <el-radio label="200">200</el-radio>
-          </li>
-          <li>
-            <el-radio label="300">300</el-radio>
-          </li>
-          <li>
-            <el-radio label="400">400</el-radio>
+            <el-radio label="所有">所有</el-radio>
           </li>
         </ul>
       </el-radio-group>
@@ -85,7 +85,7 @@
         isShowPopup: false,
         companyPosition: '',
         // 选择更新页数
-        pageSize:"100",
+        pageSize:"30",
       }
     },
     components: {
@@ -346,7 +346,7 @@
         this.title = title || '说明'
       },
       changeUpdataPageSize(val) {
-        this.pageSize = Number(val);
+        this.pageSize = val;
         this.$emit('changeUpdataPageSize', this.pageSize)
       }
     },

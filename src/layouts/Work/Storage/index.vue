@@ -231,8 +231,8 @@ export default {
        
       // 批量修改
 			isbatchamendShow: false, //显示弹框
-			
-			upDataNum:100
+			// 默认更新页数
+			upDataNum:30
     }
   },
   components: {
