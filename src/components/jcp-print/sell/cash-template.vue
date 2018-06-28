@@ -64,7 +64,7 @@
           </tr>
         </template>
 
-        <template v-for="(productTypeList,j) in buyBackStorage.productTypeList">
+        <template v-if="buyBackStorage.productTypeList" v-for="(productTypeList,j) in buyBackStorage.productTypeList">
           <template v-if="productTypeList.productSellTypeList" v-for="(productSellTypeList,i) in productTypeList.productSellTypeList">
 
             <tr v-for="(item,index) in productSellTypeList.productTypeList" :key="index">
