@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import elementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
+import 'element-ui/lib/theme-chalk/index.css'
 import resource from 'vue-resource'
 import App from './App'
 import router from './router'
@@ -27,39 +27,39 @@ let vue = new Vue({
 Object.assign( Vue.prototype, {
 
    /* 小数点精确截取
-    * @arguments 
+    * @arguments
     * n 数字
     * fixed 小数点精确位数
     */
    toFixed: (n, fixed) => {
-       
+
         //空值处理
         if ( typeof n == 'undefined' || n == null  ){
           return '-'
         }
-        
+
         //空
         if ( n.length == 0 || (n.length == 1 && n.indexOf('-') >= 0)){
           return '-'
         }
-        
-        let str = n + '', 
+
+        let str = n + '',
             splitlen = 0,
-            num = n   
-        
+            num = n
+
         //非数字
         if( !/^[\d.-]+$/.test(str) ){
           return n
         }
-        
+
         if ( typeof str === 'string' && str.includes('.')) {
           splitlen = str.split('.')[1].length
         }
-        
+
         if ( splitlen >= 0  || n.length == 1 ) {
           num = parseFloat(n).toFixed(fixed)
         }
-        
+
         return num
    },
    globalRoute : router,
