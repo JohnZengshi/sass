@@ -338,14 +338,13 @@
 			readMoreData() {
 			  let totalNum = this.allSynopsiData.totalNum;
 			  let length = this.dgDataList.length;
-			//   console.log(totalNum - length)
-			//   console.log(this.upDataNum)
 			  this.pageNum += 1;
 			  if (totalNum - length < this.upDataNum) {
 			    this.pageSize = totalNum - length;
 			  } else {
 			    this.pageSize = this.upDataNum;
 			  }
+			  console.log(this.pageSize)
 			  this.fetchGoodList();
 			}
 

@@ -1,7 +1,7 @@
 <template>
   <div class="bottomBox">
-    <div class="readMoreData" v-show="MoreData" @click="readMoreData">查看更多未读数据</div>
-    <div class="noMoreData" v-show="noMoreData">数据展示到底了啦~</div>
+    <div class="readMoreData" v-if="MoreData" @click="readMoreData">查看更多未读数据</div>
+    <div class="noMoreData" v-if="noMoreData">数据展示到底了啦~</div>
   </div>
 </template>
 <script>
@@ -35,6 +35,7 @@
       readMoreData() {
         this.$emit("readMoreData")
         this.MoreData = false;
+        console.log(123)
       },
     },
     props: ["allSynopsiData", "dgDataList"]
