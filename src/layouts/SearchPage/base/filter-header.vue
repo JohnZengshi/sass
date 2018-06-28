@@ -1,8 +1,13 @@
 <template>
   <div class="d-c-filter-header-main productList">
+  
+    <operation-btn ref="operationBtnWrap" @confirm="confirmDerive"></operation-btn>
+
     <div class="lable-print-change-wrap">
       <input-scope :dataLength="10" @amendNum="amendNum"></input-scope>
+      <div class="back-btn" @click="deriveTable">导出</div>
     </div>
+
     <!-- 商品 -->
     <div class="operate-bar-bottom" v-if="panelType === 0">
       <div class="search">
@@ -294,6 +299,7 @@ import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
 import { productDetailStatus } from 'Api/commonality/status';
 import inputScope from 'base/input/input-scope';
+import operationBtn from 'base/popup/operation-btn';
 export default {
   props:['panelType','serchKey'],
   components: {
@@ -304,7 +310,8 @@ export default {
     downInput,
     aloneDropDownColums,
     downInputMember,
-    inputScope
+    inputScope,
+    operationBtn
   },
   data () {
     return {
@@ -744,6 +751,13 @@ export default {
     }
   },
   methods: {
+    // 确定导出类型
+    confirmDerive (parm) {
+
+    },
+    deriveTable () {
+
+    },
     amendNum () {
 
     },
@@ -1212,11 +1226,25 @@ export default {
 }
 </script>
 <style lang="scss">
+@import "~assets/css/_fontManage.scss";
 .d-c-filter-header-main{
   .lable-print-change-wrap{
-    height: 40px;
-    margin-bottom: 10px;
-    border: 1px solid red;
+    // height: 40px;
+    padding: 0 10px 10px 18px;
+    font-size: 0;
+    .back-btn {
+        display: inline-block;
+        width: 80px;
+        height: 28px;
+        margin-left: 10px;
+        background:#2993f8;
+        @include F(12, #fff);
+        font-weight: bold;
+        text-align: center;
+        line-height: 28px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
   }
 }
 

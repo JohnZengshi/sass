@@ -8,9 +8,10 @@
         </div>
         <div class="list-wrap first-wrap">
           <div id="btn-wrap" class="btn-wrap">
-            <li :class="!rkRole ? 'disabledActive' : ''" @click="RkClick(titleStr)">入库{{ aClickType }}</li>
-            <li :class="!xsRole ? 'disabledActive' : ''" @click="XSClick(titleStr)">销售单{{ aClickType }}</li>
-            <li :class="!hyRole ? 'disabledActive' : ''" @click="HYClick(titleStr)">会员{{ aClickType }}</li>
+            <li v-for="item in operationList" @click="confirm(item)">{{item.name}}</li>
+            <!-- <li :class="!rkRole ? 'disabledActive' : ''" @click="RkClick(titleStr)">{{ aClickType }}</li>
+            <li :class="!xsRole ? 'disabledActive' : ''" @click="XSClick(titleStr)">{{ aClickType }}</li>
+            <li :class="!hyRole ? 'disabledActive' : ''" @click="HYClick(titleStr)">{{ aClickType }}</li> -->
           </div>
         </div>
         </div>
@@ -18,7 +19,23 @@
 </template>
 <script>
   export default {
-
+    props: ['operationList'],
+    data () {
+      return {
+        dialogVisible: false
+      }
+    },
+    methods: {
+      open () {
+        this.dialogVisible = true
+      },
+      close () {
+        this.dialogVisible = false
+      },
+      confirm (parm) {
+        this.$emit('confirm', parm)
+      }
+    }
   }
 </script>
 <style lang="scss">

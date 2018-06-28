@@ -48,6 +48,8 @@
 <style lang="scss">
 .input-scope-main{
   font-size: 0;
+  display: inline-block;
+  vertical-align: top;
   .e-border-radio-5{
     height: 28px;
     padding-bottom: 20px;
