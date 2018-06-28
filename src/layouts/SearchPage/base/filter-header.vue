@@ -315,6 +315,11 @@ export default {
   },
   data () {
     return {
+      printNum: { // 打印行数
+        allChecked: false, // 全部选中
+        beginNum: '',
+        endNum: '',
+      },
       isShowCost: '',
       keyWord: this.serchKey,
       tabSwitch: false,
