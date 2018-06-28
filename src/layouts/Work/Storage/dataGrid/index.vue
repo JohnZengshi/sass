@@ -6,7 +6,27 @@
 
 		<div class="datagrid-container" :class="{[!browserType ? 'animat-scroll-firefox' : 'animat-scroll']:slipPointer}" v-show="dgDataList.length > 0 " @scroll="watchScroll($event)" :style="'padding-left:'+ fixedFullSize +'px'" ref="datagrid">
 			<!--左边固定表格区-->
-			<dgridBody @addRow="add" :dgDataList="dgDataList" :synopsiData="synopsiData" ref="dgridfixed" :orderNum="orderNum" :smallDataList="smallDataList" :selectContainer="selectContainer" :addDatalist="addDatalist" @deletegoods="deletegoods" @updataSelectContainer="updataSelectContainer" @updataEditApi="updataEditApi" @updateActiveIndex="updateActiveIndex" @updateActiveSelectOn="updateActiveSelectOn" :activeClassIndex="activeClassIndex" @deleteRefresh="deleteRefresh" :fixedFullSize="fixedFullSize">
+			<dgridBody 
+			ref="dgridfixed" 
+			:dgDataList="dgDataList" 
+			:synopsiData="synopsiData" 
+			:orderNum="orderNum" 
+			:smallDataList="smallDataList" 
+			:selectContainer="selectContainer" 
+			:addDatalist="addDatalist"
+			:activeClassIndex="activeClassIndex" 
+			:fixedFullSize="fixedFullSize"
+			:allSynopsiData="allSynopsiData"
+			
+			@addRow="add" 			
+			@deletegoods="deletegoods" 
+			@updataSelectContainer="updataSelectContainer" 
+			@updataEditApi="updataEditApi" 
+			@updateActiveIndex="updateActiveIndex" 
+			@updateActiveSelectOn="updateActiveSelectOn" 
+			@deleteRefresh="deleteRefresh"
+			@readMoreData="readMoreData" 
+			>
 			</dgridBody>
 		</div>
 		<div v-show="dgDataList.length <= 0 " class="datagrid-empty">
@@ -63,17 +83,17 @@
 					fixedcIndex: -1
 				},
 				pageNum: 1,
-				pageSize: 12,
-				emptyAddClass: ''
+				pageSize: 100,
+				emptyAddClass: '',
 			}
 		},
 		components: {
 			dgridhead,
 			dgridBody,
-			dgridfooter
+			dgridfooter,
 		},
 
-		props: ['orderNum', 'slipPointer', 'goodsAdd', 'copyDataList', 'isRefreshFooter', 'curStatus', 'isShow'],
+		props: ['orderNum', 'slipPointer', 'goodsAdd', 'copyDataList', 'isRefreshFooter', 'curStatus', 'isShow' ,'upDataNum'],
 
 		watch: {
 			datagridSelectData: function() {},
@@ -113,10 +133,11 @@
 				let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
 				let clientHeight = el.target.clientHeight; // 元素的高度
 				let scrollTop = el.target.scrollTop; // 滚动了的距离
-				if(clientHeight + scrollTop >= scrollHeight) {
-					this.pageNum += 1;
-					this.fetchGoodList()
-				}
+				// if(clientHeight + scrollTop >= scrollHeight) {
+				// 	this.pageNum += 1;
+				// 	this.fetchGoodList()
+				// }
+				this.$refs.dgridfixed.scrollToBottom(scrollHeight,clientHeight,scrollTop);
 			},
 			//
 			add(){
@@ -313,6 +334,19 @@
 				}
 				// }, 1000)
 
+			},
+			readMoreData() {
+			  let totalNum = this.allSynopsiData.totalNum;
+			  let length = this.dgDataList.length;
+			//   console.log(totalNum - length)
+			//   console.log(this.upDataNum)
+			  this.pageNum += 1;
+			  if (totalNum - length < this.upDataNum) {
+			    this.pageSize = totalNum - length;
+			  } else {
+			    this.pageSize = this.upDataNum;
+			  }
+			  this.fetchGoodList();
 			}
 
 		},
