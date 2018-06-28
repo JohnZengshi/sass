@@ -5,16 +5,16 @@
       <el-checkbox v-model="printNum.allChecked" @change="changeAllChecked">全部</el-checkbox>
     </div>
 
-    <div title="打印行范围" class="l-p-range-box">
-      <input type="text" @blur="amendNum" placeholder="打印行范围" v-model="printNum.beginNum">
+    <div title="placeholder" class="l-p-range-box">
+      <input type="text" @blur="amendNum" :placeholder="placeholder" v-model="printNum.beginNum">
       <span>至</span>
-      <input type="text" @blur="amendNum" placeholder="打印行范围" v-model="printNum.endNum">
+      <input type="text" @blur="amendNum" :placeholder="placeholder" v-model="printNum.endNum">
     </div>
   </div>
 </template>
 <script>
   export default {
-    props: ['dataLength'], // 数据总长度
+    props: ['dataLength', 'placeholder'], // 数据总长度
     data () {
       return {
         printNum: { // 打印行数
@@ -38,9 +38,9 @@
       },
       // 改变数据
       amendNum () {
-        if (this.printNum.allChecked || this.printNum.beginNum && this.printNum.endNum) {
+        // if (this.printNum.allChecked || this.printNum.beginNum && this.printNum.endNum) {
           this.$emit('amendNum', this.printNum)
-        }
+        // }
       },
     }
   }

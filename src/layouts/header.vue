@@ -27,7 +27,7 @@
 
       <div class="page-side">
           <div class="menuTabs">
-              <!--<menutabs></menutabs>-->
+              <menutabs></menutabs>
           </div>
           <div class="button">
               <!-- 搜索模块 begin  -->

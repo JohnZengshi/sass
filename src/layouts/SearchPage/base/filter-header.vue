@@ -1,10 +1,10 @@
 <template>
   <div class="d-c-filter-header-main productList">
   
-    <operation-btn ref="operationBtnWrap" @confirm="confirmDerive"></operation-btn>
+    <operation-btn ref="operationBtnWrap" :title="'导出'" :operationList="operationList" :modal="false" @confirm="confirmDerive"></operation-btn>
 
     <div class="lable-print-change-wrap">
-      <input-scope :dataLength="10" @amendNum="amendNum"></input-scope>
+      <input-scope :dataLength="10" :placeholder="'导出行范围'" @amendNum="amendNum"></input-scope>
       <div class="back-btn" @click="deriveTable">导出</div>
     </div>
 
@@ -301,7 +301,7 @@ import { productDetailStatus } from 'Api/commonality/status';
 import inputScope from 'base/input/input-scope';
 import operationBtn from 'base/popup/operation-btn';
 export default {
-  props:['panelType','serchKey'],
+  props:['panelType','serchKey', 'operationList'],
   components: {
     dropDownColums,
     DropDownMenu,
@@ -315,6 +315,22 @@ export default {
   },
   data () {
     return {
+      operationListOne: [
+        {
+          name: '商品信息',
+          id: '1'
+        }
+      ],
+      operationListTne: [
+        {
+          name: '单据信息',
+          id: '1'
+        },
+        {
+          name: '单据信息',
+          id: '1'
+        }
+      ],
       printNum: { // 打印行数
         allChecked: false, // 全部选中
         beginNum: '',
@@ -758,13 +774,17 @@ export default {
   methods: {
     // 确定导出类型
     confirmDerive (parm) {
-
+      this.$emit('confirmDerive', parm)
     },
     deriveTable () {
-
+      if (this.panelType == 2) {
+        this.$emit('confirmDerive')
+      } else {
+        this.$refs.operationBtnWrap.open()
+      }
     },
-    amendNum () {
-
+    amendNum (parm) {
+      this.$emit('amendNum', parm)
     },
     choseMenu () {
       this.tabSwitch = !this.tabSwitch
@@ -947,7 +967,6 @@ export default {
                   }
                 })
               })
-              debugger
               
               
               // this.shopDataList.childrenList = 
