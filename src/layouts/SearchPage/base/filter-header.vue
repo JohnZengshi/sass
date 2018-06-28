@@ -1,5 +1,8 @@
 <template>
   <div class="d-c-filter-header-main productList">
+    <div class="lable-print-change-wrap">
+      <input-scope :dataLength="10" @amendNum="amendNum"></input-scope>
+    </div>
     <!-- 商品 -->
     <div class="operate-bar-bottom" v-if="panelType === 0">
       <div class="search">
@@ -290,6 +293,7 @@ import downInputMember from 'base/menu/down-input-member'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
 import { productDetailStatus } from 'Api/commonality/status';
+import inputScope from 'base/input/input-scope';
 export default {
   props:['panelType','serchKey'],
   components: {
@@ -299,7 +303,8 @@ export default {
     DownMenu,
     downInput,
     aloneDropDownColums,
-    downInputMember
+    downInputMember,
+    inputScope
   },
   data () {
     return {
@@ -739,6 +744,9 @@ export default {
     }
   },
   methods: {
+    amendNum () {
+
+    },
     choseMenu () {
       this.tabSwitch = !this.tabSwitch
       this.$emit('reportSwitch', this.tabSwitch)
@@ -1204,6 +1212,14 @@ export default {
 }
 </script>
 <style lang="scss">
+.d-c-filter-header-main{
+  .lable-print-change-wrap{
+    height: 40px;
+    margin-bottom: 10px;
+    border: 1px solid red;
+  }
+}
+
 .batch-main .batch-page-one .operate-bar-bottom .batch-time-wrap:hover{
     border: 1px solid #2993f8 !important;
 }
