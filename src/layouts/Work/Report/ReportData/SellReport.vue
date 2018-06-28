@@ -3,6 +3,7 @@
 
 		<div class="RP_report_wrapper ui-page-max-width " v-if="isPrint==0">
       
+
       <div style="height: 41px;">
           <div class="Rp_title_container sell-report-header">
             <div class="Rp_selected_container">

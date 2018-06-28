@@ -3904,20 +3904,30 @@
 							margin-bottom: 25px;
 						}
 						.select-container {
-							width: 300px;
+							width: 330px;
+							height: 30px;
 							.item {
-								width: 80px;
-								margin: 0 20px;
+								min-width: 80px;
+								// margin: 0 20px;
 								height: 30px;
 								float: left;
 								white-space: nowrap;
 								text-overflow: ellipsis;
 								span {
+									display: block;
+									max-width: 220px;
 									color: #666;
 									font-size: 14px;
 									font-weight: bold;
 									line-height: 30px;
 								}
+							}
+							.item:last-child {
+								width: 80px;
+							}
+							.item:first-child{
+								max-width: 210px;
+								margin-right: 30px;
 							}
 						}
 					}
