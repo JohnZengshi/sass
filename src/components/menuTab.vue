@@ -5,14 +5,14 @@
       <i class="el-icon-arrow-left"></i>
     </div>
     <ul class="menu-tab-box no-radius" :style="'width:'+ulWidth+'px;transform: translateX('+moveParam.moveX+'px)'" v-if="getMenuTabData.length > 0">
-      <router-link tag="li":to="item.path" 
+      <li @click.stop="toHistory(item.path, index)" 
         v-for="(item,index) in getMenuTabData"
         @mouseover.native="menuOver(item, $event)"
         @mouseleave.native="mouseLeave(item, $event)"
         @click.native="menuItem(index, $event,item.rootIndex,item.childIndex)" :class="index == curMenu ? 'active' : ''">
           {{item.text}}
           <i @click.stop="delMenu(index,$event,item)" @mouseover.native="closeOver(item, $event)">x</i>
-      </router-link>
+      </li>
     </ul>
     <div :class="this.moveParam.rightClick?'right-arrow':'right-arrow arrow-gray'" v-if="arrowStatus.show" @click="moveAction('right')">
       <i class="el-icon-arrow-right"></i>
@@ -58,6 +58,10 @@
       }
     },
     methods: {
+      toHistory (parm, index) {
+        this.curMenu = index
+        this.$router.push(`${parm}?keepAlive=true`)
+      },
       menuOver(item, evt){
         let left = 210
         this.$set(this.$data,'moveLeft',{

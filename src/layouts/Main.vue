@@ -9,9 +9,12 @@
   	</component-header>
   	
     <com-menu :rootList="rootList" @setScopeSize="setScopeSize"></com-menu>
-    
     <div class="app-main" @click="wholdClick" @scroll="scrollFun($event)">
-        <router-view></router-view>
+
+        <keep-alive>
+            <router-view v-if="$route.meta.keepAlive"></router-view>
+        </keep-alive>
+        <router-view v-if="!$route.meta.keepAlive"></router-view>
 
         <div class="index-img" v-if="isImg">
             <img src="~static/img/index.png">
@@ -23,7 +26,7 @@
     <ErrorCode v-if="errorCode"></ErrorCode>
 
     <!-- 全局弹窗 -->
-    <el-dialog :visible.sync="createCompDialog" custom-class="createDialog">
+<!--     <el-dialog :visible.sync="createCompDialog" custom-class="createDialog">
         <div>
             <div class="dia-title">{{diaTitle}}</div>
             <div class="dia-subtitle">请先加入/创建属于您的公司</div>
@@ -33,7 +36,7 @@
             </div>
             <div class="dia-btn" @click.stop="createCompanyAct()">创建</div>
         </div>
-    </el-dialog>
+    </el-dialog> -->
     <el-dialog :visible.sync="successDialog" custom-class="sucDialog">
         <img  src="./../assets/img/success.png">
         <div class="dia-title">恭喜您，创建公司成功</div>
@@ -283,6 +286,9 @@ export default {
         })
     },
     watch: {
+        'route' (to, form) {
+            console.log('路由改变了', to, from)
+        },
         'personalInfo': function () {
             this.editType = null
         },
@@ -1010,14 +1016,15 @@ export default {
         
     },
     beforeRouteEnter(to, from, next) {
-      const userId = sessionStorage.getItem('id')
-      if (!userId) {
-        next({
-          path: '/member'
-        })
-      } else {
-        next()
-      }
+        // to.meta.keepAlive = false
+        const userId = sessionStorage.getItem('id')
+        if (!userId) {
+            next({
+                path: '/member'
+            })
+        } else {
+            next()
+        }
     },
     
 }

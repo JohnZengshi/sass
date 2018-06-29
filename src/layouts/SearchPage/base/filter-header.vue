@@ -1,12 +1,12 @@
 <template>
   <div class="d-c-filter-header-main productList">
   
-    <operation-btn ref="operationBtnWrap" :title="'导出'" :operationList="operationList" :modal="false" @confirm="confirmDerive"></operation-btn>
+<!--     <operation-btn ref="operationBtnWrap" :title="'导出'" :operationList="operationList" :modal="false" @confirm="confirmDerive"></operation-btn>
 
     <div class="lable-print-change-wrap">
       <input-scope :dataLength="10" :placeholder="'导出行范围'" @amendNum="amendNum"></input-scope>
       <div class="back-btn" @click="deriveTable">导出</div>
-    </div>
+    </div> -->
 
     <!-- 商品 -->
     <div class="operate-bar-bottom" v-if="panelType === 0">
@@ -422,10 +422,10 @@ export default {
             id: "70",
             name: "已调柜"
         },
-        {
-            id: "71",
-            name: "调柜中"
-        },
+        // {
+        //     id: "71",
+        //     name: "调柜中"
+        // },
         {
             id: "80",
             name: "已销售"

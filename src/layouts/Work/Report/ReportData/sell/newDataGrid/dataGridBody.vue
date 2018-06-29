@@ -7,13 +7,13 @@
         <template v-for="(tab,indexs) in detailDataGridColumn">
           <!--<div class="tb-td category-td"
           v-if="tab.text == '回购类型'" 
-          :style="tableCell(tab.width)" >
+          :style="calculateClass(tab)" >
           <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7;'">{{caty[tab.childType]}}</i>
         </div>-->
           <div
             class="tb-td"
             :key="indexs"
-            :style="_styleWR(tab)"
+            :style="calculateClass(tab)"
             v-text="tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"
           ></div>
         </template>
@@ -30,17 +30,17 @@
           <template v-for="(tb, index) in caty.productTypeList">
             <div class="tb-tr" :key="index">
               <template v-for="(tab,index4) in detailDataGridColumn">
-                <div class="tb-td category-td"
+                <div class="branch-tb category-td"
                   :key="index4"
                   v-if="tab.text == '产品类别'" 
-                  :style="tableCell(tab.width)"
+                  :style="calculateClass(tab)"
                   >
                   {{tb[tab.childType]}}
                 </div>
                 <div class="tb-td"
                   v-else
                   :key="index4"
-                  :style="tableCell(tab.width)" 
+                  :style="calculateClass(tab)" 
                   v-text = "tab.totalType == ''? (index+1) : tb[tab.totalType]">
                 </div>
               </template>
@@ -65,31 +65,31 @@
         <div v-for="(tb, index) in caty.productTypeList" :key="index">
           <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :key="index1" :index="addIndex()">
             <template v-for="(tab,index) in detailDataGridColumn">
-              <div class="tb-td category-td" :key="index" v-if="tab.text == '产品类别' && index1 == 0" :style="tableCell(tab.width)">
+              <div class="branch-tb category-td" :key="index" v-if="tab.text == '产品类别' && index1 == 0" :style="calculateClass(tab)">
                 <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{tb[tab.childType]}}</i>
               </div>
-              <div class="tb-td category-td" :key="index" v-else-if="tab.text == '回购类型' && index1 == 0" :style="tableCell(tab.width)">
+              <div class="branch-tb category-td" :key="index" v-else-if="tab.text == '回购类型' && index1 == 0" :style="calculateClass(tab)">
                 <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{caty[tab.childType]}}</i>
               </div>
 
-<!--               <div class="tb-td" :key="index" v-else-if="tab.text == '首饰名称'" :class="{backLine:tab.childType != ''}" :style="tableCell(tab.width)" v-text="tab.childType == ''? getIndex() : tb[tab.childType]">
+<!--               <div class="tb-td" :key="index" v-else-if="tab.text == '首饰名称'" :class="{backLine:tab.childType != ''}" :style="calculateClass(tab)" v-text="tab.childType == ''? getIndex() : tb[tab.childType]">
               </div>
  -->
-              <div class="tb-td" :key="index" v-else :class="{backLine:tab.childType != ''}" :style="tableCell(tab.width)" v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
+              <div class="tb-td" :key="index" v-else :class="{backLine:tab.childType != ''}" :style="calculateClass(tab)" v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
               </div>
             </template>
           </div>
           <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
           <div v-show="tb.detailList.length" class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
             <!-- 类型小计 -->
-            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : tb[tab.totalType]"></div>
+            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 0 ? '<b>小计</b>' : tb[tab.totalType]"></div>
           </div>
         </div>
         <div class="tb-total" style="background:#ECF3FF;" v-if="positionSwitch">
           <!-- 位置小计 -->
           <!--保留2位小数-->
-          <!--<div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="tableCell(tab.width)" v-html="f == 1 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"></div>-->
-        	<div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="tableCell(tab.width)" v-html="f == 1 ? '<b>小计</b>' : caty[tab.totalType0]"></div>
+          <!--<div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 1 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"></div>-->
+        	<div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 1 ? '<b>小计</b>' : caty[tab.totalType0]"></div>
         </div>
       </div>
       <div v-if="isDate" class="no-data"></div>
@@ -101,6 +101,7 @@
 <script>
   let applyIndex = 0
   import {styleWR} from 'Api/commonality/getStyle'
+  import {calculateClass} from 'assets/js/getClass'
   export default {
     data() {
       return {
@@ -207,6 +208,9 @@
       },
       _styleWR (parm) {
         return styleWR(parm)
+      },
+      calculateClass (parm) {
+        return calculateClass(parm)
       },
       tableCell(width) {
         let _size = ''
