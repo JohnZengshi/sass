@@ -18,7 +18,7 @@
       @lazyloadSend = "lazyloadSend"
       @tabCell="tabCell">
     </data-edit-body>
-    
+
 	  <!--表尾  -->
   	<data-edit-footer 
   	  :detailDataGridColumn="detailDataGridColumn" 
@@ -40,8 +40,8 @@
       @lazyloadSend = "lazyloadSend"
       @tabCell="tabCell">
     </data-grid-body>
-  
-	  <!--表尾  -->
+
+    <!--表尾  -->
     <data-grid-footer 
       :detailDataGridColumn="detailDataGridColumn" 
       :dataGridStorage="dataGridStorage" 
@@ -60,6 +60,8 @@ import DataGridBody from './dataGridBody'
 import DataEditBody from './editBody'
 import DataGridFooter from './dataGridFooter'
 import DataEditFooter from './editFooter'
+import ReadMoreData from 'components/work/readMoreData.vue'
+import LoaderNum from 'components/work/loaderNum.vue'
 //let configData = null
 let configData = require('./config/dataGridConfig')
 let editConfigData = require('./config/edit')
@@ -76,7 +78,9 @@ export default {
 		DataGridBody,
 		DataEditBody,
 		DataGridHeader,
-		DataEditFooter
+        DataEditFooter,
+        ReadMoreData,
+        LoaderNum
 	},
 	watch :{
         reportType:function(){
