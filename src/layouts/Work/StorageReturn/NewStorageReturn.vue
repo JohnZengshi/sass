@@ -1792,8 +1792,9 @@ export default {
         close () { // 关闭
             this.$router.push(this.closeRouterUrl);
         },
-        sendlayLoad () {
-          this.dataGridOptions.pageSize += 15
+        sendlayLoad (val) {
+        //   this.dataGridOptions.pageSize += 15
+            this.dataGridOptions.pageSize = val
           seekOutStorageData(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
               this.dataGridStorage = res.data.data

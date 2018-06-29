@@ -17,7 +17,7 @@
     methods: {
       // 底部查看更多未读数据
       isShowMoreDataTip(scrollHeight, clientHeight, scrollTop) {
-        let totalNum = this.allSynopsiData.totalNum;
+        let totalNum = this.allData.totalNum;
         let length = this.dgDataList.length;
         if (totalNum > length) {
           if (clientHeight + scrollTop >= scrollHeight) {
@@ -37,10 +37,9 @@
       readMoreData() {
         this.$emit("readMoreData")
         this.MoreData = false;
-        console.log(123)
       },
     },
-    props: ["allSynopsiData", "dgDataList"]
+    props: ["allData", "dgDataList"]
   }
 
 </script>
@@ -71,8 +70,8 @@
       background: #fff;
       text-align: center;
       font-size: 14px;
-      height: 50px;
-      line-height: 50px;
+      // height: 50px;
+      // line-height: 50px;
       display: none;
       transition: all 0s;
       &.active {

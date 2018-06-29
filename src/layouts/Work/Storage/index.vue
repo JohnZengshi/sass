@@ -242,9 +242,8 @@ export default {
     utilsdatagrid,
     copyPopup,
     batchamend
-  },
-  
-  watch: {
+	},
+	watch: {
     
     dgDataList: function(){
     },

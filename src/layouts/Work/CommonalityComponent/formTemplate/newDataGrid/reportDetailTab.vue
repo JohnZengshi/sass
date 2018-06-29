@@ -3,20 +3,32 @@
 <div class="tab_detail_table">
 	<!--表头 start-->
 	<data-grid-header :newList="newList" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header>
-	<!--表格内容区  -->
-	<data-grid-body 
-		:detailDataGridColumn="detailDataGridColumn" 
-		:dataGridStorage="dataGridStorage" 
-		:reportType="reportType"
-        :positionSwitch="positionSwitch"
-        :isRole = 'isRole'
-		@scrollClass = "scrollClass"
-        @lazyloadSend = "lazyloadSend"
-        @messageBack="messageBack"
-		@tabCell="tabCell">
-	</data-grid-body>
+        <!--表格内容区  -->
+        <data-grid-body 
+            :detailDataGridColumn="detailDataGridColumn" 
+            :dataGridStorage="dataGridStorage" 
+            :reportType="reportType"
+            :positionSwitch="positionSwitch"
+            :isRole = 'isRole'
+            @scrollClass = "scrollClass"
+            @lazyloadSend = "lazyloadSend"
+            @messageBack="messageBack"
+            @tabCell="tabCell"
+            @watchScroll="watchScroll"
+            >
+        </data-grid-body>
+    <!-- 加载更多未读数据 -->
+        <ReadMoreData 
+        :allData="dataGridStorage" 
+        :dgDataList="dataGridStorage.detailList" 
+        ref="ReadMoreDataDmo" 
+        @readMoreData="readMoreData"
+        ></ReadMoreData>
 	<!--表尾  -->
 	<data-grid-footer :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="dataGridStorage" :reportType = "reportType" @tabCell="tabCell"></data-grid-footer>
+    <!-- 加载条数选择 -->
+    <LoaderNum class="loaderNum" @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
+
 </div>
 </transition>
 </template>
@@ -25,19 +37,24 @@
 import DataGridHeader from './dataGridHeader'
 import DataGridBody from './dataGridBody'
 import DataGridFooter from './dataGridFooter'
+import ReadMoreData from 'components/work/readMoreData.vue'
+import LoaderNum from 'components/work/loaderNum.vue'
 //let configData = null
 let configData = require('./config/dataGridConfig')
 export default {
 	data(){
 		return{
 			tempDatagrid : [],
-			detailDataGridColumn : []
+            detailDataGridColumn : [],
+            upDataNum:30
 		}
 	},
 	components:{
 		DataGridFooter,
 		DataGridBody,
-		DataGridHeader
+        DataGridHeader,
+        ReadMoreData,
+        LoaderNum
 	},
 	watch :{
         reportType:function(){
@@ -61,7 +78,8 @@ export default {
             this.$emit('sortList', val)
         },
         lazyloadSend (val) {
-            this.$emit('lazyloadSend', val)
+            // console.log("到底部了")
+            // this.$emit('lazyloadSend', val)
         },
         ObjectAssign(){
             this.tempDatagrid = [];
@@ -191,6 +209,35 @@ export default {
         },
         setColumn(data){
             if(data) this.detailDataGridColumn = data
+        },
+        // 监听表格滚动
+        watchScroll(scrollHeight,clientHeight,scrollTop){
+            this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+        },
+        // 加载更多未读数据
+        readMoreData(){
+            let totalNum = this.dataGridStorage.totalNum;
+    	    let length = this.dataGridStorage.detailList.length;
+            let upDataNum = this.upDataNum;
+            var pageSize = 0
+            //   this.dgDataList = [];
+            // console.log(Number(upDataNum))
+    	    if (Number(upDataNum)) {
+    	      upDataNum = Number(upDataNum);
+    	      if (totalNum - length < upDataNum) {
+    	        pageSize = 0
+    	      } else {
+    	        pageSize = length + upDataNum
+    	      }
+    	    } else {
+    	      pageSize = 0
+            }
+            this.$emit('lazyloadSend',pageSize);
+        },
+        //加载页数变化
+        changeUpdataPageSize(val) {
+        //   console.log(val)
+          this.upDataNum = val
         }
 	},
 	mounted(){
@@ -201,5 +248,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+  .loaderNum {
+    right: -68px;
+    bottom: -25px;
+  }
 </style>

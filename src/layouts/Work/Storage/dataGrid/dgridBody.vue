@@ -40,13 +40,6 @@
 			</div>
 			<div class="no-data" v-if="dgDataList.length == 0 "></div>
 		</div>
-		<!-- 加载更多未读数据 -->
-		<ReadMoreData 
-		:allSynopsiData="allSynopsiData"
-		:dgDataList="dgDataList"
-		ref="ReadMoreData"
-		@readMoreData="readMoreData"
-		></ReadMoreData>
 	</div>
 </template>
 
@@ -56,7 +49,6 @@
 	import * as configData from './config'
 	import * as fetch from './fetchData'
 	import { fixedData } from './config'
-	import ReadMoreData from '../component/readMoreData.vue'
 	export default {
 		data() {
 			return {
@@ -73,9 +65,7 @@
 				}
 			}
 		},
-		components:{
-			ReadMoreData
-		},
+		components:{},
 		props: [
 			'fixedFullSize', 
 			'dgDataList', 
@@ -1260,13 +1250,6 @@
 					}
 				})
 			},
-			
-			scrollToBottom(scrollHeight,clientHeight,scrollTop){
-				this.$refs.ReadMoreData.isShowMoreDataTip(scrollHeight,clientHeight,scrollTop)
-			},
-			readMoreData(){
-				this.$emit("readMoreData")
-			}
 		}
 	}
 </script>

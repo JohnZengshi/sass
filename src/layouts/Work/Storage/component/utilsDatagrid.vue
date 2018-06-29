@@ -30,26 +30,6 @@
       <i class="iconfont icon-shanchu1"></i>
     </span>
 
-    <span class="lorderNum">
-      <span>{{pageSize}}</span>
-      <span v-if="Number(pageSize)">条</span>
-      <el-radio-group class="floatBox" v-model="pageSize" @change="changeUpdataPageSize">
-        <ul>
-          <li>
-            <el-radio label="30">30</el-radio>
-          </li>
-          <li>
-            <el-radio label="50">50</el-radio>
-          </li>
-          <li>
-            <el-radio label="100">100</el-radio>
-          </li>
-          <li>
-            <el-radio label="所有">所有</el-radio>
-          </li>
-        </ul>
-      </el-radio-group>
-    </span>
 
     <!-- 弹出框 -->
     <orderPopup @submit="popupSubmit" @popupShow="popupShow" :title="title" :isShowPopup="isShowPopup">
@@ -84,8 +64,6 @@
         // 弹出框 显示 隐藏
         isShowPopup: false,
         companyPosition: '',
-        // 选择更新页数
-        pageSize:"30",
       }
     },
     components: {
@@ -345,10 +323,6 @@
         this.isShowPopup = type
         this.title = title || '说明'
       },
-      changeUpdataPageSize(val) {
-        this.pageSize = val;
-        this.$emit('changeUpdataPageSize', this.pageSize)
-      }
     },
 
     mounted() {
@@ -422,42 +396,4 @@
     }
   }
 
-</style>
-<style lang="less" scoped>
-  .lorderNum {
-    height: 25px !important;
-    position: relative;
-    >span {
-      &:first-of-type {
-        color: #2993f8
-      }
-    }
-    &:hover {
-      &:after {
-        opacity: 0 !important;
-      }
-      overflow: visible !important;      
-      >.floatBox{
-        opacity: 1;
-        top: -125px;
-      }
-    }
-    .floatBox {
-      width: 100px;
-      background-color: #fff;
-      border-radius: 10px;
-      position: absolute;
-      opacity: 0;
-      top: -100px;
-      transition: all 0.5s;
-      ul {
-        width: 100%;
-        li {
-          height: 20px;
-          margin: 10px;
-          text-align: center;
-        }
-      }
-    }
-  }
 </style>
