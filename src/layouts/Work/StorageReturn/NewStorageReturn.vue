@@ -967,7 +967,7 @@ export default {
             })
             this.selectConfig = fetch.Select
             this.getSeekSellReceiptsIntro(); // 单据简介
-            //this.send();
+            this.send();
             this.settingUserRole()
             this.receiptStatusList();
             // this.getReceiptRemark(); // 单据备注
