@@ -1037,7 +1037,7 @@ export default {
         this.userType = sessionStorage.getItem('userType')
         this.companyPosition = sessionStorage.getItem('companyPosition')
         this.getSeekSellReceiptsIntro(); // 单据简介
-        // this.send();
+        this.send();
         this.settingUserRole()
         this.receiptStatusList();
         this.userRoleList()
