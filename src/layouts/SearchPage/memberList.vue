@@ -1,10 +1,19 @@
 <template>
     <div>
         <!-- 表头搜索 -->
-        <filter-header :serchKey="serchKey" :panelType="panelType" @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
+        <filter-header
+          :serchKey="serchKey"
+          :panelType="panelType"
+          @seekProduct="seekProduct"
+          @reportSwitch="reportSwitch"
+          @resetData="resetData"
+          @filterData="filterData"
+          @amendNum="amendNum"
+          @confirmDerive="confirmDerive"
+        ></filter-header>
         <!-- 表格主体 -->
         <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
-            <report-detail ref="reportDetailWrap" :panelType="panelType" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow" @close="close" @openMemberByList="openMemberByList">
+            <report-detail ref="reportDetailWrap" :panelType="panelType" :allData="allData" :dataGridStorage="dataGridStorage" :printNum="printNum" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow" @close="close" @openMemberByList="openMemberByList">
             </report-detail>
         </div>
     </div>
@@ -47,7 +56,7 @@ import {
 
 import {memberListBySearch} from 'Api/search'
 import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
-
+import { downLoaderFile } from 'Api/downLoaderFile'
 
 export default {
   props: ["panelType","serchKey","showAll"],
@@ -485,6 +494,26 @@ export default {
     },
     amendNum(parm) {
       this.printNum = parm;
+    },
+    confirmDerive (parm) {
+        let datas = {
+            "page": 1,
+            "pageSize": 9999,
+            "memberNumberList": []
+        }
+        if (!this.printNum.beginNum || !this.printNum.endNum) {
+          this.$message({
+            message: '请选择导出商品',
+            type: 'warning'
+          })
+          return
+        }
+
+        let changeData = this.dataGridStorage.slice(this.printNum.beginNum - 1, this.printNum.endNum)
+        for (let i of changeData) {
+          datas.memberNumberList.push({'memberNumber': i.memberNumber})
+        }
+        downLoaderFile('/v1/export/exportExcelByMember', datas)
     },
     // 查询商品
     seekProduct(parm) {

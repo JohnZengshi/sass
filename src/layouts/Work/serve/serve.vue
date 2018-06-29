@@ -65,7 +65,7 @@
                         </div>
                     </div>
 
-                    <div class="optionDiv sell-new-data oper-btn" @click="newReceipt">
+                    <div v-if="shopRole" class="optionDiv sell-new-data oper-btn" @click="newReceipt">
                         <span style="font-size: 12px;font-weight: blod;">新建售后单</span>
                     </div>
                 </div>

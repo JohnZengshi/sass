@@ -5,10 +5,9 @@
     <div style="width: 1100px; display: flex;">
     	<div  
     	  class="ui-table_th" 
-          :class="{'xj-report-text-right': tab.right}" 
     	  v-for="tab in detailDataGridColumn" 
     	  :key="tab.id" 
-    	  :style="tableCell(tab.width)">
+    	  :style="nTableCell(tab)">
     	  
     		{{tab.text }} <i v-if="tab.unit !=''">{{ tab.unit}}</i>
 
@@ -18,11 +17,14 @@
 </template>
 
 <script>
+import {calculateClass} from 'assets/js/getClass'
 export default{
 	props : ['detailDataGridColumn','tabCell'],
 	
 	methods:{
-	  
+	    nTableCell (parm) {
+            return calculateClass(parm)
+        },
 		tableCell( width ){
 			
 			let _size = ''

@@ -655,6 +655,9 @@ export default {
         this.sortList = []
         this.dataGridOptions.sortList = []
         Object.assign(this.dataGridOptions, parm)
+        if (parm.noRefresh) {
+          return
+        }
         this.send()
     },
     //成本控制
