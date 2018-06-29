@@ -160,6 +160,7 @@
         }).then((res) => {
           if (res.data.state == 200) {
             this.dgDataList = res.data.data.rowDataList;
+            this.allSynopsiData = res.data.data;
             this.$emit('updataData', {
               key: 'dgDataList',
               data: this.dgDataList
