@@ -2,13 +2,11 @@
 	<transition name="tp-ani">
 
 		<div class="RP_report_wrapper ui-page-max-width " v-if="isPrint==0">
-      
-
       <div style="height: 41px;">
           <div class="Rp_title_container sell-report-header">
             <div class="Rp_selected_container">
          <!--      <span class="spaceMark">|</span> -->
-              <DropDownMenu class="selected_dropdown" :titleName="shopList[0].shopName" dataType="店铺" v-if="itemShow" :propList="shopList" @dropReturn="dropReturn" @clearInfo="clearInfo">
+              <DropDownMenu class="selected_dropdown" :titleName="printSelectDate.shop" dataType="店铺" v-if="itemShow" :propList="shopList" @dropReturn="dropReturn" @clearInfo="clearInfo">
               </DropDownMenu>
               <span v-else :style="{color:activeColor, fontSize:size,fontWeight:weight,marginRight:right,lineHeight:height,height:high}">{{printSelectDate.shop}}</span>
 
@@ -996,8 +994,12 @@ export default {
         this.changeCounter.counterId = "";
         this.changeCounter.counterName = "";
       } else if (val.type == "店铺") {
-        this.printSelectDate.shop = "";
-        this.dataGridOptions.shopId = "";
+        this.printSelectDate.shop = this.shopList[0] ? this.shopList[0].shopName : "";
+        this.dataGridOptions.shopId = this.shopList[0] ? this.shopList[0].shopId : "";
+        this.dataGridOptions.size = 1
+        this.dataGridOptions.pageSize = 15
+        this.send();
+        return
         this.printSelectDate.preparedBy = "";
         this.dataGridOptions.makeUserList[0].makeUserId = "";
         this.printSelectDate.payee = "";
@@ -1037,16 +1039,20 @@ export default {
           ]
         });
       }
+      this.dataGridOptions.size = 1
       this.dataGridOptions.pageSize = 15
       $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+      debugger
       this.send();
     },
     dropReturn(val) {
+      debugger
       if (val.type == "柜组") {
         // this.dataGridOptions.storageId = val.item.operateId
         // this.printSelectDate.storage = val.item.operateName
       } else if (val.type == "店铺") {
         this.printSelectDate.shop = val.item.operateName;
+        this.dataGridOptions.shopName = val.item.operateName;
         this.dataGridOptions.shopId = val.item.operateId;
         this.getUserList();
         //this._seekShowCounterList(val.item.operateId)
@@ -1218,11 +1224,13 @@ export default {
           if (this.shopList.length == 1) {
             this.itemShow = false;
             this.dataGridOptions.shopId = this.shopList[0].shopId;
+            this.dataGridOptions.shopName = this.shopList[0].shopName;
             this.printSelectDate.shop = this.shopList[0].shopName;
             this.getUserList();
           } else {
             this.itemShow = true;
             this.dataGridOptions.shopId = this.shopList[0].shopId;
+            this.dataGridOptions.shopName = this.shopList[0].shopName;
             this.printSelectDate.shop = this.shopList[0].shopName;
             this.getUserList();
           }
@@ -1302,7 +1310,7 @@ export default {
     },
 
     send(type) {
-      
+      debugger
       if (this.modleSwitch == '2') {
         this.dataGridOptions.sellStatus = ''        
         this.sellSend();
@@ -1618,7 +1626,7 @@ export default {
   background-color: #fff;
   border: 1px solid #ededed;
   border-radius: 5px;
-  z-index: 3500;
+  // z-index: 3500;
   > .popover_primary {
     height: 50px;
     width: 50px;

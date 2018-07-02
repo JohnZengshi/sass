@@ -141,7 +141,9 @@ module.exports = {
         totalType : '' ,
         allType : '',
         toFixed : false,
-        countCut : 0
+        countCut : 0,
+        paddingLeft: '10px',
+        textAlign: 'left'
       },
       { 
         id: '2245',  
@@ -156,7 +158,7 @@ module.exports = {
         allType : 'allNum',
         toFixed : false, 
         countCut : 0,
-        right: true
+        textAlign: 'right'
       },
       { 
         id: '4',  
@@ -171,7 +173,7 @@ module.exports = {
         allType : 'allWeight',
         toFixed : false,
         countCut : 3,
-        right: true
+        textAlign: 'right'
       },
       
       { 
@@ -187,7 +189,7 @@ module.exports = {
         allType : 'allGoldWeight',
         toFixed : false,
         countCut : 3,
-        right: true
+        textAlign: 'right'
       },
       { 
         id: '523',  
@@ -204,7 +206,7 @@ module.exports = {
         allType : 'allSoldPrice',
         toFixed : false,
         countCut : 2,
-        right: true
+        textAlign: 'right'
       },
       { 
         id: '6',  
@@ -219,7 +221,8 @@ module.exports = {
         allType : 'allWage',
             toFixed : false,
             countCut : 2,
-            right: true
+
+            textAlign: 'right'
       },
       { 
         id: '7',  
@@ -234,7 +237,7 @@ module.exports = {
         allType : 'allBackPrice',
         toFixed : false,
         countCut : 2,
-        right: true
+        textAlign: 'right'
       }
     ],
     tradeTwo : [
@@ -293,7 +296,9 @@ module.exports = {
         totalType : '' ,
         allType : '',
         toFixed : false,
-        countCut : 0
+        countCut : 0,
+        paddingLeft: '10px',
+        textAlign: 'left'
       },
       { 
         id: '2245',  
@@ -308,7 +313,7 @@ module.exports = {
         allType : 'allNum',
         toFixed : false, 
         countCut : 0,
-        right: true
+        textAlign: 'right'
       },
       { 
         id: '4',  
@@ -323,7 +328,7 @@ module.exports = {
         allType : 'allWeight',
         toFixed : false,
         countCut : 3,
-        right: true
+        textAlign: 'right'
       },
       
       { 
@@ -339,7 +344,7 @@ module.exports = {
         allType : 'allGoldWeight',
         toFixed : false,
         countCut : 3,
-        right: true
+        textAlign: 'right'
       },
       { 
         id: '523',  
@@ -358,7 +363,7 @@ module.exports = {
         allType : 'allSoldPrice',
         toFixed : false,
         countCut : 2,
-        right: true
+        textAlign: 'right'
       },
       { 
         id: '6',  
@@ -373,7 +378,8 @@ module.exports = {
         allType : 'allWage',
             toFixed : false,
             countCut : 2,
-            right: true
+
+            textAlign: 'right'
       },
       { 
         id: '7',  
@@ -388,7 +394,7 @@ module.exports = {
         allType : 'totalBuy',
         toFixed : false,
         countCut : 2,
-        right: true
+        textAlign: 'right'
       }
     ]
 }
