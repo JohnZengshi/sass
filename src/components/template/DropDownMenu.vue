@@ -320,6 +320,7 @@ export default {
             this.$emit("dropReturn", {item: _data, type: this.dataType})
         },
         clearTitleInfo () {
+            debugger
             this.optionData.titleInfo = '';
             //console.log('查看取消类型：'+this.dataType);
             console.log(this.dataType)

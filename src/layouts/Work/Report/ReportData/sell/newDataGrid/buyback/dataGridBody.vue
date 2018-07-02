@@ -5,7 +5,7 @@
     <div>
       <div class="tb-tr" v-for="(tb,index) in tempArray" :key="index">
         <template v-for="(tab,indexs) in detailDataGridColumn">
-          <!--<div class="tb-td category-td"
+          <!--<div class="branch-tb category-td"
           v-if="tab.text == '回购类型'" 
           :style="tableCell(tab.width)" >
           <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7;'">{{caty[tab.childType]}}</i>
@@ -27,7 +27,7 @@
               <template v-for="(tab, indexGrid) in detailDataGridColumn">
 
                 <div 
-                  class="tb-td category-td" 
+                  class="branch-tb category-td" 
                   v-if="tab.text == '回购类型' && index == 0 && index1 == 0 && indexGrid == 0" 
                   :style="tableCell(tab.width)">
                   <i :style="sellTypeNameH(caty)">{{caty[tab.childType]}}</i>
@@ -75,7 +75,7 @@
               <template v-for="(tab, indexGrid) in detailDataGridColumn">
 
                 <div 
-                  class="tb-td category-td" 
+                  class="branch-tb category-td" 
                   v-if="tab.text == '回购类型' && index == 0 && index1 == 0 && indexGrid == 0" 
                   :style="tableCell(tab.width)">
                   <i :style="sellTypeNameHD(caty)">{{caty[tab.childType]}}</i>
@@ -83,12 +83,12 @@
                 </div>
 
 
-              <div class="tb-td category-td" :key="index" v-else-if="tab.text == '产品类别' && index1 == 0" :style="tableCell(tab.width)">
+              <div class="branch-tb category-td" :key="index" v-else-if="tab.text == '产品类别' && index1 == 0" :style="tableCell(tab.width)">
                 <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{tb[tab.childType]}}</i>
               </div>
 
 <!--                 <div 
-                  class="tb-td category-td" 
+                  class="branch-tb category-td" 
                   v-else-if="tab.text == '产品类别'" 
                   :style="tableCell(tab.width)">
                   <i :style="sellTypeNameXJ(tb)">{{tab.childType}}</i>

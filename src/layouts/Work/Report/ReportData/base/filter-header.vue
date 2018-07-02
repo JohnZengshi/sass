@@ -85,9 +85,11 @@
           this.$emit('complate', Object.assign({}, this.filterData, this.segmentationFilter))
         },
         madeUpOn (parm) {
+          debugger
           let datas = parm
           this.segmentationFilter = parm
-          this.$emit('complate', Object.assign({}, this.filterData, {page: '1'}, this.segmentationFilter))
+          // isRefresh 刷新
+          this.$emit('complate', Object.assign({}, this.filterData, {page: '1'}, this.segmentationFilter, {noRefresh: true}))
         },
         choseMenu () {
           this.tabSwitch = !this.tabSwitch

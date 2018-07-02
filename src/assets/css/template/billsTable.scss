@@ -391,6 +391,12 @@ $report-p-r: 20px;
 .xj-report-text-right{
     text-align: right!important;
 }
+.xj-report-text-left{
+    text-align: left!important;
+}
+.pl-10{
+    padding-left: 10px;
+}
 .xj-report-table-container{
     height: 515px;
     //overflow-y: auto;
@@ -408,6 +414,40 @@ $report-p-r: 20px;
       &.table-evet{
         background-color: #fbfbfb;
       }
+      // 特索处理跨行
+      .branch-tb{
+            float: left;
+            display: inline-block;
+            height: 40px;
+            line-height: 40px;    
+            text-align: center;
+            font-size: 14px; 
+            // display: flex;
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            transition: all .3s;
+            color: #333;
+            &.category-td{
+                position: relative;
+                border-right: 1px solid #f0f2f5;
+                >i{
+                    font-style: normal;
+                    font-size: 15px;
+                    position: absolute;
+                    background-color: #f9f9f9;
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+                    left: 0;
+                    top: 0;
+                    z-index: 100;
+                    text-align: center;
+                    justify-content:center
+                }
+            }
+      }
       .tb-td{
         float: left;
         display: inline-block;
@@ -422,7 +462,11 @@ $report-p-r: 20px;
         justify-content: center;
         transition: all .3s;
         color: #333;
-        
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
         &.category-td{
             position: relative;
             border-right: 1px solid #f0f2f5;

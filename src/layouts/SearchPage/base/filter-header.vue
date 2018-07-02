@@ -1,5 +1,13 @@
 <template>
   <div class="d-c-filter-header-main productList">
+  
+<!--     <operation-btn ref="operationBtnWrap" :title="'导出'" :operationList="operationList" :modal="false" @confirm="confirmDerive"></operation-btn>
+
+    <div class="lable-print-change-wrap">
+      <input-scope :dataLength="10" :placeholder="'导出行范围'" @amendNum="amendNum"></input-scope>
+      <div class="back-btn" @click="deriveTable">导出</div>
+    </div> -->
+
     <!-- 商品 -->
     <div class="operate-bar-bottom" v-if="panelType === 0">
       <div class="search">
@@ -290,8 +298,10 @@ import downInputMember from 'base/menu/down-input-member'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
 import { productDetailStatus } from 'Api/commonality/status';
+import inputScope from 'base/input/input-scope';
+import operationBtn from 'base/popup/operation-btn';
 export default {
-  props:['panelType','serchKey'],
+  props:['panelType','serchKey', 'operationList'],
   components: {
     dropDownColums,
     DropDownMenu,
@@ -299,10 +309,33 @@ export default {
     DownMenu,
     downInput,
     aloneDropDownColums,
-    downInputMember
+    downInputMember,
+    inputScope,
+    operationBtn
   },
   data () {
     return {
+      operationListOne: [
+        {
+          name: '商品信息',
+          id: '1'
+        }
+      ],
+      operationListTne: [
+        {
+          name: '单据信息',
+          id: '1'
+        },
+        {
+          name: '单据信息',
+          id: '1'
+        }
+      ],
+      printNum: { // 打印行数
+        allChecked: false, // 全部选中
+        beginNum: '',
+        endNum: '',
+      },
       isShowCost: '',
       keyWord: this.serchKey,
       tabSwitch: false,
@@ -389,10 +422,10 @@ export default {
             id: "70",
             name: "已调柜"
         },
-        {
-            id: "71",
-            name: "调柜中"
-        },
+        // {
+        //     id: "71",
+        //     name: "调柜中"
+        // },
         {
             id: "80",
             name: "已销售"
@@ -739,6 +772,20 @@ export default {
     }
   },
   methods: {
+    // 确定导出类型
+    confirmDerive (parm) {
+      this.$emit('confirmDerive', parm)
+    },
+    deriveTable () {
+      if (this.panelType == 2) {
+        this.$emit('confirmDerive')
+      } else {
+        this.$refs.operationBtnWrap.open()
+      }
+    },
+    amendNum (parm) {
+      this.$emit('amendNum', parm)
+    },
     choseMenu () {
       this.tabSwitch = !this.tabSwitch
       this.$emit('reportSwitch', this.tabSwitch)
@@ -920,7 +967,6 @@ export default {
                   }
                 })
               })
-              debugger
               
               
               // this.shopDataList.childrenList = 
@@ -1204,6 +1250,28 @@ export default {
 }
 </script>
 <style lang="scss">
+@import "~assets/css/_fontManage.scss";
+.d-c-filter-header-main{
+  .lable-print-change-wrap{
+    // height: 40px;
+    padding: 0 10px 10px 18px;
+    font-size: 0;
+    .back-btn {
+        display: inline-block;
+        width: 80px;
+        height: 28px;
+        margin-left: 10px;
+        background:#2993f8;
+        @include F(12, #fff);
+        font-weight: bold;
+        text-align: center;
+        line-height: 28px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+  }
+}
+
 .batch-main .batch-page-one .operate-bar-bottom .batch-time-wrap:hover{
     border: 1px solid #2993f8 !important;
 }

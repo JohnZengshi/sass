@@ -43,7 +43,7 @@ export const downLoaderFile = (url,data) => {
 //     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8082/yunzhubao' : ''
 //     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:9092/yunzhubao' : ''
 //     // 内网
-        let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8083/yunzhubao' : ''
+        // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8083/yunzhubao' : ''
         
     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.109:8080/yunzhubao' : ''
 //     //let serverHost = process.env.NODE_ENV === 'development' ? 'https://program.yunzhubao.com/yunzhubao/' : ''
@@ -53,7 +53,7 @@ export const downLoaderFile = (url,data) => {
 //    // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8082/yunzhubao' : ''
 
 //     // 本地
-//     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.109:8080/yunzhubao' : ''
+let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.114:8080/yunzhubao' : ''
 
 //     // let serverHost = 'http://www.jzmsoft.com'
 //     // 正式
