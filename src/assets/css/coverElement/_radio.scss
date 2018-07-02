@@ -55,6 +55,25 @@
         }
     }
 }
+.radio-21{
+    .el-radio-group{
+        width: 100%;
+        .el-radio{
+            .el-radio__input{
+                display: none;
+                .el-radio__inner{
+                    width: 14px;
+                    height: 14px;
+                }
+            }
+            .el-radio__label{
+                margin-left: 5px;
+                padding-left: 0;
+                color: $c3;
+            }
+        }
+    }
+}
 .counter-radio-20{
     .el-radio-group{
         width: 100%;
