@@ -28,3 +28,7 @@
 # 单据无商品                NoReceiptsTemplate.vue
 
 # 批量添加                  BatchAddReceipts.vue
+<!--  -->
+# 加载更多未读数据（表格底部） readMoreData.vue
+
+# 选择加载条数（右下角的选择器） loaderNum.vue

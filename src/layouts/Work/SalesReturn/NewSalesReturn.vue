@@ -418,6 +418,8 @@
                   <span class="iconfont icon-shanchu1"></span>
                   <span>删除</span>
                 </div>
+                <!-- 加载页数 -->
+                <LoaderNum ref="LoaderNum" style="display:block;"></LoaderNum>
               </div>
             </div>
           </section>
@@ -517,7 +519,7 @@
 import dropDownColum from 'base/menu/drop-down-colums'
 
 import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList} from "Api/commonality/seek"
-
+import LoaderNum from 'components/work/loaderNum';
   export default {
     components: {
       receiptsRemark,
@@ -539,6 +541,7 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
 			intelligenceTypeTemplate,
       customTemplate,
       dropDownColum,
+      LoaderNum
     },
     data() {
       return {
@@ -772,7 +775,7 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
           }],
           type: 1,
           page: 1,
-          pageSize: 15,
+          pageSize: 30,
           keyWord: '',
           wColorId: '',
           wGemId: '',
@@ -1019,7 +1022,7 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
               sortFlag: '0',
               type: 1,
               page: 1,
-              pageSize: 15,
+              pageSize: 30,
               keyWord: ''
             })
           } else if(port == 2) {
@@ -1090,7 +1093,7 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
         this.loading = true;
         //this.page = 1
         this.dataGridOptions.page = 1
-        this.dataGridOptions.pageSize = 15
+        this.dataGridOptions.pageSize = 30
         this.tabClassActive.index = index;
         this.setReportType(type)
 
@@ -1200,7 +1203,7 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
                 this.inconspanactive2 = true;
             }
             this.dataGridOptions.page = 1;
-            this.dataGridOptions.pageSize = 15;
+            this.dataGridOptions.pageSize = 30;
             this.dataGridOptions.productClass = val;
             console.log("切换成旧料", this.dataGridOptions.productClass);
             //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
@@ -1795,8 +1798,9 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
         this.$router.push(this.closeRouterUrl);
       },
       // *******************************************************************************************************************************
-      sendlayLoad() {
-        this.dataGridOptions.pageSize += 15
+      sendlayLoad(val) {
+        // this.dataGridOptions.pageSize += 15
+        this.dataGridOptions.pageSize = val
         seekOutShopData(this.dataGridOptions).then((res) => {
           if(res.data.state == 200) {
             this.dataGridStorage = res.data.data
@@ -1817,7 +1821,7 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
               //打印数据请求完成之后 初始化分页设置
               Object.assign(this.dataGridOptions, {
                 page: 1,
-                pageSize: 15
+                pageSize: 30
               })
             } else {
               this.dataGridStorage = res.data.data

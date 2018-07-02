@@ -5,6 +5,7 @@
 	<data-grid-header :newList="newList" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header>
 	<!--表格内容区  -->
 	<data-grid-body 
+        ref="dataGridBody"
 		:detailDataGridColumn="detailDataGridColumn" 
 		:dataGridStorage="dataGridStorage" 
 		:reportType="reportType"
