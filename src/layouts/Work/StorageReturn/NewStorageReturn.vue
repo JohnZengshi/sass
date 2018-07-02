@@ -380,11 +380,11 @@
                                     </div>
                                     
                                      <!-- 成品旧料的切换 -->
-                                    <div class="iconfont_wrap fr">
+        <!--                             <div class="iconfont_wrap fr">
                                         <span :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)">成品</span>
                                         <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
                                         <span :class="inconspanactive2 == true ? 'myspanactive' : ''" @click="toggleAttribute(2)">旧料</span>
-                                    </div>
+                                    </div> -->
 
                                     <ul class="header-wrap-btn">
                                     
@@ -1195,22 +1195,6 @@ export default {
               this.dataGridOptions.nJewelryId = val.value
             break;
           }
-        },
-        toggleAttribute (val) {
-           if (val == 1) {
-                this.inconspanactive1 = true;
-                this.inconspanactive2 = false;
-            } else {
-                this.inconspanactive1 = false;
-                this.inconspanactive2 = true;
-            }
-            this.dataGridOptions.page = 1;
-            this.dataGridOptions.pageSize = 30;
-            this.dataGridOptions.productClass = val;
-            console.log("切换成旧料", this.dataGridOptions.productClass);
-            //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
-            this.loading = true;
-            this.send();
         },
         //成本控制
         reportSwitch(){
