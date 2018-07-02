@@ -35,7 +35,9 @@
         }
       },
       readMoreData() {
-        this.$emit("readMoreData")
+        if(this.MoreData){
+          this.$emit("readMoreData")
+        }
         this.MoreData = false;
       },
     },
