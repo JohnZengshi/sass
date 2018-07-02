@@ -418,6 +418,8 @@
                   <span class="iconfont icon-shanchu1"></span>
                   <span>删除</span>
                 </div>
+                <!-- 加载页数 -->
+                <LoaderNum ref="LoaderNum" style="display:block;"></LoaderNum>
               </div>
             </div>
           </section>
@@ -517,7 +519,7 @@
 import dropDownColum from 'base/menu/drop-down-colums'
 
 import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList} from "Api/commonality/seek"
-
+import LoaderNum from 'components/work/loaderNum';
   export default {
     components: {
       receiptsRemark,
@@ -539,6 +541,7 @@ import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCount
 			intelligenceTypeTemplate,
       customTemplate,
       dropDownColum,
+      LoaderNum
     },
     data() {
       return {

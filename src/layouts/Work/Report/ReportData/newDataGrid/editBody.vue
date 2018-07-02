@@ -306,8 +306,7 @@ export default {
 				  // this.$parent.$parent.send()
 				  let totalNum = this.dataGridStorage.totalNum;
 				  let length = currentDataList.length;
-				  let upDataNum = this.$parent.$parent.upDataNum;
-				  this.pageNum = 1;
+				  let upDataNum = this.$parent.$parent.$refs["LoaderNum"].pageSize;
 				  let pageSize = 30
 				  //   this.dgDataList = [];
 				  if (Number(upDataNum)) {

@@ -101,33 +101,35 @@
 
 				</div>
 
-				<!-- 导出表格 -->
-				<div class="printBtn exportBtn" @click="exportTab()">
-          <i class="iconfont icon-daochu"></i>
-          <span>导出报表</span>
-        </div>
-				
-				
-				<!--打印-->
-				<div class="utils-container-sell">
-					
-					<el-popover ref="reportPrint" placement="top" width="100" v-model="visible2">
-						<div class="select-print">
-							<el-checkbox :indeterminate="indeterminate" v-model="checkAll" @change="checkAllChange">综合</el-checkbox>
-							<el-checkbox-group v-model="selectValue" @change="partChecked">
-								<el-checkbox v-for="(city,index) in selectParam" :label="city" :key="city">
-									{{city}}
-								</el-checkbox>
-							</el-checkbox-group>
-							<el-button type="primary" size="small" @click.native="tabPrin()">确定</el-button>
-						</div>
-					</el-popover>
+				<div class="utilsBtn flex flex-v flex-pack-justify">
+          <!-- 导出表格 -->
+          <div class="btn" @click="exportTab()">
+            <i class="iconfont icon-daochu"></i>
+            <span>导出报表</span>
+          </div>
+          
+          
+          <!--打印-->
+          <div class="btn utils-container-sell">
+            
+            <el-popover ref="reportPrint" placement="top" width="100" v-model="visible2">
+              <div class="select-print">
+                <el-checkbox :indeterminate="indeterminate" v-model="checkAll" @change="checkAllChange">综合</el-checkbox>
+                <el-checkbox-group v-model="selectValue" @change="partChecked">
+                  <el-checkbox v-for="(city,index) in selectParam" :label="city" :key="city">
+                    {{city}}
+                  </el-checkbox>
+                </el-checkbox-group>
+                <el-button type="primary" size="small" @click.native="tabPrin()">确定</el-button>
+              </div>
+            </el-popover>
 
-					<el-button type="primary" class="popover_primary" v-popover:reportPrint>
-						<span class="txt">打印报表</span>
-						<i class="iconfont icon-dayin"></i>
-					</el-button>
-				</div>
+            <el-button type="primary" class="popover_primary" v-popover:reportPrint>
+              <span class="txt">打印报表</span>
+              <i class="iconfont icon-dayin"></i>
+            </el-button>
+          </div>
+        </div>
 
 <!--         <intelligence-type-template v-if="this.tabClassActive.index==1" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :title="'智能分类'" :headerData="printSelectDate"></intelligence-type-template> -->
 				<!--打印模块-->
@@ -1611,7 +1613,7 @@ export default {
 }
 .utils-container-sell {
   position: absolute;
-  right: -70px;
+  // right: -70px;
   bottom: 0;
   width: 52px;
   min-height: 50px;

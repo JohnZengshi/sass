@@ -46,6 +46,8 @@
   <span data-text="删除单据" v-if="synopsiData.checkType == '1' && synopsiData.isRole == 'Y'" @click="delOrder">
     <i class="iconfont icon-shanchu1"></i>
   </span>
+  <!-- 加载页数 -->
+  <LoaderNum ref="LoaderNum"></LoaderNum>
 
   <!-- 弹出框 -->
   <orderPopup 
@@ -69,7 +71,7 @@ import {
 import {seekReceiptRKSynopsis} from 'Api/commonality/seek'
 import orderPopup from '../component/orderPopup'
 import printLabel from '../component/printLabel'
-
+import LoaderNum from 'components/work/loaderNum'
 export default{
   data(){
     return{
@@ -81,12 +83,15 @@ export default{
      
      // 弹出框 显示 隐藏
      isShowPopup : false,
-     companyPosition : ''
+     companyPosition : '',
+     // 选择更新页数
+    pageSize: "30",
     }
   },
   components: {
     orderPopup,
-    printLabel
+    printLabel,
+    LoaderNum
   },
   props: ['dataList','orderData','curStatus'],
   

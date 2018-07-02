@@ -358,16 +358,22 @@
           </report-detail>
         </div>
 
-        <div class="exportTab" @click="exportTab()">
-          <i class="iconfont icon-daochu"></i>
-          <span>导出表格</span>
+        <div class="utilsBtn flex flex-v flex-pack-justify">
+          <div class="btn" @click="exportTab()">
+            <i class="iconfont icon-daochu"></i>
+            <span>导出表格</span>
+          </div>
+          <div class="btn" @click="tabPrin()">
+            <i class="iconfont icon-dayin1"></i>
+            <span>打印库存</span>
+          </div>
+          <!-- 加载条数选择器 -->
+          <LoaderNum 
+          class="loaderNum" 
+          ref="LoaderNum"
+          v-show="dataGridOptions.type==1" 
+          ></LoaderNum>
         </div>
-        <div class="printBtn" @click="tabPrin()">
-          <i class="iconfont icon-dayin1"></i>
-          <span>打印库存</span>
-        </div>
-        <!-- 加载条数选择器 -->
-        <LoaderNum class="loaderNum" v-show="dataGridOptions.type==1" @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
       </div>
 
       <div ref="tablePrint" v-if="isPrint==1">
@@ -591,8 +597,6 @@ export default {
       conditionList:[],
       jewelList:[],
       jewelryList:[],
-      // 选择加载的条数
-      upDataNum:30,
     };
   },
   watch: {
@@ -1375,11 +1379,6 @@ export default {
         }
       );
     },
-    //加载页数变化
-    changeUpdataPageSize(val) {
-      // console.log(val)
-      this.upDataNum = val
-    }
   },
 
   mounted() {

@@ -263,7 +263,7 @@ export default {
 		readMoreData() {
 		  let totalNum = this.dataGridStorage.totalNum;
 		  let length = this.dataGridStorage.detailList.length;
-		  let upDataNum = this.$parent.$parent.upDataNum;
+		  let upDataNum = this.$parent.$parent.$refs["LoaderNum"].pageSize;
 		  let pageSize = 1;
 		  if (Number(upDataNum)) {
 		    upDataNum = Number(upDataNum);

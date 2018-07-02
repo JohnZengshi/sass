@@ -61,7 +61,6 @@ import DataEditBody from './editBody'
 import DataGridFooter from './dataGridFooter'
 import DataEditFooter from './editFooter'
 import ReadMoreData from 'components/work/readMoreData.vue'
-import LoaderNum from 'components/work/loaderNum.vue'
 //let configData = null
 let configData = require('./config/dataGridConfig')
 let editConfigData = require('./config/edit')
@@ -80,7 +79,6 @@ export default {
 		DataGridHeader,
         DataEditFooter,
         ReadMoreData,
-        LoaderNum
 	},
 	watch :{
         reportType:function(){

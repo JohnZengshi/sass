@@ -219,20 +219,22 @@
 
       </div>
 
-      <div class="printBtn exportBtn" @click="exportTab()">
-        <i class="iconfont icon-daochu"></i>
-        <span>导出报表</span>
-      </div>
+      <div class="utilsBtn flex flex-v flex-pack-justify">
+        <div class="btn" @click="exportTab()">
+          <i class="iconfont icon-daochu"></i>
+          <span>导出报表</span>
+        </div>
 
-	    <div class="printBtn" @click="tabPrin()">
-        <i class="iconfont icon-dayin1"></i>
-        <span>打印报表</span>
-      </div>
+        <div class="btn" @click="tabPrin()">
+          <i class="iconfont icon-dayin1"></i>
+          <span>打印报表</span>
+        </div>
 
-      <!-- 加载条数选择 -->
-      <LoaderNum 
-      @changeUpdataPageSize="changeUpdataPageSize"
-      ></LoaderNum>
+        <!-- 加载条数选择 -->
+        <div class="LoaderNumBtn">
+          <LoaderNum ref="LoaderNum"></LoaderNum>
+        </div>
+      </div>
       	<!--打印模块-->
 				<div style="display: none;">
 						<detail-template v-if="this.tabClassActive.index==0" title="修改" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detail-template>

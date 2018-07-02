@@ -1,23 +1,25 @@
 <template>
-  <span class="loaderNum">
+  <span class="loaderNum radio-21">
     <span>{{pageSize}}</span>
     <span v-if="Number(pageSize)">条</span>
-    <el-radio-group class="floatBox" v-model="pageSize" @change="changeUpdataPageSize">
-      <ul>
-        <li>
-          <el-radio label="30">30</el-radio>
-        </li>
-        <li>
-          <el-radio label="50">50</el-radio>
-        </li>
-        <li>
-          <el-radio label="100">100</el-radio>
-        </li>
-        <li>
-          <el-radio label="所有">所有</el-radio>
-        </li>
-      </ul>
-    </el-radio-group>
+    <div class="Box">
+      <el-radio-group class="floatBox" v-model="pageSize" @change="changeUpdataPageSize">
+        <ul>
+          <li :class="{active:(pageSize == '30')}">
+            <el-radio label="30">30条</el-radio>
+          </li>
+          <li :class="{active:(pageSize == '50')}">
+            <el-radio label="50">50条</el-radio>
+          </li>
+          <li :class="{active:(pageSize == '100')}">
+            <el-radio label="100">100条</el-radio>
+          </li>
+          <li :class="{active:(pageSize == '所有')}">
+            <el-radio label="所有">所有</el-radio>
+          </li>
+        </ul>
+      </el-radio-group>
+    </div>
   </span>
 </template>
 <script>
@@ -28,26 +30,24 @@
         pageSize: "30",
       }
     },
-    methods:{
-        changeUpdataPageSize(val){
-            this.pageSize = val
-            this.$emit("changeUpdataPageSize",this.pageSize)
-        }
+    methods: {
+      changeUpdataPageSize(val) {
+        this.pageSize = val
+        this.$emit("changeUpdataPageSize", this.pageSize)
+      }
     }
   }
 
 </script>
 <style lang="less" scoped>
   .loaderNum {
-    height: 25px !important;
-    position: absolute;
-    right: -70px;
-    width: 52px;
-    background-color: #fff;
-    border: 1px solid #ededed;
-    border-radius: 5px;
-    text-align: center;
-    z-index: 9999;
+    height: 25px !important; // position: absolute;
+    // right: -70px;
+    // width: 52px;
+    background-color: #fff; // border: 1px solid #ededed;
+    // border-radius: 5px;
+    text-align: center; // z-index: 9999;
+    overflow: visible !important;
     >span {
       &:first-of-type {
         color: #2993f8
@@ -58,28 +58,49 @@
         opacity: 0 !important;
       }
       overflow: visible !important;
-      >.floatBox {
-        opacity: 1;
-        top: -125px;
+      >.Box {
         display: block;
+        .floatBox {
+          opacity: 1;
+          display: block;
+          z-index: 9999;
+        }
       }
     }
-    .floatBox {
-      width: 100px;
-      background-color: #fff;
-      border-radius: 10px;
+    .Box {
       position: absolute;
-      opacity: 0;
-      top: -100px;
-      left: -33px;
-      transition: all 0.5s;
+      bottom: 0;
+      left: 50px;
+      width: 90px;
       display: none;
-      ul {
-        width: 100%;
-        li {
-          height: 20px;
-          margin: 10px;
-          text-align: center;
+      .floatBox {
+        width: 90px;
+        background-color: #fff; // border-radius: 10px;
+        // position: absolute;
+        opacity: 0; // bottom: 0;
+        // left: 8px;
+        transform: translateX(5px);
+        transition: all 0.5s; // display: none;
+        box-shadow: 3px 3px 10px #999;
+        ul {
+          width: 100%;
+          li {
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            position: relative;
+            &.active {
+              background-color: rgb(236, 236, 236);
+              &::before {
+                width: 5px;
+                height: 100%;
+                background-color: #2993f8;
+                display: inline-block;
+                float: left;
+                content: "";
+              }
+            }
+          }
         }
       }
     }
