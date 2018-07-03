@@ -32,3 +32,5 @@
 # 加载更多未读数据（表格底部） readMoreData.vue
 
 # 选择加载条数（右下角的选择器） loaderNum.vue
+
+# 批量修改弹窗               batchamend.vue
