@@ -16,6 +16,10 @@
       专列项
     </div>
     
+    <div class="cost-btn ml-10" v-if="isPosition" :title="positionSwitch?'取消位置' : '选择位置'" @click="chosePosition" :class="{active: positionSwitch}">
+      位置
+    </div>
+
   </div>
 </template>
 <script>
@@ -23,7 +27,7 @@
   import cutSegmentation from "base/cut/cut-segmentation";
   import {seekSettingUserRole} from "Api/commonality/seek"
   export default {
-    props: ['isOld', 'isBuy', 'specialItem', 'customList', 'type'],
+    props: ['isOld', 'isBuy', 'specialItem', 'customList', 'type', 'isPosition'],
     components:{
       cutBg,
       cutSegmentation
@@ -38,6 +42,7 @@
         },
         tabSwitch: false, // 专列项
         isBuyBack: false, // 回购额
+        positionSwitch: false, // 位置
         isShowCost: '',
         madeUpList: [
             {
@@ -71,14 +76,20 @@
       }
     },
     methods: {
+        chosePosition () {
+          this.positionSwitch = !this.positionSwitch
+          this.$emit('chosePosition', this.positionSwitch)
+        },
         madeUpOnProductClass (parm) {
           this.filterData.productClass = parm.id
           this.$emit('complate', Object.assign({}, this.filterData, this.segmentationFilter))
         },
         madeUpOn (parm) {
+          debugger
           let datas = parm
           this.segmentationFilter = parm
-          this.$emit('complate', Object.assign({}, this.filterData, this.segmentationFilter))
+          // isRefresh 刷新
+          this.$emit('complate', Object.assign({}, this.filterData, {page: '1'}, this.segmentationFilter, {noRefresh: true}))
         },
         choseMenu () {
           this.tabSwitch = !this.tabSwitch
@@ -107,6 +118,7 @@
   margin-top: 10px;
   float: right;
   font-size: 0;
+  margin-right: 10px;
   .cost-btn{
     display: inline-block;
     font-size: 12px;

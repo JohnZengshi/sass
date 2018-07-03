@@ -16,31 +16,26 @@
           <i class="iconfont icon-shangpin"></i>          
           <div class="detailsInfo">
             <div class="detailsInfo_left">
-              <div class="main-body">
-                <!-- <ul class="title-tab">
-                    <div class="slide" ref="slide"></div>
-                    <li @click="tabSwitch(item, index, $event)" :key="index" :class="{active: tabIndex==index}" v-for="(item, index) in tabList">
-                        <div>{{item.label}}</div>
-                    </li>
-
-                </ul> -->
-                <ul class="item-blobk">
-                    <li v-for="(item, index) in sortDataList" :key="index">
-                        <div class="main-name">
-                            <div class="name-wrap">
-                                <span class="line"></span>
-                                <span class="name">{{item.label}}</span>
-                            </div>
-                        </div>
-                        <div class="main-item-list">
-                            <div class="main-item" v-for="(f, i) in item.dataList" :key="i">
-                                <div class="title">{{f.itemName}}</div>
-                                <div class="value">{{f.itemVal}}<span v-if="f.unit">{{f.unit}}</span></div>
-                            </div>
-                        </div>
-                        <div class="clear"></div>
-                    </li>
-                </ul>
+              <div class="d-main-body">
+                <div>
+                  <ul class="item-blobk">
+                      <li v-for="(item, index) in sortDataList" :key="index">
+                          <div class="main-name">
+                              <div class="name-wrap">
+                                  <span class="line"></span>
+                                  <span class="name">{{item.label}}</span>
+                              </div>
+                          </div>
+                          <div class="main-item-list">
+                              <div class="main-item" v-for="(f, i) in item.dataList" :key="i">
+                                  <div class="title">{{f.itemName}}</div>
+                                  <div class="value">{{f.itemVal}}<span v-if="f.unit">{{f.unit}}</span></div>
+                              </div>
+                          </div>
+                          <div class="clear"></div>
+                      </li>
+                  </ul>
+                </div>
               </div>
             </div>
             <div class="detailsInfo_right">
@@ -50,9 +45,9 @@
                 <div><i class="icon-dian fl">●</i><p>{{getProductClass(productClass)}}</p></div>
               </div>
               <div class="right_bottom">
-                <!-- 步骤条 -->
-                <steps-path :orderListST="orderListST" :productId="productId" :statusREfresh="statusREfresh">
-                </steps-path>
+                  <!-- 步骤条 -->
+                  <stepsPath :orderListST="orderListST" :productId="productId" :statusREfresh="statusREfresh">
+                  </stepsPath>
               </div>
             </div>
           </div>
@@ -213,6 +208,11 @@ export default {
     //开关 成本列
     tabSwitch: function() {
       this.tableSwitch();
+    },
+    sortDataList () {
+      $(".d-main-body").mCustomScrollbar({
+          theme: "minimal-dark"
+      });
     }
   },
   created() {
@@ -333,46 +333,46 @@ export default {
     },
     openDialog(parm) {
       if(this.panelType == 1) {
-        
-
-        console.log(parm)
+        this.$router.push({path:'/work/'})
         this.$emit('close')
-        // 入库详情页
-        if(parm.orderNum.indexOf('RK') !== -1) {
-          this.$router.push({path:'/work/storage/detail',query:{ orderNumber: parm.orderNum }})
-        }
-        // 修改详情页
-        if(parm.orderNum.indexOf('XG') !== -1) {
-          this.$router.push({path:'/work/amend/index',query:{ orderNumber: parm.orderNum }})
-        }
-        // 退库详情页
-        if(parm.orderNum.indexOf('TK') !== -1) {
-          this.$router.push({path:'/work/storageReturn/NewStorageReturn',query:{ orderNumber: parm.orderNum }})
-        }
-        // 调库详情页
-        if(parm.orderNum.indexOf('DK') !== -1) {
-          this.$router.push({path:'/work/transferStorage/newTransferStorage',query:{ orderNumber: parm.orderNum }})
-        }
-        // 发货详情页
-        if(parm.orderNum.indexOf('FH') !== -1) {
-          this.$router.push({path:'/work/sipping/newSipping',query:{ orderNumber: parm.orderNum }})
-        }
-        // 调柜详情页
-        if(parm.orderNum.indexOf('DG') !== -1) {
-          this.$router.push({path:'/work/transferCabinet/newTransferCabinet',query:{ orderNumber: parm.orderNum }})
-        }
-        // 退货详情页
-        if(parm.orderNum.indexOf('TH') !== -1) {
-          this.$router.push({path:'/work/salesReturn/newSalesReturn',query:{ orderNumber: parm.orderNum }})
-        }
-        // 销售详情页
-        if(parm.orderNum.indexOf('XS') !== -1) {
-          this.$router.push({path:'/work/sell/sellReceiptsList',query:{ orderNumber: parm.orderNum }})
-        } 
-        // 服务详情页
-        if(parm.orderNum.indexOf('FW') !== -1) {
-          this.$router.push({path:'/work/serve/serveReceiptsList',query:{ orderNumber: parm.orderNum, shopId: parm.shopId }})
-        } 
+        setTimeout(() => {
+                  // 入库详情页
+          if(parm.orderNum.indexOf('RK') !== -1) {
+            this.$router.push({path:'/work/storage/detail',query:{ orderNumber: parm.orderNum }})
+          }
+          // 修改详情页
+          if(parm.orderNum.indexOf('XG') !== -1) {
+            this.$router.push({path:'/work/amend/index',query:{ orderNumber: parm.orderNum }})
+          }
+          // 退库详情页
+          if(parm.orderNum.indexOf('TK') !== -1) {
+            this.$router.push({path:'/work/storageReturn/NewStorageReturn',query:{ orderNumber: parm.orderNum }})
+          }
+          // 调库详情页
+          if(parm.orderNum.indexOf('DK') !== -1) {
+            this.$router.push({path:'/work/transferStorage/newTransferStorage',query:{ orderNumber: parm.orderNum }})
+          }
+          // 发货详情页
+          if(parm.orderNum.indexOf('FH') !== -1) {
+            this.$router.push({path:'/work/sipping/newSipping',query:{ orderNumber: parm.orderNum }})
+          }
+          // 调柜详情页
+          if(parm.orderNum.indexOf('DG') !== -1) {
+            this.$router.push({path:'/work/transferCabinet/newTransferCabinet',query:{ orderNumber: parm.orderNum }})
+          }
+          // 退货详情页
+          if(parm.orderNum.indexOf('TH') !== -1) {
+            this.$router.push({path:'/work/salesReturn/newSalesReturn',query:{ orderNumber: parm.orderNum }})
+          }
+          // 销售详情页
+          if(parm.orderNum.indexOf('XS') !== -1) {
+            this.$router.push({path:'/work/sell/sellReceiptsList',query:{ orderNumber: parm.orderNum }})
+          } 
+          // 服务详情页
+          if(parm.orderNum.indexOf('FW') !== -1) {
+            this.$router.push({path:'/work/serve/serveReceiptsList',query:{ orderNumber: parm.orderNum, shopId: parm.shopId }})
+          } 
+        }, 100)
           // this.$router.push({path:'/work/sell'})
           // this.$router.push({path:'/work/sell/sellReceiptsList?orderNumber='+parm})
         return
@@ -974,7 +974,7 @@ export default {
     getProductType(data) {
       switch (data) {
         case "10":
-          return '在库位'
+          return '已入库'
           break;
         case "11":
           return '入库中'
@@ -1069,6 +1069,10 @@ export default {
     }
   },
   mounted() {
+    $(".d-main-body").mCustomScrollbar({
+            theme: "minimal-dark"
+    });
+    
     this.$nextTick(() => {
       this.tableSwitch();
     });
@@ -1108,11 +1112,10 @@ export default {
     display: flex;
     .detailsInfo_left {
       width: 1010px;
-      .main-body {
+      .d-main-body {
             width: 1010px;
             height: 700px;
             // margin: 0 auto;
-            overflow-y: auto;
             .title-tab {
                 height: 32px;
                 position: relative;
@@ -1263,7 +1266,7 @@ export default {
       // 时间轴
       .right_bottom {
         position: relative;
-        height: 100%;
+        height: 550px;
         margin-top: 30px;
       }
     }

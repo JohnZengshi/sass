@@ -452,6 +452,8 @@
                                         <span class="iconfont icon-shanchu1"></span>
                                         <span>删除</span>
                                     </div>
+                                    <!-- 加载页数 -->
+                                    <LoaderNum ref="LoaderNum" style="display:block;"></LoaderNum>
                                 </div>
                             </div>
                         </section>
@@ -573,7 +575,7 @@ import {downLoaderFile} from 'Api/downLoaderFile'
 import dropDownColum from 'base/menu/drop-down-colums'
 
 import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList} from "Api/commonality/seek"
-
+import LoaderNum from 'components/work/loaderNum';
 export default {
 	components: {
         storageReturnReceiptsIntro,
@@ -596,7 +598,7 @@ export default {
 		intelligenceTypeTemplate,
         customTemplate,
         dropDownColum,
-        
+        LoaderNum,
     },
     data () {
         return {
@@ -793,7 +795,7 @@ export default {
                 sortList: [{barcode: '1'}],
                 type: 1,
                 page: 1,
-                pageSize: 15,
+                pageSize: 30,
                 keyWord: '',
                 wColorId: '',
                 wGemId: '',
@@ -1090,7 +1092,7 @@ export default {
                 sortFlag: '0',
                 type: 1,
                 page: 1,
-                pageSize: 15,
+                pageSize: 30,
                 keyWord: ''
               })
             } else if (port == 2) {
@@ -1162,7 +1164,7 @@ export default {
           this.loading = true;
           //this.page = 1
           this.dataGridOptions.page = 1
-          this.dataGridOptions.pageSize = 15
+          this.dataGridOptions.pageSize = 30
           this.tabClassActive.index = index;
           this.setReportType(type)
           
@@ -1257,7 +1259,7 @@ export default {
                 this.inconspanactive2 = true;
             }
             this.dataGridOptions.page = 1;
-            this.dataGridOptions.pageSize = 15;
+            this.dataGridOptions.pageSize = 30;
             this.dataGridOptions.productClass = val;
             console.log("切换成旧料", this.dataGridOptions.productClass);
             //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
@@ -1949,8 +1951,9 @@ export default {
                
         //     })
         // },
-        sendlayLoad () {
-          this.dataGridOptions.pageSize += 15
+        sendlayLoad (val) {
+        //   this.dataGridOptions.pageSize += 15
+        this.dataGridOptions.pageSize = val
           seekTransferStorageData(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
               this.dataGridStorage = res.data.data
@@ -1972,7 +1975,7 @@ export default {
                 //打印数据请求完成之后 初始化分页设置
                 Object.assign(this.dataGridOptions, {
                   page : 1,
-                  pageSize : 15
+                  pageSize : 30
                 })
               }else{
                 this.dataGridStorage = res.data.data

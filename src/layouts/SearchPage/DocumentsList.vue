@@ -1,10 +1,20 @@
 <template>
     <div>
         <!-- 表头搜索 -->
-        <filter-header :serchKey="serchKey" :panelType="panelType" @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
+        <filter-header
+          :serchKey="serchKey"
+          :panelType="panelType"
+          @seekProduct="seekProduct"
+          @reportSwitch="reportSwitch"
+          @resetData="resetData"
+          @amendNum="amendNum"
+          @confirmDerive="confirmDerive"
+          @filterData="filterData"
+          :operationList="operationList"
+          ></filter-header>
         <!-- 表格主体 -->
         <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
-            <report-detail ref="reportDetailWrap" :panelType="panelType" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow" @close="close">
+            <report-detail ref="reportDetailWrap" :panelType="panelType" :allData="allData" :dataGridStorage="dataGridStorage" :printNum="printNum" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow" @close="close">
             </report-detail>
         </div>
     </div>
@@ -24,8 +34,7 @@ import {
   seekGetUserList,
   // seekGetShopListByCo,
   seekGetUserInfo,
-  seekMemberList,
-  seekGetPrintLabelList
+  seekMemberList
 } from "Api/commonality/seek.js";
 import Cascade from "./base/Cascade";
 import * as jurisdictions from "Api/commonality/jurisdiction";
@@ -39,7 +48,7 @@ import {
   productTpyeState,
   newProductDetailStatus,
   statusModuleType,
-  documentsState,
+  searchProductStatus,
   memberTypeState,
   memberFollowTypeState,
   memberOriginState,
@@ -48,7 +57,7 @@ import {
 
 import { orderListBySearch } from 'Api/search'
 import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
-
+import { downLoaderFile } from 'Api/downLoaderFile'
 
 export default {
   props: ["panelType","serchKey",'showAll'],
@@ -63,6 +72,20 @@ export default {
   },
   data() {
     return {
+      operationList: [
+        {
+          name: '单据信息',
+          id: '1'
+        },
+        {
+          name: '商品信息',
+          id: '2'
+        },
+        // {
+        //   name: '单据和商品信息',
+        //   id: '3'
+        // },
+      ],
       addData: [], // 让后台过滤的数据源
       printNum: {
         // 打印行数
@@ -316,7 +339,7 @@ export default {
     //           // 单据类型
     //           i.orderType = statusModuleType(i.orderType)
     //           // 制单状态
-    //           i.auditStatus = documentsState(i.auditStatus)
+    //           i.auditStatus = searchProductStatus(i.auditStatus)
     //           // 制单时间
     //           i.createTime = this._formDataTimeYND(i.createTime)
     //           //
@@ -458,6 +481,7 @@ export default {
       this.$emit('close',false)
     },
     resetData() {
+      debugger
       this.filterCondition = {
         keyWord: "",
         // newOrderId: "",
@@ -479,6 +503,43 @@ export default {
     },
     amendNum(parm) {
       this.printNum = parm;
+    },
+
+    confirmDerive (parm) {
+        let datas = {
+            "page": 1,
+            "pageSize": 9999,
+            "orderNumList": []
+        }
+
+        if (parm.cost) {
+          datas.SpecialId = '1'
+        }
+        
+        if (!this.printNum.beginNum || !this.printNum.endNum) {
+          this.$message({
+            message: '请选择导出商品',
+            type: 'warning'
+          })
+          return
+        }
+
+        let changeData = this.dataGridStorage.slice(this.printNum.beginNum - 1, this.printNum.endNum)
+        for (let i of changeData) {
+          if (parm.name == '单据信息') {
+            datas.orderNumList.push({'orderNum': i.orderNum})
+          }
+          if (parm.name == '商品信息') {
+            datas.barcodeList.push({'barcode': i.barcode})
+          }
+        }
+        // if (parm.name == '单据信息') {
+
+        // }
+        // if (parm.name == '商品信息') {
+
+        // }
+        downLoaderFile('/v1/export/exportExcelByReceipt', datas)
     },
 
     // 查询单据
@@ -507,7 +568,7 @@ export default {
             // 单据类型
             i.orderType = statusModuleType(i.orderType)
             // 制单状态
-            i.auditStatus = documentsState(i.auditStatus)
+            i.auditStatus = searchProductStatus(i.auditStatus)
             // 制单时间
             i.createTime = this._formDataTimeYND(i.createTime)
           }
@@ -555,7 +616,7 @@ export default {
             // 单据类型
             i.orderType = statusModuleType(i.orderType)
             // 制单状态
-            i.auditStatus = documentsState(i.auditStatus)
+            i.auditStatus = searchProductStatus(i.auditStatus)
             // 制单时间
             i.createTime = this._formDataTimeYND(i.createTime)
           }
@@ -990,64 +1051,6 @@ export default {
       return d < 10 ? "0" + d : d + "";
     },
 
-    // send() {
-    //   this.loading = true;
-    //   seekGetPrintLabelList(this.dataGridOptions).then((res) => {
-    //     if (res.data.state == 200) {
-    //       this.dataGridStorage = [
-    //         {
-    //             barcode: '100',
-    //             productTypeName: '100',
-    //             className: '100',
-    //             weight: '100',
-    //             GoldWeight: '100',
-    //             main: '100',
-    //             deputy: '100',
-    //             soldPrice: '100',
-    //             orderNum: '100',
-    //             productClass: '100',
-    //             locationName: '100',
-    //             productStatus: '100'
-    //           },
-    //           {
-    //             barcode: '100',
-    //             productTypeName: '100',
-    //             className: '100',
-    //             weight: '100',
-    //             GoldWeight: '100',
-    //             main: '100',
-    //             deputy: '100',
-    //             soldPrice: '100',
-    //             orderNum: '100',
-    //             productClass: '100',
-    //             locationName: '100',
-    //             productStatus: '100'
-    //           },
-    //           {
-    //             barcode: '100',
-    //             productTypeName: '100',
-    //             className: '100',
-    //             weight: '100',
-    //             GoldWeight: '100',
-    //             main: '100',
-    //             deputy: '100',
-    //             soldPrice: '100',
-    //             orderNum: '100',
-    //             productClass: '100',
-    //             locationName: '100',
-    //             productStatus: '100'
-    //           }
-    //         ]
-    //       this.loading = false
-    //     } else {
-    //       this.$message({
-    //         type: 'error',
-    //         message: res.data.msg
-    //       })
-    //     }
-    //     this.loading = false
-    //   })
-    // },
 
     //懒加载
     lazyloadSend() {

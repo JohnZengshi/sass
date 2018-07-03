@@ -1,5 +1,13 @@
 <template>
   <div class="d-c-filter-header-main productList">
+  
+<!--     <operation-btn ref="operationBtnWrap" :title="'导出'" :operationList="operationList" :modal="false" @confirm="confirmDerive"></operation-btn>
+
+    <div class="lable-print-change-wrap">
+      <input-scope :dataLength="10" :placeholder="'导出行范围'" @amendNum="amendNum"></input-scope>
+      <div class="back-btn" @click="deriveTable">导出</div>
+    </div> -->
+
     <!-- 商品 -->
     <div class="operate-bar-bottom" v-if="panelType === 0">
       <div class="search">
@@ -20,7 +28,16 @@
       </div>
 
       <div class="search-block">
-          <alone-drop-down-colums
+          <dropDownColums
+              ref="shopWrap"
+              :propsList="shopDataList"
+              :allName="'全部店铺'"
+              :keyName="'shopId'"
+              titleData="店铺名称"
+              @dataBack="dataBack"
+          >
+          </dropDownColums>
+<!--           <alone-drop-down-colums
               ref="shopWrap"
               :propsList="shopDataList"
               :allName="'全部店铺'"
@@ -28,7 +45,7 @@
               titleData="店铺名称"
               @dataBack="dataBackShopList"
           >
-          </alone-drop-down-colums>
+          </alone-drop-down-colums> -->
           
       </div>
       <div class="class-btn-wrap">
@@ -135,16 +152,16 @@
           
       </div>
       
-      <div class="search-block t-center">
+<!--       <div class="search-block t-center">
         <alone-drop-down-colums 
             ref="peopleTypeWrap"
             :propsList="userTypeListConfig"
             titleData="人员类型"
             @dataBack="dataBackUserTypeList"
         ></alone-drop-down-colums>
-      </div>
+      </div> -->
 
-      <div class="search-block">
+<!--       <div class="search-block">
           <dropDownColums
               ref="peopleWrap"
               :propsList="selectPersonnelConfig"
@@ -154,7 +171,7 @@
           >
           </dropDownColums>
           
-      </div>
+      </div> -->
 
       <div class="itemType">
           <alone-drop-down-colums 
@@ -281,8 +298,10 @@ import downInputMember from 'base/menu/down-input-member'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
 import { productDetailStatus } from 'Api/commonality/status';
+import inputScope from 'base/input/input-scope';
+import operationBtn from 'base/popup/operation-btn';
 export default {
-  props:['panelType','serchKey'],
+  props:['panelType','serchKey', 'operationList'],
   components: {
     dropDownColums,
     DropDownMenu,
@@ -290,10 +309,33 @@ export default {
     DownMenu,
     downInput,
     aloneDropDownColums,
-    downInputMember
+    downInputMember,
+    inputScope,
+    operationBtn
   },
   data () {
     return {
+      operationListOne: [
+        {
+          name: '商品信息',
+          id: '1'
+        }
+      ],
+      operationListTne: [
+        {
+          name: '单据信息',
+          id: '1'
+        },
+        {
+          name: '单据信息',
+          id: '1'
+        }
+      ],
+      printNum: { // 打印行数
+        allChecked: false, // 全部选中
+        beginNum: '',
+        endNum: '',
+      },
       isShowCost: '',
       keyWord: this.serchKey,
       tabSwitch: false,
@@ -322,7 +364,7 @@ export default {
       stateList: [
         {
             id: "10",
-            name: "在库位"
+            name: "已入库"
         },
         {
             id: "11",
@@ -380,10 +422,10 @@ export default {
             id: "70",
             name: "已调柜"
         },
-        {
-            id: "71",
-            name: "调柜中"
-        },
+        // {
+        //     id: "71",
+        //     name: "调柜中"
+        // },
         {
             id: "80",
             name: "已销售"
@@ -686,10 +728,10 @@ export default {
         //   id: '10',
         //   name: '修改'
         // },
-        // {
-        //   id: '11',
-        //   name: '服务'
-        // },
+        {
+          id: '11',
+          name: '服务'
+        },
       ]
     }
 
@@ -730,6 +772,20 @@ export default {
     }
   },
   methods: {
+    // 确定导出类型
+    confirmDerive (parm) {
+      this.$emit('confirmDerive', parm)
+    },
+    deriveTable () {
+      if (this.panelType == 2) {
+        this.$emit('confirmDerive')
+      } else {
+        this.$refs.operationBtnWrap.open()
+      }
+    },
+    amendNum (parm) {
+      this.$emit('amendNum', parm)
+    },
     choseMenu () {
       this.tabSwitch = !this.tabSwitch
       this.$emit('reportSwitch', this.tabSwitch)
@@ -746,17 +802,21 @@ export default {
     },
     // 重置
     resetData () {
+      debugger
       this.keyWord = ''
+      this.filterCondition = {
+        keyWord: ''
+      }
       if(this.panelType == 0) {
-        this.filterData.keyword = ''
-        this.filterData.colourList = []
-        this.filterData.jeweList = []
-        this.filterData.jewelryList = []
-        this.filterData.productClassList = []
-        this.filterData.productStatusList = []
-        this.filterData.productTypeList = []
-        this.filterData.shopList = []
-        this.filterData.storageList = []
+        // this.filterData.keyword = ''
+        // this.filterData.colourList = []
+        // this.filterData.jeweList = []
+        // this.filterData.jewelryList = []
+        // this.filterData.productClassList = []
+        // this.filterData.productStatusList = []
+        // this.filterData.productTypeList = []
+        // this.filterData.shopList = []
+        // this.filterData.storageList = []
 
         this.$refs.storageLocationWrap.reset()
         this.$refs.shopWrap.reset()
@@ -771,8 +831,8 @@ export default {
       if(this.panelType == 1) {
         this.$refs.storageLocationWrap.reset()
         this.$refs.shopWrap.reset()
-        this.$refs.peopleTypeWrap.reset()
-        this.$refs.peopleWrap.reset()
+        // this.$refs.peopleTypeWrap.reset()
+        // this.$refs.peopleWrap.reset()
         this.$refs.stateWrap.reset()
 
         this.orderBegin = ''
@@ -787,11 +847,11 @@ export default {
         this.filterCondition['orderBegin'] = ''
         this.filterCondition['orderEnd'] = ''
 
-        this.filterData.repositoryList = []
-        this.filterData.shopIdList = []
-        this.filterData.userTypeList = []
-        this.filterData.operatorList = []
-        this.filterData.orderTypeList = []
+        // this.filterData.repositoryList = []
+        // this.filterData.shopIdList = []
+        // this.filterData.userTypeList = []
+        // this.filterData.operatorList = []
+        // this.filterData.orderTypeList = []
 
       }
       if(this.panelType == 2) {
@@ -802,12 +862,11 @@ export default {
         this.$refs.memberFollowWrap.reset()
         this.$refs.memberOriginWrap.reset()
         this.$refs.moreWrap.reset()
-
-        this.filterData.followTypeList = []
-        this.filterData.memberOriginList = []
-        this.filterData.memberTypeList = []
-        this.filterData.operatorList = []
-        this.filterData.shopIdList = []
+        // this.filterData.followTypeList = []
+        // this.filterData.memberOriginList = []
+        // this.filterData.memberTypeList = []
+        // this.filterData.operatorList = []
+        // this.filterData.shopIdList = []
       }
       this.$emit('resetData')
     },
@@ -865,19 +924,14 @@ export default {
         } else if (this.isJrole) { // 监察员
           options.type = 1
         }
-
+        this.selectPersonnelConfig = []
+        this.storePersonnel = []
         seekGetShopListByCo(options)
           .then(res => {
             if (res.data.state == 200) {
               for (let i of res.data.data.shopList) {
                 this._showCounterList(i.shopId, i)
               }
-
-              let dpData = {
-                  id: '2',
-                  name:'店铺人员',
-                  childrenList: [],
-                }
 
               // 获取店铺人员
               res.data.data.shopList.forEach(item => {
@@ -890,19 +944,30 @@ export default {
                 
                 seekGetShopUserList(shopData).then(res => {
                   if(res.data.state == 200) {
-                    console.log('看看看这里的数据',res.data)
+                      let dpData = {
+                        id: '2',
+                        name:'店铺人员',
+                        childrenList: [],
+                      }
+
                     res.data.data.shopUserList.forEach(i => {
                       let option = {}                      
                       option.id = i.userId
                       option.name = i.userName
                       dpData.childrenList.push(option)
-                      this.storePersonnel.push(option)
+                      // this.storePersonnel.push(option)
+                      let isHas = this.storePersonnel.filter((currentValue, index, arr) => {
+                        return currentValue.id == i.userId
+                      })
+                      if (!isHas.length) {
+                        this.storePersonnel.push(option)
+                      } 
                     })
+                    this.selectPersonnelConfig.push(dpData)
                   }
                 })
               })
-
-              this.selectPersonnelConfig.push(dpData)
+              
               
               // this.shopDataList.childrenList = 
               // this.productCategory[1].children = res.data.data.repositoryList
@@ -963,6 +1028,7 @@ export default {
 
     },
     changeOrderId (parm) {
+      debugger
       this.filterCondition.newOrderId = parm
       this.$emit('filterData', this.filterCondition)
     },
@@ -973,6 +1039,7 @@ export default {
 
     },
     dataBack (parm) {
+      debugger
       // 字符串的 截取 因为 知道 字段不会出现Id
       let len = parm.keyName.length
       let key = parm.keyName.slice(0,len-2) + 'List'
@@ -982,10 +1049,12 @@ export default {
     },
     // 店铺id
     dataBackShopList (parm) {
+      debugger
       this.filterCondition.shopList = this.conversionData(parm.bigList,'shopId')
       this.$emit('filterData', this.filterCondition)
     },
     dataBackProductTypeId (parm) { // 产品类别过滤
+      debugger
       this.filterCondition.productStatusList = this.conversionData(parm.bigList,'productStatus')
       this.$emit('filterData', this.filterCondition)
     },
@@ -1038,6 +1107,7 @@ export default {
       if(val) {
         let beginTime = val.substr(0, 10).split('-').join("") + "000000"
         this.filterCondition['startTime'] = beginTime
+        debugger
         this.$emit('filterData', this.filterCondition)
       }
     },
@@ -1046,6 +1116,7 @@ export default {
       if(val) {
         let endTime = val.substr(0, 10).split('-').join("") + "235959"
         this.filterCondition['endTime'] = endTime
+        debugger
         this.$emit('filterData', this.filterCondition)
       }
     },
@@ -1053,6 +1124,7 @@ export default {
     // 商品状态过滤
     dataBackProductClass (parm) {
       this.filterCondition.productClassList  = this.conversionData(parm.bigList,'productClass')
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 获取人员列表
@@ -1093,62 +1165,74 @@ export default {
     rangeOfScreening () {
       this.filterCondition['orderBegin'] = this.orderBegin
       this.filterCondition['orderEnd'] = this.orderEnd
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 单据的时间筛选
     timeToScreen () {
       this.filterCondition['startTime'] = this.beginTime
       this.filterCondition['endTime'] = this.endTime
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 会员类型的筛选
     dataBackmembermemberType(parm) {
       this.filterCondition.memberTypeList = this.conversionData(parm.bigList,'memberType')
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 会员级别的筛选
     dataBackGrade(parm) {
       this.filterCondition.gradeList = this.conversionData(parm.bigList,'grade')
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 跟进状态
     dataBackFollowType(parm) {
       this.filterCondition.followTypeList = this.conversionData(parm.bigList,'followType')
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 会员来源
     dataBackMemberOrigin(parm) {
       this.filterCondition.memberOriginList = this.conversionData(parm.bigList,'memberOrigin')
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 人员类型
     dataBackUserTypeList(parm) {
       this.filterCondition.userTypeList = this.conversionData(parm.bigList,'userType')
+      debugger
       this.$emit('filterData', this.filterCondition)      
     },
     // 店铺id
     dataBackShopidList(parm) {
       this.filterCondition.shopIdList = this.conversionData(parm.bigList,'shopId')
+      debugger
       this.$emit('filterData', this.filterCondition)  
     },
     // 库位id
     dataBackRepositoryList(parm) {
       this.filterCondition.repositoryList = this.conversionData(parm.bigList,'repositoryId')
+      debugger
       this.$emit('filterData', this.filterCondition)  
     },
     // 选择人员
     dataBackOperatorList(parm) {
       this.filterCondition.operatorList = this.conversionData(parm.samllList,'operatorId')
+      debugger
       this.$emit('filterData', this.filterCondition)  
     },
     // 单据类型
     dataBackOrderTypeList(parm) {
       this.filterCondition.orderTypeList = this.conversionData(parm.bigList,'orderType')
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 店铺人员
     dataBackShopidPeopleList(parm) {
       this.filterCondition.operatorList = this.conversionData(parm.bigList,'operatorId')
+      debugger
       this.$emit('filterData', this.filterCondition)
     },
 
@@ -1166,6 +1250,28 @@ export default {
 }
 </script>
 <style lang="scss">
+@import "~assets/css/_fontManage.scss";
+.d-c-filter-header-main{
+  .lable-print-change-wrap{
+    // height: 40px;
+    padding: 0 10px 10px 18px;
+    font-size: 0;
+    .back-btn {
+        display: inline-block;
+        width: 80px;
+        height: 28px;
+        margin-left: 10px;
+        background:#2993f8;
+        @include F(12, #fff);
+        font-weight: bold;
+        text-align: center;
+        line-height: 28px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+  }
+}
+
 .batch-main .batch-page-one .operate-bar-bottom .batch-time-wrap:hover{
     border: 1px solid #2993f8 !important;
 }
@@ -1220,7 +1326,8 @@ export default {
           }
       }
       .search-block {
-          width: 85px;
+          min-width: 70px;
+          width: auto;
           height: 28px;
           margin-left: 10px;
           border: 1px solid #d6d6d6;

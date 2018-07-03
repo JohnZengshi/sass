@@ -41,6 +41,7 @@ module.exports = {
       totalType: '',
       toFixed: false,
       countCut: 0,
+      textAlign: 'left'
       //sort: ''
     },
     {
@@ -55,6 +56,7 @@ module.exports = {
       totalType: '',
       toFixed: false,
       countCut: 0,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -69,7 +71,8 @@ module.exports = {
       totalType: 'subtotalWeight',
       toFixed: false,
       countCut: 3,
-      right: true
+      right: true,
+      textAlign: 'right'
       //sort: ''
     },
     // {
@@ -97,7 +100,8 @@ module.exports = {
       totalType: 'subtotalGoldWeight',
       toFixed: false,
       countCut: 3,
-      right: true
+      right: true,
+      textAlign: 'right'
       //sort: ''
     },
     // {
@@ -125,7 +129,8 @@ module.exports = {
       totalType: 'subtotalPrice',
       toFixed: false,
       countCut: 2,
-      right: true
+      right: true,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -140,7 +145,8 @@ module.exports = {
       totalType: 'subtotalWage',
       toFixed: false,
       countCut: 2,
-      right: true
+      right: true,
+      textAlign: 'right'
     },
     {
       id: '127',
@@ -154,7 +160,8 @@ module.exports = {
       totalType: 'subtotalRealPrice',
       toFixed: false,
       countCut: 2,
-      right: true
+      right: true,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -169,7 +176,8 @@ module.exports = {
       totalType: 'subtotalCost',
       toFixed: false,
       countCut: 2,
-      right: true
+      right: true,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -185,7 +193,8 @@ module.exports = {
       totalType: 'margin',
       toFixed: false,
       countCut: 2,
-      right: true
+      right: true,
+      textAlign: 'right'
       //sort: ''
     }
   ],
@@ -233,6 +242,8 @@ module.exports = {
       totalType: '',
       toFixed: false,
       countCut: 0,
+      paddingLeft: '10px',
+      textAlign: 'left'
       //sort: ''
     },
     {
@@ -247,6 +258,7 @@ module.exports = {
       totalType: 'totalNum',
       toFixed: false,
       countCut: 0,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -261,6 +273,7 @@ module.exports = {
       totalType: 'totalWeight',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -275,6 +288,7 @@ module.exports = {
       totalType: 'totalGoldWeight',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     // {
@@ -317,6 +331,7 @@ module.exports = {
       totalType: 'totalSoldPrice',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -330,7 +345,8 @@ module.exports = {
       childType: 'wage',
       totalType: 'totalWage',
       toFixed: false,
-      countCut: 2
+      countCut: 2,
+      textAlign: 'right'
     },
     {
       id: '1d7',
@@ -344,6 +360,7 @@ module.exports = {
       totalType: 'totalRealPrice',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     // {
@@ -397,7 +414,8 @@ module.exports = {
       childType: 'buy',
       totalType: 'totalBuy',
       toFixed: true,
-      countCut: 2
+      countCut: 2,
+      textAlign: 'right'
     },
 
 
@@ -412,7 +430,8 @@ module.exports = {
       childType: 'actualPrice',
       totalType: 'totalActualPrice',
       toFixed: false,
-      countCut: 2
+      countCut: 2,
+      textAlign: 'right'
     },
     {
       id: '149',
@@ -426,6 +445,7 @@ module.exports = {
       totalType: 'totalCost',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -441,6 +461,7 @@ module.exports = {
       // totalType: 'totalMargin',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     }
   ],
@@ -500,6 +521,7 @@ module.exports = {
       totalType: 'totalNum',
       toFixed: false,
       countCut: 0,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -514,6 +536,7 @@ module.exports = {
       totalType: 'totalWeight',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -528,6 +551,7 @@ module.exports = {
       totalType: 'totalGoldWeight',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     // {
@@ -570,6 +594,7 @@ module.exports = {
       totalType: 'totalSoldPrice',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -583,7 +608,8 @@ module.exports = {
       childType: 'wage',
       totalType: 'totalWage',
       toFixed: false,
-      countCut: 2
+      countCut: 2,
+      textAlign: 'right'
     },
     {
       id: 'g317',
@@ -597,6 +623,7 @@ module.exports = {
       totalType: 'totalRealPrice',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     // {
@@ -650,7 +677,8 @@ module.exports = {
       childType: 'buy',
       totalType: 'totalBuy',
       toFixed: true,
-      countCut: 2
+      countCut: 2,
+      textAlign: 'right'
     },
     {
       id: 'sf20',
@@ -663,7 +691,8 @@ module.exports = {
       childType: 'actualPrice',
       totalType: 'totalActualPrice',
       toFixed: false,
-      countCut: 2
+      countCut: 2,
+      textAlign: 'right'
     },
     {
       id: '319',
@@ -677,6 +706,7 @@ module.exports = {
       totalType: 'totalCost',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -691,6 +721,7 @@ module.exports = {
       totalType: 'margin',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     }
   ],
@@ -736,6 +767,8 @@ module.exports = {
       totalType: '',
       toFixed: false,
       countCut: 0,
+      textAlign: 'left',
+      paddingLeft: '10px'
       //sort: ''
     },
     {
@@ -750,6 +783,7 @@ module.exports = {
       totalType: 'totalNum',
       toFixed: false,
       countCut: 0,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -764,6 +798,7 @@ module.exports = {
       totalType: 'totalWeight',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -778,6 +813,7 @@ module.exports = {
       totalType: 'totalGoldWeight',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     // {
@@ -819,6 +855,7 @@ module.exports = {
       totalType: 'totalSoldPrice',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -832,7 +869,8 @@ module.exports = {
       childType: 'wage',
       totalType: 'totalWage',
       toFixed: false,
-      countCut: 2
+      countCut: 2,
+      textAlign: 'right'
     },
     {
       id: 'g317',
@@ -846,6 +884,7 @@ module.exports = {
       totalType: 'totalRealPrice',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     // {
@@ -899,7 +938,8 @@ module.exports = {
       childType: 'buy',
       totalType: 'totalBuy',
       toFixed: true,
-      countCut: 2
+      countCut: 2,
+      textAlign: 'right'
     },
     {
       id: 'sf20',
@@ -912,7 +952,8 @@ module.exports = {
       childType: 'actualPrice',
       totalType: 'totalActualPrice',
       toFixed: false,
-      countCut: 2
+      countCut: 2,
+      textAlign: 'right'
     },
     {
       id: '319',
@@ -926,6 +967,7 @@ module.exports = {
       totalType: 'totalCost',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     },
     {
@@ -940,6 +982,7 @@ module.exports = {
       totalType: 'margin',
       toFixed: false,
       countCut: 2,
+      textAlign: 'right'
       //sort: ''
     }
   ]

@@ -32,6 +32,17 @@ const store = {
             }
         ],
         littleClass: [ // 小类
+            {
+                "name": "产品类别",
+                "englishName": "productType",
+                "open": [{
+                    "name": "计重类",
+                    "englishName": "WeightClass"
+                }, {
+                    "name": "计件类",
+                    "englishName": "PieceworkClass"
+                }]
+            },
             { // 首饰名称
               "name": "首饰名称",
               "colspan": 4,
@@ -579,7 +590,10 @@ const store = {
                 }, {
                     "name": "计重"
                 }
-            ]
+            ],
+            "WeightClass": [], //计重类
+            "PieceworkClass": [], //计件类
+
         },
         rowConfigData: { // 一行数据
             "productId": "", // 商品ID(用来做删除用的)

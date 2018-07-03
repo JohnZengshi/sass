@@ -1,7 +1,7 @@
 <template>
   <!--表头-->
   <div class="ui-table_column">
-    <div @click="headSort(tab)" class="ui-table_th" v-for="tab in detailDataGridColumn" :style="tableCell(tab.width)">
+    <div @click="headSort(tab)" class="ui-table_th" v-for="tab in detailDataGridColumn" :style="_calculateClass(tab)">
       {{tab.text }} <i v-if="tab.unit !=''">{{ tab.unit}}</i>
       <img v-if="tab.sort == ''" src="/static/img/sort/default.png">
       <img v-if="tab.sort == '1'" src="/static/img/sort/up.png">
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+  import {calculateClass} from 'assets/js/getClass'
   export default {
     props: ['detailDataGridColumn', 'tabCell', 'reportType', 'newList'],
     data() {
@@ -91,6 +92,9 @@
       }
     },
     methods: {
+      _calculateClass (parm) {
+        return calculateClass(parm)
+      },
       tableCell(width) {
         let _size = ''
 
@@ -277,6 +281,9 @@
         // line-height: 38px;
         // font-size: 14px;
         color: #2993f8;
+      }
+      &.ui-table_th:last-child{
+        padding-right: 20px;
       }
     }
   }

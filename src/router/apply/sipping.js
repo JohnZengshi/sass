@@ -7,7 +7,7 @@ const routes = {
     path: 'sipping',
     component: sippingIndex,
     children: [
-        {path: "", component: sipping, name: "发货"},
+        {path: "", component: sipping, name: "发货", meta: {keepAlive: true}},
         {path: "newSipping", component: newSipping, name: "新建单据"},
         {path: "printFH", component: printFH},
         {path: "detailSippingTable", component: detailSippingTable}

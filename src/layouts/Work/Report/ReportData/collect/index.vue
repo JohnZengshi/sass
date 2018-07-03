@@ -26,18 +26,20 @@
 				</div>
 			</div> -->
 
-			<!-- 导出表格 -->
-			<div class="printBtn exportBtn" @click="exportTab()">
-        		<i class="iconfont icon-daochu"></i>
-         		 <span>导出报表</span>
-        	</div>
+			<div class="utilsBtn flex flex-v flex-pack-justify">
+				<!-- 导出表格 -->
+				<div class="btn" @click="exportTab()">
+					<i class="iconfont icon-daochu"></i>
+					<span>导出报表</span>
+				</div>
 
-			<!--打印-->
-			<div class="utils-container-sell">
-				<el-button type="primary" class="popover_primary" @click="tabPrin">
-					<span class="txt">打印报表</span>
-					<i class="iconfont icon-dayin"></i>
-				</el-button>
+				<!--打印-->
+				<div class="btn utils-container-sell">
+					<el-button type="primary" class="popover_primary" @click="tabPrin">
+						<span class="txt">打印报表</span>
+						<i class="iconfont icon-dayin"></i>
+					</el-button>
+				</div>
 			</div>
 			<!--打印模块-->
 			<div style="display: none;">

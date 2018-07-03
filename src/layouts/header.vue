@@ -27,7 +27,7 @@
 
       <div class="page-side">
           <div class="menuTabs">
-              <!--<menutabs></menutabs>-->
+             <!--  <menutabs></menutabs> -->
           </div>
           <div class="button">
               <!-- 搜索模块 begin  -->
@@ -128,7 +128,7 @@
       </div>
 
       <!-- 点击了搜索列表后的弹窗 -->
-      <el-dialog top="7%" :modal="false" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption serachList">
+      <el-dialog top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption serachList h-770">
         <!-- tab栏 -->
         <div class="tab-list">
           <ul>
@@ -139,12 +139,12 @@
 			  </div>
         <!-- tab栏切换的内容 -->
         <div class="page-wrap">
-				  <component :showAll="showAll" :is="panel" :panelType="panelType" :serchKey="searchText" @close="close" @openMemberByList="openMemberByList"></component>
+				  <component :showAll="showAll" :listDetails="ListDetails" :is="panel" :panelType="panelType" :serchKey="searchText" @close="close" @openMemberByList="openMemberByList"></component>
 			  </div>
         
       </el-dialog>
       <!-- 点击了商品的弹窗 -->
-      <el-dialog :title="productTypeName" top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="DataShow" customClass="ruleOption detailsBounced">
+      <el-dialog :title="productTypeName" top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="DataShow" customClass="ruleOption detailsBounced h-770">
           <i class="iconfont icon-shangpin"></i>
           <div class="detailsInfo">
             <div class="detailsInfo_left">
@@ -372,6 +372,25 @@ export default {
         //this.$refs.switch_skin.style.background = "#f5f8f7"
       }
     }
+    $(".main-body").mCustomScrollbar({
+        theme: "minimal-dark",
+        autoHideScrollbar: true,
+        scrollInertia: 500,
+        mouseWheel: {
+          scrollAmount: 200,
+          preventDefault: false,
+          normalizeDelta: false
+        },
+        callbacks: {
+          onTotalScroll: function () {
+            //console.log(111)
+          },
+          onScroll: function () {
+            //console.log(222)
+          }
+        }
+
+      });
   },
   watch: {
     companyInfo: function() {
@@ -1237,7 +1256,7 @@ export default {
     getProductType(data) {
       switch (data) {
         case "10":
-          return '在库位'
+          return '已入库'
           break;
         case "11":
           return '入库中'
@@ -1878,7 +1897,7 @@ export default {
             width: 1010px;
             height: 700px;
             // margin: 0 auto;
-            overflow-y: auto;
+            // overflow-y: auto;
             .title-tab {
                 height: 32px;
                 position: relative;
@@ -2036,5 +2055,8 @@ export default {
   }
 
 
+}
+.h-770{
+  height: 770px!important;
 }
 </style>

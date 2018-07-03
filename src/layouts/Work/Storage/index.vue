@@ -36,7 +36,25 @@
 				</div>
 
 				<!--表格-->
-				<datagrid :dgDataList="dgDataList" :isShow="isShow" :curStatus="curStatus" :orderNum="orderData.orderNum" :slipPointer="curStatus.slipPointer" :goodsAdd="goodsAdd" ref="datagrid" :copyDataList="copyOrderArray" :isRefreshFooter="isRefreshFooter" @add="add" @updataApi="updataApi" @updataData="updataData" @updataAdd="updataAdd" @updataCopyOrderObject="updataCopyOrderObject" @updataLoader="updataLoader" @updataAddDataList="updataAddDataList" @updataSlipPointer="updataSlipPointer" @setSynopsiData="updataSynopsiData">
+				<datagrid 
+				:dgDataList="dgDataList" 
+				:isShow="isShow" 
+				:curStatus="curStatus" 
+				:orderNum="orderData.orderNum" 
+				:slipPointer="curStatus.slipPointer" 
+				:goodsAdd="goodsAdd" ref="datagrid" 
+				:copyDataList="copyOrderArray" 
+				:isRefreshFooter="isRefreshFooter" 
+				@add="add" 
+				@updataApi="updataApi"
+				@updataData="updataData" 
+				@updataAdd="updataAdd" 
+				@updataCopyOrderObject="updataCopyOrderObject" 
+				@updataLoader="updataLoader" 
+				@updataAddDataList="updataAddDataList" 
+				@updataSlipPointer="updataSlipPointer" 
+				@setSynopsiData="updataSynopsiData"
+				>
 				</datagrid>
 
 				<!--滚动条上滑时出现的那个订单号-->
@@ -51,15 +69,33 @@
 			</div>
 
 			<!--步骤条-->
-			<steps-path :orderNum="orderData.orderNum" :ifImport="orderData.ifImport" ref="stepsPath" @setStatus="getStatus">
+			<steps-path 
+			:orderNum="orderData.orderNum" 
+			:ifImport="orderData.ifImport" 
+			ref="stepsPath" 
+			@setStatus="getStatus"
+			>
 			</steps-path>
 
 			<!--各个按钮操作区-->
-			<utilsdatagrid :curStatus="curStatus" @updataApi="updataApi" :orderData="orderData" :dataList="dgDataList" @goPage="goPage">
+			<utilsdatagrid
+			ref="utilsdatagrid" 
+			:curStatus="curStatus" 
+			@updataApi="updataApi" 
+			:orderData="orderData" 
+			:dataList="dgDataList" 
+			@goPage="goPage" 
+			>
 			</utilsdatagrid>
 
 			<!-- 弹出框 -->
-			<copyPopup @submit="submitCopy" :isCopy="isShowPopup" @popupShow="copyPopupShow" title="请输入你要复制的行数" :isShowPopup="isShowPopup">
+			<copyPopup 
+			@submit="submitCopy" 
+			:isCopy="isShowPopup" 
+			@popupShow="copyPopupShow" 
+			title="请输入你要复制的行数" 
+			:isShowPopup="isShowPopup"
+			>
 			</copyPopup>
 
 			<!--批量修改-->
@@ -114,7 +150,7 @@ import utilsdatagrid from './component/utilsDatagrid'
 import {operateAddProductToRKOrder} from 'Api/commonality/operate'
 import {downloadTable, seekReceiptRKSynopsis} from 'Api/commonality/seek'
 import copyPopup from './component/orderPopup'
-import batchamend from './component/batchamend'
+import batchamend from 'components/work/batchamend'
 
 //规则配置相关组件 
 import NewPopup from "./../../jinbaifu/NewPopup"
@@ -193,7 +229,7 @@ export default {
       ],
        
       // 批量修改
-      isbatchamendShow: false //显示弹框
+			isbatchamendShow: false, //显示弹框
     }
   },
   components: {
@@ -203,9 +239,8 @@ export default {
     utilsdatagrid,
     copyPopup,
     batchamend
-  },
-  
-  watch: {
+	},
+	watch: {
     
     dgDataList: function(){
     },
@@ -550,7 +585,7 @@ export default {
 	  goPage(url){
 	  	this.rowDataList = [];
 	  	this.$router.push({path: url});
-	  },
+		},
   },
   
   mounted(){

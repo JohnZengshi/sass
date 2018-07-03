@@ -1,10 +1,10 @@
 <template>
     <div>
         <!-- 表头搜索 -->
-        <filter-header :serchKey="serchKey" :panelType="panelType" @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
+        <filter-header ref="filterHeaderWrap" :serchKey="serchKey" :operationList="operationList" :panelType="panelType" @seekProduct="seekProduct" @reportSwitch="reportSwitch" @confirmDerive="confirmDerive" @amendNum="amendNum" @resetData="resetData" @filterData="filterData"></filter-header>
         <!-- 表格主体 -->
         <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
-            <report-detail ref="reportDetailWrap" :panelType="panelType" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow">
+            <report-detail ref="reportDetailWrap" :printNum="printNum" :panelType="panelType" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow">
             </report-detail>
         </div>
     </div>
@@ -39,13 +39,13 @@ import {
   productTpyeState,
   newProductDetailStatus
 } from "Api/commonality/status";
-
+import { downLoaderFile } from 'Api/downLoaderFile'
 import { homepageSearch } from 'Api/search'
 
 
 
 export default {
-  props: ['panelType','serchKey','showAll'],
+  props: ['panelType','serchKey','showAll', 'listDetails'],
   components: {
     ReportDetail,
     Cascade,
@@ -57,6 +57,12 @@ export default {
   },
   data() {
     return {
+      operationList: [
+        {
+          name: '商品信息',
+          id: '1'
+        }
+      ],
       addData: [], // 让后台过滤的数据源
       printNum: {
         // 打印行数
@@ -297,39 +303,6 @@ export default {
       type: 2,
       fieldType: "simple"
     });
-
-    // 获取列表内容
-    // if(this.showAll) {
-    //   seekGetPrintLabelList({}).then(res => {
-    //       if (res.data.state == 200) {
-    //         this.allData = res.data.data;
-    //         let datas = res.data.data.orderList;
-    //         for (let i of datas) {
-    //           // 属性
-    //           i.productClass = productTpyeState(i.productClass);
-    //           // 状态
-    //           i.status = newProductDetailStatus(i.status);
-    //           // 单据类型
-    //           i.orderType = statusModuleType(i.orderType)
-    //           // 制单状态
-    //           i.auditStatus = documentsState(i.auditStatus)
-    //           // 制单时间
-    //           i.createTime = this._formDataTimeYND(i.createTime)
-    //           //
-    //         }
-    //         this.addData = datas;
-    //         this.dataGridStorage = datas;
-    //         this.loading = false;
-    //       } else {
-    //         this.$message({
-    //           type: "error",
-    //           message: res.data.msg
-    //         });
-    //       }
-    //       this.loading = false;
-    //     });
-    // } else {
-    // }
       if(this.showAll) {
         this.seekProduct({})
       } else {
@@ -370,6 +343,9 @@ export default {
         this.dataGridOptions.sortFlag = 0;
       }
       // this.send()
+    },
+    listDetails () {
+      this.$refs.filterHeaderWrap.resetData()
     }
   },
   computed: {
@@ -447,6 +423,7 @@ export default {
   },
   methods: {
     resetData() {
+      debugger
       this.filterCondition = {
         keyword: "",
         // newOrderId: "",
@@ -462,16 +439,39 @@ export default {
       this.addData = [];
       this.dataGridStorage = [];
       this.sortList = [{ name: "产品类别", value: "1" }];
-      this.filterData()
+      this.filterData({page: 1})
     },
     amendNum(parm) {
       this.printNum = parm;
     },
+    confirmDerive (parm) {
+      debugger
+        let datas = {
+            "page": 1,
+            "pageSize": 9999,
+            "barcodeList": []
+        }
+        if (parm.cost) {
+          datas.SpecialId = '1'
+        }
+        if (!this.printNum.beginNum || !this.printNum.endNum) {
+          this.$message({
+            message: '请选择导出商品',
+            type: 'warning'
+          })
+          return
+        }
+
+        let changeData = this.dataGridStorage.slice(this.printNum.beginNum - 1, this.printNum.endNum)
+        for (let i of changeData) {
+          datas.barcodeList.push({'barcode': i.barcode})
+          // datas.list.push({'orderNumList': orderNum})
+        }
+        downLoaderFile('/v1/export/exportExcelByProduct', datas)
+    },
     // 查询商品
     seekProduct(parm) {
-      console.log(parm)
       this.loading = true;
-      
       seekGetPrintLabelList(
         Object.assign(parm, { page: "1", pageSize: "30" })
       ).then(res => {
@@ -520,6 +520,7 @@ export default {
             i.productClass = productTpyeState(i.productClass);
             // 状态
             i.status = newProductDetailStatus(i.status);
+
           }
           this.dataGridStorage.push(...datas);
           this.loading = false;
@@ -951,65 +952,6 @@ export default {
     formatDate(d) {
       return d < 10 ? "0" + d : d + "";
     },
-
-    // send() {
-    //   this.loading = true;
-    //   seekGetPrintLabelList(this.dataGridOptions).then((res) => {
-    //     if (res.data.state == 200) {
-    //       this.dataGridStorage = [
-    //         {
-    //             barcode: '100',
-    //             productTypeName: '100',
-    //             className: '100',
-    //             weight: '100',
-    //             GoldWeight: '100',
-    //             main: '100',
-    //             deputy: '100',
-    //             soldPrice: '100',
-    //             orderNum: '100',
-    //             productClass: '100',
-    //             locationName: '100',
-    //             productStatus: '100'
-    //           },
-    //           {
-    //             barcode: '100',
-    //             productTypeName: '100',
-    //             className: '100',
-    //             weight: '100',
-    //             GoldWeight: '100',
-    //             main: '100',
-    //             deputy: '100',
-    //             soldPrice: '100',
-    //             orderNum: '100',
-    //             productClass: '100',
-    //             locationName: '100',
-    //             productStatus: '100'
-    //           },
-    //           {
-    //             barcode: '100',
-    //             productTypeName: '100',
-    //             className: '100',
-    //             weight: '100',
-    //             GoldWeight: '100',
-    //             main: '100',
-    //             deputy: '100',
-    //             soldPrice: '100',
-    //             orderNum: '100',
-    //             productClass: '100',
-    //             locationName: '100',
-    //             productStatus: '100'
-    //           }
-    //         ]
-    //       this.loading = false
-    //     } else {
-    //       this.$message({
-    //         type: 'error',
-    //         message: res.data.msg
-    //       })
-    //     }
-    //     this.loading = false
-    //   })
-    // },
 
     //懒加载
     lazyloadSend() {

@@ -1,6 +1,6 @@
 <template>
-    <div class="dropColums-wrap">
-        <div class="tltle">
+    <div class="drop-colums-wrap">
+        <div class="tltle" :class="{actions: isChecked}">
             {{titleData}}
             <i class="iconfont icon-xiala"></i>
         </div>
@@ -40,7 +40,8 @@ export default {
             rightList: [],
             leftIndex: null,
             rightIndex: null,
-            operateId: ''
+            operateId: '',
+            isChecked: false
         }
     },
     props: [
@@ -92,16 +93,22 @@ export default {
         },
         complate () {
             this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll})
+            if (this.checkedCities.length || this.smallIdList.length) {
+                this.isChecked = true
+            } else {
+                this.isChecked = false
+            }
         },
         reset () {
             this.checkedCities = []
             this.allChecked = []
+            this.isChecked = false
         }
     }
 }
 </script>
 <style lang="scss">
-.dropColums-wrap{
+.drop-colums-wrap{
   .el-checkbox{
     height: 20px!important;
     line-height: 20px!important;
@@ -139,8 +146,8 @@ export default {
 // }
 </style>
 <style scoped lang="scss">
-.dropColums-wrap {
-    width: 78px;
+.drop-colums-wrap {
+    width: 68px;
     height: 28px;
     //border: 1px solid #d6d6d6;
     //border-radius: 4px;
@@ -150,16 +157,20 @@ export default {
     .tltle {
         width: 100%;
         height: 100%;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
         text-align: left;
-        line-height: 26px;
+        line-height: 27px;
         cursor: pointer;
+        color: #666;
         i {
             position: absolute;
             right: 0;
             top: 0;
             line-height: 28px;
+        }
+        &.actions{
+            color: #2993f8;
         }
     }
     .list-box {
@@ -259,7 +270,7 @@ export default {
         }
     }
 }
-.dropColums-wrap:hover {
+.drop-colums-wrap:hover {
     .list-box {
         z-index: 20;
         opacity: 1;

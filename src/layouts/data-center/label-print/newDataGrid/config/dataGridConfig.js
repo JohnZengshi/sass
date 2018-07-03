@@ -175,21 +175,21 @@ module.exports = {
       sort: '',
       editOldType : 'afCost'
     },
-    {
-      id: '14', //id 
-      text: '单据号', //头部title文字
-      width: '130', //单元格宽
-      type: '', //合计类型值
-      type1: '', //合计类型值
-      unit: '', //头部单位补充文字
-      footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
-      totalName: '', //底部合计 提示文字
-      childType: 'orderNum', //单元格类型
-      totalType: '', //小计
-      toFixed: false, //是否进行小数点精确截取
-      countCut: 0, //小数点截取位数
-      editOldType : ''
-    },
+    // {
+    //   id: '14', //id 
+    //   text: '单据号', //头部title文字
+    //   width: '130', //单元格宽
+    //   type: '', //合计类型值
+    //   type1: '', //合计类型值
+    //   unit: '', //头部单位补充文字
+    //   footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
+    //   totalName: '', //底部合计 提示文字
+    //   childType: 'orderNum', //单元格类型
+    //   totalType: '', //小计
+    //   toFixed: false, //是否进行小数点精确截取
+    //   countCut: 0, //小数点截取位数
+    //   editOldType : ''
+    // },
     {
       id: '12', //id 
       text: '商品属性', //头部title文字

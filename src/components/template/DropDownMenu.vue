@@ -79,6 +79,8 @@ export default {
                     return item.username
                 case '销售人':
                     return item.username
+                case '收银人':
+                    return item.username
                 case '审核人':
                     return item.username
                 case '收货人':
@@ -171,6 +173,11 @@ export default {
                     this.returnData.operateName = item.supplierName
                     break;
                 case '制单人':
+                    this.optionData.titleInfo = item.username
+                    this.returnData.operateId = item.userId
+                    this.returnData.operateName = item.username
+                    break;
+                case '收银人':
                     this.optionData.titleInfo = item.username
                     this.returnData.operateId = item.userId
                     this.returnData.operateName = item.username
@@ -313,6 +320,7 @@ export default {
             this.$emit("dropReturn", {item: _data, type: this.dataType})
         },
         clearTitleInfo () {
+            debugger
             this.optionData.titleInfo = '';
             //console.log('查看取消类型：'+this.dataType);
             console.log(this.dataType)

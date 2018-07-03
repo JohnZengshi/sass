@@ -10,16 +10,16 @@
           <p>销售</p>
         </div>
 
-          <div class="right-type-inner-wrap">
+          <div class="c-right-type-inner-wrap">
             <div :index="resetIndex(ind)" v-for="(caty, ind) in otherDatagrid">
               <div class="tb-tr"  v-for="(tb, index) in caty.productTypeList">
                 <!-- <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()"> -->
                   <template v-for="(tab, indexGrid) in detailDataGridColumn">
                     
                     <div 
-                      class="tb-td category-td" 
+                      class="branch-tb category-td" 
                       v-if="tab.text == '类型' && index == 0 && indexGrid == 0" 
-                      :style="tableCell(tab.width)">
+                      :style="nTableCell(tab)">
                       <i :style="sellTypeNameHX(caty)">{{filterName(caty[tab.childType])}}</i>
 
                     </div>
@@ -28,15 +28,15 @@
                       class="tb-td"
                       v-else-if="tab.text == '产品类别'" 
                       :class="{backLine:tab.childType != ''}" 
-                      :style="tableCell(tab.width)" 
+                      :style="nTableCell(tab)" 
                       v-text="tab.childType == ''? getIndex() : tb[tab.childType]">
                     </div>
                     
                     <div 
                       class="tb-td" 
                       v-else 
-                      :class="{backLine:tab.totalType != '', 'xj-report-text-right':tab.right}" 
-                      :style="tableCell(tab.width)" 
+                      :class="{backLine:tab.totalType != ''}" 
+                      :style="nTableCell(tab)" 
                       v-text="tab.totalType == ''? getIndex() : tb[tab.totalType]">
                       
                     </div>
@@ -70,16 +70,16 @@
         <p>回购</p>
       </div>
 
-      <div class="right-type-inner-wrap">
+      <div class="c-right-type-inner-wrap">
           <div :index="resetIndex(ind)" v-for="(caty, ind) in buyBackDataList">
             <div class="tb-tr"  v-for="(tb, index) in caty.productTypeList">
               <!-- <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()"> -->
                 <template v-for="(tab, indexGrid) in detailDataGridColumnTwo">
                   
                   <div 
-                    class="tb-td category-td" 
+                    class="branch-tb category-td" 
                     v-if="tab.text == '类型' && index == 0 && indexGrid == 0" 
-                    :style="tableCell(tab.width)">
+                    :style="nTableCell(tab)">
                     <i :style="sellTypeNameHX(caty)">{{caty[tab.childType]}}</i>
 
                   </div>
@@ -88,15 +88,15 @@
                     class="tb-td"
                     v-else-if="tab.text == '产品类别'" 
                     :class="{backLine:tab.childType != ''}" 
-                    :style="tableCell(tab.width)" 
+                    :style="nTableCell(tab)" 
                     v-text="tab.childType == ''? getIndex() : tb[tab.childType]">
                   </div>
                   
                   <div 
                     class="tb-td" 
                     v-else 
-                    :class="{backLine:tab.totalType != '', 'xj-report-text-right':tab.right}" 
-                    :style="tableCell(tab.width)" 
+                    :class="{backLine:tab.totalType != ''}" 
+                    :style="nTableCell(tab)" 
                     v-text="tab.totalType == ''? getIndex() : tb[tab.totalType]">
                     
                   </div>
@@ -131,6 +131,8 @@
 
 <script>
   import subtotal from './../../base/subtotal'
+  import {calculateClass} from 'assets/js/getClass'
+  
   let applyIndex = 0
   export default {
     components: {
@@ -362,6 +364,11 @@
         }
       },
 
+      nTableCell (parm) {
+        return calculateClass(parm)
+      },
+
+
       tableCell(width) {
         let _size = ''
 
@@ -538,9 +545,9 @@
       margin: auto;
     }
   }
-  .right-type-inner-wrap{
+  .c-right-type-inner-wrap{
     display: inline-block;
-    width: 1098px;
+    width: 1095px;
     overflow: hidden;
   }
 

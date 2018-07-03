@@ -179,63 +179,20 @@
             </i>
             
           </div>
-          <!-- 输入框 -->
-          <div class="search_wrap">
-            <input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" />
-          </div>
           <!-- 成品旧料的切换 -->
-          <div class="iconfont_wrap fl">
+<!--           <div class="iconfont_wrap fl">
             <span :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)">成品</span>
             <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
             <span :class="inconspanactive2 == true ? 'myspanactive' : ''" @click="toggleAttribute(2)">旧料</span>
-          </div>
-          <!-- 新增的一些筛选 -->
-          <div class="xj-report-multi-select-wrap">
-            <dropDownColum
-                ref="productTypeIdWrap"
-                :propsList="proList"
-                :keyName="'productTypeId'"
-                titleData="产品类别"
-                @dataBack="dataBack"
-            >
-            </dropDownColum>
-
-            <dropDownColum
-                ref="colourIdWrap"
-                :propsList="conditionList"
-                :keyName="'colourId'"
-                titleData="成色名称"
-                @dataBack="dataBack"
-            >
-            </dropDownColum>
-
-            <dropDownColum
-                ref="jeweIdWrap"
-                :propsList="jewelList"
-                :keyName="'jeweId'"
-                titleData="宝石名称"
-                @dataBack="dataBack"
-            >
-            </dropDownColum>
-
-            <dropDownColum
-                ref="jewelryIdWrap"
-                :propsList="jewelryList"
-                :keyName="'jewelryId'"
-                titleData="首饰类别"
-                @dataBack="dataBack"
-            >
-            </dropDownColum>
-          </div>
+          </div> -->
           <!-- 表格的筛选 -->
-          <div class="tab_wrap">
+<!--           <div class="tab_wrap">
             <span :class="0 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(0, 1)">明细</span>
             <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>           
             <span :class="1 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(1, 2)">智能分类</span>
             <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
             <span :class="2 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(2, 3)">产品分类</span>
             <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
-            <!-- 自定义 -->
             <span style="position: relative" :class="3 == tabClassActive.index ? 'myspanactive' : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)" @click="tabs(3,4)">自定义
               <div class="customDia site" ref="customDia" style="display: none;">
                 <div class="body">
@@ -330,29 +287,92 @@
 
               </div>
             </span>
+          </div> -->
+          <filter-header
+            @complate="filterHeaderComplate"
+            @reportSwitch="reportSwitch"
+            @choseBuyBack="choseBuyBack"
+            @chosePosition="chosePosition"
+            :isOld="isOld"
+            :specialItem="true"
+            :customList="customList"
+            :type="dataGridOptions.type"
+            :positionSwitch="positionSwitch"
+            :isPosition="dataGridOptions.type != 1"
+          ></filter-header>
+          <!-- 新增的一些筛选 -->
+          <div class="xj-report-multi-select-wrap stock-table-multi-select">
+            <dropDownColum
+                ref="productTypeIdWrap"
+                :propsList="proList"
+                :keyName="'productTypeId'"
+                titleData="产品类别"
+                @dataBack="dataBack"
+            >
+            </dropDownColum>
+
+            <dropDownColum
+                ref="colourIdWrap"
+                :propsList="conditionList"
+                :keyName="'colourId'"
+                titleData="成色名称"
+                @dataBack="dataBack"
+            >
+            </dropDownColum>
+
+            <dropDownColum
+                ref="jeweIdWrap"
+                :propsList="jewelList"
+                :keyName="'jeweId'"
+                titleData="宝石名称"
+                @dataBack="dataBack"
+            >
+            </dropDownColum>
+
+            <dropDownColum
+                ref="jewelryIdWrap"
+                :propsList="jewelryList"
+                :keyName="'jewelryId'"
+                titleData="首饰类别"
+                @dataBack="dataBack"
+            >
+            </dropDownColum>
+          </div>
+                    <!-- 输入框 -->
+          <div class="search_wrap">
+            <input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" />
           </div>
           <!-- 位置与专列项 -->
-          <div class="position_group fl">
+
+<!--           <div class="position_group fl">
               <span :title="positionSwitch ? '取消位置' : '选择位置'" @click="choseMenu(1)" class="btn" :class="{active: positionSwitch}" v-if="dataGridOptions.type != 1">位置</span>
           </div>
           <div class="xj_switch fl" v-if="isShowCost == 'Y'">
               <span :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" class="btn" :class="{active: tabSwitch}">专列项</span>
-          </div>
+          </div> -->
         </div>
         <!-- 表头筛选重构 end -->
 
         <div class="rp_dataGridTemp" :class="tabShow">
-          <report-detail v-if="dataGridStorage" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :isOld="isOld" :newList="newList" @lazyloadSend="sendlayLoad" @scrollClass="tabScrollShow" @sortList="sortListAct" :reportType="getReportType()">
+          <report-detail ref="ReportDetail" v-if="dataGridStorage" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :isOld="isOld" :newList="newList" @lazyloadSend="sendlayLoad" @scrollClass="tabScrollShow" @sortList="sortListAct" :reportType="getReportType()">
           </report-detail>
         </div>
 
-        <div class="exportTab" @click="exportTab()">
-          <i class="iconfont icon-daochu"></i>
-          <span>导出表格</span>
-        </div>
-        <div class="printBtn" @click="tabPrin()">
-          <i class="iconfont icon-dayin1"></i>
-          <span>打印库存</span>
+        <div class="utilsBtn flex flex-v flex-pack-justify">
+          <div class="btn" @click="exportTab()">
+            <i class="iconfont icon-daochu"></i>
+            <span>导出表格</span>
+          </div>
+          <div class="btn" @click="tabPrin()">
+            <i class="iconfont icon-dayin1"></i>
+            <span>打印库存</span>
+          </div>
+          <!-- 加载条数选择器 -->
+          <LoaderNum 
+          class="loaderNum" 
+          ref="LoaderNum"
+          v-show="dataGridOptions.type==1" 
+          ></LoaderNum>
         </div>
       </div>
 
@@ -364,7 +384,7 @@
       <!-- 明细0 -->
 <!--       <detailTemplate v-if="this.tabClassActive.index==0" title="库存-明细" ref="detailTemplate" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
  -->
-          <div v-if="this.tabClassActive.index==0" class="xj-kc-print-main" ref="detailTemplateWrap">
+          <div v-if="dataGridOptions.type==1" class="xj-kc-print-main" ref="detailTemplateWrap">
             <detailTemplate title="库存-明细" :tabSwitch="tabSwitch" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
           </div>
         <!--打印模块-->
@@ -375,14 +395,14 @@
 
 
             <!-- 智能1 -->
-            <intelligence-type-template v-if="tabClassActive.index==1" title="库存-智能分类" ref="intelligenceTypeTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
+            <intelligence-type-template v-if="dataGridOptions.type==2" title="库存-智能分类" ref="intelligenceTypeTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
 
             <!-- 产品分类 -->
-            <project-type-template v-if="this.tabClassActive.index==2" title="库存-产品分类" ref="projectTypeTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></project-type-template>
+            <project-type-template v-if="dataGridOptions.type==3" title="库存-产品分类" ref="projectTypeTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></project-type-template>
 
 
             <!-- 自定义3 -->
-            <intelligence-type-template v-if="tabClassActive.index==3" title="库存-自定义" ref="customTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
+            <intelligence-type-template v-if="dataGridOptions.type==4" title="库存-自定义" ref="customTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
 
 <!-- 
             <project-type-template v-if="tabClassActive.index==2" title="库存" ref="projectTypeTemplate" :sellList="printData" :headerData="printSelectDate"></project-type-template>
@@ -409,6 +429,7 @@ import {
 import DropDownMenu from "components/template/DropDownMenu1";
 import ReportDetail from "./newDataGrid/reportDetailTab";
 import TablePrint from "./print/reportDetailTab";
+import filterHeader from '@/layouts/Work/Report/ReportData/base/filter-header'
 
 //打印模板，明细，产品分类，智能分类=自定义
 import detailTemplate from "@/components/jcp-print/kc/detail-template";
@@ -423,12 +444,27 @@ import { downLoaderFile } from "Api/downLoaderFile";
 import dropDownColum from 'base/menu/drop-down-colums'
 
 import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList} from "Api/commonality/seek"
-
+// 右下角加载条数选择器
+import LoaderNum from 'components/work/loaderNum.vue'
 
 export default {
   props: ["changeRepository", "changeShop", "changeCounter"],
   data() {
     return {
+      customList: [
+        {
+            name: '明细',
+            id: 1
+        },
+        {
+            name: '智能分类',
+            id: 2
+        },
+        {
+            name: '产品分类',
+            id: 3
+        }
+      ],
       printData: {},
       inconspanactive1: true,
       inconspanactive2: false,
@@ -532,7 +568,7 @@ export default {
         ],
         type: 2, //类型
         page: 1,
-        pageSize: 15,
+        pageSize: 30,
         keyWord: "", //关键字
         wColorId: "", //计重
         wGemId: "", //宝石类
@@ -561,7 +597,6 @@ export default {
       conditionList:[],
       jewelList:[],
       jewelryList:[],
-
     };
   },
   watch: {
@@ -570,7 +605,7 @@ export default {
       if (this.changeRepository.repositoryId) {
         this.dataGridOptions.storageId = val;
         this.dataGridOptions.page = 1;
-        this.dataGridOptions.pageSize = 15;
+        this.dataGridOptions.pageSize = 30;
       }
       this.send();
     },
@@ -582,13 +617,13 @@ export default {
         this.dataGridOptions.counterId = "";
       }
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 15;
+      this.dataGridOptions.pageSize = 30;
       this.send();
     },
     "changeCounter.counterId"(val) {
       this.dataGridOptions.counterId = val;
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 15;
+      this.dataGridOptions.pageSize = 30;
       if (this.changeCounter.counterId) {
         this.send();
       }
@@ -606,11 +641,13 @@ export default {
     ReportDetail,
     DropDownMenu,
     TablePrint,
+    filterHeader,
     projectTypeTemplate,
     intelligenceTypeTemplate,
     detailTemplate,
     customTemplate,
-    dropDownColum
+    dropDownColum,
+    LoaderNum
   },
   created() {
     // 初始化筛选列表
@@ -622,6 +659,42 @@ export default {
     this.settingUserRole();
   },
   methods: {
+    filterHeaderComplate (parm) {
+        this.dataGridOptions.page = 1;
+        this.sortList = []
+        this.dataGridOptions.sortList = []
+        // 初始化ReaderMoreData组件的状态
+        if(this.$refs.ReportDetail.$refs.dataGridBody.$refs.ReadMoreDataDmo){
+          let ReadMoreDataDmo = this.$refs.ReportDetail.$refs.dataGridBody.$refs.ReadMoreDataDmo;
+          ReadMoreDataDmo.MoreData = false;
+          ReadMoreDataDmo.noMoreData = false;
+        }
+        Object.assign(this.dataGridOptions, parm)
+        if (parm.noRefresh) {
+          return
+        }
+        this.send()
+    },
+    //成本控制
+    reportSwitch(parm){
+      this.tabSwitch = parm
+
+      if(this.tabSwitch) {
+        this.dataGridOptions.specialId = '1'
+      } else {
+        this.dataGridOptions.specialId = ''
+      }
+
+    },
+    choseBuyBack (parm) {
+      this.isBuyBack = parm
+      this.sellSend()
+      if(this.isBuyBack) {
+        this.dataGridOptions.backId = '1'
+      } else {
+        this.dataGridOptions.backId = ''
+      }
+    },
     exportTab() {
       let exportData = Object.assign({}, this.dataGridOptions);
       exportData.weight = this.dataGridStorage.totalWeight;
@@ -632,6 +705,15 @@ export default {
       exportData.className = "";
       exportData.classTypeName = "";
       downLoaderFile("/v1/export/exportExcelByInventory", exportData);
+    },
+    chosePosition (parm) {
+      this.positionSwitch = !this.positionSwitch;
+      if (this.positionSwitch) {
+        this.dataGridOptions.sortFlag = 1;
+      } else {
+        this.dataGridOptions.sortFlag = "";
+      }
+      this.send()
     },
     choseMenu(type) {
       if (type == 1) {
@@ -657,7 +739,6 @@ export default {
     },
     sortListAct(val) {
       // 列表排序
-      console.log("回来的列表排序", val);
       this.dataGridOptions.sortList = val;
       this.send();
       this.sortList = [];
@@ -731,8 +812,7 @@ export default {
       this.loading = true;
       this.dataGridOptions.pageSize = 0;
       seekStockProductList(this.dataGridOptions).then(res => {
-        console.log("打印响应数据", res);
-        this.dataGridOptions.pageSize = 15;
+        this.dataGridOptions.pageSize = 30;
         if (res.data.state == 200) {
           if (res.data.data.detailList) {
             if (res.data.data.detailList[0] instanceof Array) {
@@ -765,18 +845,18 @@ export default {
 
     // 打印
     currentPrint() {
-      switch (this.tabClassActive.index) {
-        case 0:
+      switch (this.dataGridOptions.type) {
+        case 1:
           this.defaultPrint();
           // this.$refs.detailTemplateWrap.print();
           break;
-        case 1:
+        case 2:
           this.$refs.intelligenceTypeTemplate.print();
           break;
-        case 2:
+        case 3:
           this.$refs.projectTypeTemplate.print();
           break;
-        case 3:
+        case 4:
           // this.$refs.detailTemplate.print();
           this.$refs.customTemplate.print();
           break;
@@ -920,9 +1000,8 @@ export default {
         this.inconspanactive2 = true;
       }
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 15;
+      this.dataGridOptions.pageSize = 30;
       this.dataGridOptions.productClass = val;
-      console.log("切换成旧料", this.dataGridOptions.productClass);
       //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
       this.loading = true;
       this.send();
@@ -983,7 +1062,6 @@ export default {
         })
     },
     dataBack (parm) {
-      console.log('回调',parm)
       let optionsList = []
       switch (parm.keyName) {
         case 'productTypeId':
@@ -1051,7 +1129,7 @@ export default {
       }
       this.loading = true;
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 15;
+      this.dataGridOptions.pageSize = 30;
       this.tabClassActive.index = index;
       this.setReportType(type);
     },
@@ -1086,7 +1164,7 @@ export default {
               sortFlag: "0",
               type: 1,
               page: 1,
-              pageSize: 15,
+              pageSize: 30,
               keyWord: ""
             });
           } else if (this.inconspanactive2) {
@@ -1098,7 +1176,7 @@ export default {
               sortFlag: "0",
               type: 1,
               page: 1,
-              pageSize: 15,
+              pageSize: 30,
               keyWord: ""
             });
           } else {
@@ -1110,7 +1188,7 @@ export default {
               sortFlag: "0",
               type: 1,
               page: 1,
-              pageSize: 15,
+              pageSize: 30,
               keyWord: ""
             });
           }
@@ -1191,55 +1269,55 @@ export default {
             });
           }
         } else if (port == 4) {
-          if (this.inconspanactive1) {
-            Object.assign(this.dataGridOptions, {
-              //              storageId: '',
-              //              shopId: '',
-              //              counterId: '',
-              productClass: "1",
-              sortFlag: this.positionSwitch ? "1" : "0",
-              type: 1,
-              keyWord: "",
-              wColorId: "",
-              wGemId: "",
-              wJewelryId: "1",
-              nColorId: "",
-              nGemId: "",
-              nJewelryId: "1"
-            });
-          } else if (this.inconspanactive2) {
-            Object.assign(this.dataGridOptions, {
-              //              storageId: '',
-              //              shopId: '',
-              //              counterId: '',
-              productClass: "2",
-              sortFlag: this.positionSwitch ? "1" : "0",
-              type: 1,
-              keyWord: "",
-              wColorId: "",
-              wGemId: "",
-              wJewelryId: "1",
-              nColorId: "",
-              nGemId: "",
-              nJewelryId: "1"
-            });
-          } else {
-            Object.assign(this.dataGridOptions, {
-              //              storageId: '',
-              //              shopId: '',
-              //              counterId: '',
-              productClass: "1",
-              sortFlag: this.positionSwitch ? "1" : "0",
-              type: 1,
-              keyWord: "",
-              wColorId: "",
-              wGemId: "",
-              wJewelryId: "1",
-              nColorId: "",
-              nGemId: "",
-              nJewelryId: "1"
-            });
-          }
+          // if (this.inconspanactive1) {
+          //   Object.assign(this.dataGridOptions, {
+          //     //              storageId: '',
+          //     //              shopId: '',
+          //     //              counterId: '',
+          //     productClass: "1",
+          //     sortFlag: this.positionSwitch ? "1" : "0",
+          //     type: 1,
+          //     keyWord: "",
+          //     wColorId: "",
+          //     wGemId: "",
+          //     wJewelryId: "1",
+          //     nColorId: "",
+          //     nGemId: "",
+          //     nJewelryId: "1"
+          //   });
+          // } else if (this.inconspanactive2) {
+          //   Object.assign(this.dataGridOptions, {
+          //     //              storageId: '',
+          //     //              shopId: '',
+          //     //              counterId: '',
+          //     productClass: "2",
+          //     sortFlag: this.positionSwitch ? "1" : "0",
+          //     type: 1,
+          //     keyWord: "",
+          //     wColorId: "",
+          //     wGemId: "",
+          //     wJewelryId: "1",
+          //     nColorId: "",
+          //     nGemId: "",
+          //     nJewelryId: "1"
+          //   });
+          // } else {
+          //   Object.assign(this.dataGridOptions, {
+          //     //              storageId: '',
+          //     //              shopId: '',
+          //     //              counterId: '',
+          //     productClass: "1",
+          //     sortFlag: this.positionSwitch ? "1" : "0",
+          //     type: 1,
+          //     keyWord: "",
+          //     wColorId: "",
+          //     wGemId: "",
+          //     wJewelryId: "1",
+          //     nColorId: "",
+          //     nGemId: "",
+          //     nJewelryId: "1"
+          //   });
+          // }
         }
       }
       this.dataGridOptions.type = port;
@@ -1255,7 +1333,7 @@ export default {
        */
     searchWord() {
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 15;
+      this.dataGridOptions.pageSize = 30;
       this.send();
     },
     // 懒加载
@@ -1283,7 +1361,6 @@ export default {
       this.dataGridStorage = []
       seekStockProductList(this.dataGridOptions).then(
         res => {
-          console.log("库存统计数据加位置:", res);
           if (res.data.state == 200) {
             if (this.dataGridOptions.type == 1) {
               this.dataGridOptions.page = 2;
@@ -1305,7 +1382,6 @@ export default {
         }
       );
     },
-    
   },
 
   mounted() {
@@ -1382,6 +1458,10 @@ export default {
 </style>
 <style lang="scss" src="./../../assets/css/customDialog/customDialog.scss"></style>
 <style lang="scss" scoped>
+.stock-table-multi-select{
+  margin-right: 0;
+  float: right;
+}
 /* 
  * 数据表格 模块
  * */
@@ -1723,6 +1803,9 @@ export default {
       }
     }
   }
+  .loaderNum{
+    font-size: 16px;
+  }
 }
 
 .rp_dataGridTemp {
@@ -1768,7 +1851,7 @@ export default {
   }
   // 标签
   .sort_wrap {
-    width: 230px;
+    // width: 250px;
     height: 50px;
     margin-left: 20px;
     padding-top: 12px;
@@ -1869,9 +1952,9 @@ export default {
     height: 32px;
     margin-top: 12px;
     margin-left: 10px;
-    margin-right: 10px;
+    // margin-right: 10px;
     // display: inline-block;
-    float: left;
+    float: right;
     vertical-align: top;
     input {
       width: 100px;
@@ -1950,7 +2033,7 @@ export default {
   .xj-report-multi-select-wrap{
     margin-left: 10px;
     margin-right:0px;
-    float: left;
+    float: right;
   }
   // 表格筛选
   .tab_wrap {

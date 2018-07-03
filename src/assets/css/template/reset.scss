@@ -60,12 +60,29 @@ a {
 .el-select-dropdown {
     min-width: 110px;
     transform-origin: center top 0px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    position: absolute;
+    z-index: 999;
+    opacity: 1;
+    background: #fff;
+    overflow: hidden;
+    top: 40px;
+    // transition: all .3s ease;
     .el-select-dropdown__wrap {
         .el-select-dropdown__list {
             .el-select-dropdown__item {
                 background-color: $C2;
+                height: 40px;
+                // width: 150px;
+                line-height: 40px;
+                text-align: left;
+                padding-left: 14px;
+                font-size: 14px;
+                border-bottom: 1px solid #f1f2f3;
                 &.hover {
-                    background-color: $C2;
+                    background: #f6f7f8;
+                    color: #3195f5;
                 }
                 &.selected {
                     background-color: $C2;

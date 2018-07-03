@@ -1,6 +1,6 @@
 <template>
     <div class="dropDown-wrap">
-        <span class="title-name" :class="optionData.titleInfo == '' ? '' : 'select'">
+        <span class="title-name" :class="{actions: isChecked, select: optionData.titleInfo}">
             {{titleName}}
             <i class="iconfont icon-arrow-down drop-triangle" v-if="optionData.titleInfo ==''"></i>
             <i v-else-if="isClear == undefined ? true : isClear == true ? true : false" class="el-icon-circle-close" title="清除" @click="clearTitleInfo"></i>
@@ -40,6 +40,7 @@ export default {
     ],
     data () {
         return {
+            isChecked: false,
             moreChange: {
                 beginNum: '', // 开始件数
                 endNum: '', // 结束件数
@@ -79,6 +80,12 @@ export default {
             this.actIndex = null
         },
         complate () {
+            if (this.moreChange.beginNum || this.moreChange.endNum || this.moreChange.beginWeight || this.moreChange.endWeight || this.moreChange.beginPrice || this.moreChange.endPrice) {
+                this.isChecked = true
+            } else {
+                this.isChecked = false
+            }
+            
             this.$emit('filterData', this.moreChange)
         },
         reset () {
@@ -88,6 +95,7 @@ export default {
             this.moreChange.endWeight = ''
             this.moreChange.beginPrice = ''
             this.moreChange.endPrice = ''
+            this.isChecked = false
         }
     }
 }
@@ -130,24 +138,27 @@ export default {
             //color:#2993f8;
         }
         >.title-name {
-            color:#3195f5;
+            color:#666;
         }
         .title-name .el-icon-circle-close {
-            color:#2993f8;
+            color:#666;
         }
     }
     .title-name {
         padding: 0 4px;
+        color:#666;
+        &.actions{
+            color: #2993f8;
+        }
         &.select{
             //color: #333;
         }
-        color:#333;
         text-align: right;
         display: block;
         height: 25px;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
-        line-height: 25px;
+        line-height: 27px;
         .drop-triangle {
             font-size:12px;
             display: inline-block;

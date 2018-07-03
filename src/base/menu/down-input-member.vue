@@ -1,25 +1,25 @@
 <template>
     <div class="dropDown-wrap">
-        <span class="title-name" :class="optionData.titleInfo == '' ? '' : 'select'">
+        <span class="title-name" :class="{actions: isChecked, select: optionData.titleInfo}">
             {{titleName}}
             <i class="iconfont icon-arrow-down drop-triangle" v-if="optionData.titleInfo ==''"></i>
             <i v-else-if="isClear == undefined ? true : isClear == true ? true : false" class="el-icon-circle-close" title="清除" @click="clearTitleInfo"></i>
         </span>
         <div class="input-drop-list">
-            <h4>注册时间</h4>
+<!--             <h4>注册时间</h4> -->
             <!-- <div title="件数" class="down-range-box" style="background:url(../../../static/img/batch/number.png) no-repeat 5px center;">
                 <input type="text" placeholder="开始时间" v-model="moreChange.startTime">
                 <span>-</span>
                 <input type="text" placeholder="结束时间" v-model="moreChange.endTime">
             </div> -->
-            <div class="report_data">
+<!--             <div class="report_data">
                     <div class="block until" data-txt="至" style="background:url(../../../static/img/batch/number.png) no-repeat 5px center;">
                         <el-date-picker size="mini" v-model="startTime" @change="getTimeData" type="date" placeholder="选择开始时间"></el-date-picker>
                     </div>
                     <div class="block">
                         <el-date-picker size="mini" v-model="endTime" @change="overTimeDate" type="date" placeholder="选择结束时间"></el-date-picker>
                     </div>
-            </div>
+            </div> -->
             
 
             <h4>积分范围</h4>
@@ -34,7 +34,7 @@
                 <span>-</span>
                 <input type="text" placeholder="交易额（元）" v-model="moreChange.maxPrice">
             </div>
-            <div class="list-footer">
+            <div class="list-footer mt-30">
                 <span @click="complate">完成</span>
                 <span @click="reset">重置</span>
             </div>
@@ -50,6 +50,7 @@ export default {
     ],
     data () {
         return {
+            isChecked: false,
             moreChange: {
                 startTime: '', // 开始件数
                 endTime: '', // 结束件数
@@ -78,7 +79,6 @@ export default {
     methods: {
         clearTitleInfo () {
             this.optionData.titleInfo = '';
-            //console.log('查看取消类型：'+this.dataType);
             console.log(this.dataType)
             this.$emit("clearInfo", {type: this.dataType})
             this.actIndex = null
@@ -86,11 +86,16 @@ export default {
         clearTitletext(){
             //只清除掉 第二次选择的  选项，，不再走请求
             this.optionData.titleInfo = '';
-            console.log('查看清除类型：'+this.dataType);
             this.$emit("clearTitletext", {type: this.dataType})
             this.actIndex = null
         },
         complate () {
+            debugger
+            if (this.moreChange.startTime || this.moreChange.endTime || this.moreChange.maxScore || this.moreChange.minScore || this.moreChange.maxPrice || this.moreChange.mixPrice) {
+                this.isChecked = true
+            } else {
+                this.isChecked = false
+            }
             this.$emit('filterData', this.moreChange)
         },
         getTimeData(val) {
@@ -114,6 +119,7 @@ export default {
             this.moreChange.mixPrice = ''
             this.startTime = ''
             this.endTime = ''
+            this.isChecked = false
         }
     }
 }
@@ -164,16 +170,19 @@ export default {
     }
     .title-name {
         padding: 0 4px;
+        &.actions{
+            color: #2993f8;
+        }
         &.select{
             //color: #333;
         }
-        color:#333;
+        color:#666;
         text-align: right;
         display: block;
         height: 25px;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
-        line-height: 25px;
+        line-height: 27px;
         .drop-triangle {
             font-size:12px;
             display: inline-block;
@@ -264,6 +273,9 @@ export default {
             color:#fff;
             border-radius: 4px;
         }
+    }
+    .mt-30{
+        margin-top: 108px;
     }
 }
 

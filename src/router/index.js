@@ -8,5 +8,4 @@ import routes from './routes' // 引入routes
 const router = new VueRouter({
   routes
 })
-
 export default router

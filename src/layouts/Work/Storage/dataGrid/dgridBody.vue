@@ -65,8 +65,19 @@
 				}
 			}
 		},
-
-		props: ['fixedFullSize', 'dgDataList', 'activeClassIndex', 'synopsiData', 'selectContainer', 'smallDataList', 'orderNum', 'addDatalist'],
+		components:{},
+		props: [
+			'fixedFullSize', 
+			'dgDataList', 
+			'activeClassIndex', 
+			'synopsiData', 
+			'selectContainer', 
+			'smallDataList', 
+			'orderNum', 
+			'addDatalist',
+			'allSynopsiData',
+			'dgDataList'
+			],
 
 		created() {
 			this.selectConfig = fetch.Select
@@ -1238,7 +1249,7 @@
 						productId: item.productId
 					}
 				})
-			}
+			},
 		}
 	}
 </script>

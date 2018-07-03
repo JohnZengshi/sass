@@ -7,7 +7,7 @@
 				<div class="tb-td"
 					v-for="(tab,num) in detailDataGridColumn" 
 					:style="tableCell(tab.width)" 
-					v-text = "tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"
+					v-text = "tab.childType == ''? (index+1)  : tb[tab.childType]"
 				:key="num"
 				></div>
 			</div>
@@ -176,7 +176,7 @@ export default {
 </style>
 <style scoped lang="scss">
 .ui-table-container{
-    height: 685px;
+    height: 595px;
     overflow-y: auto;
     &.produc-line {
 		.tb-tr:nth-child(even){

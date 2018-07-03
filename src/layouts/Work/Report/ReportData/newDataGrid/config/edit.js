@@ -46,8 +46,8 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
-      // editOldType : ''
-      editOldType : 'jewelryName'
+      editOldType : ''
+      // editOldType : 'jewelryName'
     },
     {
       id: '8', //id 
@@ -327,7 +327,8 @@ module.exports = {
       id: '9', //id 
       text: '售价', //头部title文字
       width: '120', //单元格宽
-      type: 'totalPrice', //合计类型值
+      // type: 'totalPrice', //合计类型值
+      type: 'afTotalPrice', //合计类型值
       type1: 'totalPrice', //合计类型值
       unit: '(元)', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
