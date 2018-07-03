@@ -51,7 +51,7 @@
         </div> -->
         <!-- ------------------------------修改前 -->
         <div v-show="selectOrInput == 'input'" class="input-w200">
-          <el-input v-model="amendingData"></el-input>
+          <el-input v-model="amendingData" placeholder="请输入"></el-input>
         </div>
         <!-- 选择框 -->
         <el-select v-show="selectOrInput == 'select'" class="options" filterable v-model="amendingData">
@@ -508,6 +508,7 @@
         } else {
           console.log("输入值")
           this.selectOrInput = "input"
+          this.amendingData = "";
         }
 
       },
