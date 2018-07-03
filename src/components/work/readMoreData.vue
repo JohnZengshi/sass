@@ -11,7 +11,7 @@
     data() {
       return {
         MoreData: false,
-        noMoreData: false
+        noMoreData: false,
       }
     },
     methods: {
@@ -19,18 +19,29 @@
       isShowMoreDataTip(scrollHeight, clientHeight, scrollTop) {
         let totalNum = this.allData.totalNum;
         let length = this.dgDataList.length;
+        // 还有更多数据未加载
         if (totalNum > length) {
           if (clientHeight + scrollTop >= scrollHeight) {
             this.MoreData = true;
           } else {
             this.MoreData = false;
           }
-        } else {
-          this.MoreData = false;
-          if (clientHeight + scrollTop >= scrollHeight) {
-            this.noMoreData = true;
-          } else {
-            this.noMoreData = false;
+        } 
+        // 没有更多数据加载
+        else{
+          // 表格有数据
+          if(length > 0){
+            this.MoreData = false;
+            if (clientHeight + scrollTop >= scrollHeight) {
+              this.noMoreData = true;
+            } else {
+              this.noMoreData = false;
+            }
+          }
+          // 表格没数据
+          else{
+            this.MoreData = false;
+            this.noMoreData = false
           }
         }
       },
@@ -41,7 +52,34 @@
         this.MoreData = false;
       },
     },
-    props: ["allData", "dgDataList"]
+    props: ["allData", "dgDataList"],
+    watch: {
+      "allData": {
+        handler: function (newValue, oldValue) {
+          console.log(this.dgDataList)
+          // 数据变化，表格有数据
+          if (this.dgDataList.length > 0) {
+            // 还有数据未加载
+            if (this.dgDataList.length < Number(newValue.totalNum)) {
+              this.MoreData = true;
+              this.noMoreData = false
+            }
+            // 已加载了全部数据
+             else {
+              this.MoreData = false;
+              this.noMoreData = true;
+            }
+          } 
+          // 数据变化，表格没数据
+          else {
+            this.MoreData = false;
+            this.noMoreData = false
+          }
+        },
+        deep: true,
+
+      }
+    }
   }
 
 </script>
