@@ -56,7 +56,7 @@
     watch: {
       "allData": {
         handler: function (newValue, oldValue) {
-          console.log(this.dgDataList)
+          // console.log(this.dgDataList)
           // 数据变化，表格有数据
           if (this.dgDataList.length > 0) {
             // 还有数据未加载
