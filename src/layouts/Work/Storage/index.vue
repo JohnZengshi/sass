@@ -150,7 +150,7 @@ import utilsdatagrid from './component/utilsDatagrid'
 import {operateAddProductToRKOrder} from 'Api/commonality/operate'
 import {downloadTable, seekReceiptRKSynopsis} from 'Api/commonality/seek'
 import copyPopup from './component/orderPopup'
-import batchamend from './component/batchamend'
+import batchamend from 'components/work/batchamend'
 
 //规则配置相关组件 
 import NewPopup from "./../../jinbaifu/NewPopup"

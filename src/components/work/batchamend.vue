@@ -2,7 +2,7 @@
   <div class="amend-popup-wrap1" v-if="isbatchamendShow">
     <i class="el-icon-close" @click="hidebatchamend"></i>
     <div class="popup-tittle">
-      <img src="./../../../../../static/img/piliang.png">
+      <img src="static/img/piliang.png">
       <div>批量修改</div>
     </div>
     <div class="amend-tittle">
@@ -101,7 +101,8 @@
     seekCertificateList,
     seekReceiptXGSynopsis,
     getUpdateGoodsList,
-    seekReceiptStatusList
+    seekReceiptStatusList,
+    getProductTypeList
   } from 'Api/commonality/seek'
   import {
     operateUpdateGoods,
@@ -110,7 +111,6 @@
   import {
     readOnly
   } from 'Api/commonality/filter' // 过滤器
-import threeLayersDownMenuVue from '../../../../base/menu/three-layers-down-menu.vue';
   export default {
 
     data() {
@@ -251,7 +251,22 @@ import threeLayersDownMenuVue from '../../../../base/menu/three-layers-down-menu
         //选择输入
         // this.$set(this.popup, 'isShowData', this.popup.amendingData == '')
         // <!-- -------------------------------- -->
-
+        // 因为代码奇葩，要特殊处理产品类别
+        if(this.selectValue[this.selectValue.length - 1] == "WeightClass" || this.selectValue[this.selectValue.length - 1] == "PieceworkClass"){
+          this.selectValue[this.selectValue.length - 1] = "productTypeId"
+          this.configPullDownData["WeightClass"].forEach((val,index)=>{
+              if(val.classesName == this.amendingData){
+                this.amendingData = val.classesId
+              }
+          })
+          this.configPullDownData["PieceworkClass"].forEach((val,index)=>{
+              if(val.classesName == this.amendingData){
+                this.amendingData = val.classesId
+              }
+          })
+        }
+        console.log(this.selectValue);
+        console.log(this.amendingData);
         // 非全选情况要对修改范围进行验证
         if (!this.switchType) {
           if (!this.selectRange('sel1')) {
@@ -271,7 +286,9 @@ import threeLayersDownMenuVue from '../../../../base/menu/three-layers-down-menu
               //   [this.popup.amendingLittleClass]: this.popup.amendingData,
               [this.selectValue[this.selectValue.length - 1]]: this.amendingData,
             }]
-          } else {
+          } 
+          // 范围修改
+          else {
             this.allFlag = 2
             if (!this.popup.editRanges) {
               let sRow = parseFloat(this.popup.amendingStartRow)
@@ -301,6 +318,7 @@ import threeLayersDownMenuVue from '../../../../base/menu/three-layers-down-menu
             }).catch((res) => {})
           }
         }
+
         this.resetPopupData();
       },
 
@@ -351,7 +369,21 @@ import threeLayersDownMenuVue from '../../../../base/menu/three-layers-down-menu
           } else {}
         })
       },
-
+      // 获取产品类别的下拉表
+      ProductTypeList(){
+        getProductTypeList().then(res=>{
+          if(res.data.state === 200){
+            res.data.data.list.forEach((val,index)=>{
+              if(val.classesType == 1){
+                this.configPullDownData["WeightClass"] = val.typeList;
+              }else if(val.classesType == 2){
+                this.configPullDownData["PieceworkClass"] = val.typeList;
+              }
+            })
+          }
+          console.log(this.configPullDownData)
+        })
+      },
       productPropertyList() { // 获取商品属性下拉列表
         var _self = this;
         let requestNumber = 1;
@@ -498,6 +530,7 @@ import threeLayersDownMenuVue from '../../../../base/menu/three-layers-down-menu
         this.productCertificateList() // 证书下拉列表
         this.productPropertyList() // 商品属性下拉列表
         this.productClassList() // 获取商品大小类的下拉列表
+        this.ProductTypeList() //获取产品类别的下拉表
       })
     }
   }

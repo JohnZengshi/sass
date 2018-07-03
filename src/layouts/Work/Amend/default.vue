@@ -107,7 +107,7 @@ import datagrid from './dataGrid'
 import utilsdatagrid from './component/utilsDatagrid'
 import {operateAddProductToRKOrder} from 'Api/commonality/operate'
 import {downloadTable, seekReceiptRKSynopsis} from 'Api/commonality/seek'
-import batchamend from './component/batchamend'
+import batchamend from 'components/work/batchamend'
 import BatchAddReceipts from '../../../components/work/BatchAddReceipts'
 export default {
   data(){
