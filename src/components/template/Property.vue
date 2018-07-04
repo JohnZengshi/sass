@@ -6,9 +6,9 @@
     <div class="resize" v-if="!isPreview"></div>
 </div>
 <div class="property-component string" v-show="isShown" :style="componentStyle" :class="{borderRender: data.border}" v-else>
-    <span :style="prefixStyle" v-html="rawPrefix"></span>
-    <span :style="valueStyle">{{ value }}</span>
-    <span :style="suffixStyle" v-html="rawSuffix"></span>
+    <span v-if="filterShow(value)" :style="prefixStyle" v-html="rawPrefix"></span>
+    <span v-if="filterShow(value)" :style="valueStyle">{{ value }}</span>
+    <span v-if="filterShow(value)" :style="suffixStyle" v-html="rawSuffix"></span>
 </div>
 </template>
 
@@ -30,7 +30,7 @@ export default {
                 isNull: false
             }
         },
-        props: ['isPreview', 'parent', 'data', 'page', 'templateData'],
+        props: ['isPreview', 'parent', 'data', 'page', 'templateData', 'showEmpty'],
         computed: {
             ...mapState({
                 mapTemplate: state => state.template.detail
@@ -183,7 +183,6 @@ export default {
                         return  '#{' + code + '}'
                     }
                 }
-               
                 if (this.data.propertyType == 1 || this.data.propertyType == 3) {
                     return Number(value).toFixed(this.data.toFixed)
                 } else {
@@ -364,6 +363,17 @@ export default {
                         format: 'CODE128'
                   })
              }
+            },
+
+            filterShow (value) {
+                if (this.showEmpty == 'N') {
+                    if (this.data.propertyCode == 'discountPrice' && value == "100") {
+                        return false
+                    }
+                    return value && value != 0.00 && value != 0.000
+                } else {
+                    return true
+                }
             }
         },
         mounted() {

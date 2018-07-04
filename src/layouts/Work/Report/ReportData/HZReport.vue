@@ -82,11 +82,13 @@
         <span>导出报表</span>
     </div> -->
     <!-- 按钮组 -->
-
-    <div class="printBtn" @click="tabPrin()">
-        <i class="iconfont icon-dayin1"></i>
-        <span>打印报表</span>
+    <div class="utilsBtn flex flex-v flex-pack-justify">
+        <div class="btn" @click="tabPrin()">
+            <i class="iconfont icon-dayin1"></i>
+            <span>打印报表</span>
+        </div>
     </div>
+    
 
     <!--打印模块-->
     <div style="display: none;">

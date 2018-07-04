@@ -246,6 +246,7 @@
 		
 		<div class="rp_dataGridTemp" :class="tabShow" v-loading = "loading" element-loading-text="数据查询中">
 			<report-detail 
+                ref="ReportDetail"
 				:dataGridStorage="dataGridStorage" 
 				:tabSwitch = "tabSwitch" 
 				@scrollClass = "tabScrollShow"
@@ -255,7 +256,8 @@
                 :newList="newList"
 				:reportType="getReportType()">
 			</report-detail>
-            <report-load v-if="dataGridStorage.totalNum != '0' && dataGridOptions.type === 1 && dataGridStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>            
+            <!-- 数据加载控件 end-->
+            <!-- <report-load v-if="dataGridStorage.totalNum != '0' && dataGridOptions.type === 1 && dataGridStorage.totalNum>30" @LoadOptionsDefault="LoadOptionsDefault"></report-load>             -->
 		</div>
 		
 	</div>
@@ -263,16 +265,22 @@
 	<!-- <div class="reportPrint_fixed skin-shield" :class="reportPrint_fixed ? 'isWebkit' : ''">
 		<el-button type="primary" @click.native="tabPrin()">打印报表</el-button>
 	</div> -->
-	<div class="printBtn exportBtn" @click="exportTab()">
-        <i class="iconfont icon-daochu"></i>
-        <span>导出报表</span>
-    </div>
+    <div class="utilsBtn flex flex-v flex-pack-justify">
+        <div class="btn" @click="exportTab()">
+            <i class="iconfont icon-daochu"></i>
+            <span>导出报表</span>
+        </div>
 
-	<div class="printBtn" @click="tabPrin()">
-        <i class="iconfont icon-dayin1"></i>
-        <span>打印报表</span>
+        <div class="btn" @click="tabPrin()">
+            <i class="iconfont icon-dayin1"></i>
+            <span>打印报表</span>
+        </div>
+
+        <!-- 加载条数选择 -->
+        <div class="LoaderNumBtn">
+            <LoaderNum ref="LoaderNum"></LoaderNum>
+        </div>
     </div>
-	
 	
 	<!--打印模块-->
 	<div style="display: none;">
@@ -333,7 +341,8 @@ import ReportLoad from './LoadOptions/ReportLoadOption'
 // 筛选的组件
 import dropDownColum from 'base/menu/drop-down-colums'
 import {seekProductClassList,showCounterList} from "Api/commonality/seek"
-
+// 选择加载页数组件
+import LoaderNum from 'components/work/loaderNum.vue'
 export default {
     components:{
     	ReportDetail,
@@ -345,7 +354,8 @@ export default {
         customTemplate,
         ReportLoad,
         HeaderDropDownMenu,
-        dropDownColum
+        dropDownColum,
+        LoaderNum
     },
      data() {
       return {
@@ -503,7 +513,7 @@ export default {
             sortList: [{classTypeName: '1'}],
             type: 2,
             page: 1,
-            pageSize: 15,
+            pageSize: 30,
             keyWord: '',
             wColorId: '',
             wGemId: '',
@@ -532,6 +542,8 @@ export default {
         conditionList:[],
         jewelList:[],
         jewelryList:[],
+        // 选择的加载条数
+        upDataNum:30
       };
     },
     
@@ -639,7 +651,7 @@ export default {
                 sortFlag: '0',
                 type: 1,
                 page: 1,
-                pageSize: 15,
+                pageSize: 30,
                 keyWord: ''
               })
             } else if (port == 2) {
@@ -660,7 +672,7 @@ export default {
                 // productClass: '1',
                 sortFlag: this.positionSwitch ? "1" : "0",
                 type: 1,
-                pageSize:15
+                pageSize:30
               })
             } else if (port == 3) {
               delete this.dataGridOptions.page
@@ -680,7 +692,7 @@ export default {
                 // productClass: '1',
                 sortFlag: this.positionSwitch ? "1" : "0",
                 type: 1,
-                pageSize:15
+                pageSize:30
               })
             } else if (port == 4) {
               Object.assign(this.dataGridOptions, {
@@ -699,7 +711,7 @@ export default {
                 nColorId: '',
                 nGemId: '',
                 nJewelryId: '1',
-                pageSize:15
+                pageSize:30
               })
             }
           }
@@ -732,7 +744,7 @@ export default {
           this.loading = true;
           //this.page = 1
           this.dataGridOptions.page = 1
-          this.dataGridOptions.pageSize = 15
+          this.dataGridOptions.pageSize = 30
           this.tabClassActive.index = index;
           this.setReportType(type)
           
@@ -825,7 +837,7 @@ export default {
                     this.inconspanactive2 = true;
                 }
                 this.dataGridOptions.page = 1;
-                this.dataGridOptions.pageSize = 15;
+                this.dataGridOptions.pageSize = 30;
                 this.dataGridOptions.productClass = val;
                 console.log("切换成旧料", this.dataGridOptions.productClass);
                 //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
@@ -875,7 +887,7 @@ export default {
                   takeUserList : [],
                 }) 
             }
-            this.dataGridOptions.pageSize = 15
+            this.dataGridOptions.pageSize = 30
             $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send()
         },
@@ -911,14 +923,14 @@ export default {
                 this.dataGridOptions.takeUserList[0].takeUserId = val.item.operateId
             }
             this.currentPage = 1
-            this.dataGridOptions.pageSize = 15
+            this.dataGridOptions.pageSize = 30
             $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send()
         },
     	
     	//库位
     	storageFunc(){
-            this.dataGridOptions.pageSize = 15
+            this.dataGridOptions.pageSize = 30
             $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
     		this.send()
     	},
@@ -978,14 +990,16 @@ export default {
         getTimeData(val) {
             this.dataGridOptions.beginTime = val.substr(0, 10).split('-').join("") + "000000"
             this.printSelectDate.startTime = val
-            this.dataGridOptions.pageSize = 15
+            this.dataGridOptions.pageSize = 30
+            this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
             $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send();
         },
         overTimeDate(val) {
             this.dataGridOptions.endTime = val.substr(0, 10).split('-').join("") + "235959"
             this.printSelectDate.endTime = val
-            this.dataGridOptions.pageSize = 15
+            this.dataGridOptions.pageSize = 30
+            this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
             $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send();
         },
@@ -1225,6 +1239,11 @@ export default {
             }
             this.send()
         },
+        //加载页数变化
+        changeUpdataPageSize(val) {
+          console.log(val)
+          this.upDataNum = val
+        }
     },
     
     mounted(){

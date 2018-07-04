@@ -1,7 +1,7 @@
 <template>
 <!--表格内容区-->
 <!--明细-->
-<div class="ui-table-container default-line" ref="tableContainer" v-if="reportType == 1">
+<div @scroll="watchScroll($event)" class="ui-table-container default-line" ref="tableContainer" v-if="reportType == 1">
 	<div>
 		<div class="tb-tr" v-for="(tb,index) in tempArray" :key="index">
 			<div class="tb-td"
@@ -10,6 +10,13 @@
 				v-text = "tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"
 			></div>
 		</div>
+		<!-- 加载更多未读数据 -->
+		<ReadMoreData 
+		:allData="dataGridStorage" 
+		:dgDataList="dataGridStorage.detailList" 
+		ref="ReadMoreDataDmo" 
+		@readMoreData="readMoreData"
+		></ReadMoreData>
 		<div v-if="isDate" class="no-data"></div>
 	</div>
 </div>
@@ -110,7 +117,9 @@
 </template>
 
 <script>
-let applyIndex = 0
+let applyIndex = 0;
+import ReadMoreData from 'components/work/readMoreData';
+import threeLayersDownMenuVue from '../../../base/menu/three-layers-down-menu.vue';
 export default {
 	data(){
 		return{
@@ -120,6 +129,9 @@ export default {
 			addNum: 0,
 		}
 	},
+	components:{
+		ReadMoreData
+	},
 	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch'],
 	
 	watch:{
@@ -127,7 +139,6 @@ export default {
 			this.tempArray = []
 			this.cheackData()
 			this.storageFormatDate()
-			//console.log(1111)
 			this.tabCellHeight()
 		},
 		// 'reportType': function (val) {
@@ -151,26 +162,26 @@ export default {
 			_this.$emit('lazyloadSend',123 )
 		})
 		
-		$(".ui-table-container").mCustomScrollbar({
-            theme: "minimal-dark",
-            axis: 'y',
-            scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
-            mouseWheel: {
-                scrollAmount: 200,
-                preventDefault: false,
-                normalizeDelta: false,
-                scrollInertia : 0
-            },
-            callbacks: {
-                onTotalScroll: function () {
-					if (_this.reportType == 1) {
-						_this.$emit('lazyloadSend', {refresh: true})
-					} else {
-						//console.log('略略略')
-					}
-                }
-            }
-        });
+		// $(".ui-table-container").mCustomScrollbar({
+        //     theme: "minimal-dark",
+        //     axis: 'y',
+        //     scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
+        //     mouseWheel: {
+        //         scrollAmount: 200,
+        //         preventDefault: false,
+        //         normalizeDelta: false,
+        //         scrollInertia : 0
+        //     },
+        //     callbacks: {
+        //         onTotalScroll: function () {
+		// 			if (_this.reportType == 1) {
+		// 				_this.$emit('lazyloadSend', {refresh: true})
+		// 			} else {
+		// 				//console.log('略略略')
+		// 			}
+        //         }
+        //     }
+        // });
 		this.tabCellHeight()
 	},
 	methods:{
@@ -223,7 +234,7 @@ export default {
      	//格式化
      	storageFormatDate(){
      		if( this.reportType == 1  && this.dataGridStorage ){
-				if(  this.dataGridStorage.detailList.length > 0 ){
+				if(this.dataGridStorage.detailList && this.dataGridStorage.detailList.length > 0 ){
 				     this.tempArray = this.dataGridStorage.detailList
 				}	
 			}
@@ -239,7 +250,41 @@ export default {
             }else{
   				this.isDate = true;
   			}
-     	}
+		 },
+		// 监听下拉
+		watchScroll (el) { 
+			// console.log(el)
+			let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
+			let clientHeight = el.target.clientHeight; // 元素的高度
+			let scrollTop = el.target.scrollTop; // 滚动了的距离
+			this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+		},
+		// 加载更多未读数据
+		readMoreData() {
+		  let totalNum = this.dataGridStorage.totalNum;
+		  let length = this.dataGridStorage.detailList.length;
+		  let upDataNum = this.$parent.$parent.$refs["LoaderNum"].pageSize;
+		  let pageSize = 1;
+		  if (Number(upDataNum)) {
+		    upDataNum = Number(upDataNum);
+		    if (totalNum - length < upDataNum) {
+				// 后台返回所有数据，要把表格的数据清空
+		      this.$parent.$parent.dataGridStorage.detailList = [];
+		      pageSize = 0
+		    } else {
+		      pageSize = upDataNum
+		    }
+		  } else {
+			  // 后台返回所有数据，要把表格的数据清空
+		    this.$parent.$parent.dataGridStorage.detailList = [];
+		    pageSize = 0
+		  }
+		//   this.$parent.$parent.dataGridOptions.page += 1
+		  this.$parent.$parent.dataGridOptions.pageSize = pageSize;
+		//   console.log(this.$parent.$parent.dataGridOptions.pageSize)
+		//   this.$parent.$parent.send();
+		this.$parent.$parent.sendlayLoad();
+		}
      	
 	},
 	update(){
@@ -258,6 +303,7 @@ export default {
 </style>
 <style scoped lang="scss">
 .ui-table-container{
+	position: relative;
     height: 570px;
     overflow-y: auto;
     &.produc-line {

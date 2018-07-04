@@ -3,7 +3,7 @@
     <div class="resize"></div>
 </div>
 <div class="item-list-component" v-else>
-    <component v-for="child in items" :is="child.type" :isPreview="true" :parent="null" class="component" :data="child.data" :templateData="templateData" @changeComponentData="changeComponentData(child, $event)" :changeComponentData="changeComponentData"></component>
+    <component v-for="child in items" :is="child.type" :showEmpty="showEmpty" :isPreview="true" :parent="null" class="component" :data="child.data" :templateData="templateData" @changeComponentData="changeComponentData(child, $event)" :changeComponentData="changeComponentData"></component>
  <!-- 需求改变，暂时屏蔽 -->
 <!--     <div class="page" v-show="sumPage" :style="pageStyle">{{ page }}-{{ sumPage }}页</div> -->
 </div>
@@ -20,7 +20,7 @@ import {
     getComponentTranslate
 } from '../../utils/print'
 export default {
-    props: ['isPreview', 'parent', 'data', 'templateData', 'page', 'changeComponentData'],
+    props: ['isPreview', 'parent', 'data', 'templateData', 'page', 'changeComponentData', 'showEmpty'],
     components: {
         TextComponent,
         ImageComponent,

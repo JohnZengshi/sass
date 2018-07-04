@@ -171,7 +171,7 @@
         </div>
         <div class="table-main" @scroll="scrollFun($event)">
           <el-checkbox-group class="checkboxGroup" v-model="barcodeList" v-loading="isLoading">
-            <span class="float" v-show="receiptList.length > 0 && Float">{{currentOrderId}}
+            <span class="float" v-show="receiptList.length > 0 && floatOrderId != ''">{{floatOrderId}}
               <i class="el-icon-circle-close" title="清除" @click="clearFloat"></i>
             </span>
             <img v-if="receiptList.length ==0" style="display: block; margin:0 auto;" src="static/img/space-page.png" />
@@ -443,9 +443,7 @@
         //制单人列表(去重)
         makeInvoicesPerson: [],
         // 当前点击单据的orderID
-        currentOrderId: "",
-        // 关闭显示单据号的浮层
-        Float: true,
+        floatOrderId: "",
         // 没有更多单据数据
         noMoreOrderNum: false,
         // 没有更多商品数据
@@ -563,8 +561,8 @@
         }
       },
       choseListData(item) { // 选择单据列表
-        console.log(item)
-        this.newOrderId = item.orderNo
+        // console.log(item)
+        // this.newOrderId = item.orderNo
 
       },
       dataBack(val) { // 级联数据返回
@@ -792,9 +790,10 @@
         let options = {
           page: 1,
           pageSize: this.pageSize,
-          // orderId: this.$route.query.orderNumber, // this.orderNo
-          orderId: this.currentOrderId,
-          newOrderId: this.newOrderId,
+          orderId: this.$route.query.orderNumber, // this.orderNo
+          // orderId: this.floatOrderId,
+          newOrderId: this.floatOrderId,
+          // newOrderId: this.newOrderId,
           keyword: this.keyword,
           productTypeId: this.productTypeId,
           productTypeList: this.productTypeList,
@@ -856,7 +855,7 @@
           this.endBarcode1 = ''
           this.productType = ''
           this.location = ''
-          this.newOrderId = ''
+          // this.newOrderId = ''
           // 切换回单据要重置单据号
           this.orderId = ''
           this.noMoreOrderNum = false;
@@ -868,9 +867,9 @@
           this.beginPrice = ''
           this.endPrice = ''
           this.modelType = ''
-          this.newOrderId = ''
+          // this.newOrderId = ''
           // 点击切换需要查询商品
-          this.currentOrderId = this.$route.query.orderNumber;
+          this.floatOrderId = "";
           this.batchAddByProductList();
           // 设置商品的位置
           this.setGoodslocationList();
@@ -1256,18 +1255,17 @@
         this.jewelryList = [];
         this.productStatusList = [];
         this.locationList = [];
-        this.gotoGoods(this.currentOrderId);
+        // this.gotoGoods(this.floatOrderId);
+        this.batchAddByProductList();
       },
       // 点击单据展示商品列表
       gotoGoods(orderId) {
         console.log(orderId);
         this.listType = "商品";
         this.noMoreProductList = false
-        this.currentOrderId = orderId;
+        this.floatOrderId = orderId;
         this.batchAddByProductList();
         this.setGoodslocationList();
-        // 显示单据号的浮层
-        this.Float = true;
       },
       // 设置店铺，库位位置列表
       setGoodslocationList() {
@@ -1349,8 +1347,8 @@
       },
       // 清空浮条
       clearFloat() {
-        this.Float = false;
-        this.currentOrderId = this.$route.query.orderNumber;
+        this.floatOrderId = "";
+        // 重置数据
         this.batchAddByProductList();
       }
     },

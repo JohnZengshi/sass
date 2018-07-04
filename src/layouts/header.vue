@@ -391,6 +391,9 @@ export default {
         }
 
       });
+    $(".main-body").mCustomScrollbar({
+            theme: "minimal-dark"
+    });
   },
   watch: {
     companyInfo: function() {
@@ -400,6 +403,11 @@ export default {
     },
     $route: function() {
       this.unreadCount();
+    },
+    sortDataList () {
+      $(".main-body").mCustomScrollbar({
+          theme: "minimal-dark"
+      });
     }
   },
   methods: {
@@ -1895,7 +1903,7 @@ export default {
       width: 1010px;
       .main-body {
             width: 1010px;
-            height: 700px;
+            height: 680px;
             // margin: 0 auto;
             // overflow-y: auto;
             .title-tab {

@@ -1,7 +1,7 @@
 <template>
   <transition name="tp-ani">
 
-    <div class="RP_report_wrapper ui-page-max-width report_table_fixed" v-if="isPrint==0" v-loading="loading" element-loading-text="数据查询中">
+    <div class="RP_report_wrapper ui-page-max-width report_table_fixed" v-if="isPrint==0">
 
       <div class="Rp_title_container">
         <!--面包屑-->
@@ -207,7 +207,7 @@
         </div>
 
         <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
-          <report-detail :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" @scrollClass="tabScrollShow" :positionSwitch="positionSwitch" :newList="newList" @lazyloadSend="lazyloadSend" @sortList="sortListAct" :reportType="getReportType()">
+          <report-detail ref="ReportDetail" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" @scrollClass="tabScrollShow" :positionSwitch="positionSwitch" :newList="newList" @lazyloadSend="lazyloadSend" @sortList="sortListAct" :reportType="getReportType()">
           </report-detail>
           <!-- 数据加载控件 bengin-->
           <!-- <div class="loadControl">
@@ -220,7 +220,7 @@
             </ul>  
           </div> -->
           <!-- 数据加载控件 end-->
-          <report-load v-if="dataGridStorage.totalNum != '0' && dataGridOptions.type === 1 && dataGridStorage.totalNum > 15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>
+          <!-- <report-load v-if="dataGridStorage.totalNum != '0' && dataGridOptions.type === 1 && dataGridStorage.totalNum > 15" @LoadOptionsDefault="LoadOptionsDefault"></report-load> -->
         </div>
 
       </div>
@@ -231,16 +231,23 @@
           :page="print.templateData.productList.length" >
         </Lodop>
       
-      <div class="printBtn exportBtn" @click="exportTab()">
-        <i class="iconfont icon-daochu"></i>
-        <span>导出报表</span>
-      </div>
+      <div class="utilsBtn flex flex-v flex-pack-justify">
+        <div class="btn" @click="exportTab()">
+          <i class="iconfont icon-daochu"></i>
+          <span>导出报表</span>
+        </div>
 
-	    <div class="printBtn" @click="tabPrin()">
-        <i class="iconfont icon-dayin1"></i>
-        <span>打印报表</span>
-      </div>
+        <div class="btn" @click="tabPrin()">
+          <i class="iconfont icon-dayin1"></i>
+          <span>打印报表</span>
+        </div>
 
+        <!-- 加载条数选择 -->
+        <div class="LoaderNumBtn">
+          <LoaderNum ref="LoaderNum"></LoaderNum>
+        </div>
+      </div>
+      
 			<!--打印模块-->
 			<div style="display: none;">
 					<detail-template v-if="this.tabClassActive.index==0" title="入库" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detail-template>
@@ -298,7 +305,8 @@
 // import dropDownColum from '@/components/dropDownColums'
 import dropDownColum from 'base/menu/drop-down-colums'
 import {seekProductClassList,showCounterList} from "Api/commonality/seek"
-
+// 选择加载页数组件
+import LoaderNum from 'components/work/loaderNum.vue'
   export default {
     components: {
       ReportDetail,
@@ -312,7 +320,8 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
       customTemplate,
       ReportLoad,
       HeaderDropDownMenu,
-      dropDownColum
+      dropDownColum,
+      LoaderNum
     },
     data() {
       return {
@@ -450,7 +459,7 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
           }],
           type: 2,
           page: 1,
-          pageSize: 15,
+          pageSize: 30,
           keyWord: '',
           wColorId: '',
           wGemId: '',
@@ -602,7 +611,7 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
               sortFlag: '0',
               type: 1,
               page: 1,
-              pageSize: 15,
+              pageSize: 30,
               keyWord: ''
             })
           } else if(port == 2) {
@@ -621,7 +630,7 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
               // productClass: '1',
               sortFlag: this.positionSwitch ? "1" : "0",
               type: 1,
-              pageSize: 15
+              pageSize: 30
             })
           } else if(port == 3) {
             delete this.dataGridOptions.page
@@ -656,7 +665,7 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
               nColorId: '',
               nGemId: '',
               nJewelryId: '1',
-              pageSize: 15
+              pageSize: 30
             })
           }
         }
@@ -686,7 +695,7 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
         //this.page = 1
         this.dataGridOptions.page = 1
         // this.dataGridOptions.pageSize = 9999
-        this.dataGridOptions.pageSize = 15
+        this.dataGridOptions.pageSize = 30
 
         this.tabClassActive.index = index;
         this.setReportType(type)
@@ -807,7 +816,7 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
                 this.inconspanactive2 = true;
             }
             this.dataGridOptions.page = 1;
-            this.dataGridOptions.pageSize = 15;
+            this.dataGridOptions.pageSize = 30;
             this.dataGridOptions.productClass = val;
             console.log("切换成旧料", this.dataGridOptions.productClass);
             //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
@@ -835,27 +844,27 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
           this.dataGridOptions.shopId = ''
           this.printSelectDate.takeUser = ''
           this.takeUserDisabled = true
-          this.dataGridOptions.pageSize = 15
+          this.dataGridOptions.pageSize = 30
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
           
         } else if(val.type == "库位") {
           this.dataGridOptions.storageId = ''
           this.printSelectDate.storage = ''
-          this.dataGridOptions.pageSize = 15
+          this.dataGridOptions.pageSize = 30
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
           
         } else if(val.type == "供应商") {
           this.dataGridOptions.supplierId = ''
           this.printSelectDate.supplier = ''
-          this.dataGridOptions.pageSize = 15
+          this.dataGridOptions.pageSize = 30
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
           
         } else if(val.type == "制单人") {
           this.printSelectDate.preparedBy = ''
-          this.dataGridOptions.pageSize = 15
+          this.dataGridOptions.pageSize = 30
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
           
@@ -864,7 +873,7 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
           })
         } else if(val.type == "审核人") {
           this.printSelectDate.auditor = ''
-          this.dataGridOptions.pageSize = 15
+          this.dataGridOptions.pageSize = 30
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
           
@@ -882,7 +891,7 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
         } else if(val.type == "店铺") {
           this.printSelectDate.shop = val.item.operateName
           this.dataGridOptions.shopId = val.item.operateId
-          this.dataGridOptions.pageSize = 15
+          this.dataGridOptions.pageSize = 30
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
 
@@ -890,18 +899,18 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
         } else if(val.type == "库位") {
           this.dataGridOptions.storageId = val.item.operateId
           this.printSelectDate.storage = val.item.operateName
-          this.dataGridOptions.pageSize = 15
+          this.dataGridOptions.pageSize = 30
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
         } else if(val.type == "供应商") {
           this.dataGridOptions.supplierId = val.item.operateId
           this.printSelectDate.supplier = val.item.operateName
-          this.dataGridOptions.pageSize = 15
+          this.dataGridOptions.pageSize = 30
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
         } else if(val.type == "制单人") {
           this.printSelectDate.preparedBy = val.item.operateName
-          this.dataGridOptions.pageSize = 15
+          this.dataGridOptions.pageSize = 30
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
           Object.assign(this.dataGridOptions, {
@@ -912,7 +921,7 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
           this.dataGridOptions.makeUserList[0].makeUserId = val.item.operateId
         } else if(val.type == "审核人") {
           this.printSelectDate.auditor = val.item.operateName
-          this.dataGridOptions.pageSize = 15
+          this.dataGridOptions.pageSize = 30
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
           Object.assign(this.dataGridOptions, {
@@ -942,7 +951,7 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
         if(res.length == 0) {
           this.printSelectDate.productType = ''
           this.dataGridOptions.productTypeId = ''
-          this.dataGridOptions.pageSize = 15
+          this.dataGridOptions.pageSize = 30
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d') 
           this.send()
           return
@@ -992,7 +1001,7 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
       getShopListByCo() {
         let options = {
           page: '1',
-          pageSize: '10'
+          pageSize: '30'
         }
         seekGetShopListByCo(options).then((res) => {
           this.distributorList = res.body.data.shopList
@@ -1049,7 +1058,8 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
       getTimeData(val) {
         this.dataGridOptions.beginTime = val.substr(0, 10).split('-').join("") + "000000"
         this.printSelectDate.startTime = val
-        this.dataGridOptions.pageSize = 15    
+        this.dataGridOptions.pageSize = 30;
+        this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')                   
         this.currentPage = 1
         this.send();
@@ -1057,7 +1067,8 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
       overTimeDate(val) {
         this.dataGridOptions.endTime = val.substr(0, 10).split('-').join("") + "235959"
         this.printSelectDate.endTime = val
-        this.dataGridOptions.pageSize = 15
+        this.dataGridOptions.pageSize = 30
+        this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
         this.currentPage = 1
         this.send();
@@ -1108,7 +1119,7 @@ import {seekProductClassList,showCounterList} from "Api/commonality/seek"
 
       send() {
         this.loading = true;
-        //this.dataGridOptions.pageSize += 50;
+        // this.dataGridOptions.pageSize += 50;
         seekEntryStorage(this.dataGridOptions).then((res) => {
           if(res.data.state == 200) {
             this.dataGridStorage = res.data.data

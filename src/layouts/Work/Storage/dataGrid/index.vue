@@ -13,7 +13,12 @@
         @updateActiveIndex="updateActiveIndex" @updateActiveSelectOn="updateActiveSelectOn" @deleteRefresh="deleteRefresh">
       </dgridBody>
       <!-- 加载更多未读数据 -->
-      <ReadMoreData :allData="allSynopsiData" :dgDataList="dgDataList" ref="ReadMoreDataDmo" @readMoreData="readMoreData"></ReadMoreData>
+      <ReadMoreData 
+      :allData="allSynopsiData" 
+      :dgDataList="dgDataList" 
+      ref="ReadMoreDataDmo" 
+      @readMoreData="readMoreData"
+      ></ReadMoreData>
     </div>
     <div v-show="dgDataList.length <= 0 " class="datagrid-empty">
       <img class="empty-img" src="../../../../assets/img/empty.png" />
@@ -27,7 +32,7 @@
       @setSynopsiData="updataSynopsiData" :orderNum="orderNum">
     </dgridfooter>
     <!-- 加载条数选择 -->
-    <LoaderNum @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
+    <!-- <LoaderNum @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum> -->
   </div>
 </template>
 
@@ -43,7 +48,7 @@
   import * as configData from './config'
   import * as fetch from './fetchData'
   import ReadMoreData from 'components/work/readMoreData.vue'
-  import LoaderNum from 'components/work/loaderNum.vue'
+  // import LoaderNum from 'components/work/loaderNum.vue'
   export default {
     data() {
       return {
@@ -77,7 +82,6 @@
         emptyAddClass: '',
         pageNum: 1,
         pageSize: 30,
-        upDataNum: 30
       }
     },
     components: {
@@ -85,7 +89,7 @@
       dgridBody,
       dgridfooter,
       ReadMoreData,
-      LoaderNum
+      // LoaderNum
     },
 
     props: ['orderNum', 'slipPointer', 'goodsAdd', 'copyDataList', 'isRefreshFooter', 'curStatus', 'isShow'],
@@ -160,6 +164,7 @@
         }).then((res) => {
           if (res.data.state == 200) {
             this.dgDataList = res.data.data.rowDataList;
+            this.allSynopsiData = res.data.data;
             this.$emit('updataData', {
               key: 'dgDataList',
               data: this.dgDataList
@@ -335,7 +340,8 @@
       readMoreData() {
         let totalNum = this.allSynopsiData.totalNum;
         let length = this.dgDataList.length;
-        let upDataNum = this.upDataNum;
+        // let upDataNum = this.upDataNum;
+        let upDataNum = this.$parent.$refs["utilsdatagrid"].$refs["LoaderNum"].pageSize;
         this.pageNum = 1;
         //   this.dgDataList = [];
         if (Number(upDataNum)) {
@@ -350,12 +356,6 @@
         }
         this.fetchGoodList();
       },
-      //加载页数变化
-      changeUpdataPageSize(val) {
-        console.log(val)
-        this.upDataNum = val
-      }
-
     },
     updata() {
 

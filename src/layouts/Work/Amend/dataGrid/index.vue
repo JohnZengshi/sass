@@ -50,8 +50,6 @@
        @setSynopsiData = "updataSynopsiData"
        :orderNum="orderData.orderNum">
    </dgridfooter>
-  <!-- 加载条数选择 -->
-  <LoaderNum @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
 
 			<!--打印模块-->
 			<div style="display: none;">
@@ -70,7 +68,6 @@ import * as configData from './config'
 import * as fetch from './fetchData'
 import detailTemplate from "@/components/jcp-print/bill/update/detail-template";
 import ReadMoreData from 'components/work/readMoreData.vue'
-import LoaderNum from 'components/work/loaderNum.vue'
 export default{
   components: {
     dgridhead,
@@ -78,7 +75,6 @@ export default{
     dgridfooter,
     detailTemplate,
     ReadMoreData,
-    LoaderNum
   },
   props:['orderData','slipPointer','goodsAdd', 'seekBarcode', 'seekFlag'],
   data(){
@@ -114,7 +110,7 @@ export default{
       },
       pageNum: 1,
       pageSize: 30,
-      upDataNum: 30
+      // upDataNum: 30
       
     }
   },
@@ -289,9 +285,8 @@ export default{
     	readMoreData() {
     	    let totalNum = this.synopsiData.totalNum;
     	    let length = this.dgDataList.length;
-    	    let upDataNum = this.upDataNum;
+          let upDataNum = this.$parent.$refs["utilsdatagrid"].$refs["LoaderNum"].pageSize;
     	    this.pageNum = 1;
-    	    //   this.dgDataList = [];
     	    if (Number(upDataNum)) {
     	      upDataNum = Number(upDataNum);
     	      if (totalNum - length < upDataNum) {
@@ -304,12 +299,6 @@ export default{
     	    }
     	    this.fetchGoodList();
     	  },
-    	  //加载页数变化
-    	  changeUpdataPageSize(val) {
-    	    // console.log(val)
-    	    this.upDataNum = val
-    	  }
-    
   },
   
   mounted(){

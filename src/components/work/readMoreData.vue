@@ -11,7 +11,7 @@
     data() {
       return {
         MoreData: false,
-        noMoreData: false
+        noMoreData: false,
       }
     },
     methods: {
@@ -19,27 +19,67 @@
       isShowMoreDataTip(scrollHeight, clientHeight, scrollTop) {
         let totalNum = this.allData.totalNum;
         let length = this.dgDataList.length;
+        // 还有更多数据未加载
         if (totalNum > length) {
           if (clientHeight + scrollTop >= scrollHeight) {
             this.MoreData = true;
           } else {
             this.MoreData = false;
           }
-        } else {
-          this.MoreData = false;
-          if (clientHeight + scrollTop >= scrollHeight) {
-            this.noMoreData = true;
-          } else {
-            this.noMoreData = false;
+        } 
+        // 没有更多数据加载
+        else{
+          // 表格有数据
+          if(length > 0){
+            this.MoreData = false;
+            if (clientHeight + scrollTop >= scrollHeight) {
+              this.noMoreData = true;
+            } else {
+              this.noMoreData = false;
+            }
+          }
+          // 表格没数据
+          else{
+            this.MoreData = false;
+            this.noMoreData = false
           }
         }
       },
       readMoreData() {
-        this.$emit("readMoreData")
+        if(this.MoreData){
+          this.$emit("readMoreData")
+        }
         this.MoreData = false;
       },
     },
-    props: ["allData", "dgDataList"]
+    props: ["allData", "dgDataList"],
+    watch: {
+      "allData": {
+        handler: function (newValue, oldValue) {
+          // console.log(this.dgDataList)
+          // 数据变化，表格有数据
+          if (this.dgDataList && this.dgDataList.length > 0) {
+            // 还有数据未加载
+            if (this.dgDataList.length < Number(newValue.totalNum)) {
+              // this.MoreData = true; 
+              this.noMoreData = false
+            }
+            // 已加载了全部数据
+             else {
+              this.MoreData = false;
+              this.noMoreData = false;
+            }
+          } 
+          // 数据变化，表格没数据
+          else {
+            this.MoreData = false;
+            this.noMoreData = false
+          }
+        },
+        deep: true,
+
+      }
+    }
   }
 
 </script>
@@ -57,9 +97,11 @@
       color: #e99a1d;
       line-height: 22px;
       opacity: 0;
-      transition: all .8s;
+      height: 0px;
+      transition: opacity .8s;
       cursor: pointer;
       &.active{
+        height: 22px;
         opacity: 1;
       }
     }
@@ -69,11 +111,12 @@
       position: absolute;
       background: #fff;
       text-align: center;
-      font-size: 14px;
+      font-size: 12px;
       // height: 50px;
       // line-height: 50px;
       display: none;
       transition: all 0s;
+      margin: 10px 0;
       &.active {
         display: block;
       }
@@ -84,18 +127,18 @@
           height: 1px;
           content: "";
           display: inline-block;
-          background-color: #999;
+          background-color: #d6d6d6;
           vertical-align: middle;
-          margin-right: 50px;
+          margin-right: 40px;
         }
         &::after {
           width: 200px;
           height: 1px;
           content: "";
           display: inline-block;
-          background-color: #999;
+          background-color: #d6d6d6;
           vertical-align: middle;
-          margin-left: 50px;
+          margin-left: 40px;
         }
       }
     }

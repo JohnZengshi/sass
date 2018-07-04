@@ -45,7 +45,6 @@
 				:goodsAdd="goodsAdd" ref="datagrid" 
 				:copyDataList="copyOrderArray" 
 				:isRefreshFooter="isRefreshFooter" 
-				:upDataNum="upDataNum"
 				@add="add" 
 				@updataApi="updataApi"
 				@updataData="updataData" 
@@ -79,13 +78,13 @@
 			</steps-path>
 
 			<!--各个按钮操作区-->
-			<utilsdatagrid 
+			<utilsdatagrid
+			ref="utilsdatagrid" 
 			:curStatus="curStatus" 
 			@updataApi="updataApi" 
 			:orderData="orderData" 
 			:dataList="dgDataList" 
 			@goPage="goPage" 
-			@changeUpdataPageSize="changeUpdataPageSize"
 			>
 			</utilsdatagrid>
 
@@ -151,7 +150,7 @@ import utilsdatagrid from './component/utilsDatagrid'
 import {operateAddProductToRKOrder} from 'Api/commonality/operate'
 import {downloadTable, seekReceiptRKSynopsis} from 'Api/commonality/seek'
 import copyPopup from './component/orderPopup'
-import batchamend from './component/batchamend'
+import batchamend from 'components/work/batchamend'
 
 //规则配置相关组件 
 import NewPopup from "./../../jinbaifu/NewPopup"
@@ -231,8 +230,6 @@ export default {
        
       // 批量修改
 			isbatchamendShow: false, //显示弹框
-			// 默认更新页数
-			upDataNum:30
     }
   },
   components: {
@@ -589,9 +586,6 @@ export default {
 	  	this.rowDataList = [];
 	  	this.$router.push({path: url});
 		},
-		changeUpdataPageSize(data){
-			this.upDataNum = data
-		}
   },
   
   mounted(){

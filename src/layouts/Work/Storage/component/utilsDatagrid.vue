@@ -29,8 +29,10 @@
     <span data-text="删除单据" v-if="synopsiData.checkType == '1' && synopsiData.isRole == 'Y'" @click="delOrder">
       <i class="iconfont icon-shanchu1"></i>
     </span>
-
-
+    <!-- 加载页数 -->
+    <LoaderNum 
+    ref="LoaderNum"
+    ></LoaderNum>
     <!-- 弹出框 -->
     <orderPopup @submit="popupSubmit" @popupShow="popupShow" :title="title" :isShowPopup="isShowPopup">
     </orderPopup>
@@ -51,7 +53,7 @@
   } from 'Api/commonality/seek'
   import orderPopup from '../component/orderPopup'
   import printLabel from '../component/printLabel'
-
+  import LoaderNum from 'components/work/loaderNum'
   export default {
     data() {
       return {
@@ -63,12 +65,12 @@
 
         // 弹出框 显示 隐藏
         isShowPopup: false,
-        companyPosition: '',
       }
     },
     components: {
       orderPopup,
-      printLabel
+      printLabel,
+      LoaderNum
     },
     props: ['dataList', 'orderData', 'curStatus'],
 
@@ -322,7 +324,7 @@
       popupShow(type, title) {
         this.isShowPopup = type
         this.title = title || '说明'
-      },
+      }
     },
 
     mounted() {
@@ -356,7 +358,7 @@
       line-height: 18px;
       cursor: pointer;
       display: flex;
-      /*border-radius: 5px;*/
+      border-radius: 5px;
       position: relative;
       justify-content: center;
       align-items: center;
@@ -395,5 +397,4 @@
       }
     }
   }
-
 </style>

@@ -27,7 +27,7 @@
 	<!--表尾  -->
 	<data-grid-footer :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="dataGridStorage" :reportType = "reportType" @tabCell="tabCell"></data-grid-footer>
     <!-- 加载条数选择 -->
-    <LoaderNum class="loaderNum" @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
+    <!-- <LoaderNum class="loaderNum" @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum> -->
 
 </div>
 </transition>
@@ -218,7 +218,7 @@ export default {
         readMoreData(){
             let totalNum = this.dataGridStorage.totalNum;
     	    let length = this.dataGridStorage.detailList.length;
-            let upDataNum = this.upDataNum;
+            let upDataNum = this.$parent.$refs["LoaderNum"].pageSize;
             var pageSize = 0
             //   this.dgDataList = [];
             // console.log(Number(upDataNum))

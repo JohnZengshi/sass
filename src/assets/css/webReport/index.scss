@@ -341,47 +341,146 @@
       box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     }
 }
-.printBtn {
-    width: 52px;
-    height: 52px;
+.utilsBtn{
     position: absolute;
-    bottom: 0;
-    right: -70px;
+    right: -68px;
+    bottom: -1px;
     background:#fff;
-    border-radius: 4px;
-    z-index: 10;
-    text-align: center;
-    cursor: pointer;
-    overflow: hidden;
-    i {
-        line-height:52px;
-        color:#999;
-        font-size: 24px;
-    }
-    span {
-        display: none;
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
+    border: 1px solid #ededed;
+    width: 52px;
+    z-index: 99;
+    min-height: 52px;
+    border-radius: 5px;
+    >.btn{
+        width: 50px;
+        height: 51px;
         background:#fff;
-        padding: 6px 11px;
-        font-size: 14px;
+        border-radius: 4px;
+        z-index: 10;
+        text-align: center;
+        cursor: pointer;
+        overflow: hidden;
+        position: relative;
+        // margin: 5px 0;
+        border-bottom: 1px solid #ededed;
+        // position: absolute;
+        // bottom: 0;
+        // right: -70px;
+        i {
+            line-height:52px;
+            color:#999;
+            font-size: 24px;
+        }
+        span {
+            display: none;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background:#fff;
+            padding: 6px 11px;
+            font-size: 14px;
+        }
+        &:hover {
+            span {
+                display: block;
+                background:#2993f8;
+                color:#fff;
+            }
+        }
+        &:last-of-type{
+            margin-bottom: 0;
+        }
     }
-}
-.printBtn:hover {
-    span {
-        display: block;
-        background:#2993f8;
-        color:#fff;
+    .LoaderNumBtn{
+        width: 50px;
+        background:#fff;
+        text-align: center;
+        cursor: pointer;
+        position: relative;
+        margin: 5px 0;
+        margin-bottom: 0;
+        >span{
+            display: block;
+            width: 100%;
+        }
     }
 }
 
-// 导出图标按钮
-.exportBtn {
-    bottom: 60px;
-}
+// .utilsBtn{
+//     position: absolute;
+//     right: -68px;
+//     bottom: -1px;
+//     background:#fff;
+//     border: 1px solid #ededed;
+//     width: 52px;
+//     z-index: 99;
+//     min-height: 52px;
+//     border-radius: 5px;
+//     >.btn{
+//         width: 50px;
+//         height: 51px;
+//         position: relative;
+//         cursor: pointer;
+//         border-radius: 5px;
+//         overflow:hidden;
+//         border-bottom: 1px solid #ededed;
+//         i {
+//             line-height:52px;
+//             color:#999;
+//             font-size: 24px;
+//         }
+//         span {
+//             display:flex;
+//             justify-content: center;
+//             align-items: center;
+//             width: 100%;
+//             height: 100%;
+//             text-align: center;
+//             transition: all ease .2s;
+//         }
+//         span:nth-child(1) {
+//             opacity: 1;
+//             color:#999999;
+//             font-size: 24px;
+//         }
+//         span:nth-child(2) {
+//             opacity: 0;
+//             position: absolute;
+//             top: 0px;
+//             left: 0px;
+//             font-size: 14px;
+//             padding: 0 6px;
+//             background:#2993f8;
+//             color:#fff;
+//         }
+//         &:hover {
+//             >span {
+//                 display: block;
+//                 background:#2993f8;
+//                 color:#fff;
+//             }
+//         }
+//         &:last-of-type{
+//             margin-bottom: 0;
+//         }
+//     }
+//     .LoaderNumBtn{
+//         width: 52px;
+//         background:#fff;
+//         text-align: center;
+//         cursor: pointer;
+//         position: relative;
+//         margin: 5px 0;
+//         margin-bottom: 0;
+//         >span{
+//             display: block;
+//             width: 100%;
+//         }
+//     }
+// }
+
 
 /* 日期控件 */
 .time-main{
