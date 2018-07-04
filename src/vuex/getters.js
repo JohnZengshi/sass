@@ -20,6 +20,8 @@ export const saveSuccess = state => state.popup.saveSuccess // 保存弹窗
 export const saveSuccessData = state => state.popup.saveSuccessData // 保存弹窗数据
 export const affirmAudit = state => state.popup.affirmAudit // 审核的确认弹窗
 export const modelState = state => state.popup.modelState // 销售的模糊层
+export const labelData = state => state.popup.labelData // 标签的打印数据
+
 // 一些基本下拉数据
 export const applyUserList = state => state.workCommonality.applyUserList // 应用用户列表
 export const productClass = state => state.workCommonality.productClass // 产品类别（商品类型列表）

@@ -1,7 +1,7 @@
 <template>
     <div class="template-print-canvas-main" :style="mainStyle">
         <div class="template-print-canvas" :style="canvasStyle">
-            <component v-for="component in components" :is="component.type" :isPreview="true" :parent="null" class="component" :data="component.data" :templateData="templateData" @changeComponentData="changeComponentData(component, $event)" :changeComponentData="changeComponentData" :page="page"></component>
+            <component v-for="component in components" :showEmpty="showEmpty" :is="component.type" :isPreview="true" :parent="null" class="component" :data="component.data" :templateData="templateData" @changeComponentData="changeComponentData(component, $event)" :changeComponentData="changeComponentData" :page="page"></component>
         </div>
     </div>
 </template>
@@ -31,7 +31,7 @@ export default {
                 }
             }
         },
-        props: ['canvas', 'templateData', 'page', 'isPrintCanvas'],
+        props: ['canvas', 'templateData', 'page', 'isPrintCanvas', 'showEmpty'],
         components: {
             TextComponent,
             ImageComponent,

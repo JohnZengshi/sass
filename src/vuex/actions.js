@@ -434,6 +434,9 @@ export const workCounterList = ({commit}, parm) => { // 柜组列表
         this.$store.dispatch('workPopupError', response.data.msg);
     })
 }
+export const getLabelData = ({commit}, parm) => { // 打印标签数据
+    commit(types.LABEL_DATA, parm)
+}
 // 销售
 export const sellProductListFun = ({commit}, parm) => { // 商品列表-销售
     commit(types.SELL_PRODUCT_LIST, parm);
