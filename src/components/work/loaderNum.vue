@@ -98,7 +98,9 @@
                 height: 100%;
                 background-color: #2993f8;
                 display: inline-block;
-                float: left;
+                // float: left;
+                position: absolute;
+                left: 0;
                 content: "";
               }
             }

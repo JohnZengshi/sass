@@ -358,7 +358,7 @@
       line-height: 18px;
       cursor: pointer;
       display: flex;
-      /*border-radius: 5px;*/
+      border-radius: 5px;
       position: relative;
       justify-content: center;
       align-items: center;

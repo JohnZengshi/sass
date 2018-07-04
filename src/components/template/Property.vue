@@ -183,7 +183,6 @@ export default {
                         return  '#{' + code + '}'
                     }
                 }
-               
                 if (this.data.propertyType == 1 || this.data.propertyType == 3) {
                     return Number(value).toFixed(this.data.toFixed)
                 } else {
@@ -368,6 +367,9 @@ export default {
 
             filterShow (value) {
                 if (this.showEmpty == 'N') {
+                    if (this.data.propertyCode == 'discountPrice' && value == "100") {
+                        return false
+                    }
                     return value && value != 0.00 && value != 0.000
                 } else {
                     return true

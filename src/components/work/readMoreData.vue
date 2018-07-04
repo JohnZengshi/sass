@@ -97,9 +97,11 @@
       color: #e99a1d;
       line-height: 22px;
       opacity: 0;
-      transition: all .8s;
+      height: 0px;
+      transition: opacity .8s;
       cursor: pointer;
       &.active{
+        height: 22px;
         opacity: 1;
       }
     }
@@ -114,6 +116,7 @@
       // line-height: 50px;
       display: none;
       transition: all 0s;
+      margin: 10px 0;
       &.active {
         display: block;
       }
@@ -124,7 +127,7 @@
           height: 1px;
           content: "";
           display: inline-block;
-          background-color: #999;
+          background-color: #d6d6d6;
           vertical-align: middle;
           margin-right: 40px;
         }
@@ -133,7 +136,7 @@
           height: 1px;
           content: "";
           display: inline-block;
-          background-color: #999;
+          background-color: #d6d6d6;
           vertical-align: middle;
           margin-left: 40px;
         }

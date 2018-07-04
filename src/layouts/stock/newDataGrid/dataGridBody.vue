@@ -268,11 +268,15 @@ export default {
 		  if (Number(upDataNum)) {
 		    upDataNum = Number(upDataNum);
 		    if (totalNum - length < upDataNum) {
-			  pageSize = 0
+				// 后台返回所有数据，要把表格的数据清空
+		      this.$parent.$parent.dataGridStorage.detailList = [];
+		      pageSize = 0
 		    } else {
 		      pageSize = upDataNum
 		    }
 		  } else {
+			  // 后台返回所有数据，要把表格的数据清空
+		    this.$parent.$parent.dataGridStorage.detailList = [];
 		    pageSize = 0
 		  }
 		//   this.$parent.$parent.dataGridOptions.page += 1

@@ -156,8 +156,16 @@ export const JaTools = {
 					let _span = $("<span>");
 					box.append(_span);
 					if(data.valueStyle) {
+						let value = data.sample
+						if (data.propertyType == 1 || data.propertyType == 3) {
+                value = Number(value).toFixed(data.toFixed)
+            } else {
+                if (data.propertyType == 2) {
+                    value = moment(value).format(data.dateFormat)
+                }
+            }
 						let {fontSize, color, fontFamily, isUnderline, isItalic, isBold} = data.valueStyle;
-						_span.html(data.sample).css({
+						_span.html(value).css({
 							"font-size": fontSize + "px",
 							"color": color,
 							"font-family": fontFamily,
