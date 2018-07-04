@@ -67,7 +67,7 @@
             // 已加载了全部数据
              else {
               this.MoreData = false;
-              this.noMoreData = true;
+              this.noMoreData = false;
             }
           } 
           // 数据变化，表格没数据
@@ -109,7 +109,7 @@
       position: absolute;
       background: #fff;
       text-align: center;
-      font-size: 14px;
+      font-size: 12px;
       // height: 50px;
       // line-height: 50px;
       display: none;
@@ -126,7 +126,7 @@
           display: inline-block;
           background-color: #999;
           vertical-align: middle;
-          margin-right: 50px;
+          margin-right: 40px;
         }
         &::after {
           width: 200px;
@@ -135,7 +135,7 @@
           display: inline-block;
           background-color: #999;
           vertical-align: middle;
-          margin-left: 50px;
+          margin-left: 40px;
         }
       }
     }
