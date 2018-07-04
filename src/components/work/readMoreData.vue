@@ -61,7 +61,7 @@
           if (this.dgDataList && this.dgDataList.length > 0) {
             // 还有数据未加载
             if (this.dgDataList.length < Number(newValue.totalNum)) {
-              this.MoreData = true;
+              // this.MoreData = true; 
               this.noMoreData = false
             }
             // 已加载了全部数据
