@@ -81,7 +81,7 @@
         // left: 8px;
         transform: translateX(5px);
         transition: all 0.5s; // display: none;
-        box-shadow: 3px 3px 10px #999;
+        box-shadow: 0 0 15px #ddd;
         ul {
           width: 100%;
           li {
@@ -89,10 +89,12 @@
             line-height: 40px;
             text-align: center;
             position: relative;
+            &:hover{
+              background-color: #F6F7F8;
+            }
             &.active {
-              background-color: rgb(236, 236, 236);
               &::before {
-                width: 5px;
+                width: 3px;
                 height: 100%;
                 background-color: #2993f8;
                 display: inline-block;

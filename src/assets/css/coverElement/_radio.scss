@@ -73,6 +73,13 @@
             }
         }
     }
+    li{
+        &.active{
+            .el-radio__label{
+                color: #3195F5 !important;
+            }
+        }
+    }
 }
 .counter-radio-20{
     .el-radio-group{

@@ -58,7 +58,7 @@
         handler: function (newValue, oldValue) {
           // console.log(this.dgDataList)
           // 数据变化，表格有数据
-          if (this.dgDataList.length > 0) {
+          if (this.dgDataList && this.dgDataList.length > 0) {
             // 还有数据未加载
             if (this.dgDataList.length < Number(newValue.totalNum)) {
               this.MoreData = true;

@@ -234,7 +234,7 @@ export default {
      	//格式化
      	storageFormatDate(){
      		if( this.reportType == 1  && this.dataGridStorage ){
-				if(  this.dataGridStorage.detailList.length > 0 ){
+				if(this.dataGridStorage.detailList && this.dataGridStorage.detailList.length > 0 ){
 				     this.tempArray = this.dataGridStorage.detailList
 				}	
 			}
