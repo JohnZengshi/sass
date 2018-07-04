@@ -1,8 +1,8 @@
 <template>
 <!--表格内容区-->
 <!--明细-->
-<div class="ui-table-container default-line" ref="tableContainer" v-if="reportType == 1" :class="isEditReport == 'edit' ? 'edit' : ''">
-	<div>
+<div @scroll="watchScroll($event)" class="ui-table-container default-line" ref="tableContainer" v-if="reportType == 1" :class="isEditReport == 'edit' ? 'edit' : ''">
+	<div class="tableBox">
 	  <template v-for="(tb, index) in tempArray">
   		<div class="tb-tr" :class="index % 2 == 0 ? 'tb-tr-gray' : ''">
   			<div class="tb-td"
@@ -22,6 +22,14 @@
       </div>
       
 		</template>
+		<!-- 加载更多未读数据 -->
+		<ReadMoreData
+		class="demo"
+		:allData="dataGridStorage" 
+		:dgDataList="dataGridStorage.detailList" 
+		ref="ReadMoreDataDmo" 
+		@readMoreData="readMoreData(dataGridStorage.detailList)"
+		></ReadMoreData>
 		<div v-if="isDate" class="no-data"></div>
 	</div>
 </div>
@@ -139,6 +147,7 @@
 
 <script>
 let applyIndex = 0
+import ReadMoreData from 'components/work/readMoreData.vue'
 export default {
 	data(){
 		return{
@@ -146,6 +155,9 @@ export default {
 			tempArray : [],
 			heightArr: []
 		}
+	},
+	components:{
+		ReadMoreData,
 	},
 	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch','isEditReport'],
 	
@@ -178,37 +190,37 @@ export default {
 			_this.$emit('lazyloadSend',123 )
 		})
 		
-		$(".ui-table-container").mCustomScrollbar({
-            theme: "minimal-dark",
-            axis: 'y',
-            scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
-            mouseWheel: {
-                scrollAmount: 200,
-                preventDefault: false,
-                normalizeDelta: true,
-                scrollInertia : 50
-            },
-            callbacks: {
-                onTotalScroll: function () {
-					console.log('滚轮到底了')
-					$('.loadControl').css({
-						opacity:1
-					})
-                },
-				onUpdate(){
-					console.log('滚动条更新')
-					$('.loadControl').css({
-						opacity:0
-					})
-				},
-				whileScrolling(){
-					console.log('滚动条活动')
-					$('.loadControl').css({
-						opacity:0
-					})
-				}
-            }
-        });
+		// $(".ui-table-container").mCustomScrollbar({
+    //         theme: "minimal-dark",
+    //         axis: 'y',
+    //         scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
+    //         mouseWheel: {
+    //             scrollAmount: 200,
+    //             preventDefault: false,
+    //             normalizeDelta: true,
+    //             scrollInertia : 50
+    //         },
+    //         callbacks: {
+    //             onTotalScroll: function () {
+		// 			console.log('滚轮到底了')
+		// 			$('.loadControl').css({
+		// 				opacity:1
+		// 			})
+    //             },
+		// 		onUpdate(){
+		// 			console.log('滚动条更新')
+		// 			$('.loadControl').css({
+		// 				opacity:0
+		// 			})
+		// 		},
+		// 		whileScrolling(){
+		// 			console.log('滚动条活动')
+		// 			$('.loadControl').css({
+		// 				opacity:0
+		// 			})
+		// 		}
+    //         }
+    //     });
 		this.tabCellHeight()
 	},
 	methods:{
@@ -273,7 +285,46 @@ export default {
             }else{
   				this.isDate = true;
   			}
-     	}
+			 },
+			 
+			 		//  监听表格滚动
+		watchScroll(el) { // 下拉加载数据
+		  let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
+		  let clientHeight = el.target.clientHeight; // 元素的高度
+		  let scrollTop = el.target.scrollTop; // 滚动了的距离
+		  // if(clientHeight + scrollTop >= scrollHeight) {
+		  // 	this.pageNum += 1;
+		  // 	this.fetchGoodList()
+		  // }
+		  if(this.$refs.ReadMoreDataDmo){
+		  	this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+		  }
+		},
+				//加载更多数据
+				readMoreData(currentDataList) {
+				  // console.log(this.$parent.$parent.dataGridOptions.pageSize)
+				  // this.$parent.$parent.send()
+				  let totalNum = this.dataGridStorage.totalNum;
+				  let length = currentDataList.length;
+				  let upDataNum = this.$parent.$parent.$refs["LoaderNum"].pageSize;
+				  let pageSize = 30
+				  //   this.dgDataList = [];
+				  if (Number(upDataNum)) {
+				    upDataNum = Number(upDataNum);
+				    if (totalNum - length < upDataNum) {
+				      pageSize = 0
+				    } else {
+				      pageSize = length + upDataNum
+				    }
+				  } else {
+				    pageSize = 0
+				  }
+				  //   this.$parent.$parent
+				  // console.log(pageSize);
+				  this.$parent.$parent.dataGridOptions.pageSize = pageSize;
+				  this.$parent.$parent.send();
+				  // console.log(this.$parent.$parent.dataGridOptions.pageSize)
+				},
      	
 	},
 	update(){
@@ -406,5 +457,9 @@ export default {
 .no-data{
 	height: 100%;
 	background: url(~static/img/space-page.png) center center no-repeat;
+}
+
+.tableBox{
+	position: relative;
 }
 </style>

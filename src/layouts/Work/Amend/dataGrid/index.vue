@@ -32,6 +32,14 @@
           :activeClassIndex="activeClassIndex"
           :fixedFullSize="fixedFullSize">
       </dgridBody>
+
+      <!-- 加载更多未读数据 -->
+      <ReadMoreData 
+      :allData="synopsiData" 
+      :dgDataList="dgDataList" 
+      ref="ReadMoreDataDmo" 
+      @readMoreData="readMoreData"
+      ></ReadMoreData>
    </div>
    
    <!--表尾-->
@@ -59,12 +67,14 @@ import datagridScroll from 'assets/js/uiScroll'
 import * as configData from './config'
 import * as fetch from './fetchData'
 import detailTemplate from "@/components/jcp-print/bill/update/detail-template";
+import ReadMoreData from 'components/work/readMoreData.vue'
 export default{
   components: {
     dgridhead,
     dgridBody,
     dgridfooter,
     detailTemplate,
+    ReadMoreData,
   },
   props:['orderData','slipPointer','goodsAdd', 'seekBarcode', 'seekFlag'],
   data(){
@@ -98,7 +108,10 @@ export default{
         fixedfIndex : -1,
         fixedcIndex : -1
       },
-      pageSize: 15
+      pageNum: 1,
+      pageSize: 30,
+      // upDataNum: 30
+      
     }
   },
   watch: {
@@ -129,11 +142,12 @@ export default{
       let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
       let clientHeight = el.target.clientHeight; // 元素的高度
       let scrollTop = el.target.scrollTop; // 滚动了的距离
-      if (clientHeight + scrollTop >= scrollHeight) {
-          console.log("到底了")
-          this.pageSize += 30
-          this.fetchGoodList()
-      }
+      // if (clientHeight + scrollTop >= scrollHeight) {
+      //     console.log("到底了")
+      //     this.pageSize += 30
+      //     this.fetchGoodList()
+      // }
+      this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
     },
     // 获取商品列表
     fetchGoodList() {
@@ -265,8 +279,26 @@ export default{
     // 中间件 添加商品
     updataAdd (type) {
       this.$emit('updataAdd', type)
-    }
-    
+    },
+
+    	//加载更多数据
+    	readMoreData() {
+    	    let totalNum = this.synopsiData.totalNum;
+    	    let length = this.dgDataList.length;
+          let upDataNum = this.$parent.$refs["utilsdatagrid"].$refs["LoaderNum"].pageSize;
+    	    this.pageNum = 1;
+    	    if (Number(upDataNum)) {
+    	      upDataNum = Number(upDataNum);
+    	      if (totalNum - length < upDataNum) {
+    	        this.pageSize = 0
+    	      } else {
+    	        this.pageSize = length + upDataNum
+    	      }
+    	    } else {
+    	      this.pageSize = 0
+    	    }
+    	    this.fetchGoodList();
+    	  },
   },
   
   mounted(){

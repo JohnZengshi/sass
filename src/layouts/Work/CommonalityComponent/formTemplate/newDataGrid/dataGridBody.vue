@@ -1,7 +1,7 @@
 <template>
 <!--表格内容区-->
 <!--明细-->
-<div class="ui-table-container default-line" ref="tableContainer" v-if="reportType == 1">
+<div @scroll="watchScroll($event)" class="ui-table-container default-line" ref="tableContainer" v-if="reportType == 1">
 	<div>
 		<dataisdelete 
 			:isdeletedialogvisibly="deletedialogvisi"
@@ -30,7 +30,7 @@
 	
 </div>
 
-<div class="ui-table-container con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
+<div @scroll="watchScroll($event)" class="ui-table-container con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
 	<div>
 		<div class="tb-category" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind">
 			<div v-for="(tb, index) in caty.productTypeList" :key="index">
@@ -79,7 +79,7 @@
 </div>
 
 <!--产品分类-->
-<div class="ui-table-container produc-line" ref="tableContainer" v-else-if="reportType == 3">
+<div @scroll="watchScroll($event)" class="ui-table-container produc-line" ref="tableContainer" v-else-if="reportType == 3">
 	<div>
 		<div class="tb-category" v-for="(caty,index) in dataGridStorage.dataList" :key="index">
 			<div class="tb-tr" v-for="(tb, index) in caty.productTypeList" :key="index">
@@ -154,25 +154,24 @@ export default {
 			_this.$emit('lazyloadSend',123 )
 		})
 
-		$(".ui-table-container").mCustomScrollbar({
-            theme: "minimal-dark",
-            axis: 'y',
-            mouseWheel: {
-                scrollAmount: 200,
-                preventDefault: false,
-                normalizeDelta: false,
-                scrollInertia : 0
-            },
-            callbacks: {
-                onTotalScroll: function () {
-					if (_this.reportType == 1) {
-						_this.$emit('lazyloadSend', {refresh: true})
-					} else {
-						//console.log('略略略')
-					}
-                }
-            }
-        });
+		// $(".ui-table-container").mCustomScrollbar({
+        //     theme: "minimal-dark",
+        //     axis: 'y',
+        //     mouseWheel: {
+        //         scrollAmount: 200,
+        //         preventDefault: false,
+        //         normalizeDelta: false,
+        //         scrollInertia : 0
+        //     },
+        //     callbacks: {
+        //         onTotalScroll: function () {
+		// 			if (_this.reportType == 1) {
+		// 				_this.$emit('lazyloadSend', {refresh: true})
+		// 			} else {
+		// 			}
+        //         }
+        //     }
+        // });
 		this.tabCellHeight()
 	},
 	methods:{
@@ -307,7 +306,16 @@ export default {
             }else{
   				this.isDate = true;
   			}
-     	}
+		 },
+		 
+		 // 监听表格滚动
+        watchScroll(el){
+            console.log("在滚")
+            let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
+            let clientHeight = el.target.clientHeight; // 元素的高度
+			let scrollTop = el.target.scrollTop; // 滚动了的距离
+			this.$emit("watchScroll",scrollHeight,clientHeight,scrollTop)
+        }
 
 	},
 	update(){

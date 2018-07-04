@@ -354,17 +354,25 @@
         <!-- 表头筛选重构 end -->
 
         <div class="rp_dataGridTemp" :class="tabShow">
-          <report-detail v-if="dataGridStorage" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :isOld="isOld" :newList="newList" @lazyloadSend="sendlayLoad" @scrollClass="tabScrollShow" @sortList="sortListAct" :reportType="getReportType()">
+          <report-detail ref="ReportDetail" v-if="dataGridStorage" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :isOld="isOld" :newList="newList" @lazyloadSend="sendlayLoad" @scrollClass="tabScrollShow" @sortList="sortListAct" :reportType="getReportType()">
           </report-detail>
         </div>
 
-        <div class="exportTab" @click="exportTab()">
-          <i class="iconfont icon-daochu"></i>
-          <span>导出表格</span>
-        </div>
-        <div class="printBtn" @click="tabPrin()">
-          <i class="iconfont icon-dayin1"></i>
-          <span>打印库存</span>
+        <div class="utilsBtn flex flex-v flex-pack-justify">
+          <div class="btn" @click="exportTab()">
+            <i class="iconfont icon-daochu"></i>
+            <span>导出表格</span>
+          </div>
+          <div class="btn" @click="tabPrin()">
+            <i class="iconfont icon-dayin1"></i>
+            <span>打印库存</span>
+          </div>
+          <!-- 加载条数选择器 -->
+          <LoaderNum 
+          class="loaderNum" 
+          ref="LoaderNum"
+          v-show="dataGridOptions.type==1" 
+          ></LoaderNum>
         </div>
       </div>
 
@@ -436,7 +444,8 @@ import { downLoaderFile } from "Api/downLoaderFile";
 import dropDownColum from 'base/menu/drop-down-colums'
 
 import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList} from "Api/commonality/seek"
-
+// 右下角加载条数选择器
+import LoaderNum from 'components/work/loaderNum.vue'
 
 export default {
   props: ["changeRepository", "changeShop", "changeCounter"],
@@ -559,7 +568,7 @@ export default {
         ],
         type: 2, //类型
         page: 1,
-        pageSize: 15,
+        pageSize: 30,
         keyWord: "", //关键字
         wColorId: "", //计重
         wGemId: "", //宝石类
@@ -588,7 +597,6 @@ export default {
       conditionList:[],
       jewelList:[],
       jewelryList:[],
-
     };
   },
   watch: {
@@ -597,7 +605,7 @@ export default {
       if (this.changeRepository.repositoryId) {
         this.dataGridOptions.storageId = val;
         this.dataGridOptions.page = 1;
-        this.dataGridOptions.pageSize = 15;
+        this.dataGridOptions.pageSize = 30;
       }
       this.send();
     },
@@ -609,13 +617,13 @@ export default {
         this.dataGridOptions.counterId = "";
       }
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 15;
+      this.dataGridOptions.pageSize = 30;
       this.send();
     },
     "changeCounter.counterId"(val) {
       this.dataGridOptions.counterId = val;
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 15;
+      this.dataGridOptions.pageSize = 30;
       if (this.changeCounter.counterId) {
         this.send();
       }
@@ -638,7 +646,8 @@ export default {
     intelligenceTypeTemplate,
     detailTemplate,
     customTemplate,
-    dropDownColum
+    dropDownColum,
+    LoaderNum
   },
   created() {
     // 初始化筛选列表
@@ -654,6 +663,12 @@ export default {
         this.dataGridOptions.page = 1;
         this.sortList = []
         this.dataGridOptions.sortList = []
+        // 初始化ReaderMoreData组件的状态
+        if(this.$refs.ReportDetail.$refs.dataGridBody.$refs.ReadMoreDataDmo){
+          let ReadMoreDataDmo = this.$refs.ReportDetail.$refs.dataGridBody.$refs.ReadMoreDataDmo;
+          ReadMoreDataDmo.MoreData = false;
+          ReadMoreDataDmo.noMoreData = false;
+        }
         Object.assign(this.dataGridOptions, parm)
         if (parm.noRefresh) {
           return
@@ -797,7 +812,7 @@ export default {
       this.loading = true;
       this.dataGridOptions.pageSize = 0;
       seekStockProductList(this.dataGridOptions).then(res => {
-        this.dataGridOptions.pageSize = 15;
+        this.dataGridOptions.pageSize = 30;
         if (res.data.state == 200) {
           if (res.data.data.detailList) {
             if (res.data.data.detailList[0] instanceof Array) {
@@ -985,7 +1000,7 @@ export default {
         this.inconspanactive2 = true;
       }
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 15;
+      this.dataGridOptions.pageSize = 30;
       this.dataGridOptions.productClass = val;
       //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
       this.loading = true;
@@ -1114,7 +1129,7 @@ export default {
       }
       this.loading = true;
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 15;
+      this.dataGridOptions.pageSize = 30;
       this.tabClassActive.index = index;
       this.setReportType(type);
     },
@@ -1149,7 +1164,7 @@ export default {
               sortFlag: "0",
               type: 1,
               page: 1,
-              pageSize: 15,
+              pageSize: 30,
               keyWord: ""
             });
           } else if (this.inconspanactive2) {
@@ -1161,7 +1176,7 @@ export default {
               sortFlag: "0",
               type: 1,
               page: 1,
-              pageSize: 15,
+              pageSize: 30,
               keyWord: ""
             });
           } else {
@@ -1173,7 +1188,7 @@ export default {
               sortFlag: "0",
               type: 1,
               page: 1,
-              pageSize: 15,
+              pageSize: 30,
               keyWord: ""
             });
           }
@@ -1318,7 +1333,7 @@ export default {
        */
     searchWord() {
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 15;
+      this.dataGridOptions.pageSize = 30;
       this.send();
     },
     // 懒加载
@@ -1367,7 +1382,6 @@ export default {
         }
       );
     },
-    
   },
 
   mounted() {
@@ -1788,6 +1802,9 @@ export default {
         display: block;
       }
     }
+  }
+  .loaderNum{
+    font-size: 16px;
   }
 }
 

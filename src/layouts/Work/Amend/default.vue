@@ -68,11 +68,13 @@
    
    <!--各个按钮操作区-->
    <utilsdatagrid 
+      ref="utilsdatagrid"
      :curStatus="curStatus"
      @updataApi="updataApi"
      :orderData="orderData"
      :dataList="dgDataList"
-     @tabPrint="tabPrint">
+     @tabPrint="tabPrint"
+     >
    </utilsdatagrid>
   
    <!--批量修改-->
@@ -105,7 +107,7 @@ import datagrid from './dataGrid'
 import utilsdatagrid from './component/utilsDatagrid'
 import {operateAddProductToRKOrder} from 'Api/commonality/operate'
 import {downloadTable, seekReceiptRKSynopsis} from 'Api/commonality/seek'
-import batchamend from './component/batchamend'
+import batchamend from 'components/work/batchamend'
 import BatchAddReceipts from '../../../components/work/BatchAddReceipts'
 export default {
   data(){
@@ -179,9 +181,7 @@ export default {
         deleteReceipts: false, // 删除单据弹窗
         batchAddReceiptsPopup: false,
         auditPopup: false // 审核弹窗
-      },
-      
-      
+      }
     }
   },
   components: {
@@ -325,7 +325,6 @@ export default {
         this.popup1.batchAddReceiptsPopup = parm.name;
         this.updataApi()
     }
-
   },
   
   mounted(){
