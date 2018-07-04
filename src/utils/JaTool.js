@@ -14,7 +14,7 @@ export const JaTools = {
 			html.push(JaTools.transformationDataToHtml(page));
 			myDoc.settings = {paperWidth: page.width, paperHeight: page.height};
 		}
-		myDoc.documents = {html: html};
+		myDoc.documents = {html: html,logPage:true};
 		jcp.printPreview(myDoc, true);
 	},
 	directPrint(template, dataList){

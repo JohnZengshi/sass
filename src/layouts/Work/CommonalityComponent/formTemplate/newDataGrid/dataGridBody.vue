@@ -48,6 +48,7 @@
 							<i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;'">{{caty[tab.childType]}}</i>
 						</div>
 						<div class="tb-td"
+              @click.stop="openLabel(tb1)"
 							v-else  :key="index2"
 							style="overflow: hidden;"
 							:class="{backLine:tab.childType != ''}"
@@ -175,6 +176,9 @@ export default {
 		this.tabCellHeight()
 	},
 	methods:{
+    openLabel (parm) {
+      console.log('--==-=-=-=-=-=-=-=-=', parm)
+    },
 		setDeletedialogvisibly(isShow){
            this.deletedialogvisi = isShow; 
 		},
