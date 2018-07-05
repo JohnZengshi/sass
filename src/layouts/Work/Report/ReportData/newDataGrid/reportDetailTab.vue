@@ -9,7 +9,7 @@
 	<template v-if="this.type == 'edit'">
 	  <!--表格内容区  -->
     <data-edit-body 
-        ref="DataEditBody"
+      ref="DataEditBody"
       :detailDataGridColumn="detailDataGridColumn" 
       :dataGridStorage="dataGridStorage" 
       :reportType="reportType"

@@ -22,7 +22,7 @@
         </div>
 
         <div class="btn-header-wrap">
-          <btn-header class="btn-header-inner" @amendNum="amendNum" :dataGridStorage="dataGridStorage"></btn-header>
+          <btn-header class="btn-header-inner" :isPopup="true" @amendNum="amendNum" :dataGridStorage="dataGridStorage"></btn-header>
         </div>
         
         
@@ -336,9 +336,16 @@ export default {
       }
       // this.send()
     },
-    labelData () {
-      alert('数据变了')
-      this.listDetails = true
+    labelData (parm) {
+      if (this.labelData) {
+        this.listDetails = true
+        this.seekProduct({keyWord: 100})
+      }
+    },
+    listDetails () {
+      if (!this.listDetails) {
+        this.$store.dispatch('getLabelData', '')
+      }
     }
   },
   computed: {

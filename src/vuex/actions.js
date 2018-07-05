@@ -447,6 +447,6 @@ export const workModelState = ({commit}, parm) => { // 销售的模糊层
 }
 
 /*组织架构*/
-export const workOrganizationChange = ({commit}, parm) => { // 销售的模糊层/.
+export const workOrganizationChange = ({commit}, parm) => { // 销售的模糊层
     commit(types.SET_ORGANIZATION_CHANGE, parm)
 }

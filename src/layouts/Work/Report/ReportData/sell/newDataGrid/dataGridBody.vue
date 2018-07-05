@@ -5,11 +5,6 @@
     <div>
       <div class="tb-tr" v-for="(tb,index) in tempArray" :key="index">
         <template v-for="(tab,indexs) in detailDataGridColumn">
-          <!--<div class="tb-td category-td"
-          v-if="tab.text == '回购类型'" 
-          :style="calculateClass(tab)" >
-          <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7;'">{{caty[tab.childType]}}</i>
-        </div>-->
           <div
             class="tb-td"
             :key="indexs"
@@ -72,9 +67,6 @@
                 <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{caty[tab.childType]}}</i>
               </div>
 
-<!--               <div class="tb-td" :key="index" v-else-if="tab.text == '首饰名称'" :class="{backLine:tab.childType != ''}" :style="calculateClass(tab)" v-text="tab.childType == ''? getIndex() : tb[tab.childType]">
-              </div>
- -->
               <div class="tb-td" :key="index" v-else :class="{backLine:tab.childType != ''}" :style="calculateClass(tab)" v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
               </div>
             </template>
@@ -87,8 +79,6 @@
         </div>
         <div class="tb-total" style="background:#ECF3FF;" v-if="positionSwitch">
           <!-- 位置小计 -->
-          <!--保留2位小数-->
-          <!--<div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 1 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"></div>-->
         	<div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 1 ? '<b>小计</b>' : caty[tab.totalType0]"></div>
         </div>
       </div>
@@ -118,7 +108,6 @@
         this.tempArray = []
         this.cheackData()
         this.storageFormatDate()
-        //console.log(1111)
         this.tabCellHeight()
         if(this.reportType > 1){
           this.reduceAssign()

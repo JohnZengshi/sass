@@ -1,6 +1,7 @@
 module.exports = {
   //明细表配置
-  detailConfing: [{
+  detailConfing: [
+    {
       id: '0', //id 
       text: '序号', //头部title文字
       width: '80', //单元格宽
@@ -27,6 +28,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: 1,
+      textAlign: 'right',
       editOldType : ''
     },
     {
@@ -42,6 +44,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'left',
       editOldType : ''
     },
     {
@@ -57,6 +60,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType : 'afWeight'
     },
     {
@@ -72,6 +76,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType : 'afGoldWeight'
     },
     {
@@ -86,6 +91,7 @@ module.exports = {
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
+      textAlign: 'right',
       editOldType : 'afMain'
     },
     // { 
@@ -99,8 +105,9 @@ module.exports = {
     // 	childType : 'mainCount', //单元格类型
     // 	totalType : '' , //小计
     //     toFixed : false, //是否进行小数点精确截取
-    // 	countCut : 0, //小数点截取位数
-    // },
+    // textAlign: 'right',  // 
+    //  countCut : 0, //小数点截取位数
+  // },
     {
       id: '6', //id 
       text: '副石', //头部title文字
@@ -113,6 +120,7 @@ module.exports = {
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
+      textAlign: 'right',
       editOldType : 'afDeputy'
     },
     // { 
@@ -126,8 +134,9 @@ module.exports = {
     // 	childType : 'deputyCount', //单元格类型
     // 	totalType : '' , //小计
     //     toFixed : false, //是否进行小数点精确截取
+    // textAlign: 'right',  // 
     //     countCut : 0 //小数点截取位数
-    // },
+  // },
 
     {
       id: '9', //id 
@@ -142,6 +151,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType : 'afPrice'
     },
     {
@@ -157,6 +167,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType : 'afCost'
     },
   ],
@@ -174,21 +185,7 @@ module.exports = {
       totalType0: '', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
-      editOldType : ''
-    },
-    {
-      id: '0', //id 
-      text: '序号', //头部title文字
-      width: '80', //单元格宽
-      type: '', //合计类型值
-      unit: '', //头部单位补充文字
-      footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
-      totalName: '', //底部合计 提示文字
-      childType: '', //单元格类型
-      totalType: '', //小计
-      totalType0: '', //小计1
-      toFixed: false, //是否进行小数点精确截取
-      countCut: 0, //小数点截取位数
+      textAlign: 'right',
       editOldType : ''
     },
     {
@@ -205,6 +202,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '1',
+      textAlign: 'right',
       editOldType : ''
     },
 
@@ -222,6 +220,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'left',
       editOldType : ''
     },
     {
@@ -238,6 +237,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType : 'afNum'
     },
     {
@@ -254,6 +254,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType : 'afWeight'
     },
     {
@@ -270,6 +271,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType : 'afGoldWeight'
     },
     {
@@ -285,6 +287,7 @@ module.exports = {
       totalType0: 'totalMain0', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0,
+      textAlign: 'right',
       editOldType : 'afMain'
     },
     {
@@ -300,6 +303,7 @@ module.exports = {
       totalType0: 'totalDeputy0', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0,
+      textAlign: 'right',
       editOldType : 'afDeputy'
     },
     {
@@ -316,6 +320,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType : 'afPrice'
     },
     {
@@ -332,6 +337,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType : 'afCost'
     },
   ],
@@ -348,20 +354,7 @@ module.exports = {
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
-      editOldType : ''
-    },
-    {
-      id: '0', //id 
-      text: '序号', //头部title文字
-      width: '80', //单元格宽
-      type: '', //合计类型值
-      unit: '', //头部单位补充文字
-      footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
-      totalName: '', //底部合计 提示文字
-      childType: '', //单元格类型
-      totalType: '', //小计
-      toFixed: false, //是否进行小数点精确截取
-      countCut: 0, //小数点截取位数
+      textAlign: 'right',
       editOldType : ''
     },
     {
@@ -377,6 +370,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '1',
+      textAlign: 'right',
       editOldType : ''
     },
     {
@@ -392,6 +386,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType : 'sfTotalNum1'
     },
     {
@@ -407,6 +402,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType : 'afTotalWeight1'
     },
     {
@@ -422,6 +418,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType : 'afTotalGoldWeight1'
     },
     {
@@ -436,6 +433,7 @@ module.exports = {
       totalType: 'totalMain0', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0,
+      textAlign: 'right',
       editOldType : 'afTotalMain1'
     },
     {
@@ -450,6 +448,7 @@ module.exports = {
       totalType: 'totalDeputy0', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0,
+      textAlign: 'right',
       editOldType : 'afTotalDeputy1'
     },
 
@@ -466,6 +465,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType : 'afTotalPrice1'
     },
     {
@@ -481,6 +481,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType : 'afTotalCost1'
     },
   ],
@@ -498,22 +499,8 @@ module.exports = {
       totalType0: '', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
+      textAlign: 'right',
       editOldType: ''
-    },
-    {
-      id: '0', //id 
-      text: '序号', //头部title文字
-      width: '80', //单元格宽
-      type: '', //合计类型值
-      unit: '', //头部单位补充文字
-      footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
-      totalName: '', //底部合计 提示文字
-      childType: '', //单元格类型
-      totalType: '', //小计
-      totalType0: '', //小计1
-      toFixed: false, //是否进行小数点精确截取
-      countCut: 0, //小数点截取位数
-      editOldType:''
     },
     {
       id: '2', //id 
@@ -529,6 +516,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '1',
+      textAlign: 'right',
       editOldType : ''
     },
     {
@@ -545,6 +533,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'left',
       editOldType:''
     },
     {
@@ -561,6 +550,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType:'Num'
     },
     {
@@ -577,6 +567,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType:'Weight'
     },
     {
@@ -593,6 +584,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType:'afGoldWeight'
     },
     {
@@ -608,6 +600,7 @@ module.exports = {
       totalType0: 'totalMain0', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0,
+      textAlign: 'right',
       editOldType:'afMain'
     },
     {
@@ -623,6 +616,7 @@ module.exports = {
       totalType0: 'totalDeputy0', //小计1
       toFixed: false, //是否进行小数点精确截取
       countCut: 0 ,
+      textAlign: 'right',
       editOldType:'afDeputy'
     },
 
@@ -640,6 +634,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType: 'afPrice'
     },
     {
@@ -656,6 +651,7 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'right',
       editOldType:'afCost'
     },
   ]

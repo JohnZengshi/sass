@@ -15,8 +15,18 @@
 
     <printDownMenu :titleInfo="currentPrint ? currentPrint : '选择打印机'" :showList="printList" :nameKey="'name'" @changeData="changePrint" @clearInfo="clearPrint" @toMouseover="loadPrinters"></printDownMenu>
 
-    <el-button size="small" class="ml-10" @click.native="_previewTemplate('Y')">预览</el-button>
-    <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">打印</el-button>
+
+    <template v-if="isPopup">
+        <el-button type="primary" size="small" class="ml-10" @click.native="_previewTemplate('Y')">预览</el-button>
+        <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">打印</el-button>
+        <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">导出</el-button>
+    </template>
+
+    <template v-else>
+        <el-button size="small" class="ml-10" @click.native="_previewTemplate('Y')">预览</el-button>
+        <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">打印</el-button>
+    </template>
+
   </div>
 </template>
 <script>
@@ -25,7 +35,7 @@ import {JaTools} from '@/utils/JaTool.js';
 import DownMenu from 'base/menu/new-down-menu'
 import printDownMenu from 'base/menu/print-down-menu'
 export default {
-  props: ['dataGridStorage'],
+  props: ['dataGridStorage', 'isPopup'],
   components: {
     DownMenu,
     printDownMenu

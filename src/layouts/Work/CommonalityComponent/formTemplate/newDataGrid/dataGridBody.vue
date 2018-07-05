@@ -176,7 +176,7 @@ export default {
 	},
 	methods:{
     openLabel (parm) {
-      console.log('--==-=-=-=-=-=-=-=-=', parm)
+      this.$store.dispatch('getLabelData', parm)
     },
 		setDeletedialogvisibly(isShow){
            this.deletedialogvisi = isShow; 

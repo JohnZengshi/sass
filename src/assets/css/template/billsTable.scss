@@ -608,7 +608,9 @@ $report-p-r: 20px;
             font-size: 15px;
             font-weight: bold;
         }
-          
+        &:last-child{
+            padding-right: $report-p-r;
+        }  
     }
 }
 

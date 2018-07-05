@@ -7,7 +7,7 @@
   			<div class="tb-tr" :key="index">
   				<div class="tb-td"
   					v-for="(tab,num) in detailDataGridColumn" 
-  					:style="tableCell(tab.width)" 
+  					:style="_calculateClass(tab)" 
   					v-text = "tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"
 					:key="num"
   				></div>
@@ -36,13 +36,13 @@
   						<div class="tb-td category-td"
 						  	:key="index2"
   							v-if="tab.text == '产品类别' && index1 == 0" 
-  							:style="tableCell(tab.width)" >
+  							:style="_calculateClass(tab)" >
   							<i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7; line-height: 20px;'">{{tb[tab.childType]}}</i>
   						</div>
   						<div class="tb-td category-td"
 						  	:key="index2"
   							v-else-if="tab.text == '位置名称' && index == 0 && index1 == 0"
-  							:style="tableCell(tab.width)"
+  							:style="_calculateClass(tab)"
   						>	
   							<i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;'">{{caty[tab.childType]}}</i>
   						</div>
@@ -51,7 +51,7 @@
 							:key="index2"
 							style="overflow: hidden;"
   							:class="{backLine:tab.childType != ''}"
-  							:style="tableCell(tab.width)" 
+  							:style="_calculateClass(tab)" 
   							v-text = "tab.childType == ''? getIndex() : tb1[tab.childType]">
   						</div>
   					</template>
@@ -65,7 +65,7 @@
 					<div class="tb-td"
 						v-for="(tab,f) in detailDataGridColumn" 
 						:key="f"
-						:style="tableCell(tab.width)" 
+						:style="_calculateClass(tab)" 
 						v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
 					></div>
 				</div>
@@ -74,7 +74,7 @@
 				<div class="tb-td"
 					v-for="(tab,f) in detailDataGridColumn" 
 					:key="f"
-					:style="tableCell(tab.width)" 
+					:style="_calculateClass(tab)" 
 					v-html = "f == 1 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"
 				></div>
 			</div>
@@ -93,7 +93,7 @@
   					<div class="tb-td category-td"
 					  	:key="index4"
   						v-if="tab.text == '产品类别' && index == 0" 
-  						:style="tableCell(tab.width)"
+  						:style="_calculateClass(tab)"
   						v-text="tb[tab.childType]"
   						>
   						<!-- <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i> -->
@@ -101,14 +101,14 @@
   					<div class="tb-td category-td"
 					  	:key="index4"
   						v-else-if="tab.text == '位置名称' && index == 0"
-  						:style="tableCell(tab.width)"
+  						:style="_calculateClass(tab)"
   					>	
   						<i :style="'height:'+ caty.productTypeList.length * 50 +'px;  color: #2993f8; background:#fff;'">{{caty[tab.childType]}}</i>
   					</div>
   					<div class="tb-td"
   						v-else
 						:key="index4"
-  						:style="tableCell(tab.width)" 
+  						:style="_calculateClass(tab)" 
   						v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
   					</div>
   				</template>
@@ -123,6 +123,7 @@
 
 <script>
 let applyIndex = 0
+import {calculateClass} from 'assets/js/getClass'
 import ReadMoreData from 'components/work/readMoreData.vue'
 export default {
 	data(){
@@ -197,6 +198,9 @@ export default {
 		this.tabCellHeight()
 	},
 	methods:{
+    _calculateClass (parm) {
+      return calculateClass(parm)
+    },
 		//重置index
 	    resetIndex( index ){
          if( index == 0 ) applyIndex = 0
