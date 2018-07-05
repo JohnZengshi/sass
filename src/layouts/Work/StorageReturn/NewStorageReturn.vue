@@ -408,7 +408,6 @@
                                 <!-- 筛选切换 end -->
                                 <div class="rp_dataGridTemp" :class="tabShow" > <!--v-loading = "loading" element-loading-text="数据查询中"-->
                                     <report-detail 
-                                        v-loading="loading"
                                         :dataGridStorage="dataGridStorage" 
                                         :tabSwitch="tabSwitch"
                                         :positionSwitch="positionSwitch"
@@ -1783,13 +1782,9 @@ export default {
         sendlayLoad (val) {
         //   this.dataGridOptions.pageSize += 15
             this.dataGridOptions.pageSize = val;
-            this.loading = true;
           seekOutStorageData(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
               this.dataGridStorage = res.data.data
-              setTimeout(()=>{
-                  this.loading = false
-              },500)
             }
           }, (res) => {
 
