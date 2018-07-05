@@ -85,7 +85,7 @@
           this.$emit('complate', Object.assign({}, this.filterData, this.segmentationFilter))
         },
         madeUpOn (parm) {
-          debugger
+          // debugger
           let datas = parm
           this.segmentationFilter = parm
           // isRefresh 刷新

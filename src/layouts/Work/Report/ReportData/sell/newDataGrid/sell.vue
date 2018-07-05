@@ -10,6 +10,7 @@
 	  @tabCell="tabCell"></data-grid-header>
 	<!--表格内容区  -->
 	<data-grid-body 
+        ref="DataGridBody"
         :detailDataGridColumn="detailDataGridColumn" 
         :dataGridStorage="dataGridStorage" 
         :reportType="reportType"
@@ -18,8 +19,8 @@
         @lazyloadSend = "lazyloadSend"
         @tabCell="tabCell">
 	</data-grid-body>
-    <slot>
-    </slot>
+    <!-- <slot>
+    </slot> -->
 	<!--表尾  -->
 	<data-grid-footer :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="dataGridStorage" :reportType = "reportType" @tabCell="tabCell"></data-grid-footer>
 </div>
