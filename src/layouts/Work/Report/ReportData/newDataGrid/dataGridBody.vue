@@ -271,7 +271,11 @@ export default {
 		  // 	this.fetchGoodList()
 		  // }
 		  if(this.$refs.ReadMoreDataDmo){
-		  	this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+			//   this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+			  let res = this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+			  if(res){
+				this.readMoreData(this.dataGridStorage.detailList);
+			  }
 		  }
 		},
 		//加载更多数据

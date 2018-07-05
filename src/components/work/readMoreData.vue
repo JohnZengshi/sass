@@ -1,6 +1,6 @@
 <template>
   <div class="bottomBox">
-    <div class="readMoreData"  :class="{'active':MoreData}" @click="readMoreData">查看更多未读数据</div>
+    <!-- <div class="readMoreData"  :class="{'active':MoreData}" @click="readMoreData">查看更多未读数据</div> -->
     <div class="noMoreData" :class="{'active':noMoreData}">
       <span>数据展示到底了啦~</span>
     </div>
@@ -23,8 +23,10 @@
         if (totalNum > length) {
           if (clientHeight + scrollTop >= scrollHeight) {
             this.MoreData = true;
+            return true
           } else {
             this.MoreData = false;
+            return false
           }
         } 
         // 没有更多数据加载
