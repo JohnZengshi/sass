@@ -266,7 +266,10 @@
         let clientHeight = el.target.clientHeight; // 元素的高度
         let scrollTop = el.target.scrollTop; // 滚动了的距离
         if (this.$refs.ReadMoreDataDmo) {
-          this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+          let res = this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+          if(res){
+            this.readMoreData();
+          }
         }
       },
 
