@@ -336,19 +336,22 @@ export default {
       }
       // this.send()
     },
-    // labelData (parm) {
-    //   if (this.labelData) {
-    //     this.listDetails = true
-    //     this.filterCondition = Object.assign(this.filterCondition, parm)
-    //     this.filterData()
-    //   }
-    // },
-    // listDetails () {
-    //   if (!this.listDetails) {
-    //     this.$store.dispatch('getLabelData', '')
-    //     this.$refs.filterHeaderBox.resetData()
-    //   }
-    // }
+    labelData () {
+      if (this.labelData) {
+        this.listDetails = true
+        this.filterCondition = Object.assign(this.filterCondition, this.labelData)
+        Vue.nextTick(() => {
+          this.$refs.filterHeaderBox.initData(this.filterCondition)
+        })
+        this.filterData()
+      }
+    },
+    listDetails () {
+      if (!this.listDetails) {
+        this.$store.dispatch('getLabelData', '')
+        this.$refs.filterHeaderBox.resetData()
+      }
+    }
   },
   computed: {
     ...mapGetters([

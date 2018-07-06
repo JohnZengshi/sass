@@ -379,7 +379,7 @@ export default {
       this.$refs.shopWrap.reset()
       this.$refs.storageLocationWrap.reset()
       this.$refs.littleBatchWrap.reset()
-      this.$refs.littleBatchWrap.close()
+      // this.$refs.littleBatchWrap.close()
       this.$emit('resetData')
     },
     batchAddByOrderNum () {

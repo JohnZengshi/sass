@@ -442,7 +442,7 @@ export const getLabelData = ({commit}, parm) => { // 打印标签数据
             datas.productTypeId = [parm.data.productTypeId]
         }
         if (parm.data.colorId) {
-            datas.colorId = [parm.data.colorId]
+            datas.colourId = [parm.data.colorId]
         }
         if (parm.data.jewelryId) {
             datas.jewelryId = [parm.data.jewelryId]
@@ -450,9 +450,12 @@ export const getLabelData = ({commit}, parm) => { // 打印标签数据
         if (parm.data.gemId) {
             datas.jeweId = [parm.data.gemId]
         }
+        // 单据号
         if (parm.data.newOrderId) {
             datas.newOrderId = [parm.data.newOrderId]
         }
+    } else if (parm.type == 2){ // 库存模块
+        datas = parm.data
     }
     commit(types.LABEL_DATA, datas)
 }
