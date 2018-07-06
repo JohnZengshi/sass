@@ -85,15 +85,15 @@
 
 					<!--回购报表-->
 					<div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
-						<report-detail-trade :dataGridStorage="tradeStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
-              <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1 && tradeStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>
+						<report-detail-trade ref="ReportDetailTrade" :dataGridStorage="tradeStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
+              <!-- <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1 && tradeStorage.totalNum>30" @LoadOptionsDefault="LoadOptionsDefault"></report-load> -->
 						</report-detail-trade>            
 					</div>
 
 					<!--销售报表-->
 					<div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
-						<report-detail :dataGridStorage="sellStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" :positionSwitch="positionSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
-               <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type === 1 && sellStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>
+						<report-detail ref="ReportDetail" :dataGridStorage="sellStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" :positionSwitch="positionSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
+               <!-- <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type === 1 && sellStorage.totalNum>30" @LoadOptionsDefault="LoadOptionsDefault"></report-load> -->
 						</report-detail>                      
 					</div>
 
@@ -126,6 +126,11 @@
               <span class="txt">打印报表</span>
               <i class="iconfont icon-dayin"></i>
             </el-button>
+          </div>
+
+          <!-- 加载条数选择 -->
+          <div class="LoaderNumBtn">
+            <LoaderNum ref="LoaderNum"></LoaderNum>
           </div>
         </div>
 
@@ -226,8 +231,9 @@ import customTemplate from "@/components/jcp-print/sell/intelligence-type-templa
 import { downLoaderFile } from "Api/downLoaderFile"
 
 // 加载控件
-import ReportLoad from './LoadOptions/ReportLoadOption'
-
+// import ReportLoad from './LoadOptions/ReportLoadOption'
+// 选择加载页数组件
+import LoaderNum from 'components/work/loaderNum.vue'
 export default {
   components: {
     ReportDetail,
@@ -242,10 +248,11 @@ export default {
     projectTypeTemplate,
     intelligenceTypeTemplate,
     customTemplate,
-    ReportLoad,
+    // ReportLoad,
     ZDYDropDownMenu,
     filterHeader,
-    cutBg
+    cutBg,
+    LoaderNum
   },
   data() {
     return {
@@ -505,7 +512,7 @@ export default {
         ],
         type: 2,
         page: 1,
-        pageSize: 15,
+        pageSize: 30,
         keyWord: "",
         wColorId: "",
         wGemId: "",
@@ -565,8 +572,8 @@ export default {
       // this.send();
     },
     "sellShowId": function () {
-      this.dataGridOptions.pageSize = 15
-      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+      this.dataGridOptions.pageSize = 30
+      // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
     }
   },
   created() {
@@ -618,8 +625,8 @@ export default {
         }
       ]);
       
-      this.dataGridOptions.pageSize = 15
-      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+      this.dataGridOptions.pageSize = 30
+      // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
       this.send();
 
@@ -689,7 +696,7 @@ export default {
             sortFlag: "0",
             type: 1,
             page: 1,
-            pageSize: 15,
+            pageSize: 30,
             keyWord: ""
           });
         } else if (port == 2) {
@@ -708,7 +715,7 @@ export default {
             // productClass: '1',
             sortFlag: this.positionSwitch ? "1" : "0",
             type: 1,
-            pageSize:15
+            pageSize:30
           });
         } else if (port == 3) {
           delete this.dataGridOptions.page;
@@ -726,7 +733,7 @@ export default {
             // productClass: '1',
             sortFlag: this.positionSwitch ? "1" : "0",
             type: 1,
-            pageSize:15
+            pageSize:30
           });
         } else if (port == 4) {
           Object.assign(this.dataGridOptions, {
@@ -743,7 +750,7 @@ export default {
             nColorId: "",
             nGemId: "",
             nJewelryId: "1",
-            pageSize:15
+            pageSize:30
           });
         }
       }
@@ -758,7 +765,7 @@ export default {
       this.loading = true;
       //this.page = 1
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 15;
+      this.dataGridOptions.pageSize = 30;
       this.tabClassActive.index = index;
       this.setReportType(type);
     },
@@ -937,8 +944,8 @@ export default {
           // }
         ]);
 
-        this.dataGridOptions.pageSize = 15
-        $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+        this.dataGridOptions.pageSize = 30
+        // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
         this.send();
         
@@ -954,8 +961,8 @@ export default {
         // this.beginTime = this.getDate(0, "start").format;
         // this.endTime = this.getDate(0, "end").format;
 
-        this.dataGridOptions.pageSize = 15
-        $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+        this.dataGridOptions.pageSize = 30
+        // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
         // this.send()
       }
@@ -999,7 +1006,7 @@ export default {
         this.printSelectDate.shop = this.shopList[0] ? this.shopList[0].shopName : "";
         this.dataGridOptions.shopId = this.shopList[0] ? this.shopList[0].shopId : "";
         this.dataGridOptions.size = 1
-        this.dataGridOptions.pageSize = 15
+        this.dataGridOptions.pageSize = 30
         this.send();
         return
         this.printSelectDate.preparedBy = "";
@@ -1044,6 +1051,10 @@ export default {
       this.dataGridOptions.size = 1
       this.dataGridOptions.pageSize = 15
       $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+      this.send();
+    },
+    dropReturn(val) {
+      this.dataGridOptions.pageSize = 30
       this.send();
     },
     dropReturn(val) {
@@ -1096,8 +1107,8 @@ export default {
       }
 
       this.currentPage = 1;
-      this.dataGridOptions.pageSize = 15
-      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+      this.dataGridOptions.pageSize = 30
+      // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
 
@@ -1122,8 +1133,8 @@ export default {
           value: "1"
         }
       ]);
-      this.dataGridOptions.pageSize = 15
-      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+      this.dataGridOptions.pageSize = 30
+      // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
 
@@ -1149,8 +1160,8 @@ export default {
         }
       ]);
       
-      this.dataGridOptions.pageSize = 15
-      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+      this.dataGridOptions.pageSize = 30
+      // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
       this.send();
     },
@@ -1167,8 +1178,8 @@ export default {
     },
 
     storageFunc() {
-      this.dataGridOptions.pageSize = 15
-      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+      this.dataGridOptions.pageSize = 30
+      // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
 
@@ -1249,8 +1260,15 @@ export default {
           .split("-")
           .join("") + "000000";
       this.printSelectDate.startTime = val;
-      this.dataGridOptions.pageSize = 15
-      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+      this.dataGridOptions.pageSize = 30;
+      // 回购
+      if(this.sellShowId == 'buyback'){
+        this.$refs["ReportDetailTrade"].$children[1].tempArray = [];
+      }
+      // 销售
+      else if(this.sellShowId == 'sales'){
+        this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
+      }
       this.send();
     },
     overTimeDate(val) {
@@ -1260,8 +1278,16 @@ export default {
           .split("-")
           .join("") + "235959";
       this.printSelectDate.endTime = val;
-      this.dataGridOptions.pageSize = 15
-      $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+      this.dataGridOptions.pageSize = 30;
+      // 回购
+      if(this.sellShowId == 'buyback'){
+        this.$refs["ReportDetailTrade"].$children[1].tempArray = [];
+      }
+      // 销售
+      else if(this.sellShowId == 'sales'){
+        this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
+      }
+      // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
     getDate(day, type) {
@@ -1325,7 +1351,7 @@ export default {
       if (this.getReportType() == 1) {
         Object.assign(this.dataGridOptions, {
           page: 1,
-          // pageSize: 15,
+          // pageSize: 30,
           // sellStatus:'1'
         });
       } else {
@@ -1524,7 +1550,7 @@ export default {
 
         if(isAlltotal) {
            // 更换文字
-          $('.loadControl span').html('已经到底了').css('color','#474747')
+          // $('.loadControl span').html('已经到底了').css('color','#474747')
           return;
         }
         this.loading = true;    

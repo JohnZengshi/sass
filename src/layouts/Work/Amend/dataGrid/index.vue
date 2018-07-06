@@ -142,12 +142,10 @@ export default{
       let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
       let clientHeight = el.target.clientHeight; // 元素的高度
       let scrollTop = el.target.scrollTop; // 滚动了的距离
-      // if (clientHeight + scrollTop >= scrollHeight) {
-      //     console.log("到底了")
-      //     this.pageSize += 30
-      //     this.fetchGoodList()
-      // }
-      this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+      let res = this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+      if(res){
+        this.readMoreData()
+      }
     },
     // 获取商品列表
     fetchGoodList() {

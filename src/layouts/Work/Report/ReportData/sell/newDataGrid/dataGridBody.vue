@@ -1,7 +1,7 @@
 <template>
   <!--表格内容区-->
   <!--明细-->
-  <div class="xj-report-table-container" ref="tableContainer" v-if="reportType == 1">
+  <div @scroll="watchScroll($event)" class="xj-report-table-container" ref="tableContainer" v-if="reportType == 1">
     <div>
       <div class="tb-tr" v-for="(tb,index) in tempArray" :key="index">
         <template v-for="(tab,indexs) in detailDataGridColumn">
@@ -13,6 +13,13 @@
           ></div>
         </template>
       </div>
+      <!-- 加载更多未读数据 -->
+      <ReadMoreData
+        :allData="dataGridStorage" 
+        :dgDataList="dataGridStorage.detailList" 
+        ref="ReadMoreDataDmo" 
+        @readMoreData="readMoreData"
+        ></ReadMoreData>
       <div v-if="isDate" class="no-data"></div>
     </div>
   </div>
@@ -92,6 +99,7 @@
   let applyIndex = 0
   import {styleWR} from 'Api/commonality/getStyle'
   import {calculateClass} from 'assets/js/getClass'
+  import ReadMoreData from 'components/work/readMoreData.vue'
   export default {
     data() {
       return {
@@ -100,6 +108,9 @@
         heightArr: [],
         otherDatagrid: []
       }
+    },
+    components:{
+      ReadMoreData
     },
     props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch'],
 
@@ -131,37 +142,37 @@
         _this.$emit('lazyloadSend', 123)
       })
 
-      $(".xj-report-table-container").mCustomScrollbar({
-        theme: "minimal-dark",
-        axis: 'y',
-        scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
-        mouseWheel: {
-          scrollAmount: 200,
-                preventDefault: false,
-                normalizeDelta: true,
-                scrollInertia : 50
-        },
-        callbacks: {
-          onTotalScroll: function () {
-					// console.log('滚轮到底了')
-					$('.loadControl').css({
-						opacity:1
-					})
-                },
-				onUpdate(){
-					// console.log('滚动条更新')
-					$('.loadControl').css({
-						opacity:0
-					})
-				},
-				whileScrolling(){
-					// console.log('滚动条活动')
-					$('.loadControl').css({
-						opacity:0
-					})
-				}
-        }
-      });
+      // $(".xj-report-table-container").mCustomScrollbar({
+      //   theme: "minimal-dark",
+      //   axis: 'y',
+      //   scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
+      //   mouseWheel: {
+      //     scrollAmount: 200,
+      //           preventDefault: false,
+      //           normalizeDelta: true,
+      //           scrollInertia : 50
+      //   },
+      //   callbacks: {
+      //     onTotalScroll: function () {
+			// 		// console.log('滚轮到底了')
+			// 		$('.loadControl').css({
+			// 			opacity:1
+			// 		})
+      //           },
+			// 	onUpdate(){
+			// 		// console.log('滚动条更新')
+			// 		$('.loadControl').css({
+			// 			opacity:0
+			// 		})
+			// 	},
+			// 	whileScrolling(){
+			// 		// console.log('滚动条活动')
+			// 		$('.loadControl').css({
+			// 			opacity:0
+			// 		})
+			// 	}
+      //   }
+      // });
       this.tabCellHeight()
     },
     methods: {
@@ -241,7 +252,45 @@
             this.otherDatagrid = this.dataGridStorage.productTypeList[0].productSellTypeList
           }
         }
-      }
+      },
+
+      //  监听表格滚动
+      watchScroll(el) { // 下拉加载数据
+        let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
+        let clientHeight = el.target.clientHeight; // 元素的高度
+        let scrollTop = el.target.scrollTop; // 滚动了的距离
+        if (this.$refs.ReadMoreDataDmo) {
+          let res = this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+          if(res){
+            this.readMoreData();
+          }
+        }
+      },
+
+      //加载更多数据
+      readMoreData(currentDataList) {
+        let totalNum = this.dataGridStorage.totalNum;
+        let length = this.dataGridStorage.detailList.length;
+        let upDataNum = this.$parent.$parent.$refs["LoaderNum"].pageSize;
+        this.pageNum = 1;
+        let pageSize = 30
+        //   this.dgDataList = [];
+        if (Number(upDataNum)) {
+          upDataNum = Number(upDataNum);
+          if (totalNum - length < upDataNum) {
+            pageSize = 0
+          } else {
+            pageSize = length + upDataNum
+          }
+        } else {
+          pageSize = 0
+        }
+        //   this.$parent.$parent
+        // console.log(pageSize);
+        this.$parent.$parent.dataGridOptions.pageSize = pageSize;
+        this.$parent.$parent.send();
+        // console.log(this.$parent.$parent.dataGridOptions.pageSize)
+      },
     },
     update() {
       console.log('updata')
@@ -260,93 +309,9 @@
 <style scoped lang="scss">
 .xj-report-table-container {
   height: 556px;
-}
-  // .xj-report-table-container {
-  //   height: 515px;
-  //   overflow-y: auto;
-  //   &.produc-line {
-  //     .tb-tr:nth-child(even) {
-  //       background-color: #f9f9f9;
-  //     }
-  //   }
-  //   &.default-line {
-  //     .tb-tr:nth-child(even) {
-  //       background-color: #f9f9f9;
-  //     }
-  //   }
-  //   &.con-line {
-  //     .backLine {overflow: hidden;}
-  //     .tb-tr:nth-child(even) {
-  //       .backLine {
-  //         background-color: #f9f9f9;
-          
-  //       }
-  //     }
-  //   }
-  //   .tb-tr {
-  //     // height: 40px;
-  //     display: flex;
-  //     .tb-td {
-  //       float: left;
-  //       display: inline-block;
-  //       // height: 40px;
-  //       // line-height: 40px;
-  //       text-align: center;
-  //       font-size: 14px;
-  //       font-weight: 400;
-  //       transition: all .1s;
-  //       white-space: nowrap;
-  //       color: #333;
-  //       -webkit-font-smoothing: subpixel-antialiased;
-  //       text-overflow: ellipsis;
-  //       &.category-td {
-  //         position: relative;
-  //         //overflow: hidden;
-  //         text-overflow: ellipsis;
-  //         white-space: pre-wrap;
-  //         >i {
-  //           font-style: normal;
-  //           // font-weight: bold;
-  //           // color: #248efc;
-  //           color: #333;
-  //           font-size: 14px;
-  //           // font-size: 15px;
-  //           position: absolute;
-  //           display: flex;
-  //           align-items: center;
-  //           width: 100%;
-  //           left: 0;
-  //           top: 0;
-  //           text-align: center;
-  //           justify-content: center
-  //         }
-  //       }
-  //     }
-  //   }
-  //   .tb-total {
-  //     background-color: #e9f4fe;
-  //     height: 40px;
-  //     display: flex;
-  //     .tb-td {
-  //       float: left;
-  //       display: inline-block;
-  //       // height: 40px;
-  //       // line-height: 40px;
-  //       text-align: center;
-  //       font-size: 14px;
-  //       font-weight: bold;
-  //       color: #2993f8;
-  //       transition: all .3s;
-  //       overflow: hidden;
-  //       white-space: nowrap;
-  //       text-overflow: ellipsis;
-  //       b {
-  //         color: #333 !important;
-  //       }
-  //     }
-  //   }
-  // }
-  
+  overflow-y: scroll;
+  position: relative;
+}  
   .no-data {
     height: 100%;
     background: url(~static/img/space-page.png) center center no-repeat;

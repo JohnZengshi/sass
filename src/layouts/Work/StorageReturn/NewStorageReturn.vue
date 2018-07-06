@@ -1781,11 +1781,10 @@ export default {
         },
         sendlayLoad (val) {
         //   this.dataGridOptions.pageSize += 15
-            this.dataGridOptions.pageSize = val
+            this.dataGridOptions.pageSize = val;
           seekOutStorageData(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
               this.dataGridStorage = res.data.data
-              this.loading = false
             }
           }, (res) => {
 

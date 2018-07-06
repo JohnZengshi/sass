@@ -140,6 +140,9 @@
 			},
 			isBuyBack: {
         type: Boolean
+	  },
+	  			tabSwitch: {
+        type: Boolean
       }
 		},
 		data() {
