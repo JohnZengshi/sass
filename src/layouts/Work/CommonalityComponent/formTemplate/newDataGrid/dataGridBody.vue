@@ -39,7 +39,7 @@
 						<div class="tb-td category-td" :key="index2"
 							v-if="tab.text == '产品类别' && index1 == 0"
 							:style="tableCell(tab.width)" >
-							<i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;z-index:2; line-height: 20px;'">{{tb[tab.childType]}}</i>
+							<i @click.stop="openLabel({}, tb)" :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;z-index:2; line-height: 20px;'">{{tb[tab.childType]}}</i>
 						</div>
 						<div class="tb-td category-td" :key="index2"
 							v-else-if="tab.text == '位置名称' && index == 0 && index1 == 0"
@@ -48,7 +48,7 @@
 							<i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;'">{{caty[tab.childType]}}</i>
 						</div>
 						<div class="tb-td"
-              @click.stop="openLabel(tb1)"
+              @click.stop="openLabel(tb1, tb)"
 							v-else  :key="index2"
 							style="overflow: hidden;"
 							:class="{backLine:tab.childType != ''}"
@@ -99,6 +99,7 @@
 					</div>
 					<div class="tb-td"
 						v-else :key="index"
+            @click.stop="openLabel(tb1, tb)"
 						:style="tableCell(tab.width)"
 						v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
 					</div>
@@ -175,8 +176,14 @@ export default {
 		this.tabCellHeight()
 	},
 	methods:{
-    openLabel (parm) {
-      this.$store.dispatch('getLabelData', parm)
+    openLabel (parm, caty) {
+      this.$store.dispatch('getLabelData', {
+        type: '1',
+        data: Object.assign({}, parm, {
+          productTypeId: caty.productTypeId,
+          newOrderId: this.$route.query.orderNumber
+        })
+      })
     },
 		setDeletedialogvisibly(isShow){
            this.deletedialogvisi = isShow; 

@@ -8,7 +8,7 @@
           <router-link tag="span" to="/work/report/" class="path_crumbs">标签打印</router-link>
         </div>
 
-        <btn-header @amendNum="amendNum" :dataGridStorage="dataGridStorage"></btn-header>
+        <btn-header @amendNum="amendNum" :filterCondition="filterCondition" :addData="addData" :dataGridStorage="dataGridStorage"></btn-header>
 
       </div>
 

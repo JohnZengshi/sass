@@ -373,7 +373,7 @@ export default{
  background-color: #fff;
  border:1px solid #ededed;
  border-radius: 5px;
- z-index: 3500;
+ //z-index: 3500;
  
  >.receipts{
    

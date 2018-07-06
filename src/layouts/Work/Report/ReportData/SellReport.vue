@@ -1044,11 +1044,9 @@ export default {
       this.dataGridOptions.size = 1
       this.dataGridOptions.pageSize = 15
       $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
-      debugger
       this.send();
     },
     dropReturn(val) {
-      debugger
       if (val.type == "柜组") {
         // this.dataGridOptions.storageId = val.item.operateId
         // this.printSelectDate.storage = val.item.operateName
@@ -1065,7 +1063,6 @@ export default {
         this.dataGridOptions.supplierId = val.item.operateId;
         this.printSelectDate.supplier = val.item.operateName;
       } else if (val.type == "制单人") {
-        debugger
         this.printSelectDate.preparedBy = val.item.operateName;
         Object.assign(this.dataGridOptions, {
           makeUserList: [
@@ -1076,7 +1073,6 @@ export default {
         });
         this.dataGridOptions.makeUserList[0].makeUserId = val.item.operateId;
       } else if (val.type == "收银人") {
-        debugger
         this.printSelectDate.payee = val.item.operateName;
         Object.assign(this.dataGridOptions, {
           cashierList: [
@@ -1312,7 +1308,6 @@ export default {
     },
 
     send(type) {
-      debugger
       if (this.modleSwitch == '2') {
         this.dataGridOptions.sellStatus = ''        
         this.sellSend();
@@ -1463,7 +1458,6 @@ export default {
 
     //打印表格
     tabPrin() {
-      debugger
       if (
         _.indexOf(this.selectValue, "销售") >= 0 ||
         _.indexOf(this.selectValue, "回购") >= 0

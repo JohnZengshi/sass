@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="listDetails" class="new-popup-dialog">
+  <el-dialog top="7%" :visible.sync="listDetails" class="new-popup-dialog">
     <div class="new-popup-main">
       <div class="RP_report_wrapper report_table_fixed dc-label-print-main" v-if="isPrint==0">
 
@@ -27,7 +27,7 @@
         
         
 
-        <filter-header @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
+        <filter-header ref="filterHeaderBox" @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
 
       </div>
       <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
@@ -90,7 +90,7 @@ export default {
         // colourId: [],
         // jeweId: [],
         // jewelryId: [], // 首饰类别
-        sortList: [{ classTypeName: '1' }],
+        sortList: [],
         productStatus: [], // 产品状态
       },
       openReset: true,
@@ -339,12 +339,14 @@ export default {
     labelData (parm) {
       if (this.labelData) {
         this.listDetails = true
-        this.seekProduct({keyWord: 100})
+        this.filterCondition = Object.assign(this.filterCondition, parm)
+        this.filterData()
       }
     },
     listDetails () {
       if (!this.listDetails) {
         this.$store.dispatch('getLabelData', '')
+        this.$refs.filterHeaderBox.resetData()
       }
     }
   },
@@ -417,12 +419,16 @@ export default {
         // colourId: [],
         // jeweId: [],
         // jewelryId: [], // 首饰类别
-        sortList: [{ classTypeName: '1' }],
+        sortList: [],
         productStatus: [], // 产品状态
       }
       this.addData = []
       this.dataGridStorage = []
-      this.sortList = [{ name: '产品类别', value: '1' }]
+      this.paging = {
+        page: 1,
+        pageSize: '30'
+      }
+      this.sortList = []
     },
     amendNum (parm) {
       this.printNum = parm
@@ -463,44 +469,15 @@ export default {
         })
     },
     filterData (parm) {
+
       if (parm) {
         this.dataGridStorage = []
         this.paging.page = 1
-        this.filterCondition = this.formattingData(parm)
-        // 产品类别
-        // if (datas.productTypeId.length) {
-        //   let productTypeId = []
-        //   for (let i of datas.productTypeId) {
-        //     productTypeId.push({
-        //       id: 1
-        //     })
-        //   }
-        // }
-        // this.filterCondition = Object.assign({}, this.filterCondition, datas)
+        this.filterCondition = Object.assign(this.filterCondition, parm)
       }
-      let barcode = {
-        barcodeList: []
-      }
-      for (let i of this.addData) {
-        barcode.barcodeList.push({barcode: i.barcode})
-      }
-      this.loading = true
 
-      // this.filterCondition = {
-      //   keyWord: '',
-      //   newOrderId: '',
-      //   storageId: [],
-      //   shopId: [],
-      //   productTypeId: [],
-      //   colourId: [],
-      //   jeweId: [],
-      //   jewelryId: [], // 首饰类别
-      //   sortList: [{ classTypeName: '1' }],
-      //   productStatus: [], // 产品状态
-      // }
-      // let datas = this.filterCondition
-      // this.formattingData(datas.productTypeId)
-      seekGetPrintLabelList(Object.assign(this.filterCondition, barcode, this.paging, {}))
+      this.loading = true
+      seekGetPrintLabelList(Object.assign(this.formattingData(this.filterCondition), this.paging))
         .then(res => {
           if (res.data.state == 200) {
             this.paging.page += 1
@@ -525,7 +502,7 @@ export default {
         })
     },
     formattingData (parm) {
-        let datas = parm
+        let datas = _.cloneDeep(parm)
         // 产品类别
         if (datas.productTypeId) {
           if (datas.productTypeId.length) {
@@ -1111,7 +1088,7 @@ export default {
 .new-popup-main{
   height: 100%;
   width: 1200px;
-  height: 770px;
+  height: 732px;
   background-color: #fff;
   border-radius: 5px;
   .btn-header-wrap{

@@ -135,6 +135,9 @@ export default {
         }
     },
     methods: {
+        initData (parm) {
+            this.smallIdList = parm
+        },
         filterStyle (parm) {
             let datas = ''
             if (this.checkedCities.includes(parm)) {

@@ -1,12 +1,12 @@
 <template>
 <!--表格内容区-->
 <!--明细-->
-<div @scroll="watchScroll($event)" class="ui-table-container default-line" ref="tableContainer" v-if="reportType == 1">
+<div @scroll="watchScroll($event)" class="xj-report-table-container default-line" ref="tableContainer" v-if="reportType == 1">
 	<div>
 		<div class="tb-tr" v-for="(tb,index) in tempArray" :key="index">
 			<div class="tb-td"
 				v-for="(tab,coindex) in detailDataGridColumn" 
-				:style="tableCell(tab.width)" :key="coindex"
+				:style="_calculateClass(tab)" :key="coindex"
 				v-text = "tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"
 			></div>
 		</div>
@@ -21,28 +21,29 @@
 	</div>
 </div>
 	
-<div class="ui-table-container con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
+<div class="xj-report-table-container con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
 	<div>
 		<div class="tb-category" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind">
 			<div v-for="(tb, index) in caty.productTypeList" :key="index">
 				<div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()" :key="index1">
 					<template v-for="(tab,tabindex) in detailDataGridColumn">
-						<div class="tb-td category-td"
+						<div class="branch-tb category-td"
 							v-if="tab.text == '产品类别' && index1 == 0"  :key="tabindex"
-							:style="tableCell(tab.width)" >
-							<i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7; line-height: 20px;'">{{tb[tab.childType]}}</i>
+							:style="_calculateClass(tab)" >
+							<i @click.stop="openLabel({}, tb)" :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7; line-height: 20px;'">{{tb[tab.childType]}}</i>
 						</div>
-						<div class="tb-td category-td"  :key="tabindex"
+						<div class="branch-tb category-td"  :key="tabindex"
 							v-else-if="tab.text == '位置名称' && index == 0 && index1 == 0"
-							:style="tableCell(tab.width)"
+							:style="_calculateClass(tab)"
 						>	
 							<i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;z-index: 100'">{{caty[tab.childType]}}</i>
 						</div>
-						<div class="tb-td"  :key="tabindex"
+						<div class="tb-td" :key="tabindex"
 							v-else
 							style="overflow: hidden;"
+              @click.stop="openLabel(tb1, tb)"
 							:class="{backLine:tab.childType != ''}"
-							:style="tableCell(tab.width)" 
+							:style="_calculateClass(tab)" 
 							v-text = "tab.childType == ''? getIndex() : tb1[tab.childType]">
 						</div>
 					</template>
@@ -53,7 +54,7 @@
           <template v-if="!positionSwitch">
             <div class="tb-td"
               v-for="(tab,f) in detailDataGridColumn" :key="f"
-              :style="tableCell(tab.width)" 
+              :style="_calculateClass(tab)" 
               v-html = "f == 0 ? '<b>小计</b>' : tb[tab.totalType]"
             ></div>
           </template>
@@ -61,7 +62,7 @@
           <template v-else>
             <div class="tb-td"
               v-for="(tab,f) in detailDataGridColumn" :key="f"
-              :style="tableCell(tab.width)" 
+              :style="_calculateClass(tab)" 
               v-html = "f == 1 ? '<b>小计</b>' : tb[tab.totalType]"
             ></div>
           </template>
@@ -73,7 +74,7 @@
 				<div class="tb-td"
 					v-for="(tab,f) in detailDataGridColumn"
           :key="f"
-					:style="tableCell(tab.width)" 
+					:style="_calculateClass(tab)" 
 					v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"
 				></div>
 			</div>
@@ -83,28 +84,30 @@
 </div>
 
 <!--产品分类-->
-<div class="ui-table-container produc-line" ref="tableContainer" v-else-if="reportType == 3">
+<div class="xj-report-table-container produc-line" ref="tableContainer" v-else-if="reportType == 3">
 	<div>
 		<div class="tb-category" v-for="(caty,catyindex) in dataGridStorage.dataList" :key="catyindex">
 			<div class="tb-tr" v-for="(tb, index) in caty.productTypeList" :key="index">
 				<template v-for="(tab,tabindex) in detailDataGridColumn">
 					{{index}}
-					<div class="tb-td category-td" :key="tabindex"
+					<div class="branch-tb category-td" :key="tabindex"
 						v-if="tab.text == '产品类别' && index == 0" 
-						:style="tableCell(tab.width)"
+						:style="_calculateClass(tab)"
 						v-text="tb[tab.childType]"
+            @click.stop="openLabel({}, tb)"
 						>
 						<!-- <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i> -->
 					</div>
-					<div class="tb-td category-td"   :key="tabindex"
+					<div class="branch-tb category-td"   :key="tabindex"
 						v-else-if="tab.text == '位置名称' && index == 0"
-						:style="tableCell(tab.width)"
+						:style="_calculateClass(tab)"
 					>	
 						<i v-bind:class="catyindex%2 !=0 ? 'mytabstyle1':'mytabstyle2' " :style="'height:'+ caty.productTypeList.length * 40 +'px;  color: #2993f8;'">{{caty[tab.childType]}}</i>
 					</div>
 					<div class="tb-td"
 						v-else  :key="tabindex"
-						:style="tableCell(tab.width)" 
+						:style="_calculateClass(tab)"
+            @click.stop="openLabel(tb1, tb)"
 						v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
 					</div>
 				</template>
@@ -120,6 +123,7 @@
 let applyIndex = 0;
 import ReadMoreData from 'components/work/readMoreData';
 import threeLayersDownMenuVue from '../../../base/menu/three-layers-down-menu.vue';
+import {calculateClass} from 'assets/js/getClass'
 export default {
 	data(){
 		return{
@@ -162,7 +166,7 @@ export default {
 			_this.$emit('lazyloadSend',123 )
 		})
 		
-		// $(".ui-table-container").mCustomScrollbar({
+		// $(".xj-report-table-container").mCustomScrollbar({
         //     theme: "minimal-dark",
         //     axis: 'y',
         //     scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
@@ -185,6 +189,17 @@ export default {
 		this.tabCellHeight()
 	},
 	methods:{
+    openLabel (parm, caty) {
+      this.$store.dispatch('getLabelData', {
+        type: '1',
+        data: Object.assign({}, parm, {
+          productTypeId: caty.productTypeId
+        })
+      })
+    },
+    _calculateClass (parm) {
+      return calculateClass(parm)
+    },
 		addNumAct () {
 			this.addNum++
 		},
@@ -302,7 +317,7 @@ export default {
 }
 </style>
 <style scoped lang="scss">
-.ui-table-container{
+.xj-report-table-container{
 	position: relative;
     height: 570px;
     overflow-y: auto;

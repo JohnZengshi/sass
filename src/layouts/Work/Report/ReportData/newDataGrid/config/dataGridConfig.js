@@ -28,7 +28,8 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: 1,
-      textAlign: 'right',
+      textAlign: 'left',
+      paddingLeft: '10px',
       editOldType : ''
     },
     {
@@ -202,7 +203,6 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '1',
-      textAlign: 'right',
       editOldType : ''
     },
 
@@ -221,6 +221,7 @@ module.exports = {
       countCut: 0, //小数点截取位数
       sort: '',
       textAlign: 'left',
+      paddingLeft: '10px',
       editOldType : ''
     },
     {
@@ -370,7 +371,8 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '1',
-      textAlign: 'right',
+      textAlign: 'left',
+      paddingLeft: '10px',
       editOldType : ''
     },
     {
@@ -516,7 +518,6 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '1',
-      textAlign: 'right',
       editOldType : ''
     },
     {
@@ -534,6 +535,7 @@ module.exports = {
       countCut: 0, //小数点截取位数
       sort: '',
       textAlign: 'left',
+      paddingLeft: '10px',
       editOldType:''
     },
     {
