@@ -93,7 +93,7 @@
 					<!--销售报表-->
 					<div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
 						<report-detail :dataGridStorage="sellStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" :positionSwitch="positionSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
-               <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type === 1 && sellStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>
+               <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type == 1 && sellStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>
 						</report-detail>                      
 					</div>
 

@@ -436,7 +436,7 @@
                                         <span class="iconfont icon-shouhuo"></span>
                                         <span>收货</span>
                                     </div>
-                                    <div class="btn" @click="exportTab()">
+                                    <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
                                         <span class="iconfont icon-daochu"></span>
                                         <span>导出表格</span>
                                     </div>

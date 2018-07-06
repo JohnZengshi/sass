@@ -221,7 +221,7 @@
       </div>
 
       <div class="utilsBtn flex flex-v flex-pack-justify">
-        <div class="btn" @click="exportTab()">
+        <div v-if="tabClassActive.index != 0" class="btn" @click="exportTab()">
           <i class="iconfont icon-daochu"></i>
           <span>导出报表</span>
         </div>
