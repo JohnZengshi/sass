@@ -109,7 +109,7 @@
 				fieldType: 'simple'
 			})
 			// 获取打印数据
-			this.reportsPrintRK();
+			// this.reportsPrintRK();
 		},
 		watch: {
 			labelTemplateList: function() {
@@ -307,7 +307,7 @@
 					if(res.data.state == 200) {
 						this.dataGridStorage = res.data.data
 						setTimeout(() => {
-							// this.tabPrin()
+							this.tabPrin()
 						}, 1000)
 					} else if(res.data.state == 100100) {
 						this.$message({
