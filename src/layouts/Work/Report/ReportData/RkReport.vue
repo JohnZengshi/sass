@@ -249,17 +249,52 @@
       </div>
       
 			<!--打印模块-->
-			<div style="display: none;">
-					<detail-template v-if="this.tabClassActive.index==0" title="入库" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detail-template>
-					<intelligence-type-template v-if="this.tabClassActive.index==1" title="入库" ref="intelligenceTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></intelligence-type-template>
-					<project-type-template v-if="this.tabClassActive.index==2" title="入库" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></project-type-template>
-					<custom-template v-if="this.tabClassActive.index==3" title="入库" ref="customTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></custom-template>
+			<div style="display: block;">
+					<detail-template 
+            v-if="this.tabClassActive.index==0" 
+            title="入库" 
+            tabTitle="明细"
+            ref="detailTemplate" 
+            :sellList="dataGridStorage" 
+            :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"></detail-template>
+					<intelligence-type-template 
+            v-if="this.tabClassActive.index==1" 
+            title="入库" 
+            tabTitle="智能分类"
+            ref="intelligenceTypeTemplate" 
+            :sellList="dataGridStorage" 
+            :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"></intelligence-type-template>
+					<project-type-template 
+            v-if="this.tabClassActive.index==2" 
+            title="入库" 
+            tabTitle="产品分类"
+            ref="projectTypeTemplate" 
+            :sellList="dataGridStorage" 
+            :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"></project-type-template>
+					<custom-template 
+            v-if="this.tabClassActive.index==3" 
+            title="入库" 
+            tabTitle="自定义"
+            ref="customTemplate" 
+            :sellList="dataGridStorage" 
+            :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"></custom-template>
 			</div>
     </div>
     <!--打印模块-->
     <div ref="tablePrint" v-if="isPrint==1">
-      <table-print typeName="入库" :tabSwitch="tabSwitch" :reportType="getReportType()" @sortList="sortListAct" :positionSwitch="positionSwitch" :printSelectDate="printSelectDate" :dataGridStorage="dataGridStorage">
-      </table-print>
+      <table-print 
+        typeName="入库" 
+        :tabSwitch="tabSwitch" 
+        :reportType="getReportType()" 
+        @sortList="sortListAct" 
+        :positionSwitch="positionSwitch" 
+        :printSelectDate="printSelectDate" 
+        :dataGridStorage="dataGridStorage">
+        </table-print>
     </div>
   </transition>
 </template>
@@ -1293,7 +1328,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
         //获取公司信息
         let companyName = JSON.parse(localStorage.getItem('companyInfo'))
         if(companyName) {
-          this.printSelectDate.companyName = '公司名：' + companyName.companyName
+          this.printSelectDate.companyName = '公司名称：' + companyName.companyName
         }
       })
     }

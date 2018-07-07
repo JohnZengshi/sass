@@ -295,11 +295,39 @@
         </div>
     </div>
 	<!--打印模块-->
-	<div style="display: none;">
-			<detail-template v-if="this.tabClassActive.index==0" title="发货" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detail-template>
-			<intelligence-type-template v-if="this.tabClassActive.index==1" title="发货" ref="intelligenceTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></intelligence-type-template>
-			<project-type-template v-if="this.tabClassActive.index==2" title="发货" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></project-type-template>
-			<custom-template v-if="this.tabClassActive.index==3" title="发货" ref="customTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></custom-template>
+	<div style="display: block;">
+			<detail-template 
+                v-if="this.tabClassActive.index==0" 
+                title="发货" 
+                tabTitle="明细"
+                ref="detailTemplate" 
+                :sellList="dataGridStorage" 
+                :headerData="printSelectDate"
+                :tabSwitch="tabSwitch"></detail-template>
+			<intelligence-type-template 
+                v-if="this.tabClassActive.index==1" 
+                title="发货" 
+                tabTitle="智能分类"
+                ref="intelligenceTypeTemplate" 
+                :sellList="dataGridStorage" 
+                :headerData="printSelectDate"
+                :tabSwitch="tabSwitch"></intelligence-type-template>
+			<project-type-template 
+                v-if="this.tabClassActive.index==2" 
+                title="发货" 
+                tabTitle="产品分类"
+                ref="projectTypeTemplate" 
+                :sellList="dataGridStorage" 
+                :headerData="printSelectDate"
+                :tabSwitch="tabSwitch"></project-type-template>
+			<custom-template 
+                v-if="this.tabClassActive.index==3" 
+                title="发货" 
+                tabTitle="自定义"
+                ref="customTemplate" 
+                :sellList="dataGridStorage" 
+                :headerData="printSelectDate"
+                :tabSwitch="tabSwitch"></custom-template>
 	</div>
 </div>
 <!--打印模块-->
@@ -890,7 +918,7 @@ export default {
                   checkUserList : [],
                 })  
             } else if (val.type == "收货人") {
-                this.printSelectDate.auditor = ''
+                this.printSelectDate.takeUser = ''
                 Object.assign(this.dataGridOptions,{
                   takeUserList : [],
                 })
@@ -921,7 +949,7 @@ export default {
                 })
                 this.dataGridOptions.makeUserList[0].makeUserId = val.item.operateId
             } else if (val.type == "审核人") {
-                this.printSelectDate.takeUser = val.item.operateName
+                this.printSelectDate.auditor = val.item.operateName
                 Object.assign(this.dataGridOptions,{
                   checkUserList : [{
                       checkUserId: ''
@@ -929,7 +957,7 @@ export default {
                 }) 
                 this.dataGridOptions.checkUserList[0].checkUserId = val.item.operateId
             } else if (val.type == "收货人") {
-                this.printSelectDate.auditor = val.item.operateName
+                this.printSelectDate.takeUser = val.item.operateName
                 Object.assign(this.dataGridOptions,{
                   takeUserList : [{
                       takeUserId: ''
@@ -1358,7 +1386,7 @@ export default {
             //获取公司信息
             let companyName = JSON.parse(localStorage.getItem('companyInfo'))
             if(companyName){
-              this.printSelectDate.companyName = '公司名：'+ companyName.companyName 
+              this.printSelectDate.companyName = '公司名称：'+ companyName.companyName 
             }
         })
     }

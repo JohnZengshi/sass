@@ -136,7 +136,7 @@
 
 <!--         <intelligence-type-template v-if="this.tabClassActive.index==1" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :title="'智能分类'" :headerData="printSelectDate"></intelligence-type-template> -->
 				<!--打印模块-->
-				<div style="display: none;">
+				<div style="display: block;">
 						<detail-template v-if="dataGridOptions.type==1" ref="detailTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :title="'明细'"
             :tabSwitch="tabSwitch"
@@ -148,6 +148,8 @@
             ></intelligence-type-template>
 						<project-type-template v-if="dataGridOptions.type==3" ref="projectTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :title="'产品分类'"
+            :tabSwitch="tabSwitch"
+            :isBuyBack="isBuyBack"
             ></project-type-template>
 						<custom-template v-if="dataGridOptions.type==4" ref="customTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :title="'自定义'"
@@ -1574,7 +1576,7 @@ export default {
       //获取公司信息
       let companyName = JSON.parse(localStorage.getItem("companyInfo"));
       if (companyName) {
-        this.printSelectDate.companyName = "公司名：" + companyName.companyName;
+        this.printSelectDate.companyName = "公司名称：" + companyName.companyName;
       }
 	  });
 	
