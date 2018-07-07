@@ -15,8 +15,16 @@
 
     <printDownMenu :titleInfo="currentPrint ? currentPrint : '选择打印机'" :showList="printList" :nameKey="'name'" @changeData="changePrint" @clearInfo="clearPrint" @toMouseover="loadPrinters"></printDownMenu>
 
-    <el-button size="small" class="ml-10" @click.native="_previewTemplate('Y')">预览</el-button>
-    <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">打印</el-button>
+    <template v-if="isPopup">
+        <el-button type="primary" size="small" class="ml-10" @click.native="_previewTemplate('Y')">预览</el-button>
+        <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">打印</el-button>
+        <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">导出</el-button>
+    </template>
+
+    <template v-else>
+        <el-button size="small" class="ml-10" @click.native="_previewTemplate('Y')">预览</el-button>
+        <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">打印</el-button>
+    </template>
   </div>
 </template>
 <script>
@@ -24,8 +32,9 @@ import {mapState} from 'vuex'
 import {JaTools} from '@/utils/JaTool.js';
 import DownMenu from 'base/menu/new-down-menu'
 import printDownMenu from 'base/menu/print-down-menu'
+import {seekGetPrintLabelList} from 'Api/commonality/seek.js'
 export default {
-  props: ['dataGridStorage'],
+  props: ['dataGridStorage', 'isPopup', 'addData', 'filterCondition'],
   components: {
     DownMenu,
     printDownMenu
@@ -88,10 +97,34 @@ export default {
     toHome () {
 
     },
+    seekPrintData (parm) { // 范围，回调
+      debugger
+      let barcode = {
+        barcodeList: []
+      }
+      for (let i of this.addData) {
+        barcode.barcodeList.push({barcode: i.barcode})
+      }
+      this.loading = true
+      seekGetPrintLabelList(Object.assign(this.filterCondition, barcode, {
+        beginNum: this.printNum.beginNum,
+        endNum: this.printNum.endNum
+      })).then(res => {
+          if (res.data.state == 200) {
+            this._previewTemplate(res.data.data.dataList, parm)
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            })
+          }
+          this.loading = false
+        })
+    },
     // 获取打印模板
-    _previewTemplate (parm) {
+    _previewTemplate (data, parm) {
       let productId = []
-      for (let i of this.dataGridStorage.slice(this.printNum.beginNum - 1, this.printNum.endNum)) {
+      for (let i of data) {
         productId.push(i.productId)
       }
       if (!productId.length) {

@@ -262,7 +262,7 @@ $report-p-r: 20px;
 .rp_dataGridTemp{
     position: relative;
     height: 100%;
-    padding: 40px 0 40px;
+    padding: 40px 0 0;
     
     .ui-table_column{
         position: relative;
@@ -398,7 +398,8 @@ $report-p-r: 20px;
     padding-left: 10px;
 }
 .xj-report-table-container{
-    height: 515px;
+    // height: 515px;
+    height: 555px;
     //overflow-y: auto;
     .tb-tr{
       height: 40px;
@@ -608,7 +609,9 @@ $report-p-r: 20px;
             font-size: 15px;
             font-weight: bold;
         }
-          
+        &:last-child{
+            padding-right: $report-p-r;
+        }  
     }
 }
 

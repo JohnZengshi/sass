@@ -1,13 +1,13 @@
 <template>
 <!--表格内容区-->
 <!--明细-->
-<div class="ui-table-container default-line" ref="tableContainer" v-if="reportType == 1">
+<div class="xj-report-table-container default-line" ref="tableContainer" v-if="reportType == 1">
   <div>
       <template v-for="(tb, index) in tempArray">
         <div class="tb-tr" :key="index">
           <div class="tb-td"
             v-for="(tab,num) in detailDataGridColumn" 
-            :style="tableCell(tab.width)" 
+            :style="_calculateClass(tab)" 
             v-text = "tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"
           :key="num"
           ></div>
@@ -17,7 +17,7 @@
   </div>
 </div>
   
-<div class="ui-table-container con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
+<div class="xj-report-table-container con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
   <div>
 <!--   {{dataGridStorage.dataList}} -->
    <!--  <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind"> -->
@@ -32,16 +32,16 @@
            <!-- :class="{'hz-td-tr': index1%2 == 0}" -->
             <div class="tb-tr" :class="{'hz-td-tr': filterEvent(index, index1, caty.productTypeList)}" :index="addIndex()" :key="index1">
               <template v-for="(tab,index2) in detailDataGridColumn">
-                <div class="tb-td category-td"
+                <div class="branch-tb category-td"
                   :key="index2"
                   v-if="tab.text == '产品类别' && index1 == 0" 
-                  :style="tableCell(tab.width)" >
+                  :style="_calculateClass(tab)" >
                   <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f9f9; line-height: 20px;'">{{tb[tab.childType]}}</i>
                 </div>
-                <div class="tb-td category-td"
+                <div class="branch-tb category-td"
                   :key="index2"
                   v-else-if="tab.text == '位置名称' && index == 0 && index1 == 0"
-                  :style="tableCell(tab.width)"
+                  :style="_calculateClass(tab)"
                 > 
                   <i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;'">{{caty[tab.childType]}}</i>
                 </div>
@@ -50,7 +50,7 @@
                   :key="index2"
                   style="overflow: hidden;"
                   :class="{backLine:tab.childType != ''}"
-                  :style="tableCell(tab.width)" 
+                  :style="_calculateClass(tab)" 
                   v-text = "tab.childType == ''? getIndex() : tb1[tab.childType]">
                 </div>
               </template>
@@ -64,7 +64,7 @@
           <div class="tb-td"
             v-for="(tab,f) in detailDataGridColumn" 
             :key="f"
-            :style="tableCell(tab.width)" 
+            :style="_calculateClass(tab)" 
             v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
           ></div>
         </div>
@@ -80,7 +80,7 @@
           <div class="tb-td"
             v-for="(tab,f) in detailDataGridColumn" 
             :key="f"
-            :style="tableCell(tab.width)" 
+            :style="_calculateClass(tab)" 
             v-html = "caty[tab.totalType0]"
           ></div>
         </div>
@@ -93,7 +93,7 @@
         <div class="tb-td"
           v-for="(tab,f) in detailDataGridColumn" 
           :key="f"
-          :style="tableCell(tab.width)" 
+          :style="_calculateClass(tab)" 
           v-html = "f == 0 ? '<b></b>' : tab.toFixed ? toFixed(caty[tab.totalType], tab.countCut) : caty[tab.totalType]"
         ></div>
 
@@ -102,7 +102,7 @@
 <!--         <div class="tb-td"
           v-for="(tab,f) in detailDataGridColumn" 
           :key="f"
-          :style="tableCell(tab.width)" 
+          :style="_calculateClass(tab)" 
           v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
         ></div> -->
       </div>
@@ -110,7 +110,7 @@
         <div class="tb-td"
           v-for="(tab,f) in detailDataGridColumn" 
           :key="f"
-          :style="tableCell(tab.width)" 
+          :style="_calculateClass(tab)" 
           v-html = "f == 1 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"
         ></div>
       </div>
@@ -120,7 +120,7 @@
 </div>
 
 <!--产品分类-->
-<div class="ui-table-container produc-line" ref="tableContainer" v-else-if="reportType == 3">
+<div class="xj-report-table-container produc-line" ref="tableContainer" v-else-if="reportType == 3">
   <div>
     <div class="tb-category hz-tb-category hz-tb-category-two" v-if="caty.productTypeList.length" v-for="(caty,index) in dataGridStorage.dataList" :key="index">
       <div class="left-type-name-wrap left-y" :style="getClassRightH(caty)">
@@ -130,24 +130,24 @@
         <template v-for="(tb, index) in caty.productTypeList">
           <div class="tb-tr" :key="index">
             <template v-for="(tab,index4) in detailDataGridColumn">
-              <div class="tb-td category-td"
+              <div class="branch-tb category-td"
                 :key="index4"
                 v-if="tab.text == '产品类别' && index == 0" 
-                :style="tableCell(tab.width)"
+                :style="_calculateClass(tab)"
                 v-text="tb[tab.childType]"
                 >
               </div>
-              <div class="tb-td category-td"
+              <div class="branch-tb category-td"
                 :key="index4"
                 v-else-if="tab.text == '位置名称' && index == 0"
-                :style="tableCell(tab.width)"
+                :style="_calculateClass(tab)"
               > 
                 <i :style="'height:'+ caty.productTypeList.length * 40 +'px;  color: #2993f8; background:#fff;'">{{caty[tab.childType]}}</i>
               </div>
               <div class="tb-td"
                 v-else
                 :key="index4"
-                :style="tableCell(tab.width)"
+                :style="_calculateClass(tab)"
                 v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
                 >
               </div>
@@ -166,7 +166,7 @@
           <div class="tb-td"
             v-for="(tab,f) in detailDataGridColumn" 
             :key="f"
-            :style="tableCell(tab.width)" 
+            :style="_calculateClass(tab)" 
             v-html = "f == 0 ? '<b></b>' : tab.toFixed ? toFixed(caty[tab.totalType], tab.countCut) : caty[tab.totalType]"
           ></div>
         </div>
@@ -179,6 +179,7 @@
 </template>
 
 <script>
+import {calculateClass} from 'assets/js/getClass'
 let applyIndex = 0
 export default {
   data(){
@@ -219,7 +220,7 @@ export default {
       _this.$emit('lazyloadSend',123 )
     })
     
-    $(".ui-table-container").mCustomScrollbar({
+    $(".xj-report-table-container").mCustomScrollbar({
       theme: "minimal-dark",
       axis: 'y',
       scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
@@ -236,7 +237,7 @@ export default {
       }
     });
 
-    // $(".ui-table-container").mCustomScrollbar({
+    // $(".xj-report-table-container").mCustomScrollbar({
         //     theme: "minimal-dark",
         //     axis: 'y',
         //     mouseWheel: {
@@ -258,6 +259,9 @@ export default {
     this.tabCellHeight()
   },
   methods:{
+    _calculateClass (parm) {
+      return calculateClass(parm)
+    },
     // 提取有数据的值
     filterHasData (parm) {
       let datas = []
@@ -406,8 +410,8 @@ export default {
 
 </style>
 <style scoped lang="scss">
-.ui-table-container{
-    height: 556px;
+.xj-report-table-container{
+    height: 596px;
     // overflow-y: auto;
     .hz-tb-category-two{
       margin-bottom: 2px;

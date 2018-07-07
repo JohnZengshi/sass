@@ -4,7 +4,7 @@ module.exports = {
         {
     		id: '0',  //id 
     		text: '序号', //头部title文字
-    		width:'80', //单元格宽
+    		width:'70', //单元格宽
     		type:'', //合计类型值
     		unit: '', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -26,7 +26,8 @@ module.exports = {
     		totalType : '' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: 1,
+            textAlign: 'left',
+            sort: 1,
         },
         { 
     		id: '3',  //id 
@@ -40,8 +41,9 @@ module.exports = {
     		totalType : '' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: '',
-		},
+		      textAlign: 'left',
+            sort: '',
+        },
 		{ 
     		id: '8',  //id 
     		text: '件重', //头部title文字
@@ -54,8 +56,9 @@ module.exports = {
     		totalType : '' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
-		},
+		  textAlign: 'right',
+            sort: ''
+        },
 		{ 
     		id: '8',  //id 
     		text: '金重', //头部title文字
@@ -68,7 +71,8 @@ module.exports = {
     		totalType : '' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
+            textAlign: 'right',
+            sort: ''
         },
         { 
     		id: '4',  //id 
@@ -81,21 +85,9 @@ module.exports = {
     		childType : 'main', //单元格类型
     		totalType : '' , //小计
             toFixed : false, //是否进行小数点精确截取
-			countCut : 0, //小数点截取位数
+            textAlign: 'right',
+            countCut : 0, //小数点截取位数
         },
-        // { 
-    	// 	id: '5',  //id 
-    	// 	text: '主石粒数', //头部title文字
-    	// 	width:'115', //单元格宽
-    	// 	type:'', //合计类型值
-    	// 	unit: '', //头部单位补充文字
-    	// 	footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
-    	// 	totalName : '',//底部合计 提示文字
-    	// 	childType : 'mainCount', //单元格类型
-    	// 	totalType : '' , //小计
-        //     toFixed : false, //是否进行小数点精确截取
-		// 	countCut : 0, //小数点截取位数
-        // },
         { 
     		id: '6',  //id 
     		text: '副石', //头部title文字
@@ -107,21 +99,9 @@ module.exports = {
     		childType : 'deputy', //单元格类型
     		totalType : '' , //小计
             toFixed : false, //是否进行小数点精确截取
+            textAlign: 'right',
             countCut : 0 //小数点截取位数
         },
-        // { 
-    	// 	id: '7',  //id 
-    	// 	text: '副石粒数', //头部title文字
-    	// 	width:'115', //单元格宽
-    	// 	type:'', //合计类型值
-    	// 	unit: '', //头部单位补充文字
-    	// 	footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
-    	// 	totalName : '',//底部合计 提示文字
-    	// 	childType : 'deputyCount', //单元格类型
-    	// 	totalType : '' , //小计
-        //     toFixed : false, //是否进行小数点精确截取
-        //     countCut : 0 //小数点截取位数
-        // },
         
         { 
     		id: '9',  //id 
@@ -135,7 +115,8 @@ module.exports = {
     		totalType : '' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
+            textAlign: 'right',
+            sort: ''
         },
         { 
     		id: '10',  //id 
@@ -149,8 +130,9 @@ module.exports = {
     		totalType : '' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
-    	},
+    	   textAlign: 'right',
+            sort: ''
+        },
 	],
 	//智能列表
 	intelligentConfing: [
@@ -166,6 +148,7 @@ module.exports = {
 			totalType : '' , //小计
 			totalType0 : '' , //小计1
             toFixed : false, //是否进行小数点精确截取
+            textAlign: 'right',
             countCut : 0 //小数点截取位数
         },
 		{
@@ -181,7 +164,7 @@ module.exports = {
 			totalType0 : '' , //小计1
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
+            sort: ''
         },
         
         { 
@@ -197,8 +180,10 @@ module.exports = {
 			totalType0 : '' , //小计1
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
-		},
+            paddingLeft: '10px',
+		  textAlign: 'left',
+            sort: ''
+        },
 		{
     		id: '2',  //id 
     		text: '件数', //头部title文字
@@ -212,8 +197,9 @@ module.exports = {
     		totalType0 : 'totalNum0' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
-		},
+		  textAlign: 'right',
+            sort: ''
+        },
 		{
     		id: '3',  //id 
     		text: '件重', //头部title文字
@@ -227,8 +213,9 @@ module.exports = {
     		totalType0 : 'totalWeight0' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
-		},
+		  textAlign: 'right',
+            sort: ''
+        },
 		{
     		id: '3',  //id 
     		text: '金重', //头部title文字
@@ -242,7 +229,8 @@ module.exports = {
     		totalType0 : 'totalGoldWeight0' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
+            textAlign: 'right',
+            sort: ''
         },
         { 
     		id: '4',  //id 
@@ -256,6 +244,7 @@ module.exports = {
 			totalType : 'totalMain1' , //小计
 			totalType0 : 'totalMain0' , //小计1
             toFixed : false, //是否进行小数点精确截取
+            textAlign: 'right',
             countCut : 0 //小数点截取位数
         },
         { 
@@ -270,6 +259,7 @@ module.exports = {
 			totalType : 'totalDeputy1' , //小计
 			totalType0 : 'totalDeputy0' , //小计1
             toFixed : false, //是否进行小数点精确截取
+            textAlign: 'right',
             countCut : 0 //小数点截取位数
         },
         { 
@@ -285,7 +275,8 @@ module.exports = {
 			totalType0 : 'totalPrice0' , //小计1
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
+            textAlign: 'right',
+            sort: ''
         },
         { 
     		id: '10',  //id 
@@ -300,8 +291,9 @@ module.exports = {
 			totalType0 : 'totalCost0' , //小计1
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
-    	},
+    	   textAlign: 'right',
+            sort: ''
+        },
 	],
 	//产品分类
 	produceConfing: [
@@ -316,6 +308,7 @@ module.exports = {
     		childType : 'whereName', //单元格类型
     		totalType : '' , //小计
             toFixed : false, //是否进行小数点精确截取
+            textAlign: 'right',
             countCut : 0 //小数点截取位数
         },
 		{
@@ -330,7 +323,9 @@ module.exports = {
     		totalType : '' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: '',
+            // textAlign: 'left',
+            // paddingLeft: '10px',
+            sort: '',
         },
 		{
     		id: '2',  //id 
@@ -344,8 +339,9 @@ module.exports = {
     		totalType : 'totalNum0' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: '',
-		},
+		  textAlign: 'right',
+            sort: '',
+        },
 		{ 
     		id: '8',  //id 
     		text: '件重', //头部title文字
@@ -358,8 +354,9 @@ module.exports = {
     		totalType : 'totalWeight0' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: '',
-		},
+		  textAlign: 'right',
+            sort: '',
+        },
 		{
     		id: '3',  //id 
     		text: '金重', //头部title文字
@@ -373,7 +370,8 @@ module.exports = {
     		totalType0 : 'totalGoldWeight0' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
+            textAlign: 'right',
+            sort: ''
         },
         { 
     		id: '4',  //id 
@@ -386,6 +384,7 @@ module.exports = {
     		childType : 'totalMain1', //单元格类型
     		totalType : 'totalMain0' , //小计
             toFixed : false, //是否进行小数点精确截取
+            textAlign: 'right',
             countCut : 0 //小数点截取位数
         },
         { 
@@ -399,6 +398,7 @@ module.exports = {
     		childType : 'totalDeputy1', //单元格类型
     		totalType : 'totalDeputy0' , //小计
             toFixed : false, //是否进行小数点精确截取
+            textAlign: 'right',
             countCut : 0 //小数点截取位数
         },
         
@@ -414,7 +414,8 @@ module.exports = {
     		totalType : 'totalPrice0' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
+            textAlign: 'right',
+            sort: ''
         },
         { 
     		id: '10',  //id 
@@ -428,8 +429,9 @@ module.exports = {
     		totalType : 'totalCost0' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
-    	},
+    	   textAlign: 'right',
+            sort: ''
+        },
 	],
 	//自定义分类
 	customConfing: [
@@ -445,6 +447,7 @@ module.exports = {
 			totalType : '' , //小计
 			totalType0 : '' , //小计1
             toFixed : false, //是否进行小数点精确截取
+            textAlign: 'right',
             countCut : 0 //小数点截取位数
         },
 		{
@@ -460,8 +463,8 @@ module.exports = {
 			totalType0 : '' , //小计1
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
-		},
+            sort: ''
+        },
 		{
     		id: '2',  //id 
     		text: '首饰名称', //头部title文字
@@ -475,7 +478,9 @@ module.exports = {
 			totalType0 : '' , //小计1
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
+            textAlign: 'left',
+            paddingLeft: '10px',
+            sort: ''
         },
 		{
     		id: '2',  //id 
@@ -490,8 +495,9 @@ module.exports = {
 			totalType0 : 'totalNum0' , //小计1
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
-		},
+		  textAlign: 'right',
+            sort: ''
+        },
 		{ 
     		id: '8',  //id 
     		text: '件重', //头部title文字
@@ -505,8 +511,9 @@ module.exports = {
 			totalType0 : 'totalWeight0' , //小计1
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
-		},
+		  textAlign: 'right',
+            sort: ''
+        },
 		{
     		id: '3',  //id 
     		text: '金重', //头部title文字
@@ -520,7 +527,8 @@ module.exports = {
     		totalType0 : 'totalGoldWeight0' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
+            textAlign: 'right',
+            sort: ''
         },
         { 
     		id: '4',  //id 
@@ -534,6 +542,7 @@ module.exports = {
 			totalType : 'totalMain1' , //小计
 			totalType0 : 'totalMain0' , //小计1
             toFixed : false, //是否进行小数点精确截取
+            textAlign: 'right',
             countCut : 0 //小数点截取位数
         },
         { 
@@ -548,6 +557,7 @@ module.exports = {
 			totalType : 'totalDeputy1' , //小计
 			totalType0 : 'totalDeputy0' , //小计1
             toFixed : false, //是否进行小数点精确截取
+            textAlign: 'right',
             countCut : 0 //小数点截取位数
         },
         
@@ -564,7 +574,8 @@ module.exports = {
 			totalType0 : 'totalPrice0' , //小计1
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
+            textAlign: 'right',
+            sort: ''
         },
         { 
     		id: '10',  //id 
@@ -579,7 +590,8 @@ module.exports = {
 			totalType0 : 'totalCost0' , //小计1
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
-			sort: ''
-    	},
+    	   textAlign: 'right',
+            sort: ''
+        },
     ]
 }

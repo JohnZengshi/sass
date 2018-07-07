@@ -254,6 +254,8 @@ module.exports = {
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
+      textAlign: 'left',
+      paddingLeft: '10px',
       editOldType : ''
     },
     {

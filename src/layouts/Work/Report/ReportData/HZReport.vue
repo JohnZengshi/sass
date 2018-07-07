@@ -486,6 +486,9 @@ export default {
         // 打印表格
         send () {
           this.loading = true;
+          this.dataGridStorage = {
+            dataList: []
+          }
           seekGetReportsComprehensive(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
                 this.dataGridStorage = res.data.data

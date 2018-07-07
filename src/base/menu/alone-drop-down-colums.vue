@@ -57,6 +57,9 @@ export default {
         }
     },
     methods: {
+        initData (parm) { // 初始化数据
+            this.checkedCities = parm
+        },
         filterStyle (parm) {
             let datas = ''
             if (this.checkedCities.includes(parm)) {

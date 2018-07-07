@@ -160,7 +160,7 @@
 
             <!-- 会员信息 begin -->
             <member-info
-                @closeReturn="closeEditReturn" 
+                @closeReturn="closeEditReturn"
                 :memberId="memberId"
                 :shopId="shopId"
                 :memberInfoFlag="editLeaguer">

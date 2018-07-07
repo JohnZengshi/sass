@@ -2,7 +2,7 @@
 <transition name="tp-ani">
     <div>
         <router-view></router-view>
-        <!-- <labelPopup></labelPopup> -->
+        <labelPopup></labelPopup>
     </div>
 </transition>
 </template>
