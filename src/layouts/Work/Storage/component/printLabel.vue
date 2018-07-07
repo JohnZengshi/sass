@@ -31,7 +31,7 @@
 		</div>
 		
 		<!--打印模块-->
-		<div style="display: none;">
+		<div style="display: none;" class="testClass">
 				<detail-template title="入库" :reportType="1" ref="detailTemplate" :sellList="dataGridStorage" :headerData="orderData"></detail-template>
 		</div>
 		
@@ -108,6 +108,8 @@
 				type: 2,
 				fieldType: 'simple'
 			})
+			// 获取打印数据
+			this.reportsPrintRK();
 		},
 		watch: {
 			labelTemplateList: function() {
@@ -305,7 +307,7 @@
 					if(res.data.state == 200) {
 						this.dataGridStorage = res.data.data
 						setTimeout(() => {
-							this.tabPrin()
+							// this.tabPrin()
 						}, 1000)
 					} else if(res.data.state == 100100) {
 						this.$message({

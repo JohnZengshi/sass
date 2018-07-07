@@ -221,7 +221,11 @@ export default {
         console.log(res)
         if (res.data.state == 200) {
           Object.assign(this.orderData, {
-            makeOrderMan: res.data.data.makeOrderManId == sessionStorage.getItem('id') ? true : false
+            makeOrderMan: res.data.data.makeOrderManId == sessionStorage.getItem('id') ? true : false,
+            // 新增公司名称
+						companyName: res.data.data.companyName,
+						// 新增审核人
+						checkName: res.data.data.checkName,
           })
           console.log(this.orderData)
         }

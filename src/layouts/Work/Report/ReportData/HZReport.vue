@@ -91,7 +91,7 @@
     
 
     <!--打印模块-->
-    <div style="display: block;">
+    <div style="display: none;">
     
         <intelligence-type-template 
             v-if="this.dataGridOptions.type==2" 

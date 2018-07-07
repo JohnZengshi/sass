@@ -292,7 +292,7 @@
         </div>
     </div>
 	<!--打印模块-->
-	<div style="display: block;">
+	<div style="display: none;">
 			<detail-template 
                 v-if="this.tabClassActive.index==0" 
                 title="退货" 

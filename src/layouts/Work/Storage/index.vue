@@ -263,6 +263,10 @@ export default {
       seekReceiptRKSynopsis(options).then((res) => {
         if (res.data.state == 200) {
           Object.assign(this.orderData, {
+						// 新增公司名称
+						companyName: res.data.data.companyName,
+						// 新增审核人
+						checkName: res.data.data.checkName,
             supplierName: res.data.data.supplierName,
             supplierId: res.data.data.supplierId,
             shopName: res.data.data.shopName,

@@ -163,9 +163,9 @@ export default {
 			}
 			_this.$emit('lazyloadSend',123 )
 		})
-		$(".xj-report-table-container").mCustomScrollbar({
-      theme: "minimal-dark"
-    })
+	// 	$(".xj-report-table-container").mCustomScrollbar({
+    //   theme: "minimal-dark"
+    // })
 		// $(".xj-report-table-container").mCustomScrollbar({
         //     theme: "minimal-dark",
         //     axis: 'y',
@@ -333,6 +333,9 @@ export default {
 
 </style>
 <style scoped lang="scss">
+.xj-report-table-container{
+	overflow-y: auto;
+}
 // .xj-report-table-container{
 //     height: 556px;
 //     overflow-y: auto;

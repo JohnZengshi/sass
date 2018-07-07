@@ -3,10 +3,11 @@
 		<div class="print-header">
 			<h1 class="title center">{{title}}单据</h1>
 			<div class="head-option">
-				<div class="left">{{headerData.companyName}}</div>
+				<div class="left">公司名称：{{headerData.companyName}}</div>
+				<div class="left">分类：{{tabTitle}}</div>
 				<div class="right">制单时间:{{headerData.createDate|DATA_FORMAT}}</div>
 			</div>
-			<div>
+			<!-- <div>
 				<div class="explain-box">
 					单据号：{{headerData.orderNum}}
 				</div>
@@ -87,11 +88,12 @@
 						收货人：{{headerData.consigneeName}}
 					</div>
 				</template>
-			</div>
+			</div> -->
+			 <filtrateBoxByInvoices :headerData="headerData" :title="title" :reportType="reportType"></filtrateBoxByInvoices>
 		</div>
 		<div>
 			<table class="table-box">
-				<tr>
+				<tr class="tm noBorderTop">
 					<td>序号</td>
 					<td>产品类别</td>
 					<td>首饰名称</td>
@@ -101,47 +103,48 @@
 					<td>主石(ct,g)</td>
 					<td>副石(ct,g)</td>
 					<td>售价(元)</td>
-					<td>成本(元)</td>
+					<td v-show="tabSwitch">成本(元)</td>
 				</tr>
 				<template v-for="dataList in sellList.dataList">
 					<template v-for="productTypeList in dataList.productTypeList">
-							<tr v-for="(item, index) in productTypeList.detailList">
+							<tr class="tr" v-for="(item, index) in productTypeList.detailList">
 								<td>{{item.index}}</td>
-								<td v-if="index==0" :rowspan="productTypeList.detailList.length">{{productTypeList.className}}</td>
-								<td>{{item.className}}</td>
-								<td>{{item.num|NOUNIT}}</td>
-								<td>{{item.weight|NOUNIT}}</td>
-								<td>{{item.goldWeight|NOUNIT}}</td>
+								<td class="tl" v-if="index==0" :rowspan="productTypeList.detailList.length">{{productTypeList.className}}</td>
+								<td class="tl">{{item.className}}</td>
+								<td>{{item.num}}</td>
+								<td>{{item.weight}}</td>
+								<td>{{item.goldWeight}}</td>
 								<td>{{item.main}}</td>
 								<td>{{item.deputy}}</td>
-								<td>{{item.price|NOUNIT}}</td>
-								<td>{{item.cost|NOUNIT}}</td>
+								<td>{{item.price}}</td>
+								<td v-show="tabSwitch">{{item.cost}}</td>
 							</tr>
-							<tr>
-								<td colspan="3">小计</td>
-								<td>{{productTypeList.totalNum1}}件</td>
-								<td>{{productTypeList.totalWeight1|GRAMUNIT}}</td>
-								<td>{{productTypeList.totalGoldWeight1|GRAMUNIT}}</td>
+							<tr class="tr">
+								<td class="tm" colspan="3">小计</td>
+								<td>{{productTypeList.totalNum1}}</td>
+								<td>{{productTypeList.totalWeight1}}</td>
+								<td>{{productTypeList.totalGoldWeight1}}</td>
 								<td>{{productTypeList.totalMain1}}</td>
 								<td>{{productTypeList.totalDeputy1}}</td>
-								<td>{{productTypeList.totalPrice1|RMBUNIT}}</td>
-								<td>{{productTypeList.totalCost1|RMBUNIT}}</td>
+								<td>{{productTypeList.totalPrice1}}</td>
+								<td v-show="tabSwitch">{{productTypeList.totalCost1}}</td>
 							</tr>
 					</template>
 					
-					<tr>
-						<td colspan="3">合计</td>
-						<td>{{dataList.totalNum0}}件</td>
-						<td>{{dataList.totalWeight0|GRAMUNIT}}</td>
-						<td>{{dataList.totalGoldWeight0|GRAMUNIT}}</td>
+					<tr class="tr">
+						<td class="tm" colspan="3">合计</td>
+						<td>{{dataList.totalNum0}}</td>
+						<td>{{dataList.totalWeight0}}</td>
+						<td>{{dataList.totalGoldWeight0}}</td>
 						<td>{{dataList.totalMain0}}</td>
 						<td>{{dataList.totalDeputy0}}</td>
-						<td>{{dataList.totalPrice0|RMBUNIT}}</td>
-						<td>{{dataList.totalCost0|RMBUNIT}}</td>
+						<td>{{dataList.totalPrice0}}</td>
+						<td v-show="tabSwitch">{{dataList.totalCost0}}</td>
 					</tr>
 				</template>
 			</table>
 		</div>
+		<Sign :title="title"></Sign>
 		<div class="printDate">
 			打印时间：{{printDate}}
 		</div>
@@ -150,8 +153,13 @@
 <script>
 	import {jcpPrint} from "@/tools/jcp-print";
 	import moment from "moment";
+	import filtrateBoxByInvoices from "../../components/filtrateBoxByInvoices.vue"
+  	import Sign from "../../components/Sign.vue"
 	export default {
-		components: {},
+		components: {
+			filtrateBoxByInvoices,
+      		Sign
+		},
 		props: {
 			sellList: {
 				type: Object
@@ -166,6 +174,12 @@
 			reportType: {
 				type: Number
 			},
+			tabTitle:{
+				type:String
+			},
+			tabSwitch:{
+				type:Boolean
+			}
 		},
 		filters:{
 			DATA_FORMAT:(date)=>{
@@ -249,52 +263,8 @@
 </script>
 
 <style scoped lang="scss">
-	.center {
-		text-align: center;
-	}
-	.font-bold {
-		font-weight: bold;
-	}
-	
+ @import "../../../../assets/css/print.scss";
 	.print-box{
-		font-size: 12px;
 		width: 208mm;
-		margin: 0 auto;
-		padding: 20px;
-	}
-	
-	.explain-box {
-		display: inline-block;
-		padding: 5px 35px 5px 0;
-	}
-	
-	.head-option div {
-		display: table-cell;
-	}
-	
-	.right {
-		text-align: right;
-	}
-	
-	.head-option {
-		display: table;
-		width: 100%;
-		margin-bottom: 5px;
-	}
-	
-	.table-box {
-		width: 100%;
-		border-collapse: collapse;
-	}
-	
-	td{
-		font-size: 12px;
-		border: 1px solid;
-		line-height: 25px;
-		text-align: center;
-	}
-	.printDate{
-		text-align: right;
-    padding: 15px 0;
 	}
 </style>
