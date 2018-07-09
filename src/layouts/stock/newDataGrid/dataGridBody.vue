@@ -107,7 +107,11 @@
 					<div class="tb-td"
 						v-else  :key="tabindex"
 						:style="_calculateClass(tab)"
+<<<<<<< HEAD
             @click.stop="openLabel(tb1, tb)"
+=======
+            @click.stop="openLabel(tb, tab)"
+>>>>>>> remotes/origin/v4.0.0
 						v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
 					</div>
 				</template>
@@ -136,23 +140,14 @@ export default {
 	components:{
 		ReadMoreData
 	},
-	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch'],
-	
+	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch',"changeRepository", "changeShop", "changeCounter", 'dataGridOptions'],
 	watch:{
 		'dataGridStorage':function(){
 			this.tempArray = []
 			this.cheackData()
 			this.storageFormatDate()
 			this.tabCellHeight()
-		},
-		// 'reportType': function (val) {
-		// 	//console.log(this.positionSwitch)
-		// 	this.tabCellHeight()
-		// },
-		// 'positionSwitch': function (val) {
-		// 	//console.log(val)
-		// 	this.tabCellHeight()
-		// }
+		}
 	},
 	mounted () {
     let _this = this
@@ -166,6 +161,7 @@ export default {
 			_this.$emit('lazyloadSend',123 )
 		})
 		
+<<<<<<< HEAD
 		// $(".xj-report-table-container").mCustomScrollbar({
         //     theme: "minimal-dark",
         //     axis: 'y',
@@ -186,16 +182,43 @@ export default {
         //         }
         //     }
         // });
+=======
+>>>>>>> remotes/origin/v4.0.0
 		this.tabCellHeight()
 	},
 	methods:{
     openLabel (parm, caty) {
+<<<<<<< HEAD
       this.$store.dispatch('getLabelData', {
         type: '1',
         data: Object.assign({}, parm, {
           productTypeId: caty.productTypeId
         })
       })
+=======
+        let datas = {
+          type: '2',
+          data: {
+            jeweId: parm.gemId ? [parm.gemId] : [],
+            jewelryId: parm.jewelryId ? [parm.jewelryId] : [],
+            colourId: parm.colorId ? [parm.colorId] : [],
+            productTypeId: [caty.productTypeId],
+            storageId: this.changeRepository.repositoryId ? [this.changeRepository.repositoryId] : [],
+            shopId: this.changeShop.shopId ? [this.changeShop.shopId] : [],
+            counterId: this.changeCounter.counterId, // 柜组
+            productClass: this.dataGridOptions.productClass
+          }
+        }
+        if (this.dataGridOptions.type == '4') {
+            datas.data.wColorId = queryData.wColorId
+            datas.data.wGemId = queryData.wGemId
+            datas.data.wJewelryId = queryData.wJewelryId
+            datas.data.nColorId = queryData.nColorId
+            datas.data.nGemId = queryData.nGemId
+            datas.data.nJewelryId = queryData.nJewelryId
+        }
+      this.$store.dispatch('getLabelData', datas)
+>>>>>>> remotes/origin/v4.0.0
     },
     _calculateClass (parm) {
       return calculateClass(parm)

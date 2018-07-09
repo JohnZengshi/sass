@@ -419,16 +419,18 @@
                                 :dataGridStorage="dataGridStorage" 
                                 :tabSwitch="tabSwitch"
                                 :isRole='receiptsIntroList.isRole'
+                                :dataGridOptions="dataGridOptions"
+                                :orderType="'06'"
+                                :newList="newList"
+                                :reportType="getReportType()"
                                 @scrollClass="tabScrollShow"
                                 @messageBack="messageBack"
-                                :newList="newList"
                                 @lazyloadSend="sendlayLoad"
-                                @sortList="sortListAct" 
-                                :reportType="getReportType()">
+                                @sortList="sortListAct">
                             </report-detail>
                         </div>
                         <div class="btn-list">
-                            <div class="btn" @click="exportTab()">
+                            <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
                                 <span class="iconfont icon-daochu"></span>
                                 <span>导出表格</span>
                             </div>

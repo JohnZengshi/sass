@@ -336,6 +336,7 @@ export default {
       }
       // this.send()
     },
+<<<<<<< HEAD
     // labelData (parm) {
     //   if (this.labelData) {
     //     this.listDetails = true
@@ -349,6 +350,24 @@ export default {
     //     this.$refs.filterHeaderBox.resetData()
     //   }
     // }
+=======
+    labelData () {
+      if (this.labelData) {
+        this.listDetails = true
+        this.filterCondition = Object.assign(this.filterCondition, this.labelData)
+        Vue.nextTick(() => {
+          this.$refs.filterHeaderBox.initData(this.filterCondition)
+        })
+        this.filterData()
+      }
+    },
+    listDetails () {
+      if (!this.listDetails) {
+        this.$store.dispatch('getLabelData', '')
+        this.$refs.filterHeaderBox.resetData()
+      }
+    }
+>>>>>>> remotes/origin/v4.0.0
   },
   computed: {
     ...mapGetters([

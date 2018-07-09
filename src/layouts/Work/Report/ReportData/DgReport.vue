@@ -261,6 +261,7 @@
 		
 		<div class="rp_dataGridTemp" :class="tabShow" v-loading = "loading" element-loading-text="数据查询中">
 			<report-detail 
+<<<<<<< HEAD
                 ref="ReportDetail"
 				:dataGridStorage="dataGridStorage" 
 				:tabSwitch = "tabSwitch" 
@@ -270,6 +271,20 @@
 				@lazyloadSend = "lazyloadSend"
                 @sortList="sortListAct"
 				:reportType="getReportType()">
+=======
+        ref="ReportDetail"
+        :dataGridStorage="dataGridStorage" 
+        :tabSwitch = "tabSwitch"
+        :dataGridOptions="dataGridOptions"
+        :orderType="'06'"
+        @scrollClass = "tabScrollShow"
+        :positionSwitch="positionSwitch"
+        :newList="newList"
+        @lazyloadSend = "lazyloadSend"
+        @sortList="sortListAct"
+        :reportType="getReportType()"
+        >
+>>>>>>> remotes/origin/v4.0.0
 			</report-detail>
             <!-- 数据加载控件 end-->
             <!-- <report-load v-if="dataGridStorage.totalNum != '0' && dataGridOptions.type === 1 && dataGridStorage.totalNum>30" @LoadOptionsDefault="LoadOptionsDefault"></report-load>                                     -->
@@ -278,7 +293,7 @@
 	</div>
     
     <div class="utilsBtn flex flex-v flex-pack-justify">
-        <div class="btn" @click="exportTab()">
+        <div v-if="tabClassActive.index != 0" class="btn" @click="exportTab()">
             <i class="iconfont icon-daochu"></i>
             <span>导出报表</span>
         </div>

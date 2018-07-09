@@ -1,7 +1,11 @@
 <template>
 <!--表格内容区-->
 <!--明细-->
+<<<<<<< HEAD
 <div @scroll="watchScroll($event)" class="xj-report-table-container default-line" ref="tableContainer" v-if="reportType == 1">
+=======
+<div @scroll="watchScroll($event)" class="xj-report-table-container xj-report-table-container-scroll default-line" ref="tableContainer" v-if="reportType == 1">
+>>>>>>> remotes/origin/v4.0.0
 	<div class="tableBox">
 	  	<template v-for="(tb, index) in tempArray">
   			<div class="tb-tr" :key="index">
@@ -25,7 +29,11 @@
 	</div>
 </div>
 	
+<<<<<<< HEAD
 <div class="xj-report-table-container con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
+=======
+<div class="xj-report-table-container xj-report-table-container-scroll con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
+>>>>>>> remotes/origin/v4.0.0
 	<div class="tableBox">
 		<div class="tb-category" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind">
 			<div v-for="(tb, index) in caty.productTypeList" :key="index">
@@ -37,7 +45,11 @@
 						  	:key="index2"
   							v-if="tab.text == '产品类别' && index1 == 0" 
   							:style="_calculateClass(tab)" >
+<<<<<<< HEAD
   							<i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7; line-height: 20px;'">{{tb[tab.childType]}}</i>
+=======
+  							<i @click="openLabel({}, tb)" :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7; line-height: 20px;'">{{tb[tab.childType]}}</i>
+>>>>>>> remotes/origin/v4.0.0
   						</div>
   						<div class="branch-tb category-td"
 						  	:key="index2"
@@ -47,12 +59,22 @@
   							<i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;'">{{caty[tab.childType]}}</i>
   						</div>
   						<div class="tb-td"
+<<<<<<< HEAD
   							v-else
 							:key="index2"
 							style="overflow: hidden;"
   							:class="{backLine:tab.childType != ''}"
   							:style="_calculateClass(tab)" 
   							v-text = "tab.childType == ''? getIndex() : tb1[tab.childType]">
+=======
+                  v-else
+                  :key="index2"
+                  style="overflow: hidden;"
+                  :class="{backLine:tab.childType != ''}"
+                  :style="_calculateClass(tab)" 
+                  @click="openLabel(tb1, tb)"
+                  v-text = "tab.childType == ''? getIndex() : tb1[tab.childType]">
+>>>>>>> remotes/origin/v4.0.0
   						</div>
   					</template>
   				</div>
@@ -84,7 +106,11 @@
 </div>
 
 <!--产品分类-->
+<<<<<<< HEAD
 <div class="xj-report-table-container produc-line" ref="tableContainer" v-else-if="reportType == 3">
+=======
+<div class="xj-report-table-container xj-report-table-container-scroll produc-line" ref="tableContainer" v-else-if="reportType == 3">
+>>>>>>> remotes/origin/v4.0.0
 	<div class="tableBox">
 		<div class="tb-category" v-for="(caty,index) in dataGridStorage.dataList" :key="index">
 		  <template v-for="(tb, index) in caty.productTypeList">
@@ -106,10 +132,18 @@
   						<i :style="'height:'+ caty.productTypeList.length * 40 +'px;  color: #2993f8; background:#fff;'">{{caty[tab.childType]}}</i>
   					</div>
   					<div class="tb-td"
+<<<<<<< HEAD
   						v-else
 						:key="index4"
   						:style="_calculateClass(tab)" 
   						v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
+=======
+              v-else
+              @click="openLabel({}, tb)"
+              :key="index4"
+              :style="_calculateClass(tab)" 
+              v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
+>>>>>>> remotes/origin/v4.0.0
   					</div>
   				</template>
   			</div>
@@ -136,7 +170,7 @@ export default {
 	components:{
 		ReadMoreData,
 	},
-	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch'],
+	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch', 'dataGridOptions', 'orderType'],
 	
 	watch:{
 		'dataGridStorage':function(){
@@ -145,15 +179,9 @@ export default {
 			this.storageFormatDate()
 			this.tabCellHeight()
 		},
-		// 'reportType': function (val) {
-		// 	this.tabCellHeight()
-		// },
-		// 'positionSwitch': function (val) {
-		// 	this.tabCellHeight()
-		// }
 	},
 	mounted () {
-    	let _this = this
+    let _this = this
 		this.$nextTick(()=>{
 			
 			if( this.dataGridStorage.detailList ){
@@ -163,6 +191,7 @@ export default {
 			}
 			_this.$emit('lazyloadSend',123 )
 		})
+<<<<<<< HEAD
 		$(".xj-report-table-container").mCustomScrollbar({
       theme: "minimal-dark"
     })
@@ -200,22 +229,40 @@ export default {
 		this.tabCellHeight()
 	},
 	methods:{
+=======
+		// $(".xj-report-table-container").mCustomScrollbar({
+  //     theme: "minimal-dark",
+  //     scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
+  //   })
+		this.tabCellHeight()
+	},
+	methods:{
+    openLabel (parm, caty) {
+      this.$store.dispatch('getLabelData', {
+        type: '3',
+        data: Object.assign({}, parm, this.dataGridOptions, {
+          productTypeId: caty.productTypeId,
+          orderType: this.orderType,
+        })
+      })
+    },
+>>>>>>> remotes/origin/v4.0.0
     _calculateClass (parm) {
       return calculateClass(parm)
     },
 		//重置index
-	    resetIndex( index ){
-         if( index == 0 ) applyIndex = 0
-        },
-        //
-        addIndex(){
-         applyIndex++
-        },
-        
-        getIndex(){
-          this.$emit('getIndex',applyIndex)
-          return applyIndex
-        },
+    resetIndex( index ){
+     if( index == 0 ) applyIndex = 0
+    },
+    //
+    addIndex(){
+     applyIndex++
+    },
+    
+    getIndex(){
+      this.$emit('getIndex',applyIndex)
+      return applyIndex
+    },
 		tabCellHeight () {
 			this.heightArr = []
 			//console.log(this.dataGridStorage)
@@ -269,6 +316,7 @@ export default {
 		 
 		//  监听表格滚动
 		watchScroll(el) { // 下拉加载数据
+      console.log('------------------------------------------------=============')
 		  let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
 		  let clientHeight = el.target.clientHeight; // 元素的高度
 		  let scrollTop = el.target.scrollTop; // 滚动了的距离
@@ -333,6 +381,12 @@ export default {
 
 </style>
 <style scoped lang="scss">
+<<<<<<< HEAD
+=======
+.xj-report-table-container-scroll{
+  overflow-y: scroll;
+}
+>>>>>>> remotes/origin/v4.0.0
 // .xj-report-table-container{
 //     height: 556px;
 //     overflow-y: auto;

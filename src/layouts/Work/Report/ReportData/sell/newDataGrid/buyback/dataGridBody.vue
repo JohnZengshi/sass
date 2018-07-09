@@ -48,6 +48,7 @@
                 <div
                   class="tb-td" 
                   v-else
+                  @click="openLabel({}, tb)"
                   :class="{backLine:tab.childType != ''}" 
                   :style="_calculateClass(tab)" 
                   v-text="tab.childType == ''? getIndex() : tb[tab.totalType] ? tb[tab.totalType] : '-' ">
@@ -85,7 +86,11 @@
 
 
               <div class="branch-tb category-td" :key="index" v-else-if="tab.text == '产品类别' && index1 == 0" :style="_calculateClass(tab)">
+<<<<<<< HEAD
                 <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{tb[tab.childType]}}</i>
+=======
+                <i @click="openLabel({}, tb)" :style="'height:'+ tb.detailList.length * 40 +'px;'">{{tb[tab.childType]}}</i>
+>>>>>>> remotes/origin/v4.0.0
               </div>
 
 <!--                 <div 
@@ -107,7 +112,8 @@
                 
                 <div 
                   class="tb-td" 
-                  v-else 
+                  v-else
+                  @click="openLabel(tb1, tb)"
                   :class="{backLine:tab.childType != ''}" 
                   :style="_calculateClass(tab)" 
                   v-text="tab.childType == ''? getIndex() : tb1[tab.childType] ? tb1[tab.childType] : '-' ">
@@ -149,7 +155,11 @@
     components:{
       ReadMoreData
     },
+<<<<<<< HEAD
     props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch'],
+=======
+    props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch', 'dataGridOptions', 'orderType'],
+>>>>>>> remotes/origin/v4.0.0
 
     watch: {
       'dataGridStorage': function() {
@@ -211,6 +221,18 @@
       this.tabCellHeight()
     },
     methods: {
+<<<<<<< HEAD
+=======
+      openLabel (parm, caty) {
+        this.$store.dispatch('getLabelData', {
+          type: '3',
+          data: Object.assign({}, parm, {
+            productTypeId: caty.productTypeId,
+            orderType: this.orderType,
+          }, this.dataGridOptions)
+        })
+      },
+>>>>>>> remotes/origin/v4.0.0
       _calculateClass (parm) {
         return calculateClass(parm)
       },

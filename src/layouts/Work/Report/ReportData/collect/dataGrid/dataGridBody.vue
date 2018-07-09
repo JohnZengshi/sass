@@ -37,6 +37,7 @@
                       v-else 
                       :class="{backLine:tab.totalType != ''}" 
                       :style="nTableCell(tab)" 
+                      @click="openLabel({}, tb)"
                       v-text="tab.totalType == ''? getIndex() : tb[tab.totalType]">
                       
                     </div>
@@ -96,7 +97,8 @@
                     class="tb-td" 
                     v-else 
                     :class="{backLine:tab.totalType != ''}" 
-                    :style="nTableCell(tab)" 
+                    :style="nTableCell(tab)"
+                    @click="openLabel({}, tb)" 
                     v-text="tab.totalType == ''? getIndex() : tb[tab.totalType]">
                     
                   </div>
@@ -147,7 +149,7 @@
         buyBackDataList: []
       }
     },
-    props: ['detailDataGridColumn', 'detailDataGridColumnTwo', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch', 'buyBackStorage'],
+    props: ['detailDataGridColumn', 'detailDataGridColumnTwo', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch', 'buyBackStorage', 'dataGridOptions', 'orderType'],
 
     watch: {
       'dataGridStorage': function() {
@@ -215,6 +217,17 @@
       this.tabCellHeight()
     },
     methods: {
+      openLabel (parm, caty) {
+        debugger
+        this.$store.dispatch('getLabelData', {
+          type: '3',
+          data: Object.assign({}, parm, {
+            productTypeId: caty.productTypeId,
+            orderType: this.orderType,
+            shopId: this.dataGridOptions.shopId
+          })
+        })
+      },
       filterName (parm) {
        // return '9000000'
         if (parm == '1') {

@@ -42,6 +42,7 @@
                 <div class="tb-td"
                   v-else
                   :key="index4"
+                  @click="openLabel({}, tb)"
                   :style="calculateClass(tab)" 
                   v-text = "tab.totalType == ''? (index+1) : tb[tab.totalType]">
                 </div>
@@ -74,7 +75,11 @@
                 <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{caty[tab.childType]}}</i>
               </div>
 
+<<<<<<< HEAD
               <div class="tb-td" :key="index" v-else :class="{backLine:tab.childType != ''}" :style="calculateClass(tab)" v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
+=======
+              <div @click="openLabel(tb1, tb)" class="tb-td" :key="index" v-else :class="{backLine:tab.childType != ''}" :style="calculateClass(tab)" v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
+>>>>>>> remotes/origin/v4.0.0
               </div>
             </template>
           </div>
@@ -112,7 +117,11 @@
     components:{
       ReadMoreData
     },
+<<<<<<< HEAD
     props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch'],
+=======
+    props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch', 'dataGridOptions', 'orderType'],
+>>>>>>> remotes/origin/v4.0.0
 
     watch: {
       'dataGridStorage': function() {
@@ -142,6 +151,11 @@
         _this.$emit('lazyloadSend', 123)
       })
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> remotes/origin/v4.0.0
       // $(".xj-report-table-container").mCustomScrollbar({
       //   theme: "minimal-dark",
       //   axis: 'y',
@@ -176,6 +190,15 @@
       this.tabCellHeight()
     },
     methods: {
+      openLabel (parm, caty) {
+        this.$store.dispatch('getLabelData', {
+          type: '3',
+          data: Object.assign({}, parm, {
+            productTypeId: caty.productTypeId,
+            orderType: this.orderType,
+          }, this.dataGridOptions)
+        })
+      },
       //重置index
       resetIndex(index) {
         if(index == 0) applyIndex = 0

@@ -371,7 +371,20 @@
               </div>
               <div class="rp_dataGridTemp" :class="tabShow">
                 <!--v-loading = "loading" element-loading-text="数据查询中"-->
-                <report-detail :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :isSelDelect="isSelDelect" :isRole='receiptsIntroList.isRole' @scrollClass="tabScrollShow" @delectBack="delBack" @messageBack="messageBack" :newList="newList" @lazyloadSend="sendlayLoad" @sortList="sortListAct" :reportType="getReportType()">
+                <report-detail
+                  :dataGridOptions="dataGridOptions"
+                  :orderType="'04'"
+                  :dataGridStorage="dataGridStorage"
+                  :tabSwitch="tabSwitch"
+                  :isSelDelect="isSelDelect"
+                  :isRole='receiptsIntroList.isRole'
+                  :reportType="getReportType()"
+                  :newList="newList"
+                  @scrollClass="tabScrollShow"
+                  @delectBack="delBack"
+                  @messageBack="messageBack"
+                  @lazyloadSend="sendlayLoad"
+                  @sortList="sortListAct">
                 </report-detail>
               </div>
               <div class="btn-list">
@@ -402,7 +415,7 @@
                   <span class="iconfont icon-shenhebohui"></span>
                   <span>驳回审核</span>
                 </div>
-                <div class="btn" @click="exportTab()">
+                <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
                   <span class="iconfont icon-daochu"></span>
                   <span>导出表格</span>
                 </div>

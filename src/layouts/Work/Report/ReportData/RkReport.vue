@@ -13,9 +13,9 @@
           <HeaderDropDownMenu class="selected_dropdown" titleName="入库库位" dataType="库位" :propList="repositoryList" @dropReturn="dropReturn" @clearInfo="clearInfo">
           </HeaderDropDownMenu>
 
-          <span class="spaceMark">|</span>
+<!--           <span class="spaceMark">|</span>
           <Cascade :propList="productCategory" titleName="产品类别" @clear="callProductCategory" @dropReturn="changeVaue">
-          </Cascade>
+          </Cascade> -->
           <span class="spaceMark">|</span>
           <HeaderDropDownMenu class="selected_dropdown" titleName="供应商" dataType="供应商" :propList="providerList" @dropReturn="dropReturn" @clearInfo="clearInfo">
           </HeaderDropDownMenu>
@@ -207,7 +207,23 @@
         </div>
 
         <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
+<<<<<<< HEAD
           <report-detail ref="ReportDetail" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" @scrollClass="tabScrollShow" :positionSwitch="positionSwitch" :newList="newList" @lazyloadSend="lazyloadSend" @sortList="sortListAct" :reportType="getReportType()">
+=======
+          <report-detail
+            ref="ReportDetail"
+            :dataGridStorage="dataGridStorage"
+            :tabSwitch="tabSwitch"
+            :positionSwitch="positionSwitch"
+            :newList="newList"
+            :reportType="getReportType()"
+            :dataGridOptions="dataGridOptions"
+            :orderType="'01'"
+            @scrollClass="tabScrollShow"
+            @lazyloadSend="lazyloadSend"
+            @sortList="sortListAct"
+          >
+>>>>>>> remotes/origin/v4.0.0
           </report-detail>
           <!-- 数据加载控件 bengin-->
           <!-- <div class="loadControl">
@@ -232,7 +248,7 @@
         </Lodop>
       
       <div class="utilsBtn flex flex-v flex-pack-justify">
-        <div class="btn" @click="exportTab()">
+        <div v-if="tabClassActive.index != 0" class="btn" @click="exportTab()">
           <i class="iconfont icon-daochu"></i>
           <span>导出报表</span>
         </div>
