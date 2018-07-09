@@ -1,14 +1,14 @@
 <template>
 <transition name="tp-ani">
   <header class="app-header not-print">
-      
+
       <h1 class="logo">
           <img class="companyLogo" v-if='companyInfo' :src="companyInfo ? companyInfo.logo : ''">
           <span class="company-name-now" v-if='companyInfo'>{{companyInfo.companyName}}</span>
           <!--公司切换-->
           <el-dropdown @command="switchCompany" trigger="click" v-if="companyList1.length>1">
             <span class="el-dropdown-link"><i class="iconfont icon-icon_qiehuangongsi"></i></span>
-            
+
                 <el-dropdown-menu slot="dropdown"  class="layout-drop-item">
                   <div class="header-layout">
                       <el-dropdown-item
@@ -19,15 +19,15 @@
                       </el-dropdown-item>
                   </div>
                       <el-dropdown-item v-if="isAllowCreate" @click.native="createComp"><i class="iconfont icon-jia2 icon-create-company"></i>创建公司</el-dropdown-item>
-                      
+
                 </el-dropdown-menu>
           </el-dropdown>
-          
+
       </h1>
 
       <div class="page-side">
           <div class="menuTabs">
-             <!--  <menutabs></menutabs> -->
+               <menutabs></menutabs>
           </div>
           <div class="button">
               <!-- 搜索模块 begin  -->
@@ -141,7 +141,7 @@
         <div class="page-wrap">
 				  <component :showAll="showAll" :listDetails="ListDetails" :is="panel" :panelType="panelType" :serchKey="searchText" @close="close" @openMemberByList="openMemberByList"></component>
 			  </div>
-        
+
       </el-dialog>
       <!-- 点击了商品的弹窗 -->
       <el-dialog :title="productTypeName" top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="DataShow" customClass="ruleOption detailsBounced h-770">
@@ -191,7 +191,7 @@
       </el-dialog>
       <!-- 点击了会员列表 -->
       <member-info
-        @closeReturn="closeEditReturn" 
+        @closeReturn="closeEditReturn"
         :memberId="memberId"
         :shopId="shopId"
         :memberInfoFlag="editLeaguer">
@@ -231,7 +231,7 @@ export default {
     return {
       statusREfresh: false,
       orderNum:'',
-      
+
       skinConf: [],
       searchText: "",
       searchTypeText: "商品",
@@ -248,11 +248,11 @@ export default {
       ListDetails: false, // 列表弹框
 
       DataShow: false,
-      
+
       tabList: [
         '商品',
         '单据',
-        '会员'	
+        '会员'
       ],
       panel: ProductList,// 对应的页面
       actIndex:'0', // 对应选中的参数
@@ -314,7 +314,7 @@ export default {
         }
       },
 
-        
+
       orderList: [], // 对应的单据
       productList: [], // 对应的商品
       memberListData: [], // 对应的会员
@@ -328,7 +328,7 @@ export default {
       productId: '',
 
       orderListST:[], // 数据列表
-      
+
       productType: '',
       locationName: '',
       productClass: '',
@@ -1018,7 +1018,7 @@ export default {
           this.panel = ProductList
           this.panelType = type
           this.actIndex = type + ''
-          
+
           break;
         case 1:
           if(showAll) {
@@ -1030,21 +1030,21 @@ export default {
           this.panelType = type
           this.actIndex = type + ''
 
-          
+
           break;
         case 2:
           if(showAll) {
             this.showAll = true
           } else {
             this.showAll = false
-          } 
+          }
           this.panel = memberList
           this.panelType = type
-          this.actIndex = type + '' 
+          this.actIndex = type + ''
 
-                  
+
           break;
-      
+
         default:
           break;
       }
@@ -1083,7 +1083,7 @@ export default {
     watchCloseIcon() {
       if (this.searchText != "") {
         this.iconShow = false;
-        this.getHomepageSearchData()        
+        this.getHomepageSearchData()
       } else {
         this.iconShow = true;
         this.orderList = []
@@ -1150,7 +1150,7 @@ export default {
     searchType(command) {
       //单击搜索类型切换
       this.searchTypeText = command;
-      
+
     },
     //selectMenu
     selectMenu(command) {
@@ -1186,7 +1186,7 @@ export default {
     tabAction(index) {
         console.log(index)
         this.actIndex = index + ''
-        this.panelType = index        
+        this.panelType = index
 				switch(index) {
           case 0:
             this.panel = ProductList
@@ -1247,7 +1247,7 @@ export default {
         case '11':
           return '服务'
           break;
-      
+
         default:
           break;
       }
@@ -1344,7 +1344,7 @@ export default {
         case '2':
           return '旧料'
           break;
-      
+
         default:
           break;
       }
@@ -1362,7 +1362,7 @@ export default {
         }
       }
     },
-    
+
   }
 };
 </script>
@@ -1467,7 +1467,7 @@ export default {
           font-weight: bold;
           padding: 4px 0 4px 0;
           background-color: transparent;
-        
+
         }
         input::-webkit-input-placeholder {
           color: #d6d6d6;
@@ -1816,10 +1816,10 @@ export default {
             color: #2993f8;
           }
           .gnn span {
-            color: #2993f8;            
+            color: #2993f8;
           }
           .slocation {
-            font-size: 12px;          
+            font-size: 12px;
             color: #2993f8;
           }
           background: #f2f2f2;
@@ -1861,7 +1861,7 @@ export default {
   color: #ff6e88 !important;
 }
 </style>
- 
+
 <style lang="scss">
 @import "~assets/css/_fontManage.scss";
 
@@ -1871,7 +1871,7 @@ export default {
 }
 
 .ruleOption.detailsBounced {
-  
+
   .el-dialog__header {
     padding-left: 4px;
     line-height: 68px;

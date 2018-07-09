@@ -12,6 +12,8 @@ export const JaTools = {
      */
     print(template, dataList) {
         debugger
+        console.time('toDom');
+
         let pageList = JaTools.transformation(template, dataList);
         let html = [];
         $('body').css({'overflow': 'auto'}).append('<div id="print_box"></div>');
@@ -25,8 +27,9 @@ export const JaTools = {
         for (let page of pageList) {
             $print.append(JaTools.transformationDataToHtml(page));
         }
-
+        console.timeEnd('toDom');
         const fun = async function () {
+            console.time('toCanvas');
             let nodeArr = document.getElementById('print_box').children;
             let scale = 5;
             let arr = [];
@@ -48,8 +51,8 @@ export const JaTools = {
                 let dataUrl = await JaTools.canvasToDataURL(node, opts);
                 arr.push(dataUrl);
             }
-            console.log(arr);
             $print.remove();
+            console.timeEnd('toCanvas');
             JaTools.startPrint({
                 scale: scale,
                 template: template,
@@ -59,6 +62,8 @@ export const JaTools = {
         fun();
     },
     startPrint(opt) {
+        console.time('toPDF');
+
         let width = opt.template.width * opt.scale;
         let height = opt.template.height * opt.scale;
         let rotateDeg = width > height ? 'landscape' : '';
@@ -74,6 +79,8 @@ export const JaTools = {
         iframe.style.display = 'block';
         document.getElementById('closePrint').style.display = 'block';
         iframe.src = doc.output('datauristring');//在iframe中显示
+        console.timeEnd('toPDF');
+
     },
     canvasToDataURL(node, opts) {
         return new Promise((resolve, reject) => {

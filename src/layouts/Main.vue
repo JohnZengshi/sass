@@ -1,132 +1,127 @@
 <template>
-  <div class="app-site-scope" :class="isClassAuto == 'true' ? 'active' : ''">
-  	<component-header 
-        @messageBack="dataBack"
-        @goPersonalInfo="openPersonal"
-  		:userInfo = "userInfo"
-        :isAllowCreate="isAllowCreate"
-  		:companyInfo="companyInfo">
-  	</component-header>
-  	
-    <com-menu :rootList="rootList" @setScopeSize="setScopeSize"></com-menu>
-    <div class="app-main" @click="wholdClick" @scroll="scrollFun($event)">
+    <div class="app-site-scope" :class="isClassAuto == 'true' ? 'active' : ''">
+        <component-header @messageBack="dataBack" @goPersonalInfo="openPersonal" :userInfo="userInfo" :isAllowCreate="isAllowCreate" :companyInfo="companyInfo"></component-header>
 
-        <router-view></router-view>
+        <com-menu :rootList="rootList" @setScopeSize="setScopeSize"></com-menu>
+        <div class="app-main" @click="wholdClick" @scroll="scrollFun($event)">
+            <router-view></router-view>
 
-        <div class="index-img" v-if="isImg">
-            <img src="~static/img/index.png">
+            <div class="index-img" v-if="isImg">
+                <img src="~static/img/index.png">
+            </div>
+
         </div>
 
+        <!-- 全局报错 -->
+        <ErrorCode v-if="errorCode"></ErrorCode>
+
+        <!-- 全局弹窗 -->
+        <!--     <el-dialog :visible.sync="createCompDialog" custom-class="createDialog">
+                <div>
+                    <div class="dia-title">{{diaTitle}}</div>
+                    <div class="dia-subtitle">请先加入/创建属于您的公司</div>
+                    <div class="dia-main">
+                        <img  src="./../assets/img/yun.png">
+                        <input v-model="companyName" type="text" placeholder="输入公司名称">
+                    </div>
+                    <div class="dia-btn" @click.stop="createCompanyAct()">创建</div>
+                </div>
+            </el-dialog> -->
+        <el-dialog :visible.sync="successDialog" custom-class="sucDialog">
+            <img src="./../assets/img/success.png">
+            <div class="dia-title">恭喜您，创建公司成功</div>
+            <div class="dia-subtitle">我们已经免费为您开通了第一家店铺</div>
+            <div class="foot-word"><span class="span1">{{num}}<i>s</i></span>后进入<span class="span2">组织架构</span></div>
+        </el-dialog>
+        <el-dialog :visible.sync="personalInfo" custom-class="perDialog">
+            <div slot="title" class="dia-head">
+                <!--<i class="iconfont icon-bianji"></i>-->
+            </div>
+            <div class="top-block">
+                <img style="cursor: pointer;" class="bg-img" :src="userInfo.backgroundMap" @click="selectFile(2)"> <!-- ./../assets/img/timg.jpg -->
+                <div class="head-block">
+                    <!-- <img id="preview_img" @click="selectFile(1)" :src="userInfo.userLogo"> -->
+                    <FormatImg :logo="userInfo.userLogo" @click.native="selectFile(1)" class="img" id="preview_img" :userName="userInfo.userName" :size="84"></FormatImg>
+                    <input style="display: none;" type="file" id="file_input" @change="changeFileInput"/>
+                </div>
+                <div class="title-name">
+                    <span>{{userInfo.userName}}<i></i></span>
+                </div>
+                <div class="title-sub">
+                    <input v-focus="editType == 0" v-if="editType == 0" v-model="userInfo.signature" @blur="blurAndUpdateUser($event, 8)">
+                    <span v-else @click="toEdting(0)">{{userInfo.signature}}</span>
+
+                </div>
+                <span v-show="false" class="cover" @click="selectFile(2)" id="preview_img1">更换封面</span>
+            </div>
+            <div class="bottom-block">
+                <ul>
+                    <li>
+                        <label>人脸识别<i></i></label>
+                        <div class="operate-block" style="cursor: pointer;">
+                            <UploadingImg :type="1" @cosImg="cosImg">
+                                <!--    <div class="face-recognition-tit">{{filterFaceFlag(userInfo.faceFlag)}} ></div> -->
+                                <div class="face-recognition-tit">{{faceImageList.length ? '人脸图片已通过审核' : '请上传清晰正面照'}} ></div>
+                            </UploadingImg>
+                            <!-- <input class="input-class" v-focus="editType == 1" v-if="editType == 1" v-model="userInfo.userName" type="text" @blur="blurAndUpdateUser($event, 2)">
+                                <span class="show-box" @click="toEdting(1)" v-else >{{userInfo.userName}}</span> -->
+                        </div>
+                    </li>
+                    <li>
+                        <label>姓 名<i></i></label>
+                        <div class="operate-block">
+                            <input class="input-class" v-focus="editType == 1" v-if="editType == 1" v-model="userInfo.userName" type="text" @blur="blurAndUpdateUser($event, 2)">
+                            <span class="show-box" @click="toEdting(1)" v-else>{{userInfo.userName}}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <label>性 别<i></i></label>
+                        <div class="operate-block">
+                            <div v-if="editType == 2">
+                                <input class="radio" @click="blueAndUpdataSex(1)" :checked="userInfo.sex == 1" type="radio" name="sex">
+                                男
+                                <input class="radio sed" @click="blueAndUpdataSex(2)" :checked="userInfo.sex == 2" type="radio" name="sex">
+                                女
+                            </div>
+                            <span class="show-box" @click="toEdting(2)" v-else>{{userInfo.sex == 1 ? "男" : userInfo.sex == 2 ? "女" : ''}}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <label>电 话<i></i></label>
+                        <div class="operate-block">
+                            <!--<input v-focus="editType == 3" v-if="editType == 3" v-model="userInfoData1.phone" type="text" @blur="blurAndUpdateUser($event, 1)">-->
+                            <span class="show-box">{{userInfo.phone}}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <label>邮 箱<i></i></label>
+                        <div class="operate-block">
+                            <input class="input-class" v-focus="editType == 5" v-if="editType == 5" v-model="userInfo.email" type="text" @blur="blurAndUpdateUser($event, 3)">
+                            <span class="show-box" @click="toEdting(5)" v-else>{{userInfo.email}}</span>
+                        </div>
+                    </li>
+                    <li>
+                        <label>地 址<i></i></label>
+                        <div class="operate-block">
+                            <AddressSelect v-if="editType == 4" @addressReturn="SelectArea"></AddressSelect>
+                            <input type="text" v-model="pcaValue" v-if="editType == 4">
+                            <span v-else @click="toEdting(4)" class="show-box">{{userInfo.provinceName + ' ' + userInfo.cityName + ' ' + userInfo.areaName}}</span>
+
+                        </div>
+                    </li>
+                    <li>
+                        <label>详细地址<i></i></label>
+                        <div class="operate-block">
+                            <input class="input-class" v-focus="editType == 6" v-if="editType == 6" v-model="userInfo.address" type="text" @blur="blurAndUpdateUser($event, 5)">
+                            <span class="show-box" @click="toEdting(6)" v-else>{{userInfo.address}}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </el-dialog>
+
+        <facePopup></facePopup>
     </div>
-
-    <!-- 全局报错 -->
-    <ErrorCode v-if="errorCode"></ErrorCode>
-
-    <!-- 全局弹窗 -->
-<!--     <el-dialog :visible.sync="createCompDialog" custom-class="createDialog">
-        <div>
-            <div class="dia-title">{{diaTitle}}</div>
-            <div class="dia-subtitle">请先加入/创建属于您的公司</div>
-            <div class="dia-main">
-                <img  src="./../assets/img/yun.png">
-                <input v-model="companyName" type="text" placeholder="输入公司名称">
-            </div>
-            <div class="dia-btn" @click.stop="createCompanyAct()">创建</div>
-        </div>
-    </el-dialog> -->
-    <el-dialog :visible.sync="successDialog" custom-class="sucDialog">
-        <img  src="./../assets/img/success.png">
-        <div class="dia-title">恭喜您，创建公司成功</div>
-        <div class="dia-subtitle">我们已经免费为您开通了第一家店铺</div>
-        <div class="foot-word"><span class="span1">{{num}}<i>s</i></span>后进入<span class="span2">组织架构</span></div>
-    </el-dialog>
-    <el-dialog :visible.sync="personalInfo" custom-class="perDialog">
-        <div slot="title" class="dia-head">
-            <!--<i class="iconfont icon-bianji"></i>-->
-        </div>
-        <div class="top-block">
-            <img style="cursor: pointer;" class="bg-img" :src="userInfo.backgroundMap" @click="selectFile(2)"> <!-- ./../assets/img/timg.jpg -->
-            <div class="head-block">
-                <!-- <img id="preview_img" @click="selectFile(1)" :src="userInfo.userLogo"> -->
-                <FormatImg :logo="userInfo.userLogo" @click.native="selectFile(1)" class="img" id="preview_img" :userName="userInfo.userName" :size="84"></FormatImg>
-                <input style="display: none;" type="file" id="file_input" @change="changeFileInput"/>
-            </div>
-            <div class="title-name">
-                <span>{{userInfo.userName}}<i></i></span>
-            </div>
-            <div class="title-sub">
-                <input v-focus="editType == 0" v-if="editType == 0" v-model="userInfo.signature" @blur="blurAndUpdateUser($event, 8)">
-                <span v-else @click="toEdting(0)">{{userInfo.signature}}</span>
- 
-            </div>
-            <span v-show="false" class="cover" @click="selectFile(2)" id="preview_img1">更换封面</span>
-        </div>
-        <div class="bottom-block">
-            <ul>
-                <li>
-                    <label>人脸识别<i></i></label>
-                    <div class="operate-block" style="cursor: pointer;">
-                        <UploadingImg
-                            :type="1"
-                            @cosImg="cosImg"
-                        >
-                         <!--    <div class="face-recognition-tit">{{filterFaceFlag(userInfo.faceFlag)}} ></div> -->
-                            <div class="face-recognition-tit">{{faceImageList.length ? '人脸图片已通过审核' : '请上传清晰正面照'}} ></div>
-                        </UploadingImg>
-                    <!-- <input class="input-class" v-focus="editType == 1" v-if="editType == 1" v-model="userInfo.userName" type="text" @blur="blurAndUpdateUser($event, 2)">
-                        <span class="show-box" @click="toEdting(1)" v-else >{{userInfo.userName}}</span> -->
-                    </div>
-                </li>
-                <li>
-                    <label>姓 名<i></i></label>
-                    <div class="operate-block">
-                        <input class="input-class" v-focus="editType == 1" v-if="editType == 1" v-model="userInfo.userName" type="text" @blur="blurAndUpdateUser($event, 2)">
-                        <span class="show-box" @click="toEdting(1)" v-else >{{userInfo.userName}}</span>
-                    </div>
-                </li>
-                <li>
-                    <label>性 别<i></i></label>
-                    <div class="operate-block">
-                        <div v-if="editType == 2"><input class="radio" @click="blueAndUpdataSex(1)" :checked="userInfo.sex == 1" type="radio" name="sex">男 <input class="radio sed" @click="blueAndUpdataSex(2)" :checked="userInfo.sex == 2" type="radio" name="sex">女</div>
-                        <span class="show-box" @click="toEdting(2)" v-else>{{userInfo.sex == 1 ? "男" : userInfo.sex == 2 ? "女" : ''}}</span>
-                    </div>
-                </li>
-                <li>
-                    <label>电 话<i></i></label>
-                    <div class="operate-block">
-                        <!--<input v-focus="editType == 3" v-if="editType == 3" v-model="userInfoData1.phone" type="text" @blur="blurAndUpdateUser($event, 1)">-->
-                        <span class="show-box">{{userInfo.phone}}</span>
-                    </div>
-                </li>
-                <li>
-                    <label>邮 箱<i></i></label>
-                    <div class="operate-block">
-                        <input class="input-class" v-focus="editType == 5" v-if="editType == 5" v-model="userInfo.email" type="text" @blur="blurAndUpdateUser($event, 3)">
-                        <span class="show-box" @click="toEdting(5)" v-else >{{userInfo.email}}</span>
-                    </div>
-                </li>
-                <li>
-                    <label>地 址<i></i></label>
-                    <div class="operate-block">
-                        <AddressSelect v-if="editType == 4" @addressReturn="SelectArea"></AddressSelect>
-                        <input type="text" v-model="pcaValue" v-if="editType == 4">
-                        <span v-else @click="toEdting(4)" class="show-box">{{userInfo.provinceName + ' ' + userInfo.cityName + ' ' + userInfo.areaName}}</span>
-                        
-                    </div>
-                </li>
-                <li>
-                    <label>详细地址<i></i></label>
-                    <div class="operate-block">
-                        <input class="input-class" v-focus="editType == 6" v-if="editType == 6" v-model="userInfo.address" type="text" @blur="blurAndUpdateUser($event, 5)">
-                        <span class="show-box" @click="toEdting(6)" v-else >{{userInfo.address}}</span>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </el-dialog>
-
-    <facePopup></facePopup>
-  </div>
 </template>
 
 <script>
@@ -138,9 +133,9 @@ import baseApi from '../Api/Base/base'
 import AddressSelect from 'src/components/template/AddressSelect'
 import UploadingImg from 'base/uploading/UploadingImg'
 import {
-	seekMySelfWorkApplyList, 
-	seekPermissionList,
-	seekCompanyList,
+    seekMySelfWorkApplyList,
+    seekPermissionList,
+    seekCompanyList,
     seekGetUserInfo,
     createCompany,
     seekGetAddress,
@@ -188,7 +183,7 @@ export default {
                 objectId: ''
             },
             shengList: [],
-            cityNameList : [],
+            cityNameList: [],
             areaList: [],
             editType: null,
             isEditGraph: true, // 是否编辑个性签名
@@ -213,7 +208,7 @@ export default {
             rootList: [], // 一级权限列表
             twoRootList: [], // 二级权限列表
             rootApplySecondList: {},
-            isClassAuto : false,
+            isClassAuto: false,
             userInfoData: {},
             userType: '',
             dataType: '',
@@ -235,7 +230,7 @@ export default {
             'errorCode',
             "shopListByCo", // 店铺列表
         ]),
-         computeUserLogo: function() {
+        computeUserLogo: function () {
             if (this.userInfo) {
                 return this.userInfo.userLogo ? this.userInfo.userLogo : 'static/img/userphone.png'
             }
@@ -249,23 +244,23 @@ export default {
             }
         }
     },
-    created () {
+    created() {
         this.userRoleList()
         this.getSeekUserInfo()
         this.getSeekGetUserInfo(); // 职位信息
         this.getSeekCompanyInfo(); // 公司详情
-        this.permissionList() // 功能权限列表 
+        this.permissionList() // 功能权限列表
         this.setScopeSize(sessionStorage.getItem('_systemFixed'))
         this._seekGetAddress()
         this.userRoleList1()
         this.getShopListByCo()
         this._seekFaceUserImageList()
     },
-    beforeDestroy () {
+    beforeDestroy() {
         // this.closeWebSocket()
         this.closeCreatedWebSocket()
     },
-    mounted () {
+    mounted() {
         // this.routerActive()
         eventBus.$on('cut-web-socket', (parm) => {
             this.currentFaceShop = parm
@@ -277,19 +272,19 @@ export default {
             this._seekGetShopListByCo()
             setTimeout(() => {
                 if (!this.userInfo.userName) {
-                   this.getSeekUserInfo() 
+                    this.getSeekUserInfo()
                 }
             }, 1000)
         })
     },
     watch: {
-        'route' (to, form) {
+        'route'(to, form) {
             console.log('路由改变了', to, from)
         },
         'personalInfo': function () {
             this.editType = null
         },
-        'shopListByCo' () {
+        'shopListByCo'() {
             if (this.shopListByCo[0]) {
                 // if (this.closeWebSocket) {
                 //     this.closeWebSocket()
@@ -306,7 +301,7 @@ export default {
             "getShopListByCo", // 店铺列表
         ]),
         // 新店铺列表
-        _seekGetShopListByCo () {
+        _seekGetShopListByCo() {
             let options = {
                 page: '1',
                 pageSize: 9999,
@@ -320,96 +315,96 @@ export default {
                         this._downloadTable()
                     } else {
                         this.$message({
-                           message: res.data.msg,
-                           type: 'warning'
+                            message: res.data.msg,
+                            type: 'warning'
                         })
                     }
                 })
         },
         // 获取推送地址
-        _downloadTable () {
-          let options = {
-            "type":"1",
-            "infoType":"003"
-          }
-          downloadTable(options)
-            .then(res => {
-              // ws://192.168.100.110:9097/yunzhubao-bat/ws/{companyId}/1?msgType=09&os={client}&userId={userId}&env=test
-              if (res.data.state == 200) {
-                let url = res.data.data.url
-                url = url.replace('{companyId}', sessionStorage.getItem('companyId'))
-                url = url.replace('{client}', 'web')
-                url = url.replace('{userId}', sessionStorage.getItem('id'))
-                this.createdWebSocket(url)
-                // this.url = url
-                console.log('组装好的地址', url)
-              }
-            })
+        _downloadTable() {
+            let options = {
+                "type": "1",
+                "infoType": "003"
+            }
+            downloadTable(options)
+                .then(res => {
+                    // ws://192.168.100.110:9097/yunzhubao-bat/ws/{companyId}/1?msgType=09&os={client}&userId={userId}&env=test
+                    if (res.data.state == 200) {
+                        let url = res.data.data.url
+                        url = url.replace('{companyId}', sessionStorage.getItem('companyId'))
+                        url = url.replace('{client}', 'web')
+                        url = url.replace('{userId}', sessionStorage.getItem('id'))
+                        this.createdWebSocket(url)
+                        // this.url = url
+                        console.log('组装好的地址', url)
+                    }
+                })
         },
         // 创建连接
-        createdWebSocket (parm) {
-          let _self = this
-          let ws = new WebSocket(parm)
-          // 连接成功
-          ws.onopen = function(evt) {
-            console.log('测试连接成功', evt)
-          }
-          // 有新消息来
-          ws.onmessage = function(evt) {
-            console.log('新消息--===', evt.data)
-            let datas = JSON.parse(evt.data)
-            if (datas.msgType == '09') { // 登出
-              if (datas.os == 'app') {
-                if (datas.opType == 'qry') {
-                  ws.send(JSON.stringify({"os":"web","fs":"xiaohua","msgType":"09","status":"1"}))
-                } else if (datas.opType == 'out') {
-                    operateLogout()
-                        .then(res => {
-                            if (res.data.state == 200) {
-                                ws.close()
-                                _self.loginOut()
-                                // sessionStorage.clear()
-                                // localStorage.clear()
-                                // _self.$router.push({path: '/member/login'})
-                                // let body = document.getElementById('body')
-                                // body.style.background = '#f5f8f7'
-                            } else {
-                                _self.$message({
-                                    message: res.data.msg,
-                                    type: 'warning'
-                                });
-                            }
-                        })
-                }
-              }
-            } else if (datas.msgType == '08') { // 人脸识别
-                console.log('收到人脸的数据', evt)
-                _self.faceWebsocked(datas)
-            } else if (datas.msgType == '10' && sessionStorage.getItem("tokenId") != datas.tokenId && datas.os == 'web' && sessionStorage.getItem("id") == datas.userId) { // 退出
-                ws.close()
-                Vue.prototype.loginPopup.show()
-                // _self.loginOut()
+        createdWebSocket(parm) {
+            let _self = this
+            let ws = new WebSocket(parm)
+            // 连接成功
+            ws.onopen = function (evt) {
+                console.log('测试连接成功', evt)
             }
-          }
-          ws.error = function(evt) {
-            console.log('测试连接失败', evt)
-          }
-          _self.closeCreatedWebSocket = () => {
-            ws.close()
-          }
-          window.onbeforeunload = function() {
-            ws.send({"companyId":sessionStorage.getItem('companyId'),"msgType":"09","os":"web","userId":sessionStorage.getItem('id'),"status":"1000"})
-            ws.close()
-          }
+            // 有新消息来
+            ws.onmessage = function (evt) {
+                console.log('新消息--===', evt.data)
+                let datas = JSON.parse(evt.data)
+                if (datas.msgType == '09') { // 登出
+                    if (datas.os == 'app') {
+                        if (datas.opType == 'qry') {
+                            ws.send(JSON.stringify({"os": "web", "fs": "xiaohua", "msgType": "09", "status": "1"}))
+                        } else if (datas.opType == 'out') {
+                            operateLogout()
+                                .then(res => {
+                                    if (res.data.state == 200) {
+                                        ws.close()
+                                        _self.loginOut()
+                                        // sessionStorage.clear()
+                                        // localStorage.clear()
+                                        // _self.$router.push({path: '/member/login'})
+                                        // let body = document.getElementById('body')
+                                        // body.style.background = '#f5f8f7'
+                                    } else {
+                                        _self.$message({
+                                            message: res.data.msg,
+                                            type: 'warning'
+                                        });
+                                    }
+                                })
+                        }
+                    }
+                } else if (datas.msgType == '08') { // 人脸识别
+                    console.log('收到人脸的数据', evt)
+                    _self.faceWebsocked(datas)
+                } else if (datas.msgType == '10' && sessionStorage.getItem("tokenId") != datas.tokenId && datas.os == 'web' && sessionStorage.getItem("id") == datas.userId) { // 退出
+                    ws.close()
+                    Vue.prototype.loginPopup.show()
+                    // _self.loginOut()
+                }
+            }
+            ws.error = function (evt) {
+                console.log('测试连接失败', evt)
+            }
+            _self.closeCreatedWebSocket = () => {
+                ws.close()
+            }
+            window.onbeforeunload = function () {
+                ws.send({"companyId": sessionStorage.getItem('companyId'), "msgType": "09", "os": "web", "userId": sessionStorage.getItem('id'), "status": "1000"})
+                ws.close()
+            }
         },
-        loginOut () {
+        loginOut() {
             sessionStorage.clear()
             localStorage.clear()
             this.$router.push({path: '/member/login'})
             let body = document.getElementById('body')
             body.style.background = '#f5f8f7'
         },
-        faceWebsocked (datas) {
+        faceWebsocked(datas) {
             if (this.currentFaceShop) {
                 if (datas.shopId != this.currentFaceShop) {
                     return
@@ -459,15 +454,15 @@ export default {
 
             eventBus.$emit('new-client-come-on')
         },
-        establishWebSocket (parm) {
+        establishWebSocket(parm) {
             let _self = this;
             let socketUrl = process.env.NODE_ENV === 'development' ? 'ws://uat.yunzhubao.com:8080/yunzhubao/ws/facepass/' : 'wss://app.yunzhubao.com:9092/yunzhubao/ws/facepass/'
             // let socketUrl = 'wss://app.yunzhubao.com:9092/yunzhubao/ws/facepass/'
             let ws = new WebSocket(`${socketUrl}${parm}`)
-            ws.onopen = function(evt) {
+            ws.onopen = function (evt) {
                 console.log('访客连接成功', evt)
             }
-            ws.onmessage = function(evt) {
+            ws.onmessage = function (evt) {
                 console.log('有访客来', evt)
                 let hintTit = '有新访客到店，请及时接待'
                 let datas = JSON.parse(evt.data)
@@ -505,20 +500,20 @@ export default {
 
                 eventBus.$emit('new-client-come-on')
             }
-            ws.error = function(evt) {
+            ws.error = function (evt) {
                 console.log('访客连接失败', evt)
             }
             // _self.closeWebSocket = () => {
             //     ws.close()
             // }
-                //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+            //监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
             // window.onbeforeunload = function() {
             //     localStorage.setItem('浏览器执行了关闭', '浏览器执行了关闭')
             //     alert('关闭窗口')
             // }
 
         },
-        filterFaceFlag (parm) {
+        filterFaceFlag(parm) {
             switch (parm) {
                 case '1':
                     return '请上传清晰正面照'
@@ -530,10 +525,10 @@ export default {
                     return '请上传清晰正面照'
             }
         },
-        scrollFun (el) {
+        scrollFun(el) {
             eventBus.$emit('scrollTop', {itemTop: el.target.scrollTop, diff: parseInt(el.target.children[0].clientHeight - el.target.clientHeight)})
         },
-        userRoleList1 () {
+        userRoleList1() {
             let options = {
                 userId: sessionStorage.getItem('id')
             }
@@ -549,30 +544,30 @@ export default {
             })
         },
         // ****************************  上传  *****************************************
-        selectFile (type) {
+        selectFile(type) {
             this.updataImgType = type
             document.getElementById("file_input").click();
         },
-        changeFileInput (ev) {
+        changeFileInput(ev) {
             let self = this
             let file = ev.target.files[0];
-            console.log(ev,this.updataImgType);
-            if (file) {   
+            console.log(ev, this.updataImgType);
+            if (file) {
                 let reader = new FileReader();
                 reader.readAsDataURL(ev.target.files[0]);
                 reader.onload = function (e) {
-                if (self.updataImgType == 1) {
-                    document.getElementById("preview_img").src = this.result;
-                    self.uploadHandler(file, 1)
-                } else {
-                    document.getElementById("preview_img1").src = this.result;
-                    self.uploadHandler(file, 11)
-                }
-                
+                    if (self.updataImgType == 1) {
+                        document.getElementById("preview_img").src = this.result;
+                        self.uploadHandler(file, 1)
+                    } else {
+                        document.getElementById("preview_img1").src = this.result;
+                        self.uploadHandler(file, 11)
+                    }
+
                 }
             }
         },
-        uploadHandler (file, type) {
+        uploadHandler(file, type) {
             let self = this;
             let extNameList = file.name.split('.');
             let extName = extNameList[extNameList.length - 1]
@@ -586,69 +581,69 @@ export default {
             let timestamp = new Date().getTime()
             let fileName = userId + '-' + timestamp + '.' + extName
             let cos = new CosCloud({
-            appid: appid,
-            bucket: bucket,
-            region: region,
-            getAppSign: function (callback) {
-                baseApi.apiCall({type: '1'}, getSignUrl).then((response) => {
-                let sign = response.data.data.signStr
-                myFolder = response.data.data.url
-                callback(sign)
-                })
-            }
+                appid: appid,
+                bucket: bucket,
+                region: region,
+                getAppSign: function (callback) {
+                    baseApi.apiCall({type: '1'}, getSignUrl).then((response) => {
+                        let sign = response.data.data.signStr
+                        myFolder = response.data.data.url
+                        callback(sign)
+                    })
+                }
             })
             if (extName == 'png' || extName == 'jpg' || extName == 'JPEG' || extName == 'jpeg') {
-            let successCallBack = function (result) {
-                console.log('获取上传结果:',result);
-                if (result.code === 0) {
-                let data = {
-                    type: type,
-                    objId: userId,
-                    url: result.data.source_url
-                }
-                baseApi.apiCall(data, updateUploadFileURL).then((response) => {
-                    if (response.data.state === 200) {
-                    self.$store.dispatch('getUserInfo');
+                let successCallBack = function (result) {
+                    console.log('获取上传结果:', result);
+                    if (result.code === 0) {
+                        let data = {
+                            type: type,
+                            objId: userId,
+                            url: result.data.source_url
+                        }
+                        baseApi.apiCall(data, updateUploadFileURL).then((response) => {
+                            if (response.data.state === 200) {
+                                self.$store.dispatch('getUserInfo');
+                            }
+                        })
                     }
-                })
                 }
-            }
-            let errorCallBack = function (result) {
-            }
-            let progressCallBack = function (result) {
-            }
-            cos.uploadFile(successCallBack, errorCallBack, progressCallBack, bucket, myFolder + fileName, file, 1) //0表示允许覆盖文件 1表示不允许
+                let errorCallBack = function (result) {
+                }
+                let progressCallBack = function (result) {
+                }
+                cos.uploadFile(successCallBack, errorCallBack, progressCallBack, bucket, myFolder + fileName, file, 1) //0表示允许覆盖文件 1表示不允许
             } else {
-            this.$store.dispatch('workPopupError', "文件格式必须为 *.jpg / *.png / *.jpeg");
-            location.reload();
-            return
+                this.$store.dispatch('workPopupError', "文件格式必须为 *.jpg / *.png / *.jpeg");
+                location.reload();
+                return
             }
         },
         // ****************************  上传  *****************************************
-        SelectProvince (parm) {
+        SelectProvince(parm) {
             this.changeSheng.objectName = parm.objectName
             this.changeSheng.objectId = parm.objectId
             this.changCity.objectName = ''
             this.changCity.objectId = ''
-            this.getCity( parm.objectId )
+            this.getCity(parm.objectId)
         },
-        SelectCity (parm) {
+        SelectCity(parm) {
             this.changCity.objectName = parm.objectName
             this.changCity.objectId = parm.objectId
             this.changeArea.objectName = ''
             this.changeArea.objectId = ''
             this.changeArea.objectName = ''
             this.changeArea.objectId = ''
-            this.getArea( parm.objectId )
+            this.getArea(parm.objectId)
         },
-        SelectArea (parm) {
+        SelectArea(parm) {
             // this.changeArea.objectName = parm.objectName
             // this.changeArea.objectId = parm.objectId
             // this._operateUpdateCompany(4, `${this.changeSheng.objectId}-${this.changCity.objectId}-${this.changeArea.objectId}`, true)
             this.pcaValue = parm.provName + '/' + parm.cityName + '/' + parm.areaName
             this._operateUpdateCompany(4, `${parm.provId}-${parm.cityId}-${parm.areaId}`, true, parm)
         },
-        cosImg (parm) {          
+        cosImg(parm) {
             let options = {
                 imageUrl: parm,
                 serialNo: 1
@@ -662,7 +657,7 @@ export default {
                         });
                         this.editType = null
                         this.$store.dispatch('getUserInfo')
-                        this.$nextTick(()=>{
+                        this.$nextTick(() => {
                             this.personalCenterInfo()
                         })
                     } else {
@@ -673,7 +668,7 @@ export default {
                     }
                 })
         },
-        _seekFaceUserImageList () {
+        _seekFaceUserImageList() {
             seekFaceUserImageList()
                 .then(res => {
                     if (res.data.state == 200) {
@@ -686,7 +681,7 @@ export default {
                     }
                 })
         },
-        _operateUpdateCompany (operateType, objectData, isUpdate) {
+        _operateUpdateCompany(operateType, objectData, isUpdate) {
             let options = {
                 operateType: operateType,
                 objectData: objectData
@@ -700,7 +695,7 @@ export default {
                         });
                         this.editType = null
                         this.$store.dispatch('getUserInfo')
-                        this.$nextTick(()=>{
+                        this.$nextTick(() => {
                             this.personalCenterInfo()
                         })
                         // this.getSeekUserInfo()
@@ -714,43 +709,43 @@ export default {
                 })
         },
         //获取省份
-        _seekGetAddress () {
+        _seekGetAddress() {
             let options = {
-            objectId: '',
-            type: '1'
+                objectId: '',
+                type: '1'
             }
             seekGetAddress(options).then((res) => {
-            this.shengList = res.data.data.dataList
+                this.shengList = res.data.data.dataList
             }, (res) => {
             })
         },
         //获取市
         getCity(objectId) {
             let options = {
-            objectId: objectId,
-            type: '2'
+                objectId: objectId,
+                type: '2'
             }
             seekGetAddress(options).then((res) => {
-            this.cityNameList = res.data.data.dataList
+                this.cityNameList = res.data.data.dataList
             }, (res) => {
             })
         },
-        
+
         //获取区
         getArea(objectId) {
             let options = {
-            objectId: objectId,
-            type: '3'
+                objectId: objectId,
+                type: '3'
             }
             seekGetAddress(options).then((res) => {
-            this.areaList = res.data.data.dataList
+                this.areaList = res.data.data.dataList
             }, (res) => {
             })
         },
-        toEdting (type) {
+        toEdting(type) {
             this.editType = type
         },
-        blueAndUpdataSex (type) {
+        blueAndUpdataSex(type) {
             let options = {
                 operateType: 1,
                 objectData: type
@@ -763,8 +758,8 @@ export default {
                     });
                     this.editType = null
                     this.$store.dispatch('getUserInfo')
-                    
-                    this.$nextTick(()=>{
+
+                    this.$nextTick(() => {
                         this.personalCenterInfo()
                     })
                     // this.getSeekUserInfo()
@@ -782,11 +777,11 @@ export default {
                 });
             })
         },
-        blurAndUpdateUser (evt, type) { // 上传个人信息
+        blurAndUpdateUser(evt, type) { // 上传个人信息
             if (type === 3 && !(/^(\w)+(\.\w+)*@(\w)+((\.\w+)+)$/.test(evt.target.value))) {
                 this.$message({
-                message: '邮箱格式必须为XXX@XX.com/cn ...',
-                type: 'warning'
+                    message: '邮箱格式必须为XXX@XX.com/cn ...',
+                    type: 'warning'
                 });
             } else {
                 let options = {
@@ -806,7 +801,7 @@ export default {
                         this.getSeekUserInfo()
                         this.getSeekGetUserInfo(); // 职位信息
                         this.getSeekCompanyInfo(); // 公司详情
-                        this.permissionList() // 功能权限列表 
+                        this.permissionList() // 功能权限列表
                         this.setScopeSize(sessionStorage.getItem('_systemFixed'))
                         this._seekGetAddress()
                         this.userRoleList1()
@@ -822,16 +817,16 @@ export default {
                     });
                 })
             }
-            
+
         },
-        saveGraph () { // 保存个性签名
+        saveGraph() { // 保存个性签名
             this.isEditGraph = true
         },
-        openPersonal (val) { // 打开个人中心
+        openPersonal(val) { // 打开个人中心
             this.personalInfo = val.flag
             this.personalCenterInfo()
         },
-        personalCenterInfo () { // 个人中心参数初始化
+        personalCenterInfo() { // 个人中心参数初始化
             this.userInfoData1.largeName = this.userInfo.userName
             this.userInfoData1.smallName = this.userInfo.userName
             this.userInfoData1.autograph = this.userInfo.signature
@@ -843,25 +838,25 @@ export default {
             this.userInfoData1.address = this.userInfo.address
             this.userInfoData1.userLogo = this.userInfo.userLogo
         },
-        dataBack (val) {
+        dataBack(val) {
             this.createCompDialog = val.flag
             this.createType = val.type
             this.diaTitle = '创建公司'
         },
-        wholdClick () { // 全局点击
+        wholdClick() { // 全局点击
             let companyId = sessionStorage.getItem('companyId')
             if (!companyId) {
                 this.isImg = true
                 if (this.createCompDialog == false) {
                     this.createCompDialog = true
-                    this.createType = 1   
+                    this.createType = 1
                 }
-                
+
             } else {
                 this.isImg = false
             }
         },
-        routerActive () {
+        routerActive() {
             let companyId = sessionStorage.getItem('companyId')
             if (!companyId) {
                 this.isImg = true
@@ -872,7 +867,7 @@ export default {
                 this.isImg = false
             }
         },
-        goNextpage () { // 去组织架构
+        goNextpage() { // 去组织架构
             let self = this
             this.successDialog = true
             let timer = setInterval(function () {
@@ -886,7 +881,7 @@ export default {
                 //location.reload()
             }, 3000)
         },
-        createCompanyAct () { // 创建公司
+        createCompanyAct() { // 创建公司
             let options = {
                 comName: this.companyName,
                 contactName: this.userInfo.userName,
@@ -916,101 +911,101 @@ export default {
                 });
             })
         },
-        setScopeSize( type ){
+        setScopeSize(type) {
             this.isClassAuto = type + ''
         },
         // 功能权限列表
-        permissionList () {
+        permissionList() {
             seekPermissionList().then((res) => {
-                if( res.data.state === 200 ){
-                this.rootList = res.data.data.dataList
-                /* --临时测试需要，记得删除-- */
-                // this.rootList.push({
-                //     "companyId": "",
-                //     "editable": "N",
-                //     "mainName": "人脸识别",
-                //     "mainType": "10",
-                //     "userId": "e58d8b6ff51840eca738c461f02b4a03",
-                //     "mainLogo": ""
-                // })
-                this.twoRootList = res.data.data.twoDataList
-                //this.routerListShow(this.rootList)
-                this.$store.dispatch('applyList', res.data.data.twoDataList)
-                
-                }else{
+                if (res.data.state === 200) {
+                    this.rootList = res.data.data.dataList
+                    /* --临时测试需要，记得删除-- */
+                    // this.rootList.push({
+                    //     "companyId": "",
+                    //     "editable": "N",
+                    //     "mainName": "人脸识别",
+                    //     "mainType": "10",
+                    //     "userId": "e58d8b6ff51840eca738c461f02b4a03",
+                    //     "mainLogo": ""
+                    // })
+                    this.twoRootList = res.data.data.twoDataList
+                    //this.routerListShow(this.rootList)
+                    this.$store.dispatch('applyList', res.data.data.twoDataList)
+
+                } else {
                     this.$message({
-                    type :'error',
-                    message : res.data.msg
-                })
-            		}
-               
+                        type: 'error',
+                        message: res.data.msg
+                    })
+                }
+
             }, (res) => {
-            
-               this.$message({
-               		type :'error',
-               		message : res.data.msg
-               })
+
+                this.$message({
+                    type: 'error',
+                    message: res.data.msg
+                })
             })
         },
         // 用户角色列表
-        userRoleList () {
+        userRoleList() {
             let options = {
                 userId: sessionStorage.getItem('id')
             }
             seekGetUserInfo(options).then((res) => {
                 //this.$router.push({path: '/member/login'})
-                console.log('获取登录角色数据:',res);
+                console.log('获取登录角色数据:', res);
                 this.userInfoData = res.data.data
                 for (let i = 0; i < this.userInfoData.roleList.length; i++) {
-                if (this.userInfoData.roleList[i].role == 1 || this.userInfoData.roleList[i].role == 2 || this.userInfoData.roleList[i].role == 3) {
-                    this.userType = 1 // 公司职员
-                    //this.dataType = 1
-                    this.isCompany = true
-                    if (this.userInfoData.roleList[i].role == 1) {
-                    sessionStorage.setItem('companyPosition', '1') // 超管
-                    } else if (this.userInfoData.roleList[i].role == 2) {
-                    sessionStorage.setItem('companyPosition', '2') // 管理
-                    } else if (this.userInfoData.roleList[i].role == 3) {
-                    sessionStorage.setItem('companyPosition', '3') // 职员
+                    if (this.userInfoData.roleList[i].role == 1 || this.userInfoData.roleList[i].role == 2 || this.userInfoData.roleList[i].role == 3) {
+                        this.userType = 1 // 公司职员
+                        //this.dataType = 1
+                        this.isCompany = true
+                        if (this.userInfoData.roleList[i].role == 1) {
+                            sessionStorage.setItem('companyPosition', '1') // 超管
+                        } else if (this.userInfoData.roleList[i].role == 2) {
+                            sessionStorage.setItem('companyPosition', '2') // 管理
+                        } else if (this.userInfoData.roleList[i].role == 3) {
+                            sessionStorage.setItem('companyPosition', '3') // 职员
+                        }
+                    } else if (this.userInfoData.roleList[i].role == 4) {
+                        this.userType = 2 // 店长
+                        //this.dataType = 2
+                        this.shopLength = this.userInfoData.roleList.length
+                        this.shopList = this.userInfoData.roleList
+                        this.shopId = this.userInfoData.roleList[0].shopId
+                        this.isShop = true
+                        sessionStorage.setItem('companyPosition', '4') // 店长
+                    } else if (this.userInfoData.roleList[i].role == 5) {
+                        this.userType = 3 // 店员
+                        //this.dataType = 3
+                        this.isShop = true
+                        sessionStorage.setItem('companyPosition', '5') // 店员
                     }
-                } else if (this.userInfoData.roleList[i].role == 4) {
-                    this.userType = 2 // 店长
-                    //this.dataType = 2
-                    this.shopLength = this.userInfoData.roleList.length
-                    this.shopList = this.userInfoData.roleList
-                    this.shopId = this.userInfoData.roleList[0].shopId
-                    this.isShop = true
-                    sessionStorage.setItem('companyPosition', '4') // 店长
-                } else if (this.userInfoData.roleList[i].role == 5) {
-                    this.userType = 3 // 店员
-                    //this.dataType = 3
-                    this.isShop = true
-                    sessionStorage.setItem('companyPosition', '5') // 店员
-                }
                 }
                 if (this.isShop == true && this.isCompany == true) {
-                this.multipleIdentities = true
-                sessionStorage.setItem('multipleIdentities', 'Y')
+                    this.multipleIdentities = true
+                    sessionStorage.setItem('multipleIdentities', 'Y')
                 } else {
-                sessionStorage.setItem('multipleIdentities', 'N')
+                    sessionStorage.setItem('multipleIdentities', 'N')
                 }
                 sessionStorage.setItem('userType', this.userType)
-                
+
                 if (sessionStorage.getItem('userType') == 2) {
-                this.shopManage = true
+                    this.shopManage = true
                 }
             }, (res) => {
             })
         },
-        errorCodeCB () {
+        errorCodeCB() {
             let options = {
                 content: "",
                 type: false
             }
             this.$store.dispatch('workPopupError', options)
-            
+
         }
-        
+
     },
     beforeRouteEnter(to, from, next) {
         // to.meta.keepAlive = false
@@ -1023,325 +1018,323 @@ export default {
             next()
         }
     },
-    
+
 }
 </script>
 <style lang="scss">
-.dropClass {
-    .el-scrollbar {
-        .el-select-dropdown__wrap {
-            .el-select-dropdown__list {
-                min-width: 115px;
+    .dropClass{
+        .el-scrollbar{
+            .el-select-dropdown__wrap{
+                .el-select-dropdown__list{
+                    min-width:115px;
+                }
             }
         }
     }
-}
-.operate-block {
-    position: relative;
-    input {
-        //width: 56px !important;
-        padding: 0;
-    }
-    .face-recognition-tit{
-        width: 100%;
-        cursor: pointer;
-    }
-    .input-class {
-        width: 156px !important;
-    }
-    .el-select {
-        .el-input {
-            .el-input__icon {
-                font-size: 10px;
-                width: 15px;
-                line-height: 26px;
-            }
-            .el-input__inner {
-                padding-left: 5px;
-                padding-right: 10px;
-                font-size: 12px;
+    .operate-block{
+        position:relative;
+        input{
+            //width: 56px !important;
+            padding:0;
+        }
+        .face-recognition-tit{
+            width:100%;
+            cursor:pointer;
+        }
+        .input-class{
+            width:156px !important;
+        }
+        .el-select{
+            .el-input{
+                .el-input__icon{
+                    font-size:10px;
+                    width:15px;
+                    line-height:26px;
+                }
+                .el-input__inner{
+                    padding-left:5px;
+                    padding-right:10px;
+                    font-size:12px;
+                }
             }
         }
+
     }
-
-}
-
-    .createDialog {
-        width: 372px;
-        height: 480px;
+    .createDialog{
+        width:372px;
+        height:480px;
         background:#fff;
-        border-radius: 10px;
-        .dia-title {
-            width: 300px;
+        border-radius:10px;
+        .dia-title{
+            width:300px;
             margin:0 auto;
-            height: 40px;
-            text-align: center;
-            font-size: 24px;
-            color: #2993f8;
+            height:40px;
+            text-align:center;
+            font-size:24px;
+            color:#2993f8;
         }
-        .dia-subtitle {
-            width: 300px;
+        .dia-subtitle{
+            width:300px;
             margin:0 auto;
-            height: 40px;
-            text-align: center;
-            font-size: 16px;
+            height:40px;
+            text-align:center;
+            font-size:16px;
             color:#999;
         }
-        .dia-main {
-            width: 300px;
+        .dia-main{
+            width:300px;
             margin:0 auto;
-            height: 257px;
-            img {
+            height:257px;
+            img{
                 width:150px;
-                height: 150px;
-                display: block;
+                height:150px;
+                display:block;
                 margin:0 auto;
-                margin-bottom: 30px;
+                margin-bottom:30px;
             }
-            input {
-                width: 300px;
-                height: 48px;
+            input{
+                width:300px;
+                height:48px;
                 background:#f1f2f3;
-                border-radius: 10px;
-                padding-left: 24px;
+                border-radius:10px;
+                padding-left:24px;
             }
         }
-        .dia-btn {
-            width: 300px;
-            height: 48px;
+        .dia-btn{
+            width:300px;
+            height:48px;
             background:#2993f8;
-            border-radius: 10px;
-            margin: 0 auto;
+            border-radius:10px;
+            margin:0 auto;
             color:#fff;
             text-align:center;
-            line-height: 48px;
-            font-size: 16px;
-            cursor: pointer;
+            line-height:48px;
+            font-size:16px;
+            cursor:pointer;
         }
     }
-    .sucDialog {
-        width: 372px;
-        height: 341px;
-        border-radius: 10px;
-        padding: 0;
-        img {
-            width: 72px;
-            height: 72px;
-            margin: 0 auto;
-            display: block;
-            margin-bottom: 48px;
-        }
-        .dia-title {
-            width: 300px;
+    .sucDialog{
+        width:372px;
+        height:341px;
+        border-radius:10px;
+        padding:0;
+        img{
+            width:72px;
+            height:72px;
             margin:0 auto;
-            height: 40px;
-            text-align: center;
-            font-size: 24px;
-            color: #2993f8;
+            display:block;
+            margin-bottom:48px;
         }
-        .dia-subtitle {
-            width: 300px;
+        .dia-title{
+            width:300px;
             margin:0 auto;
-            height: 40px;
-            text-align: center;
-            font-size: 16px;
+            height:40px;
+            text-align:center;
+            font-size:24px;
+            color:#2993f8;
+        }
+        .dia-subtitle{
+            width:300px;
+            margin:0 auto;
+            height:40px;
+            text-align:center;
+            font-size:16px;
             color:#999;
         }
-        .foot-word {
-            font-size: 16px;
+        .foot-word{
+            font-size:16px;
             color:#333;
-            text-align: center;
-            .span1 {
+            text-align:center;
+            .span1{
                 color:#2993f8;
-                font-size: 14px;
-                i {
-                    font-style: normal;
-                    font-size: 10px;
+                font-size:14px;
+                i{
+                    font-style:normal;
+                    font-size:10px;
                 }
             }
-            .span2 {
+            .span2{
                 color:#666;
-                cursor: pointer;
+                cursor:pointer;
             }
-            .span2:hover {
+            .span2:hover{
                 color:#2993f8;
             }
         }
     }
-    .perDialog {
-        width: 330px;
-        height: 520px;
-        border-radius: 10px;
-        position: relative;
-        .dia-head + .el-dialog__headerbtn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 10;
+    .perDialog{
+        width:330px;
+        height:520px;
+        border-radius:10px;
+        position:relative;
+        .dia-head + .el-dialog__headerbtn{
+            position:absolute;
+            top:10px;
+            right:10px;
+            z-index:10;
             color:#999;
         }
-        .dia-head {
-            height: 20px;
+        .dia-head{
+            height:20px;
             width:20px;
-            position: absolute;
-            right: 10px;
-            top: 10px;
-            z-index: 10;
-            .iconfont {
-                cursor: pointer;
+            position:absolute;
+            right:10px;
+            top:10px;
+            z-index:10;
+            .iconfont{
+                cursor:pointer;
                 color:#999;
             }
-            .iconfont:hover {
+            .iconfont:hover{
                 color:#2993f8;
             }
         }
-        .top-block {
-            width: 330px;
-            height: 205px;
-            position: absolute;
-            top: 0;
-            left: 0;
-            .bg-img {
-                width: 100%;
-                height: 100%;
-                border-top-left-radius: 10px;
-                border-top-right-radius: 10px;
-                z-index: 0;
+        .top-block{
+            width:330px;
+            height:205px;
+            position:absolute;
+            top:0;
+            left:0;
+            .bg-img{
+                width:100%;
+                height:100%;
+                border-top-left-radius:10px;
+                border-top-right-radius:10px;
+                z-index:0;
             }
 
-            .head-block {
-                width: 84px;
-                height: 84px;
-                position: absolute;
-                top: -20px;
-                left: 50%;
-                margin-left: -42px;
+            .head-block{
+                width:84px;
+                height:84px;
+                position:absolute;
+                top:-20px;
+                left:50%;
+                margin-left:-42px;
                 // border:2px solid #fff;
                 background:#fff;
-                border-radius: 50%;
-                overflow: hidden;
-                box-shadow: 0 10px 5px 1px rgba(0,0,0,0.1);
-                .img {
-                    width: 100%;
-                    height: 100%;
-                    cursor: pointer;
+                border-radius:50%;
+                overflow:hidden;
+                box-shadow:0 10px 5px 1px rgba(0, 0, 0, 0.1);
+                .img{
+                    width:100%;
+                    height:100%;
+                    cursor:pointer;
                 }
-                img {
-                    width: 100%;
-                    height: 100%;
-                    cursor: pointer;
+                img{
+                    width:100%;
+                    height:100%;
+                    cursor:pointer;
                 }
             }
-            .title-name {
-                height: 20px;
-                width: 160px;
-                position: absolute;
-                left: 50%;
-                top: 87px;
-                margin-left: -80px;
-                font-size: 18px;
+            .title-name{
+                height:20px;
+                width:160px;
+                position:absolute;
+                left:50%;
+                top:87px;
+                margin-left:-80px;
+                font-size:18px;
                 color:#333;
-                z-index: 10;
-                text-align: center;
+                z-index:10;
+                text-align:center;
                 //margin: 0 auto;
-                span {
-                    position: relative;
-                    i {
-                        position: absolute;
-                        top: 0;
-                        right: -10px;
+                span{
+                    position:relative;
+                    i{
+                        position:absolute;
+                        top:0;
+                        right:-10px;
                     }
                 }
             }
-            .title-sub {
-                height: 20px;
-                width: 160px;
-                position: absolute;
-                left: 50%;
-                top: 120px;
-                margin-left: -80px;
-                text-align: center;
-                span {
-                    cursor: pointer;
-                    padding: 0 6px;
-                    white-space: nowrap;
-                    
+            .title-sub{
+                height:20px;
+                width:160px;
+                position:absolute;
+                left:50%;
+                top:120px;
+                margin-left:-80px;
+                text-align:center;
+                span{
+                    cursor:pointer;
+                    padding:0 6px;
+                    white-space:nowrap;
                 }
-                span:hover {
-                    border: 1px solid #999;
+                span:hover{
+                    border:1px solid #999;
                 }
-                input {
-                    text-align: center;
+                input{
+                    text-align:center;
                 }
             }
-            .cover {
-                font-size: 14px;
+            .cover{
+                font-size:14px;
                 color:#666;
-                cursor: pointer;
-                position: absolute;
-                bottom: 10px;
-                right: 10px;
+                cursor:pointer;
+                position:absolute;
+                bottom:10px;
+                right:10px;
             }
-            .cover:hover {
+            .cover:hover{
                 color:#2993f8;
             }
         }
-        .bottom-block {
-            position: absolute;
-            width: 100%;
-            top: 205px;
-            left: 0;
-            bottom: 0;
-            padding: 25px 25px;
-            ul {
-                
-                li {
-                    height: 26px;
-                    margin-bottom: 15px;
-                    line-height: 26px;
-                    label {
-                        float: left;
-                        display: block;
-                        height: 20px;
-                        width: 60px;
-                        font-size: 14px;
+        .bottom-block{
+            position:absolute;
+            width:100%;
+            top:205px;
+            left:0;
+            bottom:0;
+            padding:25px 25px;
+            ul{
+
+                li{
+                    height:26px;
+                    margin-bottom:15px;
+                    line-height:26px;
+                    label{
+                        float:left;
+                        display:block;
+                        height:20px;
+                        width:60px;
+                        font-size:14px;
                         color:#999;
-                        text-align:justify;  
+                        text-align:justify;
                         text-align-last:justify;
-                        margin-right: 35px;
+                        margin-right:35px;
                     }
-                    .operate-block {
-                        float: left;
-                        height: 26px;
-                        .show-box {
-                            display: block;
-                            width: 185px;
-                            height: 24px;
-                            cursor: pointer;
-                            line-height: 24px;
-                            border: 1px solid #fff;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
+                    .operate-block{
+                        float:left;
+                        height:26px;
+                        .show-box{
+                            display:block;
+                            width:185px;
+                            height:24px;
+                            cursor:pointer;
+                            line-height:24px;
+                            border:1px solid #fff;
+                            overflow:hidden;
+                            text-overflow:ellipsis;
+                            white-space:nowrap;
                         }
-                        .show-box:hover {
-                            border: 1px solid #2993f8;
-                            border-radius: 4px;
+                        .show-box:hover{
+                            border:1px solid #2993f8;
+                            border-radius:4px;
                         }
-                        input {
-                            width: 185px;
-                            height: 24px;
-                            border: 1px solid #2993f8;
-                            border-radius: 4px;
-                            padding-left: 10px;
+                        input{
+                            width:185px;
+                            height:24px;
+                            border:1px solid #2993f8;
+                            border-radius:4px;
+                            padding-left:10px;
                         }
-                        .radio {
-                            height: 14px;
-                            width: 14px !important;
-                            margin-right: 10px;
+                        .radio{
+                            height:14px;
+                            width:14px !important;
+                            margin-right:10px;
                         }
-                        .sed {
-                            margin-left: 20px;
+                        .sed{
+                            margin-left:20px;
                         }
                     }
                 }
@@ -1351,86 +1344,82 @@ export default {
 </style>
 <style lang="scss" scoped>
 
-/* 新菜单 样式 */
-.system-nav{
+    /* 新菜单 样式 */
+    .system-nav{
 
-	&.active{
-		width: 190px;
-		.root{
-			&:after{
-				opacity: 1;
-				visibility: visible;
-			}
-		}
-		
-		/*  */
-		.nav{
-			
-			/* 子菜单 */
-			&.active{
-				color: #fff;
-				background-color: #252830;
-				.root i{ color: #fff;}
-				
-				>.item{
-					opacity: 1;
-				  visibility: visible;
-				  height: auto;
-				}
-			}
-		}
-		
-		.navFixed{
-			opacity: 1;
-		}
-		
-	}
-}
+        &.active{
+            width:190px;
+            .root{
+                &:after{
+                    opacity:1;
+                    visibility:visible;
+                }
+            }
 
+            /*  */
+            .nav{
 
+                /* 子菜单 */
+                &.active{
+                    color:#fff;
+                    background-color:#252830;
+                    .root i{ color:#fff;}
 
-@media print {
-	.system-nav{ opacity: 0;}
-}
+                    > .item{
+                        opacity:1;
+                        visibility:visible;
+                        height:auto;
+                    }
+                }
+            }
 
-.app-site-scope{
-    padding: 64px 0 0 70px;
-    height: 100%;
-    transition: all .2s;
-    
-    .app-header{
-      transition:all .2s;  
+            .navFixed{
+                opacity:1;
+            }
+
+        }
     }
-    &.active{
-      padding-left: 190px;
-      .app-header{
-         padding-left: 190px;
-      }
+    @media print{
+        .system-nav{ opacity:0;}
     }
-    
-    .app-main{
-    	height: 100%;
-    	width: 100%;
-    	overflow: auto;
-        position: relative;
-    	// padding-bottom: 100px;
-        .index-img {
-            height: 100%;
-    	    width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-            background:#f5f8f7;
-            padding-top: 50px;
-            //padding-left: 50px;
-            img {
-                height: 828px;
-    	        width: 1283px;
-                margin:0 auto;
-                display: block;
+    .app-site-scope{
+        padding:64px 0 0 70px;
+        height:100%;
+        transition:all .2s;
+
+        .app-header{
+            transition:all .2s;
+        }
+        &.active{
+            padding-left:190px;
+            .app-header{
+                padding-left:190px;
+            }
+        }
+
+        .app-main{
+            height:100%;
+            width:100%;
+            overflow:auto;
+            position:relative;
+            // padding-bottom: 100px;
+            .index-img{
+                height:100%;
+                width:100%;
+                position:absolute;
+                top:0;
+                left:0;
+                z-index:1000;
+                background:#f5f8f7;
+                padding-top:50px;
+                //padding-left: 50px;
+                img{
+                    height:828px;
+                    width:1283px;
+                    margin:0 auto;
+                    display:block;
+                }
             }
         }
     }
-}
 </style>
