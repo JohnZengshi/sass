@@ -107,7 +107,7 @@
 					<div class="tb-td"
 						v-else  :key="tabindex"
 						:style="_calculateClass(tab)"
-            @click.stop="openLabel(tb1, tb)"
+            @click.stop="openLabel(tb, tab)"
 						v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
 					</div>
 				</template>
@@ -161,19 +161,28 @@ export default {
 	},
 	methods:{
     openLabel (parm, caty) {
-      this.$store.dispatch('getLabelData', {
-        type: '2',
-        data: {
-          jeweId: [parm.gemId],
-          jewelryId: [parm.jewelryId],
-          colourId: [parm.colorId],
-          productTypeId: [caty.productTypeId],
-          storageId: this.changeRepository.repositoryId ? [this.changeRepository.repositoryId] : [],
-          shopId: this.changeShop.shopId ? [this.changeShop.shopId] : [],
-          counterId: this.changeCounter.counterId, // 柜组
-          productClass: this.dataGridOptions.productClass
+        let datas = {
+          type: '2',
+          data: {
+            jeweId: parm.gemId ? [parm.gemId] : [],
+            jewelryId: parm.jewelryId ? [parm.jewelryId] : [],
+            colourId: parm.colorId ? [parm.colorId] : [],
+            productTypeId: [caty.productTypeId],
+            storageId: this.changeRepository.repositoryId ? [this.changeRepository.repositoryId] : [],
+            shopId: this.changeShop.shopId ? [this.changeShop.shopId] : [],
+            counterId: this.changeCounter.counterId, // 柜组
+            productClass: this.dataGridOptions.productClass
+          }
         }
-      })
+        if (this.dataGridOptions.type == '4') {
+            datas.data.wColorId = queryData.wColorId
+            datas.data.wGemId = queryData.wGemId
+            datas.data.wJewelryId = queryData.wJewelryId
+            datas.data.nColorId = queryData.nColorId
+            datas.data.nGemId = queryData.nGemId
+            datas.data.nJewelryId = queryData.nJewelryId
+        }
+      this.$store.dispatch('getLabelData', datas)
     },
     _calculateClass (parm) {
       return calculateClass(parm)

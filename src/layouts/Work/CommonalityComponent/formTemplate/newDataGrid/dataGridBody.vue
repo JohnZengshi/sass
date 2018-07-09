@@ -60,6 +60,7 @@
 				<div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
 				<div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch"><!-- 类型小计 -->
 					<div class="tb-td"
+            @click="openLabel({}, tb)"
 						v-for="(tab,f) in detailDataGridColumn"
 						:style="tableCell(tab.width)" :key="f"
 						v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
@@ -130,7 +131,7 @@ export default {
 			asData:{}
 		}
 	},
-	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType','isRole', 'positionSwitch'],
+	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType','isRole', 'positionSwitch', 'dataGridOptions', 'orderType'], // orderType -> 报表类型
     components:{
        dataisdelete
 	},
@@ -181,10 +182,26 @@ export default {
         type: '1',
         data: Object.assign({}, parm, {
           productTypeId: caty.productTypeId,
+          orderType: this.orderType,
           newOrderId: this.$route.query.orderNumber
-        })
+        }, this.dataGridOptions)
       })
     },
+    // openSubtotalLabel (caty) {
+    //   debugger
+    //   let productTypeId = []
+    //   for (let i of caty) {
+    //     productTypeId.push(i.productTypeId)
+    //   }   
+    //   this.$store.dispatch('getLabelData', {
+    //     type: '1',
+    //     data: Object.assign({}, {
+    //       productTypeId: productTypeId,
+    //       orderType: this.orderType,
+    //       newOrderId: this.$route.query.orderNumber
+    //     }, this.dataGridOptions)
+    //   })
+    // },
 		setDeletedialogvisibly(isShow){
            this.deletedialogvisi = isShow; 
 		},

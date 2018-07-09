@@ -248,7 +248,9 @@
 			<report-detail 
                 ref="ReportDetail"
 				:dataGridStorage="dataGridStorage" 
-				:tabSwitch = "tabSwitch" 
+				:tabSwitch = "tabSwitch"
+                :dataGridOptions="dataGridOptions"
+                :orderType="'07'"
 				@scrollClass = "tabScrollShow"
                 @sortList="sortListAct"
                 @lazyloadSend = "lazyloadSend"
@@ -266,7 +268,7 @@
 		<el-button type="primary" @click.native="tabPrin()">打印报表</el-button>
 	</div> -->
     <div class="utilsBtn flex flex-v flex-pack-justify">
-        <div class="btn" @click="exportTab()">
+        <div v-if="tabClassActive.index != 0" class="btn" @click="exportTab()">
             <i class="iconfont icon-daochu"></i>
             <span>导出报表</span>
         </div>

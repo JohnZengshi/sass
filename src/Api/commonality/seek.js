@@ -851,3 +851,8 @@ export const seekGetPrintLabelList = function (parm) { // 标签打印
     let URL = "/v1/print/getPrintLabelList"
     return apiCall(parm, URL);
 }
+// 11.20 入库单据打印
+export const seekGetReportsPrintRK = function (parm) {
+  let URL = "/v1/reports/getReportsPrintRK";
+  return apiCall(parm, URL);
+}

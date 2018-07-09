@@ -15,6 +15,8 @@
       :reportType="reportType"
       :isEditReport="type"
       :positionSwitch="positionSwitch"
+      :dataGridOptions="dataGridOptions"
+        :orderType="orderType"
       @scrollClass = "scrollClass"
       @lazyloadSend = "lazyloadSend"
       @tabCell="tabCell">
@@ -34,13 +36,15 @@
 	<!--表格内容区  -->
     <data-grid-body 
         ref="DataGridBody"
-      :detailDataGridColumn="detailDataGridColumn" 
-      :dataGridStorage="dataGridStorage" 
-      :reportType="reportType"
-      :positionSwitch="positionSwitch"
-      @scrollClass = "scrollClass"
-      @lazyloadSend = "lazyloadSend"
-      @tabCell="tabCell">
+        :detailDataGridColumn="detailDataGridColumn" 
+        :dataGridStorage="dataGridStorage" 
+        :reportType="reportType"
+        :positionSwitch="positionSwitch"
+        :dataGridOptions="dataGridOptions"
+        :orderType="orderType"
+        @scrollClass = "scrollClass"
+        @lazyloadSend = "lazyloadSend"
+        @tabCell="tabCell">
     </data-grid-body>
 
     <!--表尾  -->
@@ -101,11 +105,11 @@ export default {
 		}
 	},
 	created(){
-	  if(this.type == 'edit'){
-      this.$set(this,'configData', editConfigData)
-    }
+	    if (this.type == 'edit') {
+            this.$set(this,'configData', editConfigData)
+        }
 	},
-	props : ['dataGridStorage','reportType','tabSwitch','isOld', 'positionSwitch', 'newList','type'],
+	props : ['dataGridStorage','reportType','tabSwitch','isOld', 'positionSwitch', 'newList','type', 'dataGridOptions', 'orderType'],
 	methods:{
         sortList (val) {
             this.$emit('sortList', val)

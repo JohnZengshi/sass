@@ -1,12 +1,12 @@
 <template>
   <div class="d-c-filter-header-main productList">
   
-    <operation-btn ref="operationBtnWrap" :title="'导出'" :operationList="operationList" :modal="false" @confirm="confirmDerive"></operation-btn>
+<!--     <operation-btn ref="operationBtnWrap" :title="'导出'" :operationList="operationList" :modal="false" @confirm="confirmDerive"></operation-btn>
 
     <div class="lable-print-change-wrap">
       <input-scope :dataLength="10" :placeholder="'导出行范围'" @amendNum="amendNum"></input-scope>
       <div class="back-btn" @click="deriveTable">导出</div>
-    </div>
+    </div> -->
 
     <!-- 商品 -->
     <div class="operate-bar-bottom" v-if="panelType === 0">

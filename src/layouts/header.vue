@@ -128,7 +128,7 @@
       </div>
 
       <!-- 点击了搜索列表后的弹窗 -->
-      <el-dialog top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption serachList h-770">
+      <el-dialog top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption serachList h-740">
         <!-- tab栏 -->
         <div class="tab-list">
           <ul>
@@ -144,7 +144,7 @@
         
       </el-dialog>
       <!-- 点击了商品的弹窗 -->
-      <el-dialog :title="productTypeName" top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="DataShow" customClass="ruleOption detailsBounced h-770">
+      <el-dialog :title="productTypeName" top="7%" :modal="true" :modal-append-to-body="false" :visible.sync="DataShow" customClass="ruleOption detailsBounced h-740">
           <i class="iconfont icon-shangpin"></i>
           <div class="detailsInfo">
             <div class="detailsInfo_left">
@@ -2064,7 +2064,7 @@ export default {
 
 
 }
-.h-770{
-  height: 770px!important;
+.h-740{
+  height: 720px!important;
 }
 </style>

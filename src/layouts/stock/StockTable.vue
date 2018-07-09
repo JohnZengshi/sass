@@ -375,7 +375,7 @@
         </div>
 
         <div class="utilsBtn flex flex-v flex-pack-justify">
-          <div class="btn" @click="exportTab()">
+          <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
             <i class="iconfont icon-daochu"></i>
             <span>导出表格</span>
           </div>
