@@ -1,16 +1,7 @@
 <template>
-  <transition name="tp-ani">
-    <div class="RP_report_wrapper ui-page-max-width report_table_fixed dc-label-print-main" v-if="isPrint==0">
-      <div class="Rp_title_container">
-        <!--面包屑-->
-        <div class="Rp_crumbs">
-          <i class="iconfont icon-baobiao1"></i>
-          <router-link tag="span" to="/work/report/" class="path_crumbs">标签打印</router-link>
-        </div>
-
-        <btn-header @amendNum="amendNum" :filterCondition="filterCondition" :addData="addData" :dataGridStorage="dataGridStorage"></btn-header>
-
-      </div>
+  <el-dialog top="7%" :visible.sync="listDetails" class="new-popup-dialog">
+    <div class="new-popup-main">
+      <div class="RP_report_wrapper report_table_fixed dc-label-print-main" v-if="isPrint==0">
 
       <div class="Rp_dataGrid_container">
 
@@ -30,7 +21,13 @@
 
         </div>
 
-        <filter-header @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
+        <div class="btn-header-wrap">
+          <btn-header class="btn-header-inner" :isPopup="true" @amendNum="amendNum" :dataGridStorage="dataGridStorage"></btn-header>
+        </div>
+        
+        
+
+        <filter-header ref="filterHeaderBox" @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
 
       </div>
       <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
@@ -39,7 +36,7 @@
       </div>
     </div>
     </div>
-  </transition>
+  </el-dialog>
 </template>
 <script>
 import Vue from 'vue'
@@ -77,6 +74,7 @@ export default {
   },
   data () {
     return {
+      listDetails: false,
       addData: [], // 让后台过滤的数据源
       printNum: { // 打印行数
         allChecked: false, // 全部选中
@@ -92,7 +90,7 @@ export default {
         // colourId: [],
         // jeweId: [],
         // jewelryId: [], // 首饰类别
-        sortList: [{ classTypeName: '1' }],
+        sortList: [],
         productStatus: [], // 产品状态
       },
       openReset: true,
@@ -337,11 +335,25 @@ export default {
         this.dataGridOptions.sortFlag = 0
       }
       // this.send()
-    }
+    },
+    // labelData (parm) {
+    //   if (this.labelData) {
+    //     this.listDetails = true
+    //     this.filterCondition = Object.assign(this.filterCondition, parm)
+    //     this.filterData()
+    //   }
+    // },
+    // listDetails () {
+    //   if (!this.listDetails) {
+    //     this.$store.dispatch('getLabelData', '')
+    //     this.$refs.filterHeaderBox.resetData()
+    //   }
+    // }
   },
   computed: {
     ...mapGetters([
       // "repositoryList", // 库位列表
+      "labelData", // 当前选中标签数据
       "userPositionInfo", // 职位信息
       "shopListByCo" // 店铺列表
     ]),
@@ -407,12 +419,16 @@ export default {
         // colourId: [],
         // jeweId: [],
         // jewelryId: [], // 首饰类别
-        sortList: [{ classTypeName: '1' }],
+        sortList: [],
         productStatus: [], // 产品状态
       }
       this.addData = []
       this.dataGridStorage = []
-      this.sortList = [{ name: '产品类别', value: '1' }]
+      this.paging = {
+        page: 1,
+        pageSize: '30'
+      }
+      this.sortList = []
     },
     amendNum (parm) {
       this.printNum = parm
@@ -453,44 +469,15 @@ export default {
         })
     },
     filterData (parm) {
+
       if (parm) {
         this.dataGridStorage = []
         this.paging.page = 1
-        this.filterCondition = this.formattingData(parm)
-        // 产品类别
-        // if (datas.productTypeId.length) {
-        //   let productTypeId = []
-        //   for (let i of datas.productTypeId) {
-        //     productTypeId.push({
-        //       id: 1
-        //     })
-        //   }
-        // }
-        // this.filterCondition = Object.assign({}, this.filterCondition, datas)
+        this.filterCondition = Object.assign(this.filterCondition, parm)
       }
-      let barcode = {
-        barcodeList: []
-      }
-      for (let i of this.addData) {
-        barcode.barcodeList.push({barcode: i.barcode})
-      }
-      this.loading = true
 
-      // this.filterCondition = {
-      //   keyWord: '',
-      //   newOrderId: '',
-      //   storageId: [],
-      //   shopId: [],
-      //   productTypeId: [],
-      //   colourId: [],
-      //   jeweId: [],
-      //   jewelryId: [], // 首饰类别
-      //   sortList: [{ classTypeName: '1' }],
-      //   productStatus: [], // 产品状态
-      // }
-      // let datas = this.filterCondition
-      // this.formattingData(datas.productTypeId)
-      seekGetPrintLabelList(Object.assign(this.filterCondition, barcode, this.paging, {}))
+      this.loading = true
+      seekGetPrintLabelList(Object.assign(this.formattingData(this.filterCondition), this.paging))
         .then(res => {
           if (res.data.state == 200) {
             this.paging.page += 1
@@ -515,7 +502,7 @@ export default {
         })
     },
     formattingData (parm) {
-        let datas = parm
+        let datas = _.cloneDeep(parm)
         // 产品类别
         if (datas.productTypeId) {
           if (datas.productTypeId.length) {
@@ -1098,41 +1085,19 @@ export default {
 
 </script>
 <style lang="scss">
-.ml-10{
-  margin-left: 10px;
+.new-popup-main{
+  height: 100%;
+  width: 1200px;
+  height: 732px;
+  background-color: #fff;
+  border-radius: 5px;
+  .btn-header-wrap{
+    height: 40px;
+    padding-left: 20px;
+    >.btn-header-inner{
+      float: left;
+      width: auto;
+    }
+  }
 }
-.dc-label-print-main{
-  // .l-p-range-box {
-  //   display: inline-block;
-  //   position: relative;
-  //   cursor: pointer;
-  //   vertical-align: top;
-  //   margin-left: 16px;
-  //   width: 180px;
-  //   height: 28px;
-  //   border-radius: 4px;
-  //   border: 1px solid #d6d6d6;
-  //   padding-left: 10px;
-  //   background-color: #fff;
-  //   input {
-  //       width: 68px;
-  //       height: 100%;
-  //       float: left;
-  //       text-align: center;
-  //   }
-  //   span {
-  //       float: left;
-  //       margin: 0 4px;
-  //       color: #666;
-  //       font-size: 14px;
-  //       line-height: 26px;
-  //   }
-  // }
-  // .e-border-radio-5{
-  //   height: 28px;
-  //   padding-bottom: 20px;
-  //   vertical-align: top;
-  // }
-}
-
 </style>

@@ -1,7 +1,7 @@
 <template>
     <div class="template-preview-canvas-wrapper" :style="canvasWrapperStyle">
         <div class="template-preview-canvas" :style="canvasStyle">
-            <component v-for="component in components" :is="component.type" :isPreview="true" :parent="null" class="component" :data="component.data" :templateData="templateData" @changeComponentData="changeComponentData(component, $event)" :changeComponentData="changeComponentData" :page="page"></component>
+            <component v-for="component in components" :is="component.type" :isPreview="true" :parent="null" class="component" :data="component.data" :showEmpty="showEmpty" :templateData="templateData" @changeComponentData="changeComponentData(component, $event)" :changeComponentData="changeComponentData" :page="page"></component>
         </div>
     </div>
 </template>
@@ -27,7 +27,7 @@ export default {
                 components: JSON.parse(JSON.stringify(this.canvas)).components.filter(component => !component.data.itemListId)
             }
         },
-        props: ['canvas', 'templateData', 'page', 'isPrintCanvas'],
+        props: ['canvas', 'templateData', 'page', 'isPrintCanvas', 'showEmpty'],
         components: {
             TextComponent,
             ImageComponent,

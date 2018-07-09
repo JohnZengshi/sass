@@ -105,6 +105,7 @@
     </div>
 
     <little-batch ref="littleBatchWrap" @changeOrderId="changeOrderId" :supplierListData="supplierListData"></little-batch>
+
   </div>
 </template>
 <script>
@@ -336,6 +337,14 @@ export default {
     }
   },
   methods: {
+    initData (parm) {
+      this.filterCondition = parm
+      this.$refs.storageLocationWrap.initData(parm.storageId)
+      this.$refs.productTypeIdWrap.initData(parm.productTypeId)
+      this.$refs.colourIdWrap.initData(parm.colourId)
+      this.$refs.jeweIdWrap.initData(parm.jeweId)
+      this.$refs.jewelryIdWrap.initData(parm.jewelryId)   
+    },
     choseMenu () {
       this.tabSwitch = !this.tabSwitch
       this.$emit('reportSwitch', this.tabSwitch)
@@ -370,6 +379,7 @@ export default {
       this.$refs.shopWrap.reset()
       this.$refs.storageLocationWrap.reset()
       this.$refs.littleBatchWrap.reset()
+      this.$refs.littleBatchWrap.close()
       this.$emit('resetData')
     },
     batchAddByOrderNum () {

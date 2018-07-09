@@ -2330,9 +2330,9 @@ input:-moz-placeholder{
 input:-ms-input-placeholder{
     font-size:10px;
 }
-#body-row2 {
-    z-index: 0
-}
+// #body-row2 {
+//     z-index: 0
+// }
 </style>
 <style lang="scss" scoped>
 .tab_wrap {

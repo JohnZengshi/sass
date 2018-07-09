@@ -20,6 +20,8 @@ export const WORK_POPUP_ERROR = 'WORK_POPUP_ERROR' // 错误弹窗
 export const WORK_POPUP_SAVE = 'WORK_POPUP_SAVE' // 保存弹窗
 export const WORK_POPUP_AFFIRM = 'WORK_POPUP_AFFIRM' // 审核的确认弹窗
 export const WORK_MODEL_STATE = 'WORK_MODEL_STATE' // 销售模糊层
+export const LABEL_DATA = 'LABEL_DATA' // 销售模糊层
+
     // 一些基本下拉数据
 export const WORK_APPLY_USER = 'WORK_APPLY_USER' // 应用用户列表
 export const WORK_PRODUCT_CLASS = 'WORK_PRODUCT_CLASS' // 产品类别（商品类型列表）

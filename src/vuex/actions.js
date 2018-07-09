@@ -434,6 +434,28 @@ export const workCounterList = ({commit}, parm) => { // 柜组列表
         this.$store.dispatch('workPopupError', response.data.msg);
     })
 }
+export const getLabelData = ({commit}, parm) => { // 打印标签数据
+    let datas = ''
+    if (parm.type == 1) { // 单据详情模块
+        datas = {}
+        if (parm.data.productTypeId) {
+            datas.productTypeId = [parm.data.productTypeId]
+        }
+        if (parm.data.colorId) {
+            datas.colorId = [parm.data.colorId]
+        }
+        if (parm.data.jewelryId) {
+            datas.jewelryId = [parm.data.jewelryId]
+        }
+        if (parm.data.gemId) {
+            datas.jeweId = [parm.data.gemId]
+        }
+        if (parm.data.newOrderId) {
+            datas.newOrderId = [parm.data.newOrderId]
+        }
+    }
+    commit(types.LABEL_DATA, datas)
+}
 // 销售
 export const sellProductListFun = ({commit}, parm) => { // 商品列表-销售
     commit(types.SELL_PRODUCT_LIST, parm);
@@ -444,6 +466,6 @@ export const workModelState = ({commit}, parm) => { // 销售的模糊层
 }
 
 /*组织架构*/
-export const workOrganizationChange = ({commit}, parm) => { // 销售的模糊层/.
+export const workOrganizationChange = ({commit}, parm) => { // 销售的模糊层
     commit(types.SET_ORGANIZATION_CHANGE, parm)
 }

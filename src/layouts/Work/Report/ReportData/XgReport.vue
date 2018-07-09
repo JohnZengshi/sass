@@ -203,6 +203,7 @@
 
         <div class="rp_dataGridTemp edit-rp_container" v-loading="loading" element-loading-text="数据查询中">
           <report-detail 
+            ref="ReportDetail"
             :dataGridStorage="dataGridStorage" 
             :tabSwitch="tabSwitch"
             :positionSwitch="positionSwitch" 
@@ -960,6 +961,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
         this.dataGridOptions.beginTime = val.substr(0, 10).split('-').join("") + "000000"
         this.printSelectDate.startTime = val
         this.dataGridOptions.pageSize = 30
+        this.$refs["ReportDetail"].$refs["DataEditBody"].tempArray = [];
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
         this.send();
       },
@@ -967,6 +969,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
         this.dataGridOptions.endTime = val.substr(0, 10).split('-').join("") + "235959"
         this.printSelectDate.endTime = val
         this.dataGridOptions.pageSize = 30
+        this.$refs["ReportDetail"].$refs["DataEditBody"].tempArray = [];
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
         this.send();
       },

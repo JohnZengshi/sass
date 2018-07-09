@@ -2044,9 +2044,9 @@ import LoaderNum from 'components/work/loaderNum';
     font-size: 12px;
     color: #a9a8a7;
   }
-  #body-row2 {
-    z-index:0;
-  }
+  // #body-row2 {
+  //   z-index:0;
+  // }
 </style>
 <style lang="scss" scoped>
 .tab_wrap {

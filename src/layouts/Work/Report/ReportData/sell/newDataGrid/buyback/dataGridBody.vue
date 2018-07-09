@@ -1,19 +1,20 @@
 <template>
   <!--表格内容区-->
   <!--明细-->
-  <div class="xj-report-table-container" ref="tableContainer" v-if="reportType == 1">
+  <div @scroll="watchScroll($event)" class="xj-report-table-container" ref="tableContainer" v-if="reportType == 1">
     <div>
       <div class="tb-tr" v-for="(tb,index) in tempArray" :key="index">
         <template v-for="(tab,indexs) in detailDataGridColumn">
-          <!--<div class="branch-tb category-td"
-          v-if="tab.text == '回购类型'" 
-          :style="tableCell(tab.width)" >
-          <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7;'">{{caty[tab.childType]}}</i>
-        </div>-->
-
-          <div class="tb-td" :key="indexs" :style="tableCell(tab.width)" v-text="tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType] ? tb[tab.childType]: '-'"></div>
+          <div class="tb-td" :key="indexs" :style="_calculateClass(tab)" v-text="tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType] ? tb[tab.childType]: '-'"></div>
         </template>
       </div>
+      <!-- 加载更多未读数据 -->
+      <ReadMoreData
+        :allData="dataGridStorage" 
+        :dgDataList="dataGridStorage.detailList" 
+        ref="ReadMoreDataDmo" 
+        @readMoreData="readMoreData"
+        ></ReadMoreData>
       <div v-if="isDate" class="no-data"></div>
     </div>
   </div>
@@ -29,7 +30,7 @@
                 <div 
                   class="branch-tb category-td" 
                   v-if="tab.text == '回购类型' && index == 0 && index1 == 0 && indexGrid == 0" 
-                  :style="tableCell(tab.width)">
+                  :style="_calculateClass(tab)">
                   <i :style="sellTypeNameH(caty)">{{caty[tab.childType]}}</i>
 
                 </div>
@@ -39,7 +40,7 @@
                   class="tb-td" 
                   v-else-if="tab.text == '产品类别' && index1 == 0"
                   :class="{backLine:tab.childType != ''}" 
-                  :style="tableCell(tab.width)" 
+                  :style="_calculateClass(tab)" 
                   >
                   {{tb[tab.childType]}}
                 </div>
@@ -48,7 +49,7 @@
                   class="tb-td" 
                   v-else
                   :class="{backLine:tab.childType != ''}" 
-                  :style="tableCell(tab.width)" 
+                  :style="_calculateClass(tab)" 
                   v-text="tab.childType == ''? getIndex() : tb[tab.totalType] ? tb[tab.totalType] : '-' ">
                   
                 </div>
@@ -59,7 +60,7 @@
           <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
           <div class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
             <!-- 类型小计 -->
-            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? '<b>小计</b>' : caty[tab.allTotal]"></div>
+            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="_calculateClass(tab)" v-html="f == 0 ? '<b>小计</b>' : caty[tab.allTotal]"></div>
           </div>
         </div>
       <div v-if="isDate" class="no-data"></div>
@@ -77,20 +78,20 @@
                 <div 
                   class="branch-tb category-td" 
                   v-if="tab.text == '回购类型' && index == 0 && index1 == 0 && indexGrid == 0" 
-                  :style="tableCell(tab.width)">
+                  :style="_calculateClass(tab)">
                   <i :style="sellTypeNameHD(caty)">{{caty[tab.childType]}}</i>
 
                 </div>
 
 
-              <div class="branch-tb category-td" :key="index" v-else-if="tab.text == '产品类别' && index1 == 0" :style="tableCell(tab.width)">
+              <div class="branch-tb category-td" :key="index" v-else-if="tab.text == '产品类别' && index1 == 0" :style="_calculateClass(tab)">
                 <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{tb[tab.childType]}}</i>
               </div>
 
 <!--                 <div 
                   class="branch-tb category-td" 
                   v-else-if="tab.text == '产品类别'" 
-                  :style="tableCell(tab.width)">
+                  :style="_calculateClass(tab)">
                   <i :style="sellTypeNameXJ(tb)">{{tab.childType}}</i>
 
                 </div> -->
@@ -99,7 +100,7 @@
                   class="tb-td" 
                   v-else-if="tab.text == '产品类别'"
                   :class="{backLine:tab.childType != ''}"
-                  :style="tableCell(tab.width)" 
+                  :style="_calculateClass(tab)" 
                   >
                   {{tb[tab.childType]}}
                 </div> -->
@@ -108,7 +109,7 @@
                   class="tb-td" 
                   v-else 
                   :class="{backLine:tab.childType != ''}" 
-                  :style="tableCell(tab.width)" 
+                  :style="_calculateClass(tab)" 
                   v-text="tab.childType == ''? getIndex() : tb1[tab.childType] ? tb1[tab.childType] : '-' ">
                   
                 </div>
@@ -116,14 +117,14 @@
             </div>
             
             <div class="tb-total" style="background:#ECF3FF;">
-              <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 1 ? '<b>小计</b>' : tb[tab.totalType]"></div>
+              <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="_calculateClass(tab)" v-html="f == 1 ? '<b>小计</b>' : tb[tab.totalType]"></div>
             </div>
 
           </div>
           <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
           <div class="tb-total" style="background:#ECF3FF;margin-top: 2px;" v-if="!positionSwitch">
             <!-- 类型小计 -->
-            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)" v-html="f == 0 ? `<b>${caty[tab.childType]}小计</b>` : caty[tab.allTotal]"></div>
+            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="_calculateClass(tab)" v-html="f == 0 ? `<b>${caty[tab.childType]}小计</b>` : caty[tab.allTotal]"></div>
           </div>
         </div>
       <div v-if="isDate" class="no-data"></div>
@@ -133,7 +134,9 @@
 </template>
 
 <script>
+  import {calculateClass} from 'assets/js/getClass'
   let applyIndex = 0
+  import ReadMoreData from 'components/work/readMoreData.vue'
   export default {
     data() {
       return {
@@ -142,6 +145,9 @@
         heightArr: [],
         otherDatagrid: []
       }
+    },
+    components:{
+      ReadMoreData
     },
     props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch'],
 
@@ -174,40 +180,40 @@
         _this.$emit('lazyloadSend', 123)
       })
 
-      $(".xj-report-table-container").mCustomScrollbar({
-        theme: "minimal-dark",
-        axis: 'y',
-        scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
-        mouseWheel: {
-          scrollAmount: 200,
-                preventDefault: false,
-                normalizeDelta: true,
-                scrollInertia : 40
-        },
-        callbacks: {
-          onTotalScroll: function () {
-          // console.log('滚轮到底了')
-          $('.loadControl').css({
-            opacity:1
-          })
-                },
-        onUpdate(){
-          // console.log('滚动条更新')
-          $('.loadControl').css({
-            opacity:0
-          })
-        },
-        whileScrolling(){
-          // console.log('滚动条活动')
-          $('.loadControl').css({
-            opacity:0
-          })
-        }
-        }
-      });
+      // $(".xj-report-table-container").mCustomScrollbar({
+      //   theme: "minimal-dark",
+      //   axis: 'y',
+      //   scrollInertia:100,
+      //   mouseWheel: {
+      //     scrollAmount: 200,
+      //           preventDefault: false,
+      //           normalizeDelta: true,
+      //           scrollInertia : 40
+      //   },
+      //   callbacks: {
+      //     onTotalScroll: function () {
+      //     $('.loadControl').css({
+      //       opacity:1
+      //     })
+      //           },
+      //   onUpdate(){
+      //     $('.loadControl').css({
+      //       opacity:0
+      //     })
+      //   },
+      //   whileScrolling(){
+      //     $('.loadControl').css({
+      //       opacity:0
+      //     })
+      //   }
+      //   }
+      // });
       this.tabCellHeight()
     },
     methods: {
+      _calculateClass (parm) {
+        return calculateClass(parm)
+      },
       sellTypeNameH (parm) {
         let Num = 0
         if (parm) {
@@ -328,7 +334,44 @@
             this.otherDatagrid = this.dataGridStorage.productTypeList[0].productSellTypeList
           }
         }
-      }
+      },
+      //  监听表格滚动
+      watchScroll(el) { // 下拉加载数据
+        let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
+        let clientHeight = el.target.clientHeight; // 元素的高度
+        let scrollTop = el.target.scrollTop; // 滚动了的距离
+        if (this.$refs.ReadMoreDataDmo) {
+          let res = this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+          if(res){
+            this.readMoreData();
+          }
+        }
+      },
+
+      //加载更多数据
+      readMoreData(currentDataList) {
+        let totalNum = this.dataGridStorage.totalNum;
+        let length = this.dataGridStorage.detailList.length;
+        let upDataNum = this.$parent.$parent.$refs["LoaderNum"].pageSize;
+        this.pageNum = 1;
+        let pageSize = 30
+        //   this.dgDataList = [];
+        if (Number(upDataNum)) {
+          upDataNum = Number(upDataNum);
+          if (totalNum - length < upDataNum) {
+            pageSize = 0
+          } else {
+            pageSize = length + upDataNum
+          }
+        } else {
+          pageSize = 0
+        }
+        //   this.$parent.$parent
+        // console.log(pageSize);
+        this.$parent.$parent.dataGridOptions.pageSize = pageSize;
+        this.$parent.$parent.send();
+        // console.log(this.$parent.$parent.dataGridOptions.pageSize)
+      },
     },
     update() {
       console.log('updata')
@@ -348,6 +391,8 @@
 <style scoped lang="scss">
 .xj-report-table-container {
   height: 556px;
+  overflow-y: scroll;
+  position: relative;
 }
   .no-data {
     height: 100%;

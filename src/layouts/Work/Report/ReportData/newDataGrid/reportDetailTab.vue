@@ -9,6 +9,7 @@
 	<template v-if="this.type == 'edit'">
 	  <!--表格内容区  -->
     <data-edit-body 
+      ref="DataEditBody"
       :detailDataGridColumn="detailDataGridColumn" 
       :dataGridStorage="dataGridStorage" 
       :reportType="reportType"
@@ -32,6 +33,7 @@
     
 	<!--表格内容区  -->
     <data-grid-body 
+        ref="DataGridBody"
       :detailDataGridColumn="detailDataGridColumn" 
       :dataGridStorage="dataGridStorage" 
       :reportType="reportType"

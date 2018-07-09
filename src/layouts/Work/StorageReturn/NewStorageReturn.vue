@@ -12,7 +12,7 @@
                                 </ul>
                                 <div class="back-btn" @click="goPreviousPage">返回上一级</div>
                             </div>
-                            <div id="body-row2-Zindex" class="body-row2 actions-status"
+                            <div class="body-row2 actions-status"
                                 :data-status="curStatus.statusName"
                                 :class="{'animat-scroll':curStatus.slipPointer, 'color1': nowStatus == 1, 'color2': nowStatus == 2,
                         'color3': nowStatus == 3, 'color4': nowStatus == 4, 'color5': nowStatus == 5, 'color6': nowStatus == 6,
@@ -1781,11 +1781,10 @@ export default {
         },
         sendlayLoad (val) {
         //   this.dataGridOptions.pageSize += 15
-            this.dataGridOptions.pageSize = val
+            this.dataGridOptions.pageSize = val;
           seekOutStorageData(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
               this.dataGridStorage = res.data.data
-              this.loading = false
             }
           }, (res) => {
 
