@@ -39,7 +39,7 @@
 					<td>主石(ct,g)</td>
 					<td>副石(ct,g)</td>
 					<td>售价(元)</td>
-					<td>成本(元)</td>
+					<td v-if="isShowCost == 'Y'">成本(元)</td>
 				</tr>
 				<tr v-for="(item,index) in sellList.productTypeList" :key="index">
 					<td>{{index+1}}</td>
@@ -52,7 +52,7 @@
 					<td>{{item.main}}</td>
 					<td>{{item.deputy}}</td>
 					<td>{{item.price}}</td>
-					<td>{{item.cost}}</td>
+					<td v-if="isShowCost == 'Y'">{{item.cost}}</td>
 				</tr>
 				<tr>
 					<td colspan="2">合计</td>
@@ -64,7 +64,7 @@
 					<td>{{sellList.totalMain}}</td>
 					<td>{{sellList.totalDeputy}}</td>
 					<td>{{sellList.totalPrice}}元</td>
-					<td>{{sellList.totalCost}}元</td>
+					<td v-if="isShowCost == 'Y'">{{sellList.totalCost}}元</td>
 				</tr>
 			</table>
 		</div>
@@ -88,6 +88,9 @@
 			headerData: {
 				type: Object
 			},
+			isShowCost: {
+				type: String
+			}
 		},
 		filters:{
 			DATA_FORMAT:(date)=>{

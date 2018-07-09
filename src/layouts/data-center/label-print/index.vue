@@ -8,7 +8,7 @@
           <router-link tag="span" to="/work/report/" class="path_crumbs">标签打印</router-link>
         </div>
 
-        <btn-header @amendNum="amendNum" :dataGridStorage="dataGridStorage"></btn-header>
+        <btn-header @amendNum="amendNum" :filterCondition="formattingData(filterCondition)" :addData="addData" :dataGridStorage="dataGridStorage"></btn-header>
 
       </div>
 
@@ -456,17 +456,7 @@ export default {
       if (parm) {
         this.dataGridStorage = []
         this.paging.page = 1
-        this.filterCondition = this.formattingData(parm)
-        // 产品类别
-        // if (datas.productTypeId.length) {
-        //   let productTypeId = []
-        //   for (let i of datas.productTypeId) {
-        //     productTypeId.push({
-        //       id: 1
-        //     })
-        //   }
-        // }
-        // this.filterCondition = Object.assign({}, this.filterCondition, datas)
+        this.filterCondition = Object.assign({}, this.filterCondition, parm)
       }
       let barcode = {
         barcodeList: []
@@ -476,21 +466,7 @@ export default {
       }
       this.loading = true
 
-      // this.filterCondition = {
-      //   keyWord: '',
-      //   newOrderId: '',
-      //   storageId: [],
-      //   shopId: [],
-      //   productTypeId: [],
-      //   colourId: [],
-      //   jeweId: [],
-      //   jewelryId: [], // 首饰类别
-      //   sortList: [{ classTypeName: '1' }],
-      //   productStatus: [], // 产品状态
-      // }
-      // let datas = this.filterCondition
-      // this.formattingData(datas.productTypeId)
-      seekGetPrintLabelList(Object.assign(this.filterCondition, barcode, this.paging, {}))
+      seekGetPrintLabelList(Object.assign({}, this.formattingData(this.filterCondition), barcode, this.paging, {}))
         .then(res => {
           if (res.data.state == 200) {
             this.paging.page += 1

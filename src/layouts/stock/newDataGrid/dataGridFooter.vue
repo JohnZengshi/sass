@@ -1,8 +1,8 @@
 <template>
 <!--表尾-->
-<div class="ui-table_footer">
+<div class="xj-report-table-footer">
 	<div class="th_footer" v-for="(tab,f) in detailDataGridColumn" 
-		:style="tableCell(tab.width)" :key="f">
+		:style="_calculateClass(tab)" :key="f">
   		<p class="totalNum" v-html="v_html(tab)"></p>
       <p class="total-more" v-if="f == 0" style="font-weight: bold;">合计</p>
 	</div>
@@ -10,22 +10,14 @@
 </template>
 
 <script>
+import {calculateClass} from 'assets/js/getClass'
 export default {
 	props : ['detailDataGridColumn','dataGridStorage','tabCell', 'reportType'],
 	
 	methods:{
-		tableCell( width ){
-			
-			let _size = ''
-			
-			this.$emit('tabCell',{
-				width : width,
-				res :( res ) =>{
-					_size = res
-				}
-			})
-			return _size
-        },
+    _calculateClass (parm) {
+      return calculateClass(parm)
+    },
 		v_html( tab ){
         if( tab.type =='' ) return ''
         // if( this.dataGridStorage[tab.type] == ''){

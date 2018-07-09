@@ -864,3 +864,8 @@ export const identifyingCode = function (parm) { // 验证码验证
     let URL = "/v1/public/identifyingCode"
     return apiCall(parm, URL);
 }
+// 11.20 入库单据打印
+export const seekGetReportsPrintRK = function (parm) {
+  let URL = "/v1/reports/getReportsPrintRK";
+  return apiCall(parm, URL);
+}

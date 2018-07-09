@@ -9,7 +9,9 @@
             :dataGridStorage="dataGridStorage" 
             :reportType="reportType"
             :positionSwitch="positionSwitch"
-            :isRole = 'isRole'
+            :isRole='isRole'
+            :dataGridOptions='dataGridOptions'
+            :orderType='orderType'
             @scrollClass = "scrollClass"
             @lazyloadSend = "lazyloadSend"
             @messageBack="messageBack"
@@ -68,7 +70,7 @@ export default {
 			this.posSwitch()
 		},
 	},
-	props : ['dataGridStorage','reportType','tabSwitch','isOld', 'isRole', 'positionSwitch', 'newList'],
+	props : ['dataGridStorage','reportType','tabSwitch','isOld', 'isRole', 'positionSwitch', 'newList', 'dataGridOptions', 'orderType'],
 	methods:{
         messageBack (val) {
             this.$emit('messageBack', val)
@@ -212,7 +214,10 @@ export default {
         },
         // 监听表格滚动
         watchScroll(scrollHeight,clientHeight,scrollTop){
-            this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+            let res = this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+            if(res){
+                this.readMoreData();
+            }
         },
         // 加载更多未读数据
         readMoreData(){

@@ -354,12 +354,28 @@
         <!-- 表头筛选重构 end -->
 
         <div class="rp_dataGridTemp" :class="tabShow">
-          <report-detail ref="ReportDetail" v-if="dataGridStorage" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :isOld="isOld" :newList="newList" @lazyloadSend="sendlayLoad" @scrollClass="tabScrollShow" @sortList="sortListAct" :reportType="getReportType()">
+          <report-detail
+            ref="ReportDetail"
+            v-if="dataGridStorage"
+            @lazyloadSend="sendlayLoad"
+            @scrollClass="tabScrollShow"
+            @sortList="sortListAct"
+            :dataGridStorage="dataGridStorage"
+            :tabSwitch="tabSwitch"
+            :positionSwitch="positionSwitch"
+            :isOld="isOld"
+            :newList="newList"
+            :reportType="getReportType()"
+            :changeRepository="changeRepository"
+            :changeShop="changeShop"
+            :changeCounter="changeCounter"
+            :dataGridOptions="dataGridOptions"
+          >
           </report-detail>
         </div>
 
         <div class="utilsBtn flex flex-v flex-pack-justify">
-          <div class="btn" @click="exportTab()">
+          <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
             <i class="iconfont icon-daochu"></i>
             <span>导出表格</span>
           </div>
@@ -381,17 +397,11 @@
         </table-print>
       </div>
       
-      <!-- 明细0 -->
-<!--       <detailTemplate v-if="this.tabClassActive.index==0" title="库存-明细" ref="detailTemplate" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
- -->
           <div v-if="dataGridOptions.type==1" class="xj-kc-print-main" ref="detailTemplateWrap">
             <detailTemplate title="库存-明细" :tabSwitch="tabSwitch" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
           </div>
         <!--打印模块-->
         <div style="display: none;">
-            
-            <!-- 明细0 -->
-     <!--        <detailTemplate v-if="this.tabClassActive.index==0" title="库存-明细" ref="detailTemplate" :sellList="printData" :headerData="printSelectDate"></detailTemplate> -->
 
 
             <!-- 智能1 -->
@@ -404,11 +414,6 @@
             <!-- 自定义3 -->
             <intelligence-type-template v-if="dataGridOptions.type==4" title="库存-自定义" ref="customTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
 
-<!-- 
-            <project-type-template v-if="tabClassActive.index==2" title="库存" ref="projectTypeTemplate" :sellList="printData" :headerData="printSelectDate"></project-type-template>
-
-            <custom-template v-if="tabClassActive.index==3" title="库存" ref="customTemplate" :sellList="printData" :headerData="printSelectDate"></custom-template>
- -->
         </div>
 
     </div>

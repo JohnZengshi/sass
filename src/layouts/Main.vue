@@ -120,8 +120,9 @@
             </div>
         </el-dialog>
 
-        <facePopup></facePopup>
-    </div>
+    <facePopup></facePopup>
+    <labelPopup></labelPopup>
+  </div>
 </template>
 
 <script>
@@ -132,6 +133,7 @@ import base from '../config/base/index'
 import baseApi from '../Api/Base/base'
 import AddressSelect from 'src/components/template/AddressSelect'
 import UploadingImg from 'base/uploading/UploadingImg'
+import labelPopup from '@/layouts/data-center/label-print/popup'
 import {
     seekMySelfWorkApplyList,
     seekPermissionList,
@@ -163,7 +165,8 @@ export default {
         AddressSelect,
         FormatImg,
         UploadingImg,
-        facePopup
+        facePopup,
+        labelPopup
     },
     data() {
         return {

@@ -259,8 +259,11 @@
 		
 		<div class="rp_dataGridTemp" :class="tabShow" v-loading = "loading" element-loading-text="数据查询中">
 			<report-detail 
+                ref="ReportDetail"
 				:dataGridStorage="dataGridStorage" 
-				:tabSwitch = "tabSwitch" 
+				:tabSwitch = "tabSwitch"
+                :dataGridOptions="dataGridOptions"
+                :orderType="'04'"
 				@scrollClass = "tabScrollShow" 
                 :positionSwitch="positionSwitch"
                 :newList="newList"
@@ -275,7 +278,7 @@
 	</div>
 	
     <div class="utilsBtn flex flex-v flex-pack-justify">
-        <div class="btn" @click="exportTab()">
+        <div v-if="tabClassActive.index != 0" class="btn" @click="exportTab()">
             <i class="iconfont icon-daochu"></i>
             <span>导出报表</span>
         </div>
@@ -1118,6 +1121,7 @@ export default {
             this.dataGridOptions.beginTime = val.substr(0, 10).split('-').join("") + "000000"
             this.printSelectDate.startTime = val
             this.dataGridOptions.pageSize = 30
+            this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
             $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send();
         },
@@ -1125,6 +1129,7 @@ export default {
             this.dataGridOptions.endTime = val.substr(0, 10).split('-').join("") + "235959"
             this.printSelectDate.endTime = val
             this.dataGridOptions.pageSize = 30
+            this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
             $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send();
         },

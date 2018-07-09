@@ -12,7 +12,7 @@
         </template>
 
         <!-- 详情弹框 -->
-        <el-dialog :title="productTypeName" top="0" :modal="false" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption detailsBounced">
+        <el-dialog :title="productTypeName" top="0" :modal="false" :modal-append-to-body="false" :visible.sync="ListDetails" customClass="ruleOption detailsBounced new-popup-style">
           <i class="iconfont icon-shangpin"></i>          
           <div class="detailsInfo">
             <div class="detailsInfo_left">

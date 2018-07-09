@@ -9,10 +9,10 @@
         <li :key="index">
           <div class="shop-wrap" @click="shopInfo(item, index)">
             <img src="./../../assets/img/shop-icon.png" alt="">
-            <div class="title-wrap title-wrap-shop" style="width:120px;">
-              <p>{{item.shopName}}</p>
+            <div class="title-wrap title-wrap-shop">
+              <p :title="item.shopName">{{item.shopName}}</p>
             </div>
-            <p>（{{item.shopCount}}人）</p>
+            <p :title="item.shopCount + '人'">（{{item.shopCount}}人）</p>
           </div>
           <div class="manager-assistant">
             <div class="store-manager-wrap">
@@ -484,6 +484,7 @@
   .shop-wrap{
     padding: 5px 0;
     height: 50px;
+    overflow: hidden;
     cursor: pointer;
     padding-left: 22px;
     img{
@@ -497,7 +498,7 @@
       vertical-align: top;
       display: inline-block;
       height: 22px;
-      max-width:147px;
+      max-width:145px;
       float: left;
       margin-left: 8px;
       position: relative;
@@ -513,8 +514,12 @@
       color: #333;
       font-size: 14px;
       float: left;
+      max-width: 60px;
       margin-top: 8px;
       margin-left: 5px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
     .title-wrap-shop{
        p:nth-child(1){

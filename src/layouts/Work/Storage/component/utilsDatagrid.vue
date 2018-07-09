@@ -346,7 +346,7 @@
     border: 1px solid #ededed;
     border-radius: 5px;
     /*overflow: hidden;*/
-    z-index: 3500;
+    // z-index: 3500;
     >.receipts {}
     >span,
     >.receipts>span {
@@ -358,7 +358,7 @@
       line-height: 18px;
       cursor: pointer;
       display: flex;
-      /*border-radius: 5px;*/
+      border-radius: 5px;
       position: relative;
       justify-content: center;
       align-items: center;

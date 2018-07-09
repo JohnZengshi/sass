@@ -77,12 +77,12 @@
     
   </div>
     
-<!--     <div class="printBtn exportBtn" @click="exportTab()">
-        <i class="iconfont icon-daochu"></i>
-        <span>导出报表</span>
-    </div> -->
     <!-- 按钮组 -->
     <div class="utilsBtn flex flex-v flex-pack-justify">
+<!--         <div class="btn" @click="exportTab()">
+            <i class="iconfont icon-daochu"></i>
+            <span>导出报表</span>
+        </div> -->
         <div class="btn" @click="tabPrin()">
             <i class="iconfont icon-dayin1"></i>
             <span>打印报表</span>
@@ -465,6 +465,9 @@ export default {
         // 打印表格
         send () {
           this.loading = true;
+          this.dataGridStorage = {
+            dataList: []
+          }
           seekGetReportsComprehensive(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
                 this.dataGridStorage = res.data.data

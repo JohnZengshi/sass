@@ -19,6 +19,7 @@
 			<div class="commodity-container" v-loading="loadCommodity" element-loading-text="数据加载中..." :class="{'animat-scroll':curStatus.slipPointer}">
 				<div class="handle">
 					<span class="list-icon"><i class="iconfont icon-liebiao"></i>商品列表</span>
+
 					<div class="item">
 						<span v-if="isShow && curStatus.nowStatus == 1" class="add" @click="add" ref="ref_addGoods">添加商品</span>
 						<span v-if="isShow && curStatus.nowStatus == 1" @click="onBatchamend">批量修改</span>
@@ -33,29 +34,55 @@
 						</template>
 						<input style="display: none;" ref="uploadfile" type="file" name="file" @change="uploadingOne($event)" />
 					</div>
+
+          <filter-header
+            class="storage-filter-header-wrap"
+            @complate="filterHeaderComplate"
+            @reportSwitch="reportSwitch"
+            @choseBuyBack="choseBuyBack"
+            @chosePosition="chosePosition"
+            :type="dataGridOptions.type"
+            :customList="customList"
+          ></filter-header>
+
 				</div>
 
 				<!--表格-->
-				<datagrid 
-				:dgDataList="dgDataList" 
-				:isShow="isShow" 
-				:curStatus="curStatus" 
-				:orderNum="orderData.orderNum" 
-				:slipPointer="curStatus.slipPointer" 
-				:goodsAdd="goodsAdd" ref="datagrid" 
-				:copyDataList="copyOrderArray" 
-				:isRefreshFooter="isRefreshFooter" 
-				@add="add" 
-				@updataApi="updataApi"
-				@updataData="updataData" 
-				@updataAdd="updataAdd" 
-				@updataCopyOrderObject="updataCopyOrderObject" 
-				@updataLoader="updataLoader" 
-				@updataAddDataList="updataAddDataList" 
-				@updataSlipPointer="updataSlipPointer" 
-				@setSynopsiData="updataSynopsiData"
+				<datagrid
+          v-show="dataGridOptions.type == 1"
+  				:dgDataList="dgDataList" 
+  				:isShow="isShow" 
+  				:curStatus="curStatus" 
+  				:orderNum="orderData.orderNum" 
+  				:slipPointer="curStatus.slipPointer" 
+  				:goodsAdd="goodsAdd" ref="datagrid" 
+  				:copyDataList="copyOrderArray" 
+  				:isRefreshFooter="isRefreshFooter" 
+  				@add="add" 
+  				@updataApi="updataApi"
+  				@updataData="updataData" 
+  				@updataAdd="updataAdd" 
+  				@updataCopyOrderObject="updataCopyOrderObject" 
+  				@updataLoader="updataLoader" 
+  				@updataAddDataList="updataAddDataList" 
+  				@updataSlipPointer="updataSlipPointer" 
+  				@setSynopsiData="updataSynopsiData"
 				>
 				</datagrid>
+
+        <div v-if="dataGridOptions.type != 1" class="rp_dataGridTemp" :class="tabShow" v-loading="loadCommodity" element-loading-text="数据查询中">
+          <report-detail
+            ref="ReportDetail"
+            :dataGridStorage="dataGridStorage"
+            :tabSwitch="tabSwitch"
+            :positionSwitch="positionSwitch"
+            :newList="newList"
+            :reportType="getReportType()"
+            :dataGridOptions="dataGridOptions"
+            :orderType="'01'"
+          >
+          </report-detail>
+        </div>
 
 				<!--滚动条上滑时出现的那个订单号-->
 				<div class="tab-orderNum" @click="updataSlipPointer(false)">
@@ -148,9 +175,10 @@ import stepsPath from './component/stepsPath'
 import datagrid from './dataGrid'
 import utilsdatagrid from './component/utilsDatagrid'
 import {operateAddProductToRKOrder} from 'Api/commonality/operate'
-import {downloadTable, seekReceiptRKSynopsis} from 'Api/commonality/seek'
+import {downloadTable, seekReceiptRKSynopsis, seekGetReportsPrintRK} from 'Api/commonality/seek'
 import copyPopup from './component/orderPopup'
 import batchamend from 'components/work/batchamend'
+import filterHeader from '@/layouts/Work/Report/ReportData/base/filter-header'
 
 //规则配置相关组件 
 import NewPopup from "./../../jinbaifu/NewPopup"
@@ -168,6 +196,31 @@ import Other from "./../../jinbaifu/components/other"
 export default {
   data(){
     return {
+      customList: [
+        {
+            name: '明细',
+            id: 1
+        },
+        {
+            name: '智能分类',
+            id: 2
+        },
+        {
+            name: '产品分类',
+            id: 3
+        }
+      ],
+      dataGridOptions: {
+        orderNum: this.$route.query.orderNumber,
+        productClass: "1", //商品属性
+        type: 1, //类型
+        wColorId: "", //计重
+        wGemId: "", //宝石类
+        wJewelryId: "1", //首饰类
+        nColorId: "", //计件
+        nGemId: "", //宝石类
+        nJewelryId: "1" //首饰类
+      },
       errorCode: '',
       errorLocal: false,
       isRefreshFooter: false,
@@ -238,7 +291,8 @@ export default {
     datagrid,
     utilsdatagrid,
     copyPopup,
-    batchamend
+    batchamend,
+    filterHeader
 	},
 	watch: {
     
@@ -256,6 +310,34 @@ export default {
     this.receiptRKSynopsis()
   },
   methods: {
+    filterHeaderComplate (parm) {
+      Object.assign(this.dataGridOptions, parm)
+      if (this.dataGridOptions.type != 1) {
+        this._seekGetReportsPrintRK()
+      }
+    },
+    _seekGetReportsPrintRK () {
+      seekGetReportsPrintRK(this.dataGridOptions)
+        .then(res => {
+          if (res.data.state == 200) {
+
+          } else {
+            this.$message({
+               message: res.data.msg,
+               type: 'warning'
+            })
+          }
+        })
+    },
+    reportSwitch () {
+
+    },
+    choseBuyBack () {
+
+    },
+    chosePosition () {
+
+    },
     receiptRKSynopsis () {
       let options = {
         orderNum: this.orderData.orderNum
@@ -311,11 +393,9 @@ export default {
     },
     // 更新选中数据 以便进行复制
     updataCopyOrderObject(data){
-    	console.log('复制的数据', data)
       if(data){
       	this.copyOrderObject = Object.assign({}, data)
       }
-      console.log('得值数据', this.copyOrderObject)
     },
     // loading
     updataLoader (type) {
@@ -406,7 +486,6 @@ export default {
     
     // 复制
     submitCopy(num){
-    	console.log(num)
       if (!/^(\d)*$/.test(num)) {
         this.$message({
           type:'warning',
@@ -708,12 +787,17 @@ export default {
 		>.handle {
 			height: 50px;
 			background-color: #fff;
-			line-height: 50px;
+			// line-height: 50px;
 			padding: 0 20px;
 			position: relative;
 			//z-index: 2;
 			border-radius: 10px 10px 0 0;
+      >.storage-filter-header-wrap{
+        margin-top: 12px;
+        margin-right: 0;
+      }
 			>.list-icon {
+        line-height: 50px;
 				.iconfont {
 					color: #2993f8;
 					margin-right: 5px;
@@ -724,6 +808,7 @@ export default {
 				margin-top: 10px;
 				user-select: none;
 				height: 30px;
+        line-height: 50px;
 				>span,
 				>a {
 					display: inline-block;

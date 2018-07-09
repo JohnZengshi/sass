@@ -24,8 +24,8 @@
         <div class="btn-header-wrap">
           <btn-header class="btn-header-inner" :isPopup="true" @amendNum="amendNum" :dataGridStorage="dataGridStorage"></btn-header>
         </div>
-        
-        
+
+
 
         <filter-header ref="filterHeaderBox" @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
 
@@ -98,7 +98,7 @@ export default {
       // allChecked: false, // 全部选中
       currentTemplate: '', // 当前的模板
       printList: [], // 打印机列表
-      currentPrint: "", // 当前打印机             
+      currentPrint: "", // 当前打印机
       productCategory: [
         {
           classesName: '全公司',
@@ -203,7 +203,7 @@ export default {
 
       //入库库位
       storageSpaceValue: '',
-      // repositoryList: [], 
+      // repositoryList: [],
 
       provider: '',
       providerId: '',
@@ -336,21 +336,6 @@ export default {
       }
       // this.send()
     },
-<<<<<<< HEAD
-    // labelData (parm) {
-    //   if (this.labelData) {
-    //     this.listDetails = true
-    //     this.filterCondition = Object.assign(this.filterCondition, parm)
-    //     this.filterData()
-    //   }
-    // },
-    // listDetails () {
-    //   if (!this.listDetails) {
-    //     this.$store.dispatch('getLabelData', '')
-    //     this.$refs.filterHeaderBox.resetData()
-    //   }
-    // }
-=======
     labelData () {
       if (this.labelData) {
         this.listDetails = true
@@ -367,7 +352,6 @@ export default {
         this.$refs.filterHeaderBox.resetData()
       }
     }
->>>>>>> remotes/origin/v4.0.0
   },
   computed: {
     ...mapGetters([

@@ -1,7 +1,7 @@
 <template>
   <!--表尾-->
   <div class="ui-table_footer">
-    <div class="th_footer" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)">
+    <div class="th_footer" v-for="(tab,f) in detailDataGridColumn" :style="_calculateClass(tab)">
       <template v-if="reportType == 1 && tab.text == '条码号'">
         <!--<p class="top">修改前</p>
         <p class="top">修改后</p>-->
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  
+  import {calculateClass} from 'assets/js/getClass'
   export default {
     data(){
     return{
@@ -40,6 +40,9 @@
     props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'isEditReport', 'configData'],
 
     methods: {
+      _calculateClass (parm) {
+        return calculateClass(parm)
+      },
       tableCell(width) {
 
         let _size = ''

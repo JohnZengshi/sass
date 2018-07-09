@@ -2,7 +2,7 @@
 <!--表尾-->
 <div class="xj-report-table-footer">
 	<div class="th_footer" v-for="(tab,f) in detailDataGridColumn" 
-		:style="tableCell(tab.width)">
+		:style="_calculateClass(tab)">
       <p class="total-more" v-if="f == 0">
       	<span v-if="reportType == 1">{{dataGridStorage.totalNum}}</span>
       	<span v-else>合计</span>
@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import {calculateClass} from 'assets/js/getClass'
 export default {
   data(){
     return{
@@ -29,6 +30,9 @@ export default {
 	},
 	
 	methods:{
+    _calculateClass (parm) {
+      return calculateClass(parm)
+    },
 		tableCell( width ){
 			
 			let _size = ''

@@ -7,7 +7,8 @@ const store = {
         saveSuccess: false, // 保存弹窗
         saveSuccessData: null, // 保存弹窗数据
         affirmAudit: false, // 审核的确认弹窗
-        modelState: false // 销售的模糊层
+        modelState: false, // 销售的模糊层
+        labelData: {} // 标签打印弹窗
     },
     mutations: {
         [types.WORK_POPUP_AUDIT] (state, parm) { // 审核弹窗
@@ -26,6 +27,9 @@ const store = {
         },
         [types.WORK_MODEL_STATE] (state, parm) { // 销售的模糊层
             state.modelState = parm
+        },
+        [types.LABEL_DATA] (state, parm) { // 标签打印数据
+            state.labelData = parm
         }
     }
 }

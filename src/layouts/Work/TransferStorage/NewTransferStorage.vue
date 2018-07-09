@@ -15,7 +15,7 @@
                                 <div class="back-btn" @click="goPreviousPage">返回上一级</div>
                             </div>
                             
-                            <div id='body-row2' class="body-row2 actions-status"
+                            <div class="body-row2 actions-status"
                                 :data-status="curStatus.statusName"
                                 :class="{'animat-scroll':curStatus.slipPointer, 'color1': nowStatus == 1, 'color2': nowStatus == 2,
                         'color3': nowStatus == 3, 'color4': nowStatus == 4, 'color5': nowStatus == 5, 'color6': nowStatus == 6,
@@ -411,6 +411,8 @@
                                         :isSelDelect="isSelDelect"
                                         :dataGridStorage="dataGridStorage" 
                                         :tabSwitch="tabSwitch" 
+                                        :dataGridOptions="dataGridOptions"
+                                        :orderType="'07'"
                                         @scrollClass="tabScrollShow"
                                         @delectBack="delBack"
                                         @scrollBack="scrollBack"
@@ -436,7 +438,7 @@
                                         <span class="iconfont icon-shouhuo"></span>
                                         <span>收货</span>
                                     </div>
-                                    <div class="btn" @click="exportTab()">
+                                    <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
                                         <span class="iconfont icon-daochu"></span>
                                         <span>导出表格</span>
                                     </div>

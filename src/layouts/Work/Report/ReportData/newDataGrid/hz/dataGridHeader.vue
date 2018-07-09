@@ -1,9 +1,9 @@
 <template>
 <!--表头-->
-<div class="ui-table_column-hz">
+<div class="xj-report-table-column">
   <div class="ui-table_th" style="width: 210px;">模块</div>
   <div style="width: 1038px; display: flex;">
-    <div @click="headSort(tab)" class="ui-table_th" v-for="tab in detailDataGridColumn" :style="tableCell(tab.width)">
+    <div @click="headSort(tab)" class="ui-table_th" v-for="tab in detailDataGridColumn" :style="_calculateClass(tab)">
       {{tab.text }} <i v-if="tab.unit !=''">{{ tab.unit}}</i>
           <!-- <em v-if="tab.sort == ''" class="iconfont icon-sort-copy"></em>
           <em v-if="tab.sort == '1'" class="iconfont icon-sort-up"></em>
@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import {calculateClass} from 'assets/js/getClass'
 export default {
   props : ['detailDataGridColumn','tabCell', 'reportType','newList'],
   data () {
@@ -118,18 +119,10 @@ export default {
         }
     },
   methods:{
-    tableCell( width ){
-      let _size = ''
-      
-      this.$emit('tabCell',{
-        width : width,
-        res :( res ) =>{
-          _size = res
-        }
-      })
-      return _size
-        },
-        headSort (tab) { // 排序点击事件
+    _calculateClass (parm) {
+      return calculateClass(parm)
+    },
+    headSort (tab) { // 排序点击事件
           if(tab.sort == null || tab.sort == undefined ) return
           
           if (this.reportType == 1) {
@@ -226,51 +219,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.ui-table_column-hz{
-    height: 40px;
-    background-color: #f5f5f5;
-    //overflow: hidden;
-    // display: flex;
-    position: relative;
-    width: 100%;
-    margin-top: -40px;
-    
-    &:after {
-        content: "";
-        height:2px;
-        width: 100%;
-        background:#e7e7e7;
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        z-index: 2;
-    }
-    .ui-table_th{
-        display:inline-block;
-        line-height: 40px;
-        text-align: center;
-        color: #686868;
-        font-size:12px;
-        float: left;
-        font-weight: bold;
-        transition: all .1s;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        
-        >i{
-          font-style:normal;
-          color: #999;
-          font-weight: normal;
-          font-size: 10px;
-        }
-        &>em {
-            // line-height: 38px;
-            // font-size: 14px;
-            color:#2993f8;
-        }
-    }
-}
-
-</style>
