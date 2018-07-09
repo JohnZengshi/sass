@@ -1,8 +1,7 @@
 <template>
     <div class="drop-down-colums-main">
         <div class="tltle" :class="{actions: isChecked}">
-            {{titleData}}
-            <i class="iconfont icon-xiala"></i>
+            {{titleData}}<i class="iconfont icon-xiala"></i>
         </div>
         <div class="list-box">
             <ul class="list-left">
@@ -221,26 +220,29 @@ export default {
 </style>
 <style scoped lang="scss">
 .drop-down-colums-main {
-    width: 78px;
-    height: 28px;
+    // width: 78px;
+    // height: 22px;
     //border: 1px solid #d6d6d6;
     //border-radius: 4px;
+    padding: 5px 0;
     float: left;
     position: relative;
     margin: 0 4px;
     .tltle {
         width: 100%;
         height: 100%;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
-        line-height: 26px;
+        line-height: 12px;
         cursor: pointer;
         color: #666;
-        i {
-            position: absolute;
-            right: 0;
-            top: 0;
-            line-height: 28px;
+        >i {
+            line-height: 12px;
+            font-size: 12px;
+            // position: absolute;
+            // right: 0;
+            // top: 0;
+            // line-height: 28px;
         }
         &.actions{
             color: #2993f8;

@@ -27,27 +27,61 @@
            <div class="item" :t="isShow ? '1' : '2'">
                <!-- <span v-if="isShow && curStatus.nowStatus == 1" class="add" @click="add" >添加商品</span> -->
                <input v-model="seekBarcode" v-if="isShow && curStatus.nowStatus == 1" class="seek" type="text" placeholder="请输入条码号" @keyup.enter="addClick"/>
-               <span v-if="isShow && curStatus.nowStatus == 1" @click="onBatchamend">批量修改</span>
-               <span v-if="isShow && curStatus.nowStatus == 1" @click="onBatchAdd">批量添加</span>
+
+                <combination-drop-down-colums
+                  v-show="dataGridOptions.type != 1"
+                  class="storage-combination-drop-down-colums-wrap"
+                  @dataBack="combinationHeaderComplate"
+                ></combination-drop-down-colums>
+
+                <filter-header
+                  class="storage-filter-header-wrap"
+                  @complate="filterHeaderComplate"
+                  @reportSwitch="reportSwitch"
+                  @choseBuyBack="choseBuyBack"
+                  @chosePosition="chosePosition"
+                  :type="dataGridOptions.type"
+                  :customList="customList"
+                ></filter-header>
+
+
+                <span v-if="isShow && curStatus.nowStatus == 1" @click="onBatchamend">批量修改</span>
+                <span v-if="isShow && curStatus.nowStatus == 1" @click="onBatchAdd">批量添加</span>
            </div>
        </div>
        
        <!--表格-->
        <datagrid
-       	:orderData="orderData"
-        :seekFlag="seekFlag"
-        :seekBarcode="seekBarcode"
-        :slipPointer = "curStatus.slipPointer"
-        :goodsAdd = "goodsAdd"
-        ref="datagrid"
-        @updataApi="updataApi"
-        @updataData="updataData"
-        @updataAdd = "updataAdd"
-        @updataCopyOrderObject = "updataCopyOrderObject"
-        @updataLoader = "updataLoader"
-        @updataSlipPointer = "updataSlipPointer"
-        @setSynopsiData="updataSynopsiData">
+          v-show="dataGridOptions.type == 1"
+         	:orderData="orderData"
+          :seekFlag="seekFlag"
+          :seekBarcode="seekBarcode"
+          :slipPointer = "curStatus.slipPointer"
+          :goodsAdd = "goodsAdd"
+          ref="datagrid"
+          @updataApi="updataApi"
+          @updataData="updataData"
+          @updataAdd = "updataAdd"
+          @updataCopyOrderObject = "updataCopyOrderObject"
+          @updataLoader = "updataLoader"
+          @updataSlipPointer = "updataSlipPointer"
+          @setSynopsiData="updataSynopsiData">
        </datagrid>
+
+        <div v-if="dataGridOptions.type != 1" class="rp_dataGridTemp" v-loading="loadCommodity" element-loading-text="数据查询中">
+          <report-detail
+            ref="ReportDetail"
+            :isProductStyle="true"
+            :dataGridStorage="dataGridStorage"
+            :tabSwitch="tabSwitch"
+            :newList="newList"
+            :reportType="getReportType()"
+            :dataGridOptions="dataGridOptions"
+            :orderType="'10'"
+          >
+          </report-detail>
+        </div>
+
        <!--滚动条上滑时出现的那个订单号-->
        <div class="tab-orderNum" @click="updataSlipPointer(false)">
          <span v-text="orderData.orderNum" class="txt"></span>
@@ -106,12 +140,46 @@ import stepsPath from './component/stepsPath'
 import datagrid from './dataGrid'
 import utilsdatagrid from './component/utilsDatagrid'
 import {operateAddProductToRKOrder} from 'Api/commonality/operate'
-import {downloadTable, seekReceiptRKSynopsis} from 'Api/commonality/seek'
+import {downloadTable, seekReceiptRKSynopsis, seekGetReportsPrintXG} from 'Api/commonality/seek'
 import batchamend from 'components/work/batchamend'
 import BatchAddReceipts from '../../../components/work/BatchAddReceipts'
+import filterHeader from '@/layouts/Work/Report/ReportData/base/filter-header'
+import combinationDropDownColums from 'base/menu/combination-drop-down-colums'
+import ReportDetail from "@/layouts/Work/Report/ReportData/newDataGrid/reportDetailTab";
 export default {
   data(){
     return {
+      dataGridStorage: {},
+      newList: [],
+      //成本核算
+      tabSwitch: false,
+      dataGridOptions: {
+        orderNum: this.$route.query.orderNumber,
+        productClass: "1", //商品属性
+        type: 1, //类型
+        wColorId: "", //计重
+        wGemId: "", //宝石类
+        wJewelryId: "1", //首饰类
+        nColorId: "", //计件
+        nGemId: "", //宝石类
+        nJewelryId: "1" //首饰类
+      },
+      customList: [
+        {
+            name: '明细',
+            id: 1
+        },
+        {
+            name: '智能分类',
+            id: 2
+        },
+        {
+            name: '产品分类',
+            id: 3
+        }
+      ],
+
+
       seekFlag: false,
       seekBarcode: '',
       // 头部状态栏
@@ -190,7 +258,10 @@ export default {
     datagrid,
     utilsdatagrid,
     batchamend,
-    BatchAddReceipts
+    BatchAddReceipts,
+    filterHeader,
+    combinationDropDownColums,
+    ReportDetail
   },
   
   watch: {
@@ -203,6 +274,60 @@ export default {
     this.receiptRKSynopsis()
   },
   methods: {
+    //获取当前的接口类型
+    getReportType() {
+      return this.dataGridOptions.type;
+    },
+    filterHeaderComplate (parm) {
+      Object.assign(this.dataGridOptions, parm)
+      if (this.dataGridOptions.type != 1) {
+        this._seekGetReportsPrintXG()
+      }
+    },
+    combinationHeaderComplate (parm) {
+      let datas = {}
+      datas.productClassIdList = this.filterSeekData(parm.productTypeList, 'productClassId', 'productTypeId')
+      datas.colourNameIdList = this.filterSeekData(parm.colourList, 'colourNameId', 'colourId')
+      datas.gemNameIdList = this.filterSeekData(parm.jeweList, 'gemNameId', 'jeweId')
+      datas.jewelNameIdList = this.filterSeekData(parm.jewelryList, 'jewelNameId', 'jewelryId')
+      Object.assign(this.dataGridOptions, datas)
+      if (this.dataGridOptions.type != 1) {
+        this._seekGetReportsPrintXG()
+      }
+    },
+    filterSeekData (parm, keyName, bKey) {
+      let datas = []
+      for (let i of parm) {
+        datas.push({
+          [keyName]: i[bKey]
+        })
+      }
+      return datas
+    },
+    _seekGetReportsPrintXG () {
+      seekGetReportsPrintXG(this.dataGridOptions)
+        .then(res => {
+          if (res.data.state == 200) {
+            this.dataGridStorage = res.data.data
+          } else {
+            this.$message({
+               message: res.data.msg,
+               type: 'warning'
+            })
+          }
+        })
+    },
+
+    reportSwitch () {
+
+    },
+    choseBuyBack () {
+
+    },
+    chosePosition () {
+
+    },
+
   	tabPrint(){
   		this.$refs.datagrid.tabPrint();
   	},
@@ -398,13 +523,14 @@ export default {
   >.handle{
     height: 50px;
     background-color: #fff;
-    line-height: 50px;  
+    // line-height: 50px;  
     padding: 0 20px;
     position: relative;
     z-index: 2;
     border-radius: 10px 10px 0 0;
     
     >.list-icon{
+      line-height: 50px;
       .iconfont{
         color:#2993f8;
         margin-right: 5px;
@@ -431,7 +557,16 @@ export default {
           background-color: #f4f9ff;
           border: 1px solid #2993f8;
       }
+      >.storage-filter-header-wrap{
+        margin-top: 2px;
+        margin-right: 0;
+      }
+      >.storage-combination-drop-down-colums-wrap{
+        margin-top: 2px;
+        margin-right: 0;
+      }
       >span, >a{
+        line-height: 50px;  
         display:inline-block;
         font-size: 14px;
         color: #333;

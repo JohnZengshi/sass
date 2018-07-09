@@ -289,6 +289,7 @@
             </span>
           </div> -->
           <filter-header
+            class="stock-table-filter-header-wrap"
             @complate="filterHeaderComplate"
             @reportSwitch="reportSwitch"
             @choseBuyBack="choseBuyBack"
@@ -375,7 +376,11 @@
         </div>
 
         <div class="utilsBtn flex flex-v flex-pack-justify">
-          <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
+<!--           <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
+            <i class="iconfont icon-daochu"></i>
+            <span>导出表格</span>
+          </div> -->
+          <div class="btn" @click="exportTab()">
             <i class="iconfont icon-daochu"></i>
             <span>导出表格</span>
           </div>
@@ -2111,5 +2116,9 @@ export default {
       background: #2993f8;
     }
   }
+}
+.stock-table-filter-header-wrap{
+  float: right;
+  margin: 10px 10px 0 0;
 }
 </style>

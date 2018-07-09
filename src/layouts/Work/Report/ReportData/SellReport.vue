@@ -62,6 +62,7 @@
 						</div>
 
             <filter-header
+              class="sell-report-filter-header-wrap"
               v-if="sellShowId == 'sales' || sellShowId == 'buyback'"
               @complate="filterHeaderComplate"
               @reportSwitch="reportSwitch"
@@ -1809,5 +1810,10 @@ export default {
 .cut-bg-btn-wrap{
   float: right;
   margin-top: 10px;
+}
+.sell-report-filter-header-wrap{
+  margin-top: 10px;
+  float: right;
+  margin-right: 10px;
 }
 </style>

@@ -25,7 +25,7 @@
 	</div>
 </div>
 	
-<div class="xj-report-table-container xj-report-table-container-scroll con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
+<div class="xj-report-table-container xj-report-table-container-scroll con-line" :class="{'xj-product-report-table-container': isProductStyle}" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
 	<div class="tableBox">
 		<div class="tb-category" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind">
 			<div v-for="(tb, index) in caty.productTypeList" :key="index">
@@ -85,7 +85,7 @@
 </div>
 
 <!--产品分类-->
-<div class="xj-report-table-container xj-report-table-container-scroll produc-line" ref="tableContainer" v-else-if="reportType == 3">
+<div class="xj-report-table-container xj-report-table-container-scroll produc-line" :class="{'xj-product-report-table-container': isProductStyle}" ref="tableContainer" v-else-if="reportType == 3">
 	<div class="tableBox">
 		<div class="tb-category" v-for="(caty,index) in dataGridStorage.dataList" :key="index">
 		  <template v-for="(tb, index) in caty.productTypeList">
@@ -138,7 +138,7 @@ export default {
 	components:{
 		ReadMoreData,
 	},
-	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch', 'dataGridOptions', 'orderType'],
+	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch', 'dataGridOptions', 'orderType', 'isProductStyle'],
 	
 	watch:{
 		'dataGridStorage':function(){

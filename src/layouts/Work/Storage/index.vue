@@ -21,6 +21,23 @@
 					<span class="list-icon"><i class="iconfont icon-liebiao"></i>商品列表</span>
 
 					<div class="item">
+
+            <combination-drop-down-colums
+              v-show="dataGridOptions.type != 1"
+              class="storage-combination-drop-down-colums-wrap"
+              @dataBack="combinationHeaderComplate"
+            ></combination-drop-down-colums>
+
+            <filter-header
+              class="storage-filter-header-wrap"
+              @complate="filterHeaderComplate"
+              @reportSwitch="reportSwitch"
+              @choseBuyBack="choseBuyBack"
+              @chosePosition="chosePosition"
+              :type="dataGridOptions.type"
+              :customList="customList"
+            ></filter-header>
+
 						<span v-if="isShow && curStatus.nowStatus == 1" class="add" @click="add" ref="ref_addGoods">添加商品</span>
 						<span v-if="isShow && curStatus.nowStatus == 1" @click="onBatchamend">批量修改</span>
 						<span v-if="isShow && curStatus.nowStatus == 1" class="copy" @click="copyPopupShow(true)">复制</span>
@@ -35,15 +52,6 @@
 						<input style="display: none;" ref="uploadfile" type="file" name="file" @change="uploadingOne($event)" />
 					</div>
 
-          <filter-header
-            class="storage-filter-header-wrap"
-            @complate="filterHeaderComplate"
-            @reportSwitch="reportSwitch"
-            @choseBuyBack="choseBuyBack"
-            @chosePosition="chosePosition"
-            :type="dataGridOptions.type"
-            :customList="customList"
-          ></filter-header>
 
 				</div>
 
@@ -70,12 +78,12 @@
 				>
 				</datagrid>
 
-        <div v-if="dataGridOptions.type != 1" class="rp_dataGridTemp" :class="tabShow" v-loading="loadCommodity" element-loading-text="数据查询中">
+        <div v-if="dataGridOptions.type != 1" class="rp_dataGridTemp" v-loading="loadCommodity" element-loading-text="数据查询中">
           <report-detail
             ref="ReportDetail"
+            :isProductStyle="true"
             :dataGridStorage="dataGridStorage"
             :tabSwitch="tabSwitch"
-            :positionSwitch="positionSwitch"
             :newList="newList"
             :reportType="getReportType()"
             :dataGridOptions="dataGridOptions"
@@ -179,7 +187,8 @@ import {downloadTable, seekReceiptRKSynopsis, seekGetReportsPrintRK} from 'Api/c
 import copyPopup from './component/orderPopup'
 import batchamend from 'components/work/batchamend'
 import filterHeader from '@/layouts/Work/Report/ReportData/base/filter-header'
-
+import combinationDropDownColums from 'base/menu/combination-drop-down-colums'
+import ReportDetail from "@/layouts/Work/Report/ReportData/newDataGrid/reportDetailTab";
 //规则配置相关组件 
 import NewPopup from "./../../jinbaifu/NewPopup"
 import BasePage from "./../../jinbaifu/components/base"
@@ -196,6 +205,12 @@ import Other from "./../../jinbaifu/components/other"
 export default {
   data(){
     return {
+      dataGridStorage: {},
+      //成本核算
+      tabSwitch: false,
+      newList: [],
+
+
       customList: [
         {
             name: '明细',
@@ -292,7 +307,9 @@ export default {
     utilsdatagrid,
     copyPopup,
     batchamend,
-    filterHeader
+    filterHeader,
+    ReportDetail,
+    combinationDropDownColums
 	},
 	watch: {
     
@@ -310,17 +327,41 @@ export default {
     this.receiptRKSynopsis()
   },
   methods: {
+    //获取当前的接口类型
+    getReportType() {
+      return this.dataGridOptions.type;
+    },
     filterHeaderComplate (parm) {
       Object.assign(this.dataGridOptions, parm)
       if (this.dataGridOptions.type != 1) {
         this._seekGetReportsPrintRK()
       }
     },
+    combinationHeaderComplate (parm) {
+      let datas = {}
+      datas.productClassIdList = this.filterSeekData(parm.productTypeList, 'productClassId', 'productTypeId')
+      datas.colourNameIdList = this.filterSeekData(parm.colourList, 'colourNameId', 'colourId')
+      datas.gemNameIdList = this.filterSeekData(parm.jeweList, 'gemNameId', 'jeweId')
+      datas.jewelNameIdList = this.filterSeekData(parm.jewelryList, 'jewelNameId', 'jewelryId')
+      Object.assign(this.dataGridOptions, datas)
+      if (this.dataGridOptions.type != 1) {
+        this._seekGetReportsPrintRK()
+      }
+    },
+    filterSeekData (parm, keyName, bKey) {
+      let datas = []
+      for (let i of parm) {
+        datas.push({
+          [keyName]: i[bKey]
+        })
+      }
+      return datas
+    },
     _seekGetReportsPrintRK () {
       seekGetReportsPrintRK(this.dataGridOptions)
         .then(res => {
           if (res.data.state == 200) {
-
+            this.dataGridStorage = res.data.data
           } else {
             this.$message({
                message: res.data.msg,
@@ -329,6 +370,7 @@ export default {
           }
         })
     },
+
     reportSwitch () {
 
     },
@@ -338,6 +380,8 @@ export default {
     chosePosition () {
 
     },
+
+
     receiptRKSynopsis () {
       let options = {
         orderNum: this.orderData.orderNum
@@ -789,15 +833,13 @@ export default {
 			background-color: #fff;
 			// line-height: 50px;
 			padding: 0 20px;
+      font-size: 0;
 			position: relative;
 			//z-index: 2;
 			border-radius: 10px 10px 0 0;
-      >.storage-filter-header-wrap{
-        margin-top: 12px;
-        margin-right: 0;
-      }
 			>.list-icon {
         line-height: 50px;
+        font-size: 15px;
 				.iconfont {
 					color: #2993f8;
 					margin-right: 5px;
@@ -808,9 +850,9 @@ export default {
 				margin-top: 10px;
 				user-select: none;
 				height: 30px;
-        line-height: 50px;
 				>span,
 				>a {
+          line-height: 50px;
 					display: inline-block;
 					font-size: 14px;
 					color: #333;
@@ -839,6 +881,14 @@ export default {
 						cursor: default;
 					}
 				}
+        >.storage-filter-header-wrap{
+          margin-top: 2px;
+          margin-right: 0;
+        }
+        >.storage-combination-drop-down-colums-wrap{
+          margin-top: 2px;
+          margin-right: 0;
+        }
 			}
 		}
 		/* 上滑出现的那点订单号 */
