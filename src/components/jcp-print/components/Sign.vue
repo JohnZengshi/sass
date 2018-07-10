@@ -80,12 +80,15 @@
 </script>
 <style lang="less" scoped>
     .signClass{
+        width: 100%;
+        display: table;
         float: right;
-        padding: 10px 10px 10px 10px;
+        padding: 30px 0px 20px 0px;
         >div{
             margin: 0 10px;
             position: relative;
             display: inline;
+            float: right;
             span{
 
             }

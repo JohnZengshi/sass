@@ -74,37 +74,39 @@
               <td>{{productTypeList.totalPrice1}}</td>
               <td v-if="tabSwitch">{{productTypeList.totalCost1}}</td>
             </tr>
-			<tr class="tr">
-				<td class="tl">修改后</td>
-				<td>{{productTypeList.afTotalNum1}}</td>
-				<td>{{productTypeList.afTotalWeight1}}</td>
-				<td>{{productTypeList.afTotalGoldWeight1}}</td>
-				<td>{{productTypeList.afTotalMain1}}</td>
-				<td>{{productTypeList.afTotalDeputy1}}</td>
-				<td>{{productTypeList.afTotalPrice1}}</td>
-				<td v-if="tabSwitch">{{productTypeList.afTotalCost1}}</td>
-			</tr>
+            <tr class="tr">
+              <td class="tl">修改后</td>
+              <td>{{productTypeList.afTotalNum1}}</td>
+              <td>{{productTypeList.afTotalWeight1}}</td>
+              <td>{{productTypeList.afTotalGoldWeight1}}</td>
+              <!-- <td>{{productTypeList.afTotalMain1}}</td> -->
+              <td>{{productTypeList.afMain}}</td>
+              <!-- <td>{{productTypeList.afTotalDeputy1}}</td> -->
+              <td>{{productTypeList.afDeputy}}</td>
+              <td>{{productTypeList.afTotalPrice1}}</td>
+              <td v-if="tabSwitch">{{productTypeList.afTotalCost1}}</td>
+            </tr>
           </template>
           <tr class="tr">
             <td class="tm" colspan="1" rowspan="2">合计</td>
 			      <td class="tl">修改前</td>
-            <td rowspan="2">{{dataList.totalNum0}}</td>
-            <td>{{dataList.totalWeight0}}</td>
-            <td>{{dataList.totalGoldWeight0}}</td>
-            <td>{{dataList.totalMain0}}</td>
-            <td>{{dataList.totalDeputy0}}</td>
-            <td>{{dataList.totalPrice0}}</td>
-            <td v-if="tabSwitch">{{dataList.totalCost0}}</td>
+            <td rowspan="2">{{sellList.totalNum}}</td>
+            <td>{{sellList.totalWeight}}</td>
+            <td>{{sellList.totalGoldWeight}}</td>
+            <td>{{sellList.totalMain}}</td>
+            <td>{{sellList.totalDeputy}}</td>
+            <td>{{sellList.totalPrice}}</td>
+            <td v-if="tabSwitch">{{sellList.totalCost}}</td>
           </tr>
           <tr class="tr">
 			      <td class="tl">修改后</td>
-            <!-- <td>{{dataList.afTotalNum0}}</td> -->
-            <td>{{dataList.afTotalWeight0}}</td>
-            <td>{{dataList.afTotalGoldWeight0}}</td>
-            <td>{{dataList.afTotalMain0}}</td>
-            <td>{{dataList.afTotalDeputy0}}</td>
-            <td>{{dataList.afTotalPrice0}}</td>
-            <td v-if="tabSwitch">{{dataList.afTotalCost0}}</td>
+            <!-- <td>{{sellList.afTotalNum0}}</td> -->
+            <td>{{sellList.afTotalWeight}}</td>
+            <td>{{sellList.afTotalGoldWeight}}</td>
+            <td>{{sellList.afTotalMain}}</td>
+            <td>{{sellList.afTotalDeputy}}</td>
+            <td>{{sellList.afTotalPrice}}</td>
+            <td v-if="tabSwitch">{{sellList.afTotalCost}}</td>
           </tr>
         </template>
       </table>

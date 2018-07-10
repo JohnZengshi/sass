@@ -474,10 +474,42 @@
     
 			<!--打印模块-->
 			<div style="display: none;">
-				<detail-template v-if="this.tabClassActive.index==0" title="退货" :reportType="4" ref="detailTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></detail-template>
-				<intelligence-type-template v-if="this.tabClassActive.index==1" title="退货" :reportType="4" ref="intelligenceTypeTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></intelligence-type-template>
-				<project-type-template v-if="this.tabClassActive.index==2" title="退货" :reportType="4" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></project-type-template>
-				<custom-template v-if="this.tabClassActive.index==3" title="退货" :reportType="4" ref="customTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></custom-template>
+				<detail-template 
+          v-if="this.tabClassActive.index==0" 
+          title="退货" 
+          tabTitle="明细"
+          :reportType="4" 
+          ref="detailTemplate" 
+          :sellList="dataGridStorage" 
+          :headerData="receiptsIntroList"
+          :tabSwitch="tabSwitch"></detail-template>
+				<intelligence-type-template 
+          v-if="this.tabClassActive.index==1" 
+          title="退货" 
+          tabTitle="智能分类"
+          :reportType="4" 
+          ref="intelligenceTypeTemplate" 
+          :sellList="dataGridStorage" 
+          :headerData="receiptsIntroList"
+          :tabSwitch="tabSwitch"></intelligence-type-template>
+				<project-type-template 
+          v-if="this.tabClassActive.index==2" 
+          title="退货"
+          tabTitle="产品分类" 
+          :reportType="4" 
+          ref="projectTypeTemplate" 
+          :sellList="dataGridStorage" 
+          :headerData="receiptsIntroList"
+          :tabSwitch="tabSwitch"></project-type-template>
+				<custom-template 
+          v-if="this.tabClassActive.index==3" 
+          title="退货" 
+          tabTitle="自定义"
+          :reportType="4" 
+          ref="customTemplate" 
+          :sellList="dataGridStorage" 
+          :headerData="receiptsIntroList"
+          :tabSwitch="tabSwitch"></custom-template>
 			</div>
   </div>
 </template>

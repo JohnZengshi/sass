@@ -557,9 +557,16 @@
       <remarkTit ref="remarkTitWrap" :boundingData="boundingData"></remarkTit>
       
       <!--打印模块-->
-      <div style="display: block;">
-        <sell-template title="销售" ref="sellTemplate" :isShowCost="isShowCost" :sellList="dataGridStorage" :headerData="receiptsIntroList"></sell-template>
-        <warranty-template :template="warrantyTemplate.template" :dataList="warrantyTemplate.dataList"></warranty-template>
+      <div style="display: none;">
+        <sell-template 
+          title="销售" 
+          ref="sellTemplate" 
+          :isShowCost="isShowCost" 
+          :sellList="dataGridStorage" 
+          :headerData="receiptsIntroList"></sell-template>
+        <warranty-template 
+          :template="warrantyTemplate.template" 
+          :dataList="warrantyTemplate.dataList"></warranty-template>
       </div>
       
     </div>

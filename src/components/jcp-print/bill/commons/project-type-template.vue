@@ -129,8 +129,8 @@
 				</template>
 			</table>
 		</div>
-		<Sign :title="title"></Sign>
 		<div class="printDate">
+			<Sign :title="title"></Sign>
 			打印时间：{{printDate}}
 		</div>
 	</div>

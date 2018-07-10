@@ -38,6 +38,28 @@
         </div>
       </div>
     </template>
+    <!-- 销售 -->
+    <template v-else-if="title == '销售'">
+      <!-- 单据号，店铺名称，制单人，销售员，收银员 -->
+      <div class="explain-box" v-if="
+          (headerData.orderNum != '') ||
+          (headerData.storageName != '') ||
+          (headerData.makeOrderManName != '') ||
+          (headerData.sellManName != '') ||
+          (headerData.cashName)">
+          <!-- 审核人 -->
+        <div v-show="headerData.orderNum">单据号：{{headerData.orderNum}}
+        </div>
+        <div v-show="headerData.storageName">店铺名称：{{headerData.storageName}}
+        </div>
+        <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
+        </div>
+        <div v-show="headerData.sellManName">销售员：{{headerData.sellManName}}
+        </div>
+        <div v-show="headerData.cashName">收银员：{{headerData.cashName}}
+        </div>
+      </div>
+    </template>
     <!-- 其他 -->
     <template v-else-if="reportType">
       <!-- 退库 -->
@@ -85,64 +107,84 @@
           </div> -->
         </div>
       </template>
-      <!-- 发货 -->
+      <!-- 发货,退货 -->
       <template v-if="reportType == 4">
-        <!-- 单据号，发货库位，店铺名称（收货之后+柜组），制单人，审核人，收货人 -->
-        <div class="explain-box" v-if="
-                    (headerData.orderNum != '') ||
-                    (headerData.storageName != '') ||
-                    (headerData.shopName != '') ||
-                    (headerData.makeOrderManName != '') ||
-                    (headerData.checkName)">
-          <div v-show="headerData.orderNum">单据号：{{headerData.orderNum}}
+        <template v-if="title == '发货'">
+          <!-- 单据号，发货库位，店铺名称（收货之后+柜组），制单人，审核人，收货人 -->
+          <div class="explain-box" v-if="
+                            (headerData.orderNum != '') ||
+                            (headerData.storageName != '') ||
+                            (headerData.shopName != '') ||
+                            (headerData.makeOrderManName != '') ||
+                            (headerData.checkName)">
+            <div v-show="headerData.orderNum">单据号：{{headerData.orderNum}}
+            </div>
+            <div v-show="headerData.storageName">发货库位：{{headerData.storageName}}
+            </div>
+            <div v-show="headerData.shopName">店铺名称：{{headerData.shopName}}
+            </div>
+            <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
+            </div>
+            <div v-show="headerData.checkName">审核人：{{headerData.checkName}}
+            </div>
+            <!-- <div v-show="headerData.auditor">收货人：{{headerData.auditor}}
+                  </div> -->
           </div>
-          <div v-show="headerData.storageName">发货库位：{{headerData.storageName}}
+        </template>
+        <template v-else-if="title == '退货'">
+          <!-- 单据号，店铺名称，退入库位，商品属性，制单人，审核人，收货人 -->
+          <div class="explain-box" v-if="
+                            (headerData.orderNum != '') ||
+                            (headerData.shopName != '') ||
+                            (headerData.storageName != '') ||
+                            (headerData.productProperty != '') ||
+                            (headerData.checkName)">
+            <div v-show="headerData.orderNum">单据号：{{headerData.orderNum}}
+            </div>
+            <div v-show="headerData.shopName">店铺名称：{{headerData.shopName}}
+            </div>
+            <div v-show="headerData.storageName">退入库位：{{headerData.storageName}}
+            </div>
+            <div v-show="headerData.productProperty">商品属性：{{headerData.productProperty == '1'?"成品":"旧料"}}
+            </div>
+            <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
+            </div>
+            <div v-show="headerData.checkName">审核人：{{headerData.checkName}}
+            </div>
+            <!-- <div v-show="headerData.auditor">收货人：{{headerData.auditor}}
+                  </div> -->
           </div>
-          <div v-show="headerData.shopName">店铺名称：{{headerData.shopName}}
-          </div>
-          <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
-          </div>
-          <div v-show="headerData.checkName">审核人：{{headerData.checkName}}
-          </div>
-          <!-- <div v-show="headerData.auditor">收货人：{{headerData.auditor}}
-          </div> -->
-        </div>
+        </template>
       </template>
       <!-- 调柜 -->
       <template v-if="reportType == 5">
+        <!-- 单据号，店铺名称，调出柜组，调入柜组，商品属性，制单人 -->
         <div class="explain-box" v-if="
-                    (headerData.auditor != '') ||
-                    (headerData.preparedBy != '') ||
-                    (headerData.storage != '') ||
-                    (headerData.storageOut != '')">
-          <div v-show="headerData.storage">调入库位：{{headerData.storage}}
+                    (headerData.orderNum != '') ||
+                    (headerData.distributor != '') ||
+                    (headerData.groupName != '') ||
+                    (headerData.groupName2 != '') ||
+                    (headerData.productProperty != '') ||
+                    (headerData.makeOrderManName != '')">
+          <div v-show="headerData.orderNum">单据号：{{headerData.orderNum}}
           </div>
-          <div v-show="headerData.storageOut">调出库位：{{headerData.storageOut}}
+          <div v-show="headerData.distributor">店铺名称：{{headerData.distributor}}
           </div>
-          <div v-show="headerData.preparedBy">制单人：{{headerData.preparedBy}}
+          <div v-show="headerData.groupName">调出柜组：{{headerData.groupName}}
           </div>
-          <div v-show="headerData.auditor">收货人：{{headerData.auditor}}
+          <div v-show="headerData.groupName2">调入柜组：{{headerData.groupName2}}
+          </div>
+          <div v-show="headerData.productProperty">商品属性：{{headerData.productProperty == '1'?'成品':'旧料'}}
+          </div>
+          <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
           </div>
         </div>
       </template>
-      <!-- 退货 -->
       <template v-if="reportType == 6">
-        <div class="explain-box" v-if="
-                    (headerData.auditor != '') ||
-                    (headerData.preparedBy != '') ||
-                    (headerData.storage != '') ||
-                    (headerData.storageOut != '')">
-          <div v-show="headerData.storage">调入库位：{{headerData.storage}}
-          </div>
-          <div v-show="headerData.storageOut">调出库位：{{headerData.storageOut}}
-          </div>
-          <div v-show="headerData.preparedBy">制单人：{{headerData.preparedBy}}
-          </div>
-          <div v-show="headerData.auditor">收货人：{{headerData.auditor}}
-          </div>
-        </div>
+        
       </template>
     </template>
+
   </div>
 
 </template>
