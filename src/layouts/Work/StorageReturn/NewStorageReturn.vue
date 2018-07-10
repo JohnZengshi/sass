@@ -543,7 +543,7 @@
                     tabTitle="明细"
                     :reportType="2" 
                     ref="detailTemplate" 
-                    :sellList="dataGridStorage" 
+                    :sellList="printDataGrid" 
                     :headerData="receiptsIntroList"
                     :tabSwitch="tabSwitch"></detail-template>
 				<intelligence-type-template 
@@ -552,7 +552,7 @@
                     :reportType="2" 
                     tabTitle="智能分类"
                     ref="intelligenceTypeTemplate" 
-                    :sellList="dataGridStorage" 
+                    :sellList="printDataGrid" 
                     :headerData="receiptsIntroList"
                     :tabSwitch="tabSwitch"></intelligence-type-template>
 				<project-type-template 
@@ -561,7 +561,7 @@
                     tabTitle="产品分类"
                     :reportType="2" 
                     ref="projectTypeTemplate" 
-                    :sellList="dataGridStorage" 
+                    :sellList="printDataGrid" 
                     :headerData="receiptsIntroList"
                     :tabSwitch="tabSwitch"></project-type-template>
 				<custom-template 
@@ -570,7 +570,7 @@
                     tabTitle="自定义"
                     :reportType="2" 
                     ref="customTemplate" 
-                    :sellList="dataGridStorage" 
+                    :sellList="printDataGrid" 
                     :headerData="receiptsIntroList"
                     :tabSwitch="tabSwitch"></custom-template>
 			</div>

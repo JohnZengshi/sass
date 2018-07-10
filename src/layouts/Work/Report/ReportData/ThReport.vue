@@ -294,13 +294,13 @@
         </div>
     </div>
 	<!--打印模块-->
-	<div style="display: none;">
+	<div style="display: none;" v-if="printDataGrid">
 			<detail-template 
                 v-if="this.tabClassActive.index==0" 
                 title="退货" 
                 tabTitle="明细"
                 ref="detailTemplate" 
-                :sellList="dataGridStorage" 
+                :sellList="printDataGrid" 
                 :headerData="printSelectDate"
                 :tabSwitch="tabSwitch"></detail-template>
 			<intelligence-type-template 
@@ -308,7 +308,7 @@
                 title="退货" 
                 tabTitle="智能分类"
                 ref="intelligenceTypeTemplate" 
-                :sellList="dataGridStorage" 
+                :sellList="printDataGrid" 
                 :headerData="printSelectDate"
                 :tabSwitch="tabSwitch"></intelligence-type-template>
 			<project-type-template 
@@ -316,7 +316,7 @@
                 title="退货" 
                 tabTitle="产品分类"
                 ref="projectTypeTemplate" 
-                :sellList="dataGridStorage" 
+                :sellList="printDataGrid" 
                 :headerData="printSelectDate"
                 :tabSwitch="tabSwitch"></project-type-template>
 			<custom-template 
@@ -324,7 +324,7 @@
                 title="退货" 
                 tabTitle="自定义"
                 ref="customTemplate" 
-                :sellList="dataGridStorage" 
+                :sellList="printDataGrid" 
                 :headerData="printSelectDate"
                 :tabSwitch="tabSwitch"></custom-template>
 	</div>
@@ -587,9 +587,8 @@ export default {
 
         inconspanactive1: true,
         inconspanactive2: false,
-
-        // 选择的加载条数
-        upDataNum:30
+        // 打印的数据
+        printDataGrid:null
       };
     },
     created() {
@@ -1224,22 +1223,27 @@ export default {
         },
         //打印表格
         tabPrin(){
-        		switch (this.tabClassActive.index){
-						case 0:
-							this.$refs.detailTemplate.print();
-							break;
-						case 1:
-							this.$refs.intelligenceTypeTemplate.print();
-							break;
-						case 2:
-							this.$refs.projectTypeTemplate.print();
-							break;
-						case 3:
-							this.$refs.customTemplate.print();
-							break;
-						default:
-							break;
-					}
+            (async () => {
+                let res = await this.getPrintData();
+                if (res) {
+                switch (this.tabClassActive.index) {
+                    case 0:
+                    this.$refs.detailTemplate.print();
+                    break;
+                    case 1:
+                    this.$refs.intelligenceTypeTemplate.print();
+                    break;
+                    case 2:
+                    this.$refs.projectTypeTemplate.print();
+                    break;
+                    case 3:
+                    this.$refs.customTemplate.print();
+                    break;
+                    default:
+                    break;
+                }
+                }
+            })()
         },
         // 导出报表
         exportTab(){
@@ -1359,11 +1363,34 @@ export default {
             }
             this.send()
         },
-          //加载页数变化
-        changeUpdataPageSize(val) {
-          console.log(val)
-          this.upDataNum = val
-        }
+        // 获取打印数据
+      getPrintData() {
+        // 请求所有数据
+        Object.assign(this.dataGridOptions, {
+          page: 1,
+          pageSize: 0
+        })
+        let res = seekOutShopReport(this.dataGridOptions).then((res) => {
+          if (res.data.state == 200) {
+            this.printDataGrid = res.data.data;
+            // 还原设置
+            Object.assign(this.dataGridOptions, {
+              page: 1,
+              pageSize: this.$refs["LoaderNum"].pageSize
+            })
+            return true;
+          }
+          if (res.data.state == 200101) {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            })
+            return false;
+          }
+        })
+        return res
+      }
+
     },
     
     mounted(){
