@@ -119,6 +119,7 @@ export default{
   
   methods: {
   	tabPrint(){
+      debugger
   		this.$emit("tabPrint");
   	},
     submitAudit () {

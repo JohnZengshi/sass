@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <filter-header :isOld="true" :specialItem="true" @complate="filterHeaderComplate" @reportSwitch="reportSwitch"></filter-header>
+            <filter-header class="hz-report-filter-header-wrap" :isOld="true" :specialItem="true" @complate="filterHeaderComplate" @reportSwitch="reportSwitch"></filter-header>
 
     </div>
     
@@ -135,9 +135,6 @@
 </transition>
 </template>
 
-<style scoped>
-    
-</style>
 
 
 <script>
@@ -845,4 +842,9 @@ export default {
     }
  }
 </script>
-
+<style lang="scss" scoped>
+.hz-report-filter-header-wrap{
+    float: right;
+    margin-top: 10px;
+} 
+</style>

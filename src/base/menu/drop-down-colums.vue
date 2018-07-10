@@ -224,7 +224,7 @@ export default {
     // height: 22px;
     //border: 1px solid #d6d6d6;
     //border-radius: 4px;
-    padding: 5px 0;
+    padding: 7px 0;
     float: left;
     position: relative;
     margin: 0 4px;

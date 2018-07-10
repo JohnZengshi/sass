@@ -114,7 +114,8 @@
 
 			<!--各个按钮操作区-->
 			<utilsdatagrid
-			ref="utilsdatagrid" 
+			ref="utilsdatagrid"
+      :dataGridOptions="dataGridOptions"
 			:curStatus="curStatus" 
 			@updataApi="updataApi" 
 			:orderData="orderData" 

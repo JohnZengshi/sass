@@ -1,5 +1,5 @@
 <template>
-    <div class="drop-colums-wrap">
+    <div class="alone-drop-down-colums-main">
         <div class="tltle" :class="{actions: isChecked}">
             {{titleData}}
             <i class="iconfont icon-xiala"></i>
@@ -111,7 +111,7 @@ export default {
 }
 </script>
 <style lang="scss">
-.drop-colums-wrap{
+.alone-drop-down-colums-main{
   .el-checkbox{
     height: 20px!important;
     line-height: 20px!important;
@@ -122,6 +122,7 @@ export default {
   .el-checkbox-group {
     .el-checkbox__label{
         font-size: 14px!important;
+        font-weight: normal;
     }
   }
 }
@@ -149,7 +150,7 @@ export default {
 // }
 </style>
 <style scoped lang="scss">
-.drop-colums-wrap {
+.alone-drop-down-colums-main {
     width: 68px;
     height: 28px;
     //border: 1px solid #d6d6d6;
@@ -273,7 +274,7 @@ export default {
         }
     }
 }
-.drop-colums-wrap:hover {
+.alone-drop-down-colums-main:hover {
     .list-box {
         z-index: 20;
         opacity: 1;

@@ -7,6 +7,7 @@
 			<div class="tb-td"
 				v-for="(tab,coindex) in detailDataGridColumn" 
 				:style="_calculateClass(tab)" :key="coindex"
+        :title="tb[tab.childType]"
 				v-text = "tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"
 			></div>
 		</div>
@@ -41,6 +42,7 @@
 						<div class="tb-td" :key="tabindex"
 							v-else
 							style="overflow: hidden;"
+              :title="tab.childType == ''? getIndex() : tb1[tab.childType]"
               @click.stop="openLabel(tb1, tb)"
 							:class="{backLine:tab.childType != ''}"
 							:style="_calculateClass(tab)" 
@@ -107,7 +109,8 @@
 					<div class="tb-td"
 						v-else  :key="tabindex"
 						:style="_calculateClass(tab)"
-            @click.stop="openLabel(tb, tab)"
+            :title="tb[tab.childType]"
+            @click.stop="openLabel({}, tb)"
 						v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
 					</div>
 				</template>
@@ -161,6 +164,7 @@ export default {
 	},
 	methods:{
     openLabel (parm, caty) {
+      debugger
         let datas = {
           type: '2',
           data: {
@@ -175,12 +179,12 @@ export default {
           }
         }
         if (this.dataGridOptions.type == '4') {
-            datas.data.wColorId = queryData.wColorId
-            datas.data.wGemId = queryData.wGemId
-            datas.data.wJewelryId = queryData.wJewelryId
-            datas.data.nColorId = queryData.nColorId
-            datas.data.nGemId = queryData.nGemId
-            datas.data.nJewelryId = queryData.nJewelryId
+            datas.data.wColorId = this.dataGridOptions.wColorId
+            datas.data.wGemId = this.dataGridOptions.wGemId
+            datas.data.wJewelryId = this.dataGridOptions.wJewelryId
+            datas.data.nColorId = this.dataGridOptions.nColorId
+            datas.data.nGemId = this.dataGridOptions.nGemId
+            datas.data.nJewelryId = this.dataGridOptions.nJewelryId
         }
       this.$store.dispatch('getLabelData', datas)
     },

@@ -67,6 +67,7 @@
 						v-for="(tab,f) in detailDataGridColumn" 
 						:key="f"
 						:style="_calculateClass(tab)" 
+            @click="openLabel({}, tb)"
 						v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
 					></div>
 				</div>
@@ -244,7 +245,6 @@ export default {
 		 
 		//  监听表格滚动
 		watchScroll(el) { // 下拉加载数据
-      console.log('------------------------------------------------=============')
 		  let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
 		  let clientHeight = el.target.clientHeight; // 元素的高度
 		  let scrollTop = el.target.scrollTop; // 滚动了的距离
