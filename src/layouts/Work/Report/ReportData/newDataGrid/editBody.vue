@@ -55,6 +55,7 @@
   						</div>
   						<div class="tb-td"
   							v-else
+                @click="openLabel(tb1, tb)"
 								style="overflow: hidden;"
   							:class="{backLine:tab.childType != ''}"
   							:style="_calculateClass(tab)" 
@@ -83,6 +84,7 @@
 					<div class="tb-td"
 						v-for="(tab,f) in detailDataGridColumn" 
 						:style="_calculateClass(tab)" 
+            @click="openLabel({}, tb)"
 						v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
 					></div>
 				</div>
@@ -121,7 +123,7 @@
   					</div>
   					<div class="tb-td"
   						v-else
-              @click="openLabel(tb)"
+              @click="openLabel({}, tb)"
   						:style="_calculateClass(tab)" 
   						v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
   					</div>
@@ -226,13 +228,23 @@ export default {
 		this.tabCellHeight()
 	},
 	methods:{
-    openLabel (parm) {
+    // openLabel (parm, caty) {
+    //   debugger
+    //   this.$store.dispatch('getLabelData', {
+    //     type: '3',
+    //     data: Object.assign({}, parm, {
+    //       orderType: this.orderType,
+    //     }, this.dataGridOptions)
+    //   })
+    // },
+    openLabel (parm, caty) {
       debugger
       this.$store.dispatch('getLabelData', {
         type: '3',
-        data: Object.assign({}, parm, {
+        data: Object.assign({}, parm, this.dataGridOptions, {
+          productTypeId: caty.productTypeId,
           orderType: this.orderType,
-        }, this.dataGridOptions)
+        })
       })
     },
     _calculateClass (parm) {

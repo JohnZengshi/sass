@@ -32,7 +32,7 @@ module.exports = {
         { 
     		id: '3',  //id 
     		text: '首饰名称', //头部title文字
-    		width:'155', //单元格宽
+    		width:'200', //单元格宽
     		type:'', //合计类型值
     		unit: '', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -170,7 +170,7 @@ module.exports = {
         { 
     		id: '3',  //id 
     		text: '首饰名称', //头部title文字
-    		width:'150', //单元格宽
+    		width:'200', //单元格宽
     		type:'', //合计类型值
     		unit: '', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -187,7 +187,7 @@ module.exports = {
 		{
     		id: '2',  //id 
     		text: '件数', //头部title文字
-    		width:'120', //单元格宽
+    		width:'60', //单元格宽
     		type:'totalNum', //合计类型值
     		unit: '(件)', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -330,7 +330,7 @@ module.exports = {
 		{
     		id: '2',  //id 
     		text: '件数', //头部title文字
-    		width:'120', //单元格宽
+    		width:'60', //单元格宽
     		type:'totalNum', //合计类型值
     		unit: '(件)', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -468,7 +468,7 @@ module.exports = {
 		{
     		id: '2',  //id 
     		text: '首饰名称', //头部title文字
-    		width:'150', //单元格宽
+    		width:'200', //单元格宽
     		type:'', //合计类型值
     		unit: '', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -485,7 +485,7 @@ module.exports = {
 		{
     		id: '2',  //id 
     		text: '件数', //头部title文字
-    		width:'120', //单元格宽
+    		width:'60', //单元格宽
     		type:'totalNum', //合计类型值
     		unit: '(件)', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位

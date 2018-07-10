@@ -1,6 +1,6 @@
 <template>
-	<div class="receipts">
-		<span data-text="导出表格" @click="exportTab()">
+	<div class="receipts" v-loading="loading">
+		<span v-if="dataGridOptions.type==1" data-text="导出表格" @click="exportTab()">
 			<i class="iconfont icon-daochu"></i>
 		</span>
 		<span data-text="打印标签" @click="printLabel">
@@ -32,9 +32,15 @@
 		
 		<!--打印模块-->
 		<div style="display: none;">
-				<detail-template title="入库" :reportType="1" ref="detailTemplate" :sellList="dataGridStorage" :headerData="orderData"></detail-template>
+				<detail-template title="入库-明细" :reportType="1" v-if="dataGridOptions.type==1" ref="detailTemplate" :sellList="dataGridStorage" :headerData="orderData"></detail-template>
+<!-- 				<detail-template v-if="this.tabClassActive.index==0" title="入库" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detail-template> -->
+
+					<intelligence-type-template v-if="dataGridOptions.type==2" title="入库-智能" ref="intelligenceTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></intelligence-type-template>
+
+					<project-type-template v-if="dataGridOptions.type==3" title="入库-产品分类" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></project-type-template>
+
+					<custom-template v-if="dataGridOptions.type==4" title="入库-自定义" ref="customTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></custom-template>
 		</div>
-		
 	</div>
 </template>
 
@@ -45,6 +51,7 @@
 	//import TemplatePreviewDialog from 'components/template/TemplatePreviewDialog'
 	import Lodop from 'components/template/Lodop'
 	import { seekGetStorageData } from 'Api/commonality/operate'
+	import { seekGetReportsPrintRK } from 'Api/commonality/seek'
 	//打印模块
 	import TablePrint from './../../../Work/CommonalityComponent/print/dataGridPrint'
 
@@ -53,15 +60,23 @@
 	// 导出按钮
 	import {downLoaderFile} from 'Api/downLoaderFile'
 	
+	import intelligenceTypeTemplate from "@/components/jcp-print/commons/intelligence-type-template";
+  import customTemplate from "@/components/jcp-print/commons/intelligence-type-template";
+  import projectTypeTemplate from "@/components/jcp-print/commons/project-type-template";
+
 	export default {
 		components: {
 			PrintLabelByOrderDialog,
 			Lodop,
 			TablePrint,
       detailTemplate,
+      intelligenceTypeTemplate,
+      customTemplate,
+      projectTypeTemplate
 		},
 		data() {
 			return {
+				loading: false,
 				dataGridStorage:{},
 				receiptsIntroList:{},
 				templateList: [],
@@ -102,7 +117,7 @@
 				}
 			}
 		},
-		props: ['orderNum', 'orderData'],
+		props: ['orderNum', 'orderData', 'dataGridOptions'],
 		created() {
 			this.$store.dispatch('getTemplateList', {
 				type: 2,
@@ -204,11 +219,6 @@
 		methods: {
 			// 导出表格
 			exportTab(){
-				console.log('导出表格')
-				// console.log('http://192.168.100.110:8083/yunzhubao/v1/export/exportExcelByBusinss?'+objStr)
-				// location.href='http://192.168.100.109:8080/yunzhubao/v1/export/exportExcelByBusinss?'+objStr
-				console.log(this.exportTabData)
-
 				downLoaderFile('/v1/export/exportExcelByBusinss',this.exportTabData)
 
 			},
@@ -219,7 +229,20 @@
 			},
 			//打印表格 
 			tabPrin(){
-				this.$refs.detailTemplate.print();
+				let type = this.dataGridOptions.type
+				if (type == 1) {
+						this.$refs.detailTemplate.print();
+						return
+				} else if (type == 2) {
+						this.$refs.intelligenceTypeTemplate.print();
+						return
+				} else if (type == 3) {
+						this.$refs.projectTypeTemplate.print();
+						return
+				} else if (type == 4){
+						this.$refs.customTemplate.print();
+						return
+				}
 			},
 			requestProductList(filter) {
 				this.$store.dispatch('getPrintLabelByOrder', filter).then(json => {
@@ -232,10 +255,8 @@
 			getPrintLabelData(type, orderId, beginNum, endNum, canvas, selectedProducts, isPrint){
 				this.print.canvas = canvas
 				if(type==0){//勾选
-					debugger
 					this.previewTemplate(canvas, selectedProducts, isPrint);
 				}else if(type==1){//全部
-					debugger
 					this.$store.dispatch('getPrintLabelData', {orderId:orderId}).then(json => {
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)
@@ -245,7 +266,6 @@
 						}
 					})
 				}else if(type==2){//分页
-					debugger
 					this.$store.dispatch('getPrintLabelData', {orderId:orderId,beginNum:beginNum, endNum:endNum}).then(json => {
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)
@@ -257,7 +277,6 @@
 				}
 			},
 			previewTemplate(canvas, selectedProducts, isPrint) {
-				debugger
 				if(selectedProducts.length > 0) {
 					let productList = selectedProducts.map(selectedProduct => {
 						return {
@@ -266,7 +285,6 @@
 					});
 					this.$store.dispatch('getPrintLabelData', {productList:productList}).then(json => {
 						if(json.state == 200) {
-							debugger
 							this.$set(this.print, 'templateData', json.data)
 							//this.print.templateData = json.data;
 							this.print.isPreview = true;
@@ -274,13 +292,11 @@
 						}
 					})
 				} else {
-					debugger
 					this.$store.dispatch('getPrintLabelData', {
 						isTmp: 1,
 						productType: 1
 					}).then(json => {
 						if(json.state == 200) {
-							debugger
 							this.print.templateData.productList = json.data.productList.slice(0, 1)
 							this.print.isPreview = true
 							this.printTemplate(canvas, json.data.productList);
@@ -290,22 +306,40 @@
 			},
 			//预览模板
 			printTemplate(templateList, dataList){
-				debugger
 				JaTools.print(templateList, dataList);
 			},
-			reportsPrintRK(){ // 获取单据打印数据
+			_seekGetReportsPrintRK () {
+				seekGetReportsPrintRK(Object.assign(this.dataGridOptions, {pageSize: 0})).then((res) => {
+					if(res.data.state == 200) {
+						this.dataGridStorage = res.data.data
+						setTimeout(() => {
+							this.tabPrin()
+							this.loading = false
+						}, 700)
+					} else if(res.data.state == 100100) {
+						this.$message({
+							type: 'error',
+							message: res.data.msg
+						})
+					}
+
+				})
+
+			},
+			_seekGetStorageData () {
 				let options = {
 					orderNum: this.$route.query.orderNumber,
 					reportType: 3,
 					type: 1,
 					page: 1,
-					pageSize: 99999
+					pageSize: 0
 				}
 				seekGetStorageData(options).then((res) => {
 					if(res.data.state == 200) {
 						this.dataGridStorage = res.data.data
 						setTimeout(() => {
 							this.tabPrin()
+							this.loading = false
 						}, 1000)
 					} else if(res.data.state == 100100) {
 						this.$message({
@@ -314,6 +348,14 @@
 						})
 					}
 				}, (res) => {})
+			},
+			reportsPrintRK(){ // 获取单据打印数据
+				this.loading = true
+				if (this.dataGridOptions.type == 1) {
+					this._seekGetStorageData()
+				} else {
+					this._seekGetReportsPrintRK()
+				}
 			}
 		}
 	}

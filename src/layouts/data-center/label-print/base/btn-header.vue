@@ -18,7 +18,7 @@
     <template v-if="isPopup">
         <el-button type="primary" size="small" class="ml-10" @click.native="seekPrintData('Y')">预览</el-button>
         <el-button type="primary" size="small" class="back-btn" @click.native="seekPrintData('N')">打印</el-button>
-        <el-button type="primary" size="small" class="back-btn" @click.native="seekPrintData('N')">导出</el-button>
+<!--         <el-button type="primary" size="small" class="back-btn" @click.native="seekPrintData('N')">导出</el-button> -->
     </template>
 
     <template v-else>

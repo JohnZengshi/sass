@@ -58,15 +58,17 @@ export default {
         font-size: 12px;
         line-height: 12px;
         font-weight: bold;
-        padding: 5px 8px;
+        padding: 7px 8px;
         cursor: pointer;
         color: #666;
         transition: all .3s;
         &:after{
           content: " ";
           position: absolute;
-          top: 5px;
+          top: 0;
           right: 0;
+          bottom: 0;
+          margin: auto;
           height: 12px;
           border-right: 1px solid #d6d6d6;
         }

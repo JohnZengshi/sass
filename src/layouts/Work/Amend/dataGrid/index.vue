@@ -62,7 +62,7 @@
 import dgridhead from './dgridHeader'
 import dgridBody from './dgridBody'
 import dgridfooter from './dgridFooter'
-import {getUpdateGoodsList} from 'Api/commonality/seek'
+import {getUpdateGoodsList, seekGetReportsPrintXG} from 'Api/commonality/seek'
 import datagridScroll from 'assets/js/uiScroll'
 import * as configData from './config'
 import * as fetch from './fetchData'
@@ -79,6 +79,7 @@ export default{
   props:['orderData','slipPointer','goodsAdd', 'seekBarcode', 'seekFlag'],
   data(){
     return {
+      printDatas: {},
     	sellList:{old:{},now:{}},
       dgDataList: [],
       // 页脚 修改前、后的数据
@@ -146,6 +147,19 @@ export default{
       if(res){
         this.readMoreData()
       }
+    },
+    
+    _seekGetReportsPrintXG () {
+      seekGetReportsPrintXG().then(res => {
+        if (res.data.state == 200){
+          this.printDatas = res.data.data;
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.data.msg
+          })
+        }
+      })
     },
     // 获取商品列表
     fetchGoodList() {

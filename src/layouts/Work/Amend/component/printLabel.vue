@@ -214,6 +214,7 @@ export default{
         downLoaderFile('/v1/export/exportExcelByBusinss',this.exportTabData)
 	},
   	tabPrint(){
+      debugger
   		this.$emit("tabPrint");
   	},
     // 打印标签

@@ -72,7 +72,7 @@
                                 <div>{{item.weight}}g</div>
                                 <div>{{item.price}}元</div>
                                 <div style="margin-top: 0;">
-                                    <el-checkbox class="checkbox-font" :label='item.orderId'></el-checkbox>
+                                    <el-checkbox class="checkbox-font" :label='item.orderNo'></el-checkbox>
                                 </div>
                             </div>
                         </li>

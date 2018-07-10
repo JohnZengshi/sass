@@ -35,45 +35,12 @@
           
       </div>
 
-      <div class="class-btn-wrap">
+      <combination-drop-down-colums
+          refs="combinationDropDownColumsBox"
+          class="class-btn-wrap"
+          @dataBack="combinationHeaderComplate"
+      ></combination-drop-down-colums>
 
-          <dropDownColums
-              ref="productTypeIdWrap"
-              :propsList="proList"
-              :keyName="'productTypeId'"
-              titleData="产品类别"
-              @dataBack="dataBack"
-          >
-          </dropDownColums>
-
-          <dropDownColums
-              ref="colourIdWrap"
-              :propsList="conditionList"
-              :keyName="'colourId'"
-              titleData="成色名称"
-              @dataBack="dataBack"
-          >
-          </dropDownColums>
-
-          <dropDownColums
-              ref="jeweIdWrap"
-              :propsList="jewelList"
-              :keyName="'jeweId'"
-              titleData="宝石名称"
-              @dataBack="dataBack"
-          >
-          </dropDownColums>
-
-          <dropDownColums
-              ref="jewelryIdWrap"
-              :propsList="jewelryList"
-              :keyName="'jewelryId'"
-              titleData="首饰类别"
-              @dataBack="dataBack"
-          >
-          </dropDownColums>
-
-      </div>
 
       <div class="search-block t-center">
         <alone-drop-down-colums 
@@ -118,6 +85,7 @@ import DownMenu from 'base/menu/DownMenu'
 import downInput from 'base/menu/down-input'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
+import combinationDropDownColums from 'base/menu/combination-drop-down-colums'
 export default {
   components: {
     dropDownColums,
@@ -125,7 +93,8 @@ export default {
     littleBatch,
     DownMenu,
     downInput,
-    aloneDropDownColums
+    aloneDropDownColums,
+    combinationDropDownColums
   },
   data () {
     return {
@@ -337,13 +306,17 @@ export default {
     }
   },
   methods: {
+    combinationHeaderComplate (parm) {
+      Object.assign(this.filterCondition, parm)
+    },
     initData (parm) {
       this.filterCondition = parm
-      this.$refs.storageLocationWrap.initData(parm.storageId)
-      this.$refs.productTypeIdWrap.initData(parm.productTypeId)
-      this.$refs.colourIdWrap.initData(parm.colourId)
-      this.$refs.jeweIdWrap.initData(parm.jeweId)
-      this.$refs.jewelryIdWrap.initData(parm.jewelryId)   
+      // this.$refs.storageLocationWrap.initData(parm.storageId)
+      // this.$refs.combinationDropDownColumsBox.initData(parm)
+      // this.$refs.productTypeIdWrap.initData(parm.productTypeId)
+      // this.$refs.colourIdWrap.initData(parm.colourId)
+      // this.$refs.jeweIdWrap.initData(parm.jeweId)
+      // this.$refs.jewelryIdWrap.initData(parm.jewelryId)   
     },
     choseMenu () {
       this.tabSwitch = !this.tabSwitch
@@ -372,13 +345,14 @@ export default {
       this.filterCondition.sortList = []
       this.$refs.moreWrap.reset()
       this.$refs.stateWrap.reset()
-      this.$refs.jewelryIdWrap.reset()
-      this.$refs.jeweIdWrap.reset()
-      this.$refs.colourIdWrap.reset()
-      this.$refs.productTypeIdWrap.reset()
+      // this.$refs.jewelryIdWrap.reset()
+      // this.$refs.jeweIdWrap.reset()
+      // this.$refs.colourIdWrap.reset()
+      // this.$refs.productTypeIdWrap.reset()
       this.$refs.shopWrap.reset()
       this.$refs.storageLocationWrap.reset()
       this.$refs.littleBatchWrap.reset()
+      this.$refs.combinationDropDownColumsBox.reset(parm)
       // this.$refs.littleBatchWrap.close()
       this.$emit('resetData')
     },
@@ -622,12 +596,12 @@ export default {
         font-size: 12px;
       }
       .class-btn-wrap {
-          width: 346px;
-          height: 28px;
-          border-radius: 4px;
-          border: 1px solid #d6d6d6;
-          float: left;
-          margin-left: 10px;
+          // width: 346px;
+          // height: 28px;
+          // border-radius: 4px;
+          // border: 1px solid #d6d6d6;
+          // float: left;
+          // margin-left: 10px;
       }
       .drop-block {
           width: 90px;
