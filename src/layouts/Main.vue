@@ -1390,15 +1390,14 @@ export default {
         height:100%;
         transition:all .2s;
 
-        .app-header{
-            transition:all .2s;
-        }
-        &.active{
-            padding-left:190px;
-            .app-header{
-                padding-left:190px;
-            }
-        }
+        /*.app-header{*/
+            /*transition:all .2s;*/
+        /*}*/
+        /*&.active{*/
+            /*padding-left:190px;*/
+            /*.app-header{*/
+            /*}*/
+        /*}*/
 
         .app-main{
             height:100%;

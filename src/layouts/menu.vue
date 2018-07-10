@@ -175,7 +175,7 @@
 
             //菜单切换
             systemTab(loop, type, menu) {
-                if (!menu) {
+                if (!menu || !menu.path) {
                     return ;
                 }
                 if (type) {
@@ -195,6 +195,7 @@
                 if (this.myMenuTab.length == 0) {
                     this.myMenuTab.push({
                         menu: menu,
+                        path: menu.path,
                         systemItemClass: Object.assign({},this.systemItemClass)
                     })
                 } else {
@@ -206,6 +207,7 @@
                     if (pushStatus) {
                         this.myMenuTab.push({
                             menu: menu,
+                            path: menu.path,
                             systemItemClass: Object.assign({},this.systemItemClass)
                         })
                     }
@@ -325,6 +327,7 @@
                 //如果没打开任何页签就把当前页签数据加入数组
                 if (this.myMenuTab.length == 0) {
                     this.myMenuTab.push({
+                        path: menu.path,
                         menu: menu.children[childIndex],
                         systemItemClass: Object.assign({},this.systemItemClass)
                     })
@@ -337,6 +340,7 @@
                     }
                     if (pushStatus) {
                         this.myMenuTab.push({
+                            path: menu.path,
                             menu: menu.children[childIndex],
                             systemItemClass: Object.assign({},this.systemItemClass)
                         })
@@ -348,7 +352,6 @@
 
                 bus.$emit('menuTabPath', item.path)
             },
-
             _seekGetFaceByShop() {
                 seekGetFaceByShop()
                     .then(res => {

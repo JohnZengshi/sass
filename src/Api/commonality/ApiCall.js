@@ -17,12 +17,12 @@ function apiCall (parm, URL) {
         }
     }
     // 内网
-    // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8083/yunzhubao' : ''
+    let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8083/yunzhubao' : ''
     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.109:8080/yunzhubao' : ''
     // uat
     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8099' : ''
     // 正式
-    let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
+    // let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
     // 本地
     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.109:8080/yunzhubao' : ''
     let url = serverHost + URL
@@ -60,8 +60,8 @@ export default apiCall
 //     let foo = function* (data) {
 //         yield Vue.http.post(url, data)
 //     }
-    
-    
+
+
 //     let resourcePromise = foo(data).next().value
 //     // 中间件
 //     // resourcePromise.then( res =>{
@@ -70,9 +70,9 @@ export default apiCall
 //     //   if(res.data.state == 100 ){
 //     //     Vue.prototype.loginPopup.show()
 //     //   }
-      
+
 //     // })
-    
+
 //     return resourcePromise
 // }
 

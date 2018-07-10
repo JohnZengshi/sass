@@ -6,7 +6,7 @@
         </div>
         <ul class="menu-tab-box no-radius" :style="'width:'+ulWidth+'px;transform: translateX('+moveParam.moveX+'px)'" v-if="getMenuTabData.length > 0">
             <li @click.stop="toHistory(item, index)" v-for="(item,index) in getMenuTabData" @mouseover.native="menuOver(item.menu, $event)" @mouseleave.native="mouseLeave(item.menu, $event)" @click.native="menuItem(index, $event,item.rootIndex,item.childIndex)" :class="index == curMenu ? 'active' : ''">
-                {{item.menu.text}} <i @click.stop="delMenu(index,$event,item.menu)" @mouseover.native="closeOver(item.menu, $event)">x</i>
+                <span class="menu-tab-text">{{item.menu.text + (item.menu.report ? '报表': '')}}</span> <i class="menu-tab-close" @click.stop="delMenu(index,$event,item.menu)" @mouseover.native="closeOver(item.menu, $event)">x</i>
             </li>
         </ul>
         <div :class="this.moveParam.rightClick?'right-arrow':'right-arrow arrow-gray'" v-if="arrowStatus.show" @click="moveAction('right')">
@@ -53,7 +53,7 @@
             toHistory(parm, index) {
                 this.curMenu = index
                 this.$router.push(parm.menu.path);
-                bus.$emit('menuTabClick',parm);
+                bus.$emit('menuTabClick', parm);
             },
             menuOver(item, evt) {
                 let left = 210
@@ -72,6 +72,13 @@
                 var _this = this;
                 //接受事件
                 bus.$on('menuTabDataChange', (data) => {
+                    for (let item of data) {
+                        if (item.path == '/work/report/') {
+                            if (item.menu.path != '/work/report/' && item.menu.path != '/work/report/hzreport') {
+                                item.menu.report = true;
+                            }
+                        }
+                    }
                     _this.getMenuTabData = data
                     _this.curMenu = data.length - 1
                     _this.ulWidth = data.length * 96
@@ -102,7 +109,8 @@
                     --this.curMenu
                 }
                 //如果关闭的是最后一个页签要打开倒数第二个页签对应的路由
-                if (index == this.getMenuTabData.length && index != 0 && this.getMenuTabData.length != 0) {
+                if (this.curMenu == index && index == this.getMenuTabData.length && index != 0 && this.getMenuTabData.length != 0) {
+                    this.curMenu = this.getMenuTabData.length - 1;
                     this.$router.push(this.getMenuTabData[index - 1].menu.path)
                 }
                 //如果关闭完全页签就把路由转向首页
@@ -201,24 +209,29 @@
                 line-height:34px;
                 border-right:1px solid #d6d6d6;
                 border-top:1px solid #d6d6d6;
-                text-align:center;
+                text-align:left;
                 color:#666666;
                 font-size:12px;
                 position:relative;
-                padding-right:20px;
-                padding-left:5px;
+                padding:0 22px 0 10px;
                 overflow:hidden;
                 text-overflow:ellipsis;
                 white-space:nowrap;
                 cursor:pointer;
+                span{
+                    display:inline-block;
+                    width:100%;
+                    height:100%;
+                }
                 i{
+                    display: inline-block;
                     font-style:normal;
                     color:#d6d6d6;
-                    font-size:14px;
+                    font-size:12px;
                     position:absolute;
-                    right:0;
+                    right:0px;
                     top:0;
-                    width:20px;
+                    width:22px;
                     text-align:center;
                     cursor:pointer;
                     z-index:100;
@@ -237,12 +250,17 @@
     .menu-tab-box.no-radius{
         border-radius:0;
     }
-    .menu-tab-box li:hover{
+    .menu-tab-box .menu-tab-text:hover,
+    .menu-tab-box .menu-tab-close:hover
+    {
         color:#2993f8;
     }
     .menu-tab-box li.active{
         color:#2993f8;
     }
+    /*.menu-tab-box i.hover{*/
+        /*color:#2993f8;*/
+    /*}*/
     .hide{
         display:none;
     }
@@ -287,6 +305,14 @@
         background:#ffffff;
         box-shadow:-3px 1px 3px rgba(0, 0, 0, .2);
         z-index:1000;
+    }
+    .right-arrow:hover,
+    .left-arrow:hover{
+        color:#fff;
+        background:#2993f8;
+    }
+    .arrow-gray:hover{
+        background: #fff;
     }
     .left-arrow.arrow-gray, .right-arrow.arrow-gray{
         color:#d6d6d6;

@@ -1398,7 +1398,6 @@ export default {
   top: 0;
   height: 64px;
   width: 100%;
-  padding-left: 190px;
   background-color: #fff;
   border-bottom: 1px solid #edf0ef;
   z-index: 1002;
@@ -1406,11 +1405,10 @@ export default {
   display: flex;
 
   .logo {
-    height: 59px;
-    position: absolute;
-    left: 20px;
-    top: 5px;
-    z-index: 10;
+      height: 64px;
+      z-index: 10;
+      padding-left: 40px;
+      line-height: 64px;
 
     .companyLogo {
       width: 35px;
@@ -1419,7 +1417,6 @@ export default {
       display: inline-block;
       margin-right: 10px;
       vertical-align: middle;
-      margin-top: 6px;
     }
     .company-name-now {
       display: inline-block;
