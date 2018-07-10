@@ -367,8 +367,13 @@ export default {
 
             filterShow (value) {
                 if (this.showEmpty == 'N') {
+                    if (this.data.propertyCode == 'unitPrice') {
+                        debugger
+                    }
                     if (this.data.propertyCode == 'discountPrice' && value == "100") {
                         return false
+                    } else if (this.data.isNullPrint) {
+                        return true
                     }
                     return value && value != 0.00 && value != 0.000
                 } else {

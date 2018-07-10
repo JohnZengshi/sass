@@ -5,7 +5,7 @@
       <data-grid-header :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell" @sortList="sortList" :reportType="reportType"></data-grid-header>
 
       <!--表格内容区  -->
-      <data-grid-body :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="dataGridStorage" :detailDataGridColumnTwo="detailDataGridColumnTwo"
+      <data-grid-body :orderType="orderType" :dataGridOptions="dataGridOptions" :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="dataGridStorage" :detailDataGridColumnTwo="detailDataGridColumnTwo"
         :buyBackStorage="buyBackStorage" @tabCell="tabCell">
       </data-grid-body>
 
@@ -41,7 +41,7 @@
       DataGridBody,
       DataGridHeader
     },
-    props: ['dataGridStorage', 'reportType', 'buyBackStorage', 'cashierStatistics'],
+    props: ['dataGridStorage', 'reportType', 'buyBackStorage', 'cashierStatistics', 'dataGridOptions', 'orderType'],
 
     methods: {
       //单元格宽度

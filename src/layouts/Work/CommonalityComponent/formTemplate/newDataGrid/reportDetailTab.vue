@@ -9,7 +9,9 @@
             :dataGridStorage="dataGridStorage" 
             :reportType="reportType"
             :positionSwitch="positionSwitch"
-            :isRole = 'isRole'
+            :isRole='isRole'
+            :dataGridOptions='dataGridOptions'
+            :orderType='orderType'
             @scrollClass = "scrollClass"
             @lazyloadSend = "lazyloadSend"
             @messageBack="messageBack"
@@ -68,7 +70,7 @@ export default {
 			this.posSwitch()
 		},
 	},
-	props : ['dataGridStorage','reportType','tabSwitch','isOld', 'isRole', 'positionSwitch', 'newList'],
+	props : ['dataGridStorage','reportType','tabSwitch','isOld', 'isRole', 'positionSwitch', 'newList', 'dataGridOptions', 'orderType'],
 	methods:{
         messageBack (val) {
             this.$emit('messageBack', val)

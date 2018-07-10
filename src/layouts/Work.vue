@@ -2,18 +2,18 @@
 <transition name="tp-ani">
     <div>
         <router-view></router-view>
-        <labelPopup></labelPopup>
+        <!-- <labelPopup></labelPopup> -->
     </div>
 </transition>
 </template>
 
 <script>
 import {seekMySelfWorkApplyList} from '../../src/Api/commonality/seek'
-import labelPopup from '@/layouts/data-center/label-print/popup'
+// import labelPopup from '@/layouts/data-center/label-print/popup'
 export default {
-    components: {
-        labelPopup
-    },
+    // components: {
+    //     labelPopup
+    // },
     data () {
         return {
             indexLocation: true,

@@ -16,14 +16,14 @@
     <printDownMenu :titleInfo="currentPrint ? currentPrint : '选择打印机'" :showList="printList" :nameKey="'name'" @changeData="changePrint" @clearInfo="clearPrint" @toMouseover="loadPrinters"></printDownMenu>
 
     <template v-if="isPopup">
-        <el-button type="primary" size="small" class="ml-10" @click.native="_previewTemplate('Y')">预览</el-button>
-        <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">打印</el-button>
-        <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">导出</el-button>
+        <el-button type="primary" size="small" class="ml-10" @click.native="seekPrintData('Y')">预览</el-button>
+        <el-button type="primary" size="small" class="back-btn" @click.native="seekPrintData('N')">打印</el-button>
+        <el-button type="primary" size="small" class="back-btn" @click.native="seekPrintData('N')">导出</el-button>
     </template>
 
     <template v-else>
-        <el-button size="small" class="ml-10" @click.native="_previewTemplate('Y')">预览</el-button>
-        <el-button type="primary" size="small" class="back-btn" @click.native="_previewTemplate('N')">打印</el-button>
+        <el-button size="small" class="ml-10" @click.native="seekPrintData('Y')">预览</el-button>
+        <el-button type="primary" size="small" class="back-btn" @click.native="seekPrintData('N')">打印</el-button>
     </template>
   </div>
 </template>
@@ -97,18 +97,22 @@ export default {
     toHome () {
 
     },
-    seekPrintData (parm) { // 范围，回调
+    seekPrintData (parm) {
       debugger
       let barcode = {
         barcodeList: []
       }
-      for (let i of this.addData) {
-        barcode.barcodeList.push({barcode: i.barcode})
+
+      if (this.addData) {
+        for (let i of this.addData) {
+          barcode.barcodeList.push({barcode: i.barcode})
+        }
       }
+      
       this.loading = true
-      seekGetPrintLabelList(Object.assign(this.filterCondition, barcode, {
-        beginNum: this.printNum.beginNum,
-        endNum: this.printNum.endNum
+      seekGetPrintLabelList(Object.assign({}, this.filterCondition, barcode, {
+        startNum: this.printNum.beginNum,
+        overNum: this.printNum.endNum
       })).then(res => {
           if (res.data.state == 200) {
             this._previewTemplate(res.data.data.dataList, parm)

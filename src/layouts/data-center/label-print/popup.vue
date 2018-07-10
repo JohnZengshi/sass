@@ -1,12 +1,15 @@
 <template>
   <el-dialog top="7%" :visible.sync="listDetails" class="new-popup-dialog">
     <div class="new-popup-main">
+      
       <div class="RP_report_wrapper report_table_fixed dc-label-print-main" v-if="isPrint==0">
 
       <div class="Rp_dataGrid_container">
 
         <div class="rp_gridState">
-
+          <div class="p-close-icon" @click="listDetails = false">
+              <i class="el-dialog__close el-icon el-icon-close"></i>    
+          </div>
           <p class="side-nav"><i class="iconfont icon-liebiao"></i>商品列表</p>
 
           <div class="sort-wrap">
@@ -31,10 +34,10 @@
 
       </div>
       <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
-        <report-detail ref="reportDetailWrap" :printNum="printNum" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow">
-        </report-detail>
+          <report-detail ref="reportDetailWrap" :printNum="printNum" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow">
+          </report-detail>
+        </div>
       </div>
-    </div>
     </div>
   </el-dialog>
 </template>
@@ -336,19 +339,22 @@ export default {
       }
       // this.send()
     },
-    // labelData (parm) {
-    //   if (this.labelData) {
-    //     this.listDetails = true
-    //     this.filterCondition = Object.assign(this.filterCondition, parm)
-    //     this.filterData()
-    //   }
-    // },
-    // listDetails () {
-    //   if (!this.listDetails) {
-    //     this.$store.dispatch('getLabelData', '')
-    //     this.$refs.filterHeaderBox.resetData()
-    //   }
-    // }
+    labelData () {
+      if (this.labelData) {
+        this.listDetails = true
+        this.filterCondition = Object.assign(this.filterCondition, this.labelData)
+        Vue.nextTick(() => {
+          this.$refs.filterHeaderBox.initData(this.filterCondition)
+        })
+        this.filterData()
+      }
+    },
+    listDetails () {
+      if (!this.listDetails) {
+        this.$store.dispatch('getLabelData', '')
+        this.$refs.filterHeaderBox.resetData()
+      }
+    }
   },
   computed: {
     ...mapGetters([
@@ -1091,6 +1097,18 @@ export default {
   height: 732px;
   background-color: #fff;
   border-radius: 5px;
+  position: relative;
+  .p-close-icon{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+    >i{
+      color: #bfcbd9;
+    }
+  }
   .btn-header-wrap{
     height: 40px;
     padding-left: 20px;

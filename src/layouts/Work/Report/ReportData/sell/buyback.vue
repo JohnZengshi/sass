@@ -9,6 +9,8 @@
     :detailDataGridColumn="detailDataGridColumn" 
     :dataGridStorage="dataGridStorage" 
     :reportType = "reportType"
+    :dataGridOptions="dataGridOptions"
+    :orderType="orderType"
     @scrollClass = "scrollClass" 
     @tabCell="tabCell">
   </data-grid-body>
@@ -47,7 +49,7 @@ export default{
     }
   },
   
-  props : ['dataGridStorage','reportType','tabSwitch','dataGridConfig'],
+  props : ['dataGridStorage','reportType','tabSwitch','dataGridConfig', 'dataGridOptions', 'orderType'],
   
   methods:{
     //单元格宽度

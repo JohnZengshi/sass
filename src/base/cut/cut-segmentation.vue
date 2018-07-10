@@ -56,6 +56,7 @@ export default {
         position: relative;
         display: inline-block;
         font-size: 12px;
+        line-height: 12px;
         font-weight: bold;
         padding: 5px 8px;
         cursor: pointer;
@@ -64,9 +65,9 @@ export default {
         &:after{
           content: " ";
           position: absolute;
-          top: 7px;
+          top: 5px;
           right: 0;
-          height: 13px;
+          height: 12px;
           border-right: 1px solid #d6d6d6;
         }
         &:hover, &.actions{

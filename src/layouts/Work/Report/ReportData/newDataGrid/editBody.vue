@@ -7,7 +7,7 @@
   		<div class="tb-tr" :class="index % 2 == 0 ? 'tb-tr-gray' : ''">
   			<div class="tb-td"
   				v-for="tab in detailDataGridColumn" 
-  				:style="tableCell(tab.width)" 
+  				:style="_calculateClass(tab)" 
   				v-text = "tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"
   			></div>
   		</div>
@@ -16,7 +16,7 @@
   		<div class="tb-tr edit-tb-tr" :class="index % 2 == 0 ? 'tb-tr-gray' : ''" v-if="isEditReport == 'edit'">
         <div class="tb-td"
           v-for="tab in detailDataGridColumn" 
-          :style="tableCell(tab.width)" 
+          :style="_calculateClass(tab)" 
           v-html = "tab.editOldType == ''?  (tab.text == '条码号' ? '<em></em>':'')  : tab.toFixed ? toFixed(tb[tab.editOldType],tab.countCut) : tb[tab.editOldType]"
         ></div>
       </div>
@@ -44,12 +44,12 @@
   					<template v-for="tab in detailDataGridColumn">
   						<div class="tb-td category-td"
   							v-if="tab.text == '产品类别' && index1 == 0" 
-  							:style="tableCell(tab.width)" >
+  							:style="_calculateClass(tab)" >
   							<i v-if="isEditReport == 'edit'" :style="'height:'+ (tb.detailList.length * 50)*2 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i>
   						</div>
   						<div class="tb-td category-td"
   							v-else-if="tab.text == '位置名称' && index == 0 && index1 == 0"
-  							:style="tableCell(tab.width)"
+  							:style="_calculateClass(tab)"
   						>	
   							<i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;'">{{caty[tab.childType]}}</i>
   						</div>
@@ -57,7 +57,7 @@
   							v-else
 								style="overflow: hidden;"
   							:class="{backLine:tab.childType != ''}"
-  							:style="tableCell(tab.width)" 
+  							:style="_calculateClass(tab)" 
   							v-text = "tab.childType == ''? getIndex() : tb1[tab.childType]">
   						</div>
   					</template>
@@ -68,7 +68,7 @@
     				<div class="tb-tr edit-tb-tr" :class="index % 2 == 0 ? 'tb-tr-gray' : ''">
               <template v-for="tab in detailDataGridColumn">
                 <div class="tb-td"
-                  :style="tableCell(tab.width)" 
+                  :style="_calculateClass(tab)" 
                   v-html = "tab.editOldType == ''? (tab.text == '首饰名称' ? '<em></em>':'') : tb1[tab.editOldType]">
                 </div>
               </template>
@@ -82,7 +82,7 @@
 				<div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch"><!-- 类型小计 -->
 					<div class="tb-td"
 						v-for="(tab,f) in detailDataGridColumn" 
-						:style="tableCell(tab.width)" 
+						:style="_calculateClass(tab)" 
 						v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
 					></div>
 				</div>
@@ -90,7 +90,7 @@
 			<div class="tb-total" style="background:#e9f4fe;" v-if="positionSwitch"> <!-- 位置小计 -->
 				<div class="tb-td"
 					v-for="(tab,f) in detailDataGridColumn" 
-					:style="tableCell(tab.width)" 
+					:style="_calculateClass(tab)" 
 					v-html = "f == 1 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"
 				></div>
 			</div>
@@ -108,20 +108,21 @@
   				<template v-for="tab in detailDataGridColumn">
   					<div class="tb-td category-td"
   						v-if="tab.text == '产品类别' && index == 0" 
-  						:style="tableCell(tab.width)"
+  						:style="_calculateClass(tab)"
   						v-text="tb[tab.childType]"
   						>
   						<!-- <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i> -->
   					</div>
   					<div class="tb-td category-td"
   						v-else-if="tab.text == '位置名称' && index == 0"
-  						:style="tableCell(tab.width)"
+  						:style="_calculateClass(tab)"
   					>	
   						<i :style="'height:'+ caty.productTypeList.length * 50 +'px;  color: #2993f8; background:#fff;'">{{caty[tab.childType]}}</i>
   					</div>
   					<div class="tb-td"
   						v-else
-  						:style="tableCell(tab.width)" 
+              @click="openLabel(tb)"
+  						:style="_calculateClass(tab)" 
   						v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
   					</div>
   				</template>
@@ -131,7 +132,7 @@
   			<div class="tb-tr edit-tb-tr" :class="index % 2 == 0 ? 'tb-tr-gray' : ''" v-if="isEditReport == 'edit'">
           <template v-for="tab in detailDataGridColumn">
             <div class="tb-td"
-              :style="tableCell(tab.width)" 
+              :style="_calculateClass(tab)" 
               v-html = "tab.editOldType == ''? (tab.text == '产品类别' ? '<em></em>':'') : tb[tab.editOldType]">
             </div>
           </template>
@@ -148,6 +149,7 @@
 <script>
 let applyIndex = 0
 import ReadMoreData from 'components/work/readMoreData.vue'
+import {calculateClass} from 'assets/js/getClass'
 export default {
 	data(){
 		return{
@@ -159,7 +161,7 @@ export default {
 	components:{
 		ReadMoreData,
 	},
-	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch','isEditReport'],
+	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch','isEditReport', 'dataGridOptions', 'orderType'],
 	
 	watch:{
 		'dataGridStorage':function(){
@@ -224,6 +226,18 @@ export default {
 		this.tabCellHeight()
 	},
 	methods:{
+    openLabel (parm) {
+      debugger
+      this.$store.dispatch('getLabelData', {
+        type: '3',
+        data: Object.assign({}, parm, {
+          orderType: this.orderType,
+        }, this.dataGridOptions)
+      })
+    },
+    _calculateClass (parm) {
+      return calculateClass(parm)
+    },
 		//重置index
 	    resetIndex( index ){
          if( index == 0 ) applyIndex = 0

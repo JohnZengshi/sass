@@ -414,6 +414,8 @@
                                         :isRole='receiptsIntroList.isRole'
                                         :tabSwitch="tabSwitch"
                                         :positionSwitch="positionSwitch"
+                                        :dataGridOptions="dataGridOptions"
+                                        :orderType="'03'"
                                         @scrollClass="tabScrollShow"
                                         @messageBack="messageBack"
                                         :newList="newList"
@@ -451,7 +453,7 @@
                                         <span class="iconfont icon-shenhebohui"></span>
                                         <span>驳回审核</span>
                                     </div>
-                                    <div class="btn" @click="exportTab()">
+                                    <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
                                         <span class="iconfont icon-daochu"></span>
                                         <span>导出表格</span>
                                     </div>

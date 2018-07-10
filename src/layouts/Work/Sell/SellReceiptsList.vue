@@ -2156,6 +2156,7 @@
 						if(json.data.backuProductList && json.data.backuProductList.length > 0) {
 							if(json.data.productList) json.data.productList.push(...json.data.backuProductList)
 						}
+            debugger
 						this.templateData = json.data
 						this.isPreview = true
 						this.windowPrint(template, json.data)

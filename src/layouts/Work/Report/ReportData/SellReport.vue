@@ -62,6 +62,7 @@
 						</div>
 
             <filter-header
+              class="sell-report-filter-header-wrap"
               v-if="sellShowId == 'sales' || sellShowId == 'buyback'"
               @complate="filterHeaderComplate"
               @reportSwitch="reportSwitch"
@@ -79,22 +80,55 @@
 
 					<!--收银报表-->
 					<div class="xj-report-rp_dataGridTemp" style="padding-top: 0;" :class="tabShow" v-if="sellShowId == 'collect'">
-						<report-detail-collect :dataGridStorage="collectStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" @scrollClass="tabScrollShow" :reportType="getReportType()">
+						<report-detail-collect
+              :dataGridStorage="collectStorage"
+              :tabSwitch="tabSwitch"
+              :isBuyBack="isBuyBack"
+              :dataGridOptions="dataGridOptions"
+              :orderType="'05'"
+              :reportType="getReportType()"
+              @scrollClass="tabScrollShow"
+            >
 						</report-detail-collect>
 					</div>
 
 					<!--回购报表-->
 					<div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
-						<report-detail-trade ref="ReportDetailTrade" :dataGridStorage="tradeStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
+						<report-detail-trade
+              ref="ReportDetailTrade"
+              :dataGridStorage="tradeStorage"
+              :tabSwitch="tabSwitch"
+              :isBuyBack="isBuyBack"
+              :newList="newList"
+              :dataGridOptions="dataGridOptions"
+              :orderType="'05'"
+              :reportType="getReportType()"
+              @scrollClass="tabScrollShow"
+              @sortList="sortListAct"
+            >
               <!-- <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1 && tradeStorage.totalNum>30" @LoadOptionsDefault="LoadOptionsDefault"></report-load> -->
 						</report-detail-trade>            
 					</div>
 
 					<!--销售报表-->
 					<div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
-						<report-detail ref="ReportDetail" :dataGridStorage="sellStorage" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" :positionSwitch="positionSwitch" @sortList="sortListAct" :newList="newList" @scrollClass="tabScrollShow" :reportType="getReportType()">
-               <!-- <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type === 1 && sellStorage.totalNum>30" @LoadOptionsDefault="LoadOptionsDefault"></report-load> -->
-						</report-detail>                      
+
+						<report-detail
+              :dataGridStorage="sellStorage"
+              :tabSwitch="tabSwitch"
+              :isBuyBack="isBuyBack"
+              :positionSwitch="positionSwitch"
+              :newList="newList"
+              :reportType="getReportType()"
+              :dataGridOptions="dataGridOptions"
+              :orderType="'05'"
+              @sortList="sortListAct"
+              @scrollClass="tabScrollShow"
+            >
+              <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type == 1 && sellStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>
+
+						</report-detail>
+
 					</div>
 
 				</div>
@@ -170,7 +204,9 @@
 
 			<!--收银统计-->
 			<div class="dataGrid_statistics_switch" v-else>
-				<com-statistics :selectDate="dataGridOptions" :printSelectDate="printSelectDate" :tradeStorage="tradeStorage" :sellStorage="sellStorage">
+				<com-statistics
+            :orderType="'05'"
+            :selectDate="dataGridOptions" :printSelectDate="printSelectDate" :tradeStorage="tradeStorage" :sellStorage="sellStorage">
 				</com-statistics>
 			</div>
 			
@@ -773,14 +809,18 @@ export default {
     },
     tabHover(index, evt) {
       //if (this.dataGridOptions.type == 4 && index == 3) {
-      this.$refs.customDia.style.zIndex = "10";
-      this.$refs.customDia.style.opacity = "1";
+        if (this.$refs.customDia) {
+          this.$refs.customDia.style.zIndex = "10";
+          this.$refs.customDia.style.opacity = "1";
+        }
       //}
     },
     tabOut(index, evt) {
       //if (this.dataGridOptions.type == 4 && index == 3) {
-      this.$refs.customDia.style.zIndex = "-1";
-      this.$refs.customDia.style.opacity = "0";
+        if (this.$refs.customDia) {
+          this.$refs.customDia.style.zIndex = "-1";
+          this.$refs.customDia.style.opacity = "0";
+        }
       //}
     },
     cancelSort(item, index) {
@@ -1265,11 +1305,15 @@ export default {
       this.dataGridOptions.pageSize = 30;
       // 回购
       if(this.sellShowId == 'buyback'){
-        this.$refs["ReportDetailTrade"].$children[1].tempArray = [];
+        if (this.$refs["ReportDetailTrade"]) {
+          this.$refs["ReportDetailTrade"].$children[1].tempArray = [];
+        }
       }
       // 销售
       else if(this.sellShowId == 'sales'){
-        this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
+        if (this.$refs["ReportDetail"]) {
+          this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
+        }
       }
       this.send();
     },
@@ -1768,5 +1812,10 @@ export default {
 .cut-bg-btn-wrap{
   float: right;
   margin-top: 10px;
+}
+.sell-report-filter-header-wrap{
+  margin-top: 10px;
+  float: right;
+  margin-right: 10px;
 }
 </style>

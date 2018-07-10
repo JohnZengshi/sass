@@ -412,14 +412,16 @@
                                         :tabSwitch="tabSwitch"
                                         :positionSwitch="positionSwitch"
                                         :isRole='receiptsIntroList.isRole'
+                                        :billType="'退库'"
+                                        :isSelDelect="isSelDelect"
+                                        :newList="newList"
+                                        :dataGridOptions="dataGridOptions"
+                                        :orderType="'02'"
                                         @scrollClass="tabScrollShow"
                                         @delectBack="delBack"
                                         @scrollBack="scrollBack"
                                         @scrolling="scrolling"
                                         @messageBack="messageBack"
-                                        :billType="'退库'"
-                                        :isSelDelect="isSelDelect"
-                                        :newList="newList"
                                         @lazyloadSend="sendlayLoad"
                                         @sortList="sortListAct"
                                         :reportType="getReportType()">
@@ -442,7 +444,7 @@
                                         <span class="iconfont icon-shenhebohui"></span>
                                         <span>驳回审核</span>
                                     </div>
-                                    <div class="btn" @click="exportTab()">
+                                    <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
                                         <span class="iconfont icon-daochu"></span>
                                         <span>导出表格</span>
                                     </div>
