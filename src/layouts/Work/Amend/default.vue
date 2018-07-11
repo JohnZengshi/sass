@@ -26,7 +26,8 @@
            <span class="list-icon"><i class="iconfont icon-liebiao"></i>商品列表</span>
            <div class="item" :t="isShow ? '1' : '2'">
                <!-- <span v-if="isShow && curStatus.nowStatus == 1" class="add" @click="add" >添加商品</span> -->
-               <input v-model="seekBarcode" v-if="isShow && curStatus.nowStatus == 1" class="seek" type="text" placeholder="请输入条码号" @keyup.enter="addClick"/>
+               <!-- 只有明细才显示 -->
+               <input v-model="seekBarcode" v-if="isShow && curStatus.nowStatus == 1 && dataGridOptions.type == 1" class="seek" type="text" placeholder="请输入条码号" @keyup.enter="addClick"/>
 
                 <combination-drop-down-colums
                   v-show="dataGridOptions.type != 1"
@@ -44,9 +45,11 @@
                   :customList="customList"
                 ></filter-header>
 
-
-                <span v-if="isShow && curStatus.nowStatus == 1" @click="onBatchamend">批量修改</span>
-                <span v-if="isShow && curStatus.nowStatus == 1" @click="onBatchAdd">批量添加</span>
+                <!-- 只有明细才显示 -->
+                <template v-if="dataGridOptions.type == 1">
+                  <span v-if="isShow && curStatus.nowStatus == 1" @click="onBatchamend">批量修改</span>
+                  <span v-if="isShow && curStatus.nowStatus == 1" @click="onBatchAdd">批量添加</span>
+                </template>
            </div>
        </div>
        

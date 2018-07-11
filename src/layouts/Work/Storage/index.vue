@@ -37,18 +37,21 @@
               :type="dataGridOptions.type"
               :customList="customList"
             ></filter-header>
-
-						<span v-if="isShow && curStatus.nowStatus == 1" class="add" @click="add" ref="ref_addGoods">添加商品</span>
-						<span v-if="isShow && curStatus.nowStatus == 1" @click="onBatchamend">批量修改</span>
-						<span v-if="isShow && curStatus.nowStatus == 1" class="copy" @click="copyPopupShow(true)">复制</span>
-						<span v-if="isShow && curStatus.nowStatus == 1" class="import" @click="$refs.uploadfile.click()">导入表格</span>
-						<!--<span class="deleteAll">批量删除</span>
-               <span class="amend">批量修改</span>-->
-						<span class="ruleConfig" @click="ruleOptionDia = true">规则配置</span>
-						<a target="_blank" :href="storageDownloadUrl" class="download">下载模板</a>
-						<template v-if="isShow">
-							<span class="save" @click="seve" :class="rowDataList.length == 0 ? 'gray': ''">保存</span>
-						</template>
+            
+            <!-- 只有明细才显示 -->
+						<template v-if="dataGridOptions.type == 1">
+              <span v-if="isShow && curStatus.nowStatus == 1" class="add" @click="add" ref="ref_addGoods">添加商品</span>
+              <span v-if="isShow && curStatus.nowStatus == 1" @click="onBatchamend">批量修改</span>
+              <span v-if="isShow && curStatus.nowStatus == 1" class="copy" @click="copyPopupShow(true)">复制</span>
+              <span v-if="isShow && curStatus.nowStatus == 1" class="import" @click="$refs.uploadfile.click()">导入表格</span>
+              <!--<span class="deleteAll">批量删除</span>
+                <span class="amend">批量修改</span>-->
+              <span class="ruleConfig" @click="ruleOptionDia = true">规则配置</span>
+              <a target="_blank" :href="storageDownloadUrl" class="download">下载模板</a>
+              <template v-if="isShow">
+                <span class="save" @click="seve" :class="rowDataList.length == 0 ? 'gray': ''">保存</span>
+              </template>
+            </template>
 						<input style="display: none;" ref="uploadfile" type="file" name="file" @change="uploadingOne($event)" />
 					</div>
 

@@ -383,6 +383,7 @@
     background-color: #fff; //transition: all .5s cubic-bezier(0.51, -0.04, 0.4, 0.4);
     position: relative;
     overflow: auto;
+    transition: height .5s;
     &.animat-scroll {
       height: 540px;
     }
