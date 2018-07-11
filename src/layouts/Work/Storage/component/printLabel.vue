@@ -86,9 +86,9 @@
 	import {downLoaderFile} from 'Api/downLoaderFile'
 	// 打印模块
 	import detailTemplate from "@/components/jcp-print/bill/warehousing/template";
-	import intelligenceTypeTemplate from "@/components/jcp-print/commons/intelligence-type-template";
-  	import customTemplate from "@/components/jcp-print/commons/intelligence-type-template";
-  	import projectTypeTemplate from "@/components/jcp-print/commons/project-type-template";
+	import intelligenceTypeTemplate from "@/components/jcp-print/bill/commons/intelligence-type-template";
+  	import customTemplate from "@/components/jcp-print/bill/commons/intelligence-type-template";
+  	import projectTypeTemplate from "@/components/jcp-print/bill/commons/project-type-template";
 
 	export default {
 		components: {
