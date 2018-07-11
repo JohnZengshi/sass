@@ -707,8 +707,10 @@ export default {
       this.printSelectDate.productClass = val;
     },
       // 打印增加公司名称
-    "printData.companyName"(val){
-      this.printSelectDate.companyName = val;
+    "dataGridStorage.companyName"(val){
+      if(val){
+        this.printSelectDate.companyName = val;
+      }
     }
   },
   components: {

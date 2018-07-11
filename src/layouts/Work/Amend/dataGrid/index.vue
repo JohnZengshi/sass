@@ -24,7 +24,7 @@
     </dgridfooter>
 
     <!--打印模块-->
-    <div style="display: block;">
+    <div style="display: none;">
       <detail-template title="修改" ref="detailTemplate" :sellList="sellList_print" :headerData="orderData"></detail-template>
     </div>
   </div>
