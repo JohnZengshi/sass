@@ -280,7 +280,7 @@
 
         <!-- 加载条数选择 -->
         <div class="LoaderNumBtn">
-            <LoaderNum ref="LoaderNum"></LoaderNum>
+            <LoaderNum ref="LoaderNum" @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
         </div>
     </div>
 	
@@ -543,7 +543,7 @@ export default {
             sortList: [{classTypeName: '1'}],
             type: 2,
             page: 1,
-            pageSize: 30,
+            pageSize: 50,
             keyWord: '',
             wColorId: '',
             wGemId: '',
@@ -681,7 +681,7 @@ export default {
                 sortFlag: '0',
                 type: 1,
                 page: 1,
-                pageSize: 30,
+                pageSize: this.dataGridOptions.pageSize,
                 keyWord: ''
               })
             } else if (port == 2) {
@@ -702,7 +702,7 @@ export default {
                 // productClass: '1',
                 sortFlag: this.positionSwitch ? "1" : "0",
                 type: 1,
-                pageSize:30
+                pageSize:this.dataGridOptions.pageSize
               })
             } else if (port == 3) {
               delete this.dataGridOptions.page
@@ -722,7 +722,7 @@ export default {
                 // productClass: '1',
                 sortFlag: this.positionSwitch ? "1" : "0",
                 type: 1,
-                pageSize:30
+                pageSize:this.dataGridOptions.pageSize
               })
             } else if (port == 4) {
               Object.assign(this.dataGridOptions, {
@@ -741,7 +741,7 @@ export default {
                 nColorId: '',
                 nGemId: '',
                 nJewelryId: '1',
-                pageSize:30
+                pageSize:this.dataGridOptions.pageSize
               })
             }
           }
@@ -774,7 +774,7 @@ export default {
           this.loading = true;
           //this.page = 1
           this.dataGridOptions.page = 1
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
           this.tabClassActive.index = index;
           this.setReportType(type)
           
@@ -867,7 +867,7 @@ export default {
                     this.inconspanactive2 = true;
                 }
                 this.dataGridOptions.page = 1;
-                this.dataGridOptions.pageSize = 30;
+                this.dataGridOptions.pageSize = this.dataGridOptions.pageSize;
                 this.dataGridOptions.productClass = val;
                 console.log("切换成旧料", this.dataGridOptions.productClass);
                 //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
@@ -917,7 +917,7 @@ export default {
                   takeUserList : [],
                 }) 
             }
-            this.dataGridOptions.pageSize = 30
+            this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
             $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send()
         },
@@ -953,14 +953,14 @@ export default {
                 this.dataGridOptions.takeUserList[0].takeUserId = val.item.operateId
             }
             this.currentPage = 1
-            this.dataGridOptions.pageSize = 30
+            this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
             $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send()
         },
     	
     	//库位
     	storageFunc(){
-            this.dataGridOptions.pageSize = 30
+            this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
             $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
     		this.send()
     	},
@@ -1020,7 +1020,7 @@ export default {
         getTimeData(val) {
             this.dataGridOptions.beginTime = val.substr(0, 10).split('-').join("") + "000000"
             this.printSelectDate.startTime = val
-            this.dataGridOptions.pageSize = 30
+            this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
             this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
             $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send();
@@ -1028,7 +1028,7 @@ export default {
         overTimeDate(val) {
             this.dataGridOptions.endTime = val.substr(0, 10).split('-').join("") + "235959"
             this.printSelectDate.endTime = val
-            this.dataGridOptions.pageSize = 30
+            this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
             this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
             $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send();
@@ -1287,7 +1287,7 @@ export default {
             // 还原设置
             Object.assign(this.dataGridOptions, {
               page: 1,
-              pageSize: this.$refs["LoaderNum"].pageSize
+              pageSize: this.dataGridOptions.pageSize
             })
             return true;
           }
@@ -1300,6 +1300,10 @@ export default {
           }
         })
         return res
+      },
+      // 同步loaderNum组件的页数
+      changeUpdataPageSize(val){
+        this.dataGridOptions.pageSize = val;
       }
     },
     

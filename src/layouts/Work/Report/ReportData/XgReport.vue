@@ -235,7 +235,7 @@
 
         <!-- 加载条数选择 -->
         <div class="LoaderNumBtn">
-          <LoaderNum ref="LoaderNum"></LoaderNum>
+          <LoaderNum ref="LoaderNum" @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
         </div>
       </div>
       	<!--打印模块-->
@@ -490,7 +490,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
           }],
           type: 2,
           page: 1,
-          pageSize: 30,
+          pageSize: 50,
           keyWord: '',
           wColorId: '',
           wGemId: '',
@@ -634,7 +634,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
               sortFlag: '0',
               type: 1,
               page: 1,
-              pageSize: 30,
+              pageSize: this.dataGridOptions.pageSize,
               keyWord: ''
             })
           } else if(port == 2) {
@@ -653,7 +653,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
               // productClass: '1',
               sortFlag: this.positionSwitch ? "1" : "0",
               type: 1,
-              pageSize: 30
+              pageSize: this.dataGridOptions.pageSize
             })
           } else if(port == 3) {
             delete this.dataGridOptions.page
@@ -671,7 +671,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
               // productClass: '1',
               sortFlag: this.positionSwitch ? "1" : "0",
               type: 1,
-              pageSize: 30
+              pageSize: this.dataGridOptions.pageSize
             })
           } else if(port == 4) {
             Object.assign(this.dataGridOptions, {
@@ -688,7 +688,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
               nColorId: '',
               nGemId: '',
               nJewelryId: '1',
-              pageSize: 30
+              pageSize: this.dataGridOptions.pageSize
             })
           }
         }
@@ -715,7 +715,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
         this.loading = true;
         //this.page = 1
         this.dataGridOptions.page = 1
-        this.dataGridOptions.pageSize = 30
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
         this.tabClassActive.index = index;
         this.setReportType(type)
 
@@ -851,7 +851,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
                 this.inconspanactive2 = true;
             }
             this.dataGridOptions.page = 1;
-            this.dataGridOptions.pageSize = 30;
+            this.dataGridOptions.pageSize = this.dataGridOptions.pageSize;
             this.dataGridOptions.productClass = val;
             console.log("切换成旧料", this.dataGridOptions.productClass);
             //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
@@ -894,7 +894,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
             checkUserList: [],
           })
         }
-        this.dataGridOptions.pageSize = 30
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
 
         this.send()
@@ -921,7 +921,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
           this.dataGridOptions.checkUserList[0].checkUserId = val.item.operateId
         }
         this.currentPage = 1
-        this.dataGridOptions.pageSize = 30
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
         this.send()
       },
@@ -929,7 +929,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
         this.dataGridOptions.productTypeId = val.item.operateId
         this.printSelectDate.productType = val.item.operateName
         this.currentPage = 1
-        this.dataGridOptions.pageSize = 30
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
         this.send()
@@ -990,7 +990,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
       getTimeData(val) {
         this.dataGridOptions.beginTime = val.substr(0, 10).split('-').join("") + "000000"
         this.printSelectDate.startTime = val
-        this.dataGridOptions.pageSize = 30
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
         this.$refs["ReportDetail"].$refs["DataEditBody"].tempArray = [];
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
         this.send();
@@ -998,7 +998,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
       overTimeDate(val) {
         this.dataGridOptions.endTime = val.substr(0, 10).split('-').join("") + "235959"
         this.printSelectDate.endTime = val
-        this.dataGridOptions.pageSize = 30
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
         this.$refs["ReportDetail"].$refs["DataEditBody"].tempArray = [];
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
         this.send();
@@ -1225,7 +1225,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
             // 还原设置
             Object.assign(this.dataGridOptions, {
               page: 1,
-              pageSize: this.$refs["LoaderNum"].pageSize
+              pageSize: this.dataGridOptions.pageSize
             })
             return true;
           }
@@ -1238,9 +1238,11 @@ import LoaderNum from 'components/work/loaderNum.vue'
           }
         })
         return res
+      },
+      // 同步loaderNum组件的页数
+      changeUpdataPageSize(val){
+        this.dataGridOptions.pageSize = val;
       }
-
-
     },
 
     mounted() {

@@ -869,7 +869,7 @@ export default {
                 sortList: [{barcode: '1'}],
                 type: 1,
                 page: 1,
-                pageSize: 30,
+                pageSize: 50,
                 keyWord: '',
                 wColorId: '',
                 wGemId: '',
@@ -1165,7 +1165,7 @@ export default {
                 sortFlag: '0',
                 type: 1,
                 page: 1,
-                pageSize: 30,
+                pageSize: this.$refs['LoaderNum'].pageSize,
                 keyWord: ''
               })
             } else if (port == 2) {
@@ -1241,7 +1241,7 @@ export default {
           this.loading = true;
           //this.page = 1
           this.dataGridOptions.page = 1
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize
           this.tabClassActive.index = index;
           this.setReportType(type)
           
@@ -1332,7 +1332,7 @@ export default {
                 this.inconspanactive2 = true;
             }
             this.dataGridOptions.page = 1;
-            this.dataGridOptions.pageSize = 30;
+            this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
             this.dataGridOptions.productClass = val;
             console.log("切换成旧料", this.dataGridOptions.productClass);
             //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
@@ -2079,7 +2079,7 @@ export default {
                 //打印数据请求完成之后 初始化分页设置
                 Object.assign(this.dataGridOptions, {
                   page : 1,
-                  pageSize : 30
+                  pageSize : this.$refs['LoaderNum'].pageSize
                 })
               }else{
                 this.dataGridStorage = res.data.data

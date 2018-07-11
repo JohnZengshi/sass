@@ -1,6 +1,6 @@
 <template>
   <span class="loaderNum radio-21">
-    <span>{{pageSize}}</span>
+    <span>{{pageSize == '0'?"所有":pageSize}}</span>
     <span v-if="Number(pageSize)">条</span>
     <div class="Box">
       <el-radio-group class="floatBox" v-model="pageSize" @change="changeUpdataPageSize">
@@ -14,8 +14,8 @@
           <li :class="{active:(pageSize == '100')}">
             <el-radio label="100">100条</el-radio>
           </li>
-          <li :class="{active:(pageSize == '所有')}">
-            <el-radio label="所有">所有</el-radio>
+          <li :class="{active:(pageSize == '0')}">
+            <el-radio label="0">所有</el-radio>
           </li>
         </ul>
       </el-radio-group>
@@ -27,7 +27,7 @@
     data() {
       return {
         // 选择更新页数
-        pageSize: "30",
+        pageSize: "50",
       }
     },
     methods: {
@@ -41,6 +41,7 @@
 </script>
 <style lang="less" scoped>
   .loaderNum {
+    cursor: pointer;
     height: 25px !important; // position: absolute;
     // right: -70px;
     // width: 52px;

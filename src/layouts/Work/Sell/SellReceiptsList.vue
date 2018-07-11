@@ -56,7 +56,7 @@
                       </div>
                       <div class="item shop">
                         <!-- 注： orderData.shopName 店铺名需要另外一个接口去拿  5.38 单据简介  表尾组件已经做了接口调用，直接传过来即可 -->
-                        <select-drop class="selected_dropdown" :titleName="receiptsIntroList.sellManName" dataType="销售人1" v-if="filterUserType" :propList="shopUserList" :isDrop="true" @dropReturn="dropReturn">
+                        <select-drop ref="selectDrop" class="selected_dropdown" :titleName="receiptsIntroList.sellManName" dataType="销售人1" v-if="filterUserType" :propList="shopUserList" :isDrop="true" @dropReturn="dropReturn">
                         </select-drop>
                         <span v-else>
                                                     {{receiptsIntroList.sellManName}}
@@ -1643,6 +1643,8 @@
       },
       // 切换店铺
       dropReturn(data) {
+        // 同步销售员
+        this.receiptsIntroList.sellManName = data.item.userName;
         let options = {
           modifyList: [{
             dataType: '6',

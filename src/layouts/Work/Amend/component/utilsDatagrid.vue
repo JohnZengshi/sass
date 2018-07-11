@@ -84,8 +84,6 @@ export default{
      // 弹出框 显示 隐藏
      isShowPopup : false,
      companyPosition : '',
-     // 选择更新页数
-    pageSize: "30",
     }
   },
   components: {

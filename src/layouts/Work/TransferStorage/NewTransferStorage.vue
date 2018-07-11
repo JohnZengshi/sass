@@ -829,7 +829,7 @@ export default {
                 sortList: [{barcode: '1'}],
                 type: 1,
                 page: 1,
-                pageSize: 30,
+                pageSize: 50,
                 keyWord: '',
                 wColorId: '',
                 wGemId: '',
@@ -1126,7 +1126,7 @@ export default {
                 sortFlag: '0',
                 type: 1,
                 page: 1,
-                pageSize: 30,
+                pageSize: this.$refs['LoaderNum'].pageSize,
                 keyWord: ''
               })
             } else if (port == 2) {
@@ -2012,7 +2012,7 @@ export default {
                 //打印数据请求完成之后 初始化分页设置
                 Object.assign(this.dataGridOptions, {
                   page : 1,
-                  pageSize : 30
+                  pageSize : this.$refs['LoaderNum'].pageSize
                 })
               }else{
                 this.dataGridStorage = res.data.data

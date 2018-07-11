@@ -88,7 +88,7 @@
           fixedcIndex: -1
         },
         pageNum: 1,
-        pageSize: 30,
+        pageSize: 50,
         sellList_print: {
           old: {},
           now: {}
@@ -291,7 +291,7 @@
         let length = this.dgDataList.length;
         let upDataNum = this.$parent.$refs["utilsdatagrid"].$refs["LoaderNum"].pageSize;
         this.pageNum = 1;
-        if (Number(upDataNum)) {
+        if (Number(upDataNum) != 0) {
           upDataNum = Number(upDataNum);
           if (totalNum - length < upDataNum) {
             this.pageSize = 0

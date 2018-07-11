@@ -413,7 +413,7 @@ export default {
                 "endTime": this.optionData.endTime,
                 "orderNum": this.seekNumber || "",
                 "page": this.page || "1",
-                "pageSize": "30",
+                "pageSize": "50",
                 "productProperty": "-1"
             }
             seekOutStorageList(options).then((response) => {

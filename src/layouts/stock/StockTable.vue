@@ -622,7 +622,7 @@ export default {
         ],
         type: 2, //类型
         page: 1,
-        pageSize: 30,
+        pageSize: 50,
         keyWord: "", //关键字
         wColorId: "", //计重
         wGemId: "", //宝石类
@@ -659,7 +659,7 @@ export default {
       if (this.changeRepository.repositoryId) {
         this.dataGridOptions.storageId = val;
         this.dataGridOptions.page = 1;
-        this.dataGridOptions.pageSize = 30;
+        this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       }
       this.send();
     },
@@ -671,13 +671,13 @@ export default {
         this.dataGridOptions.counterId = "";
       }
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       this.send();
     },
     "changeCounter.counterId"(val) {
       this.dataGridOptions.counterId = val;
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       if (this.changeCounter.counterId) {
         this.send();
       }
@@ -888,7 +888,7 @@ export default {
       this.loading = true;
       this.dataGridOptions.pageSize = 0;
       seekStockProductList(this.dataGridOptions).then(res => {
-        this.dataGridOptions.pageSize = 30;
+        this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
         if (res.data.state == 200) {
           if (res.data.data.detailList) {
             if (res.data.data.detailList[0] instanceof Array) {
@@ -1076,7 +1076,7 @@ export default {
         this.inconspanactive2 = true;
       }
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       this.dataGridOptions.productClass = val;
       //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
       this.loading = true;
@@ -1205,7 +1205,7 @@ export default {
       }
       this.loading = true;
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       this.tabClassActive.index = index;
       this.setReportType(type);
     },
@@ -1240,7 +1240,7 @@ export default {
               sortFlag: "0",
               type: 1,
               page: 1,
-              pageSize: 30,
+              pageSize: this.$refs['LoaderNum'].pageSize,
               keyWord: ""
             });
           } else if (this.inconspanactive2) {
@@ -1252,7 +1252,7 @@ export default {
               sortFlag: "0",
               type: 1,
               page: 1,
-              pageSize: 30,
+              pageSize: this.$refs['LoaderNum'].pageSize,
               keyWord: ""
             });
           } else {
@@ -1264,7 +1264,7 @@ export default {
               sortFlag: "0",
               type: 1,
               page: 1,
-              pageSize: 30,
+              pageSize: this.$refs['LoaderNum'].pageSize,
               keyWord: ""
             });
           }
@@ -1409,7 +1409,7 @@ export default {
        */
     searchWord() {
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       this.send();
     },
     // 懒加载
