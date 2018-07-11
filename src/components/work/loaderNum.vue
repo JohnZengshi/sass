@@ -4,6 +4,7 @@
     <span v-if="Number(pageSize)">条</span>
     <div class="Box">
       <el-radio-group class="floatBox" v-model="pageSize" @change="changeUpdataPageSize">
+        <div class="title">每次加载条数</div>
         <ul>
           <li :class="{active:(pageSize == '30')}">
             <el-radio label="30">30条</el-radio>
@@ -43,10 +44,7 @@
   .loaderNum {
     cursor: pointer;
     height: 25px !important; // position: absolute;
-    // right: -70px;
-    // width: 52px;
     background-color: #fff; // border: 1px solid #ededed;
-    // border-radius: 5px;
     text-align: center; // z-index: 9999;
     overflow: visible !important;
     >span {
@@ -77,10 +75,8 @@
       .floatBox {
         width: 90px;
         background-color: #fff; // border-radius: 10px;
-        // position: absolute;
         opacity: 0; // bottom: 0;
-        // left: 8px;
-        transform: translateX(5px);
+        transform: translateX(8px);
         transition: all 0.5s; // display: none;
         box-shadow: 0 0 15px #ddd;
         ul {
@@ -105,8 +101,30 @@
                 content: "";
               }
             }
+            &:last-of-type{
+               &::after {
+                content: '';
+                position: absolute;
+                bottom: 8px;
+                left: -8px;
+                width: 0;
+                height:0;
+                border-top:8px solid transparent;
+                border-bottom:8px solid transparent;
+                border-right:8px solid #fff;
+               }
+            }
           }
         }
+      }
+      .title{
+        width: 100%;
+        height: 30px;
+        background-color: #f5f5f5;
+        font-size: 12px;
+        color: #333;
+        line-height: 30px;
+        text-align: center;
       }
     }
   }
