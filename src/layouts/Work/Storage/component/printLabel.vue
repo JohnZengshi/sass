@@ -31,15 +31,40 @@
 		</div>
 		
 		<!--打印模块-->
-		<div style="display: none;">
-				<detail-template title="入库-明细" :reportType="1" v-if="dataGridOptions.type==1" ref="detailTemplate" :sellList="dataGridStorage" :headerData="orderData"></detail-template>
+		<div style="display: none;" class="testClass">
+				<detail-template 
+					title="入库" 
+					tabTitle="明细"
+					:reportType="1" 
+					v-if="dataGridOptions.type==1" 
+					ref="detailTemplate" 
+					:sellList="dataGridStorage" 
+					:headerData="orderData"></detail-template>
 <!-- 				<detail-template v-if="this.tabClassActive.index==0" title="入库" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detail-template> -->
 
-					<intelligence-type-template v-if="dataGridOptions.type==2" title="入库-智能" ref="intelligenceTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></intelligence-type-template>
+					<intelligence-type-template 
+						v-if="dataGridOptions.type==2" 
+						title="入库" 
+						tabTitle="智能分类"
+						ref="intelligenceTypeTemplate" 
+						:sellList="dataGridStorage" 
+						:headerData="orderData"></intelligence-type-template>
 
-					<project-type-template v-if="dataGridOptions.type==3" title="入库-产品分类" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></project-type-template>
+					<project-type-template 
+						v-if="dataGridOptions.type==3"
+						title="入库" 
+						tabTitle="产品分类"
+						ref="projectTypeTemplate" 
+						:sellList="dataGridStorage" 
+						:headerData="orderData"></project-type-template>
 
-					<custom-template v-if="dataGridOptions.type==4" title="入库-自定义" ref="customTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></custom-template>
+					<custom-template 
+						v-if="dataGridOptions.type==4"
+						title="入库" 
+						tabTitle="自定义"
+						ref="customTemplate" 
+						:sellList="dataGridStorage" 
+						:headerData="orderData"></custom-template>
 		</div>
 	</div>
 </template>
@@ -55,14 +80,15 @@
 	//打印模块
 	import TablePrint from './../../../Work/CommonalityComponent/print/dataGridPrint'
 
-	import detailTemplate from "@/components/jcp-print/bill/warehousing/template";
+	
 
 	// 导出按钮
 	import {downLoaderFile} from 'Api/downLoaderFile'
-	
+	// 打印模块
+	import detailTemplate from "@/components/jcp-print/bill/warehousing/template";
 	import intelligenceTypeTemplate from "@/components/jcp-print/commons/intelligence-type-template";
-  import customTemplate from "@/components/jcp-print/commons/intelligence-type-template";
-  import projectTypeTemplate from "@/components/jcp-print/commons/project-type-template";
+  	import customTemplate from "@/components/jcp-print/commons/intelligence-type-template";
+  	import projectTypeTemplate from "@/components/jcp-print/commons/project-type-template";
 
 	export default {
 		components: {
@@ -415,5 +441,8 @@
 				}
 			}
 		}
+	}
+	.testClass{
+		position: absolute;
 	}
 </style>

@@ -2072,7 +2072,10 @@ export default {
               if(type && type == 'print'){
                  
                 this.printDataGrid = res.data.data
-                callBack && callBack()
+                // 待页面渲染
+                setTimeout(()=>{
+                    callBack && callBack()
+                },1000)
                 //打印数据请求完成之后 初始化分页设置
                 Object.assign(this.dataGridOptions, {
                   page : 1,

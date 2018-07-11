@@ -51,34 +51,56 @@
             <td>{{item.now.costPrice}}</td>
           </tr>
           <tr class="tr">
-            <td class="tl">修改后</td>
-            <td class="tl">{{add(item.old.metalColor, item.old.gemName, item.old.jewelryName)}}</td>
-            <td>{{item.old.totalWeight}}&nbsp;</td>
-            <td>{{item.old.netWeight}}</td>
-            <td>{{add(item.old.mainWeight, item.old.unit)}}</td>
-            <td>{{add(item.old.deputyWeight, item.old.deputyUnit)}}</td>
-            <td>{{item.old.soldPrice}}</td>
-            <td>{{item.old.costPrice}}</td>
+            <td v-if="headerData.status == 1 || headerData.status == 2" class="tl">修改后</td>
+            <td v-else-if="headerData.status == 3 || headerData.status == 6"class="tl">修改前</td>
+            <td class="tl">{{add(item.old ? item.old.metalColor :'',item.old? item.old.gemName:'',item.old? item.old.jewelryName:'')}}</td>
+            <td>{{item.old? item.old.totalWeight:''}}&nbsp;</td>
+            <td>{{item.old? item.old.netWeight:''}}</td>
+            <td>{{add(item.old? item.old.mainWeight:'', item.old ?item.old.unit:'')}}</td>
+            <td>{{add(item.old? item.old.deputyWeight:'', item.old?item.old.deputyUnit:'')}}</td>
+            <td>{{item.old ? item.old.soldPrice : ''}}</td>
+            <td>{{item.old ? item.old.costPrice : ''}}</td>
           </tr>
         </template>
         <tr class="tr">
           <td class="tm" colspan="2" rowspan="2">合计</td>
           <td class="tl">修改前</td>
-          <td>{{sellList.now.weight}}</td>
-          <td>{{sellList.now.netWeight}}</td>
-          <td>{{sellList.now.mainWeight}}</td>
-          <td>{{sellList.now.deputyWeight}}</td>
-          <td>{{sellList.now.price}}</td>
-          <td>{{sellList.now.cost}}</td>
+          <template v-if="headerData.status == 1 || headerData.status == 2">
+            <td>{{sellList.now.weight}}</td>
+            <td>{{sellList.now.netWeight}}</td>
+            <td>{{sellList.now.mainWeight}}</td>
+            <td>{{sellList.now.deputyWeight}}</td>
+            <td>{{sellList.now.price}}</td>
+            <td>{{sellList.now.cost}}</td>
+          </template>
+          <template v-else-if="headerData.status == 3 || headerData.status == 6">
+            <td>{{sellList.old.weight}}</td>
+            <td>{{sellList.old.netWeight}}</td>
+            <td>{{sellList.old.mainWeight}}</td>
+            <td>{{sellList.old.deputyWeight}}</td>
+            <td>{{sellList.old.price}}</td>
+            <td>{{sellList.old.cost}}</td>
+          </template>
+          
         </tr>
         <tr class="tr">
           <td class="tl">修改后</td>
-          <td>{{sellList.old.weight}}</td>
-          <td>{{sellList.old.netWeight}}</td>
-          <td>{{sellList.old.mainWeight}}</td>
-          <td>{{sellList.old.deputyWeight}}</td>
-          <td>{{sellList.old.price}}</td>
-          <td>{{sellList.old.cost}}</td>
+          <template v-if="headerData.status == 1 || headerData.status == 2">
+            <td>{{sellList.old.weight}}</td>
+            <td>{{sellList.old.netWeight}}</td>
+            <td>{{sellList.old.mainWeight}}</td>
+            <td>{{sellList.old.deputyWeight}}</td>
+            <td>{{sellList.old.price}}</td>
+            <td>{{sellList.old.cost}}</td>
+          </template>
+          <template v-else-if="headerData.status == 3 || headerData.status == 6">
+            <td>{{sellList.now.weight}}</td>
+            <td>{{sellList.now.netWeight}}</td>
+            <td>{{sellList.now.mainWeight}}</td>
+            <td>{{sellList.now.deputyWeight}}</td>
+            <td>{{sellList.now.price}}</td>
+            <td>{{sellList.now.cost}}</td>
+          </template>
         </tr>
       </table>
     </div>

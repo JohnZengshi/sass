@@ -50,14 +50,12 @@
               <td v-if="tabSwitch">{{item.totalCost1}}</td>
             </tr>
             <tr class="tr">
-				      <td class="tl">修改后</td>
+				      <td class="tl">修改前</td>
               <td>{{item.afTotalNum1}}</td>
               <td>{{item.afTotalWeight1}}</td>
               <td>{{item.afTotalGoldWeight1}}</td>
-              <!-- <td>{{item.afTotalMain1}}</td> -->
               <!-- 主石 -->
               <td>{{item.afMain}}</td>
-              <!-- <td>{{item.afTotalDeputy1}}</td> -->
               <!-- 副石 -->
               <td>{{item.afDeputy}}</td>
               <td>{{item.afTotalPrice1}}</td>
@@ -68,26 +66,23 @@
             <td class="tm" colspan="1" rowspan="2">合计</td>
 			      <td class="tl">修改前</td>
             <td rowspan="2">{{dataList.totalNum0}}</td>
+            <td>{{dataList.afTotalWeight0}}</td>
+            <td>{{dataList.afTotalGoldWeight0}}</td>
+            <!-- 主石 -->
+            <td>{{dataList.afMain}}</td>
+            <!-- 副石 -->
+            <td>{{dataList.afDeputy}}</td>
+            <td>{{dataList.afTotalPrice0}}</td>
+            <td v-if="tabSwitch">{{dataList.afTotalCost0}}</td>
+          </tr>
+          <tr class="tr">
+			      <td class="tl">修改后</td>
             <td>{{dataList.totalWeight0}}</td>
             <td>{{dataList.totalGoldWeight0}}</td>
             <td>{{dataList.totalMain0}}</td>
             <td>{{dataList.totalDeputy0}}</td>
             <td>{{dataList.totalPrice0}}</td>
             <td v-if="tabSwitch">{{dataList.totalCost0}}</td>
-          </tr>
-          <tr class="tr">
-			      <td class="tl">修改后</td>
-            <!-- <td>{{dataList.afTotalNum0}}</td> -->
-            <td>{{dataList.afTotalWeight0}}</td>
-            <td>{{dataList.afTotalGoldWeight0}}</td>
-            <!-- <td>{{dataList.afTotalMain0}}</td> -->
-            <!-- 主石 -->
-            <td>{{dataList.afMain}}</td>
-            <!-- <td>{{dataList.afTotalDeputy0}}</td> -->
-            <!-- 副石 -->
-            <td>{{dataList.afDeputy}}</td>
-            <td>{{dataList.afTotalPrice0}}</td>
-            <td v-if="tabSwitch">{{dataList.afTotalCost0}}</td>
           </tr>
         </template>
       </table>

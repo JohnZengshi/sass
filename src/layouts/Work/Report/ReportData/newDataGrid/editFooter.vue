@@ -20,8 +20,8 @@
         </template>
         
         <template v-else>
-          <p class="top" v-if="f != 1" v-html="oldHtml(tab)"></p>
           <p class="bottom" v-if="f != 1" v-html="v_html(tab)"></p>
+          <p class="top" v-if="f != 1" v-html="oldHtml(tab)"></p>
         </template>
 
       </template>

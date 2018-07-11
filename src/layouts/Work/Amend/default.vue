@@ -198,7 +198,9 @@ export default {
       // 订单数据
       orderData : Object.assign({},{
         orderNum : this.$route.query.orderNumber,
-        shopName:'loading...'
+        shopName:'loading...',
+        // 增加审核状态
+        status:'-1'
       }),
       
       // 新增商品开关
@@ -268,6 +270,9 @@ export default {
     'orderData.makeOrderMan': function(){
       // this.isShow = this.delectOptionRole()
       this.isShow = this.orderData.makeOrderMan
+    },
+    'curStatus.status'(val){
+      this.orderData.status = val
     }
   },
   created () {

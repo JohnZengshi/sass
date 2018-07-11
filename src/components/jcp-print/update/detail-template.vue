@@ -40,7 +40,7 @@
           <tr class="tr">
             <td rowspan="2">{{index+1}}</td>
             <td class="tl" rowspan="1">{{item.barcode}}</td>
-            <td class="tl" rowspan="2">{{item.jewelryName}}</td>
+            <td class="tl">{{item.jewelryName}}</td>
             <td>{{item.weight}}</td>
             <td>{{item.goldWeight}}</td>
             <td>{{item.main}}</td>
@@ -49,7 +49,8 @@
             <td v-if="tabSwitch">{{item.cost}}</td>
           </tr>
           <tr class="tr">
-            <td class="tl">修改后</td>
+            <td class="tl">修改前</td>
+            <td></td>
             <td>{{item.afWeight}}</td>
             <td>{{item.afGoldWeight}}</td>
             <td>{{item.afMain}}</td>
@@ -62,15 +63,6 @@
           <td class="tm" colspan="1" rowspan="2">合计</td>
           <td class="tl">修改前</td>
           <td class="tl" rowspan="2">{{sellList.detailList.length}}</td>
-          <td>{{sellList.totalWeight}}</td>
-          <td>{{sellList.totalGoldWeight}}</td>
-          <td>{{sellList.totalMain}}</td>
-          <td>{{sellList.totalDeputy}}</td>
-          <td>{{sellList.totalPrice}}</td>
-          <td v-if="tabSwitch">{{sellList.totalCost}}</td>
-        </tr>
-        <tr class="tr">
-          <td class="tl">修改后</td>
           <!-- <td>{{sellList.afTotalNum}}</td> -->
           <td>{{sellList.afTotalWeight}}</td>
           <td>{{sellList.afTotalGoldWeight}}</td>
@@ -78,6 +70,15 @@
           <td>{{sellList.afTotalDeputy}}</td>
           <td>{{sellList.afTotalPrice}}</td>
           <td v-if="tabSwitch">{{sellList.afTotalCost}}</td>
+        </tr>
+        <tr class="tr">
+          <td class="tl">修改后</td>
+          <td>{{sellList.totalWeight}}</td>
+          <td>{{sellList.totalGoldWeight}}</td>
+          <td>{{sellList.totalMain}}</td>
+          <td>{{sellList.totalDeputy}}</td>
+          <td>{{sellList.totalPrice}}</td>
+          <td v-if="tabSwitch">{{sellList.totalCost}}</td>
         </tr>
       </table>
     </div>
