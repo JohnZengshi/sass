@@ -57,8 +57,8 @@
                 <td>{{item.afNum}}</td>
                 <td>{{item.afWeight}}</td>
                 <td>{{item.afGoldWeight}}</td>
-                <td>{{item.afMain}}</td>
-                <td>{{item.afDeputy}}</td>
+                <td>{{item.afMain|ZERO}}</td>
+                <td>{{item.afDeputy|ZERO}}</td>
                 <td>{{item.afPrice}}</td>
                 <td v-if="tabSwitch">{{item.afCost}}</td>
               </tr>
@@ -69,8 +69,8 @@
               <td>{{productTypeList.afTotalNum1}}</td>
               <td>{{productTypeList.afTotalWeight1}}</td>
               <td>{{productTypeList.afTotalGoldWeight1}}</td>
-              <td>{{productTypeList.afMain}}</td>
-              <td>{{productTypeList.afDeputy}}</td>
+              <td>{{productTypeList.afMain|ZERO}}</td>
+              <td>{{productTypeList.afDeputy|ZERO}}</td>
               <td>{{productTypeList.afTotalPrice1}}</td>
               <td v-if="tabSwitch">{{productTypeList.afTotalCost1}}</td>
             </tr>
@@ -79,8 +79,8 @@
               <td>{{productTypeList.totalNum1}}</td>
               <td>{{productTypeList.totalWeight1}}</td>
               <td>{{productTypeList.totalGoldWeight1}}</td>
-              <td>{{productTypeList.totalMain1}}</td>
-              <td>{{productTypeList.totalDeputy1}}</td>
+              <td>{{productTypeList.totalMain1|ZERO}}</td>
+              <td>{{productTypeList.totalDeputy1|ZERO}}</td>
               <td>{{productTypeList.totalPrice1}}</td>
               <td v-if="tabSwitch">{{productTypeList.totalCost1}}</td>
             </tr>
@@ -91,8 +91,8 @@
             <td rowspan="2">{{sellList.totalNum}}</td>
             <td>{{sellList.afTotalWeight}}</td>
             <td>{{sellList.afTotalGoldWeight}}</td>
-            <td>{{sellList.afTotalMain}}</td>
-            <td>{{sellList.afTotalDeputy}}</td>
+            <td>{{sellList.afTotalMain|ZERO}}</td>
+            <td>{{sellList.afTotalDeputy|ZERO}}</td>
             <td>{{sellList.afTotalPrice}}</td>
             <td v-if="tabSwitch">{{sellList.afTotalCost}}</td>
           </tr>
@@ -100,8 +100,8 @@
 			      <td class="tl">修改后</td>
             <td>{{sellList.totalWeight}}</td>
             <td>{{sellList.totalGoldWeight}}</td>
-            <td>{{sellList.totalMain}}</td>
-            <td>{{sellList.totalDeputy}}</td>
+            <td>{{sellList.totalMain|ZERO}}</td>
+            <td>{{sellList.totalDeputy|ZERO}}</td>
             <td>{{sellList.totalPrice}}</td>
             <td v-if="tabSwitch">{{sellList.totalCost}}</td>
           </tr>
@@ -169,6 +169,13 @@
           return 0;
         } else {
           return "-";
+        }
+      },
+      ZERO: (num) => {
+        if (num) {
+          return num;
+        } else {
+          return "0.000";
         }
       },
       SELL_TYPE: (key) => {

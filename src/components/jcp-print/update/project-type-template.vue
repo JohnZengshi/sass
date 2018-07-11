@@ -44,8 +44,8 @@
               <td>{{item.totalNum1}}</td>
               <td>{{item.totalWeight1}}</td>
               <td>{{item.totalGoldWeight1}}</td>
-              <td>{{item.totalMain1}}</td>
-              <td>{{item.totalDeputy1}}</td>
+              <td>{{item.totalMain1|ZERO}}</td>
+              <td>{{item.totalDeputy1|ZERO}}</td>
               <td>{{item.totalPrice1}}</td>
               <td v-if="tabSwitch">{{item.totalCost1}}</td>
             </tr>
@@ -55,9 +55,9 @@
               <td>{{item.afTotalWeight1}}</td>
               <td>{{item.afTotalGoldWeight1}}</td>
               <!-- 主石 -->
-              <td>{{item.afMain}}</td>
+              <td>{{item.afMain|ZERO}}</td>
               <!-- 副石 -->
-              <td>{{item.afDeputy}}</td>
+              <td>{{item.afDeputy|ZERO}}</td>
               <td>{{item.afTotalPrice1}}</td>
               <td v-if="tabSwitch">{{item.afTotalCost1}}</td>
             </tr>
@@ -69,9 +69,9 @@
             <td>{{dataList.afTotalWeight0}}</td>
             <td>{{dataList.afTotalGoldWeight0}}</td>
             <!-- 主石 -->
-            <td>{{dataList.afMain}}</td>
+            <td>{{dataList.afMain|ZERO}}</td>
             <!-- 副石 -->
-            <td>{{dataList.afDeputy}}</td>
+            <td>{{dataList.afDeputy|ZERO}}</td>
             <td>{{dataList.afTotalPrice0}}</td>
             <td v-if="tabSwitch">{{dataList.afTotalCost0}}</td>
           </tr>
@@ -79,8 +79,8 @@
 			      <td class="tl">修改后</td>
             <td>{{dataList.totalWeight0}}</td>
             <td>{{dataList.totalGoldWeight0}}</td>
-            <td>{{dataList.totalMain0}}</td>
-            <td>{{dataList.totalDeputy0}}</td>
+            <td>{{dataList.totalMain0|ZERO}}</td>
+            <td>{{dataList.totalDeputy0|ZERO}}</td>
             <td>{{dataList.totalPrice0}}</td>
             <td v-if="tabSwitch">{{dataList.totalCost0}}</td>
           </tr>
@@ -156,7 +156,14 @@
         obj.set("2", "换货");
         obj.set("3", "回收");
         return obj.get(key);
-      }
+      },
+      ZERO: (num) => {
+        if (num) {
+          return num;
+        } else {
+          return "0.000";
+        }
+      },
     },
     watch: {
       sellList: function (n, o) {},
