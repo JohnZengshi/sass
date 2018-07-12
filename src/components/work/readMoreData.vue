@@ -1,6 +1,6 @@
 <template>
   <div class="bottomBox">
-    <div class="readMoreData"  :class="{'active':MoreData}" @click="readMoreData">查看更多未读数据</div>
+    <!-- <div class="readMoreData"  :class="{'active':MoreData}" @click="readMoreData">查看更多未读数据</div> -->
     <div class="noMoreData" :class="{'active':noMoreData}">
       <span>数据展示到底了啦~</span>
     </div>
@@ -17,14 +17,18 @@
     methods: {
       // 底部查看更多未读数据
       isShowMoreDataTip(scrollHeight, clientHeight, scrollTop) {
-        let totalNum = this.allData.totalNum;
-        let length = this.dgDataList.length;
+        if(this.allData && this.dgDataList){
+          var totalNum = this.allData.totalNum;
+          var length = this.dgDataList.length;
+        }
         // 还有更多数据未加载
         if (totalNum > length) {
           if (clientHeight + scrollTop >= scrollHeight) {
             this.MoreData = true;
+            return true
           } else {
             this.MoreData = false;
+            return false
           }
         } 
         // 没有更多数据加载

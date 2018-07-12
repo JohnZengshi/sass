@@ -1,7 +1,7 @@
 <template>
 <!--表头-->
-<div class="ui-table_column">
-	<div @click="headSort(tab)" class="ui-table_th" v-for="tab in detailDataGridColumn" :style="tableCell(tab.width)">
+<div class="xj-report-table-column">
+	<div @click="headSort(tab)" class="ui-table_th" v-for="tab in detailDataGridColumn" :style="_calculateClass(tab)">
 		{{tab.text }} <i v-if="tab.unit !=''">{{ tab.unit}}</i>
         <!-- <em v-if="tab.sort == ''" class="iconfont icon-sort-copy"></em>
         <em v-if="tab.sort == '1'" class="iconfont icon-sort-up"></em>
@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import {calculateClass} from 'assets/js/getClass'
 export default {
 	props : ['detailDataGridColumn','tabCell', 'reportType','newList'],
 	data () {
@@ -99,16 +100,8 @@ export default {
         }
     },
 	methods:{
-		tableCell( width ){
-			let _size = ''
-			
-			this.$emit('tabCell',{
-				width : width,
-				res :( res ) =>{
-					_size = res
-				}
-			})
-			return _size
+        _calculateClass (parm) {
+            return calculateClass(parm)
         },
         headSort (tab) { // 排序点击事件
           if(tab.sort == null || tab.sort == undefined ) return

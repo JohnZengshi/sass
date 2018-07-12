@@ -50,7 +50,7 @@
             </div>
 
         </div>
-        <div class="member-list">
+        <div class="member-list-wrap">
             <ul>
                 <li v-for="(item, index) in dataList" :key="index" v-if="item.operateType != 2">
      <!--                <img :src="item.logo"> -->
@@ -434,7 +434,7 @@ export default {
             margin-right: 0;
         }
     }
-    .member-list {
+    .member-list-wrap {
         height: 500px;
         margin-bottom: 60px;
         ul {
@@ -445,9 +445,15 @@ export default {
                 // line-height: 50px;
                 .member-list-item{
                     height: 50px;
+                    line-height: 50px;
                     margin-right: 5px;
                     overflow: hidden;
                     float: left;
+                    img{
+                        width: 40px;
+                        margin-top: 5px;
+                        height: 40px;
+                    }
                 }
                 .member-list-item:nth-child(1){
                     

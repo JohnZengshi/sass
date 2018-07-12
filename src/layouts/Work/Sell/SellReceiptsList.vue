@@ -26,7 +26,7 @@
                     </div>
                   </div>
                   <div v-else class="member-info">
-                    <div class="info-wrap" @click="editLeaguer = true">
+                    <div class="info-wrap" @click="openMember">
                       <img :src="memberDataInfo.logo" />
                       <div class="name">{{memberDataInfo.memberName}}</div>
                       <div class="phone">{{memberDataInfo.phone}}</div>
@@ -56,7 +56,7 @@
                       </div>
                       <div class="item shop">
                         <!-- 注： orderData.shopName 店铺名需要另外一个接口去拿  5.38 单据简介  表尾组件已经做了接口调用，直接传过来即可 -->
-                        <select-drop class="selected_dropdown" :titleName="receiptsIntroList.sellManName" dataType="销售人1" v-if="filterUserType" :propList="shopUserList" :isDrop="true" @dropReturn="dropReturn">
+                        <select-drop ref="selectDrop" class="selected_dropdown" :titleName="receiptsIntroList.sellManName" dataType="销售人1" v-if="filterUserType" :propList="shopUserList" :isDrop="true" @dropReturn="dropReturn">
                         </select-drop>
                         <span v-else>
                                                     {{receiptsIntroList.sellManName}}
@@ -508,8 +508,19 @@
             <!-- 新增会员 -->
             <addLeaguerDia v-if="addLeaguer" :addLeaguer="addLeaguer" :shopId="receiptsIntroList.shopId" :shopManageRole="shopManageRole" :shopManRole="shopManRole" :orderNum="receiptsIntroList.id" :memberId="receiptsIntroList.memberId" @closeReturn="closeReturn">
             </addLeaguerDia>
-            <!-- 编辑弹窗 -->
-            <editLeaguerDia v-if="editLeaguer" :editLeaguer="editLeaguer" :shopId="receiptsIntroList.shopId" :shopManageRole="shopManageRole" :memberId="receiptsIntroList.memberId" :orderNum="receiptsIntroList.id" @closeReturn="closeEditReturn"></editLeaguerDia>
+              <!-- 信息编辑页面 -->
+               <el-dialog
+                  :visible.sync="editLeaguer"
+                  :modal="true"
+                  top="10%"
+                  customClass="member-info-dialog"
+                  :close-on-click-modal="false"
+                  @close="close"
+                  >
+                    <information-edit v-if="editLeaguer" :oldMemberInfo="oldMemberInfo" :shopId="receiptsIntroList.shopId" :memberInfo="memberInfo" :memberId="receiptsIntroList.memberId"></information-edit>
+
+                </el-dialog>
+<!--             <editLeaguerDia v-if="editLeaguer" :editLeaguer="editLeaguer" :shopId="receiptsIntroList.shopId" :shopManageRole="shopManageRole" :memberId="receiptsIntroList.memberId" :orderNum="receiptsIntroList.id" @closeReturn="closeEditReturn"></editLeaguerDia> -->
             <el-dialog v-if="isSeekMember" :visible.sync="isSeekMember" customClass="SeekMember">
               <div class="wrap">
                 <div class="title">
@@ -547,8 +558,15 @@
       
       <!--打印模块-->
       <div style="display: none;">
-        <sell-template title="销售" ref="sellTemplate" :isShowCost="isShowCost" :sellList="dataGridStorage" :headerData="receiptsIntroList"></sell-template>
-        <warranty-template :template="warrantyTemplate.template" :dataList="warrantyTemplate.dataList"></warranty-template>
+        <sell-template 
+          title="销售" 
+          ref="sellTemplate" 
+          :isShowCost="isShowCost" 
+          :sellList="dataGridStorage" 
+          :headerData="receiptsIntroList"></sell-template>
+        <warranty-template 
+          :template="warrantyTemplate.template" 
+          :dataList="warrantyTemplate.dataList"></warranty-template>
       </div>
       
     </div>
@@ -571,6 +589,7 @@
   import receiptsRemark from '../../../components/work/ReceiptsRemark.vue'
   import { productTpyeState, receiptOptionsName, productDetailStatus } from './../../../Api/commonality/status'
   import { seekSellReceiptsIntro, seekReceiptStatusList, seekGetShopUserList, seekGoodsList, seekSellProductList, seekSellcollectMoney, getProductTypeList, seekProductClassList, seekGetMemberInfo, seekGetUserInfo, seekOneProductStatus, seekSettingUserRole } from './../../../Api/commonality/seek'
+  import { getMemberInfoById} from 'Api/member'
   import { seekTransferStorageData, operateProductList, operateReceiptOperation, operateRemarkOperation, operateDeleteByOrderNumber, operateHandleXGReceipt, operateAddProductToOrder, operateAddBackProductToOrder, operateAddBackBuyProductToOrder, operateOrderPay, seekSellData, operateMemberSalesList } from './../../../Api/commonality/operate'
   import error from "./../CommonalityComponent/popupTemplate/error"
   import affirm from "./../CommonalityComponent/popupTemplate/affirm"
@@ -592,6 +611,7 @@
 
   import addLeaguerDia from './../../Leaguer/components/addLeaguerDig'
   import editLeaguerDia from './../../Leaguer/components/editLeaguerDig'
+  import informationEdit from './../../Leaguer/components/memberPage/information'
   import SellChoseMember from './../../Leaguer/components/sellChoseMember'
 
   import FormatImg from 'components/template/DefaultHeadFormat.vue'
@@ -640,6 +660,7 @@
       remarkTit,
       sellTemplate,
       warrantyTemplate,
+      informationEdit
     },
     directives: {
       focus: {
@@ -651,6 +672,8 @@
     },
     data() {
       return {
+        oldMemberInfo: {},
+        memberInfo: {},
       	isShowCost: '',
         warrantyTemplate:{template:{},dataList:{}},
         isDisabled: true,
@@ -1418,6 +1441,31 @@
       ...mapActions([
         "workPopupError" // 错误弹窗
       ]),
+      openMember () {
+        this.getMemberInfoP()
+      },
+      // 获取会员信息
+      getMemberInfoP(){
+          let options = {
+              shopId: this.receiptsIntroList.shopId,
+              memberId: this.receiptsIntroList.memberId
+          }
+          getMemberInfoById(options).then(res => {
+              this.memberInfo = res.data.data
+              this.getOldMemberInfoP()
+          })
+      },
+      // 获取老接口的会员信息
+      getOldMemberInfoP() {
+          let options = {
+              shopId: this.receiptsIntroList.shopId,
+              memberId: this.receiptsIntroList.memberId
+          }
+          seekGetMemberInfo(options).then(res => {
+              this.oldMemberInfo = res.data.data
+              this.editLeaguer = true
+          })
+      },
       settingUserRole () { // 用户查看成本权限
         let options = {
           userId: sessionStorage.getItem('id')
@@ -1595,6 +1643,8 @@
       },
       // 切换店铺
       dropReturn(data) {
+        // 同步销售员
+        this.receiptsIntroList.sellManName = data.item.userName;
         let options = {
           modifyList: [{
             dataType: '6',
@@ -2108,6 +2158,7 @@
 						if(json.data.backuProductList && json.data.backuProductList.length > 0) {
 							if(json.data.productList) json.data.productList.push(...json.data.backuProductList)
 						}
+            debugger
 						this.templateData = json.data
 						this.isPreview = true
 						this.windowPrint(template, json.data)

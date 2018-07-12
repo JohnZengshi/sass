@@ -3,11 +3,15 @@
     <div class="print-header">
       <h1 class="title center">{{title}}报表</h1>
       <div class="head-option">
+        <div class="left">公司名称：{{headerData.companyName}}</div>
+        <div class="left">分类：{{tabTitle}}</div>
+        <div class="right" :style="{ visibility : headerData.createDate ? 'visible' : 'hidden' }">查询时间:{{headerData.createDate}}</div>
       </div>
+      <filtrateBoxByInventory :headerData="headerData" :tabTitle="tabTitle"></filtrateBoxByInventory>
     </div>
     <div>
       <table class="table-box" border="0" cellspacing="0" cellpadding="0">
-        <tr>
+        <tr class="tm noBorderTop">
           <td>序号</td>
           <td>条码号</td>
           <td>首饰名称</td>
@@ -16,32 +20,33 @@
           <td>主石(ct,g)</td>
           <td>副石(ct,g)</td>
           <td>售价(元)</td>
-          <td v-if="tabSwitch">成本(元)</td>
+          <td v-show="tabSwitch">成本(元)</td>
         </tr>
-        <tr v-for="(item,index) in sellList.detailList" :key="index">
+        <tr class="tr" v-for="(item,index) in sellList.detailList" :key="index">
           <td>{{index+1}}</td>
-          <td>{{item.barcode}}</td>
-          <td>{{item.jewelryName}}</td>
+          <td class="tl">{{item.barcode}}</td>
+          <td class="tl">{{item.jewelryName}}</td>
           <td>{{item.weight}}</td>
           <td>{{item.goldWeight}}</td>
           <td>{{item.main}}</td>
           <td>{{item.deputy}}</td>
           <td>{{item.price}}</td>
-          <td v-if="tabSwitch">{{item.cost}}</td>
+          <td v-show="tabSwitch">{{item.cost}}</td>
         </tr>
-        <tr>
-          <td colspan="2">合计</td>
-          <td>{{sellList.totalNum}}件</td>
-          <td>{{sellList.totalWeight}}g</td>
-          <td>{{sellList.totalGoldWeight}}g</td>
+        <tr class="tr">
+          <td class="tm" colspan="2">合计</td>
+          <td>{{sellList.totalNum}}</td>
+          <td>{{sellList.totalWeight}}</td>
+          <td>{{sellList.totalGoldWeight}}</td>
           <td>{{sellList.totalMain}}</td>
           <td>{{sellList.totalDeputy}}</td>
-          <td>{{sellList.totalPrice}}元</td>
-          <td v-if="tabSwitch">{{sellList.totalCost}}元</td>
+          <td>{{sellList.totalPrice}}</td>
+          <td v-show="tabSwitch">{{sellList.totalCost}}</td>
         </tr>
       </table>
     </div>
     <div class="printDate">
+      <!-- <Sign :title="title"></Sign> -->
       打印时间：{{printDate}}
     </div>
   </div>
@@ -49,8 +54,13 @@
 <script>
   import {jcpPrint} from "@/tools/jcp-print";
   import moment from "moment";
+  import filtrateBoxByInventory from "../components/filtrateBoxByInventory.vue"
+  import Sign from "../components/Sign.vue"
   export default {
-    components: {},
+    components: {
+      filtrateBoxByInventory,
+      Sign
+    },
     props: {
       sellList: {
         type: Object
@@ -65,9 +75,12 @@
       reportType: {
         type: Number
       },
+      tabTitle:{
+				type:String
+      },
       tabSwitch: { // 成本
-        type: Boolean
-      }
+        type:Boolean
+      },
     },
     filters:{
       DATA_FORMAT:(date)=>{
@@ -128,52 +141,8 @@
 </script>
 
 <style scoped lang="scss">
-  .center {
-    text-align: center;
-  }
-  .font-bold {
-    font-weight: bold;
-  }
-  
+ @import "../../../assets/css/print.scss";
   .print-box{
-    font-size: 12px;
     width: 208mm;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .explain-box {
-    display: inline-block;
-    padding: 5px 35px 5px 0;
-  }
-  
-  .head-option div {
-    display: table-cell;
-  }
-  
-  .right {
-    text-align: right;
-  }
-  
-  .head-option {
-    display: table;
-    width: 100%;
-    margin-bottom: 5px;
-  }
-  
-  .table-box {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  td{
-    font-size: 12px;
-    border: 1px solid;
-    line-height: 25px;
-    text-align: center;
-  }
-  .printDate{
-    text-align: right;
-    padding: 15px 0;
   }
 </style>

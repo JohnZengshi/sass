@@ -435,7 +435,143 @@ export const workCounterList = ({commit}, parm) => { // 柜组列表
     })
 }
 export const getLabelData = ({commit}, parm) => { // 打印标签数据
-    commit(types.LABEL_DATA, parm)
+    let datas = ''
+    let queryData = parm.data
+    if (parm.type) {
+        datas = {}
+    }
+    if (parm.type == 1) { // 单据详情模块
+        datas = filterBasic()
+    } else if (parm.type == 2) { // 库存模块
+        datas = queryData
+    } else if (parm.type == 3) { // 报表
+        datas = Object.assign({}, filterBasic(), filterRequest())
+    }
+
+    /* ---基础数据--- */
+    function filterBasic () {
+        let datas = {}
+        if (queryData.productTypeId) {
+            if (queryData.productTypeId instanceof Array) {
+                datas.productTypeId = queryData.productTypeId
+            } else {
+                datas.productTypeId = [queryData.productTypeId]
+            }
+        }
+
+        if (queryData.colorId) {
+            datas.colourId = [queryData.colorId]
+        }
+
+        if (queryData.jewelryId) {
+            datas.jewelryId = [queryData.jewelryId]
+        }
+
+        if (queryData.gemId) {
+            datas.jeweId = [queryData.gemId]
+        }
+        // 单据类型
+        if (queryData.orderType) {
+            datas.orderType = queryData.orderType
+        }
+        // 单据号
+        if (queryData.newOrderId) {
+            datas.newOrderId = [queryData.newOrderId]
+        } else {
+            // 报表加这个字段
+            datas.auditStatus = '1'
+        }
+
+        queryData.type = queryData.type
+
+        if (queryData.type == '4') {
+            datas.wColorId = queryData.wColorId
+            datas.wGemId = queryData.wGemId
+            datas.wJewelryId = queryData.wJewelryId
+            datas.nColorId = queryData.nColorId
+            datas.nGemId = queryData.nGemId
+            datas.nJewelryId = queryData.nJewelryId
+        }
+
+        if (queryData.sellStatus) {
+            datas.sellStatus = queryData.sellStatus
+        }
+
+        // 成品旧料
+        if (queryData.productClass) {
+
+            datas.productClassList = [{productClass: queryData.productClass}]
+        }
+        
+        // 成品旧料
+        if (queryData.type) {
+
+            datas.type = queryData.type
+        }
+
+        // 销售类型 1 销售  2 退货  3 换货  4 回收
+        if (queryData.sellType) {
+            datas.sellType = queryData.sellType
+        }
+
+        return datas
+    }
+
+    /* ---头部筛选数据--- */
+    function filterRequest () {
+        let datas = {}
+
+        // 开始时间和结束时间
+        if (queryData.beginTime && queryData.endTime) {
+            datas.beginTime = queryData.beginTime
+            datas.endTime = queryData.endTime
+        }
+
+        // 入库库位
+        if (queryData.storageId) {
+            datas.storageId = [queryData.storageId]
+        }
+
+        // 供应商
+        if (queryData.supplierId) {
+            datas.supplierId = queryData.supplierId
+        }
+
+        // 分销商 --> 入库为分销商
+        if (queryData.shopId) {
+            datas.shopList = [
+                {
+                    shopId: queryData.shopId
+                }
+            ]
+        }
+
+        // 制单人
+        if (queryData.makeUserId) {
+            datas.makeUserList = [
+                {
+                    makeUserId: queryData.makeUserId
+                }
+            ]
+        }
+
+        // 审核人
+        if (queryData.checkUserId) {
+            datas.checkUserList = [
+                {
+                    checkUserId: queryData.checkUserId
+                }
+            ]
+        }
+
+        return datas
+        // storageId: this.changeRepository.repositoryId ? [this.changeRepository.repositoryId] : [],
+        // shopId: this.changeShop.shopId ? [this.changeShop.shopId] : [],
+        // counterId: this.changeCounter.counterId, // 柜组
+        // productClass: this.dataGridOptions.productClass
+    }
+ 
+    commit(types.LABEL_DATA, datas)
 }
 // 销售
 export const sellProductListFun = ({commit}, parm) => { // 商品列表-销售
@@ -447,6 +583,6 @@ export const workModelState = ({commit}, parm) => { // 销售的模糊层
 }
 
 /*组织架构*/
-export const workOrganizationChange = ({commit}, parm) => { // 销售的模糊层/.
+export const workOrganizationChange = ({commit}, parm) => { // 销售的模糊层
     commit(types.SET_ORGANIZATION_CHANGE, parm)
 }

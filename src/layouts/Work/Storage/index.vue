@@ -19,43 +19,81 @@
 			<div class="commodity-container" v-loading="loadCommodity" element-loading-text="数据加载中..." :class="{'animat-scroll':curStatus.slipPointer}">
 				<div class="handle">
 					<span class="list-icon"><i class="iconfont icon-liebiao"></i>商品列表</span>
+
 					<div class="item">
-						<span v-if="isShow && curStatus.nowStatus == 1" class="add" @click="add" ref="ref_addGoods">添加商品</span>
-						<span v-if="isShow && curStatus.nowStatus == 1" @click="onBatchamend">批量修改</span>
-						<span v-if="isShow && curStatus.nowStatus == 1" class="copy" @click="copyPopupShow(true)">复制</span>
-						<span v-if="isShow && curStatus.nowStatus == 1" class="import" @click="$refs.uploadfile.click()">导入表格</span>
-						<!--<span class="deleteAll">批量删除</span>
-               <span class="amend">批量修改</span>-->
-						<span class="ruleConfig" @click="ruleOptionDia = true">规则配置</span>
-						<a target="_blank" :href="storageDownloadUrl" class="download">下载模板</a>
-						<template v-if="isShow">
-							<span class="save" @click="seve" :class="rowDataList.length == 0 ? 'gray': ''">保存</span>
-						</template>
+
+            <combination-drop-down-colums
+              v-show="dataGridOptions.type != 1"
+              class="storage-combination-drop-down-colums-wrap"
+              @dataBack="combinationHeaderComplate"
+            ></combination-drop-down-colums>
+
+            <filter-header
+              class="storage-filter-header-wrap"
+              @complate="filterHeaderComplate"
+              @reportSwitch="reportSwitch"
+              @choseBuyBack="choseBuyBack"
+              @chosePosition="chosePosition"
+              :type="dataGridOptions.type"
+              :customList="customList"
+            ></filter-header>
+            
+            <!-- 只有明细才显示 -->
+						<template v-if="dataGridOptions.type == 1">
+              <span v-if="isShow && curStatus.nowStatus == 1" class="add" @click="add" ref="ref_addGoods">添加商品</span>
+              <span v-if="isShow && curStatus.nowStatus == 1" @click="onBatchamend">批量修改</span>
+              <span v-if="isShow && curStatus.nowStatus == 1" class="copy" @click="copyPopupShow(true)">复制</span>
+              <span v-if="isShow && curStatus.nowStatus == 1" class="import" @click="$refs.uploadfile.click()">导入表格</span>
+              <!--<span class="deleteAll">批量删除</span>
+                <span class="amend">批量修改</span>-->
+              <span class="ruleConfig" @click="ruleOptionDia = true">规则配置</span>
+              <a target="_blank" :href="storageDownloadUrl" class="download">下载模板</a>
+              <template v-if="isShow">
+                <span class="save" @click="seve" :class="rowDataList.length == 0 ? 'gray': ''">保存</span>
+              </template>
+            </template>
 						<input style="display: none;" ref="uploadfile" type="file" name="file" @change="uploadingOne($event)" />
 					</div>
+
+
 				</div>
 
 				<!--表格-->
-				<datagrid 
-				:dgDataList="dgDataList" 
-				:isShow="isShow" 
-				:curStatus="curStatus" 
-				:orderNum="orderData.orderNum" 
-				:slipPointer="curStatus.slipPointer" 
-				:goodsAdd="goodsAdd" ref="datagrid" 
-				:copyDataList="copyOrderArray" 
-				:isRefreshFooter="isRefreshFooter" 
-				@add="add" 
-				@updataApi="updataApi"
-				@updataData="updataData" 
-				@updataAdd="updataAdd" 
-				@updataCopyOrderObject="updataCopyOrderObject" 
-				@updataLoader="updataLoader" 
-				@updataAddDataList="updataAddDataList" 
-				@updataSlipPointer="updataSlipPointer" 
-				@setSynopsiData="updataSynopsiData"
+				<datagrid
+          v-show="dataGridOptions.type == 1"
+  				:dgDataList="dgDataList" 
+  				:isShow="isShow" 
+  				:curStatus="curStatus" 
+  				:orderNum="orderData.orderNum" 
+  				:slipPointer="curStatus.slipPointer" 
+  				:goodsAdd="goodsAdd" ref="datagrid" 
+  				:copyDataList="copyOrderArray" 
+  				:isRefreshFooter="isRefreshFooter" 
+  				@add="add" 
+  				@updataApi="updataApi"
+  				@updataData="updataData" 
+  				@updataAdd="updataAdd" 
+  				@updataCopyOrderObject="updataCopyOrderObject" 
+  				@updataLoader="updataLoader" 
+  				@updataAddDataList="updataAddDataList" 
+  				@updataSlipPointer="updataSlipPointer" 
+  				@setSynopsiData="updataSynopsiData"
 				>
 				</datagrid>
+
+        <div v-if="dataGridOptions.type != 1" class="rp_dataGridTemp" v-loading="loadCommodity" element-loading-text="数据查询中">
+          <report-detail
+            ref="ReportDetail"
+            :isProductStyle="true"
+            :dataGridStorage="dataGridStorage"
+            :tabSwitch="tabSwitch"
+            :newList="newList"
+            :reportType="getReportType()"
+            :dataGridOptions="dataGridOptions"
+            :orderType="'01'"
+          >
+          </report-detail>
+        </div>
 
 				<!--滚动条上滑时出现的那个订单号-->
 				<div class="tab-orderNum" @click="updataSlipPointer(false)">
@@ -79,7 +117,8 @@
 
 			<!--各个按钮操作区-->
 			<utilsdatagrid
-			ref="utilsdatagrid" 
+			ref="utilsdatagrid"
+      :dataGridOptions="dataGridOptions"
 			:curStatus="curStatus" 
 			@updataApi="updataApi" 
 			:orderData="orderData" 
@@ -148,10 +187,12 @@ import stepsPath from './component/stepsPath'
 import datagrid from './dataGrid'
 import utilsdatagrid from './component/utilsDatagrid'
 import {operateAddProductToRKOrder} from 'Api/commonality/operate'
-import {downloadTable, seekReceiptRKSynopsis} from 'Api/commonality/seek'
+import {downloadTable, seekReceiptRKSynopsis, seekGetReportsPrintRK} from 'Api/commonality/seek'
 import copyPopup from './component/orderPopup'
 import batchamend from 'components/work/batchamend'
-
+import filterHeader from '@/layouts/Work/Report/ReportData/base/filter-header'
+import combinationDropDownColums from 'base/menu/combination-drop-down-colums'
+import ReportDetail from "@/layouts/Work/Report/ReportData/newDataGrid/reportDetailTab";
 //规则配置相关组件 
 import NewPopup from "./../../jinbaifu/NewPopup"
 import BasePage from "./../../jinbaifu/components/base"
@@ -168,6 +209,37 @@ import Other from "./../../jinbaifu/components/other"
 export default {
   data(){
     return {
+      dataGridStorage: {},
+      //成本核算
+      tabSwitch: false,
+      newList: [],
+
+
+      customList: [
+        {
+            name: '明细',
+            id: 1
+        },
+        {
+            name: '智能分类',
+            id: 2
+        },
+        {
+            name: '产品分类',
+            id: 3
+        }
+      ],
+      dataGridOptions: {
+        orderNum: this.$route.query.orderNumber,
+        productClass: "1", //商品属性
+        type: 1, //类型
+        wColorId: "", //计重
+        wGemId: "", //宝石类
+        wJewelryId: "1", //首饰类
+        nColorId: "", //计件
+        nGemId: "", //宝石类
+        nJewelryId: "1" //首饰类
+      },
       errorCode: '',
       errorLocal: false,
       isRefreshFooter: false,
@@ -238,7 +310,10 @@ export default {
     datagrid,
     utilsdatagrid,
     copyPopup,
-    batchamend
+    batchamend,
+    filterHeader,
+    ReportDetail,
+    combinationDropDownColums
 	},
 	watch: {
     
@@ -256,6 +331,61 @@ export default {
     this.receiptRKSynopsis()
   },
   methods: {
+    //获取当前的接口类型
+    getReportType() {
+      return this.dataGridOptions.type;
+    },
+    filterHeaderComplate (parm) {
+      Object.assign(this.dataGridOptions, parm)
+      if (this.dataGridOptions.type != 1) {
+        this._seekGetReportsPrintRK()
+      }
+    },
+    combinationHeaderComplate (parm) {
+      let datas = {}
+      datas.productClassIdList = this.filterSeekData(parm.productTypeList, 'productClassId', 'productTypeId')
+      datas.colourNameIdList = this.filterSeekData(parm.colourList, 'colourNameId', 'colourId')
+      datas.gemNameIdList = this.filterSeekData(parm.jeweList, 'gemNameId', 'jeweId')
+      datas.jewelNameIdList = this.filterSeekData(parm.jewelryList, 'jewelNameId', 'jewelryId')
+      Object.assign(this.dataGridOptions, datas)
+      if (this.dataGridOptions.type != 1) {
+        this._seekGetReportsPrintRK()
+      }
+    },
+    filterSeekData (parm, keyName, bKey) {
+      let datas = []
+      for (let i of parm) {
+        datas.push({
+          [keyName]: i[bKey]
+        })
+      }
+      return datas
+    },
+    _seekGetReportsPrintRK () {
+      seekGetReportsPrintRK(this.dataGridOptions)
+        .then(res => {
+          if (res.data.state == 200) {
+            this.dataGridStorage = res.data.data
+          } else {
+            this.$message({
+               message: res.data.msg,
+               type: 'warning'
+            })
+          }
+        })
+    },
+
+    reportSwitch () {
+
+    },
+    choseBuyBack () {
+
+    },
+    chosePosition () {
+
+    },
+
+
     receiptRKSynopsis () {
       let options = {
         orderNum: this.orderData.orderNum
@@ -263,6 +393,10 @@ export default {
       seekReceiptRKSynopsis(options).then((res) => {
         if (res.data.state == 200) {
           Object.assign(this.orderData, {
+						// 新增公司名称
+						companyName: res.data.data.companyName,
+						// 新增审核人
+						checkName: res.data.data.checkName,
             supplierName: res.data.data.supplierName,
             supplierId: res.data.data.supplierId,
             shopName: res.data.data.shopName,
@@ -311,11 +445,9 @@ export default {
     },
     // 更新选中数据 以便进行复制
     updataCopyOrderObject(data){
-    	console.log('复制的数据', data)
       if(data){
       	this.copyOrderObject = Object.assign({}, data)
       }
-      console.log('得值数据', this.copyOrderObject)
     },
     // loading
     updataLoader (type) {
@@ -406,7 +538,6 @@ export default {
     
     // 复制
     submitCopy(num){
-    	console.log(num)
       if (!/^(\d)*$/.test(num)) {
         this.$message({
           type:'warning',
@@ -708,12 +839,15 @@ export default {
 		>.handle {
 			height: 50px;
 			background-color: #fff;
-			line-height: 50px;
+			// line-height: 50px;
 			padding: 0 20px;
+      font-size: 0;
 			position: relative;
 			//z-index: 2;
 			border-radius: 10px 10px 0 0;
 			>.list-icon {
+        line-height: 50px;
+        font-size: 15px;
 				.iconfont {
 					color: #2993f8;
 					margin-right: 5px;
@@ -726,6 +860,7 @@ export default {
 				height: 30px;
 				>span,
 				>a {
+          line-height: 50px;
 					display: inline-block;
 					font-size: 14px;
 					color: #333;
@@ -754,6 +889,14 @@ export default {
 						cursor: default;
 					}
 				}
+        >.storage-filter-header-wrap{
+          margin-top: 2px;
+          margin-right: 0;
+        }
+        >.storage-combination-drop-down-colums-wrap{
+          margin-top: 2px;
+          margin-right: 0;
+        }
 			}
 		}
 		/* 上滑出现的那点订单号 */

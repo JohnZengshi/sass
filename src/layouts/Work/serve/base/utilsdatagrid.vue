@@ -383,7 +383,7 @@ export default{
  // border:1px solid #ededed;
  border-radius: 5px;
  /*overflow: hidden;*/
- z-index: 3500;
+ // z-index: 3500;
  
  >.receipts{
    

@@ -39,7 +39,7 @@
 						<div class="tb-td category-td" :key="index2"
 							v-if="tab.text == '产品类别' && index1 == 0"
 							:style="tableCell(tab.width)" >
-							<i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;z-index:2; line-height: 20px;'">{{tb[tab.childType]}}</i>
+							<i @click.stop="openLabel({}, tb)" :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;z-index:2; line-height: 20px;'">{{tb[tab.childType]}}</i>
 						</div>
 						<div class="tb-td category-td" :key="index2"
 							v-else-if="tab.text == '位置名称' && index == 0 && index1 == 0"
@@ -48,7 +48,7 @@
 							<i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;'">{{caty[tab.childType]}}</i>
 						</div>
 						<div class="tb-td"
-              @click.stop="openLabel(tb1)"
+              @click.stop="openLabel(tb1, tb)"
 							v-else  :key="index2"
 							style="overflow: hidden;"
 							:class="{backLine:tab.childType != ''}"
@@ -60,6 +60,7 @@
 				<div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
 				<div class="tb-total" style="background:#e9f4fe;" v-if="!positionSwitch"><!-- 类型小计 -->
 					<div class="tb-td"
+            @click="openLabel({}, tb)"
 						v-for="(tab,f) in detailDataGridColumn"
 						:style="tableCell(tab.width)" :key="f"
 						v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
@@ -99,6 +100,7 @@
 					</div>
 					<div class="tb-td"
 						v-else :key="index"
+            @click.stop="openLabel(tb1, tb)"
 						:style="tableCell(tab.width)"
 						v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
 					</div>
@@ -129,7 +131,7 @@ export default {
 			asData:{}
 		}
 	},
-	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType','isRole', 'positionSwitch'],
+	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType','isRole', 'positionSwitch', 'dataGridOptions', 'orderType'], // orderType -> 报表类型
     components:{
        dataisdelete
 	},
@@ -175,9 +177,31 @@ export default {
 		this.tabCellHeight()
 	},
 	methods:{
-    openLabel (parm) {
-      console.log('--==-=-=-=-=-=-=-=-=', parm)
+    openLabel (parm, caty) {
+      this.$store.dispatch('getLabelData', {
+        type: '1',
+        data: Object.assign({}, parm, {
+          productTypeId: caty.productTypeId,
+          orderType: this.orderType,
+          newOrderId: this.$route.query.orderNumber
+        }, this.dataGridOptions)
+      })
     },
+    // openSubtotalLabel (caty) {
+    //   debugger
+    //   let productTypeId = []
+    //   for (let i of caty) {
+    //     productTypeId.push(i.productTypeId)
+    //   }   
+    //   this.$store.dispatch('getLabelData', {
+    //     type: '1',
+    //     data: Object.assign({}, {
+    //       productTypeId: productTypeId,
+    //       orderType: this.orderType,
+    //       newOrderId: this.$route.query.orderNumber
+    //     }, this.dataGridOptions)
+    //   })
+    // },
 		setDeletedialogvisibly(isShow){
            this.deletedialogvisi = isShow; 
 		},

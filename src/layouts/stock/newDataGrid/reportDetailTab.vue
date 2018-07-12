@@ -10,6 +10,10 @@
 		:dataGridStorage="dataGridStorage" 
 		:reportType="reportType"
         :positionSwitch="positionSwitch"
+        :changeRepository="changeRepository"
+        :changeShop="changeShop"
+        :changeCounter="changeCounter"
+        :dataGridOptions="dataGridOptions"
 		@scrollClass = "scrollClass"
         @lazyloadSend = "lazyloadSend"
 		@tabCell="tabCell">
@@ -50,7 +54,7 @@ export default {
 			this.posSwitch()
 		},
 	},
-	props : ['dataGridStorage','reportType','tabSwitch','isOld', 'positionSwitch', 'newList'],
+	props : ['dataGridStorage','reportType','tabSwitch','isOld', 'positionSwitch', 'newList',"changeRepository", "changeShop", "changeCounter", 'dataGridOptions'],
 	methods:{
         sortList (val) {
             

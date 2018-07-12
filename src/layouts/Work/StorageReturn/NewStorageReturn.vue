@@ -12,7 +12,7 @@
                                 </ul>
                                 <div class="back-btn" @click="goPreviousPage">返回上一级</div>
                             </div>
-                            <div id="body-row2-Zindex" class="body-row2 actions-status"
+                            <div class="body-row2 actions-status"
                                 :data-status="curStatus.statusName"
                                 :class="{'animat-scroll':curStatus.slipPointer, 'color1': nowStatus == 1, 'color2': nowStatus == 2,
                         'color3': nowStatus == 3, 'color4': nowStatus == 4, 'color5': nowStatus == 5, 'color6': nowStatus == 6,
@@ -412,14 +412,16 @@
                                         :tabSwitch="tabSwitch"
                                         :positionSwitch="positionSwitch"
                                         :isRole='receiptsIntroList.isRole'
+                                        :billType="'退库'"
+                                        :isSelDelect="isSelDelect"
+                                        :newList="newList"
+                                        :dataGridOptions="dataGridOptions"
+                                        :orderType="'02'"
                                         @scrollClass="tabScrollShow"
                                         @delectBack="delBack"
                                         @scrollBack="scrollBack"
                                         @scrolling="scrolling"
                                         @messageBack="messageBack"
-                                        :billType="'退库'"
-                                        :isSelDelect="isSelDelect"
-                                        :newList="newList"
                                         @lazyloadSend="sendlayLoad"
                                         @sortList="sortListAct"
                                         :reportType="getReportType()">
@@ -535,10 +537,42 @@
         </div>
 			<!--打印模块-->
 			<div style="display: none;">
-				<detail-template v-if="this.tabClassActive.index==0" title="退库" :reportType="2" ref="detailTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></detail-template>
-				<intelligence-type-template v-if="this.tabClassActive.index==1" title="退库" :reportType="2" ref="intelligenceTypeTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></intelligence-type-template>
-				<project-type-template v-if="this.tabClassActive.index==2" title="退库" :reportType="2" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></project-type-template>
-				<custom-template v-if="this.tabClassActive.index==3" title="退库" :reportType="2" ref="customTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></custom-template>
+				<detail-template 
+                    v-if="this.tabClassActive.index==0" 
+                    title="退库" 
+                    tabTitle="明细"
+                    :reportType="2" 
+                    ref="detailTemplate" 
+                    :sellList="printDataGrid" 
+                    :headerData="receiptsIntroList"
+                    :tabSwitch="tabSwitch"></detail-template>
+				<intelligence-type-template 
+                    v-if="this.tabClassActive.index==1" 
+                    title="退库" 
+                    :reportType="2" 
+                    tabTitle="智能分类"
+                    ref="intelligenceTypeTemplate" 
+                    :sellList="printDataGrid" 
+                    :headerData="receiptsIntroList"
+                    :tabSwitch="tabSwitch"></intelligence-type-template>
+				<project-type-template 
+                    v-if="this.tabClassActive.index==2" 
+                    title="退库" 
+                    tabTitle="产品分类"
+                    :reportType="2" 
+                    ref="projectTypeTemplate" 
+                    :sellList="printDataGrid" 
+                    :headerData="receiptsIntroList"
+                    :tabSwitch="tabSwitch"></project-type-template>
+				<custom-template 
+                    v-if="this.tabClassActive.index==3" 
+                    title="退库" 
+                    tabTitle="自定义"
+                    :reportType="2" 
+                    ref="customTemplate" 
+                    :sellList="printDataGrid" 
+                    :headerData="receiptsIntroList"
+                    :tabSwitch="tabSwitch"></custom-template>
 			</div>
     </div>
 </template>
@@ -788,7 +822,7 @@ export default {
                 sortList: [{barcode: '1'}],
                 type: 1,
                 page: 1,
-                pageSize: 30,
+                pageSize: 50,
                 keyWord: '',
                 wColorId: '',
                 wGemId: '',
@@ -1032,7 +1066,7 @@ export default {
                 sortFlag: '0',
                 type: 1,
                 page: 1,
-                pageSize: 30,
+                pageSize: this.$refs['LoaderNum'].pageSize,
                 keyWord: '',
                 sortList: [{barcode: '1'}],
               })
@@ -1118,7 +1152,7 @@ export default {
           this.loading = true;
           //this.page = 1
           this.dataGridOptions.page = 1
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = 50
           this.tabClassActive.index = index;
           this.setReportType(type)
           
@@ -1781,11 +1815,10 @@ export default {
         },
         sendlayLoad (val) {
         //   this.dataGridOptions.pageSize += 15
-            this.dataGridOptions.pageSize = val
+            this.dataGridOptions.pageSize = val;
           seekOutStorageData(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
               this.dataGridStorage = res.data.data
-              this.loading = false
             }
           }, (res) => {
 
@@ -1798,11 +1831,14 @@ export default {
               // 避免繁琐操作，打印数据单独请求
               if(type && type == 'print'){
                 this.printDataGrid = res.data.data
-                callBack && callBack()
+                // 待页面渲染
+                setTimeout(()=>{
+                    callBack && callBack()
+                },1000)
                 //打印数据请求完成之后 初始化分页设置
                 Object.assign(this.dataGridOptions, {
                   page : 1,
-                  pageSize : 30
+                  pageSize : this.$refs['LoaderNum'].pageSize
                 })
               }else{
                 this.dataGridStorage = res.data.data

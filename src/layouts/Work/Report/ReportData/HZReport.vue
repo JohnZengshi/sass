@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <filter-header :isOld="true" :specialItem="true" @complate="filterHeaderComplate" @reportSwitch="reportSwitch"></filter-header>
+            <filter-header class="hz-report-filter-header-wrap" :isOld="true" :specialItem="true" @complate="filterHeaderComplate" @reportSwitch="reportSwitch"></filter-header>
 
     </div>
     
@@ -79,10 +79,10 @@
     
     <!-- 按钮组 -->
     <div class="utilsBtn flex flex-v flex-pack-justify">
-        <div class="btn" @click="exportTab()">
+<!--         <div class="btn" @click="exportTab()">
             <i class="iconfont icon-daochu"></i>
             <span>导出报表</span>
-        </div>
+        </div> -->
         <div class="btn" @click="tabPrin()">
             <i class="iconfont icon-dayin1"></i>
             <span>打印报表</span>
@@ -93,11 +93,32 @@
     <!--打印模块-->
     <div style="display: none;">
     
-        <intelligence-type-template v-if="this.dataGridOptions.type==2" title="进销存-智能分类-汇总" ref="intelligenceTypeTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></intelligence-type-template>
+        <intelligence-type-template 
+            v-if="this.dataGridOptions.type==2" 
+            title="进销存汇总表" 
+            tabTitle="智能分类"
+            ref="intelligenceTypeTemplate" 
+            :sellList="filterHasData(dataGridStorage.dataList)" 
+            :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"></intelligence-type-template>
 
-        <project-type-template v-if="this.dataGridOptions.type==3" title="进销存-产品类别-汇总" ref="projectTypeTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></project-type-template>
+        <project-type-template 
+            v-if="this.dataGridOptions.type==3" 
+            title="进销存汇总表" 
+            tabTitle="产品分类"
+            ref="projectTypeTemplate" 
+            :sellList="filterHasData(dataGridStorage.dataList)" 
+            :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"></project-type-template>
 
-        <custom-template v-if="this.dataGridOptions.type==4" title="进销存-自定义-汇总" ref="customTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></custom-template>
+        <custom-template 
+            v-if="this.dataGridOptions.type==4" 
+            title="进销存汇总表" 
+            tabTitle="自定义"
+            ref="customTemplate" 
+            :sellList="filterHasData(dataGridStorage.dataList)" 
+            :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"></custom-template>
 
     </div>
 </div>
@@ -114,9 +135,6 @@
 </transition>
 </template>
 
-<style scoped>
-    
-</style>
 
 
 <script>
@@ -465,6 +483,9 @@ export default {
         // 打印表格
         send () {
           this.loading = true;
+          this.dataGridStorage = {
+            dataList: []
+          }
           seekGetReportsComprehensive(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
                 this.dataGridStorage = res.data.data
@@ -510,16 +531,23 @@ export default {
           }
         },
         changeVaue (parm) {
+            console.log(parm)
             this.dataGridOptions.storageId = ''
             this.dataGridOptions.shopId = ''
             this.dataGridOptions.shopFlag = ''
             this.dataGridOptions.storageFlag = ''
             if (parm.type == 1) {
                 this.dataGridOptions.receiveObject = parm.type
+                // 打印报表的筛选条件
+                this.printSelectDate.shop = "";
+                this.printSelectDate.storage = ""
             } else if (parm.type == 2) {
                 if (parm.item.operateId) {
                     this.dataGridOptions.receiveObject = 4
                     this.dataGridOptions.storageId = parm.item.operateId
+                    // 打印报表的筛选条件
+                    this.printSelectDate.shop = ""
+                    this.printSelectDate.storage = parm.item.operateName
                 } else {
                     this.dataGridOptions.receiveObject = parm.type
                     this.dataGridOptions.storageFlag = '1'
@@ -529,6 +557,9 @@ export default {
                 if (parm.item.operateId) {
                     this.dataGridOptions.receiveObject = 5
                     this.dataGridOptions.shopId = parm.item.operateId
+                    // 打印报表的筛选条件
+                    this.printSelectDate.storage = ""
+                    this.printSelectDate.shop = parm.item.operateName
                 } else {
                     this.dataGridOptions.receiveObject = parm.type
                     this.dataGridOptions.shopFlag = '1'
@@ -541,6 +572,9 @@ export default {
             this.dataGridOptions.receiveObject = 1
             this.dataGridOptions.shopId = ''
             this.dataGridOptions.storageId = ''
+            // 打印报表的筛选条件
+            this.printSelectDate.shop = "";
+            this.printSelectDate.storage = ""
             this.send()
         },
 
@@ -808,4 +842,9 @@ export default {
     }
  }
 </script>
-
+<style lang="scss" scoped>
+.hz-report-filter-header-wrap{
+    float: right;
+    margin-top: 10px;
+} 
+</style>

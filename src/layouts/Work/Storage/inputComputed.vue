@@ -18,10 +18,6 @@ export default {
   watch: {
       ratio: function() {
           if (this.littleClassKey === "soldPrice") { // 倍率改变
-              console.log("倍率改变啦");
-              console.log("监听9");
-              console.log(this.costPrice);
-              console.log(this.ratio);
               if (!Number(this.costPrice) * Number(this.ratio) || Number(this.costPrice) * Number(this.ratio) === Infinity) { // 如果计算不合法
                   return;
               }
@@ -32,18 +28,11 @@ export default {
       },
       soldPrice: function () { // 售价改变
           if (this.littleClassKey === "ratio") {
-              console.log("售价改变啦");
-              console.log(this.soldPrice);
-              console.log(this.costPrice);
               if (!Number(this.soldPrice) / Number(this.costPrice) || Number(this.soldPrice) / Number(this.costPrice) === Infinity) { // 如果计算不合法
-                  console.log("9999999999999999999999999999999999999999999999999999")
                   return;
               }
-              console.log("ppppppppppppppppppp");
               console.log(Number(this.soldPrice) / Number(this.costPrice));
               this.defaultValue = Number(this.soldPrice) / Number(this.costPrice);
-              console.log("监听2")
-              console.log(this.defaultValue);
               this.$emit('input', Number(this.defaultValue));
           }
           return;
@@ -54,10 +43,8 @@ export default {
           switch (this.littleClassKey) {
               case 'ratio': // 倍率
                   if (this.ratio) {
-                      console.log("有倍率");
                       this.defaultValue = Number(this.ratio);
                   } else {
-                      console.log("没有倍率");
                       if (!Number(this.soldPrice) / Number(this.costPrice) || Number(this.costPrice) * Number(this.ratio) === Infinity) { // 如果计算不合法
                           return;
                       }
@@ -66,12 +53,8 @@ export default {
                   break;
               case 'soldPrice': // 售价
                   if (this.soldPrice) {
-                      console.log("有售价");
                       this.defaultValue = this.soldPrice;
                   } else {
-                      console.log("没有售价");
-                      console.log(this.costPrice);
-                      console.log(this.ratio);
                       this.defaultValue = Number(this.costPrice) * Number(this.ratio);
                   }
                   break;
@@ -79,7 +62,6 @@ export default {
           this.$emit('input', Number(this.defaultValue));
       },
       soldPriceComputed: function (value) { // 只限制输入字数
-          console.log(value);
           if (value) {
             this.$refs.input.value = value;
             this.$emit('input', value)

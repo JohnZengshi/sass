@@ -1,4 +1,4 @@
-。<template>
+<template>
   <div class="down-menu-main">
     <span class="title-name" :class="titleInfo ? '' : 'select'" :style="specialStyle">
       {{titleInfo}}

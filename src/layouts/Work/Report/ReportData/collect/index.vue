@@ -9,7 +9,7 @@
 					</div>
 				</div>
 				<div class="rp_dataGridTemp">
-					<sell-datagrid :dataGridStorage="sellStorage" :cashierStatistics="cashierStatistics" :buyBackStorage="buyBackStorage" reportType="1">
+					<sell-datagrid :dataGridOptions="selectDate" :orderType="orderType" :dataGridStorage="sellStorage" :cashierStatistics="cashierStatistics" :buyBackStorage="buyBackStorage" reportType="1">
 					</sell-datagrid>
 				</div>
 			</div>
@@ -71,7 +71,7 @@
 				//打印0,1
 			}
 		},
-		props: ['selectDate', 'printSelectDate'],
+		props: ['selectDate', 'printSelectDate', 'orderType'],
 		components: {
 			sellDatagrid,
 			tradeDatagrid,

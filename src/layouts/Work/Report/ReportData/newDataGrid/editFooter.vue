@@ -1,7 +1,7 @@
 <template>
   <!--表尾-->
   <div class="ui-table_footer">
-    <div class="th_footer" v-for="(tab,f) in detailDataGridColumn" :style="tableCell(tab.width)">
+    <div class="th_footer" v-for="(tab,f) in detailDataGridColumn" :style="_calculateClass(tab)">
       <template v-if="reportType == 1 && tab.text == '条码号'">
         <!--<p class="top">修改前</p>
         <p class="top">修改后</p>-->
@@ -20,8 +20,8 @@
         </template>
         
         <template v-else>
-          <p class="top" v-if="f != 1" v-html="oldHtml(tab)"></p>
           <p class="bottom" v-if="f != 1" v-html="v_html(tab)"></p>
+          <p class="top" v-if="f != 1" v-html="oldHtml(tab)"></p>
         </template>
 
       </template>
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-  
+  import {calculateClass} from 'assets/js/getClass'
   export default {
     data(){
     return{
@@ -40,6 +40,9 @@
     props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'isEditReport', 'configData'],
 
     methods: {
+      _calculateClass (parm) {
+        return calculateClass(parm)
+      },
       tableCell(width) {
 
         let _size = ''
@@ -99,10 +102,11 @@
 
 <style lang="scss" scoped>
   .ui-table_footer {
+    position: relative;
     background: #2993f8;
     height: 60px;
     z-index: 3;
-    padding: 10px 0;
+    padding: 10px 0 10px 0;
     .th_footer {
       position: relative;
       .bottom {
@@ -127,6 +131,10 @@
       .m-t-10{
         margin-top: 10px;
       }
+
+    }
+    .th_footer:last-child{
+      padding-right: 20px;
     }
   }
 </style>

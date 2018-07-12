@@ -1,5 +1,5 @@
 <template>
-    <div class="drop-colums-wrap">
+    <div class="alone-drop-down-colums-main">
         <div class="tltle" :class="{actions: isChecked}">
             {{titleData}}
             <i class="iconfont icon-xiala"></i>
@@ -22,7 +22,7 @@
             </ul>
             <div class="list-footer">
                 <span @click="complate">完成</span>
-                <span @click="reset">重置</span>
+                <span @click="reset('Y')">重置</span>
             </div>
         </div>
     </div>
@@ -57,6 +57,14 @@ export default {
         }
     },
     methods: {
+        initData (parm) { // 初始化数据
+            if (parm) {
+                this.checkedCities = parm
+                if (parm.length) {
+                    this.isChecked = true
+                }       
+            }
+        },
         filterStyle (parm) {
             let datas = ''
             if (this.checkedCities.includes(parm)) {
@@ -99,16 +107,19 @@ export default {
                 this.isChecked = false
             }
         },
-        reset () {
+        reset (parm) {
             this.checkedCities = []
             this.allChecked = []
             this.isChecked = false
+            if (parm == 'Y') {
+                this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll})
+            }
         }
     }
 }
 </script>
 <style lang="scss">
-.drop-colums-wrap{
+.alone-drop-down-colums-main{
   .el-checkbox{
     height: 20px!important;
     line-height: 20px!important;
@@ -119,6 +130,7 @@ export default {
   .el-checkbox-group {
     .el-checkbox__label{
         font-size: 14px!important;
+        font-weight: normal;
     }
   }
 }
@@ -146,7 +158,7 @@ export default {
 // }
 </style>
 <style scoped lang="scss">
-.drop-colums-wrap {
+.alone-drop-down-colums-main {
     width: 68px;
     height: 28px;
     //border: 1px solid #d6d6d6;
@@ -270,7 +282,7 @@ export default {
         }
     }
 }
-.drop-colums-wrap:hover {
+.alone-drop-down-colums-main:hover {
     .list-box {
         z-index: 20;
         opacity: 1;

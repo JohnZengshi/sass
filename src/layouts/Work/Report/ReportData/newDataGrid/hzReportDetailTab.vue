@@ -22,13 +22,13 @@
     </div>
   
     <!--表尾  -->
-    <data-grid-footer 
+    <!-- <data-grid-footer 
       :detailDataGridColumn="detailDataGridColumn" 
       :dataGridStorage="dataGridStorage" 
       :reportType = "reportType" 
       :configData="configData"
       @tabCell="tabCell">
-    </data-grid-footer>
+    </data-grid-footer> -->
 </div>
 </transition>
 </template>

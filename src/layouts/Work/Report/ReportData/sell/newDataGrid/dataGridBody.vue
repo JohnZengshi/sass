@@ -1,15 +1,10 @@
 <template>
   <!--表格内容区-->
   <!--明细-->
-  <div class="xj-report-table-container" ref="tableContainer" v-if="reportType == 1">
+  <div @scroll="watchScroll($event)" class="xj-report-table-container" ref="tableContainer" v-if="reportType == 1">
     <div>
       <div class="tb-tr" v-for="(tb,index) in tempArray" :key="index">
         <template v-for="(tab,indexs) in detailDataGridColumn">
-          <!--<div class="tb-td category-td"
-          v-if="tab.text == '回购类型'" 
-          :style="calculateClass(tab)" >
-          <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7;'">{{caty[tab.childType]}}</i>
-        </div>-->
           <div
             class="tb-td"
             :key="indexs"
@@ -18,6 +13,13 @@
           ></div>
         </template>
       </div>
+      <!-- 加载更多未读数据 -->
+      <ReadMoreData
+        :allData="dataGridStorage" 
+        :dgDataList="dataGridStorage.detailList" 
+        ref="ReadMoreDataDmo" 
+        @readMoreData="readMoreData"
+        ></ReadMoreData>
       <div v-if="isDate" class="no-data"></div>
     </div>
   </div>
@@ -33,6 +35,7 @@
                 <div class="branch-tb category-td"
                   :key="index4"
                   v-if="tab.text == '产品类别'" 
+                  @click="openLabel({}, tb)"
                   :style="calculateClass(tab)"
                   >
                   {{tb[tab.childType]}}
@@ -40,6 +43,7 @@
                 <div class="tb-td"
                   v-else
                   :key="index4"
+                  @click="openLabel({}, tb)"
                   :style="calculateClass(tab)" 
                   v-text = "tab.totalType == ''? (index+1) : tb[tab.totalType]">
                 </div>
@@ -65,30 +69,27 @@
         <div v-for="(tb, index) in caty.productTypeList" :key="index">
           <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :key="index1" :index="addIndex()">
             <template v-for="(tab,index) in detailDataGridColumn">
-              <div class="branch-tb category-td" :key="index" v-if="tab.text == '产品类别' && index1 == 0" :style="calculateClass(tab)">
+              <div class="branch-tb category-td" :key="index" v-if="tab.text == '产品类别' && index1 == 0" :style="calculateClass(tab)"
+                @click="openLabel({}, tb)"
+              >
                 <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{tb[tab.childType]}}</i>
               </div>
               <div class="branch-tb category-td" :key="index" v-else-if="tab.text == '回购类型' && index1 == 0" :style="calculateClass(tab)">
                 <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{caty[tab.childType]}}</i>
               </div>
 
-<!--               <div class="tb-td" :key="index" v-else-if="tab.text == '首饰名称'" :class="{backLine:tab.childType != ''}" :style="calculateClass(tab)" v-text="tab.childType == ''? getIndex() : tb[tab.childType]">
-              </div>
- -->
-              <div class="tb-td" :key="index" v-else :class="{backLine:tab.childType != ''}" :style="calculateClass(tab)" v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
+              <div @click="openLabel(tb1, tb)" class="tb-td" :key="index" v-else :class="{backLine:tab.childType != ''}" :style="calculateClass(tab)" v-text="tab.childType == ''? getIndex() : tb1[tab.childType]">
               </div>
             </template>
           </div>
           <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
           <div v-show="tb.detailList.length" class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
             <!-- 类型小计 -->
-            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 0 ? '<b>小计</b>' : tb[tab.totalType]"></div>
+            <div class="tb-td" @click="openLabel({}, tb)" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 0 ? '<b>小计</b>' : tb[tab.totalType]"></div>
           </div>
         </div>
         <div class="tb-total" style="background:#ECF3FF;" v-if="positionSwitch">
           <!-- 位置小计 -->
-          <!--保留2位小数-->
-          <!--<div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 1 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"></div>-->
         	<div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 1 ? '<b>小计</b>' : caty[tab.totalType0]"></div>
         </div>
       </div>
@@ -102,6 +103,7 @@
   let applyIndex = 0
   import {styleWR} from 'Api/commonality/getStyle'
   import {calculateClass} from 'assets/js/getClass'
+  import ReadMoreData from 'components/work/readMoreData.vue'
   export default {
     data() {
       return {
@@ -111,14 +113,16 @@
         otherDatagrid: []
       }
     },
-    props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch'],
+    components:{
+      ReadMoreData
+    },
+    props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch', 'dataGridOptions', 'orderType'],
 
     watch: {
       'dataGridStorage': function() {
         this.tempArray = []
         this.cheackData()
         this.storageFormatDate()
-        //console.log(1111)
         this.tabCellHeight()
         if(this.reportType > 1){
           this.reduceAssign()
@@ -142,40 +146,54 @@
         _this.$emit('lazyloadSend', 123)
       })
 
-      $(".xj-report-table-container").mCustomScrollbar({
-        theme: "minimal-dark",
-        axis: 'y',
-        scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
-        mouseWheel: {
-          scrollAmount: 200,
-                preventDefault: false,
-                normalizeDelta: true,
-                scrollInertia : 50
-        },
-        callbacks: {
-          onTotalScroll: function () {
-					// console.log('滚轮到底了')
-					$('.loadControl').css({
-						opacity:1
-					})
-                },
-				onUpdate(){
-					// console.log('滚动条更新')
-					$('.loadControl').css({
-						opacity:0
-					})
-				},
-				whileScrolling(){
-					// console.log('滚动条活动')
-					$('.loadControl').css({
-						opacity:0
-					})
-				}
-        }
-      });
+
+
+      // $(".xj-report-table-container").mCustomScrollbar({
+      //   theme: "minimal-dark",
+      //   axis: 'y',
+      //   scrollInertia:100, //滚动条移动速度，数值越大滚动越慢
+      //   mouseWheel: {
+      //     scrollAmount: 200,
+      //           preventDefault: false,
+      //           normalizeDelta: true,
+      //           scrollInertia : 50
+      //   },
+      //   callbacks: {
+      //     onTotalScroll: function () {
+			// 		// console.log('滚轮到底了')
+			// 		$('.loadControl').css({
+			// 			opacity:1
+			// 		})
+      //           },
+			// 	onUpdate(){
+			// 		// console.log('滚动条更新')
+			// 		$('.loadControl').css({
+			// 			opacity:0
+			// 		})
+			// 	},
+			// 	whileScrolling(){
+			// 		// console.log('滚动条活动')
+			// 		$('.loadControl').css({
+			// 			opacity:0
+			// 		})
+			// 	}
+      //   }
+      // });
       this.tabCellHeight()
     },
     methods: {
+      openLabel (parm, caty) {
+        this.$store.dispatch('getLabelData', {
+          type: '3',
+          data: Object.assign({}, parm, this.dataGridOptions,{
+            productTypeId: caty.productTypeId,
+            orderType: this.orderType,
+            sellType: '1',
+          },  {
+            sellStatus: '1'
+          })
+        })
+      },
       //重置index
       resetIndex(index) {
         if(index == 0) applyIndex = 0
@@ -252,7 +270,45 @@
             this.otherDatagrid = this.dataGridStorage.productTypeList[0].productSellTypeList
           }
         }
-      }
+      },
+
+      //  监听表格滚动
+      watchScroll(el) { // 下拉加载数据
+        let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
+        let clientHeight = el.target.clientHeight; // 元素的高度
+        let scrollTop = el.target.scrollTop; // 滚动了的距离
+        if (this.$refs.ReadMoreDataDmo) {
+          let res = this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+          if(res){
+            this.readMoreData();
+          }
+        }
+      },
+
+      //加载更多数据
+      readMoreData(currentDataList) {
+        let totalNum = this.dataGridStorage.totalNum;
+        let length = this.dataGridStorage.detailList.length;
+        let upDataNum = this.$parent.$parent.$refs["LoaderNum"].pageSize;
+        this.pageNum = 1;
+        let pageSize = 50
+        //   this.dgDataList = [];
+        if (Number(upDataNum) != 0) {
+          upDataNum = Number(upDataNum);
+          if (totalNum - length < upDataNum) {
+            pageSize = 0
+          } else {
+            pageSize = length + upDataNum
+          }
+        } else {
+          pageSize = 0
+        }
+        //   this.$parent.$parent
+        // console.log(pageSize);
+        this.$parent.$parent.dataGridOptions.pageSize = pageSize;
+        this.$parent.$parent.send();
+        // console.log(this.$parent.$parent.dataGridOptions.pageSize)
+      },
     },
     update() {
       console.log('updata')
@@ -271,93 +327,9 @@
 <style scoped lang="scss">
 .xj-report-table-container {
   height: 556px;
-}
-  // .xj-report-table-container {
-  //   height: 515px;
-  //   overflow-y: auto;
-  //   &.produc-line {
-  //     .tb-tr:nth-child(even) {
-  //       background-color: #f9f9f9;
-  //     }
-  //   }
-  //   &.default-line {
-  //     .tb-tr:nth-child(even) {
-  //       background-color: #f9f9f9;
-  //     }
-  //   }
-  //   &.con-line {
-  //     .backLine {overflow: hidden;}
-  //     .tb-tr:nth-child(even) {
-  //       .backLine {
-  //         background-color: #f9f9f9;
-          
-  //       }
-  //     }
-  //   }
-  //   .tb-tr {
-  //     // height: 40px;
-  //     display: flex;
-  //     .tb-td {
-  //       float: left;
-  //       display: inline-block;
-  //       // height: 40px;
-  //       // line-height: 40px;
-  //       text-align: center;
-  //       font-size: 14px;
-  //       font-weight: 400;
-  //       transition: all .1s;
-  //       white-space: nowrap;
-  //       color: #333;
-  //       -webkit-font-smoothing: subpixel-antialiased;
-  //       text-overflow: ellipsis;
-  //       &.category-td {
-  //         position: relative;
-  //         //overflow: hidden;
-  //         text-overflow: ellipsis;
-  //         white-space: pre-wrap;
-  //         >i {
-  //           font-style: normal;
-  //           // font-weight: bold;
-  //           // color: #248efc;
-  //           color: #333;
-  //           font-size: 14px;
-  //           // font-size: 15px;
-  //           position: absolute;
-  //           display: flex;
-  //           align-items: center;
-  //           width: 100%;
-  //           left: 0;
-  //           top: 0;
-  //           text-align: center;
-  //           justify-content: center
-  //         }
-  //       }
-  //     }
-  //   }
-  //   .tb-total {
-  //     background-color: #e9f4fe;
-  //     height: 40px;
-  //     display: flex;
-  //     .tb-td {
-  //       float: left;
-  //       display: inline-block;
-  //       // height: 40px;
-  //       // line-height: 40px;
-  //       text-align: center;
-  //       font-size: 14px;
-  //       font-weight: bold;
-  //       color: #2993f8;
-  //       transition: all .3s;
-  //       overflow: hidden;
-  //       white-space: nowrap;
-  //       text-overflow: ellipsis;
-  //       b {
-  //         color: #333 !important;
-  //       }
-  //     }
-  //   }
-  // }
-  
+  overflow-y: scroll;
+  position: relative;
+}  
   .no-data {
     height: 100%;
     background: url(~static/img/space-page.png) center center no-repeat;
