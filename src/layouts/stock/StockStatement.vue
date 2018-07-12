@@ -51,6 +51,13 @@
                <i class="iconfont icon-arrow-down myicon"></i>
             </div>
           </li>
+<!--           <li>
+            <div class="xj-time-wrap">
+                <div class="block until" data-txt="至">
+                    <el-date-picker size="mini" v-model="beginTime" @change="getTimeData"  type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
+                </div>
+            </div>
+          </li> -->
         </ul>
       </div>
 <!--       <div class="echartdiv"> -->
@@ -115,6 +122,33 @@
     },
     data () {
       return {
+        pickerOptions1: {
+          shortcuts: [{
+            text: '今天',
+            onClick(picker) {
+              picker.$emit('pick', new Date());
+            }
+          }, {
+            text: '昨天',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24);
+              picker.$emit('pick', date);
+            }
+          }, {
+            text: '一周前',
+            onClick(picker) {
+              const date = new Date();
+              date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit('pick', date);
+            }
+          }]
+        },
+        beginTime: new Date(),
+        dataGridOptions: {
+          beginTime: ''
+        },
+
         kwcodedelete:false,//通过 这个参数 实现 代码判断
         dpcodedelete:false,
         takeUserDisabled : true,
@@ -159,6 +193,11 @@
       }
     },
     methods: {
+      getTimeData(val) {
+          this.dataGridOptions.beginTime = val.substr(0, 10).split('-').join("") + "000000"
+          this.printSelectDate.startTime = val
+          this.send();
+      },
       clearTitletext(val){
          if(val.type == '店铺'){
             this.dpcodedelete = false;
@@ -368,11 +407,12 @@
     },
     
     mounted(){
-       this.$nextTick(()=>{
-          this._seekRepositoryList()
-          this._seekGetShopListByCo()
-          this._statisticalIndex()
-       })
+      this.getTimeData(this.beginTime)
+      this.$nextTick(()=>{
+        this._seekRepositoryList()
+        this._seekGetShopListByCo()
+        this._statisticalIndex()
+      })
     }
   }
 </script>
@@ -416,7 +456,7 @@
       position: absolute;
       z-index: 999;
       height: 40px;
-      width: 1270px;
+      width: 1250px;
       // background-color: #f5f8f7;
       margin-left: -5px;
       margin-bottom:15px;
