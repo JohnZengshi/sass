@@ -5,15 +5,14 @@
     <div>
       <!-- 销售 -->
       <div class="tb-category" v-if="otherDatagrid.length">
-
-        <div class="left-type-name-wrap" :style="getbuyBackRightHX(otherDatagrid)">
-          <p>销售</p>
-        </div>
+        <div class="left-right-wrap">
+          <div class="left-type-name-wrap" :style="getbuyBackRightHX(otherDatagrid)">
+            <p>销售</p>
+          </div>
 
           <div class="c-right-type-inner-wrap">
             <div :index="resetIndex(ind)" v-for="(caty, ind) in otherDatagrid">
               <div class="tb-tr"  v-for="(tb, index) in caty.productTypeList">
-                <!-- <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()"> -->
                   <template v-for="(tab, indexGrid) in detailDataGridColumn">
                     
                     <div 
@@ -43,7 +42,6 @@
                       
                     </div>
                   </template>
-        <!--         </div> -->
 
               </div>
 
@@ -53,6 +51,7 @@
 
             </div>
           </div>
+        </div>
 
         <div class="total-num-wrap" v-if="!positionSwitch">
           <div>
@@ -68,6 +67,7 @@
 
     <div class="tb-category" v-if="buyBackDataList.length">
 
+<div class="left-right-wrap">
       <div class="left-type-name-wrap" :style="getbuyBackRightHX(buyBackDataList)">
         <p>回购</p>
       </div>
@@ -75,7 +75,6 @@
       <div class="c-right-type-inner-wrap">
           <div :index="resetIndex(ind)" v-for="(caty, ind) in buyBackDataList">
             <div class="tb-tr"  v-for="(tb, index) in caty.productTypeList">
-              <!-- <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :index="addIndex()"> -->
                 <template v-for="(tab, indexGrid) in detailDataGridColumnTwo">
                   
                   <div 
@@ -105,7 +104,6 @@
                     
                   </div>
                 </template>
-      <!--         </div> -->
 
             </div>
             <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
@@ -115,6 +113,7 @@
 
           </div>
         </div>
+</div>
 
       <div class="total-num-wrap" v-if="!positionSwitch">
         <div>
@@ -562,6 +561,11 @@
     height: 565px;
     background: url(~static/img/space-page.png) center center no-repeat;
   }
+  .left-right-wrap{
+      font-size: 0;
+      width: 100%;
+      display: flex;
+  }
   .left-type-name-wrap{
     position: relative;
     display: inline-block;
@@ -585,7 +589,8 @@
   }
   .c-right-type-inner-wrap{
     display: inline-block;
-    width: 1095px;
+    flex: 1;
+    // width: 1095px;
     overflow: hidden;
   }
 
