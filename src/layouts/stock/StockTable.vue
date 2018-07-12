@@ -402,22 +402,53 @@
         </table-print>
       </div>
       
-          <div v-if="dataGridOptions.type==1" class="xj-kc-print-main" ref="detailTemplateWrap">
-            <detailTemplate title="库存-明细" :tabSwitch="tabSwitch" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
+      <!-- 明细0 -->
+<!--       <detailTemplate v-if="this.tabClassActive.index==0" title="库存-明细" ref="detailTemplate" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
+ -->
+          <div v-if="dataGridOptions.type==1" class="xj-kc-print-main" style="display: none;" ref="detailTemplateWrap">
+            <detailTemplate 
+              title="库存" 
+              tabTitle="明细"
+              :tabSwitch="tabSwitch" 
+              :sellList="printData" 
+              :headerData="printSelectDate"></detailTemplate>
           </div>
         <!--打印模块-->
         <div style="display: none;">
 
 
             <!-- 智能1 -->
-            <intelligence-type-template v-if="dataGridOptions.type==2" title="库存-智能分类" ref="intelligenceTypeTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
+            <intelligence-type-template 
+              v-if="dataGridOptions.type==2" 
+              title="库存" 
+              tabTitle="智能分类"
+              ref="intelligenceTypeTemplate" 
+              :sellList="printData" 
+              :tabSwitch="tabSwitch" 
+              :headerData="printSelectDate" 
+              :positionSwitch="positionSwitch"></intelligence-type-template>
 
             <!-- 产品分类 -->
-            <project-type-template v-if="dataGridOptions.type==3" title="库存-产品分类" ref="projectTypeTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></project-type-template>
-
+            <project-type-template 
+              v-if="dataGridOptions.type==3" 
+              title="库存" 
+              tabTitle="产品分类"
+              ref="projectTypeTemplate" 
+              :sellList="printData" 
+              :tabSwitch="tabSwitch" 
+              :headerData="printSelectDate" 
+              :positionSwitch="positionSwitch"></project-type-template>
 
             <!-- 自定义3 -->
-            <intelligence-type-template v-if="dataGridOptions.type==4" title="库存-自定义" ref="customTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
+            <intelligence-type-template 
+              v-if="dataGridOptions.type==4" 
+              title="库存" 
+              tabTitle="自定义"
+              ref="customTemplate" 
+              :sellList="printData" 
+              :tabSwitch="tabSwitch" 
+              :headerData="printSelectDate" 
+              :positionSwitch="positionSwitch"></intelligence-type-template>
 
         </div>
 
@@ -491,8 +522,21 @@ export default {
         shop: "", //店铺
         preparedBy: "", //制单人
         headerData: "库存", //制单大标题
-        orderNum: this.$route.query.orderNumber
+        orderNum: this.$route.query.orderNumber,
         //reportType : '4' //1代表入库、2退库、3调库、4发货、5调柜、6退货
+        // 库位名称
+        repositoryName:"",
+        // 商品属性
+        productClass:'1',
+        // 柜组名称
+        counterName:"",
+        // 店铺名称
+        shopName:"",
+        // 公司名称
+        companyName:'',
+        // 查询时间
+        checkDate:'',
+
       },
       //
       tabShow: "tabShow",
@@ -578,7 +622,7 @@ export default {
         ],
         type: 2, //类型
         page: 1,
-        pageSize: 30,
+        pageSize: 50,
         keyWord: "", //关键字
         wColorId: "", //计重
         wGemId: "", //宝石类
@@ -615,7 +659,7 @@ export default {
       if (this.changeRepository.repositoryId) {
         this.dataGridOptions.storageId = val;
         this.dataGridOptions.page = 1;
-        this.dataGridOptions.pageSize = 30;
+        this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       }
       this.send();
     },
@@ -627,13 +671,13 @@ export default {
         this.dataGridOptions.counterId = "";
       }
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       this.send();
     },
     "changeCounter.counterId"(val) {
       this.dataGridOptions.counterId = val;
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       if (this.changeCounter.counterId) {
         this.send();
       }
@@ -645,6 +689,28 @@ export default {
         this.dataGridOptions.sortFlag = 0;
       }
       this.send();
+    },
+    "changeRepository.repositoryName"(val){
+      // 打印增加库位名称
+      this.printSelectDate.repositoryName = val;
+    },
+    "changeShop.shopName"(val){
+      // 打印增加店铺名称
+      this.printSelectDate.shopName = val;
+    },
+    "changeCounter.counterName"(val){
+      // 打印增加柜组名称
+      this.printSelectDate.counterName = val;
+    },
+    "dataGridOptions.productClass"(val){
+      // 打印增加商品属性
+      this.printSelectDate.productClass = val;
+    },
+      // 打印增加公司名称
+    "dataGridStorage.companyName"(val){
+      if(val){
+        this.printSelectDate.companyName = val;
+      }
     }
   },
   components: {
@@ -822,7 +888,7 @@ export default {
       this.loading = true;
       this.dataGridOptions.pageSize = 0;
       seekStockProductList(this.dataGridOptions).then(res => {
-        this.dataGridOptions.pageSize = 30;
+        this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
         if (res.data.state == 200) {
           if (res.data.data.detailList) {
             if (res.data.data.detailList[0] instanceof Array) {
@@ -1010,7 +1076,7 @@ export default {
         this.inconspanactive2 = true;
       }
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       this.dataGridOptions.productClass = val;
       //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
       this.loading = true;
@@ -1139,7 +1205,7 @@ export default {
       }
       this.loading = true;
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       this.tabClassActive.index = index;
       this.setReportType(type);
     },
@@ -1174,7 +1240,7 @@ export default {
               sortFlag: "0",
               type: 1,
               page: 1,
-              pageSize: 30,
+              pageSize: this.$refs['LoaderNum'].pageSize,
               keyWord: ""
             });
           } else if (this.inconspanactive2) {
@@ -1186,7 +1252,7 @@ export default {
               sortFlag: "0",
               type: 1,
               page: 1,
-              pageSize: 30,
+              pageSize: this.$refs['LoaderNum'].pageSize,
               keyWord: ""
             });
           } else {
@@ -1198,7 +1264,7 @@ export default {
               sortFlag: "0",
               type: 1,
               page: 1,
-              pageSize: 30,
+              pageSize: this.$refs['LoaderNum'].pageSize,
               keyWord: ""
             });
           }
@@ -1343,7 +1409,7 @@ export default {
        */
     searchWord() {
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       this.send();
     },
     // 懒加载

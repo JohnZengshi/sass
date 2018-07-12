@@ -276,7 +276,7 @@ export default {
 		  let length = this.dataGridStorage.detailList.length;
 		  let upDataNum = this.$parent.$parent.$refs["LoaderNum"].pageSize;
 		  let pageSize = 1;
-		  if (Number(upDataNum)) {
+		  if (Number(upDataNum) != 0) {
 		    upDataNum = Number(upDataNum);
 		    if (totalNum - length < upDataNum) {
 				// 后台返回所有数据，要把表格的数据清空

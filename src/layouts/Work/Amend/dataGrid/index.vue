@@ -51,11 +51,10 @@
        :orderNum="orderData.orderNum">
    </dgridfooter>
 
-			<!--打印模块-->
-			<div style="display: none;">
-				<detail-template v-if="dataGridOptions.type == 1" title="修改-明细" ref="detailTemplate" :sellList="sellList" :headerData="orderData"></detail-template>
-
-			</div> 
+      <!--打印模块-->
+      <div style="display: none;">
+        <detail-template title="修改" ref="detailTemplate" :sellList="sellList" :headerData="orderData"></detail-template>
+      </div> 
 </div>
 </template>
 
@@ -63,7 +62,7 @@
 import dgridhead from './dgridHeader'
 import dgridBody from './dgridBody'
 import dgridfooter from './dgridFooter'
-import {getUpdateGoodsList, seekGetReportsPrintXG} from 'Api/commonality/seek'
+import {getUpdateGoodsList} from 'Api/commonality/seek'
 import datagridScroll from 'assets/js/uiScroll'
 import * as configData from './config'
 import * as fetch from './fetchData'
@@ -77,11 +76,10 @@ export default{
     detailTemplate,
     ReadMoreData,
   },
-  props:['orderData','slipPointer','goodsAdd', 'seekBarcode', 'seekFlag', 'dataGridOptions'],
+  props:['orderData','slipPointer','goodsAdd', 'seekBarcode', 'seekFlag'],
   data(){
     return {
-      printDatas: {},
-    	sellList:{old:{},now:{}},
+      sellList:{old:{},now:{}},
       dgDataList: [],
       // 页脚 修改前、后的数据
       footerData : {
@@ -136,9 +134,9 @@ export default{
   },
   
   methods: {
-  	tabPrint(){
-        this.$refs.detailTemplate.print();
-  	},
+    tabPrint(){
+      this.$refs.detailTemplate.print();
+    },
     watchScroll (el) { // 下拉加载数据
       // console.log(el)
       let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
@@ -148,30 +146,6 @@ export default{
       if(res){
         this.readMoreData()
       }
-    },
-    
-    _seekGetReportsPrintXG () {
-      seekGetReportsPrintXG(this.dataGridOptions).then(res => {
-        if (res.data.state == 200){
-          this.printDatas = res.data.data;
-          let type = this.dataGridOptions.type
-          if (type == 2) {
-              this.$refs.intelligenceTypeTemplate.print();
-              return
-          } else if (type == 3) {
-              this.$refs.projectTypeTemplate.print();
-              return
-          } else if (type == 4){
-              this.$refs.customTemplate.print();
-              return
-          }
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.data.msg
-          })
-        }
-      })
     },
     // 获取商品列表
     fetchGoodList() {
@@ -305,24 +279,24 @@ export default{
       this.$emit('updataAdd', type)
     },
 
-    	//加载更多数据
-    	readMoreData() {
-    	    let totalNum = this.synopsiData.totalNum;
-    	    let length = this.dgDataList.length;
+      //加载更多数据
+      readMoreData() {
+          let totalNum = this.synopsiData.totalNum;
+          let length = this.dgDataList.length;
           let upDataNum = this.$parent.$refs["utilsdatagrid"].$refs["LoaderNum"].pageSize;
-    	    this.pageNum = 1;
-    	    if (Number(upDataNum)) {
-    	      upDataNum = Number(upDataNum);
-    	      if (totalNum - length < upDataNum) {
-    	        this.pageSize = 0
-    	      } else {
-    	        this.pageSize = length + upDataNum
-    	      }
-    	    } else {
-    	      this.pageSize = 0
-    	    }
-    	    this.fetchGoodList();
-    	  },
+          this.pageNum = 1;
+          if (Number(upDataNum)) {
+            upDataNum = Number(upDataNum);
+            if (totalNum - length < upDataNum) {
+              this.pageSize = 0
+            } else {
+              this.pageSize = length + upDataNum
+            }
+          } else {
+            this.pageSize = 0
+          }
+          this.fetchGoodList();
+        },
   },
   
   mounted(){

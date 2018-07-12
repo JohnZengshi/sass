@@ -1,7 +1,7 @@
 <template>
     <div class="chose-wrap">
         <div class="title">批量完成</div>
-        <div class="menu-list">
+        <div class="menu-list flex flex-r">
             <div class="search">
                 <input @keyup.enter="getFollowAllList" v-model="keyword" type="text" placeholder="请输入会员名/手机号">
                 <div class="search-btn" @click="getFollowAllList">
@@ -18,7 +18,7 @@
                 >
                 </DropDownMenu>
             </div>
-            <div class="drop-block">
+            <div class="drop-block" style="width:93px">
                 <DropDownMenu
                     titleName="跟进目的"
                     dataType="属性"
@@ -28,7 +28,7 @@
                 >
                 </DropDownMenu>
             </div>
-            <div class="batch-time-wrap">
+            <div class="batch-time-wrap  flex flex-r">
                 <div class="date-w81">
                     <el-date-picker
                         format

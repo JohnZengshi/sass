@@ -41,6 +41,7 @@
                   v-else-if="tab.text == '产品类别' && index1 == 0"
                   :class="{backLine:tab.childType != ''}" 
                   :style="_calculateClass(tab)" 
+                   @click="openLabel({}, tb, caty.sellTypeName)"
                   >
                   {{tb[tab.childType]}}
                 </div>
@@ -197,7 +198,6 @@
     },
     methods: {
       openLabel (parm, caty, sellType) {
-        debugger
         this.$store.dispatch('getLabelData', {
           type: '3',
           data: Object.assign({}, parm, this.dataGridOptions, {
@@ -365,9 +365,9 @@
         let length = this.dataGridStorage.detailList.length;
         let upDataNum = this.$parent.$parent.$refs["LoaderNum"].pageSize;
         this.pageNum = 1;
-        let pageSize = 30
+        let pageSize = 50
         //   this.dgDataList = [];
-        if (Number(upDataNum)) {
+        if (Number(upDataNum) != 0) {
           upDataNum = Number(upDataNum);
           if (totalNum - length < upDataNum) {
             pageSize = 0

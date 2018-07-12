@@ -17,8 +17,10 @@
     methods: {
       // 底部查看更多未读数据
       isShowMoreDataTip(scrollHeight, clientHeight, scrollTop) {
-        let totalNum = this.allData.totalNum;
-        let length = this.dgDataList.length;
+        if(this.allData && this.dgDataList){
+          var totalNum = this.allData.totalNum;
+          var length = this.dgDataList.length;
+        }
         // 还有更多数据未加载
         if (totalNum > length) {
           if (clientHeight + scrollTop >= scrollHeight) {

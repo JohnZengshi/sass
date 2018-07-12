@@ -81,7 +81,7 @@
         },
         emptyAddClass: '',
         pageNum: 1,
-        pageSize: 30,
+        pageSize: "50",
       }
     },
     components: {
@@ -343,7 +343,7 @@
         let upDataNum = this.$parent.$refs["utilsdatagrid"].$refs["LoaderNum"].pageSize;
         this.pageNum = 1;
         //   this.dgDataList = [];
-        if (Number(upDataNum)) {
+        if (Number(upDataNum) != 0) {
           upDataNum = Number(upDataNum);
           if (totalNum - length < upDataNum) {
             this.pageSize = 0
@@ -383,6 +383,7 @@
     background-color: #fff; //transition: all .5s cubic-bezier(0.51, -0.04, 0.4, 0.4);
     position: relative;
     overflow: auto;
+    transition: height .5s;
     &.animat-scroll {
       height: 540px;
     }

@@ -49,7 +49,7 @@
 
               <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
 
-              <subtotal :detailDataGridColumn="detailDataGridColumn" :caty="caty" :totalType="'totalType'" :name="'小计'"></subtotal>
+              <subtotal @changeData="changeData({}, caty, '1')" :detailDataGridColumn="detailDataGridColumn" :caty="caty" :totalType="'totalType'" :name="'小计'"></subtotal>
 
             </div>
           </div>
@@ -88,6 +88,7 @@
 
                   <div
                     class="tb-td"
+                    @click="openLabel({}, tb, filterSellType(caty.sellTypeName))" 
                     v-else-if="tab.text == '产品类别'" 
                     :class="{backLine:tab.childType != ''}" 
                     :style="nTableCell(tab)" 
@@ -110,7 +111,7 @@
             <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
 
             <!-- 类型小计 -->
-            <subtotal v-if="!positionSwitch" :detailDataGridColumn="detailDataGridColumnTwo" :caty="caty" :totalType="'totalType'" :name="'小计'"></subtotal>
+            <subtotal  @changeData="changeData({}, caty, filterSellType(caty.sellTypeName))" v-if="!positionSwitch" :detailDataGridColumn="detailDataGridColumnTwo" :caty="caty" :totalType="'totalType'" :name="'小计'"></subtotal>
 
           </div>
         </div>
@@ -219,6 +220,7 @@
     },
     methods: {
       openLabel (parm, caty, sellType) {
+        debugger
         this.$store.dispatch('getLabelData', {
           type: '3',
           data: Object.assign({}, parm, this.dataGridOptions, {
@@ -228,6 +230,15 @@
             sellType: sellType,
           })
         })
+      },
+      changeData (parm, caty, sellType) {
+        let datas = {
+          productTypeId: []
+        }
+        for (let i of caty.productTypeList) {
+          datas.productTypeId.push(i.productTypeId)
+        }
+        this.openLabel(parm, datas, sellType)
       },
       filterSellType (parm) {
         debugger

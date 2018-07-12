@@ -25,7 +25,7 @@
         </div>
 
         <div class="btn-header-wrap">
-          <btn-header :filterCondition="filterCondition" class="btn-header-inner" :isPopup="true" @amendNum="amendNum" :dataGridStorage="dataGridStorage"></btn-header>
+          <btn-header v-if="listDetails" :filterCondition="formattingData(filterCondition)" class="btn-header-inner" :isPopup="true" @amendNum="amendNum" :dataGridStorage="dataGridStorage"></btn-header>
         </div>
         
         

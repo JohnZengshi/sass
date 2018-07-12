@@ -3,10 +3,10 @@
 		<div class="print-header">
 			<h1 class="title center">{{title}}单据</h1>
 			<div class="head-option">
-				<div class="left">{{headerData.companyName}}</div>
+				<div class="left">公司名称：{{headerData.companyName}}</div>
 				<div class="right">制单时间:{{headerData.createDate|DATA_FORMAT}}</div>
 			</div>
-			<div>
+			<!-- <div>
 				<div class="explain-box">
 					单据号：{{headerData.orderNum}}
 				</div>
@@ -24,11 +24,12 @@
 				<div class="explain-box" v-show="headerData.cashName">
 					收银员：{{headerData.cashName}}
 				</div>
-			</div>
+			</div> -->
+			<filtrateBoxByInvoices :headerData="headerData" :title="title"></filtrateBoxByInvoices>
 		</div>
 		<div>
 			<table class="table-box">
-				<tr>
+				<tr class="tm noBorderTop">
 					<td>序号</td>
 					<td>条码号</td>
 					<td>产品类别</td>
@@ -36,39 +37,40 @@
 					<td>销售类型</td>
 					<td>件重(g)</td>
 					<td>金重(g)</td>
-					<td>主石(ct,g)</td>
-					<td>副石(ct,g)</td>
+					<!-- <td>主石(ct,g)</td> -->
+					<!-- <td>副石(ct,g)</td> -->
 					<td>售价(元)</td>
-					<td v-if="isShowCost == 'Y'">成本(元)</td>
+					<!-- <td v-if="isShowCost == 'Y'">成本(元)</td> -->
 				</tr>
-				<tr v-for="(item,index) in sellList.productTypeList" :key="index">
+				<tr class="tr" v-for="(item,index) in sellList.productTypeList" :key="index">
 					<td>{{index+1}}</td>
-					<td>{{item.barcode}}</td>
-					<td>{{item.productTypeName}}</td>
-					<td>{{item.jewelryName}}</td>
-					<td>{{item.sellTpye|SELL_TYPE}}</td>
+					<td class="tl">{{item.barcode}}</td>
+					<td class="tl">{{item.productTypeName}}</td>
+					<td class="tl">{{item.jewelryName}}</td>
+					<td class="tl">{{item.sellTpye|SELL_TYPE}}</td>
 					<td>{{item.weight}}</td>
 					<td>{{item.goldWeight}}</td>
-					<td>{{item.main}}</td>
-					<td>{{item.deputy}}</td>
+					<!-- <td>{{item.main}}</td> -->
+					<!-- <td>{{item.deputy}}</td> -->
 					<td>{{item.price}}</td>
-					<td v-if="isShowCost == 'Y'">{{item.cost}}</td>
+					<!-- <td v-if="isShowCost == 'Y'">{{item.cost}}</td> -->
 				</tr>
-				<tr>
-					<td colspan="2">合计</td>
-					<td>{{sellList.totalNum}}件</td>
+				<tr class="tr">
+					<td class="tm" colspan="2">合计</td>
+					<td>{{sellList.totalNum}}</td>
 					<td></td>
 					<td></td>
-					<td>{{sellList.totalWeight}}g</td>
-					<td>{{sellList.totalGoldWeight}}g</td>
-					<td>{{sellList.totalMain}}</td>
-					<td>{{sellList.totalDeputy}}</td>
-					<td>{{sellList.totalPrice}}元</td>
-					<td v-if="isShowCost == 'Y'">{{sellList.totalCost}}元</td>
+					<td>{{sellList.totalWeight}}</td>
+					<td>{{sellList.totalGoldWeight}}</td>
+					<!-- <td>{{sellList.totalMain}}</td> -->
+					<!-- <td>{{sellList.totalDeputy}}</td> -->
+					<td>{{sellList.totalPrice}}</td>
+					<!-- <td v-if="isShowCost == 'Y'">{{sellList.totalCost}}</td> -->
 				</tr>
 			</table>
 		</div>
 		<div class="printDate">
+			<Sign :title="title"></Sign>
 			打印时间：{{printDate}}
 		</div>
 	</div>
@@ -76,8 +78,13 @@
 <script>
 	import {jcpPrint} from "@/tools/jcp-print";
 	import moment from "moment";
+	import filtrateBoxByInvoices from "../../components/filtrateBoxByInvoices.vue"
+	import Sign from "../../components/Sign.vue"
 	export default {
-		components: {},
+		components: {
+			filtrateBoxByInvoices,
+			Sign
+		},
 		props: {
 			sellList: {
 				type: Object
@@ -126,52 +133,8 @@
 </script>
 
 <style scoped lang="scss">
-	.center {
-		text-align: center;
-	}
-	.font-bold {
-		font-weight: bold;
-	}
-	
+@import "../../../../assets/css/print.scss";
 	.print-box{
-		font-size: 12px;
 		width: 208mm;
-		margin: 0 auto;
-		padding: 20px;
-	}
-	
-	.explain-box {
-		display: inline-block;
-		padding: 5px 35px 5px 0;
-	}
-	
-	.head-option div {
-		display: table-cell;
-	}
-	
-	.right {
-		text-align: right;
-	}
-	
-	.head-option {
-		display: table;
-		width: 100%;
-		margin-bottom: 5px;
-	}
-	
-	.table-box {
-		width: 100%;
-		border-collapse: collapse;
-	}
-	
-	td{
-		font-size: 12px;
-		border: 1px solid;
-		line-height: 25px;
-		text-align: center;
-	}
-	.printDate{
-		text-align: right;
-    padding: 15px 0;
 	}
 </style>

@@ -164,7 +164,7 @@
 
           <!-- 加载条数选择 -->
           <div class="LoaderNumBtn">
-            <LoaderNum ref="LoaderNum"></LoaderNum>
+            <LoaderNum ref="LoaderNum" @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
           </div>
         </div>
 
@@ -182,6 +182,8 @@
             ></intelligence-type-template>
 						<project-type-template v-if="dataGridOptions.type==3" ref="projectTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :title="'产品分类'"
+            :tabSwitch="tabSwitch"
+            :isBuyBack="isBuyBack"
             ></project-type-template>
 						<custom-template v-if="dataGridOptions.type==4" ref="customTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :title="'自定义'"
@@ -548,7 +550,7 @@ export default {
         ],
         type: 2,
         page: 1,
-        pageSize: 30,
+        pageSize: 50,
         keyWord: "",
         wColorId: "",
         wGemId: "",
@@ -608,7 +610,7 @@ export default {
       // this.send();
     },
     "sellShowId": function () {
-      this.dataGridOptions.pageSize = 30
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
     }
   },
@@ -661,7 +663,7 @@ export default {
         }
       ]);
       
-      this.dataGridOptions.pageSize = 30
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
       this.send();
@@ -732,7 +734,7 @@ export default {
             sortFlag: "0",
             type: 1,
             page: 1,
-            pageSize: 30,
+            pageSize: this.dataGridOptions.pageSize,
             keyWord: ""
           });
         } else if (port == 2) {
@@ -751,7 +753,7 @@ export default {
             // productClass: '1',
             sortFlag: this.positionSwitch ? "1" : "0",
             type: 1,
-            pageSize:30
+            pageSize:this.dataGridOptions.pageSize
           });
         } else if (port == 3) {
           delete this.dataGridOptions.page;
@@ -769,7 +771,7 @@ export default {
             // productClass: '1',
             sortFlag: this.positionSwitch ? "1" : "0",
             type: 1,
-            pageSize:30
+            pageSize:this.dataGridOptions.pageSize
           });
         } else if (port == 4) {
           Object.assign(this.dataGridOptions, {
@@ -786,7 +788,7 @@ export default {
             nColorId: "",
             nGemId: "",
             nJewelryId: "1",
-            pageSize:30
+            pageSize:this.dataGridOptions.pageSize
           });
         }
       }
@@ -801,7 +803,7 @@ export default {
       this.loading = true;
       //this.page = 1
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize;
       this.tabClassActive.index = index;
       this.setReportType(type);
     },
@@ -984,7 +986,7 @@ export default {
           // }
         ]);
 
-        this.dataGridOptions.pageSize = 30
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
         // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
         this.send();
@@ -1001,7 +1003,7 @@ export default {
         // this.beginTime = this.getDate(0, "start").format;
         // this.endTime = this.getDate(0, "end").format;
 
-        this.dataGridOptions.pageSize = 30
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
         // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
         // this.send()
@@ -1046,7 +1048,7 @@ export default {
         this.printSelectDate.shop = this.shopList[0] ? this.shopList[0].shopName : "";
         this.dataGridOptions.shopId = this.shopList[0] ? this.shopList[0].shopId : "";
         this.dataGridOptions.size = 1
-        this.dataGridOptions.pageSize = 30
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
         this.send();
         return
         this.printSelectDate.preparedBy = "";
@@ -1089,12 +1091,12 @@ export default {
         });
       }
       this.dataGridOptions.size = 1
-      this.dataGridOptions.pageSize = 15
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
     dropReturn(val) {
-      this.dataGridOptions.pageSize = 30
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       this.send();
     },
     dropReturn(val) {
@@ -1147,7 +1149,7 @@ export default {
       }
 
       this.currentPage = 1;
-      this.dataGridOptions.pageSize = 30
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
@@ -1173,7 +1175,7 @@ export default {
           value: "1"
         }
       ]);
-      this.dataGridOptions.pageSize = 30
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
@@ -1200,7 +1202,7 @@ export default {
         }
       ]);
       
-      this.dataGridOptions.pageSize = 30
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
       this.send();
@@ -1218,7 +1220,7 @@ export default {
     },
 
     storageFunc() {
-      this.dataGridOptions.pageSize = 30
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
@@ -1300,7 +1302,7 @@ export default {
           .split("-")
           .join("") + "000000";
       this.printSelectDate.startTime = val;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize;
       // 回购
       if(this.sellShowId == 'buyback'){
         if (this.$refs["ReportDetailTrade"]) {
@@ -1322,7 +1324,7 @@ export default {
           .split("-")
           .join("") + "235959";
       this.printSelectDate.endTime = val;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize;
       // 回购
       if(this.sellShowId == 'buyback'){
         this.$refs["ReportDetailTrade"].$children[1].tempArray = [];
@@ -1609,6 +1611,10 @@ export default {
           this.sellCollectSend()
         }
       },
+      // 同步loaderNum组件的页数
+      changeUpdataPageSize(val){
+        this.dataGridOptions.pageSize = val;
+      }
   },
 
   mounted() {
@@ -1616,7 +1622,7 @@ export default {
       //获取公司信息
       let companyName = JSON.parse(localStorage.getItem("companyInfo"));
       if (companyName) {
-        this.printSelectDate.companyName = "公司名：" + companyName.companyName;
+        this.printSelectDate.companyName = "公司名称：" + companyName.companyName;
       }
 	  });
 	
