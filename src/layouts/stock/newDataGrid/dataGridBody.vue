@@ -55,6 +55,7 @@
 
           <template v-if="!positionSwitch">
             <div class="tb-td"
+              @click.stop="openLabel({}, tb)"
               v-for="(tab,f) in detailDataGridColumn" :key="f"
               :style="_calculateClass(tab)" 
               v-html = "f == 0 ? '<b>小计</b>' : tb[tab.totalType]"
@@ -63,6 +64,7 @@
           
           <template v-else>
             <div class="tb-td"
+              @click.stop="openLabel({}, tb)"
               v-for="(tab,f) in detailDataGridColumn" :key="f"
               :style="_calculateClass(tab)" 
               v-html = "f == 1 ? '<b>小计</b>' : tb[tab.totalType]"
@@ -188,6 +190,9 @@ export default {
             datas.data.nJewelryId = this.dataGridOptions.nJewelryId
         }
       this.$store.dispatch('getLabelData', datas)
+    },
+    changeData (parm, caty, sellType) {
+      console.log(parm)
     },
     _calculateClass (parm) {
       return calculateClass(parm)
