@@ -90,7 +90,7 @@
         </div>
         <div class="tb-total" style="background:#ECF3FF;" v-if="positionSwitch">
           <!-- 位置小计 -->
-        	<div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 1 ? '<b>小计</b>' : caty[tab.totalType0]"></div>
+          <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 1 ? '<b>小计</b>' : caty[tab.totalType0]"></div>
         </div>
       </div>
       <div v-if="isDate" class="no-data"></div>
@@ -130,7 +130,7 @@
       }
     },
     mounted() {
-    	
+      
       let _this = this
       this.$nextTick(() => {
         // console.log(1111, this.dataGridStorage.productTypeList)
@@ -160,23 +160,23 @@
       //   },
       //   callbacks: {
       //     onTotalScroll: function () {
-			// 		// console.log('滚轮到底了')
-			// 		$('.loadControl').css({
-			// 			opacity:1
-			// 		})
+      //    // console.log('滚轮到底了')
+      //    $('.loadControl').css({
+      //      opacity:1
+      //    })
       //           },
-			// 	onUpdate(){
-			// 		// console.log('滚动条更新')
-			// 		$('.loadControl').css({
-			// 			opacity:0
-			// 		})
-			// 	},
-			// 	whileScrolling(){
-			// 		// console.log('滚动条活动')
-			// 		$('.loadControl').css({
-			// 			opacity:0
-			// 		})
-			// 	}
+      //  onUpdate(){
+      //    // console.log('滚动条更新')
+      //    $('.loadControl').css({
+      //      opacity:0
+      //    })
+      //  },
+      //  whileScrolling(){
+      //    // console.log('滚动条活动')
+      //    $('.loadControl').css({
+      //      opacity:0
+      //    })
+      //  }
       //   }
       // });
       this.tabCellHeight()

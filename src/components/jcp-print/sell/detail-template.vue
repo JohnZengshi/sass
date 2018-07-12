@@ -148,6 +148,9 @@
       },
       tabSwitch: {
         type: Boolean
+	  },
+	  			tabSwitch: {
+        type: Boolean
       }
     },
     data() {

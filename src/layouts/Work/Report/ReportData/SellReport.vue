@@ -1,7 +1,7 @@
 <template>
-	<transition name="tp-ani">
+  <transition name="tp-ani">
 
-		<div class="RP_report_wrapper ui-page-max-width " v-if="isPrint==0">
+    <div class="RP_report_wrapper ui-page-max-width " v-if="isPrint==0">
       <div style="height: 41px;">
           <div class="Rp_title_container sell-report-header">
             <div class="Rp_selected_container">
@@ -51,15 +51,15 @@
           </ul>
       </div>
 
-			<!--销售统计-->
-			<div class="dataGrid_statistics_switch" v-if="modleSwitch == 2">
+      <!--销售统计-->
+      <div class="dataGrid_statistics_switch" v-if="modleSwitch == 2">
 
-				<div class="Rp_dataGrid_container last-table mt-0 xj-report-table-wrap" v-loading="loading" element-loading-text="数据查询中">
-					<div class="rp_gridState">
-						<!--<p class="side-nav"><i class="iconfont icon-liebiao"></i>收银报表</p>-->
-						<div class="side-nav">
-							<i class="iconfont icon-liebiao"></i>{{currentReportName}}
-						</div>
+        <div class="Rp_dataGrid_container last-table mt-0 xj-report-table-wrap" v-loading="loading" element-loading-text="数据查询中">
+          <div class="rp_gridState">
+            <!--<p class="side-nav"><i class="iconfont icon-liebiao"></i>收银报表</p>-->
+            <div class="side-nav">
+              <i class="iconfont icon-liebiao"></i>{{currentReportName}}
+            </div>
 
             <filter-header
               class="sell-report-filter-header-wrap"
@@ -76,11 +76,11 @@
              <cut-bg class="cut-bg-btn-wrap ml-10" :showList="sellTypeList" :current="sellShowId" @pitchOn="madeUpOnSell"></cut-bg>
 
 
-					</div>
+          </div>
 
-					<!--收银报表-->
-					<div class="xj-report-rp_dataGridTemp" style="padding-top: 0;" :class="tabShow" v-if="sellShowId == 'collect'">
-						<report-detail-collect
+          <!--收银报表-->
+          <div class="xj-report-rp_dataGridTemp" style="padding-top: 0;" :class="tabShow" v-if="sellShowId == 'collect'">
+            <report-detail-collect
               :dataGridStorage="collectStorage"
               :tabSwitch="tabSwitch"
               :isBuyBack="isBuyBack"
@@ -89,12 +89,12 @@
               :reportType="getReportType()"
               @scrollClass="tabScrollShow"
             >
-						</report-detail-collect>
-					</div>
+            </report-detail-collect>
+          </div>
 
-					<!--回购报表-->
-					<div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
-						<report-detail-trade
+          <!--回购报表-->
+          <div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
+            <report-detail-trade
               ref="ReportDetailTrade"
               :dataGridStorage="tradeStorage"
               :tabSwitch="tabSwitch"
@@ -107,13 +107,13 @@
               @sortList="sortListAct"
             >
               <!-- <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1 && tradeStorage.totalNum>30" @LoadOptionsDefault="LoadOptionsDefault"></report-load> -->
-						</report-detail-trade>            
-					</div>
+            </report-detail-trade>            
+          </div>
 
-					<!--销售报表-->
-					<div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
+          <!--销售报表-->
+          <div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
 
-						<report-detail
+            <report-detail
               :dataGridStorage="sellStorage"
               :tabSwitch="tabSwitch"
               :isBuyBack="isBuyBack"
@@ -127,13 +127,13 @@
             >
               <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type == 1 && sellStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>
 
-						</report-detail>
+            </report-detail>
 
-					</div>
+          </div>
 
-				</div>
+        </div>
 
-				<div class="utilsBtn flex flex-v flex-pack-justify">
+        <div class="utilsBtn flex flex-v flex-pack-justify">
           <!-- 导出表格 -->
           <div class="btn" @click="exportTab()">
             <i class="iconfont icon-daochu"></i>
@@ -169,30 +169,30 @@
         </div>
 
 <!--         <intelligence-type-template v-if="this.tabClassActive.index==1" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :title="'智能分类'" :headerData="printSelectDate"></intelligence-type-template> -->
-				<!--打印模块-->
-				<div style="display: none;">
-						<detail-template v-if="dataGridOptions.type==1" ref="detailTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
+        <!--打印模块-->
+        <div style="display: none;">
+            <detail-template v-if="dataGridOptions.type==1" ref="detailTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :title="'明细'"
             :tabSwitch="tabSwitch"
             ></detail-template>
-						<intelligence-type-template v-if="dataGridOptions.type==2" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
+            <intelligence-type-template v-if="dataGridOptions.type==2" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :tabSwitch="tabSwitch"
             :isBuyBack="isBuyBack"
             :title="'智能分类'"
             ></intelligence-type-template>
-						<project-type-template v-if="dataGridOptions.type==3" ref="projectTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
+            <project-type-template v-if="dataGridOptions.type==3" ref="projectTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :title="'产品分类'"
             :tabSwitch="tabSwitch"
             :isBuyBack="isBuyBack"
             ></project-type-template>
-						<custom-template v-if="dataGridOptions.type==4" ref="customTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
+            <custom-template v-if="dataGridOptions.type==4" ref="customTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :title="'自定义'"
             :tabSwitch="tabSwitch"
             :isBuyBack="isBuyBack"
             ></custom-template>
-				</div>
-				
-			</div>
+        </div>
+        
+      </div>
 
 
 
@@ -202,31 +202,31 @@
 
 
 
-			<!--收银统计-->
-			<div class="dataGrid_statistics_switch" v-else>
-				<com-statistics
+      <!--收银统计-->
+      <div class="dataGrid_statistics_switch" v-else>
+        <com-statistics
             :orderType="'05'"
             :selectDate="dataGridOptions" :printSelectDate="printSelectDate" :tradeStorage="tradeStorage" :sellStorage="sellStorage">
-				</com-statistics>
-			</div>
-			
-		</div>
-		
-		
+        </com-statistics>
+      </div>
+      
+    </div>
+    
+    
 
-		<!--打印模块-->
-		<div ref="tablePrint" v-else-if="isPrint==1" class="tablePrint_style">
-			<table-print-sell v-if="printSellShow" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" :reportTypeHeaderData="reportTypeHeaderData.sell" :printSelectDate="printSelectDate" :reportType="getReportType()" :dataGridStorage="sellStorage">
-			</table-print-sell>
-			<table-print-trade v-if="printBuybackShow" :printSelectDate="printSelectDate" :reportTypeHeaderData="reportTypeHeaderData.trade" :reportType="getReportType()" :dataGridStorage="tradeStorage">
-			</table-print-trade>
-			<table-print-collect v-if="printCollectShow" :reportTypeHeaderData="reportTypeHeaderData.collect" :printSelectDate="printSelectDate" :dataGridStorage="collectStorage">
-			</table-print-collect>
-		</div>
+    <!--打印模块-->
+    <div ref="tablePrint" v-else-if="isPrint==1" class="tablePrint_style">
+      <table-print-sell v-if="printSellShow" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" :reportTypeHeaderData="reportTypeHeaderData.sell" :printSelectDate="printSelectDate" :reportType="getReportType()" :dataGridStorage="sellStorage">
+      </table-print-sell>
+      <table-print-trade v-if="printBuybackShow" :printSelectDate="printSelectDate" :reportTypeHeaderData="reportTypeHeaderData.trade" :reportType="getReportType()" :dataGridStorage="tradeStorage">
+      </table-print-trade>
+      <table-print-collect v-if="printCollectShow" :reportTypeHeaderData="reportTypeHeaderData.collect" :printSelectDate="printSelectDate" :dataGridStorage="collectStorage">
+      </table-print-collect>
+    </div>
 
-		
+    
 
-	</transition>
+  </transition>
 </template>
 
 <script>
@@ -1357,13 +1357,13 @@ export default {
       let currentData = new Date();
 
       if (type == "end") {
-        //					if(Year < currentData.getFullYear() ||
-        //						month < currentData.getMonth() + 1 ||
-        //						Day < currentData.getDate()
-        //					) {
+        //          if(Year < currentData.getFullYear() ||
+        //            month < currentData.getMonth() + 1 ||
+        //            Day < currentData.getDate()
+        //          ) {
         hours = "23";
         mins = seconds = "59";
-        //					}
+        //          }
       } else if (type == "start") {
         hours = mins = seconds = "00";
       }
@@ -1389,8 +1389,8 @@ export default {
     },
 
     /*
-			 * 销售数据请求
-			 */
+       * 销售数据请求
+       */
     sellSend() {
       this.loading = true;
       //明细
@@ -1624,9 +1624,9 @@ export default {
       if (companyName) {
         this.printSelectDate.companyName = "公司名称：" + companyName.companyName;
       }
-	  });
-	
-	  var $btn = $('')
+    });
+  
+    var $btn = $('')
     },
 
     
@@ -1784,7 +1784,7 @@ export default {
   }
 }
 .exportBtn {
-	bottom: 60px;
+  bottom: 60px;
 }
 .sell-report-header{
   float: right;
