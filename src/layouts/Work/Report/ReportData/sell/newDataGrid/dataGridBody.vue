@@ -35,6 +35,7 @@
                 <div class="branch-tb category-td"
                   :key="index4"
                   v-if="tab.text == '产品类别'" 
+                  @click="openLabel({}, tb)"
                   :style="calculateClass(tab)"
                   >
                   {{tb[tab.childType]}}
@@ -68,7 +69,9 @@
         <div v-for="(tb, index) in caty.productTypeList" :key="index">
           <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :key="index1" :index="addIndex()">
             <template v-for="(tab,index) in detailDataGridColumn">
-              <div class="branch-tb category-td" :key="index" v-if="tab.text == '产品类别' && index1 == 0" :style="calculateClass(tab)">
+              <div class="branch-tb category-td" :key="index" v-if="tab.text == '产品类别' && index1 == 0" :style="calculateClass(tab)"
+                @click="openLabel({}, tb)"
+              >
                 <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{tb[tab.childType]}}</i>
               </div>
               <div class="branch-tb category-td" :key="index" v-else-if="tab.text == '回购类型' && index1 == 0" :style="calculateClass(tab)">
@@ -182,10 +185,13 @@
       openLabel (parm, caty) {
         this.$store.dispatch('getLabelData', {
           type: '3',
-          data: Object.assign({}, parm, {
+          data: Object.assign({}, parm, this.dataGridOptions,{
             productTypeId: caty.productTypeId,
             orderType: this.orderType,
-          }, this.dataGridOptions)
+            sellType: '1',
+          },  {
+            sellStatus: '1'
+          })
         })
       },
       //重置index

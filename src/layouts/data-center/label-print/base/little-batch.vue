@@ -136,6 +136,11 @@ import {getMonthStart, formattingXjTime, formattingTime, formattingEndTime} from
             }
         },
         methods: {
+            initData (parm) {
+                if (parm) {
+                    this.checkList = parm
+                }
+            },
             reset () {
                 this.checkList = []
             },

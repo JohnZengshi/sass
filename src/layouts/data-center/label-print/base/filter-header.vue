@@ -8,7 +8,7 @@
           </div>
       </div>
 
-      <div class="search-block t-center" @click="openLittleBatch">
+      <div class="search-block t-center" :class="{actions: filterCondition.newOrderId ? filterCondition.newOrderId.length : ''}" @click="openLittleBatch">
         单据搜索
       </div>
 
@@ -36,7 +36,7 @@
       </div>
 
       <combination-drop-down-colums
-          refs="combinationDropDownColumsBox"
+          ref="combinationDropDownColumsBox"
           class="class-btn-wrap"
           @dataBack="combinationHeaderComplate"
       ></combination-drop-down-colums>
@@ -149,7 +149,7 @@ export default {
             name: "修改中"
         },
         {
-            id: "40,101",
+            id: "40",
             name: "已调库"
         },
         {
@@ -157,7 +157,7 @@ export default {
             name: "调库中"
         },
         {
-            id: "50,100",
+            id: "50",
             name: "已发货"
         },
         {
@@ -307,11 +307,19 @@ export default {
   },
   methods: {
     combinationHeaderComplate (parm) {
-      Object.assign(this.filterCondition, parm)
+      this.filterCondition = Object.assign(this.filterCondition, parm)
+      this.$emit('filterData', this.filterCondition)
     },
     initData (parm) {
       this.filterCondition = parm
-      // this.$refs.storageLocationWrap.initData(parm.storageId)
+      this.$refs.combinationDropDownColumsBox.initData(parm)
+      this.$refs.storageLocationWrap.initData(parm.storageId)
+      if (parm.newOrderId) {
+        this.$refs.littleBatchWrap.initData(parm.newOrderId)
+      }
+      if (parm.shopId) {
+        this.$refs.shopWrap.initData(parm.shopId)
+      }
       // this.$refs.combinationDropDownColumsBox.initData(parm)
       // this.$refs.productTypeIdWrap.initData(parm.productTypeId)
       // this.$refs.colourIdWrap.initData(parm.colourId)
@@ -333,16 +341,21 @@ export default {
       })
     },
     resetData () {
-      this.filterCondition.keyWord = ''
-      this.filterCondition.newOrderId = ''
-      this.filterCondition.storageId = []
-      this.filterCondition.shopId = []
-      this.filterCondition.productTypeId = []
-      this.filterCondition.colourId = []
-      this.filterCondition.jeweId = []
-      this.filterCondition.jewelryId = [] // 首饰类别
-      this.filterCondition.productStatus = [] // 产品状态
-      this.filterCondition.sortList = []
+      this.keyword = ''
+      this.filterCondition = {
+        keyWord: '',
+        newOrderId: '',
+        // page: '1',
+        // pageSize: '30',
+        storageId: [],
+        shopId: [],
+        productTypeId: [],
+        colourId: [],
+        jeweId: [],
+        jewelryId: [], // 首饰类别
+        productStatus: [], // 产品状态
+        sortList: []
+      }
       this.$refs.moreWrap.reset()
       this.$refs.stateWrap.reset()
       // this.$refs.jewelryIdWrap.reset()
@@ -352,7 +365,7 @@ export default {
       this.$refs.shopWrap.reset()
       this.$refs.storageLocationWrap.reset()
       this.$refs.littleBatchWrap.reset()
-      this.$refs.combinationDropDownColumsBox.reset(parm)
+      this.$refs.combinationDropDownColumsBox.reset()
       // this.$refs.littleBatchWrap.close()
       this.$emit('resetData')
     },
@@ -370,6 +383,7 @@ export default {
       this.$emit('seekProduct', options)
     },
     storageLocation (parm) {
+      debugger
       this.filterCondition.storageId = parm.bigList
       this.$emit('filterData', this.filterCondition)
     },
@@ -400,8 +414,6 @@ export default {
               for (let i of res.data.data.shopList) {
                 this._showCounterList(i.shopId, i)
               }
-              // this.shopDataList.childrenList = 
-              // this.productCategory[1].children = res.data.data.repositoryList
             } else {
               this.$message({
                 message: res.data.msg,
@@ -466,6 +478,7 @@ export default {
 
     },
     dataBack (parm) {
+      debugger
       this.filterCondition[parm.keyName] = parm.samllList
       this.$emit('filterData', this.filterCondition)
     },
@@ -588,6 +601,9 @@ export default {
           float: left;
           cursor: pointer;
           text-align: left;
+          &.actions{
+              color: #2993f8;
+          }
       }
       .t-center{
         text-align: center;

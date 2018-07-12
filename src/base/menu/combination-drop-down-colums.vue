@@ -74,7 +74,7 @@ export default {
       this.$refs.jeweIdWrap.initData(parm.jeweId)
       this.$refs.jewelryIdWrap.initData(parm.jewelryId)   
     },
-    resetData () {
+    reset () {
       this.filterCondition.productTypeList = []
       this.filterCondition.colourList = []
       this.filterCondition.jeweList = []
@@ -100,7 +100,6 @@ export default {
           this.filterCondition.jewelryList = this.filterSeekData(parm.samllList, 'jewelryId')
           break
       }
-      debugger
       this.$emit('dataBack', this.filterCondition)
     },
     seekProductTypeList () { // 产品类别列表
@@ -309,7 +308,7 @@ export default {
 <style>
 .combination-drop-down-colums-wrap {
 /*  width: 346px;*/
-/*  height: 28px;*/
+  height: 28px;
   vertical-align: top;
   padding-left: 4px;
   border-radius: 4px;

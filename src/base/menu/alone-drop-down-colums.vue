@@ -22,7 +22,7 @@
             </ul>
             <div class="list-footer">
                 <span @click="complate">完成</span>
-                <span @click="reset">重置</span>
+                <span @click="reset('Y')">重置</span>
             </div>
         </div>
     </div>
@@ -58,7 +58,12 @@ export default {
     },
     methods: {
         initData (parm) { // 初始化数据
-            this.checkedCities = parm
+            if (parm) {
+                this.checkedCities = parm
+                if (parm.length) {
+                    this.isChecked = true
+                }       
+            }
         },
         filterStyle (parm) {
             let datas = ''
@@ -102,10 +107,13 @@ export default {
                 this.isChecked = false
             }
         },
-        reset () {
+        reset (parm) {
             this.checkedCities = []
             this.allChecked = []
             this.isChecked = false
+            if (parm == 'Y') {
+                this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll})
+            }
         }
     }
 }

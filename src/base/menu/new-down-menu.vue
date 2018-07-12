@@ -101,7 +101,7 @@ export default {
         color:#666;
         text-align: center;
         display: block;
-        height: 28px;
+        // height: 28px;
         // font-weight: bold;
         font-size: 14px;
         line-height: 28px;

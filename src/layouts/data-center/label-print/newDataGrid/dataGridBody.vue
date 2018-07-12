@@ -6,7 +6,8 @@
 			<div class="tb-tr" :key="index" :class="{'print-on': filterChange(index)}">
 				<div class="tb-td"
 					v-for="(tab,num) in detailDataGridColumn" 
-					:style="tableCell(tab.width)" 
+					:style="tableCell(tab.width)"
+          :title="tb[tab.childType]"
 					v-text = "tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"
 				:key="num"
 				></div>

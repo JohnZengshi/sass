@@ -53,7 +53,8 @@
 
 			<!--打印模块-->
 			<div style="display: none;">
-				<detail-template title="修改" ref="detailTemplate" :sellList="sellList" :headerData="orderData"></detail-template>
+				<detail-template v-if="dataGridOptions.type == 1" title="修改-明细" ref="detailTemplate" :sellList="sellList" :headerData="orderData"></detail-template>
+
 			</div> 
 </div>
 </template>
@@ -76,7 +77,7 @@ export default{
     detailTemplate,
     ReadMoreData,
   },
-  props:['orderData','slipPointer','goodsAdd', 'seekBarcode', 'seekFlag'],
+  props:['orderData','slipPointer','goodsAdd', 'seekBarcode', 'seekFlag', 'dataGridOptions'],
   data(){
     return {
       printDatas: {},
@@ -136,7 +137,7 @@ export default{
   
   methods: {
   	tabPrint(){
-  		this.$refs.detailTemplate.print();
+        this.$refs.detailTemplate.print();
   	},
     watchScroll (el) { // 下拉加载数据
       // console.log(el)
@@ -150,9 +151,20 @@ export default{
     },
     
     _seekGetReportsPrintXG () {
-      seekGetReportsPrintXG().then(res => {
+      seekGetReportsPrintXG(this.dataGridOptions).then(res => {
         if (res.data.state == 200){
           this.printDatas = res.data.data;
+          let type = this.dataGridOptions.type
+          if (type == 2) {
+              this.$refs.intelligenceTypeTemplate.print();
+              return
+          } else if (type == 3) {
+              this.$refs.projectTypeTemplate.print();
+              return
+          } else if (type == 4){
+              this.$refs.customTemplate.print();
+              return
+          }
         } else {
           this.$message({
             type: 'error',

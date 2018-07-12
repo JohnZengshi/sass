@@ -1201,12 +1201,6 @@ import LoaderNum from 'components/work/loaderNum.vue'
   }
 </script>
 
-<style lang="scss" scoped>
-.edit-rp_container{
-  /* 修改页脚 单独设置 */
-  padding-bottom: 60px!important; 
-}	
-</style>
 
 <style lang="scss" scoped>
 .tab_wrap {

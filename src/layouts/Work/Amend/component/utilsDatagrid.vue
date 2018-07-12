@@ -37,7 +37,7 @@
     <i class="iconfont icon-shenhebohui"></i>
   </span>
 
-  <print-label :orderData="orderData" :orderNum="synopsiData.orderNum" @tabPrint="tabPrint"></print-label>
+  <print-label :orderData="orderData" :dataGridOptions="dataGridOptions" :orderNum="synopsiData.orderNum" @tabPrint="tabPrint"></print-label>
   
   <span data-text="添加备注" @click="popupShow(true,'添加备注')">
     <i class="iconfont icon-beizhu"></i>
@@ -93,7 +93,7 @@ export default{
     printLabel,
     LoaderNum
   },
-  props: ['dataList','orderData','curStatus'],
+  props: ['dataList','orderData','curStatus', 'dataGridOptions'],
   
   watch : {
     curStatus:{
@@ -119,7 +119,6 @@ export default{
   
   methods: {
   	tabPrint(){
-      debugger
   		this.$emit("tabPrint");
   	},
     submitAudit () {

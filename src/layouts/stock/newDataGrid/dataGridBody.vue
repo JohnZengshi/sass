@@ -164,7 +164,6 @@ export default {
 	},
 	methods:{
     openLabel (parm, caty) {
-      debugger
         let datas = {
           type: '2',
           data: {
@@ -175,7 +174,9 @@ export default {
             storageId: this.changeRepository.repositoryId ? [this.changeRepository.repositoryId] : [],
             shopId: this.changeShop.shopId ? [this.changeShop.shopId] : [],
             counterId: this.changeCounter.counterId, // 柜组
-            productClass: this.dataGridOptions.productClass
+            productClassList: [{productClass: this.dataGridOptions.productClass}],
+            inLocation: '1',
+            type: this.dataGridOptions.type
           }
         }
         if (this.dataGridOptions.type == '4') {
