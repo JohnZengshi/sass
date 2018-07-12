@@ -408,6 +408,7 @@ export default {
       exportData.num = this.dataGridStorage.totalNum;
       exportData.className = "";
       exportData.classTypeName = "";
+      exportData.showCost = this.tabSwitch ? '1' : '0'
       downLoaderFile("/v1/export/exportExcelByInventory", exportData);
     },
     chosePosition(parm) {

@@ -156,6 +156,7 @@
       },
       //
       refresh() {
+        debugger
         seekNewGoodsInfoList({
           page: 1,
           pageSize: this.pageNum * this.pageSize,
@@ -175,6 +176,7 @@
       },
       // 获取商品列表
       fetchGoodList() {
+        debugger
         this.$emit('updataLoader', true)
         seekNewGoodsInfoList({
           page: this.pageNum,
