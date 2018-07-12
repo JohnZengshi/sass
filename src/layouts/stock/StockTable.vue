@@ -1,155 +1,8 @@
 <template>
   <transition name="tp-ani">
-
-    
-
     <div class="RP_report_wrapper ui-page-max-width xj-stock-print-table-main" v-loading="loading" element-loading-text="数据查询中">
       <!-- v-loading = "loading" -->
-
       <div class="Rp_dataGrid_container">
-        <!-- 表头筛选 begin -->
-        <!-- <div class="rp_gridState"> -->
-          <!-- <p class="side-nav"><i class="iconfont icon-baobiao"></i>商品列表</p> -->
-          <!-- <div class="sort-wrap"> -->
-            <!-- <label>排序:</label> -->
-            <!-- 排序的标签 begin -->
-            <!-- <div class="sortwrap-text" v-for="(item, index) in sortList" :key="index">
-              {{item.name}}
-              <img class="sortwrap-img" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
-              <img class="sortwrap-img" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
-              <i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
-            </div> -->
-            <!-- 排序的标签 end -->
-          <!-- </div> -->
-          <!-- <div class="right-wrap"> -->
-            <!-- <div class="search-wrap"> -->
-              <!-- <input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" /> -->
-              <!--<i class="iconfont icon-sousuo" @click="send"></i>-->
-            <!-- </div> -->
-            <!-- <div @click="toggleAttribute" class="iconfont-wrap">
-              <span v-if="dataGridOptions.productClass == 1">成品</span>
-              <span v-if="dataGridOptions.productClass == 2">旧料</span>
-              <i class="iconfont icon-qiehuan"></i>
-            </div> -->
-             <!-- 修改样式位置 -->
-            <!-- <div class="iconfont-wrap"> -->
-              <!-- <span style="margin-right:25px;" :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)" >成品</span> -->
-              <!-- <span style="margin-right:25px;" :class="inconspanactive2 == true ? 'myspanactive' : ''"  @click="toggleAttribute(2)" >旧料</span> -->
-            <!-- </div> -->
-            <!-- <div class="tab"> -->
-              <!-- <span :class="0 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(0, 1)">明细</span> -->
-              <!-- <span :class="1 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(1, 2)">智能分类</span> -->
-              <!-- <span :class="2 == tabClassActive.index ? tabClassActive.activeClass : ''" @click="tabs(2, 3)">产品分类</span> -->
-              <!--自定原点击事件：@click="tabs(3, 4)"-->
-              <!-- <span :class="3 == tabClassActive.index ? tabClassActive.activeClass : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)">自定义 -->
-                                <!-- <i v-if="tabClassActive.index == 3" class="iconfont icon-arrow-down"></i> -->
-                                <!-- <div class="customDia" ref="customDia" style="display: none;"> -->
-                                    <!-- <div class="body"> -->
-                                        <!-- <div class="list-wrap"> -->
-                      <!-- <ul>
-                        <li></li>
-                        <li>成色名称</li>
-                        <li>宝石名称</li>
-                        <li>首饰类别</li>
-                      </ul>
-                      <ul>
-                        <li>计重类</li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="成色名称-计重"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="宝石名称-计重"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="大类"
-                          dataType="customDia"
-                          dataDataType="首饰类别-计重"
-                          :propList="dialogOptions.jewelryList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                      </ul>
-                      <ul>
-                        <li>计件类</li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="成色名称-计件"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="宝石名称-计件"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="大类"
-                          dataType="customDia"
-                          dataDataType="首饰类别-计件"
-                          :propList="dialogOptions.jewelryList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                      </ul>
-                                        </div>
-                                    </div>
-                                    <div class="foot" solt="footer">
-                    <div class="btn-wrap">
-                      <div @click.stop="resetOption" class="reset btn">重置</div>
-                      <div @click.stop="compOption" class="comp btn">完成</div>
-                    </div>
-                              </div>
-                      </div>
-                    </span>
-            </div> -->
-            <!-- 位置 -->
-            <!-- <div class="position-group"> -->
-              <!-- <el-radio class="radio" label="1">位置分组</el-radio> -->
-              <!-- <el-checkbox v-model="positionSwitch" :disabled="dataGridOptions.type == 1">位置分组</el-checkbox> -->
-              <!-- <span :title="positionSwitch ? '取消位置' : '选择位置'" @click="choseMenu(1)" class="btn" :class="{active: positionSwitch}" v-if="dataGridOptions.type != 1">位置</span> -->
-            <!-- </div> -->
-            <!-- 专列项 -->
-            <!-- <div class="xj-switch" v-if="isShowCost == 'Y'"> -->
-              <!-- <el-checkbox v-model="tabSwitch">成本</el-checkbox> -->
-              <!-- <span :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" class="btn" :class="{active: tabSwitch}">专列项</span> -->
-            <!-- </div> -->
-          <!-- </div> -->
-        <!-- </div> -->
-        <!-- 表头的筛选 end -->
-
         <!-- 表头筛选重构 begin -->
         <div class="Header_screening">
           <!-- 标题 -->
@@ -173,213 +26,34 @@
                   <span class="fl">{{item.name}}</span>
                   <img class="sortwrap_img fl" v-if="item.value == '2'" src="./../../../static/img/sort/down1.png">
                   <img class="sortwrap_img fl" v-if="item.value == '1'" src="./../../../static/img/sort/up1.png">
-                  <i class="el-icon-circle-cross fr" @click="cancelSort(item, index)"></i>                  
-                </li>
-              </ul>
+                  <i class="el-icon-circle-cross fr" @click="cancelSort(item, index)"></i>
+            </li>
+            </ul>
             </i>
-            
           </div>
-          <!-- 成品旧料的切换 -->
-<!--           <div class="iconfont_wrap fl">
-            <span :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)">成品</span>
-            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
-            <span :class="inconspanactive2 == true ? 'myspanactive' : ''" @click="toggleAttribute(2)">旧料</span>
-          </div> -->
-          <!-- 表格的筛选 -->
-<!--           <div class="tab_wrap">
-            <span :class="0 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(0, 1)">明细</span>
-            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>           
-            <span :class="1 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(1, 2)">智能分类</span>
-            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
-            <span :class="2 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(2, 3)">产品分类</span>
-            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
-            <span style="position: relative" :class="3 == tabClassActive.index ? 'myspanactive' : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)" @click="tabs(3,4)">自定义
-              <div class="customDia site" ref="customDia" style="display: none;">
-                <div class="body">
-                  <div class="list-wrap">
-                    <ul>
-                        <li></li>
-                        <li>成色名称</li>
-                        <li>宝石名称</li>
-                        <li>首饰类别</li>
-                    </ul>
-                    <ul>
-                        <li>计重类</li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="成色名称-计重"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="宝石名称-计重"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="大类"
-                          dataType="customDia"
-                          dataDataType="首饰类别-计重"
-                          :propList="dialogOptions.jewelryList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>计件类</li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="成色名称-计件"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="宝石名称-计件"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="大类"
-                          dataType="customDia"
-                          dataDataType="首饰类别-计件"
-                          :propList="dialogOptions.jewelryList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div class="foot" solt="footer">
-                  <div class="btn-wrap">
-                    <div @click.stop="resetOption" class="reset btn">重置</div>
-                    <div @click.stop="compOption" class="comp btn">完成</div>
-                  </div>
-                </div>
-
-              </div>
-            </span>
-          </div> -->
-          <filter-header
-            class="stock-table-filter-header-wrap"
-            @complate="filterHeaderComplate"
-            @reportSwitch="reportSwitch"
-            @choseBuyBack="choseBuyBack"
-            @chosePosition="chosePosition"
-            :isOld="isOld"
-            :specialItem="true"
-            :customList="customList"
-            :type="dataGridOptions.type"
-            :positionSwitch="positionSwitch"
-            :isPosition="dataGridOptions.type != 1"
-          ></filter-header>
+          <filter-header class="stock-table-filter-header-wrap" @complate="filterHeaderComplate" @reportSwitch="reportSwitch" @choseBuyBack="choseBuyBack" @chosePosition="chosePosition" :isOld="isOld" :specialItem="true" :customList="customList" :type="dataGridOptions.type" :positionSwitch="positionSwitch" :isPosition="dataGridOptions.type != 1"></filter-header>
           <!-- 新增的一些筛选 -->
           <div class="xj-report-multi-select-wrap stock-table-multi-select">
-            <dropDownColum
-                ref="productTypeIdWrap"
-                :propsList="proList"
-                :keyName="'productTypeId'"
-                titleData="产品类别"
-                @dataBack="dataBack"
-            >
+            <dropDownColum ref="productTypeIdWrap" :propsList="proList" :keyName="'productTypeId'" titleData="产品类别" @dataBack="dataBack">
             </dropDownColum>
-
-            <dropDownColum
-                ref="colourIdWrap"
-                :propsList="conditionList"
-                :keyName="'colourId'"
-                titleData="成色名称"
-                @dataBack="dataBack"
-            >
+            <dropDownColum ref="colourIdWrap" :propsList="conditionList" :keyName="'colourId'" titleData="成色名称" @dataBack="dataBack">
             </dropDownColum>
-
-            <dropDownColum
-                ref="jeweIdWrap"
-                :propsList="jewelList"
-                :keyName="'jeweId'"
-                titleData="宝石名称"
-                @dataBack="dataBack"
-            >
+            <dropDownColum ref="jeweIdWrap" :propsList="jewelList" :keyName="'jeweId'" titleData="宝石名称" @dataBack="dataBack">
             </dropDownColum>
-
-            <dropDownColum
-                ref="jewelryIdWrap"
-                :propsList="jewelryList"
-                :keyName="'jewelryId'"
-                titleData="首饰类别"
-                @dataBack="dataBack"
-            >
+            <dropDownColum ref="jewelryIdWrap" :propsList="jewelryList" :keyName="'jewelryId'" titleData="首饰类别" @dataBack="dataBack">
             </dropDownColum>
           </div>
-                    <!-- 输入框 -->
+          <!-- 输入框 -->
           <div class="search_wrap">
             <input v-if="dataGridOptions.type == 1" type="text" @keyup.enter="searchWord" v-model="dataGridOptions.keyWord" placeholder="输入关键字" />
           </div>
-          <!-- 位置与专列项 -->
-
-<!--           <div class="position_group fl">
-              <span :title="positionSwitch ? '取消位置' : '选择位置'" @click="choseMenu(1)" class="btn" :class="{active: positionSwitch}" v-if="dataGridOptions.type != 1">位置</span>
-          </div>
-          <div class="xj_switch fl" v-if="isShowCost == 'Y'">
-              <span :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" class="btn" :class="{active: tabSwitch}">专列项</span>
-          </div> -->
         </div>
         <!-- 表头筛选重构 end -->
-
         <div class="rp_dataGridTemp" :class="tabShow">
-          <report-detail
-            ref="ReportDetail"
-            v-if="dataGridStorage"
-            @lazyloadSend="sendlayLoad"
-            @scrollClass="tabScrollShow"
-            @sortList="sortListAct"
-            :dataGridStorage="dataGridStorage"
-            :tabSwitch="tabSwitch"
-            :positionSwitch="positionSwitch"
-            :isOld="isOld"
-            :newList="newList"
-            :reportType="getReportType()"
-            :changeRepository="changeRepository"
-            :changeShop="changeShop"
-            :changeCounter="changeCounter"
-            :dataGridOptions="dataGridOptions"
-          >
+          <report-detail ref="ReportDetail" v-if="dataGridStorage" @lazyloadSend="sendlayLoad" @scrollClass="tabScrollShow" @sortList="sortListAct" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :isOld="isOld" :newList="newList" :reportType="getReportType()" :changeRepository="changeRepository" :changeShop="changeShop" :changeCounter="changeCounter" :dataGridOptions="dataGridOptions">
           </report-detail>
         </div>
-
         <div class="utilsBtn flex flex-v flex-pack-justify">
-<!--           <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
-            <i class="iconfont icon-daochu"></i>
-            <span>导出表格</span>
-          </div> -->
           <div class="btn" @click="exportTab()">
             <i class="iconfont icon-daochu"></i>
             <span>导出表格</span>
@@ -389,73 +63,29 @@
             <span>打印库存</span>
           </div>
           <!-- 加载条数选择器 -->
-          <LoaderNum 
-          class="loaderNum" 
-          ref="LoaderNum"
-          v-show="dataGridOptions.type==1" 
-          ></LoaderNum>
+          <LoaderNum class="loaderNum" ref="LoaderNum" v-show="dataGridOptions.type==1"></LoaderNum>
         </div>
       </div>
-
       <div ref="tablePrint" v-if="isPrint==1">
         <table-print :tabSwitch="tabSwitch" :reportType="getReportType()" @sortList="sortListAct" :positionSwitch="positionSwitch" :printSelectDate="printSelectDate" :dataGridStorage="dataGridStorage">
         </table-print>
       </div>
-      
-      <!-- 明细0 -->
-<!--       <detailTemplate v-if="this.tabClassActive.index==0" title="库存-明细" ref="detailTemplate" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
- -->
-          <div v-if="dataGridOptions.type==1" class="xj-kc-print-main" style="display: none;" ref="detailTemplateWrap">
-            <detailTemplate 
-              title="库存" 
-              tabTitle="明细"
-              :tabSwitch="tabSwitch" 
-              :sellList="printData" 
-              :headerData="printSelectDate"></detailTemplate>
-          </div>
-        <!--打印模块-->
-        <div style="display: none;">
 
-
-            <!-- 智能1 -->
-            <intelligence-type-template 
-              v-if="dataGridOptions.type==2" 
-              title="库存" 
-              tabTitle="智能分类"
-              ref="intelligenceTypeTemplate" 
-              :sellList="printData" 
-              :tabSwitch="tabSwitch" 
-              :headerData="printSelectDate" 
-              :positionSwitch="positionSwitch"></intelligence-type-template>
-
-            <!-- 产品分类 -->
-            <project-type-template 
-              v-if="dataGridOptions.type==3" 
-              title="库存" 
-              tabTitle="产品分类"
-              ref="projectTypeTemplate" 
-              :sellList="printData" 
-              :tabSwitch="tabSwitch" 
-              :headerData="printSelectDate" 
-              :positionSwitch="positionSwitch"></project-type-template>
-
-            <!-- 自定义3 -->
-            <intelligence-type-template 
-              v-if="dataGridOptions.type==4" 
-              title="库存" 
-              tabTitle="自定义"
-              ref="customTemplate" 
-              :sellList="printData" 
-              :tabSwitch="tabSwitch" 
-              :headerData="printSelectDate" 
-              :positionSwitch="positionSwitch"></intelligence-type-template>
-
-        </div>
-
+      <div v-if="dataGridOptions.type==1" class="xj-kc-print-main" style="display: none;" ref="detailTemplateWrap">
+        <detailTemplate title="库存" tabTitle="明细" :tabSwitch="tabSwitch" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
+      </div>
+      <!--打印模块-->
+      <div style="display: none;">
+        <!-- 智能1 -->
+        <intelligence-type-template v-if="dataGridOptions.type==2" title="库存" tabTitle="智能分类" ref="intelligenceTypeTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
+        <!-- 产品分类 -->
+        <project-type-template v-if="dataGridOptions.type==3" title="库存" tabTitle="产品分类" ref="projectTypeTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></project-type-template>
+        <!-- 自定义3 -->
+        <intelligence-type-template v-if="dataGridOptions.type==4" title="库存" tabTitle="自定义" ref="customTemplate" :sellList="printData" :tabSwitch="tabSwitch" :headerData="printSelectDate" :positionSwitch="positionSwitch"></intelligence-type-template>
+      </div>
     </div>
   </transition>
 </template>
-
 <script>
 import Vue from "vue";
 import find from "lodash/find";
@@ -484,7 +114,7 @@ import { downLoaderFile } from "Api/downLoaderFile";
 // 筛选的组件
 import dropDownColum from 'base/menu/drop-down-colums'
 
-import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList} from "Api/commonality/seek"
+import { getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList } from "Api/commonality/seek"
 // 右下角加载条数选择器
 import LoaderNum from 'components/work/loaderNum.vue'
 
@@ -492,18 +122,17 @@ export default {
   props: ["changeRepository", "changeShop", "changeCounter"],
   data() {
     return {
-      customList: [
-        {
-            name: '明细',
-            id: 1
+      customList: [{
+          name: '明细',
+          id: 1
         },
         {
-            name: '智能分类',
-            id: 2
+          name: '智能分类',
+          id: 2
         },
         {
-            name: '产品分类',
-            id: 3
+          name: '产品分类',
+          id: 3
         }
       ],
       printData: {},
@@ -525,17 +154,17 @@ export default {
         orderNum: this.$route.query.orderNumber,
         //reportType : '4' //1代表入库、2退库、3调库、4发货、5调柜、6退货
         // 库位名称
-        repositoryName:"",
+        repositoryName: "",
         // 商品属性
-        productClass:'1',
+        productClass: '1',
         // 柜组名称
-        counterName:"",
+        counterName: "",
         // 店铺名称
-        shopName:"",
+        shopName: "",
         // 公司名称
-        companyName:'',
+        companyName: '',
         // 查询时间
-        checkDate:'',
+        checkDate: '',
 
       },
       //
@@ -568,8 +197,7 @@ export default {
       },
 
       //大、小类 tab切换
-      tabData: [
-        {
+      tabData: [{
           txt: "明细",
           fun: this.tabs,
           type: 1
@@ -647,14 +275,14 @@ export default {
       ],
 
       // 假数据
-      proList:[],
-      conditionList:[],
-      jewelList:[],
-      jewelryList:[],
+      proList: [],
+      conditionList: [],
+      jewelList: [],
+      jewelryList: [],
     };
   },
   watch: {
-    "changeRepository.repositoryId"(val) {
+    "changeRepository.repositoryId" (val) {
       this.dataGridOptions.storageId = val;
       if (this.changeRepository.repositoryId) {
         this.dataGridOptions.storageId = val;
@@ -663,7 +291,7 @@ export default {
       }
       this.send();
     },
-    "changeShop.shopId"(val) {
+    "changeShop.shopId" (val) {
       if (this.changeShop.shopId) {
         this.dataGridOptions.shopId = val;
       } else {
@@ -674,7 +302,7 @@ export default {
       this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       this.send();
     },
-    "changeCounter.counterId"(val) {
+    "changeCounter.counterId" (val) {
       this.dataGridOptions.counterId = val;
       this.dataGridOptions.page = 1;
       this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
@@ -690,25 +318,25 @@ export default {
       }
       this.send();
     },
-    "changeRepository.repositoryName"(val){
+    "changeRepository.repositoryName" (val) {
       // 打印增加库位名称
       this.printSelectDate.repositoryName = val;
     },
-    "changeShop.shopName"(val){
+    "changeShop.shopName" (val) {
       // 打印增加店铺名称
       this.printSelectDate.shopName = val;
     },
-    "changeCounter.counterName"(val){
+    "changeCounter.counterName" (val) {
       // 打印增加柜组名称
       this.printSelectDate.counterName = val;
     },
-    "dataGridOptions.productClass"(val){
+    "dataGridOptions.productClass" (val) {
       // 打印增加商品属性
       this.printSelectDate.productClass = val;
     },
-      // 打印增加公司名称
-    "dataGridStorage.companyName"(val){
-      if(val){
+    // 打印增加公司名称
+    "dataGridStorage.companyName" (val) {
+      if (val) {
         this.printSelectDate.companyName = val;
       }
     }
@@ -735,37 +363,37 @@ export default {
     this.settingUserRole();
   },
   methods: {
-    filterHeaderComplate (parm) {
-        this.dataGridOptions.page = 1;
-        this.sortList = []
-        this.dataGridOptions.sortList = []
-        // 初始化ReaderMoreData组件的状态
-        if(this.$refs.ReportDetail.$refs.dataGridBody.$refs.ReadMoreDataDmo){
-          let ReadMoreDataDmo = this.$refs.ReportDetail.$refs.dataGridBody.$refs.ReadMoreDataDmo;
-          ReadMoreDataDmo.MoreData = false;
-          ReadMoreDataDmo.noMoreData = false;
-        }
-        Object.assign(this.dataGridOptions, parm)
-        if (parm.noRefresh) {
-          return
-        }
-        this.send()
+    filterHeaderComplate(parm) {
+      this.dataGridOptions.page = 1;
+      this.sortList = []
+      this.dataGridOptions.sortList = []
+      // 初始化ReaderMoreData组件的状态
+      if (this.$refs.ReportDetail.$refs.dataGridBody.$refs.ReadMoreDataDmo) {
+        let ReadMoreDataDmo = this.$refs.ReportDetail.$refs.dataGridBody.$refs.ReadMoreDataDmo;
+        ReadMoreDataDmo.MoreData = false;
+        ReadMoreDataDmo.noMoreData = false;
+      }
+      Object.assign(this.dataGridOptions, parm)
+      if (parm.noRefresh) {
+        return
+      }
+      this.send()
     },
     //成本控制
-    reportSwitch(parm){
+    reportSwitch(parm) {
       this.tabSwitch = parm
 
-      if(this.tabSwitch) {
+      if (this.tabSwitch) {
         this.dataGridOptions.specialId = '1'
       } else {
         this.dataGridOptions.specialId = ''
       }
 
     },
-    choseBuyBack (parm) {
+    choseBuyBack(parm) {
       this.isBuyBack = parm
       this.sellSend()
-      if(this.isBuyBack) {
+      if (this.isBuyBack) {
         this.dataGridOptions.backId = '1'
       } else {
         this.dataGridOptions.backId = ''
@@ -782,7 +410,7 @@ export default {
       exportData.classTypeName = "";
       downLoaderFile("/v1/export/exportExcelByInventory", exportData);
     },
-    chosePosition (parm) {
+    chosePosition(parm) {
       this.positionSwitch = !this.positionSwitch;
       if (this.positionSwitch) {
         this.dataGridOptions.sortFlag = 1;
@@ -974,41 +602,6 @@ export default {
       }, 10);
     },
 
-    // currentPrint () {
-    //  this.isPrint = 1;
-    //  let print = null;
-
-    //  this.appPrint = document.getElementById('appPrint')
-
-    //  if(this.IntervalOut) clearInterval(this.IntervalOut)
-    //  document.getElementById('app').style.display = 'none';
-
-    //  setTimeout(() => {
-    //    this.appPrint.innerHTML = this.$refs.tablePrint.innerHTML
-    //  }, 1000)
-    //  setTimeout(() => {
-    //    print = document.execCommand('print');
-    //  }, 1500)
-
-    //  this.IntervalOut = setInterval(() => {
-    //    if(print) {
-    //      document.getElementById('app').style.display = 'block';
-    //      this.isPrint = 0;
-    //      if(this.IntervalOut) clearInterval(this.IntervalOut)
-    //      this.IntervalOut = null;
-    //      this.appPrint.innerHTML = '';
-    //    } else if(print == false) {
-    //      if(this.IntervalOut) clearInterval(this.IntervalOut)
-    //      if(!window.print()) {
-    //        document.getElementById('app').style.display = 'block';
-    //        this.isPrint = 0;
-    //        this.IntervalOut = null;
-    //        this.appPrint.innerHTML = '';
-    //      }
-    //    }
-    //  }, 10)
-    // },
-
     settingUserRole() {
       // 用户查看成本权限
       let options = {
@@ -1093,7 +686,7 @@ export default {
     },
 
     // 新增的筛选条件
-    seekProductTypeList () { // 产品类别列表
+    seekProductTypeList() { // 产品类别列表
       getProductTypeList().then((res) => {
         if (res.data.state == 200) {
           this.isLoading = false
@@ -1111,56 +704,56 @@ export default {
         }
       })
     },
-    productClassList (type) { // 商品大小类列表
-        let options = {
-            type: type
-        }
-        seekProductClassList(options).then((res) => {
-            if (res.data.state == 200) {
-                this.isLoading = false
-                let datas =  res.data.data.list
-                for (let i of datas) {
-                  i.id = i.classesId
-                  i.name = i.classesName
-                  for (let j of i.childrenList) {
-                    j.name = j.classesName
-                    j.id = j.classesId
-                  }
-                }
-                if (type == 1) {
-                    this.conditionList = datas
-                } else if (type == 2) {
-                    this.jewelList = datas
-                } else {
-                    this.jewelryList = datas
-                }
+    productClassList(type) { // 商品大小类列表
+      let options = {
+        type: type
+      }
+      seekProductClassList(options).then((res) => {
+        if (res.data.state == 200) {
+          this.isLoading = false
+          let datas = res.data.data.list
+          for (let i of datas) {
+            i.id = i.classesId
+            i.name = i.classesName
+            for (let j of i.childrenList) {
+              j.name = j.classesName
+              j.id = j.classesId
             }
-        })
+          }
+          if (type == 1) {
+            this.conditionList = datas
+          } else if (type == 2) {
+            this.jewelList = datas
+          } else {
+            this.jewelryList = datas
+          }
+        }
+      })
     },
-    dataBack (parm) {
+    dataBack(parm) {
       let optionsList = []
       switch (parm.keyName) {
         case 'productTypeId':
-          parm.samllList.forEach((item,index) => {
-            optionsList[index] = {productClassId:item}
+          parm.samllList.forEach((item, index) => {
+            optionsList[index] = { productClassId: item }
           })
           this.dataGridOptions.productClassIdList = optionsList
           break;
         case 'colourId':
-          parm.samllList.forEach((item,index) => {
-            optionsList[index] = {colourNameId:item}
+          parm.samllList.forEach((item, index) => {
+            optionsList[index] = { colourNameId: item }
           })
           this.dataGridOptions.colourNameIdList = optionsList
           break;
         case 'jeweId':
-          parm.samllList.forEach((item,index) => {
-            optionsList[index] = {gemNameId:item}
+          parm.samllList.forEach((item, index) => {
+            optionsList[index] = { gemNameId: item }
           })
           this.dataGridOptions.gemNameIdList = optionsList
           break;
         case 'jewelryId':
-          parm.samllList.forEach((item,index) => {
-            optionsList[index] = {jewelNameId:item}
+          parm.samllList.forEach((item, index) => {
+            optionsList[index] = { jewelNameId: item }
           })
           this.dataGridOptions.jewelNameIdList = optionsList
           break;
@@ -1398,15 +991,15 @@ export default {
       }
       this.dataGridOptions.type = port;
       /*
-         * 20180601 如果重复点击同一筛选条件不重复请求
-         */
+       * 20180601 如果重复点击同一筛选条件不重复请求
+       */
       if (!this.ajaxStatus) {
         this.send();
       }
     },
     /*
-       * 数据请求  输入关键字搜索
-       */
+     * 数据请求  输入关键字搜索
+     */
     searchWord() {
       this.dataGridOptions.page = 1;
       this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
@@ -1424,7 +1017,7 @@ export default {
               this.dataGridStorage.detailList.push(...res.data.data.detailList)
             } else {
               this.dataGridStorage = res.data.data;
-            }     
+            }
             this.loading = false;
           }
         },
@@ -1466,11 +1059,11 @@ export default {
     });
   },
   updated() {
-    
+
   }
 };
-</script>
 
+</script>
 <style lang="scss">
 /* 公用样式  */
 
@@ -1515,6 +1108,7 @@ export default {
 .xj-kc-print-main {
   display: none;
 }
+
 @media print {
   tr {
     page-break-inside: avoid;
@@ -1531,16 +1125,20 @@ export default {
     }
   }
 }
+
 </style>
 <style lang="scss" src="./../../assets/css/customDialog/customDialog.scss"></style>
 <style lang="scss" scoped>
-.stock-table-multi-select{
+.stock-table-multi-select {
   margin-right: 0;
   float: right;
 }
+
+
 /* 
  * 数据表格 模块
  * */
+
 .sortwrap-text {
   margin-top: 2px;
   line-height: 16px;
@@ -1552,6 +1150,7 @@ export default {
     right: 1px;
   }
 }
+
 .Rp_dataGrid_container {
   border-radius: 10px;
   box-shadow: 0px 0 15px #e2e2e2;
@@ -1559,8 +1158,7 @@ export default {
   margin-top: 20px;
   position: relative;
   background-color: #fff;
-  padding: 50px 0 0 0;
-  // overflow: hidden;
+  padding: 50px 0 0 0; // overflow: hidden;
   .printBtn {
     width: 52px;
     height: 52px;
@@ -1633,7 +1231,7 @@ export default {
     }
   }
 
-  > .rp_gridState {
+  >.rp_gridState {
     height: 50px;
     padding-left: 20px;
     position: absolute;
@@ -1641,13 +1239,11 @@ export default {
     top: 0;
     width: 100%;
     z-index: 100;
-    > .right-wrap {
-      float: right;
-      //tab切换
-      > .tab {
+    >.right-wrap {
+      float: right; //tab切换
+      >.tab {
         // display: inline-block;
-        float: left;
-        //width: 271px;
+        float: left; //width: 271px;
         //border:1px solid #ffb549;
         //border-radius: 5px;
         padding: 0 5px;
@@ -1656,11 +1252,9 @@ export default {
         margin-top: 16px;
         font-size: 14px;
         height: 16px;
-        position: relative;
-        //overflow: hidden;
-        > span {
-          float: left;
-          //width: 24%;
+        position: relative; //overflow: hidden;
+        >span {
+          float: left; //width: 24%;
           margin: 0 15px;
           text-align: center;
           line-height: 16px;
@@ -1671,13 +1265,12 @@ export default {
           }
         }
       }
-      > .position-group {
+      >.position-group {
         // display: inline-block;
         margin-top: 12px;
-        float: left;
-        //height: 16px;
+        float: left; //height: 16px;
         padding-left: 20px;
-        & > .btn {
+        &>.btn {
           display: block;
           width: 52px;
           height: 26px;
@@ -1690,7 +1283,7 @@ export default {
           border: 1px solid #2993f8;
           cursor: pointer;
         }
-        & > .btn.active {
+        &>.btn.active {
           color: #fff;
           background: #2993f8;
         }
@@ -1702,7 +1295,7 @@ export default {
         float: left;
         padding-left: 20px;
         padding-right: 0;
-        & > .btn {
+        &>.btn {
           font-size: 12px;
           display: block;
           width: 52px;
@@ -1715,12 +1308,11 @@ export default {
           cursor: pointer;
           border: 1px solid #2993f8;
         }
-        & > .btn.active {
+        &>.btn.active {
           color: #fff;
           background: #2993f8;
         }
-      }
-      // .xj-switch{
+      } // .xj-switch{
       //   display: inline-block;
       //   vertical-align: top;
       //   margin-left: 10px;
@@ -1735,8 +1327,7 @@ export default {
         width: 100px;
         height: 32px;
         margin-top: 11px;
-        margin-right: 25px;
-        // display: inline-block;
+        margin-right: 25px; // display: inline-block;
         float: left;
         vertical-align: top;
         input {
@@ -1787,11 +1378,9 @@ export default {
   }
   .iconfont-wrap {
     // display: inline-block;
-    vertical-align: top;
-    //border:1px solid #000;
+    vertical-align: top; //border:1px solid #000;
     float: left;
-    height: 28px;
-    // width: 125px;
+    height: 28px; // width: 125px;
     margin-top: 17px;
     text-align: center;
     cursor: pointer;
@@ -1808,8 +1397,7 @@ export default {
     }
     .iconfontspan {
       margin-right: 25px;
-    }
-    // &:hover {
+    } // &:hover {
     //  >span {
     //    color: #2993f8;
     //  }
@@ -1829,7 +1417,7 @@ export default {
     line-height: 50px;
     float: left;
     font-size: 16px;
-    > i {
+    >i {
       margin-right: 7px;
     }
   }
@@ -1848,7 +1436,7 @@ export default {
       line-height: 50px;
       margin-right: 10px;
     }
-    & > div {
+    &>div {
       //float: left;
       margin-top: 11px;
       display: inline-block;
@@ -1859,7 +1447,7 @@ export default {
       border-radius: 4px;
       margin-right: 10px;
       position: relative;
-      & > i {
+      &>i {
         position: absolute;
         top: -5px;
         right: -5px;
@@ -1871,15 +1459,15 @@ export default {
         color: #2993f8;
       }
     }
-    & > div:hover {
+    &>div:hover {
       background: #e0ecf8;
       color: #2993f8;
-      & > i {
+      &>i {
         display: block;
       }
     }
   }
-  .loaderNum{
+  .loaderNum {
     font-size: 16px;
   }
 }
@@ -1905,8 +1493,8 @@ export default {
   padding-top: 13px;
   transition: margin-left 0.4s;
 }
-</style>
 
+</style>
 <style lang="scss">
 .Header_screening {
   position: absolute;
@@ -1914,18 +1502,16 @@ export default {
   left: 0;
   width: 100%;
   height: 50px;
-  padding-left: 20px;
-  // 标题
+  padding-left: 20px; // 标题
   .side_nav {
     height: inherit;
     font-size: 16px;
     line-height: 50px;
-    > i {
+    >i {
       margin-right: 7px;
       color: #2993f8;
     }
-  }
-  // 标签
+  } // 标签
   .sort_wrap {
     // width: 250px;
     height: 50px;
@@ -1949,14 +1535,14 @@ export default {
         margin-top: 7px;
         margin-left: 4px;
       }
-      > i {
+      >i {
         position: absolute;
         opacity: 0;
       }
       &:hover {
         background: #e0ecf8;
         color: #2993f8;
-        > i {
+        >i {
           opacity: 1;
           color: #2993f8;
         }
@@ -1980,8 +1566,7 @@ export default {
         display: none;
         position: absolute;
         left: -66px;
-        width: 142px;
-        // height: 200px;
+        width: 142px; // height: 200px;
         border: 1px solid #e1e1e1;
         border-radius: 4px;
         background: #ffffff;
@@ -1996,14 +1581,14 @@ export default {
             margin-top: 15px;
             margin-left: 4px;
           }
-          > i {
+          >i {
             margin-top: 15px;
             opacity: 0;
             color: #666;
           }
           &:hover {
             background: #f6f6f6;
-            > i {
+            >i {
               opacity: 1;
               cursor: pointer;
             }
@@ -2020,15 +1605,13 @@ export default {
         }
       }
     }
-  }
-  // 搜索
+  } // 搜索
   .search_wrap {
     position: relative;
     width: 100px;
     height: 32px;
     margin-top: 12px;
-    margin-left: 10px;
-    // margin-right: 10px;
+    margin-left: 10px; // margin-right: 10px;
     // display: inline-block;
     float: right;
     vertical-align: top;
@@ -2075,8 +1658,7 @@ export default {
       color: #333;
       cursor: pointer;
     }
-  }
-  // 成品旧料切换
+  } // 成品旧料切换
   .iconfont_wrap {
     width: 86px;
     height: 26px;
@@ -2085,7 +1667,7 @@ export default {
     margin-top: 12px;
     text-align: center;
     line-height: 26px;
-    span{
+    span {
       font-size: 12px;
       font-weight: bold;
       color: #666;
@@ -2094,8 +1676,7 @@ export default {
     .myspanactive {
       color: #2993f8;
     }
-  }
-  // 多重筛选
+  } // 多重筛选
   .class_btn_wrap {
     width: 300px;
     height: 26px;
@@ -2104,21 +1685,19 @@ export default {
     float: left;
     margin-left: 10px;
     margin-top: 12px;
-  }
-  // 新增的一些筛选
-  .xj-report-multi-select-wrap{
+  } // 新增的一些筛选
+  .xj-report-multi-select-wrap {
     margin-left: 10px;
-    margin-right:0px;
+    margin-right: 0px;
     float: right;
-  }
-  // 表格筛选
+  } // 表格筛选
   .tab_wrap {
     width: 232px;
     height: 26px;
     margin-top: 12px;
     margin-left: 10px;
     float: left;
-    border:1px solid #d6d6d6;
+    border: 1px solid #d6d6d6;
     border-radius: 4px;
     font-size: 12px;
     text-align: center;
@@ -2132,17 +1711,14 @@ export default {
     .myspanactive {
       color: #2993f8;
     }
-  }
-  // 明细 智能的切换
+  } // 明细 智能的切换
   .site {
     left: -210px;
-  }
-  // 位置与专列项
+  } // 位置与专列项
   .position_group {
-    margin-top: 12px;
-    // margin-right: 10px;
+    margin-top: 12px; // margin-right: 10px;
     margin-left: 10px;
-    & > .btn {
+    &>.btn {
       display: block;
       width: 52px;
       height: 26px;
@@ -2155,16 +1731,15 @@ export default {
       border: 1px solid #2993f8;
       cursor: pointer;
     }
-    & > .btn.active {
+    &>.btn.active {
       color: #fff;
       background: #2993f8;
     }
   }
   .xj_switch {
-    margin-top: 12px;
-    // margin-right: 10px;
+    margin-top: 12px; // margin-right: 10px;
     margin-left: 10px;
-    & > .btn {
+    &>.btn {
       font-size: 12px;
       display: block;
       width: 52px;
@@ -2177,14 +1752,16 @@ export default {
       cursor: pointer;
       border: 1px solid #2993f8;
     }
-    & > .btn.active {
+    &>.btn.active {
       color: #fff;
       background: #2993f8;
     }
   }
 }
-.stock-table-filter-header-wrap{
+
+.stock-table-filter-header-wrap {
   float: right;
   margin: 10px 10px 0 0;
 }
+
 </style>
