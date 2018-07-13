@@ -106,14 +106,12 @@
       </template>
       <template v-else-if="title == '进销存汇总表'">
         <div class="explain-box" v-if="
-                (headerData.auditor != '') ||
-                (headerData.preparedBy != '') ||
-                (headerData.productType != '') ||
+                (headerData.productClass != '') ||
                 (headerData.shop != '') ||
-                (headerData.storage != '') ||
-                (headerData.takeUser != '')">
+                (headerData.storage != '')">
           <div v-if="headerData.storage">库位名称：{{headerData.storage}}
           </div>
+          <div v-if="headerData.productClass">商品属性：{{headerData.productClass == '1'?'成品':'旧料'}}</div>
           <div v-else-if="headerData.shop">店铺名称：{{headerData.shop}}
           </div>
         </div>

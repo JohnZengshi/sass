@@ -54,11 +54,11 @@
 
             <tr class="tr">
               <td class="tm" colspan="2">小计</td>
-              <td>{{dataList.totalNum0}}</td>
-              <td>{{dataList.totalWeight0}}</td>
-              <td>{{dataList.totalGoldWeight0}}</td>
-              <td>{{dataList.totalPrice0}}</td>
-              <td v-show="tabSwitch">{{dataList.totalCost0}}</td>
+              <td>{{productTypeList.totalNum1}}</td>
+              <td>{{productTypeList.totalWeight1}}</td>
+              <td>{{productTypeList.totalGoldWeight1}}</td>
+              <td>{{productTypeList.totalPrice1}}</td>
+              <td v-show="tabSwitch">{{productTypeList.totalCost1}}</td>
             </tr>
           </template>
 

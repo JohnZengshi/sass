@@ -35,8 +35,8 @@
           <td>件数(件)</td>
           <td>件重(g)</td>
           <td>金重(g)</td>
-          <td>主石(ct、g)</td>
-          <td>副石(ct、g)</td>
+          <td>主石(ct,g)</td>
+          <td>副石(ct,g)</td>
           <td>售价(元)</td>
           <td v-show="tabSwitch">成本(元)</td>
         </tr>

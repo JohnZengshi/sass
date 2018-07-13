@@ -105,9 +105,9 @@
                     (headerData.checkName)">
           <div v-show="headerData.orderNum">单据号：{{headerData.orderNum}}
           </div>
-          <div v-show="headerData.storageName">调出库位：{{headerData.storageName}}
+          <div v-show="headerData.storageName2">调出库位：{{headerData.storageName2}}
           </div>
-          <div v-show="headerData.storageName2">调入库位：{{headerData.storageName2}}
+          <div v-show="headerData.storageName">调入库位：{{headerData.storageName}}
           </div>
           <div v-show="headerData.productProperty">商品属性：{{headerData.productProperty == '1'? "成品":"旧料"}}
           </div>
@@ -182,9 +182,9 @@
           </div>
           <div v-show="headerData.distributor">店铺名称：{{headerData.distributor}}
           </div>
-          <div v-show="headerData.groupName">调出柜组：{{headerData.groupName}}
+          <div v-show="headerData.groupName2">调出柜组：{{headerData.groupName2}}
           </div>
-          <div v-show="headerData.groupName2">调入柜组：{{headerData.groupName2}}
+          <div v-show="headerData.groupName">调入柜组：{{headerData.groupName}}
           </div>
           <div v-show="headerData.productProperty">商品属性：{{headerData.productProperty == '1'?'成品':'旧料'}}
           </div>

@@ -1404,7 +1404,7 @@ export default {
             //获取公司信息
             let companyName = JSON.parse(localStorage.getItem('companyInfo'))
             if(companyName){
-              this.printSelectDate.companyName = '公司名称：'+ companyName.companyName 
+              this.printSelectDate.companyName = companyName.companyName 
             }
         })
     }
