@@ -219,7 +219,7 @@ export default {
         orderNum : this.$route.query.orderNumber,
         shopName:'loading...',
         // 增加审核状态
-        status:'-1'
+        checkType:'-1'
       }),
       
       // 新增商品开关

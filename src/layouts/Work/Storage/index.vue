@@ -259,7 +259,9 @@ export default {
       // 订单数据
       orderData : Object.assign({},{
         orderNum : this.$route.query.orderNumber,
-        shopName:'loading...'
+        shopName:'loading...',
+        // 单据的状态
+        checkType:""
       }),
       
       // 新增商品
@@ -396,7 +398,7 @@ export default {
 						// 新增公司名称
 						companyName: res.data.data.companyName,
 						// 新增审核人
-						checkName: res.data.data.checkName,
+            checkName: res.data.data.checkName,
             supplierName: res.data.data.supplierName,
             supplierId: res.data.data.supplierId,
             shopName: res.data.data.shopName,

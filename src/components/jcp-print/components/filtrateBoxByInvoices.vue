@@ -21,7 +21,7 @@
         </div>
         <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
         </div>
-        <div v-show="headerData.checkName && status > '2'">审核人：{{headerData.checkName}}
+        <div v-show="headerData.checkName && headerData.checkType > '2'">审核人：{{headerData.checkName}}
         </div>
       </div>
     </template>
@@ -40,7 +40,7 @@
         </div>
         <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
         </div>
-        <div v-show="headerData.checkName && status > '2'">审核人：{{headerData.checkName}}
+        <div v-show="headerData.checkName && headerData.checkType > '2'">审核人：{{headerData.checkName}}
         </div>
       </div>
     </template>
@@ -62,7 +62,7 @@
         </div>
         <div v-show="headerData.sellManName">销售员：{{headerData.sellManName}}
         </div>
-        <div v-show="headerData.cashName && status != '8'">收银员：{{headerData.cashName}}
+        <div v-show="headerData.cashName">收银员：{{headerData.cashName}}
         </div>
       </div>
     </template>
@@ -88,7 +88,7 @@
           </div>
           <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
           </div>
-          <div v-show="headerData.checkName && status > '2'">审核人：{{headerData.checkName}}
+          <div v-show="headerData.checkName && headerData.checkType > '2'">审核人：{{headerData.checkName}}
           </div>
         </div>
       </template>
@@ -136,9 +136,9 @@
             </div>
             <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
             </div>
-            <div v-show="headerData.checkName && status > '2'">审核人：{{headerData.checkName}}
+            <div v-show="headerData.checkName && headerData.checkType > '2'">审核人：{{headerData.checkName}}
             </div>
-            <div v-show="headerData.consigneeName && status > '4'">收货人：{{headerData.consigneeName}}
+            <div v-show="headerData.consigneeName && headerData.checkType > '4'">收货人：{{headerData.consigneeName}}
             </div>
           </div>
         </template>
@@ -161,9 +161,9 @@
             </div>
             <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
             </div>
-            <div v-show="headerData.checkName && status > '2'">审核人：{{headerData.checkName}}
+            <div v-show="headerData.checkName && headerData.checkType > '2'">审核人：{{headerData.checkName}}
             </div>
-            <div v-show="headerData.auditor && status > '4'">收货人：{{headerData.auditor}}
+            <div v-show="headerData.auditor && headerData.checkType > '4'">收货人：{{headerData.auditor}}
             </div>
           </div>
         </template>
@@ -201,23 +201,20 @@
 
 </template>
 <script>
-  import {
-    seekReceiptStatusList
-  } from 'Api/commonality/seek'
   export default {
     props: ["headerData","title","reportType"],
     data() {
       return {
-        status:"1" //1:待审核，2:审核中，3:已审核，4:待收货，5:已收货，6:锁定，7:已收银，8:待收银
+        // status:"1" //1:待审核，2:审核中，3:已审核，4:待收货，5:已收货，6:锁定，7:已收银，8:待收银
       }
     },
     created() {
       // console.log(this.$route.query.orderNumber);
-      seekReceiptStatusList({
-        orderId: this.$route.query.orderNumber
-      }).then((res) => {
-        this.status = res.data.data.nowStatus;
-      })
+      // seekReceiptStatusList({
+      //   orderId: this.$route.query.orderNumber
+      // }).then((res) => {
+      //   this.status = res.data.data.nowStatus;
+      // })
     }
   }
 
