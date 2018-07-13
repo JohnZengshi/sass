@@ -37,7 +37,7 @@
     <i class="iconfont icon-shenhebohui"></i>
   </span>
 
-  <print-label :orderData="orderData" :orderNum="synopsiData.orderNum" @tabPrint="tabPrint"></print-label>
+  <print-label :orderData="orderData" :dataGridOptions="dataGridOptions" :orderNum="synopsiData.orderNum" @tabPrint="tabPrint"></print-label>
   
   <span data-text="添加备注" @click="popupShow(true,'添加备注')">
     <i class="iconfont icon-beizhu"></i>
@@ -49,7 +49,7 @@
   <!-- 加载页数 -->
   <LoaderNum 
   ref="LoaderNum"
-  v-show="isDropDownLoad"
+  v-show="dataGridOptions.type == '1'"
   ></LoaderNum>
 
   <!-- 弹出框 -->
@@ -94,7 +94,7 @@ export default{
     printLabel,
     LoaderNum
   },
-  props: ['dataList','orderData','curStatus','isDropDownLoad'],
+  props: ['dataList','orderData','curStatus', 'dataGridOptions'],
   
   watch : {
     curStatus:{
@@ -120,7 +120,6 @@ export default{
   
   methods: {
   	tabPrint(){
-      debugger
   		this.$emit("tabPrint");
   	},
     submitAudit () {

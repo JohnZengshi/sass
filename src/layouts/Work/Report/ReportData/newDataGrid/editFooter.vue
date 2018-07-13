@@ -102,10 +102,11 @@
 
 <style lang="scss" scoped>
   .ui-table_footer {
+    position: relative;
     background: #2993f8;
     height: 60px;
     z-index: 3;
-    padding: 10px 0;
+    padding: 10px 0 10px 0;
     .th_footer {
       position: relative;
       .bottom {
@@ -130,6 +131,10 @@
       .m-t-10{
         margin-top: 10px;
       }
+
+    }
+    .th_footer:last-child{
+      padding-right: 20px;
     }
   }
 </style>

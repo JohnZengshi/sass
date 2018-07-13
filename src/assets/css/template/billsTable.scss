@@ -263,7 +263,7 @@ $report-p-r: 20px;
     position: relative;
     height: 100%;
     padding: 40px 0 0;
-    
+    // z-index: 20;
     .ui-table_column{
         position: relative;
         width: 100%;
@@ -400,6 +400,7 @@ $report-p-r: 20px;
 .xj-report-table-container{
     // height: 515px;
     height: 555px;
+    background-color: #fff;
     //overflow-y: auto;
     .tb-tr{
       height: 40px;
@@ -494,6 +495,7 @@ $report-p-r: 20px;
     // 单据里的表格高度
     &.xj-product-report-table-container{
         height: 467px;
+        background-color: #fff;
     }
   .total-num-wrap{
     height: 40px;

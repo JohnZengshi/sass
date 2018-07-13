@@ -3,7 +3,7 @@
 <!--<span data-text="打印单据" @click="reportsPrintRK">
   <i class="iconfont icon-shouyindadan"></i>
 </span>-->
-<span data-text="导出表格" @click="exportTab()">
+<span data-text="导出表格" v-if="dataGridOptions.type == 1" @click="exportTab()">
     <i class="iconfont icon-daochu"></i>
 </span>
 <span data-text="打印单据" @click="tabPrint">
@@ -112,7 +112,7 @@ export default{
     TablePrint
     //TemplatePreviewDialog
   },
-  props: ['orderNum', 'orderData'],
+  props: ['orderNum', 'orderData', 'dataGridOptions'],
   created () {
     this.$store.dispatch('getTemplateList', {type: 2, fieldType: 'simple'})
   },
@@ -214,7 +214,6 @@ export default{
         downLoaderFile('/v1/export/exportExcelByBusinss',this.exportTabData)
 	},
   	tabPrint(){
-      debugger
   		this.$emit("tabPrint");
   	},
     // 打印标签
@@ -224,8 +223,6 @@ export default{
     },
     //打印表格 
     tabPrin () {
-      //console.log(111111)
-      console.log(111111, this.dataGridStorage)
       if( this.dataGridStorage.detailList && this.dataGridStorage.detailList.length ==0 ){
         this.$message({
           type:'error',

@@ -435,7 +435,6 @@ export const workCounterList = ({commit}, parm) => { // 柜组列表
     })
 }
 export const getLabelData = ({commit}, parm) => { // 打印标签数据
-    debugger
     let datas = ''
     let queryData = parm.data
     if (parm.type) {
@@ -478,6 +477,9 @@ export const getLabelData = ({commit}, parm) => { // 打印标签数据
         // 单据号
         if (queryData.newOrderId) {
             datas.newOrderId = [queryData.newOrderId]
+        } else {
+            // 报表加这个字段
+            datas.auditStatus = '1'
         }
 
         queryData.type = queryData.type
@@ -490,6 +492,28 @@ export const getLabelData = ({commit}, parm) => { // 打印标签数据
             datas.nGemId = queryData.nGemId
             datas.nJewelryId = queryData.nJewelryId
         }
+
+        if (queryData.sellStatus) {
+            datas.sellStatus = queryData.sellStatus
+        }
+
+        // 成品旧料
+        if (queryData.productClass) {
+
+            datas.productClassList = [{productClass: queryData.productClass}]
+        }
+        
+        // 成品旧料
+        if (queryData.type) {
+
+            datas.type = queryData.type
+        }
+
+        // 销售类型 1 销售  2 退货  3 换货  4 回收
+        if (queryData.sellType) {
+            datas.sellType = queryData.sellType
+        }
+
         return datas
     }
 
@@ -505,7 +529,7 @@ export const getLabelData = ({commit}, parm) => { // 打印标签数据
 
         // 入库库位
         if (queryData.storageId) {
-            datas.storageId = queryData.storageId
+            datas.storageId = [queryData.storageId]
         }
 
         // 供应商

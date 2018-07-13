@@ -164,7 +164,7 @@ export default {
             addressFlag:false,
             labelFlag:false,
             openTimeFlag:false,
-
+            score: false
         }
     },
     props: ['ruleOptionDia','importType'],
@@ -309,7 +309,8 @@ export default {
                         return this.labelFlag;
                     case 'openTime':
                         return this.openTimeFlag;
-     
+                    case 'score':
+                        return this.score;
                     
                 }
             } else {
@@ -350,7 +351,7 @@ export default {
         },
 
         showNew (name, type) {
-            console.log(name)
+            debugger
             if (type == 1) {
                 switch (name) {
                     case 'barcode':
@@ -503,6 +504,9 @@ export default {
                         break;
                     case 'openTime':
                         this.openTimeFlag= true
+                        break;
+                    case 'score':
+                        this.score = true
                         break;
                 }
             } else {
@@ -675,7 +679,9 @@ export default {
                     case 'openTime':
                         this.openTimeFlag= false
                         break;
-
+                    case 'score':
+                        this.score = false
+                        break;
 
                 }
             } else {

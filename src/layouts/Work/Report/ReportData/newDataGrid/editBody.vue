@@ -34,7 +34,7 @@
 	</div>
 </div>
 	
-<div class="ui-table-container con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4" :class="isEditReport == 'edit' ? 'edit' : ''">
+<div class="ui-table-container ui-table-container-p-r con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4" :class="isEditReport == 'edit' ? 'edit' : ''">
 	<div>
 		<div class="tb-category" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)">
 			<div v-for="(tb, index) in caty.productTypeList" >
@@ -43,7 +43,8 @@
   				<div class="tb-tr" :class="index1 % 2 == 0 ? 'tb-tr-gray' : ''" :index="addIndex()">
   					<template v-for="tab in detailDataGridColumn">
   						<div class="tb-td category-td"
-  							v-if="tab.text == '产品类别' && index1 == 0" 
+  							v-if="tab.text == '产品类别' && index1 == 0"
+                @click="openLabel({}, tb)"
   							:style="_calculateClass(tab)" >
   							<i v-if="isEditReport == 'edit'" :style="'height:'+ (tb.detailList.length * 50)*2 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i>
   						</div>
@@ -69,6 +70,7 @@
     				<div class="tb-tr edit-tb-tr" :class="index % 2 == 0 ? 'tb-tr-gray' : ''">
               <template v-for="tab in detailDataGridColumn">
                 <div class="tb-td"
+                  @click="openLabel(tb1, tb)"
                   :style="_calculateClass(tab)" 
                   v-html = "tab.editOldType == ''? (tab.text == '首饰名称' ? '<em></em>':'') : tb1[tab.editOldType]">
                 </div>
@@ -92,7 +94,8 @@
 			<div class="tb-total" style="background:#e9f4fe;" v-if="positionSwitch"> <!-- 位置小计 -->
 				<div class="tb-td"
 					v-for="(tab,f) in detailDataGridColumn" 
-					:style="_calculateClass(tab)" 
+					:style="_calculateClass(tab)"
+          @click="openLabel({}, tb)"
 					v-html = "f == 1 ? '<b>小计</b>' : tab.toFixed ? toFixed(caty[tab.totalType0], tab.countCut) : caty[tab.totalType0]"
 				></div>
 			</div>
@@ -106,11 +109,12 @@
 	<div>
 		<div class="tb-category" v-for="caty in dataGridStorage.dataList" >
 		  <template v-for="(tb, index) in caty.productTypeList">
-  			<div class="tb-tr" :class="index % 2 == 0 ? 'tb-tr-gray' : ''">
+  			<div class="tb-tr produc-line-r-20" :class="index % 2 == 0 ? 'tb-tr-gray' : ''">
   				<template v-for="tab in detailDataGridColumn">
   					<div class="tb-td category-td"
   						v-if="tab.text == '产品类别' && index == 0" 
   						:style="_calculateClass(tab)"
+              @click="openLabel({}, tb)"
   						v-text="tb[tab.childType]"
   						>
   						<!-- <i :style="'height:'+ tb.detailList.length * 50 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i> -->
@@ -131,10 +135,11 @@
   			</div>
   			
   			<!--报表-修改页面专用 start -->
-  			<div class="tb-tr edit-tb-tr" :class="index % 2 == 0 ? 'tb-tr-gray' : ''" v-if="isEditReport == 'edit'">
+  			<div class="tb-tr edit-tb-tr produc-line-r-20" :class="index % 2 == 0 ? 'tb-tr-gray' : ''" v-if="isEditReport == 'edit'">
           <template v-for="tab in detailDataGridColumn">
             <div class="tb-td"
               :style="_calculateClass(tab)" 
+              @click="openLabel({}, tb)"
               v-html = "tab.editOldType == ''? (tab.text == '产品类别' ? '<em></em>':'') : tb[tab.editOldType]">
             </div>
           </template>
@@ -238,12 +243,12 @@ export default {
     //   })
     // },
     openLabel (parm, caty) {
-      debugger
       this.$store.dispatch('getLabelData', {
         type: '3',
         data: Object.assign({}, parm, this.dataGridOptions, {
           productTypeId: caty.productTypeId,
           orderType: this.orderType,
+          newOrderId: this.$route.query.orderNumber
         })
       })
     },
@@ -394,6 +399,11 @@ export default {
 .ui-table-container{
     height: 556px;
     overflow-y: auto;
+    .produc-line-r-20{
+      >.tb-td:last-child{
+        padding-right: 20px;
+      }
+    }
     &.produc-line {
 		.tb-tr:nth-child(even){
 			background-color: #f9f9f9;
@@ -490,5 +500,10 @@ export default {
 
 .tableBox{
 	position: relative;
+}
+.ui-table-container-p-r{
+  .tb-td:last-child{
+    padding-right: 20px;
+  }
 }
 </style>

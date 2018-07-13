@@ -19,14 +19,14 @@
 
                 <div class="choose-wrap clearfix">
                     <p>选择店铺</p>
-                    <template v-for="(allItem, index) of showShopList">
+                    <template v-for="(allItem, ind) of showShopList">
                         <ul class="clearfix" :key="index">
-                            <li :title="item.shopName" :class="{actions: item.shopId == newDatas.shopId, 'actions-change': item.shopId == newDatas.shopId}" v-for="(item,index) in allItem" :key="index" @click="getShopId(item.shopId, index)">
+                            <li :title="item.shopName" :class="{actions: item.shopId == newDatas.shopId, 'actions-change': item.shopId == newDatas.shopId}" v-for="(item,index) in allItem" :key="index" @click="getShopId(item.shopId, ind)">
                                 {{item.shopName}}
                             </li>
                         </ul>
                     <!--     <div :key="index" v-if="isRepository[index]" class="xj-radio-wrap counter-radio-20"> -->
-                        <div :key="index" class="xj-radio-wrap counter-radio-20" v-if="importType == 1">
+                        <div :key="index" class="xj-radio-wrap counter-radio-20" v-if="isRepository[ind]">
                             <el-radio-group v-model="changeCounterId" @change="changeCounter">
                                 <div class="counter-wrap" v-for="(item,index) of counterList" :key="index">
                                     <el-radio  :label="item.counterId">{{item.counterName}}</el-radio>

@@ -29,7 +29,7 @@
                <!-- 只有明细才显示 -->
                <input v-model="seekBarcode" v-if="isShow && curStatus.nowStatus == 1 && dataGridOptions.type == 1" class="seek" type="text" placeholder="请输入条码号" @keyup.enter="addClick"/>
 
-                <combination-drop-down-colums
+     <!--            <combination-drop-down-colums
                   v-show="dataGridOptions.type != 1"
                   class="storage-combination-drop-down-colums-wrap"
                   @dataBack="combinationHeaderComplate"
@@ -43,7 +43,7 @@
                   @chosePosition="chosePosition"
                   :type="dataGridOptions.type"
                   :customList="customList"
-                ></filter-header>
+                ></filter-header> -->
 
                 <!-- 只有明细才显示 -->
                 <template v-if="dataGridOptions.type == 1">
@@ -57,6 +57,7 @@
        <datagrid
           v-show="dataGridOptions.type == 1"
          	:orderData="orderData"
+          :dataGridOptions="dataGridOptions"
           :seekFlag="seekFlag"
           :seekBarcode="seekBarcode"
           :slipPointer = "curStatus.slipPointer"
@@ -78,6 +79,7 @@
             :dataGridStorage="dataGridStorage"
             :tabSwitch="tabSwitch"
             :newList="newList"
+            :type = "'edit'"
             :reportType="getReportType()"
             :dataGridOptions="dataGridOptions"
             :orderType="'10'"
@@ -111,7 +113,7 @@
      :orderData="orderData"
      :dataList="dgDataList"
      @tabPrint="tabPrint"
-     :isDropDownLoad="dataGridOptions.type == '1'"
+     :dataGridOptions="dataGridOptions"
      >
    </utilsdatagrid>
   
@@ -134,6 +136,16 @@
     </BatchAddReceipts>
     
     
+      <!--打印模块-->
+      <div style="display: none;">
+
+        <intelligence-type-template v-if="dataGridOptions.type==2" :title="'修改-智能分类'" ref="intelligenceTypeTemplate" :sellList="dataGridStorage" :headerData="orderData"></intelligence-type-template>
+
+        <project-type-template v-if="dataGridOptions.type==3" :title="'修改-产品分类'" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="orderData"></project-type-template>
+
+        <custom-template v-if="dataGridOptions.type==4" :title="'修改-自定义'" ref="customTemplate" :sellList="dataGridStorage" :headerData="orderData"></custom-template>
+
+      </div> 
 </div>
 </transition>
 </template>
@@ -150,6 +162,9 @@ import BatchAddReceipts from '../../../components/work/BatchAddReceipts'
 import filterHeader from '@/layouts/Work/Report/ReportData/base/filter-header'
 import combinationDropDownColums from 'base/menu/combination-drop-down-colums'
 import ReportDetail from "@/layouts/Work/Report/ReportData/newDataGrid/reportDetailTab";
+import projectTypeTemplate from "@/components/jcp-print/update/project-type-template";
+import intelligenceTypeTemplate from "@/components/jcp-print/update/intelligence-type-template";
+import customTemplate from "@/components/jcp-print/update/intelligence-type-template";
 export default {
   data(){
     return {
@@ -267,7 +282,10 @@ export default {
     BatchAddReceipts,
     filterHeader,
     combinationDropDownColums,
-    ReportDetail
+    ReportDetail,
+    projectTypeTemplate,
+    intelligenceTypeTemplate,
+    customTemplate
   },
   
   watch: {
@@ -338,7 +356,19 @@ export default {
     },
 
   	tabPrint(){
-  		this.$refs.datagrid.tabPrint();
+        let type = this.dataGridOptions.type
+        if (type == 1) {
+          this.$refs.datagrid.tabPrint();
+        } else if (type == 2) {
+            this.$refs.intelligenceTypeTemplate.print();
+            return
+        } else if (type == 3) {
+            this.$refs.projectTypeTemplate.print();
+            return
+        } else if (type == 4){
+            this.$refs.customTemplate.print();
+            return
+        }
   	},
     addClick() {
       if (this.seekFlag == true) {
@@ -539,7 +569,6 @@ export default {
     // line-height: 50px;  
     padding: 0 20px;
     position: relative;
-    z-index: 2;
     border-radius: 10px 10px 0 0;
     
     >.list-icon{

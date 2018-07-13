@@ -1,5 +1,5 @@
 <template>
-    <img class="img" v-if="logo != '' && logo != null" :src="logo" />
+    <img class="default-head-format-img" :style="{width: size + 'px', height: size + 'px'}" v-if="logo != '' && logo != null" :src="logo" />
     <div class="img-bg" v-else ref="img_bg">
         <span ref="icon" class="iconfont icon-circle"></span>
         <!-- <div class="inset-bg" ref="inset_bg"> -->
@@ -90,6 +90,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.default-head-format-img{
+
+}
 .img-bg {
     display: inline-block;
     position: relative;

@@ -25,7 +25,7 @@
         </div>
 
         <div class="btn-header-wrap">
-          <btn-header class="btn-header-inner" :isPopup="true" @amendNum="amendNum" :dataGridStorage="dataGridStorage"></btn-header>
+          <btn-header v-if="listDetails" :filterCondition="formattingData(filterCondition)" class="btn-header-inner" :isPopup="true" @amendNum="amendNum" :dataGridStorage="dataGridStorage"></btn-header>
         </div>
         
         
@@ -53,7 +53,8 @@ import {
   // seekGetShopListByCo,
   seekGetUserInfo,
   seekMemberList,
-  seekGetPrintLabelList
+  seekGetPrintLabelList,
+  showCounterList
 } from 'Api/commonality/seek.js'
 import Cascade from './base/Cascade'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
@@ -342,11 +343,11 @@ export default {
     labelData () {
       if (this.labelData) {
         this.listDetails = true
-        this.filterCondition = Object.assign(this.filterCondition, this.labelData)
-        Vue.nextTick(() => {
-          this.$refs.filterHeaderBox.initData(this.filterCondition)
-        })
-        this.filterData()
+        if (this.labelData.shopList) {
+          this._showCounterList(this.labelData.shopList[0].shopId, this.labelData)
+        } else {
+          this.labelDataAmend(this.labelData)
+        }
       }
     },
     listDetails () {
@@ -415,6 +416,35 @@ export default {
     // }
   },
   methods: {
+    labelDataAmend (parm) {
+      this.filterCondition = Object.assign(this.filterCondition, parm)
+      Vue.nextTick(() => {
+        this.$refs.filterHeaderBox.initData(this.filterCondition)
+      })
+      this.paging = {
+        page: 1,
+        pageSize: '30'
+      }
+      this.filterData()
+    },
+    _showCounterList (parm, item) {
+      let options = {
+        shopId: parm
+      }
+      showCounterList(options)
+        .then(res => {
+          let labelData = _.cloneDeep(item)
+          let datas = []
+          for (let i of res.data.data.counterList) {
+            datas.push(i.counterId)
+            // datas.push({
+            //   shopId: i.counterId
+            // })
+          }
+          labelData.shopId = datas
+          this.labelDataAmend(labelData)
+        })
+    },
     resetData () {
       this.filterCondition = {
         keyWord: '',
@@ -435,6 +465,7 @@ export default {
         pageSize: '30'
       }
       this.sortList = []
+      this.filterData()
     },
     amendNum (parm) {
       this.printNum = parm
@@ -450,7 +481,7 @@ export default {
           barcode: i.barcode
         })
       }
-
+      this.dataGridStorage = []
       seekGetPrintLabelList(Object.assign(parm, barcode, {page: '1', pageSize: '30'}))
         .then(res => {
           if (res.data.state == 200) {
@@ -475,13 +506,14 @@ export default {
         })
     },
     filterData (parm) {
-
+      if (!this.labelData) {
+        return
+      }
       if (parm) {
         this.dataGridStorage = []
         this.paging.page = 1
         this.filterCondition = Object.assign(this.filterCondition, parm)
       }
-
       this.loading = true
       seekGetPrintLabelList(Object.assign(this.formattingData(this.filterCondition), this.paging))
         .then(res => {
@@ -1110,7 +1142,7 @@ export default {
     }
   }
   .btn-header-wrap{
-    height: 40px;
+    height: 38px;
     padding-left: 20px;
     >.btn-header-inner{
       float: left;

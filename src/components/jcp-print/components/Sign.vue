@@ -84,7 +84,7 @@
       }
     },
     created() {
-      console.log(this.$route.query.orderNumber);
+      // console.log(this.$route.query.orderNumber);
       seekReceiptStatusList({
         orderId: this.$route.query.orderNumber
       }).then((res) => {

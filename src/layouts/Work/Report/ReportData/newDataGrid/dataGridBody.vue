@@ -96,6 +96,7 @@
 					  	:key="index4"
   						v-if="tab.text == '产品类别' && index == 0" 
   						:style="_calculateClass(tab)"
+              @click="openLabel({}, tb)"
   						v-text="tb[tab.childType]"
   						>
   						<!-- <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i> -->
@@ -173,6 +174,7 @@ export default {
         data: Object.assign({}, parm, this.dataGridOptions, {
           productTypeId: caty.productTypeId,
           orderType: this.orderType,
+          newOrderId: this.$route.query.orderNumber
         })
       })
     },

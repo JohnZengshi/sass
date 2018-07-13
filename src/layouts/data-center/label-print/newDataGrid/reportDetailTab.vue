@@ -50,6 +50,9 @@ export default {
   },
   props: ['dataGridStorage', 'reportType', 'tabSwitch', 'isOld', 'positionSwitch', 'newList', 'type', 'printNum', 'allData'],
   methods: {
+    // reset () {
+    //   this.tableSwitch()
+    // },
     sortList(val) {
       this.$emit('sortListAct', val)
     },

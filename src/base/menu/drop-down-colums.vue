@@ -135,7 +135,12 @@ export default {
     },
     methods: {
         initData (parm) {
-            this.smallIdList = parm
+            if (parm) {
+                this.smallIdList = parm
+                if (parm.length) {
+                    this.isChecked = true
+                }       
+            }
         },
         filterStyle (parm) {
             let datas = ''
@@ -348,7 +353,7 @@ export default {
     }
     &:hover{
         .list-box {
-            z-index: 999;
+            z-index: 1000;
             opacity: 1;
             top: 30px;
         }
