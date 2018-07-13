@@ -111,6 +111,7 @@
      :orderData="orderData"
      :dataList="dgDataList"
      @tabPrint="tabPrint"
+     :isDropDownLoad="dataGridOptions.type == '1'"
      >
    </utilsdatagrid>
   

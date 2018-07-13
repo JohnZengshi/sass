@@ -88,7 +88,7 @@
           fixedcIndex: -1
         },
         pageNum: 1,
-        pageSize: 50,
+        pageSize: 100,
         sellList_print: {
           old: {},
           now: {}

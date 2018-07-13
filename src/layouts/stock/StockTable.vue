@@ -622,7 +622,7 @@ export default {
         ],
         type: 2, //类型
         page: 1,
-        pageSize: 50,
+        pageSize: 100,
         keyWord: "", //关键字
         wColorId: "", //计重
         wGemId: "", //宝石类

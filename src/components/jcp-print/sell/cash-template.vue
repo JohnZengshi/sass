@@ -3,7 +3,7 @@
     <div class="print-header">
       <h1 class="title center">收银统计</h1>
       <div class="head-option">
-        <div class="left">{{printSelectDate.companyName}}</div>
+        <div class="left">公司名称：{{printSelectDate.companyName}}</div>
         <div class="right">时间： {{printSelectDate.startTime}} 至 {{printSelectDate.endTime}}</div>
       </div>
       <!-- <div class="explain-box">

@@ -6,14 +6,14 @@
       <el-radio-group class="floatBox" v-model="pageSize" @change="changeUpdataPageSize">
         <div class="title">每次加载条数</div>
         <ul>
-          <li :class="{active:(pageSize == '30')}">
-            <el-radio label="30">30条</el-radio>
-          </li>
-          <li :class="{active:(pageSize == '50')}">
-            <el-radio label="50">50条</el-radio>
-          </li>
           <li :class="{active:(pageSize == '100')}">
             <el-radio label="100">100条</el-radio>
+          </li>
+          <li :class="{active:(pageSize == '300')}">
+            <el-radio label="300">300条</el-radio>
+          </li>
+          <li :class="{active:(pageSize == '500')}">
+            <el-radio label="500">500条</el-radio>
           </li>
           <li :class="{active:(pageSize == '0')}">
             <el-radio label="0">所有</el-radio>
@@ -28,7 +28,7 @@
     data() {
       return {
         // 选择更新页数
-        pageSize: "50",
+        pageSize: "100",
       }
     },
     methods: {

@@ -255,8 +255,9 @@
         </div>
 
         <!-- 加载条数选择 -->
-        <div class="LoaderNumBtn">
-          <LoaderNum ref="LoaderNum" @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
+        <div class="LoaderNumBtn" v-show="dataGridOptions.type == '1'">
+          <LoaderNum 
+          ref="LoaderNum" @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
         </div>
       </div>
       
@@ -506,7 +507,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
           }],
           type: 2,
           page: 1,
-          pageSize: 50,
+          pageSize: 100,
           keyWord: '',
           wColorId: '',
           wGemId: '',

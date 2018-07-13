@@ -3,7 +3,7 @@
     <div class="print-header">
       <h1 class="title center">销售统计</h1>
       <div class="head-option">
-        <div class="left">{{headerData.companyName}}</div>
+        <div class="left">公司名称：{{headerData.companyName}}</div>
 		    <div>分类：{{title}}</div>
         <div class="right">时间 {{headerData.startTime}} 至 {{headerData.endTime}}</div>
       </div>

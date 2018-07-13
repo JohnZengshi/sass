@@ -363,7 +363,7 @@
             <span>打印报表</span>
         </div>
         <!-- 加载条数选择 -->
-        <div class="LoaderNumBtn">
+        <div class="LoaderNumBtn" v-show="dataGridOptions.type == '1'">
             <LoaderNum ref="LoaderNum" @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
         </div>
     </div>
@@ -618,7 +618,7 @@ export default {
             sortList: [{classTypeName: '1'}],
             type: 2,
             page: 1,
-            pageSize: 50,
+            pageSize: 100,
             keyWord: '',
             wColorId: '',
             wGemId: '',

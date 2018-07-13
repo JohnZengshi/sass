@@ -113,8 +113,8 @@
           </div>
           <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
           </div>
-          <div v-show="headerData.checkName">收货人：{{headerData.checkName}}
-          </div>
+          <!-- <div v-show="headerData.checkName">收货人：{{headerData.checkName}}
+          </div> -->
         </div>
       </template>
       <!-- 发货,退货 -->

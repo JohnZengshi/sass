@@ -47,7 +47,10 @@
     <i class="iconfont icon-shanchu1"></i>
   </span>
   <!-- 加载页数 -->
-  <LoaderNum ref="LoaderNum"></LoaderNum>
+  <LoaderNum 
+  ref="LoaderNum"
+  v-show="isDropDownLoad"
+  ></LoaderNum>
 
   <!-- 弹出框 -->
   <orderPopup 
@@ -91,7 +94,7 @@ export default{
     printLabel,
     LoaderNum
   },
-  props: ['dataList','orderData','curStatus'],
+  props: ['dataList','orderData','curStatus','isDropDownLoad'],
   
   watch : {
     curStatus:{

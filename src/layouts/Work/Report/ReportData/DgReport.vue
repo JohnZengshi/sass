@@ -292,7 +292,7 @@
         </div>
 
         <!-- 加载条数选择 -->
-        <div class="LoaderNumBtn">
+        <div class="LoaderNumBtn" v-show="dataGridOptions.type == '1'">
             <LoaderNum ref="LoaderNum" @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
         </div>
     </div>
@@ -509,7 +509,7 @@ export default {
             ],
             type: 2,
             page: 1,
-            pageSize: 50,
+            pageSize: 100,
             keyWord: '',
             wColorId: '',
             wGemId: '',
@@ -1251,6 +1251,10 @@ export default {
           }
         })
         return res
+      },
+      // 同步loaderNum组件的页数
+      changeUpdataPageSize(val){
+        this.dataGridOptions.pageSize = val;
       }
     },
     
