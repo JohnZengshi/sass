@@ -377,7 +377,7 @@ export default {
       
       cheackData(){
         let isHas = true
-        for (let i of dataGridStorage.dataList) {
+        for (let i of this.dataGridStorage.dataList) {
           if (i.productTypeList.length) {
             isHas = false
           }
