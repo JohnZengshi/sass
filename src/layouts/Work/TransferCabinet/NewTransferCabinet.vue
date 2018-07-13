@@ -447,7 +447,11 @@
                                 <span>删除</span>
                             </div>
                             <!-- 加载页数 -->
-                            <LoaderNum ref="LoaderNum" style="display:block;"></LoaderNum>
+                            <LoaderNum 
+                            ref="LoaderNum" 
+                            style="display:block;"
+                            v-show="dataGridOptions.type == '1'"
+                            ></LoaderNum>
                         </div>
                     </div>
                 </section>
@@ -507,10 +511,42 @@
         
 			<!--打印模块-->
 			<div style="display: none;">
-				<detail-template v-if="this.tabClassActive.index==0" title="调柜" :reportType="5" ref="detailTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></detail-template>
-				<intelligence-type-template v-if="this.tabClassActive.index==1" title="调柜" :reportType="5" ref="intelligenceTypeTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></intelligence-type-template>
-				<project-type-template v-if="this.tabClassActive.index==2" title="调柜" :reportType="5" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></project-type-template>
-				<custom-template v-if="this.tabClassActive.index==3" title="调柜" :reportType="5" ref="customTemplate" :sellList="dataGridStorage" :headerData="receiptsIntroList"></custom-template>
+				<detail-template 
+                    v-if="this.tabClassActive.index==0" 
+                    title="调柜" 
+                    tabTitle="明细"
+                    :reportType="5" 
+                    ref="detailTemplate" 
+                    :sellList="printDataGrid" 
+                    :headerData="receiptsIntroList"
+                    :tabSwitch="tabSwitch"></detail-template>
+				<intelligence-type-template 
+                    v-if="this.tabClassActive.index==1" 
+                    title="调柜" 
+                    tabTitle="智能分类"
+                    :reportType="5" 
+                    ref="intelligenceTypeTemplate" 
+                    :sellList="printDataGrid" 
+                    :headerData="receiptsIntroList"
+                    :tabSwitch="tabSwitch"></intelligence-type-template>
+				<project-type-template 
+                    v-if="this.tabClassActive.index==2" 
+                    title="调柜" 
+                    tabTitle="产品分类"
+                    :reportType="5" 
+                    ref="projectTypeTemplate" 
+                    :sellList="printDataGrid" 
+                    :headerData="receiptsIntroList"
+                    :tabSwitch="tabSwitch"></project-type-template>
+				<custom-template 
+                    v-if="this.tabClassActive.index==3" 
+                    title="调柜" 
+                    tabTitle="自定义"
+                    :reportType="5" 
+                    ref="customTemplate" 
+                    :sellList="printDataGrid" 
+                    :headerData="receiptsIntroList"
+                    :tabSwitch="tabSwitch"></custom-template>
 			</div>
     </div>
 </template>
@@ -736,7 +772,7 @@ export default {
                 sortList: [{barcode: '1'}],
                 type: 1,
                 page: 1,
-                pageSize: 30,
+                pageSize: 100,
                 keyWord: '',
                 wColorId: '',
                 wGemId: '',
@@ -1026,7 +1062,7 @@ export default {
                 sortFlag: '0',
                 type: 1,
                 page: 1,
-                pageSize: 30,
+                pageSize: this.$refs['LoaderNum'].pageSize,
                 keyWord: ''
               })
             } else if (port == 2) {
@@ -1102,7 +1138,7 @@ export default {
           this.loading = true;
           //this.page = 1
           this.dataGridOptions.page = 1
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize
           this.tabClassActive.index = index;
           this.setReportType(type)
           
@@ -1192,7 +1228,7 @@ export default {
                 this.inconspanactive2 = true;
             }
             this.dataGridOptions.page = 1;
-            this.dataGridOptions.pageSize = 30;
+            this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
             this.dataGridOptions.productClass = val;
             console.log("切换成旧料", this.dataGridOptions.productClass);
             //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
@@ -1717,11 +1753,14 @@ export default {
               // 避免繁琐操作，打印数据单独请求
               if(type && type == 'print'){
                 this.printDataGrid = res.data.data
-                callBack && callBack()
+                // 待页面渲染
+                setTimeout(()=>{
+                    callBack && callBack()
+                },1000)
                 //打印数据请求完成之后 初始化分页设置
                 Object.assign(this.dataGridOptions, {
                   page : 1,
-                  pageSize : 30
+                  pageSize : this.$refs['LoaderNum'].pageSize
                 })
               }else{
                 this.dataGridStorage = res.data.data

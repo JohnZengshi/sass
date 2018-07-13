@@ -48,7 +48,8 @@ export default{
           statuscurClass : 'lock',
           statusClass : ''
         }
-      ]
+      ],
+      status:'',
     }
   },
   props: ['orderNum'],
@@ -64,8 +65,7 @@ export default{
         
         //当前的状态值
         let status = res.data.data.nowStatus
-        
-        
+        this.status = status;
         if (resData.length >0) {
           this.empty()
           resData.forEach((item) => {
@@ -130,7 +130,11 @@ export default{
      }
    }
   },
-  
+  watch:{
+    status(val){
+      this.$parent.orderData.checkType = val;
+    }
+  },
   mounted(){
     this.$nextTick(() => {
       this.fetchPathData()

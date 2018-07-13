@@ -14,14 +14,14 @@
 
         <p class="bottom m-t-10" v-if="f == 0">合计</p>
 
-        <template v-else-if="f == 1">
+<!--         <template v-else-if="f == 1">
           <p class="top tl">修改前</p>
           <p class="bottom tl">修改后</p>
-        </template>
+        </template> -->
         
         <template v-else>
-          <p class="top" v-if="f != 1" v-html="oldHtml(tab)"></p>
           <p class="bottom" v-if="f != 1" v-html="v_html(tab)"></p>
+          <p class="top" v-if="f != 1" v-html="oldHtml(tab)"></p>
         </template>
 
       </template>
@@ -102,10 +102,11 @@
 
 <style lang="scss" scoped>
   .ui-table_footer {
+    position: relative;
     background: #2993f8;
     height: 60px;
     z-index: 3;
-    padding: 10px 0;
+    padding: 10px 0 10px 0;
     .th_footer {
       position: relative;
       .bottom {
@@ -130,6 +131,10 @@
       .m-t-10{
         margin-top: 10px;
       }
+
+    }
+    .th_footer:last-child{
+      padding-right: 20px;
     }
   }
 </style>

@@ -422,7 +422,7 @@ export default {
                 "beginTime": this.optionData.beginTime,
                 "endTime": this.optionData.endTime,
                 "page": this.page || "1",
-                "pageSize": "30"
+                "pageSize": "100"
             }
             seekSendStorageList(options).then((response) => {
                 if (response.data.state === 200) {

@@ -227,7 +227,7 @@ export default {
   mounted(){
     this.$nextTick(()=>{
       this.tableSwitch()
-      this._setMCustomScrollbar()
+    //   this._setMCustomScrollbar()
     })
   }
 }

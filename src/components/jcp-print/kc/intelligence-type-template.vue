@@ -3,13 +3,16 @@
     <div class="print-header">
       <h1 class="title center">{{title}}报表</h1>
       <div class="head-option">
-<!--         <div class="left">{{headerData.companyName}}</div>
+        <div class="left">公司名称：{{headerData.companyName}}</div>
+        <div class="left">分类：{{tabTitle}}</div>
+        <div class="right" :style="{ visibility : headerData.createDate ? 'visible' : 'hidden' }">查询时间:{{headerData.createDate}}</div>
+        <!--         <div class="left">{{headerData.companyName}}</div>
         <div class="right">时间 {{headerData.startTime}} 至 {{headerData.endTime}}</div> -->
       </div>
-<!--       <div class="explain-box">
+      <!--       <div class="explain-box">
         店铺名称：{{headerData.shop}}
       </div> -->
-      <div>
+      <!-- <div>
         <div class="explain-box" v-show="headerData.preparedBy">
           制单人：{{headerData.preparedBy}}
         </div>
@@ -19,11 +22,12 @@
         <div class="explain-box" v-show="headerData.payee">
           收银人：{{headerData.payee}}
         </div>
-      </div>
+      </div> -->
+      <filtrateBoxByInventory :headerData="headerData" :tabTitle="tabTitle"></filtrateBoxByInventory>
     </div>
     <div>
       <table class="table-box">
-        <tr>
+        <tr class="tm noBorderTop">
           <td v-if="positionSwitch">位置名称</td>
           <td>序号</td>
           <td>产品类别</td>
@@ -31,40 +35,40 @@
           <td>件数(件)</td>
           <td>件重(g)</td>
           <td>金重(g)</td>
-          <td>主石(ct、g)</td>
-          <td>副石(ct、g)</td>
+          <td>主石(ct,g)</td>
+          <td>副石(ct,g)</td>
           <td>售价(元)</td>
-          <td v-if="tabSwitch">成本(元)</td>
+          <td v-show="tabSwitch">成本(元)</td>
         </tr>
         <template v-if="dataList.productTypeList.length" v-for="(dataList, ind) in sellList.dataList">
-          <tr v-if="positionSwitch">
-            <td :rowspan="filterLength(dataList)">{{dataList.whereName}}</td>
+          <tr class="tr" v-if="positionSwitch">
+            <td class="tm" :rowspan="filterLength(dataList)">{{dataList.whereName}}</td>
           </tr>
           <template v-for="(productTypeList, indexTwo) in dataList.productTypeList">
-              <tr v-for="(item, index) in productTypeList.detailList">
-                  <td>{{getCurrentIndex(indexTwo, index, dataList.productTypeList)}}</td>
-                  <td v-if="index==0" :rowspan="productTypeList.detailList.length">{{productTypeList.className}}</td>
-                  <td>{{item.className}}</td>
-<!--                   <td>{{item.jewelryName}}</td> -->
-                  <td>{{item.num|NOUNIT}}</td>
-                  <td>{{item.weight|NOUNIT}}</td>
-                  <td>{{item.goldWeight|NOUNIT}}</td>
-                  <td>{{item.main}}</td>
-                  <td>{{item.deputy}}</td>
-                  <td>{{item.price|NOUNIT}}</td>
-                  <td v-if="tabSwitch">{{item.cost|NOUNIT}}</td>
-              </tr>
+            <tr class="tr" v-for="(item, index) in productTypeList.detailList">
+              <td>{{getCurrentIndex(indexTwo, index, dataList.productTypeList)}}</td>
+              <td class="tl" v-if="index==0" :rowspan="productTypeList.detailList.length">{{productTypeList.className}}</td>
+              <td class="tl">{{item.className}}</td>
+              <!--                   <td>{{item.jewelryName}}</td> -->
+              <td>{{item.num|NOUNIT}}</td>
+              <td>{{item.weight|NOUNIT}}</td>
+              <td>{{item.goldWeight|NOUNIT}}</td>
+              <td>{{item.main}}</td>
+              <td>{{item.deputy}}</td>
+              <td>{{item.price|NOUNIT}}</td>
+              <td v-show="tabSwitch">{{item.cost|NOUNIT}}</td>
+            </tr>
 
           </template>
-          <tr>
-            <td :colspan="positionSwitch ? 4 : 3">小计</td>
-            <td>{{dataList.totalNum0}}件</td>
-            <td>{{dataList.totalWeight0|GRAMUNIT}}</td>
-            <td>{{dataList.totalGoldWeight0|GRAMUNIT}}</td>
+          <tr class="tr">
+            <td class="tm" :colspan="positionSwitch ? 4 : 3">小计</td>
+            <td>{{dataList.totalNum0}}</td>
+            <td>{{dataList.totalWeight0}}</td>
+            <td>{{dataList.totalGoldWeight0}}</td>
             <td>{{dataList.totalMain0}}</td>
             <td>{{dataList.totalDeputy0}}</td>
-            <td>{{dataList.totalPrice0|RMBUNIT}}</td>
-            <td v-if="tabSwitch">{{dataList.totalCost0|RMBUNIT}}</td>
+            <td>{{dataList.totalPrice0}}</td>
+            <td v-show="tabSwitch">{{dataList.totalCost0}}</td>
           </tr>
         </template>
       </table>
@@ -76,10 +80,17 @@
 </template>
 <script>
   let currentIndex = 0
-  import {jcpPrint} from "@/tools/jcp-print";
+  import {
+    jcpPrint
+  } from "@/tools/jcp-print";
   import moment from "moment";
+  import filtrateBoxByInventory from "../components/filtrateBoxByInventory.vue"
+  import Sign from "../components/Sign.vue"
   export default {
-    components: {},
+    components: {
+      filtrateBoxByInventory,
+      Sign
+    },
     props: {
       sellList: {
         type: Object
@@ -87,52 +98,55 @@
       headerData: {
         type: Object
       },
-      title:{
-        type:String
+      title: {
+        type: String
       },
       positionSwitch: {
-        type:Boolean
+        type: Boolean
+      },
+      tabTitle:{
+				type:String
       },
       tabSwitch: { // 成本
         type: Boolean
       }
     },
-    filters:{
-      GRAMUNIT:(num)=>{
-        if(num){
-          if(Number(num)){
-            return num+"g";
+    filters: {
+      GRAMUNIT: (num) => {
+        if (num) {
+          if (Number(num)) {
+            return num + "g";
           }
           return "0g";
-        }else{
+        } else {
           return "-";
         }
       },
-      RMBUNIT:(num)=>{
-        if(num){
-          if(Number(num)){
-            return num+"元";
+      RMBUNIT: (num) => {
+        if (num) {
+          if (Number(num)) {
+            return num + "元";
           }
           return "0元";
-        }else{
+        } else {
           return "-";
         }
       },
-      NOUNIT:(num)=>{
-        if(num){
-          if(Number(num)){
+      NOUNIT: (num) => {
+        if (num) {
+          if (Number(num)) {
             return num;
           }
           return 0;
-        }else{
+        } else {
           return "-";
         }
       },
-      SELL_TYPE:(key)=>{
+      SELL_TYPE: (key) => {
         let obj = new Map();
-        obj.set("1","退货");
-        obj.set("2","换货");
-        obj.set("3","回收");
+        obj.set("1", "退货");
+        obj.set("2", "换货");
+        obj.set("3", "回收");
         return obj.get(key);
       }
     },
@@ -144,17 +158,16 @@
     data() {
       return {
         // currentIndex: 0,
-        printDate:""
+        printDate: ""
       }
     },
-    computed: {
-    },
+    computed: {},
     mounted() {
       this.printDate = moment().format("YYYY-MM-DD HH:mm");
     },
     methods: {
       // 获取当前index --> 外层index， 内层index，总数据
-      getCurrentIndex (ind, index, parm) {
+      getCurrentIndex(ind, index, parm) {
         if (ind == 0) {
           return index + 1
         }
@@ -170,16 +183,16 @@
         return Num
       },
       // 重置index
-      resetIndex( index ){
-         if( index == 0 ) currentIndex = 0
+      resetIndex(index) {
+        if (index == 0) currentIndex = 0
       },
-      addIndex(){
-       applyIndex++
+      addIndex() {
+        applyIndex++
       },
-      getIndex () {
+      getIndex() {
         return currentIndex += 1
       },
-      filterLength (parm) {
+      filterLength(parm) {
         let Num = 1
         if (parm) {
           for (let i of parm.productTypeList) {
@@ -204,7 +217,7 @@
       //     }
       //   }
       // },
-      print(){
+      print() {
         let doc = {
           documents: document,
         };
@@ -212,55 +225,12 @@
       },
     }
   }
+
 </script>
 
 <style scoped lang="scss">
-  .center {
-    text-align: center;
-  }
-  .font-bold {
-    font-weight: bold;
-  }
-  
-  .print-box{
-    font-size: 12px;
+@import "../../../assets/css/print.scss";
+  .print-box {
     width: 208mm;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .explain-box {
-    display: inline-block;
-    padding: 5px 35px 5px 0;
-  }
-  
-  .head-option div {
-    display: table-cell;
-  }
-  
-  .right {
-    text-align: right;
-  }
-  
-  .head-option {
-    display: table;
-    width: 100%;
-    margin-bottom: 5px;
-  }
-  
-  .table-box {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  td{
-    font-size: 12px;
-    border: 1px solid;
-    line-height: 25px;
-    text-align: center;
-  }
-  .printDate{
-    text-align: right;
-    padding: 15px 0;
   }
 </style>

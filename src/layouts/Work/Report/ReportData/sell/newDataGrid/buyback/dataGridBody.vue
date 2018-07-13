@@ -41,6 +41,7 @@
                   v-else-if="tab.text == '产品类别' && index1 == 0"
                   :class="{backLine:tab.childType != ''}" 
                   :style="_calculateClass(tab)" 
+                   @click="openLabel({}, tb, caty.sellTypeName)"
                   >
                   {{tb[tab.childType]}}
                 </div>
@@ -48,7 +49,7 @@
                 <div
                   class="tb-td" 
                   v-else
-                  @click="openLabel({}, tb)"
+                  @click="openLabel({}, tb, caty.sellTypeName)"
                   :class="{backLine:tab.childType != ''}" 
                   :style="_calculateClass(tab)" 
                   v-text="tab.childType == ''? getIndex() : tb[tab.totalType] ? tb[tab.totalType] : '-' ">
@@ -61,7 +62,7 @@
           <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
           <div class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
             <!-- 类型小计 -->
-            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="_calculateClass(tab)" v-html="f == 0 ? '<b>小计</b>' : caty[tab.allTotal]"></div>
+            <div @click="openLabel({}, caty, caty.sellTypeName)" class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="_calculateClass(tab)" v-html="f == 0 ? '<b>小计</b>' : caty[tab.allTotal]"></div>
           </div>
         </div>
       <div v-if="isDate" class="no-data"></div>
@@ -86,30 +87,13 @@
 
 
               <div class="branch-tb category-td" :key="index" v-else-if="tab.text == '产品类别' && index1 == 0" :style="_calculateClass(tab)">
-                <i @click="openLabel({}, tb)" :style="'height:'+ tb.detailList.length * 40 +'px;'">{{tb[tab.childType]}}</i>
+                <i @click="openLabel({}, tb, caty.sellTypeName)" :style="'height:'+ tb.detailList.length * 40 +'px;'">{{tb[tab.childType]}}</i>
               </div>
-
-<!--                 <div 
-                  class="branch-tb category-td" 
-                  v-else-if="tab.text == '产品类别'" 
-                  :style="_calculateClass(tab)">
-                  <i :style="sellTypeNameXJ(tb)">{{tab.childType}}</i>
-
-                </div> -->
-<!-- 
-                <div 
-                  class="tb-td" 
-                  v-else-if="tab.text == '产品类别'"
-                  :class="{backLine:tab.childType != ''}"
-                  :style="_calculateClass(tab)" 
-                  >
-                  {{tb[tab.childType]}}
-                </div> -->
                 
                 <div 
                   class="tb-td" 
                   v-else
-                  @click="openLabel(tb1, tb)"
+                  @click="openLabel(tb1, tb, caty.sellTypeName)"
                   :class="{backLine:tab.childType != ''}" 
                   :style="_calculateClass(tab)" 
                   v-text="tab.childType == ''? getIndex() : tb1[tab.childType] ? tb1[tab.childType] : '-' ">
@@ -119,7 +103,7 @@
             </div>
             
             <div class="tb-total" style="background:#ECF3FF;">
-              <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="_calculateClass(tab)" v-html="f == 1 ? '<b>小计</b>' : tb[tab.totalType]"></div>
+              <div @click="openLabel({}, tb, caty.sellTypeName)" class="tb-td" v-for="(tab,f) in detailDataGridColumn" :style="_calculateClass(tab)" v-html="f == 1 ? '<b>小计</b>' : tb[tab.totalType]"></div>
             </div>
 
           </div>
@@ -213,14 +197,30 @@
       this.tabCellHeight()
     },
     methods: {
-      openLabel (parm, caty) {
+      openLabel (parm, caty, sellType) {
         this.$store.dispatch('getLabelData', {
           type: '3',
-          data: Object.assign({}, parm, {
-            productTypeId: caty.productTypeId,
+          data: Object.assign({}, parm, this.dataGridOptions, {
             orderType: this.orderType,
-          }, this.dataGridOptions)
+            sellType: this.filterSellType(sellType),
+          }, {
+            productTypeId: caty.productTypeId,
+            sellStatus: '0',
+            productClass: ''
+          })
         })
+      },
+      filterSellType (parm) {
+        switch (parm) {
+          case '销售':
+            return '1'
+          case '退货':
+            return '2'
+          case '换货':
+            return '3'
+          case '回收':
+            return '4'
+        }
       },
       _calculateClass (parm) {
         return calculateClass(parm)
@@ -365,9 +365,9 @@
         let length = this.dataGridStorage.detailList.length;
         let upDataNum = this.$parent.$parent.$refs["LoaderNum"].pageSize;
         this.pageNum = 1;
-        let pageSize = 30
+        let pageSize = 50
         //   this.dgDataList = [];
-        if (Number(upDataNum)) {
+        if (Number(upDataNum) != 0) {
           upDataNum = Number(upDataNum);
           if (totalNum - length < upDataNum) {
             pageSize = 0

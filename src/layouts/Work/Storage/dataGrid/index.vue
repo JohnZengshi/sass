@@ -81,7 +81,7 @@
         },
         emptyAddClass: '',
         pageNum: 1,
-        pageSize: 30,
+        pageSize: "100",
       }
     },
     components: {
@@ -92,7 +92,7 @@
       // LoaderNum
     },
 
-    props: ['orderNum', 'slipPointer', 'goodsAdd', 'copyDataList', 'isRefreshFooter', 'curStatus', 'isShow'],
+    props: ['orderNum', 'slipPointer', 'goodsAdd', 'copyDataList', 'isRefreshFooter', 'curStatus', 'isShow', 'dataGridOptions'],
 
     watch: {
       datagridSelectData: function () {},
@@ -175,12 +175,13 @@
       },
       // 获取商品列表
       fetchGoodList() {
+        debugger
         this.$emit('updataLoader', true)
-        seekNewGoodsInfoList({
+        seekNewGoodsInfoList(Object.assign({
           page: this.pageNum,
           pageSize: this.pageSize,
           orderNum: this.orderNum
-        }).then((res) => {
+        }, this.dataGridOptions)).then((res) => {
           if (res.data.state == 200) {
             // this.dgDataList = _.concat(this.dgDataList, res.data.data.rowDataList)
             this.dgDataList = res.data.data.rowDataList;
@@ -343,7 +344,7 @@
         let upDataNum = this.$parent.$refs["utilsdatagrid"].$refs["LoaderNum"].pageSize;
         this.pageNum = 1;
         //   this.dgDataList = [];
-        if (Number(upDataNum)) {
+        if (Number(upDataNum) != 0) {
           upDataNum = Number(upDataNum);
           if (totalNum - length < upDataNum) {
             this.pageSize = 0
@@ -383,6 +384,7 @@
     background-color: #fff; //transition: all .5s cubic-bezier(0.51, -0.04, 0.4, 0.4);
     position: relative;
     overflow: auto;
+    transition: height .5s;
     &.animat-scroll {
       height: 540px;
     }

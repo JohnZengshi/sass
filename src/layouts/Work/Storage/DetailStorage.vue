@@ -825,7 +825,7 @@ export default {
         if (!this.getProductDetail.rowDataList) {
             this.workProductDetail({
                 "page": "1",
-                "pageSize": "30",
+                "pageSize": "100",
                 "objId": this.newDatas.orderNumber,
                 // "objId": this.newDatas.orderNumber,
                 "type": "1",
@@ -1325,7 +1325,7 @@ export default {
             if (response.data.state === 200) {
                 this.workProductDetail({
                     "page": "1",
-                    "pageSize": "30",
+                    "pageSize": "100",
                     "objId": this.newDatas.orderNumber,
                     "type": "1",
                     "applyType": 4

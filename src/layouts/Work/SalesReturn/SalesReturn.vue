@@ -435,7 +435,7 @@ export default {
                 "beginTime": this.optionData.beginTime,
                 "endTime": this.optionData.endTime,
                 "page": this.page || "1",
-                "pageSize": "30",
+                "pageSize": "100",
                 "productProperty": '-1'
             }
             seekOutCargoList(options).then((response) => {

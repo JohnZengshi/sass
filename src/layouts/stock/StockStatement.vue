@@ -31,7 +31,7 @@
               :propList="shopList"
               @dropReturn="dropReturn"
               @clearInfo="clearInfo"
-               @clearTitletext = 'clearTitletext'
+              @clearTitletext = 'clearTitletext'
             >
             </DropDownMenu>
             <span class="spaceMark">|</span>
@@ -49,6 +49,18 @@
             <div v-else class="selected_dropdown el-dropdown placeholder disabled">
                <span class="el-dropdown-link">柜组</span>
                <i class="iconfont icon-arrow-down myicon"></i>
+            </div>
+          </li>
+          <li>
+            <div class="xj-time-wrap">
+                    <el-date-picker
+                        format
+                        v-model="beginTime"
+                        type="date"
+                        placeholder="选择日期"
+                    >
+                    </el-date-picker>
+                    <!-- <el-date-picker format size="mini" v-model="beginTime" @change="getTimeData"  type="date" placeholder="选择开始时间"></el-date-picker> -->
             </div>
           </li>
         </ul>
@@ -81,6 +93,7 @@
     
     <StockTable 
       class="stock-table-wrap"
+      :searchDate="_formattingTime(beginTime)"
       :changeRepository="changeRepository"
       :changeShop="changeShop"
       :changeCounter="changeCounter">
@@ -99,7 +112,7 @@
   import OldProduct from './OldProduct'
   import Charts from './Charts'
   import StatisticsNumber from './StatisticsNumber'
-  import {GetDateStr, GetMonth} from 'assets/js/getTime'
+  import {GetDateStr, GetMonth, formattingTime} from 'assets/js/getTime'
     import printChange from "./base/printChange";
   import {seekRepositoryList, seekGetShopListByCo, seekShowCounterList, seekStatisticalIndex} from 'Api/commonality/seek'
   import DropDownMenu from 'components/template/DropDownMenu'
@@ -115,6 +128,33 @@
     },
     data () {
       return {
+        // pickerOptions1: {
+        //   shortcuts: [{
+        //     text: '今天',
+        //     onClick(picker) {
+        //       picker.$emit('pick', new Date());
+        //     }
+        //   }, {
+        //     text: '昨天',
+        //     onClick(picker) {
+        //       const date = new Date();
+        //       date.setTime(date.getTime() - 3600 * 1000 * 24);
+        //       picker.$emit('pick', date);
+        //     }
+        //   }, {
+        //     text: '一周前',
+        //     onClick(picker) {
+        //       const date = new Date();
+        //       date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
+        //       picker.$emit('pick', date);
+        //     }
+        //   }]
+        // },
+        beginTime: new Date(),
+        dataGridOptions: {
+          beginTime: formattingTime(new Date())
+        },
+
         kwcodedelete:false,//通过 这个参数 实现 代码判断
         dpcodedelete:false,
         takeUserDisabled : true,
@@ -159,12 +199,21 @@
       }
     },
     methods: {
+      // getTimeData(val) {
+      //   console.log('时间---', this.beginTime)
+      //     console.log('时间', val)
+      //     this.dataGridOptions.beginTime = formattingTime(val)
+      //     this.send();
+      // },
       clearTitletext(val){
          if(val.type == '店铺'){
             this.dpcodedelete = false;
          }else if(val.type == "库位"){
             this.kwcodedelete = false;
          }
+      },
+      _formattingTime (parm) {
+        return formattingTime(parm)
       },
       clearInfo (val) {
         if (val.type == "柜组") {
@@ -229,30 +278,31 @@
       },
       // 统计指数数据
       _statisticalIndex (biaoji) { // 统计指数
-        let timeDatas = GetMonth()
-        let options = {
-          startTime: timeDatas.startTime,
-          endTime: timeDatas.endTime,
-          storageId: this.changeRepository.repositoryId,//库位
-          shopId: this.changeShop.shopId,//店铺
-          counterId: this.changeCounter.counterId//内柜
-        }
-        console.log('获取参数值:',options);
+        return
+        // let timeDatas = GetMonth()
+        // let options = {
+        //   startTime: timeDatas.startTime,
+        //   endTime: timeDatas.endTime,
+        //   storageId: this.changeRepository.repositoryId,//库位
+        //   shopId: this.changeShop.shopId,//店铺
+        //   counterId: this.changeCounter.counterId//内柜
+        // }
+        // console.log('获取参数值:',options);
 
-        seekStatisticalIndex(options)
-          .then(res => {
-            console.log('是否请求成功?',res);
-            if (res.data.state === 200) {
-              let allDatas = res.data.data
-              allDatas.numIconWidth = this.getIconWidth(allDatas.beginNum, allDatas.endNum, 60)
-              allDatas.WeightIconWidth = this.getIconWidth(allDatas.beginWeight, allDatas.endWeight, 65)
-              allDatas.priceIconWidth = this.getIconWidth(allDatas.beginPrice, allDatas.endPrice, 46)
-              allDatas.costIconWidth = this.getIconWidth(allDatas.beginCost, allDatas.endCost, 46)
-              this.statisticalIndexData = allDatas;
-            } else {
-              this.$store.dispatch('workPopupError', res.data.msg);
-            }
-          })
+        // seekStatisticalIndex(options)
+        //   .then(res => {
+        //     console.log('是否请求成功?',res);
+        //     if (res.data.state === 200) {
+        //       let allDatas = res.data.data
+        //       allDatas.numIconWidth = this.getIconWidth(allDatas.beginNum, allDatas.endNum, 60)
+        //       allDatas.WeightIconWidth = this.getIconWidth(allDatas.beginWeight, allDatas.endWeight, 65)
+        //       allDatas.priceIconWidth = this.getIconWidth(allDatas.beginPrice, allDatas.endPrice, 46)
+        //       allDatas.costIconWidth = this.getIconWidth(allDatas.beginCost, allDatas.endCost, 46)
+        //       this.statisticalIndexData = allDatas;
+        //     } else {
+        //       this.$store.dispatch('workPopupError', res.data.msg);
+        //     }
+        //   })
       },
       getIconWidth (begins = 0, ends = 0, maxWidth) { // 计算%
         let datas = {
@@ -288,8 +338,8 @@
             if (res.data.state === 200) {
               this.repositoryList = [...res.data.data.repositoryList, {
                 isDefault: "Y",
-                // repositoryId: "0",
-                repositoryId: "",
+                repositoryId: "0",
+                // repositoryId: "",
                 repositoryName: "全部仓库"
               }]
             }
@@ -304,8 +354,8 @@
           .then(res => {
             if (res.data.state === 200) {
               this.shopList = [...res.data.data.shopList, {
-                // shopId: '0',
-                shopId: '',
+                shopId: '0',
+                // shopId: '',
                 shopName: '全部店铺'
               }]
             }
@@ -368,11 +418,12 @@
     },
     
     mounted(){
-       this.$nextTick(()=>{
-          this._seekRepositoryList()
-          this._seekGetShopListByCo()
-          this._statisticalIndex()
-       })
+      // this.getTimeData(this.beginTime)
+      this.$nextTick(()=>{
+        this._seekRepositoryList()
+        this._seekGetShopListByCo()
+       // this._statisticalIndex()
+      })
     }
   }
 </script>
@@ -416,7 +467,7 @@
       position: absolute;
       z-index: 999;
       height: 40px;
-      width: 1270px;
+      width: 1250px;
       // background-color: #f5f8f7;
       margin-left: -5px;
       margin-bottom:15px;

@@ -6,9 +6,9 @@
     </div>
 
     <div title="打印行范围" class="l-p-range-box">
-      <input type="text" @blur="amendNum" placeholder="打印行范围" v-model="printNum.beginNum">
+      <input type="text" :disabled="printNum.allChecked" @blur="amendNum" placeholder="打印行范围" v-model="printNum.beginNum">
       <span>至</span>
-      <input type="text" @blur="amendNum" placeholder="打印行范围" v-model="printNum.endNum">
+      <input type="text" :disabled="printNum.allChecked" @blur="amendNum" placeholder="打印行范围" v-model="printNum.endNum">
     </div>
 
     <DownMenu :isSolid="true" :titleInfo="currentTemplate.templateName ? currentTemplate.templateName : '选择模板'" :showList="labelTemplateList" :nameKey="'templateName'" @changeData="changeTemplateId" @clearInfo="clearTemplate"></DownMenu>
@@ -18,7 +18,7 @@
     <template v-if="isPopup">
         <el-button type="primary" size="small" class="ml-10" @click.native="seekPrintData('Y')">预览</el-button>
         <el-button type="primary" size="small" class="back-btn" @click.native="seekPrintData('N')">打印</el-button>
-        <el-button type="primary" size="small" class="back-btn" @click.native="seekPrintData('N')">导出</el-button>
+<!--         <el-button type="primary" size="small" class="back-btn" @click.native="seekPrintData('N')">导出</el-button> -->
     </template>
 
     <template v-else>
@@ -63,13 +63,13 @@ export default {
   },
   methods: {
     changeAllChecked (parm) {
-      if (this.printNum.allChecked) {
-        this.printNum.beginNum = 1
-        this.printNum.endNum = this.dataGridStorage.length
-      } else {
-        this.printNum.beginNum = ''
-        this.printNum.endNum = ''
-      }
+      // if (this.printNum.allChecked) {
+      //   this.printNum.beginNum = 1
+      //   this.printNum.endNum = this.dataGridStorage.length
+      // } else {
+      //   this.printNum.beginNum = ''
+      //   this.printNum.endNum = ''
+      // }
       this.$emit('amendNum', this.printNum)
     },
     // 改变数据
@@ -98,7 +98,13 @@ export default {
 
     },
     seekPrintData (parm) {
-      debugger
+      if (!this.currentTemplate.templateId) {
+        this.$message({
+          type: 'error',
+          message: '请选择模板'
+        })
+        return
+      }
       let barcode = {
         barcodeList: []
       }
@@ -110,12 +116,29 @@ export default {
       }
       
       this.loading = true
-      seekGetPrintLabelList(Object.assign({}, this.filterCondition, barcode, {
-        startNum: this.printNum.beginNum,
-        overNum: this.printNum.endNum
-      })).then(res => {
+      let checkData = {}
+      if (this.printNum.allChecked) {
+        checkData = {
+          page: '1',
+          pageSize: '0'
+        }
+      } else {
+        checkData = {
+          startNum: this.printNum.beginNum,
+          overNum: this.printNum.endNum
+        }
+      }
+      seekGetPrintLabelList(Object.assign({}, this.filterCondition, barcode, checkData)).then(res => {
           if (res.data.state == 200) {
-            this._previewTemplate(res.data.data.dataList, parm)
+            if (!res.data.data.dataList.length) {
+              this.$message({
+                type: 'error',
+                message: '无商品数据'
+              })
+              return
+            } else {
+              this._previewTemplate(res.data.data.dataList, parm)
+            }
           } else {
             this.$message({
               type: 'error',
@@ -130,20 +153,6 @@ export default {
       let productId = []
       for (let i of data) {
         productId.push(i.productId)
-      }
-      if (!productId.length) {
-        this.$message({
-          type: 'error',
-          message: '请选择商品'
-        })
-        return
-      }
-      if (!this.currentTemplate.templateId) {
-        this.$message({
-          type: 'error',
-          message: '请选择模板'
-        })
-        return
       }
       this.$store.dispatch('previewTemplate', this.currentTemplate.templateId).then(json => {
         if(json.state == 200) {

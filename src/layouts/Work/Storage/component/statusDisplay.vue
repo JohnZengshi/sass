@@ -172,6 +172,8 @@ export default{
         ]
       }).then((res) => {
         // 切换失败
+        // 更新单据简介
+        this.$parent.receiptRKSynopsis();
         if(res.data.state == 99) {
           this.$message({
             type:'error',
@@ -179,7 +181,7 @@ export default{
          })
         }
       })
-      
+
     },
     
     // 更新备注显示权限

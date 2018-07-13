@@ -1,11 +1,10 @@
 <template>
     <div class="drop-down-colums-main">
         <div class="tltle" :class="{actions: isChecked}">
-            {{titleData}}
-            <i class="iconfont icon-xiala"></i>
+            {{titleData}}<i class="iconfont icon-xiala"></i>
         </div>
         <div class="list-box">
-            <ul class="list-left">
+            <ul class="list-left" v-if="propsList.length">
                 <el-checkbox-group v-if="allName" v-model="allChecked" @change="checkedAll">
                     <li  @mouseover="selLeftItem([], 0)">
                         <el-checkbox :indeterminate="false" :label="'allId'" :class="{active: allName[0]}" style="font-size: 14px;">{{allName}}</el-checkbox>
@@ -15,7 +14,7 @@
 
                 <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
                     <li @mouseover="selLeftItem(item, index)" v-for="(item, index) in propsList">
-                       <el-checkbox :indeterminate="false" :label="item.id" :style="filterStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
+                       <el-checkbox :indeterminate="filterIndeterminate(item.childrenList, smallIdList)" :label="item.id" :style="filterStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
                     </li>
                 </el-checkbox-group>
 
@@ -105,14 +104,12 @@ export default {
                                     return
                                 }
                             })
-                            return
+                            continue
                         }
                     }
                 } 
             } else if (newValue.length > oldValue.length) { // 新增一个值
-
                 for (let i of this.propsList) {
-
                     let isHas = true
 
                     for (let j of i.childrenList) {
@@ -123,7 +120,7 @@ export default {
                     }
 
                     if (this.checkedCities.includes(i.id)) {
-                        return
+                        continue
                     } else {
                         if (isHas) {
                            this.checkedCities.push(i.id) 
@@ -136,7 +133,12 @@ export default {
     },
     methods: {
         initData (parm) {
-            this.smallIdList = parm
+            if (parm) {
+                this.smallIdList = parm
+                if (parm.length) {
+                    this.isChecked = true
+                }       
+            }
         },
         filterStyle (parm) {
             let datas = ''
@@ -149,6 +151,27 @@ export default {
         },
         filterSamllStyle (parm) {
             this.smallIdList.includes(parm)
+        },
+        filterIndeterminate (current, checkeList) {
+            let currentDatas = []
+            let currentCheckeList = []
+
+            for (let i of current) {
+                currentDatas.push(i.id)
+            }
+
+            for (let i of checkeList) {
+                if (currentDatas.includes(i)) {
+                    currentCheckeList.push(i)
+                }
+            }
+
+            if (currentDatas.length == currentCheckeList.length) {
+                return false
+            } else if (currentCheckeList.length) {
+                return true
+            }
+
         },
         checkedAll (parm) {
             if (parm.length) {
@@ -221,26 +244,29 @@ export default {
 </style>
 <style scoped lang="scss">
 .drop-down-colums-main {
-    width: 78px;
-    height: 28px;
+    // width: 78px;
+    // height: 22px;
     //border: 1px solid #d6d6d6;
     //border-radius: 4px;
+    padding: 7px 0;
     float: left;
     position: relative;
     margin: 0 4px;
     .tltle {
         width: 100%;
         height: 100%;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
-        line-height: 26px;
+        line-height: 12px;
         cursor: pointer;
         color: #666;
-        i {
-            position: absolute;
-            right: 0;
-            top: 0;
-            line-height: 28px;
+        >i {
+            line-height: 12px;
+            font-size: 12px;
+            // position: absolute;
+            // right: 0;
+            // top: 0;
+            // line-height: 28px;
         }
         &.actions{
             color: #2993f8;
@@ -346,7 +372,7 @@ export default {
     }
     &:hover{
         .list-box {
-            z-index: 999;
+            z-index: 1000;
             opacity: 1;
             top: 30px;
         }

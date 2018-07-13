@@ -25,7 +25,7 @@
 	</div>
 </div>
 	
-<div class="xj-report-table-container xj-report-table-container-scroll con-line" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
+<div class="xj-report-table-container xj-report-table-container-scroll con-line" :class="{'xj-product-report-table-container': isProductStyle}" ref="tableContainer" v-else-if="reportType == 2 || reportType == 4">
 	<div class="tableBox">
 		<div class="tb-category" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind">
 			<div v-for="(tb, index) in caty.productTypeList" :key="index">
@@ -67,6 +67,7 @@
 						v-for="(tab,f) in detailDataGridColumn" 
 						:key="f"
 						:style="_calculateClass(tab)" 
+            @click="openLabel({}, tb)"
 						v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
 					></div>
 				</div>
@@ -85,7 +86,7 @@
 </div>
 
 <!--产品分类-->
-<div class="xj-report-table-container xj-report-table-container-scroll produc-line" ref="tableContainer" v-else-if="reportType == 3">
+<div class="xj-report-table-container xj-report-table-container-scroll produc-line" :class="{'xj-product-report-table-container': isProductStyle}" ref="tableContainer" v-else-if="reportType == 3">
 	<div class="tableBox">
 		<div class="tb-category" v-for="(caty,index) in dataGridStorage.dataList" :key="index">
 		  <template v-for="(tb, index) in caty.productTypeList">
@@ -95,6 +96,7 @@
 					  	:key="index4"
   						v-if="tab.text == '产品类别' && index == 0" 
   						:style="_calculateClass(tab)"
+              @click="openLabel({}, tb)"
   						v-text="tb[tab.childType]"
   						>
   						<!-- <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i> -->
@@ -138,7 +140,7 @@ export default {
 	components:{
 		ReadMoreData,
 	},
-	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch', 'dataGridOptions', 'orderType'],
+	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch', 'dataGridOptions', 'orderType', 'isProductStyle'],
 	
 	watch:{
 		'dataGridStorage':function(){
@@ -172,6 +174,7 @@ export default {
         data: Object.assign({}, parm, this.dataGridOptions, {
           productTypeId: caty.productTypeId,
           orderType: this.orderType,
+          newOrderId: this.$route.query.orderNumber
         })
       })
     },
@@ -244,7 +247,6 @@ export default {
 		 
 		//  监听表格滚动
 		watchScroll(el) { // 下拉加载数据
-      console.log('------------------------------------------------=============')
 		  let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
 		  let clientHeight = el.target.clientHeight; // 元素的高度
 		  let scrollTop = el.target.scrollTop; // 滚动了的距离
@@ -268,9 +270,9 @@ export default {
           let length = currentDataList.length;
 		  let upDataNum = this.$parent.$parent.$refs["LoaderNum"].pageSize;
 		  this.pageNum = 1;
-		  let pageSize = 30
+		  let pageSize = 50
           //   this.dgDataList = [];
-          if (Number(upDataNum)) {
+          if (Number(upDataNum) != 0) {
             upDataNum = Number(upDataNum);
             if (totalNum - length < upDataNum) {
               pageSize = 0

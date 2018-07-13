@@ -32,7 +32,7 @@ module.exports = {
         { 
     		id: '3',  //id 
     		text: '首饰名称', //头部title文字
-    		width:'155', //单元格宽
+    		width:'200', //单元格宽
     		type:'', //合计类型值
     		unit: '', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -170,7 +170,7 @@ module.exports = {
         { 
     		id: '3',  //id 
     		text: '首饰名称', //头部title文字
-    		width:'150', //单元格宽
+    		width:'200', //单元格宽
     		type:'', //合计类型值
     		unit: '', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -187,7 +187,7 @@ module.exports = {
 		{
     		id: '2',  //id 
     		text: '件数', //头部title文字
-    		width:'120', //单元格宽
+    		width:'60', //单元格宽
     		type:'totalNum', //合计类型值
     		unit: '(件)', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -330,13 +330,14 @@ module.exports = {
 		{
     		id: '2',  //id 
     		text: '件数', //头部title文字
-    		width:'120', //单元格宽
+    		width:'60', //单元格宽
     		type:'totalNum', //合计类型值
     		unit: '(件)', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
     		totalName : '',//底部合计 提示文字
     		childType : 'totalNum1', //单元格类型
     		totalType : 'totalNum0' , //小计
+            totalType0 : 'totalNum0' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
 		  textAlign: 'right',
@@ -352,6 +353,7 @@ module.exports = {
     		totalName : '',//底部合计 提示文字
     		childType : 'totalWeight1', //单元格类型
     		totalType : 'totalWeight0' , //小计
+            totalType0 : 'totalWeight0' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
 		  textAlign: 'right',
@@ -383,6 +385,7 @@ module.exports = {
     		totalName : '',//底部合计 提示文字
     		childType : 'totalMain1', //单元格类型
     		totalType : 'totalMain0' , //小计
+            totalType0 : 'totalMain0' , //小计
             toFixed : false, //是否进行小数点精确截取
             textAlign: 'right',
             countCut : 0 //小数点截取位数
@@ -397,6 +400,7 @@ module.exports = {
     		totalName : '',//底部合计 提示文字
     		childType : 'totalDeputy1', //单元格类型
     		totalType : 'totalDeputy0' , //小计
+            totalType0 : 'totalDeputy0' , //小计
             toFixed : false, //是否进行小数点精确截取
             textAlign: 'right',
             countCut : 0 //小数点截取位数
@@ -411,7 +415,8 @@ module.exports = {
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
     		totalName : '',//底部合计 提示文字
     		childType : 'totalPrice1', //单元格类型
-    		totalType : 'totalPrice0' , //小计
+            totalType : 'totalPrice0' , //小计
+    		totalType0 : 'totalPrice0' , //小计
             toFixed : false, //是否进行小数点精确截取
 			countCut : 0, //小数点截取位数
             textAlign: 'right',
@@ -468,7 +473,7 @@ module.exports = {
 		{
     		id: '2',  //id 
     		text: '首饰名称', //头部title文字
-    		width:'150', //单元格宽
+    		width:'200', //单元格宽
     		type:'', //合计类型值
     		unit: '', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
@@ -485,7 +490,7 @@ module.exports = {
 		{
     		id: '2',  //id 
     		text: '件数', //头部title文字
-    		width:'120', //单元格宽
+    		width:'60', //单元格宽
     		type:'totalNum', //合计类型值
     		unit: '(件)', //头部单位补充文字
     		footerUnit: '',//底部单位补充文字 可以为元、万或件等等 抽象单位
