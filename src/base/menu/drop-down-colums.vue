@@ -4,7 +4,7 @@
             {{titleData}}<i class="iconfont icon-xiala"></i>
         </div>
         <div class="list-box">
-            <ul class="list-left">
+            <ul class="list-left" v-if="propsList.length">
                 <el-checkbox-group v-if="allName" v-model="allChecked" @change="checkedAll">
                     <li  @mouseover="selLeftItem([], 0)">
                         <el-checkbox :indeterminate="false" :label="'allId'" :class="{active: allName[0]}" style="font-size: 14px;">{{allName}}</el-checkbox>
@@ -14,7 +14,7 @@
 
                 <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange">
                     <li @mouseover="selLeftItem(item, index)" v-for="(item, index) in propsList">
-                       <el-checkbox :indeterminate="false" :label="item.id" :style="filterStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
+                       <el-checkbox :indeterminate="filterIndeterminate(item.childrenList, smallIdList)" :label="item.id" :style="filterStyle(item.id)" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
                     </li>
                 </el-checkbox-group>
 
@@ -104,14 +104,12 @@ export default {
                                     return
                                 }
                             })
-                            return
+                            continue
                         }
                     }
                 } 
             } else if (newValue.length > oldValue.length) { // 新增一个值
-
                 for (let i of this.propsList) {
-
                     let isHas = true
 
                     for (let j of i.childrenList) {
@@ -122,7 +120,7 @@ export default {
                     }
 
                     if (this.checkedCities.includes(i.id)) {
-                        return
+                        continue
                     } else {
                         if (isHas) {
                            this.checkedCities.push(i.id) 
@@ -136,10 +134,22 @@ export default {
     methods: {
         initData (parm) {
             if (parm) {
-                this.smallIdList = parm
                 if (parm.length) {
                     this.isChecked = true
-                }       
+                }
+                if (this.propsList.length) {
+                    this.smallIdList = parm
+                } else {
+                    setTimeout(() => {
+                        if (this.propsList.length) {
+                            this.smallIdList = parm
+                        } else {
+                            setTimeout(() => {
+                                this.smallIdList = parm
+                            })
+                        }
+                    }, 1000)
+                }
             }
         },
         filterStyle (parm) {
@@ -153,6 +163,27 @@ export default {
         },
         filterSamllStyle (parm) {
             this.smallIdList.includes(parm)
+        },
+        filterIndeterminate (current, checkeList) {
+            let currentDatas = []
+            let currentCheckeList = []
+
+            for (let i of current) {
+                currentDatas.push(i.id)
+            }
+
+            for (let i of checkeList) {
+                if (currentDatas.includes(i)) {
+                    currentCheckeList.push(i)
+                }
+            }
+
+            if (currentDatas.length == currentCheckeList.length) {
+                return false
+            } else if (currentCheckeList.length) {
+                return true
+            }
+
         },
         checkedAll (parm) {
             if (parm.length) {

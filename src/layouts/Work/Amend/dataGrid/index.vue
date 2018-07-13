@@ -138,7 +138,6 @@ export default{
       this.$refs.detailTemplate.print();
     },
     watchScroll (el) { // 下拉加载数据
-      // console.log(el)
       let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
       let clientHeight = el.target.clientHeight; // 元素的高度
       let scrollTop = el.target.scrollTop; // 滚动了的距离

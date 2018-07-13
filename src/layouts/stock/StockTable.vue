@@ -119,7 +119,7 @@ import { getProductTypeList, seekProductClassList, seekGetShopListByCo, showCoun
 import LoaderNum from 'components/work/loaderNum.vue'
 
 export default {
-  props: ["changeRepository", "changeShop", "changeCounter"],
+  props: ["changeRepository", "changeShop", "changeCounter", 'searchDate'],
   data() {
     return {
       customList: [{
@@ -307,6 +307,14 @@ export default {
       this.dataGridOptions.page = 1;
       this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       if (this.changeCounter.counterId) {
+        this.send();
+      }
+    },
+    "searchDate" (val) {
+      this.dataGridOptions.searchDate = val;
+      this.dataGridOptions.page = 1;
+      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
+      if (this.searchDate) {
         this.send();
       }
     },

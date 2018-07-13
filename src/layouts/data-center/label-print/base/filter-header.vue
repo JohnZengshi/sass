@@ -319,12 +319,7 @@ export default {
       }
       if (parm.shopId) {
         this.$refs.shopWrap.initData(parm.shopId)
-      }
-      // this.$refs.combinationDropDownColumsBox.initData(parm)
-      // this.$refs.productTypeIdWrap.initData(parm.productTypeId)
-      // this.$refs.colourIdWrap.initData(parm.colourId)
-      // this.$refs.jeweIdWrap.initData(parm.jeweId)
-      // this.$refs.jewelryIdWrap.initData(parm.jewelryId)   
+      }  
     },
     choseMenu () {
       this.tabSwitch = !this.tabSwitch
@@ -383,7 +378,6 @@ export default {
       this.$emit('seekProduct', options)
     },
     storageLocation (parm) {
-      debugger
       this.filterCondition.storageId = parm.bigList
       this.$emit('filterData', this.filterCondition)
     },
@@ -451,16 +445,36 @@ export default {
       }
       showCounterList(options)
         .then(res => {
-          item.childrenList = res.data.data.counterList
-          item.id = item.shopId
-          item.name = item.shopName
-          for (let j of item.childrenList) {
-            j.name = j.counterName
-            j.id = j.counterId
+          if (res.data.state == 200) {
+            item.childrenList = res.data.data.counterList
+            item.id = item.shopId
+            item.name = item.shopName
+            for (let j of item.childrenList) {
+              j.name = j.counterName
+              j.id = j.counterId
+            }
+            this.shopDataList.push(item)
+          } else {
+            this.$message({
+              type: "info",
+              message: res.data.msg
+            })
           }
-          this.shopDataList.push(item)
         })
     },
+    // initShowCounterList (parm) {
+    //   let options = {
+    //     shopId: parm
+    //   }
+    //   showCounterList(options)
+    //     .then(res => {
+    //       let datas = []
+    //       for (let i of res.data.data.counterList) {
+    //         datas.push(j.counterId)
+    //       }
+    //       this.$refs.shopWrap.initData(datas)
+    //     })
+    // },
     changeStateData () {
 
     },

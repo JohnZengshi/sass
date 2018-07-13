@@ -107,7 +107,7 @@
 .xj-time-wrap{
     /* 日期控件 */
     display: inline-block;
-    width: 100px;
+    width: 120px;
     border:1px solid #d6d6d6;
     border-radius: 5px;
     height: 30px;
@@ -146,11 +146,10 @@
     //     }
     // }
     
-.el-input--mini .el-input__inner{
-  height: 30px;
-  background: #fff;
-}
-
+    .el-input--mini, .el-input__inner{
+      height: 30px!important;
+      background: #fff!important;
+    }
     .el-date-editor{ width: 100%;}
 }
 /* 面包屑 */

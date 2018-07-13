@@ -68,7 +68,8 @@
   				:slipPointer="curStatus.slipPointer" 
   				:goodsAdd="goodsAdd" ref="datagrid" 
   				:copyDataList="copyOrderArray" 
-  				:isRefreshFooter="isRefreshFooter" 
+  				:isRefreshFooter="isRefreshFooter"
+          :dataGridOptions="dataGridOptions"
   				@add="add" 
   				@updataApi="updataApi"
   				@updataData="updataData" 
@@ -342,13 +343,16 @@ export default {
       }
     },
     combinationHeaderComplate (parm) {
+      debugger
       let datas = {}
       datas.productClassIdList = this.filterSeekData(parm.productTypeList, 'productClassId', 'productTypeId')
       datas.colourNameIdList = this.filterSeekData(parm.colourList, 'colourNameId', 'colourId')
       datas.gemNameIdList = this.filterSeekData(parm.jeweList, 'gemNameId', 'jeweId')
       datas.jewelNameIdList = this.filterSeekData(parm.jewelryList, 'jewelNameId', 'jewelryId')
       Object.assign(this.dataGridOptions, datas)
-      if (this.dataGridOptions.type != 1) {
+      if (this.dataGridOptions.type == 1) {
+        this.$refs.datagrid.fetchGoodList()
+      } else {
         this._seekGetReportsPrintRK()
       }
     },
@@ -568,7 +572,6 @@ export default {
 	          })
           }else{
           	//复制未保存的
-            debugger
           	for(let i = 0; i < Number(num); i++){
 	            let copyObj = Object.assign({}, this.copyOrderObject, { barcode:''})
 	            console.log(this.copyOrderObject)

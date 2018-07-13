@@ -102,7 +102,7 @@
 						>
 						<!-- <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i> -->
 					</div>
-					<div class="branch-tb category-td"   :key="tabindex"
+					<div class="branch-tb category-td" :key="tabindex"
 						v-else-if="tab.text == '位置名称' && index == 0"
 						:style="_calculateClass(tab)"
 					>	
@@ -117,7 +117,13 @@
 					</div>
 				</template>
 			</div>
-			
+      <div v-if="dataGridOptions.sortFlag == 1" class="tb-total" style="background:#e9f4fe;">
+  			<div class="tb-td"
+          v-for="(tab,f) in detailDataGridColumn"
+          :style="_calculateClass(tab)" 
+          v-html = "f == 0 ? '<b>小计</b>' : caty[tab.totalType0]"
+        ></div>
+      </div>
 		</div>
 		<div v-if="isDate" class="no-data"></div>
 	</div>
@@ -166,15 +172,16 @@ export default {
 	},
 	methods:{
     openLabel (parm, caty) {
-        let datas = {
+      debugger
+        var datas = {
           type: '2',
           data: {
             jeweId: parm.gemId ? [parm.gemId] : [],
             jewelryId: parm.jewelryId ? [parm.jewelryId] : [],
             colourId: parm.colorId ? [parm.colorId] : [],
-            productTypeId: [caty.productTypeId],
+            productTypeId: caty.productTypeId ? [caty.productTypeId] : [],
             storageId: this.changeRepository.repositoryId ? [this.changeRepository.repositoryId] : [],
-            shopId: this.changeShop.shopId ? [this.changeShop.shopId] : [],
+            // shopList: this.changeShop.shopId ? [this.changeShop.shopId] : [],
             counterId: this.changeCounter.counterId, // 柜组
             productClassList: [{productClass: this.dataGridOptions.productClass}],
             inLocation: '1',
@@ -189,7 +196,12 @@ export default {
             datas.data.nGemId = this.dataGridOptions.nGemId
             datas.data.nJewelryId = this.dataGridOptions.nJewelryId
         }
-      this.$store.dispatch('getLabelData', datas)
+        if (this.changeShop.shopId) {
+          datas.data.shopList = [{
+              shopId: this.changeShop.shopId
+          }]
+        }
+        this.$store.dispatch('getLabelData', datas)
     },
     changeData (parm, caty, sellType) {
       console.log(parm)

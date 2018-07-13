@@ -202,7 +202,7 @@ export default {
         this.memberAllList()
     },
     mounted () {
-        $(".member-list").mCustomScrollbar({
+        $(".member-list-wrap").mCustomScrollbar({
             theme: "minimal-dark",
             axis: "y"
         });

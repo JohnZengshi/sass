@@ -86,6 +86,7 @@
 			<div class="tb-tr" v-for="(tb, index) in caty.productTypeList" :key="index">
 				<template v-for="(tab,index) in detailDataGridColumn">
 					<div class="tb-td category-td"
+            @click.stop="openLabel({}, tb)"
 						v-if="tab.text == '产品类别' && index == 0"
 						:style="tableCell(tab.width)" :key="index"
 						v-text="tb[tab.childType]"
@@ -100,7 +101,7 @@
 					</div>
 					<div class="tb-td"
 						v-else :key="index"
-            @click.stop="openLabel(tb1, tb)"
+            @click.stop="openLabel({}, tb)"
 						:style="tableCell(tab.width)"
 						v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
 					</div>

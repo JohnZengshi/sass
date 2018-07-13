@@ -92,7 +92,7 @@
       // LoaderNum
     },
 
-    props: ['orderNum', 'slipPointer', 'goodsAdd', 'copyDataList', 'isRefreshFooter', 'curStatus', 'isShow'],
+    props: ['orderNum', 'slipPointer', 'goodsAdd', 'copyDataList', 'isRefreshFooter', 'curStatus', 'isShow', 'dataGridOptions'],
 
     watch: {
       datagridSelectData: function () {},
@@ -156,7 +156,6 @@
       },
       //
       refresh() {
-        debugger
         seekNewGoodsInfoList({
           page: 1,
           pageSize: this.pageNum * this.pageSize,
@@ -178,11 +177,11 @@
       fetchGoodList() {
         debugger
         this.$emit('updataLoader', true)
-        seekNewGoodsInfoList({
+        seekNewGoodsInfoList(Object.assign({
           page: this.pageNum,
           pageSize: this.pageSize,
           orderNum: this.orderNum
-        }).then((res) => {
+        }, this.dataGridOptions)).then((res) => {
           if (res.data.state == 200) {
             // this.dgDataList = _.concat(this.dgDataList, res.data.data.rowDataList)
             this.dgDataList = res.data.data.rowDataList;

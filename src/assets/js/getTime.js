@@ -6,6 +6,7 @@ export const GetDateStr = function (AddDayCount) { // 获取某天的时间值
   var d = today.getDate();
   return `${y}-${m}-${d}`;
 }
+
 export const GetDateYR = function (AddDayCount) { // 获取某天的时间值
   var today = new Date();
   today.setDate(today.getDate() + AddDayCount); // 获取AddDayCount天后的日期
@@ -14,6 +15,7 @@ export const GetDateYR = function (AddDayCount) { // 获取某天的时间值
   var d = today.getDate();
   return `${m}-${d}`;
 }
+
 export const stringTime = function (AddDayCount) {
   var today = new Date();
   today.setDate(today.getDate() + AddDayCount); // 获取AddDayCount天后的日期
@@ -40,16 +42,19 @@ export const stringTime = function (AddDayCount) {
   }
   return `${N}${Y}${R}${S}${F}${M}`;
 }
+
 export const GetNYR = function (AddDayCount) {
   if (AddDayCount) {
     return `${AddDayCount.slice(0, 4)}-${AddDayCount.slice(4, 6)}-${AddDayCount.slice(6, 8)}`
   }
 }
+
 export const GetChineseNYR = function (AddDayCount) {
   if (AddDayCount) {
     return `${AddDayCount.slice(0, 4)}年${AddDayCount.slice(4, 6)}月${AddDayCount.slice(6, 8)}日`
   }
 }
+
 export const GetSF = function (AddDayCount) {
   if (AddDayCount) {
     return `${AddDayCount.slice(8, 10)}:${AddDayCount.slice(10, 12)}`
@@ -144,6 +149,7 @@ export const GetNewMonth = function () { // 获取当个月的开始和结束
   }
   return timeData
 }
+
 export const getMonthStart = function (AddDayCount) {  // 获得本月的开始日期
   let now = new Date()
   let nowMonth = now.getMonth()
@@ -151,6 +157,7 @@ export const getMonthStart = function (AddDayCount) {  // 获得本月的开始�
   nowYear += (nowYear < 2000) ? 1900 : 0
   return new Date(nowYear, nowMonth, 1)
 }
+
 export const formattingXjTime = function (parm) { // 格式化西金的时间--到日
   if (parm) {
     let year = parm.substring(0, 4)
@@ -159,6 +166,7 @@ export const formattingXjTime = function (parm) { // 格式化西金的时间--�
     return year + month + data + '000000'
   }
 }
+
 export const formattingTime = function (parm) { // 格式化时间开始
   if (!parm) {
     return ''
@@ -174,6 +182,7 @@ export const formattingTime = function (parm) { // 格式化时间开始
   }
   return `${N}${Y}${R}000000`
 }
+
 export const xjEndTime = function (parm) { // 格式化时间结束
   if (!parm) {
     return ''
@@ -189,6 +198,7 @@ export const xjEndTime = function (parm) { // 格式化时间结束
   }
   return `${N}${Y}${R}235959`
 }
+
 export const formattingEndTime = function (parm) { // 当日结束时间
   if (!parm) {
     return ''

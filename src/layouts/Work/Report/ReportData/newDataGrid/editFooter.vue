@@ -14,10 +14,10 @@
 
         <p class="bottom m-t-10" v-if="f == 0">合计</p>
 
-        <template v-else-if="f == 1">
+<!--         <template v-else-if="f == 1">
           <p class="top tl">修改前</p>
           <p class="bottom tl">修改后</p>
-        </template>
+        </template> -->
         
         <template v-else>
           <p class="bottom" v-if="f != 1" v-html="v_html(tab)"></p>
