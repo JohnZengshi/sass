@@ -77,25 +77,21 @@ export default{
     ReadMoreData,
   },
   props:['orderData','slipPointer','goodsAdd', 'seekBarcode', 'seekFlag'],
-  data() {
+  data(){
     return {
-      printDatas: {},
-      sellList: {
-        old: {},
-        now: {}
-      },
+      sellList:{old:{},now:{}},
       dgDataList: [],
       // 页脚 修改前、后的数据
-      footerData: {
-        now: {},
+      footerData : {
+        now : {},
         old: {}
       },
-      configData: configData,
-
+      configData : configData,
+      
       // 左边表格固定区域默认宽度
-      fixedFullSize: 290,
-
-      activeSelectOnIndex: -1,
+      fixedFullSize : 290,
+      
+      activeSelectOnIndex : -1,
       // 当前鼠标滑过的列
       activeClassIndex: -1,
       // 小类
@@ -125,6 +121,7 @@ export default{
     datagridSelectData: function(){
       //console.log(this.datagridSelectData)
     },
+    
     // 新增商品
     'goodsAdd.type' : function(){
       //console.log('watch:', this.goodsAdd.type)

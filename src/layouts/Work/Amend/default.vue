@@ -106,16 +106,16 @@
    </steps-path>
    
    <!--各个按钮操作区-->
-   <utilsdatagrid 
-      ref="utilsdatagrid"
-     :curStatus="curStatus"
-     @updataApi="updataApi"
-     :orderData="orderData"
-     :dataList="dgDataList"
-     @tabPrint="tabPrint"
-     :dataGridOptions="dataGridOptions"
-     >
-   </utilsdatagrid>
+    <utilsdatagrid 
+        ref="utilsdatagrid"
+        :curStatus="curStatus"
+        :dataGridOptions="dataGridOptions"
+        :orderData="orderData"
+        :dataList="dgDataList"
+        @updataApi="updataApi"
+        @tabPrint="tabPrint"
+      >
+    </utilsdatagrid>
   
    <!--批量修改-->
    <batchamend 
