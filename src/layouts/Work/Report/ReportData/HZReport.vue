@@ -263,19 +263,18 @@ export default {
         //打印0,1
         isPrint : 0,
         printSelectDate : {
-            storage: '', //发货库位
-            productType: '', //产品类别
-            productClass: '1', //商品属性
-            shop: '', //收货铺位
-            preparedBy: '', //制单人
-            auditor: '', //审核人
-            takeUser: '', //收货人
-            startTime: '', //制单时间
-            endTime: '',
-            headerData: '发货', //制单大标题
-            reportType: '4', //1代表入库、2退库、3调库、4发货、5调柜、6退货
-            companyName: '', //公司名,
-            showCompany: true //是否显示公司名  在用户不选择条件筛选的情况下 默认显示公司名
+          storage : '',//发货库位
+          productType : '',//产品类别
+          shop :'', //收货铺位
+          preparedBy: '',//制单人
+          auditor: '',//审核人
+          takeUser: '',//收货人
+          startTime : '',//制单时间
+          endTime : '',
+          headerData : '发货', //制单大标题
+          reportType : '4',//1代表入库、2退库、3调库、4发货、5调柜、6退货
+            companyName : '', //公司名,
+            showCompany : true //是否显示公司名  在用户不选择条件筛选的情况下 默认显示公司名
         },
         //
         tabShow: 'tabShow',
@@ -474,7 +473,6 @@ export default {
         /* ---new--- */
         // 完成
         filterHeaderComplate (parm) {
-            this.printSelectDate.productClass = parm.productClass;
             Object.assign(this.dataGridOptions, parm)
             this.send()
         },
@@ -491,11 +489,11 @@ export default {
           seekGetReportsComprehensive(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
                 this.dataGridStorage = res.data.data
-                // setTimeout(() => {
-                //     if (this.$refs.reportDetailWrap) {
-                //         this.$refs.reportDetailWrap._setMCustomScrollbar()
-                //     }
-                // }, 800)
+                setTimeout(() => {
+                    if (this.$refs.reportDetailWrap) {
+                        this.$refs.reportDetailWrap._setMCustomScrollbar()
+                    }
+                }, 800)
                 this.loading = false
             }  else {
                 this.$message({
@@ -812,11 +810,11 @@ export default {
           seekGetReportsComprehensive(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
               this.dataGridStorage = res.data.data
-            //   setTimeout(() => {
-            //     if (this.$refs.reportDetailWrap) {
-            //       this.$refs.reportDetailWrap._setMCustomScrollbar()
-            //     }
-            //   }, 800)
+              setTimeout(() => {
+                if (this.$refs.reportDetailWrap) {
+                  this.$refs.reportDetailWrap._setMCustomScrollbar()
+                }
+              }, 800)
               this.loading = false
             } else {
               this.$message({
@@ -837,7 +835,7 @@ export default {
             //获取公司信息
             let companyName = JSON.parse(localStorage.getItem('companyInfo'))
             if(companyName){
-              this.printSelectDate.companyName = companyName.companyName 
+              this.printSelectDate.companyName = '公司名：'+ companyName.companyName 
             }
             this._seekRepositoryList()
         })
