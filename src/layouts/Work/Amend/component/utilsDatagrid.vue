@@ -47,7 +47,10 @@
     <i class="iconfont icon-shanchu1"></i>
   </span>
   <!-- 加载页数 -->
-  <LoaderNum ref="LoaderNum"></LoaderNum>
+  <LoaderNum 
+  ref="LoaderNum"
+  v-show="dataGridOptions.type == '1'"
+  ></LoaderNum>
 
   <!-- 弹出框 -->
   <orderPopup 

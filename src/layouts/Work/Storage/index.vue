@@ -68,8 +68,7 @@
   				:slipPointer="curStatus.slipPointer" 
   				:goodsAdd="goodsAdd" ref="datagrid" 
   				:copyDataList="copyOrderArray" 
-  				:isRefreshFooter="isRefreshFooter"
-          :dataGridOptions="dataGridOptions"
+  				:isRefreshFooter="isRefreshFooter" 
   				@add="add" 
   				@updataApi="updataApi"
   				@updataData="updataData" 
@@ -260,7 +259,9 @@ export default {
       // 订单数据
       orderData : Object.assign({},{
         orderNum : this.$route.query.orderNumber,
-        shopName:'loading...'
+        shopName:'loading...',
+        // 单据的状态
+        checkType:""
       }),
       
       // 新增商品
@@ -343,16 +344,13 @@ export default {
       }
     },
     combinationHeaderComplate (parm) {
-      debugger
       let datas = {}
       datas.productClassIdList = this.filterSeekData(parm.productTypeList, 'productClassId', 'productTypeId')
       datas.colourNameIdList = this.filterSeekData(parm.colourList, 'colourNameId', 'colourId')
       datas.gemNameIdList = this.filterSeekData(parm.jeweList, 'gemNameId', 'jeweId')
       datas.jewelNameIdList = this.filterSeekData(parm.jewelryList, 'jewelNameId', 'jewelryId')
       Object.assign(this.dataGridOptions, datas)
-      if (this.dataGridOptions.type == 1) {
-        this.$refs.datagrid.fetchGoodList()
-      } else {
+      if (this.dataGridOptions.type != 1) {
         this._seekGetReportsPrintRK()
       }
     },
@@ -400,7 +398,7 @@ export default {
 						// 新增公司名称
 						companyName: res.data.data.companyName,
 						// 新增审核人
-						checkName: res.data.data.checkName,
+            checkName: res.data.data.checkName,
             supplierName: res.data.data.supplierName,
             supplierId: res.data.data.supplierId,
             shopName: res.data.data.shopName,

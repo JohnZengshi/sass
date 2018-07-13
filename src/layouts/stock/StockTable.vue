@@ -31,7 +31,128 @@
             </ul>
             </i>
           </div>
-          <filter-header class="stock-table-filter-header-wrap" @complate="filterHeaderComplate" @reportSwitch="reportSwitch" @choseBuyBack="choseBuyBack" @chosePosition="chosePosition" :isOld="isOld" :specialItem="true" :customList="customList" :type="dataGridOptions.type" :positionSwitch="positionSwitch" :isPosition="dataGridOptions.type != 1"></filter-header>
+          <!-- 成品旧料的切换 -->
+<!--           <div class="iconfont_wrap fl">
+            <span :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)">成品</span>
+            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
+            <span :class="inconspanactive2 == true ? 'myspanactive' : ''" @click="toggleAttribute(2)">旧料</span>
+          </div> -->
+          <!-- 表格的筛选 -->
+<!--           <div class="tab_wrap">
+            <span :class="0 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(0, 1)">明细</span>
+            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>           
+            <span :class="1 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(1, 2)">智能分类</span>
+            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
+            <span :class="2 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(2, 3)">产品分类</span>
+            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
+            <span style="position: relative" :class="3 == tabClassActive.index ? 'myspanactive' : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)" @click="tabs(3,4)">自定义
+              <div class="customDia site" ref="customDia" style="display: none;">
+                <div class="body">
+                  <div class="list-wrap">
+                    <ul>
+                        <li></li>
+                        <li>成色名称</li>
+                        <li>宝石名称</li>
+                        <li>首饰类别</li>
+                    </ul>
+                    <ul>
+                        <li>计重类</li>
+                        <li>
+                        <DropDownMenu
+                          titleName="不选"
+                          dataType="customDia"
+                          dataDataType="成色名称-计重"
+                          :propList="dialogOptions.conditionList"
+                          :resetFlag='resetFlag'
+                          @infoBack="diaInfoBack"
+                        >
+                        </DropDownMenu>
+                        </li>
+                        <li>
+                        <DropDownMenu
+                          titleName="不选"
+                          dataType="customDia"
+                          dataDataType="宝石名称-计重"
+                          :propList="dialogOptions.conditionList"
+                          :resetFlag='resetFlag'
+                          @infoBack="diaInfoBack"
+                        >
+                        </DropDownMenu>
+                        </li>
+                        <li>
+                        <DropDownMenu
+                          titleName="大类"
+                          dataType="customDia"
+                          dataDataType="首饰类别-计重"
+                          :propList="dialogOptions.jewelryList"
+                          :resetFlag='resetFlag'
+                          @infoBack="diaInfoBack"
+                        >
+                        </DropDownMenu>
+                        </li>
+                    </ul>
+                    <ul>
+                        <li>计件类</li>
+                        <li>
+                        <DropDownMenu
+                          titleName="不选"
+                          dataType="customDia"
+                          dataDataType="成色名称-计件"
+                          :propList="dialogOptions.conditionList"
+                          :resetFlag='resetFlag'
+                          @infoBack="diaInfoBack"
+                        >
+                        </DropDownMenu>
+                        </li>
+                        <li>
+                        <DropDownMenu
+                          titleName="不选"
+                          dataType="customDia"
+                          dataDataType="宝石名称-计件"
+                          :propList="dialogOptions.conditionList"
+                          :resetFlag='resetFlag'
+                          @infoBack="diaInfoBack"
+                        >
+                        </DropDownMenu>
+                        </li>
+                        <li>
+                        <DropDownMenu
+                          titleName="大类"
+                          dataType="customDia"
+                          dataDataType="首饰类别-计件"
+                          :propList="dialogOptions.jewelryList"
+                          :resetFlag='resetFlag'
+                          @infoBack="diaInfoBack"
+                        >
+                        </DropDownMenu>
+                        </li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="foot" solt="footer">
+                  <div class="btn-wrap">
+                    <div @click.stop="resetOption" class="reset btn">重置</div>
+                    <div @click.stop="compOption" class="comp btn">完成</div>
+                  </div>
+                </div>
+
+              </div>
+            </span>
+          </div> -->
+          <filter-header
+            class="stock-table-filter-header-wrap"
+            @complate="filterHeaderComplate"
+            @reportSwitch="reportSwitch"
+            @choseBuyBack="choseBuyBack"
+            @chosePosition="chosePosition"
+            :isOld="isOld"
+            :specialItem="true"
+            :customList="customList"
+            :type="dataGridOptions.type"
+            :positionSwitch="positionSwitch"
+            :isPosition="dataGridOptions.type != 1"
+          ></filter-header>
           <!-- 新增的一些筛选 -->
           <div class="xj-report-multi-select-wrap stock-table-multi-select">
             <dropDownColum ref="productTypeIdWrap" :propsList="proList" :keyName="'productTypeId'" titleData="产品类别" @dataBack="dataBack">
@@ -50,10 +171,30 @@
         </div>
         <!-- 表头筛选重构 end -->
         <div class="rp_dataGridTemp" :class="tabShow">
-          <report-detail ref="ReportDetail" v-if="dataGridStorage" @lazyloadSend="sendlayLoad" @scrollClass="tabScrollShow" @sortList="sortListAct" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :isOld="isOld" :newList="newList" :reportType="getReportType()" :changeRepository="changeRepository" :changeShop="changeShop" :changeCounter="changeCounter" :dataGridOptions="dataGridOptions">
+          <report-detail
+            ref="ReportDetail"
+            v-if="dataGridStorage"
+            @lazyloadSend="sendlayLoad"
+            @scrollClass="tabScrollShow"
+            @sortList="sortListAct"
+            :dataGridStorage="dataGridStorage"
+            :tabSwitch="tabSwitch"
+            :positionSwitch="positionSwitch"
+            :isOld="isOld"
+            :newList="newList"
+            :reportType="getReportType()"
+            :changeRepository="changeRepository"
+            :changeShop="changeShop"
+            :changeCounter="changeCounter"
+            :dataGridOptions="dataGridOptions"
+          >
           </report-detail>
         </div>
         <div class="utilsBtn flex flex-v flex-pack-justify">
+<!--           <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
+            <i class="iconfont icon-daochu"></i>
+            <span>导出表格</span>
+          </div> -->
           <div class="btn" @click="exportTab()">
             <i class="iconfont icon-daochu"></i>
             <span>导出表格</span>
@@ -70,6 +211,56 @@
         <table-print :tabSwitch="tabSwitch" :reportType="getReportType()" @sortList="sortListAct" :positionSwitch="positionSwitch" :printSelectDate="printSelectDate" :dataGridStorage="dataGridStorage">
         </table-print>
       </div>
+      
+      <!-- 明细0 -->
+<!--       <detailTemplate v-if="this.tabClassActive.index==0" title="库存-明细" ref="detailTemplate" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
+ -->
+          <div v-if="dataGridOptions.type==1" class="xj-kc-print-main" style="display: none;" ref="detailTemplateWrap">
+            <detailTemplate 
+              title="库存" 
+              tabTitle="明细"
+              :tabSwitch="tabSwitch" 
+              :sellList="printData" 
+              :headerData="printSelectDate"></detailTemplate>
+          </div>
+        <!--打印模块-->
+        <div style="display: none;">
+
+
+            <!-- 智能1 -->
+            <intelligence-type-template 
+              v-if="dataGridOptions.type==2" 
+              title="库存" 
+              tabTitle="智能分类"
+              ref="intelligenceTypeTemplate" 
+              :sellList="printData" 
+              :tabSwitch="tabSwitch" 
+              :headerData="printSelectDate" 
+              :positionSwitch="positionSwitch"></intelligence-type-template>
+
+            <!-- 产品分类 -->
+            <project-type-template 
+              v-if="dataGridOptions.type==3" 
+              title="库存" 
+              tabTitle="产品分类"
+              ref="projectTypeTemplate" 
+              :sellList="printData" 
+              :tabSwitch="tabSwitch" 
+              :headerData="printSelectDate" 
+              :positionSwitch="positionSwitch"></project-type-template>
+
+            <!-- 自定义3 -->
+            <intelligence-type-template 
+              v-if="dataGridOptions.type==4" 
+              title="库存" 
+              tabTitle="自定义"
+              ref="customTemplate" 
+              :sellList="printData" 
+              :tabSwitch="tabSwitch" 
+              :headerData="printSelectDate" 
+              :positionSwitch="positionSwitch"></intelligence-type-template>
+
+        </div>
 
       <div v-if="dataGridOptions.type==1" class="xj-kc-print-main" style="display: none;" ref="detailTemplateWrap">
         <detailTemplate title="库存" tabTitle="明细" :tabSwitch="tabSwitch" :sellList="printData" :headerData="printSelectDate"></detailTemplate>
@@ -154,17 +345,17 @@ export default {
         orderNum: this.$route.query.orderNumber,
         //reportType : '4' //1代表入库、2退库、3调库、4发货、5调柜、6退货
         // 库位名称
-        repositoryName: "",
+        repositoryName:"",
         // 商品属性
-        productClass: '1',
+        productClass:'1',
         // 柜组名称
-        counterName: "",
+        counterName:"",
         // 店铺名称
-        shopName: "",
+        shopName:"",
         // 公司名称
-        companyName: '',
+        companyName:'',
         // 查询时间
-        checkDate: '',
+        checkDate:'',
 
       },
       //
@@ -250,7 +441,7 @@ export default {
         ],
         type: 2, //类型
         page: 1,
-        pageSize: 50,
+        pageSize: 100,
         keyWord: "", //关键字
         wColorId: "", //计重
         wGemId: "", //宝石类
@@ -326,25 +517,25 @@ export default {
       }
       this.send();
     },
-    "changeRepository.repositoryName" (val) {
+    "changeRepository.repositoryName"(val){
       // 打印增加库位名称
       this.printSelectDate.repositoryName = val;
     },
-    "changeShop.shopName" (val) {
+    "changeShop.shopName"(val){
       // 打印增加店铺名称
       this.printSelectDate.shopName = val;
     },
-    "changeCounter.counterName" (val) {
+    "changeCounter.counterName"(val){
       // 打印增加柜组名称
       this.printSelectDate.counterName = val;
     },
-    "dataGridOptions.productClass" (val) {
+    "dataGridOptions.productClass"(val){
       // 打印增加商品属性
       this.printSelectDate.productClass = val;
     },
-    // 打印增加公司名称
-    "dataGridStorage.companyName" (val) {
-      if (val) {
+      // 打印增加公司名称
+    "dataGridStorage.companyName"(val){
+      if(val){
         this.printSelectDate.companyName = val;
       }
     }
@@ -1767,10 +1958,8 @@ export default {
     }
   }
 }
-
-.stock-table-filter-header-wrap {
+.stock-table-filter-header-wrap{
   float: right;
   margin: 10px 10px 0 0;
 }
-
 </style>

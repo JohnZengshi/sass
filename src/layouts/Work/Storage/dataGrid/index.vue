@@ -81,7 +81,7 @@
         },
         emptyAddClass: '',
         pageNum: 1,
-        pageSize: "50",
+        pageSize: "100",
       }
     },
     components: {

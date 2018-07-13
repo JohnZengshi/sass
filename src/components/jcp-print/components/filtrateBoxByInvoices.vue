@@ -21,7 +21,7 @@
         </div>
         <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
         </div>
-        <div v-show="headerData.checkName">审核人：{{headerData.checkName}}
+        <div v-show="headerData.checkName && headerData.checkType > '2'">审核人：{{headerData.checkName}}
         </div>
       </div>
     </template>
@@ -40,7 +40,7 @@
         </div>
         <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
         </div>
-        <div v-show="headerData.checkName">审核人：{{headerData.checkName}}
+        <div v-show="headerData.checkName && headerData.checkType > '2'">审核人：{{headerData.checkName}}
         </div>
       </div>
     </template>
@@ -88,7 +88,7 @@
           </div>
           <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
           </div>
-          <div v-show="headerData.checkName">审核人：{{headerData.checkName}}
+          <div v-show="headerData.checkName && headerData.checkType > '2'">审核人：{{headerData.checkName}}
           </div>
         </div>
       </template>
@@ -105,16 +105,16 @@
                     (headerData.checkName)">
           <div v-show="headerData.orderNum">单据号：{{headerData.orderNum}}
           </div>
-          <div v-show="headerData.storageName">调出库位：{{headerData.storageName}}
+          <div v-show="headerData.storageName2">调出库位：{{headerData.storageName2}}
           </div>
-          <div v-show="headerData.storageName2">调入库位：{{headerData.storageName2}}
+          <div v-show="headerData.storageName">调入库位：{{headerData.storageName}}
           </div>
           <div v-show="headerData.productProperty">商品属性：{{headerData.productProperty == '1'? "成品":"旧料"}}
           </div>
           <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
           </div>
-          <div v-show="headerData.checkName">收货人：{{headerData.checkName}}
-          </div>
+          <!-- <div v-show="headerData.checkName">收货人：{{headerData.checkName}}
+          </div> -->
         </div>
       </template>
       <!-- 发货,退货 -->
@@ -136,9 +136,9 @@
             </div>
             <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
             </div>
-            <div v-show="headerData.checkName">审核人：{{headerData.checkName}}
+            <div v-show="headerData.checkName && headerData.checkType > '2'">审核人：{{headerData.checkName}}
             </div>
-            <div v-show="headerData.consigneeName">收货人：{{headerData.consigneeName}}
+            <div v-show="headerData.consigneeName && headerData.checkType > '4'">收货人：{{headerData.consigneeName}}
             </div>
           </div>
         </template>
@@ -161,9 +161,9 @@
             </div>
             <div v-show="headerData.makeOrderManName">制单人：{{headerData.makeOrderManName}}
             </div>
-            <div v-show="headerData.checkName">审核人：{{headerData.checkName}}
+            <div v-show="headerData.checkName && headerData.checkType > '2'">审核人：{{headerData.checkName}}
             </div>
-            <div v-show="headerData.auditor">收货人：{{headerData.auditor}}
+            <div v-show="headerData.auditor && headerData.checkType > '4'">收货人：{{headerData.auditor}}
             </div>
           </div>
         </template>
@@ -182,9 +182,9 @@
           </div>
           <div v-show="headerData.distributor">店铺名称：{{headerData.distributor}}
           </div>
-          <div v-show="headerData.groupName">调出柜组：{{headerData.groupName}}
+          <div v-show="headerData.groupName2">调出柜组：{{headerData.groupName2}}
           </div>
-          <div v-show="headerData.groupName2">调入柜组：{{headerData.groupName2}}
+          <div v-show="headerData.groupName">调入柜组：{{headerData.groupName}}
           </div>
           <div v-show="headerData.productProperty">商品属性：{{headerData.productProperty == '1'?'成品':'旧料'}}
           </div>
@@ -202,7 +202,20 @@
 </template>
 <script>
   export default {
-    props: ["headerData","title","reportType"]
+    props: ["headerData","title","reportType"],
+    data() {
+      return {
+        // status:"1" //1:待审核，2:审核中，3:已审核，4:待收货，5:已收货，6:锁定，7:已收银，8:待收银
+      }
+    },
+    created() {
+      // console.log(this.$route.query.orderNumber);
+      // seekReceiptStatusList({
+      //   orderId: this.$route.query.orderNumber
+      // }).then((res) => {
+      //   this.status = res.data.data.nowStatus;
+      // })
+    }
   }
 
 </script>

@@ -319,7 +319,12 @@ export default {
       }
       if (parm.shopId) {
         this.$refs.shopWrap.initData(parm.shopId)
-      }  
+      }
+      // this.$refs.combinationDropDownColumsBox.initData(parm)
+      // this.$refs.productTypeIdWrap.initData(parm.productTypeId)
+      // this.$refs.colourIdWrap.initData(parm.colourId)
+      // this.$refs.jeweIdWrap.initData(parm.jeweId)
+      // this.$refs.jewelryIdWrap.initData(parm.jewelryId)   
     },
     choseMenu () {
       this.tabSwitch = !this.tabSwitch
@@ -378,6 +383,7 @@ export default {
       this.$emit('seekProduct', options)
     },
     storageLocation (parm) {
+      debugger
       this.filterCondition.storageId = parm.bigList
       this.$emit('filterData', this.filterCondition)
     },

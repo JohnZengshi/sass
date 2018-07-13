@@ -102,7 +102,7 @@
 						>
 						<!-- <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f8e7;'">{{tb[tab.childType]}}</i> -->
 					</div>
-					<div class="branch-tb category-td" :key="tabindex"
+					<div class="branch-tb category-td"   :key="tabindex"
 						v-else-if="tab.text == '位置名称' && index == 0"
 						:style="_calculateClass(tab)"
 					>	
@@ -172,16 +172,15 @@ export default {
 	},
 	methods:{
     openLabel (parm, caty) {
-      debugger
-        var datas = {
+        let datas = {
           type: '2',
           data: {
             jeweId: parm.gemId ? [parm.gemId] : [],
             jewelryId: parm.jewelryId ? [parm.jewelryId] : [],
             colourId: parm.colorId ? [parm.colorId] : [],
-            productTypeId: caty.productTypeId ? [caty.productTypeId] : [],
+            productTypeId: [caty.productTypeId],
             storageId: this.changeRepository.repositoryId ? [this.changeRepository.repositoryId] : [],
-            // shopList: this.changeShop.shopId ? [this.changeShop.shopId] : [],
+            shopId: this.changeShop.shopId ? [this.changeShop.shopId] : [],
             counterId: this.changeCounter.counterId, // 柜组
             productClassList: [{productClass: this.dataGridOptions.productClass}],
             inLocation: '1',
@@ -196,15 +195,7 @@ export default {
             datas.data.nGemId = this.dataGridOptions.nGemId
             datas.data.nJewelryId = this.dataGridOptions.nJewelryId
         }
-        if (this.changeShop.shopId) {
-          datas.data.shopList = [{
-              shopId: this.changeShop.shopId
-          }]
-        }
-        this.$store.dispatch('getLabelData', datas)
-    },
-    changeData (parm, caty, sellType) {
-      console.log(parm)
+      this.$store.dispatch('getLabelData', datas)
     },
     _calculateClass (parm) {
       return calculateClass(parm)

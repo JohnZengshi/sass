@@ -101,7 +101,7 @@
 					</div>
 					<div class="tb-td"
 						v-else :key="index"
-            @click.stop="openLabel({}, tb)"
+            @click.stop="openLabel(tb1, tb)"
 						:style="tableCell(tab.width)"
 						v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
 					</div>

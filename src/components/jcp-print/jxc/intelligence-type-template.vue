@@ -3,8 +3,8 @@
     <div class="print-header">
       <h1 class="title center">{{title}}报表</h1>
       <div class="head-option">
-        <div class="left">{{headerData.companyName}}</div>
-		<div class="left">分类：{{tabTitle}}</div>
+        <div class="left">公司名称：{{headerData.companyName}}</div>
+		    <div class="left">分类：{{tabTitle}}</div>
         <div class="right">时间 {{headerData.startTime}} 至 {{headerData.endTime}}</div>
       </div>
       <!-- <div class="explain-box">
@@ -54,11 +54,11 @@
 
             <tr class="tr">
               <td class="tm" colspan="2">小计</td>
-              <td>{{dataList.totalNum0}}</td>
-              <td>{{dataList.totalWeight0}}</td>
-              <td>{{dataList.totalGoldWeight0}}</td>
-              <td>{{dataList.totalPrice0}}</td>
-              <td v-show="tabSwitch">{{dataList.totalCost0}}</td>
+              <td>{{productTypeList.totalNum1}}</td>
+              <td>{{productTypeList.totalWeight1}}</td>
+              <td>{{productTypeList.totalGoldWeight1}}</td>
+              <td>{{productTypeList.totalPrice1}}</td>
+              <td v-show="tabSwitch">{{productTypeList.totalCost1}}</td>
             </tr>
           </template>
 

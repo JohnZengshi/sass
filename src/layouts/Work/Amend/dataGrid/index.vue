@@ -96,22 +96,25 @@ export default{
       activeClassIndex: -1,
       // 小类
       smallDataList: configData.jewelryNameData,
-      
+
       //浏览器检测
-      browserType : false,
-       
-      synopsiData : {},
-      
+      browserType: false,
+
+      synopsiData: {},
+
       selectContainer: {
-        selectfIndex : -1,
-        selectcIndex : -1,
-        fixedfIndex : -1,
-        fixedcIndex : -1
+        selectfIndex: -1,
+        selectcIndex: -1,
+        fixedfIndex: -1,
+        fixedcIndex: -1
       },
       pageNum: 1,
-      pageSize: 30,
-      // upDataNum: 30
-      
+      pageSize: 100,
+      sellList_print: {
+        old: {},
+        now: {}
+      }
+
     }
   },
   watch: {

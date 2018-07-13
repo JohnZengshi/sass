@@ -90,7 +90,7 @@
         </div>
         <div class="tb-total" style="background:#ECF3FF;" v-if="positionSwitch">
           <!-- 位置小计 -->
-          <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 1 ? '<b>小计</b>' : caty[tab.totalType0]"></div>
+        	<div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 1 ? '<b>小计</b>' : caty[tab.totalType0]"></div>
         </div>
       </div>
       <div v-if="isDate" class="no-data"></div>

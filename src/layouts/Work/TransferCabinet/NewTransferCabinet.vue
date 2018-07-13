@@ -447,7 +447,11 @@
                                 <span>删除</span>
                             </div>
                             <!-- 加载页数 -->
-                            <LoaderNum ref="LoaderNum" style="display:block;"></LoaderNum>
+                            <LoaderNum 
+                            ref="LoaderNum" 
+                            style="display:block;"
+                            v-show="dataGridOptions.type == '1'"
+                            ></LoaderNum>
                         </div>
                     </div>
                 </section>
@@ -768,7 +772,7 @@ export default {
                 sortList: [{barcode: '1'}],
                 type: 1,
                 page: 1,
-                pageSize: 50,
+                pageSize: 100,
                 keyWord: '',
                 wColorId: '',
                 wGemId: '',

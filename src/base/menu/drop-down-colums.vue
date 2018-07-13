@@ -134,22 +134,10 @@ export default {
     methods: {
         initData (parm) {
             if (parm) {
+                this.smallIdList = parm
                 if (parm.length) {
                     this.isChecked = true
-                }
-                if (this.propsList.length) {
-                    this.smallIdList = parm
-                } else {
-                    setTimeout(() => {
-                        if (this.propsList.length) {
-                            this.smallIdList = parm
-                        } else {
-                            setTimeout(() => {
-                                this.smallIdList = parm
-                            })
-                        }
-                    }, 1000)
-                }
+                }       
             }
         },
         filterStyle (parm) {

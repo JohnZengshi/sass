@@ -78,9 +78,9 @@
 
           </div>
 
-          <!--收银报表-->
-          <div class="xj-report-rp_dataGridTemp" style="padding-top: 0;" :class="tabShow" v-if="sellShowId == 'collect'">
-            <report-detail-collect
+					<!--收银报表-->
+					<div class="xj-report-rp_dataGridTemp" style="padding-top: 0;" :class="tabShow" v-if="sellShowId == 'collect'">
+						<report-detail-collect
               :dataGridStorage="collectStorage"
               :tabSwitch="tabSwitch"
               :isBuyBack="isBuyBack"
@@ -89,12 +89,12 @@
               :reportType="getReportType()"
               @scrollClass="tabScrollShow"
             >
-            </report-detail-collect>
-          </div>
+						</report-detail-collect>
+					</div>
 
-          <!--回购报表-->
-          <div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
-            <report-detail-trade
+					<!--回购报表-->
+					<div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'buyback'">
+						<report-detail-trade
               ref="ReportDetailTrade"
               :dataGridStorage="tradeStorage"
               :tabSwitch="tabSwitch"
@@ -107,13 +107,13 @@
               @sortList="sortListAct"
             >
               <!-- <report-load v-if="tradeStorage.totalNum != null && tradeStorage.totalNum != '0' && dataGridOptions.type === 1 && tradeStorage.totalNum>30" @LoadOptionsDefault="LoadOptionsDefault"></report-load> -->
-            </report-detail-trade>            
-          </div>
+						</report-detail-trade>            
+					</div>
 
-          <!--销售报表-->
-          <div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
+					<!--销售报表-->
+					<div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
 
-            <report-detail
+						<report-detail
               :dataGridStorage="sellStorage"
               :tabSwitch="tabSwitch"
               :isBuyBack="isBuyBack"
@@ -127,13 +127,13 @@
             >
               <report-load v-if="sellStorage.totalNum != null && sellStorage.totalNum != '0' && dataGridOptions.type == 1 && sellStorage.totalNum>15" @LoadOptionsDefault="LoadOptionsDefault"></report-load>
 
-            </report-detail>
+						</report-detail>
 
-          </div>
+					</div>
 
-        </div>
+				</div>
 
-        <div class="utilsBtn flex flex-v flex-pack-justify">
+				<div class="utilsBtn flex flex-v flex-pack-justify">
           <!-- 导出表格 -->
           <div class="btn" @click="exportTab()">
             <i class="iconfont icon-daochu"></i>
@@ -163,7 +163,7 @@
           </div>
 
           <!-- 加载条数选择 -->
-          <div class="LoaderNumBtn">
+          <div class="LoaderNumBtn" v-show="dataGridOptions.type == '1'">
             <LoaderNum ref="LoaderNum" @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
           </div>
         </div>
@@ -202,17 +202,17 @@
 
 
 
-      <!--收银统计-->
-      <div class="dataGrid_statistics_switch" v-else>
-        <com-statistics
+			<!--收银统计-->
+			<div class="dataGrid_statistics_switch" v-else>
+				<com-statistics
             :orderType="'05'"
             :selectDate="dataGridOptions" :printSelectDate="printSelectDate" :tradeStorage="tradeStorage" :sellStorage="sellStorage">
-        </com-statistics>
-      </div>
-      
-    </div>
-    
-    
+				</com-statistics>
+			</div>
+			
+		</div>
+		
+		
 
     <!--打印模块-->
     <div ref="tablePrint" v-else-if="isPrint==1" class="tablePrint_style">
@@ -550,7 +550,7 @@ export default {
         ],
         type: 2,
         page: 1,
-        pageSize: 50,
+        pageSize: 100,
         keyWord: "",
         wColorId: "",
         wGemId: "",
@@ -1622,7 +1622,7 @@ export default {
       //获取公司信息
       let companyName = JSON.parse(localStorage.getItem("companyInfo"));
       if (companyName) {
-        this.printSelectDate.companyName = "公司名称：" + companyName.companyName;
+        this.printSelectDate.companyName = companyName.companyName;
       }
     });
   

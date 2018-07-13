@@ -135,7 +135,6 @@
     components:{
       ReadMoreData
     },
-    
     props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch', 'dataGridOptions', 'orderType'],
 
     watch: {
