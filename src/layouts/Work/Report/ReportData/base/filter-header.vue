@@ -127,7 +127,7 @@
     font-size: 12px;
     line-height: 12px;
     font-weight: bold;
-    padding: 5px 8px;
+    padding: 6px 8px;
     cursor: pointer;
     border-radius: 5px;
     transition: all .3s;

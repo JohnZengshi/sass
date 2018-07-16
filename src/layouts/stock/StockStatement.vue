@@ -93,6 +93,7 @@
     
     <StockTable 
       class="stock-table-wrap"
+      :beginTime="beginTime"
       :searchDate="_formattingTime(beginTime)"
       :changeRepository="changeRepository"
       :changeShop="changeShop"

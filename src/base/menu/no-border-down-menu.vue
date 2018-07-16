@@ -15,7 +15,7 @@ export default {
   props: ['titleInfo', 'showList', 'isSolid', 'noClear', 'nameKey', 'keyName'], // isSolid->实心 nameKey->取值的key
   data () {
     return {
-      actIndex: null,
+      actIndex: '',
       noChange: true // 选中标记
       // showList: [
       //   {
@@ -30,10 +30,10 @@ export default {
     }
   },
   methods: {
-    clearTitleInfo () {
-      this.$emit("clearInfo")
-      this.actIndex = null
+    clearInfo () {
+      this.actIndex = ''
       this.noChange = true
+      this.$emit('clearTitleInfo', {keyName: this.keyName})
     },
     itemClick (item, index) {
         this.$emit('changeData', {item: item, keyName: this.keyName})
