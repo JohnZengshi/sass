@@ -135,6 +135,7 @@ let applyIndex = 0;
 import ReadMoreData from 'components/work/readMoreData';
 import threeLayersDownMenuVue from '../../../base/menu/three-layers-down-menu.vue';
 import {calculateClass} from 'assets/js/getClass'
+import {xjEndTime, formattingTime} from 'assets/js/getTime'
 export default {
   data(){
     return{
@@ -147,7 +148,7 @@ export default {
   components:{
     ReadMoreData
   },
-  props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch',"changeRepository", "changeShop", "changeCounter", 'dataGridOptions'],
+  props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType', 'positionSwitch',"changeRepository", "changeShop", "changeCounter", 'dataGridOptions', 'beginTime'],
   watch:{
     'dataGridStorage':function(){
       this.tempArray = []
@@ -184,6 +185,8 @@ export default {
             counterId: this.changeCounter.counterId, // 柜组
             productClassList: [{productClass: this.dataGridOptions.productClass}],
             inLocation: '1',
+            beginTime: formattingTime(this.beginTime),
+            endTime: xjEndTime(this.beginTime),
             type: this.dataGridOptions.type
           }
         }

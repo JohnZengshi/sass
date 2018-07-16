@@ -3,7 +3,7 @@
         <span class="title-name" @click="complate" :class="optionData.titleInfo == '' ? '' : 'select'">
             {{titleName}}
 <!--             <i class="iconfont icon-arrow-down drop-triangle" v-if="optionData.titleInfo ==''"></i> -->
-           <!--  <i v-if="isClear == undefined ? true : isClear == true ? true : false" class="el-icon-circle-close" title="清除" @click="clearTitleInfo"></i> -->
+           <!--  <i v-if="isClear == undefined ? true : isClear == true ? true : false" class="el-icon-circle-close" title="清除" @click="clearInfo"></i> -->
         </span>
         <div class="select-drop-list">
             <div class="select-drop-list-inner">
@@ -19,27 +19,33 @@
                         <li>
                             <!-- 成色名称-计重 -->
                             <new-down-menu
+                                ref="wColorIdBox"
                                 :titleInfo="filterData.wColorId.name"
                                 :keyName="'wColorId'"
                                 :showList="dialogOptions.conditionList"
+                                @clearInfo="clearInfo"
                                 @changeData="changeClass"
                             ></new-down-menu>
                         </li>
                         <li>
                             <!-- 宝石名称-计重 -->
                             <new-down-menu
+                                ref="wGemIdBox"
                                 :titleInfo="filterData.wGemId.name"
                                 :keyName="'wGemId'"
                                 :showList="dialogOptions.conditionList"
+                                @clearInfo="clearInfo"
                                 @changeData="changeClass"
                             ></new-down-menu>
                         </li>
                         <li>
                             <!-- 首饰类别-计重 -->
                             <new-down-menu
+                                ref="wJewelryIdBox"
                                 :titleInfo="filterData.wJewelryId.name"
                                 :keyName="'wJewelryId'"
                                 :showList="dialogOptions.jewelryList"
+                                @clearInfo="clearInfo"
                                 @changeData="changeClass"
                             ></new-down-menu>
                         </li>
@@ -49,27 +55,33 @@
                         <li>
                             <!-- 成色名称-计件 -->
                             <new-down-menu
+                                ref="nColorIdBox"
                                 :titleInfo="filterData.nColorId.name"
                                 :keyName="'nColorId'"
                                 :showList="dialogOptions.conditionList"
+                                @clearInfo="clearInfo"
                                 @changeData="changeClass"
                             ></new-down-menu>
                         </li>
                         <li>
                             <!-- 宝石名称-计件 -->
                             <new-down-menu
+                                ref="nGemIdBox"
                                 :titleInfo="filterData.nGemId.name"
                                 :keyName="'nGemId'"
                                 :showList="dialogOptions.conditionList"
+                                @clearInfo="clearInfo"
                                 @changeData="changeClass"
                             ></new-down-menu>
                         </li>
                         <li>
                             <!-- 首饰类别-计件 -->
                             <new-down-menu
+                                ref="nJewelryIdBox"
                                 :titleInfo="filterData.nJewelryId.name"
                                 :keyName="'nJewelryId'"
                                 :showList="dialogOptions.jewelryList"
+                                @clearInfo="clearInfo"
                                 @changeData="changeClass"
                             ></new-down-menu>
                         </li>
@@ -97,6 +109,32 @@ export default {
     data () {
         return {
             filterData: {
+                wColorId: {
+                    name: '不选',
+                    id: '',
+                },
+                wGemId: {
+                    name: '不选',
+                    id: '',
+                },
+                wJewelryId: {
+                    name: '大类',
+                    id: '1',
+                },
+                nColorId: {
+                    name: '不选',
+                    id: '',
+                },
+                nGemId: {
+                    name: '不选',
+                    id: '',
+                },
+                nJewelryId: {
+                    name: '大类',
+                    id: '1',
+                }
+            },
+            initData: {
                 wColorId: {
                     name: '不选',
                     id: '',
@@ -180,10 +218,8 @@ export default {
         changeClass (parm) {
             this.filterData[parm.keyName] = parm.item
         },
-        clearTitleInfo () {
-            this.optionData.titleInfo = '';
-            this.$emit("clearInfo", {type: this.dataType})
-            this.actIndex = null
+        clearInfo (parm) {
+            this.filterData[parm.keyName] = this.initData[parm.keyName]
         },
         clearTitletext(){
             this.optionData.titleInfo = '';
@@ -194,32 +230,13 @@ export default {
             this.$emit('complate', this.filterData)
         },
         reset () {
-            this.filterData = {
-                wColorId: {
-                    name: '不选',
-                    id: '',
-                },
-                wGemId: {
-                    name: '不选',
-                    id: '',
-                },
-                wJewelryId: {
-                    name: '大类',
-                    id: '1',
-                },
-                nColorId: {
-                    name: '不选',
-                    id: '',
-                },
-                nGemId: {
-                    name: '不选',
-                    id: '',
-                },
-                nJewelryId: {
-                    name: '大类',
-                    id: '1',
-                }
-            }
+            this.$refs.nJewelryIdBox.clearInfo()
+            this.$refs.nGemIdBox.clearInfo()
+            this.$refs.nColorIdBox.clearInfo()
+            this.$refs.wJewelryIdBox.clearInfo()
+            this.$refs.wGemIdBox.clearInfo()
+            this.$refs.wColorIdBox.clearInfo()
+            this.$emit('complate', this.initData)
         }
     }
 }

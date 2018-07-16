@@ -180,7 +180,7 @@
             titleData="单据类型"
             @dataBack="dataBackOrderTypeList"
           ></alone-drop-down-colums>
-          <span class="divider">丨</span>
+<!--           <span class="divider">丨</span> -->
           <div class="input_box">
             <input class="input_box_before" @blur="rangeOfScreening" v-model="orderBegin" type="text" name="" id="" placeholder="单据号范围">
             <span>至</span>
@@ -802,7 +802,6 @@ export default {
     },
     // 重置
     resetData () {
-      debugger
       this.keyWord = ''
       this.filterCondition = {
         keyWord: ''
@@ -1028,7 +1027,6 @@ export default {
 
     },
     changeOrderId (parm) {
-      debugger
       this.filterCondition.newOrderId = parm
       this.$emit('filterData', this.filterCondition)
     },
@@ -1039,7 +1037,6 @@ export default {
 
     },
     dataBack (parm) {
-      debugger
       // 字符串的 截取 因为 知道 字段不会出现Id
       let len = parm.keyName.length
       let key = parm.keyName.slice(0,len-2) + 'List'
@@ -1049,12 +1046,10 @@ export default {
     },
     // 店铺id
     dataBackShopList (parm) {
-      debugger
       this.filterCondition.shopList = this.conversionData(parm.bigList,'shopId')
       this.$emit('filterData', this.filterCondition)
     },
     dataBackProductTypeId (parm) { // 产品类别过滤
-      debugger
       this.filterCondition.productStatusList = this.conversionData(parm.bigList,'productStatus')
       this.$emit('filterData', this.filterCondition)
     },
@@ -1107,7 +1102,6 @@ export default {
       if(val) {
         let beginTime = val.substr(0, 10).split('-').join("") + "000000"
         this.filterCondition['startTime'] = beginTime
-        debugger
         this.$emit('filterData', this.filterCondition)
       }
     },
@@ -1116,7 +1110,6 @@ export default {
       if(val) {
         let endTime = val.substr(0, 10).split('-').join("") + "235959"
         this.filterCondition['endTime'] = endTime
-        debugger
         this.$emit('filterData', this.filterCondition)
       }
     },
@@ -1124,7 +1117,6 @@ export default {
     // 商品状态过滤
     dataBackProductClass (parm) {
       this.filterCondition.productClassList  = this.conversionData(parm.bigList,'productClass')
-      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 获取人员列表
@@ -1165,74 +1157,73 @@ export default {
     rangeOfScreening () {
       this.filterCondition['orderBegin'] = this.orderBegin
       this.filterCondition['orderEnd'] = this.orderEnd
-      debugger
       this.$emit('filterData', this.filterCondition)
     },
     // 单据的时间筛选
     timeToScreen () {
       this.filterCondition['startTime'] = this.beginTime
       this.filterCondition['endTime'] = this.endTime
-      debugger
+      
       this.$emit('filterData', this.filterCondition)
     },
     // 会员类型的筛选
     dataBackmembermemberType(parm) {
       this.filterCondition.memberTypeList = this.conversionData(parm.bigList,'memberType')
-      debugger
+      
       this.$emit('filterData', this.filterCondition)
     },
     // 会员级别的筛选
     dataBackGrade(parm) {
       this.filterCondition.gradeList = this.conversionData(parm.bigList,'grade')
-      debugger
+      
       this.$emit('filterData', this.filterCondition)
     },
     // 跟进状态
     dataBackFollowType(parm) {
       this.filterCondition.followTypeList = this.conversionData(parm.bigList,'followType')
-      debugger
+      
       this.$emit('filterData', this.filterCondition)
     },
     // 会员来源
     dataBackMemberOrigin(parm) {
       this.filterCondition.memberOriginList = this.conversionData(parm.bigList,'memberOrigin')
-      debugger
+      
       this.$emit('filterData', this.filterCondition)
     },
     // 人员类型
     dataBackUserTypeList(parm) {
       this.filterCondition.userTypeList = this.conversionData(parm.bigList,'userType')
-      debugger
+      
       this.$emit('filterData', this.filterCondition)      
     },
     // 店铺id
     dataBackShopidList(parm) {
       this.filterCondition.shopIdList = this.conversionData(parm.bigList,'shopId')
-      debugger
+      
       this.$emit('filterData', this.filterCondition)  
     },
     // 库位id
     dataBackRepositoryList(parm) {
       this.filterCondition.repositoryList = this.conversionData(parm.bigList,'repositoryId')
-      debugger
+      
       this.$emit('filterData', this.filterCondition)  
     },
     // 选择人员
     dataBackOperatorList(parm) {
       this.filterCondition.operatorList = this.conversionData(parm.samllList,'operatorId')
-      debugger
+      
       this.$emit('filterData', this.filterCondition)  
     },
     // 单据类型
     dataBackOrderTypeList(parm) {
       this.filterCondition.orderTypeList = this.conversionData(parm.bigList,'orderType')
-      debugger
+      
       this.$emit('filterData', this.filterCondition)
     },
     // 店铺人员
     dataBackShopidPeopleList(parm) {
       this.filterCondition.operatorList = this.conversionData(parm.bigList,'operatorId')
-      debugger
+      
       this.$emit('filterData', this.filterCondition)
     },
 
@@ -1344,7 +1335,7 @@ export default {
         text-align: center;
       }
       .class-btn-wrap {
-          width: 346px;
+         // width: 306px;
           height: 28px;
           border-radius: 4px;
           border: 1px solid #d6d6d6;
@@ -1508,7 +1499,7 @@ export default {
 .itemType {
   float: left;
 
-  width: 302px;
+  width: 280px;
   height: 28px;
 
   margin-left: 10px;
@@ -1520,15 +1511,18 @@ export default {
   .dropColums-wrap {
     width: 90px;
     .tltle {
+      color: #666;
+      font-size: 12px;
+      font-weight: bold;
       margin-left: 12px;
     }
   }
-  .divider {
-    position: absolute;
-    top: 3px;
-    left: 90px;
-    color: #d6d6d6;
-  }
+  // .divider {
+  //   position: absolute;
+  //   top: 3px;
+  //   left: 90px;
+  //   color: #d6d6d6;
+  // }
   .input_box {
     float: left;
     width: 200px;
@@ -1536,6 +1530,9 @@ export default {
     .input_box_before {
       width: 88px;
       height: 28px;
+      font-size: 12px;
+      color: #666;
+      font-weight: bold;
       padding: 0 7px;
       background: transparent;
       
@@ -1543,6 +1540,9 @@ export default {
     .input_box_end {
       width: 88px;
       height: 28px;
+      font-size: 12px;
+      color: #666;
+      font-weight: bold;
       padding: 0 7px;
       background: transparent;
       

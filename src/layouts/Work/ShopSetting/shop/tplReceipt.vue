@@ -104,6 +104,7 @@ export default{
         seekSetEndMoney({
               type : '1',
               id : item.id,
+              shopId: this.shopId,
               defaultFlag : 'Y'
         }).then((res)=>{
             console.log('res',res)

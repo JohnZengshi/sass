@@ -177,6 +177,7 @@
             @lazyloadSend="sendlayLoad"
             @scrollClass="tabScrollShow"
             @sortList="sortListAct"
+            :beginTime="beginTime"
             :dataGridStorage="dataGridStorage"
             :tabSwitch="tabSwitch"
             :positionSwitch="positionSwitch"
@@ -308,9 +309,9 @@ import dropDownColum from 'base/menu/drop-down-colums'
 import { getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList } from "Api/commonality/seek"
 // 右下角加载条数选择器
 import LoaderNum from 'components/work/loaderNum.vue'
-
+import {xjEndTime, formattingTime} from 'assets/js/getTime'
 export default {
-  props: ["changeRepository", "changeShop", "changeCounter", 'searchDate'],
+  props: ["changeRepository", "changeShop", "changeCounter", 'searchDate', 'beginTime'],
   data() {
     return {
       customList: [{
@@ -336,7 +337,6 @@ export default {
       isOld: 1,
       isPrint: 0,
       keyWord: "",
-      beginTime: "",
       endTime: "",
       printSelectDate: {
         shop: "", //店铺
@@ -605,6 +605,7 @@ export default {
       exportData.price = this.dataGridStorage.totalPrice;
       exportData.cost = this.dataGridStorage.totalCost;
       exportData.num = this.dataGridStorage.totalNum;
+      exportData.searchDate = this.searchDate;
       exportData.className = "";
       exportData.classTypeName = "";
       exportData.showCost = this.tabSwitch ? '1' : '0'

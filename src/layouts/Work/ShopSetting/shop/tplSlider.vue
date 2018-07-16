@@ -98,7 +98,8 @@ export default{
           dataList :[{
             type : 3,
             id : item.counterId
-          }]
+          }],
+          shopId : this.shopId
       }).then((res)=>{
           let tempData = res.data.data.dataList[0]
           
@@ -169,6 +170,7 @@ export default{
       //console.log('编辑',data)
       seekCounterInfoUpdate({
           id :data.counterId,
+          shopId: this.shopId,
           dataList : [
             {
                type : 1,
@@ -198,6 +200,7 @@ export default{
           counterIdList : [
             { counterId: data.counterId }
           ],
+          shopId: this.shopId,
           handleType : 1
       }).then((res)=>{
           this.$message({

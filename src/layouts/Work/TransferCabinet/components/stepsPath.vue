@@ -40,8 +40,6 @@ export default {
   props: ['orderNum', 'statusREfresh', 'isRemark'],
   watch: {
     'statusREfresh': function (val) {
-      //console.log(val)
-      console.log(1111111122)
       if (val == true) {
         this.fetchFootData()
       }
@@ -71,7 +69,6 @@ export default {
       seekReceiptStatusList({
         orderId : this.orderNum
       }).then((res) => {
-        console.log(res)
         let statusData = res.data.data.dataList
         let status = res.data.data.nowStatus
         
