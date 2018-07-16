@@ -6,30 +6,14 @@
         <div class="left">公司名称：{{headerData.companyName}}</div>
         <div class="left">分类：{{tabTitle}}</div>
         <div class="right" :style="{ visibility : headerData.createDate ? 'visible' : 'hidden' }">查询时间:{{headerData.createDate}}</div>
-        <!--         <div class="left">{{headerData.companyName}}</div>
-        <div class="right">时间 {{headerData.startTime}} 至 {{headerData.endTime}}</div> -->
       </div>
-      <!--       <div class="explain-box">
-        店铺名称：{{headerData.shop}}
-      </div> -->
-      <!-- <div>
-        <div class="explain-box" v-show="headerData.preparedBy">
-          制单人：{{headerData.preparedBy}}
-        </div>
-        <div class="explain-box" v-show="headerData.salesperson">
-          销售员：{{headerData.salesperson}}
-        </div>
-        <div class="explain-box" v-show="headerData.payee">
-          收银人：{{headerData.payee}}
-        </div>
-      </div> -->
       <filtrateBoxByInventory :headerData="headerData" :tabTitle="tabTitle"></filtrateBoxByInventory>
     </div>
     <div>
       <table class="table-box">
         <tr class="tm noBorderTop">
           <td v-if="positionSwitch">位置名称</td>
-          <td>序号</td>
+          <!-- <td>序号</td> -->
           <td>产品类别</td>
           <td>首饰名称</td>
           <td>件数(件)</td>
@@ -46,7 +30,7 @@
           </tr>
           <template v-for="(productTypeList, indexTwo) in dataList.productTypeList">
             <tr class="tr" v-for="(item, index) in productTypeList.detailList">
-              <td>{{getCurrentIndex(indexTwo, index, dataList.productTypeList)}}</td>
+              <!-- <td>{{getCurrentIndex(indexTwo, index, dataList.productTypeList)}}</td> -->
               <td class="tl" v-if="index==0" :rowspan="productTypeList.detailList.length">{{productTypeList.className}}</td>
               <td class="tl">{{item.className}}</td>
               <!--                   <td>{{item.jewelryName}}</td> -->
@@ -61,7 +45,7 @@
 
           </template>
           <tr class="tr">
-            <td class="tm" :colspan="positionSwitch ? 4 : 3">小计</td>
+            <td class="tm" :colspan="positionSwitch ? 3 : 2">小计</td>
             <td>{{dataList.totalNum0}}</td>
             <td>{{dataList.totalWeight0}}</td>
             <td>{{dataList.totalGoldWeight0}}</td>
