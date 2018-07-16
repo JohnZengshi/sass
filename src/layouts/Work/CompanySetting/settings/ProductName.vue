@@ -47,6 +47,21 @@
                         <div class="ope-btn" @click="insertProductType">确定</div>
                     </div>
                 </el-dialog>
+                
+<!--                 <el-dialog :visible.sync="operateDialog" customClass="product-class-dig-main">
+                    <product-class-popup
+                        v-if="operateDialog"
+                        :item='item'
+                        type="2"  
+                        isMerge='1'
+                        :stockType='stockType'
+                        @messageBack="msgBack"
+                        @delAction="delBack"
+                        :bigClass="bigClass"
+                    >
+                    </product-class-popup>
+                </el-dialog> -->
+                
                 <el-dialog :visible.sync="operateDialog" customClass="operateDig">
                     <big-popup
                         v-if="operateDialog"
@@ -91,6 +106,7 @@ import {getProductTypeList, seekInsertProductType} from './../../../../Api/commo
 import {operateProductTypeOrderBy, operateDelProductTypeByList, operateUpdateProductType, operateProductTypeDragSord} from './../../../../Api/commonality/operate'
 
 import BigPopup from './../settingComponents/bigPopup'
+import productClassPopup from './../settingComponents/product-class-popup'
 import MargePopup from './../settingComponents/margePopup'
 
 import draggable from 'vuedraggable'
@@ -126,7 +142,8 @@ export default {
     components: {
         BigPopup,  // 操作弹框
         MargePopup,
-        draggable //拖动插件
+        draggable, //拖动插件
+        productClassPopup
     },
     computed: {
         dragOptions () {

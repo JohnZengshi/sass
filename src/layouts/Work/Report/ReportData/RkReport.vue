@@ -47,25 +47,24 @@
             <label>排序:</label>
             <div v-for="(item, index) in sortList" :key="index">
               {{item.name}}
-              <img v-if="item.value == '2'" src="./../../../../../static/img/sort/down1.png">
-              <img v-if="item.value == '1'" src="./../../../../../static/img/sort/up1.png">
+              <img v-if="item.value == '2'" src="~static/img/sort/down1.png">
+              <img v-if="item.value == '1'" src="~static/img/sort/up1.png">
               <i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
             </div>
           </div>
-          <div class="xj-switch" v-if="isShowCost == 'Y'">
+         <!--  <div class="xj-switch" v-if="isShowCost == 'Y'">
             <span class="btn" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" :class="{active: tabSwitch}">专列项</span>
-          </div>
+          </div> -->
 
          
           <!-- 表格的筛选 -->
-          <div class="tab_wrap">
+<!--           <div class="tab_wrap">
             <span :class="0 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(0, 1)">明细</span>
             <span style="color: #d6d6d6">丨</span>						
             <span :class="1 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(1, 2)">智能分类</span>
             <span style="color: #d6d6d6">丨</span>
 						<span :class="2 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(2, 3)">产品分类</span>
             <span style="color: #d6d6d6">丨</span>
-            <!-- 自定义 -->
             <span style="position: relative" :class="3 == tabClassActive.index ? 'myspanactive' : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)" @click="tabs(3,4)">自定义
               <div class="customDia site" ref="customDia" style="display: none;">
                 <div class="body">
@@ -160,7 +159,10 @@
 
               </div>
             </span>
-          </div>
+          </div> -->
+          
+          <filter-header class="report-filter-header-f-r-wrap" :customList="customList" :specialItem="true" @complate="filterHeaderComplate" @reportSwitch="reportSwitch"></filter-header>
+
            <!-- 新增的一些筛选 -->
           <div class="xj-report-multi-select-wrap">
             <dropDownColum
@@ -355,6 +357,7 @@ import dropDownColum from 'base/menu/drop-down-colums'
 import {seekProductClassList,showCounterList} from "Api/commonality/seek"
 // 选择加载页数组件
 import LoaderNum from 'components/work/loaderNum.vue'
+import filterHeader from './base/filter-header'
   export default {
     components: {
       ReportDetail,
@@ -369,10 +372,25 @@ import LoaderNum from 'components/work/loaderNum.vue'
       ReportLoad,
       HeaderDropDownMenu,
       dropDownColum,
-      LoaderNum
+      LoaderNum,
+      filterHeader
     },
     data() {
       return {
+        customList: [
+            {
+                name: '明细',
+                id: 1
+            },
+            {
+                name: '智能分类',
+                id: 2
+            },
+            {
+                name: '产品分类',
+                id: 3
+            }
+        ],
         inconspanactive1: true,
         inconspanactive2: false,
         openReset: true,
@@ -613,6 +631,15 @@ import LoaderNum from 'components/work/loaderNum.vue'
       }
     },
     methods: {
+      filterHeaderComplate (parm) {
+        this.printSelectDate.productClass = parm.productClass;
+        Object.assign(this.dataGridOptions, parm)
+        this.send()
+      },
+      //成本控制
+      reportSwitch(parm){
+        this.tabSwitch = parm
+      },
       choseMenu(type) {
          
           console.log(this.dataGridOptions)
@@ -628,10 +655,6 @@ import LoaderNum from 'components/work/loaderNum.vue'
           }
       },
       resetOption() {
-        // this.openReset = false
-        // setTimeout(() => {
-        //    this.openReset = true 
-        // }, 100)
         this.dataGridOptions.wColorId = ''
         this.dataGridOptions.wGemId = ''
         this.dataGridOptions.wJewelryId = '1'
@@ -639,7 +662,6 @@ import LoaderNum from 'components/work/loaderNum.vue'
         this.dataGridOptions.nGemId = ''
         this.dataGridOptions.nJewelryId = '1'
         this.resetFlag = true
-        // this.send()
       },
       compOption() {
         if(this.dataGridOptions.type != 4) {
@@ -1489,4 +1511,8 @@ import LoaderNum from 'components/work/loaderNum.vue'
       color: #2993f8;
     }
   }
+  .report-filter-header-f-r-wrap{
+    float: right;
+    margin-top: 10px;
+  } 
 </style>

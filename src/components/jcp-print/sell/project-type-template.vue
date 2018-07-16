@@ -30,7 +30,7 @@
           <td :colspan="numLength" class="center font-bold" style="border-top: 0px;">销售报表</td>
         </tr>
         <tr class="tm">
-          <td>序号</td>
+          <!-- <td>序号</td> -->
           <td>产品类别</td>
           <td>件数(件)</td>
           <td>件重(g)</td>
@@ -46,7 +46,7 @@
         <template v-for="productTypeList in sellList.productTypeList">
           <template v-for="productSellTypeList in productTypeList.productSellTypeList">
             <tr class="tr" v-for="(item,index) in productSellTypeList.productTypeList" :key="index">
-              <td>{{index+1}}</td>
+              <!-- <td>{{index+1}}</td> -->
               <td class="tl">{{item.className}}</td>
               <td>{{item.totalNum|NOUNIT}}</td>
               <td>{{item.totalWeight|NOUNIT}}</td>
@@ -61,7 +61,7 @@
             </tr>
           </template>
           <tr class="tr">
-            <td class="tm" colspan="2">合计</td>
+            <td class="tm" colspan="1">合计</td>
             <td>{{productTypeList.totalNum}}</td>
             <td>{{productTypeList.totalWeight}}</td>
             <td>{{productTypeList.totalGoldWeight}}</td>
@@ -82,7 +82,7 @@
           <td colspan="10" class="center font-bold" style="border-top: 0px;">回购报表</td>
         </tr>
         <tr class="tm">
-          <td>序号</td>
+          <!-- <td>序号</td> -->
           <td>回购类型</td>
           <td>产品类别</td>
           <td>件数(件)</td>
@@ -96,7 +96,7 @@
         <template v-for="productTypeList in buyBackList.productTypeList">
           <template v-for="productSellTypeList in productTypeList.productSellTypeList">
             <tr class="tr" v-for="(item,index) in productSellTypeList.productTypeList" :key="index">
-              <td>{{index+1}}</td>
+              <!-- <td>{{index+1}}</td> -->
               <td class="tm" v-if="index==0" :rowspan="productSellTypeList.productTypeList.length">
                 {{productSellTypeList.sellTypeName}}
               </td>
@@ -110,7 +110,7 @@
               <td>{{item.totalActualPrice}}</td>
             </tr>
             <tr class="tr">
-              <td class="tm" colspan="3">小计</td>
+              <td class="tm" colspan="2">小计</td>
               <td>{{productSellTypeList.totalNum}}</td>
               <td>{{productSellTypeList.totalWeight}}</td>
               <td class="tm">-</td>
@@ -121,7 +121,7 @@
             </tr>
           </template>
           <tr class="tr">
-            <td class="tm" colspan="3">合计</td>
+            <td class="tm" colspan="2">合计</td>
             <td>{{productTypeList.totalNum}}</td>
             <td>{{productTypeList.totalWeight}}</td>
             <td class="tm">-</td>

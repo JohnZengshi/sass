@@ -175,7 +175,6 @@
       },
       // 获取商品列表
       fetchGoodList() {
-        debugger
         this.$emit('updataLoader', true)
         seekNewGoodsInfoList(Object.assign({
           page: this.pageNum,

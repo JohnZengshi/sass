@@ -328,7 +328,6 @@ export default {
             })
         },
         msgBack (val) { // 弹框返回的信息
-            console.log(val)
             this.operateDialog = val.status
             this.stockInfoUpdate(val.operateId, val.operateName)
             if (val.radio == '1') {
@@ -366,7 +365,6 @@ export default {
             }
         },
         openOperateDia (item) { // 修改弹窗
-            console.log(item)
             this.isDefault = item.isDefault
             console.log(this.isDefault)
             this.operateDialog = true;

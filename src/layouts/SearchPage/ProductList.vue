@@ -423,7 +423,6 @@ export default {
   },
   methods: {
     resetData() {
-      debugger
       this.filterCondition = {
         keyword: "",
         // newOrderId: "",
@@ -445,7 +444,6 @@ export default {
       this.printNum = parm;
     },
     confirmDerive (parm) {
-      debugger
         let datas = {
             "page": 1,
             "pageSize": 9999,

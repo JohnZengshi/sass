@@ -7,7 +7,8 @@
 	<data-grid-body 
         ref="dataGridBody"
 		:detailDataGridColumn="detailDataGridColumn" 
-		:dataGridStorage="dataGridStorage" 
+		:dataGridStorage="dataGridStorage"
+        :beginTime="beginTime"
 		:reportType="reportType"
         :positionSwitch="positionSwitch"
         :changeRepository="changeRepository"
@@ -54,7 +55,7 @@ export default {
 			this.posSwitch()
 		},
 	},
-	props : ['dataGridStorage','reportType','tabSwitch','isOld', 'positionSwitch', 'newList',"changeRepository", "changeShop", "changeCounter", 'dataGridOptions'],
+	props : ['dataGridStorage','reportType','tabSwitch','isOld', 'positionSwitch', 'newList',"changeRepository", "changeShop", "changeCounter", 'dataGridOptions', 'beginTime'],
 	methods:{
         sortList (val) {
             
