@@ -4,7 +4,7 @@
         <div class="main-box">
             <header class="main-box-title">
                 <span v-if="isShopName == false">
-                  店铺设置
+                  店铺设置9999
                   <el-select class="shop-select" v-model="shopStorage" placeholder="请选择店铺" @change="getGroupList">
                       <el-option
                       v-for="(item,index) in thisShopList"
