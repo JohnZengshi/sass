@@ -291,6 +291,7 @@ export default {
                 "shopId": this.shopListByCo[0] ? this.shopListByCo[0].shopId : ''
             }
             operateCreateSellOrder(options).then((response) => {
+              debugger
                 if (response.data.state === 200) {
                     this.$router.push({
                         path: "/work/sell/sellReceiptsList",
