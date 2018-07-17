@@ -19,7 +19,7 @@
            <!--店铺-->
             <li>
               <div class="serve-h-tit" v-text="receiptData.shopName"></div>
-              <div class="serve-h-tit-b">库位</div>
+              <div class="serve-h-tit-b">店铺</div>
             </li>
             <!--人-->
             <li>
