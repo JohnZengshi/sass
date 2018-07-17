@@ -122,10 +122,10 @@
                 <ImageSettingComponent ref="imageSettingComponent" v-show="setting.isImageComponent" @changeComponentSetting="changeComponentSetting"></ImageSettingComponent>
                 <LineSettingComponent ref="lineSettingComponent" v-show="setting.isLineComponent" @changeComponentSetting="changeComponentSetting"></LineSettingComponent>
                 <ContainerSettingComponent ref="containerSettingComponent" v-show="setting.isContainerComponent" @moveComponentTo="(pos)=>{this.moveComponentTo(this.activeComponents[0], pos);this.record()}"></ContainerSettingComponent>
-                <PropertySettingComponent 
-                    ref="propertySettingComponent" 
+                <PropertySettingComponent
+                    ref="propertySettingComponent"
                     @dialogVisibleFun = "dialogVisibleFun"
-                    v-show="setting.isPropertyComponent" 
+                    v-show="setting.isPropertyComponent"
                     @changeComponentSetting="changeComponentSetting"
                     :canvas="canvas">
                 </PropertySettingComponent>
@@ -135,7 +135,7 @@
                 <h4 class="title">基本元件</h4>
                 <div class="menu-component-list">
                     <div class="menu-component-block">
-                        <div class="menu-component" @mousedown="setComponentDragStartData($event, 'addText')" @dblclick="()=>{this.addText(this.canvas.width/2, this.canvas.height/2)}">文本</div>    
+                        <div class="menu-component" @mousedown="setComponentDragStartData($event, 'addText')" @dblclick="()=>{this.addText(this.canvas.width/2, this.canvas.height/2)}">文本</div>
                     </div>
                     <div class="menu-component-block">
                         <div class="menu-component" @dblclick="()=>{this.addImage(this.canvas.width/2, this.canvas.height/2)}" @mousedown="setComponentDragStartData($event, 'addImage')">图片</div>
@@ -149,7 +149,7 @@
                         </div>
                     </div>
                     <div class="menu-component-block">
-                        <div class="menu-component" @mousedown="setComponentDragStartData($event, 'addLine')" @dblclick="()=>{this.addLine(this.canvas.width/2, this.canvas.height/2)}">直线</div>    
+                        <div class="menu-component" @mousedown="setComponentDragStartData($event, 'addLine')" @dblclick="()=>{this.addLine(this.canvas.width/2, this.canvas.height/2)}">直线</div>
                     </div>
                     <div class="menu-component-block">
                         <div v-if="this.template.type == '1'" class="menu-component" @dblclick="()=>{this.addItemList(this.canvas.width/2, this.canvas.height/2)}" @mousedown="setComponentDragStartData($event, 'addItemList')">动态数据域</div>
@@ -191,8 +191,8 @@
         <div class="line-preview" v-show="componentDragStartData.action == 'addLine'" :style="{top: componentDragStartData.top, left: componentDragStartData.left}"></div>
         <div class="itemlist-preview" v-show="componentDragStartData.action == 'addItemList'" :style="{top: componentDragStartData.top, left: componentDragStartData.left}"></div>
         <div class="property-preview" v-show="componentDragStartData.action == 'addProp'" :style="{top: componentDragStartData.top, left: componentDragStartData.left}">#{动态数据项}</div>
-        
-        
+
+
         <el-dialog title="字体下载"  :visible.sync="dialogVisible" size="mini" class="fontdownload-dialog">
           <p style="line-height: 25px;">
               <i class="el-icon-information" style="font-size: 20px; margin-right: 5px; color: #F7BA2A;"></i>
@@ -322,12 +322,12 @@ export default {
                     top: 0,
                     left: 0
                 },
-                
+
                 dialogVisible : false
             }
         },
         computed: {
-            
+
             canvasContainerStyle() {
                 return {
                     width: this.canvas.width * this.canvas.percentage / 100 / 25.4 * this.ppi + 60 + 'px',
@@ -437,7 +437,7 @@ export default {
                     }
                 })
             },
-            
+
             canvas:function(){
                 console.log(this.canvas)
             }
@@ -558,12 +558,12 @@ export default {
             window.removeEventListener('resize', this.setMenuBarHeight)
         },
         methods: {
-            
+
             dialogVisibleFun( obj ){
-               this.dialogVisible = obj.type 
+               this.dialogVisible = obj.type
                this.fonts = obj.fonts
             },
-            
+
             //设置菜单栏的高度
             setMenuBarHeight() {
                 this.menuBarHeight = getOuterHeight(this.$refs.menuBar)
@@ -626,7 +626,7 @@ export default {
                     let top = Number(offsetY.toFixed(1))
                     console.log(this.componentDragStartData.data)
                     switch (this.componentDragStartData.action) {
-                        
+
                         case 'addText':
                             this.addText(left, top)
                             break
@@ -708,10 +708,10 @@ export default {
                         }
                         if (this._resizingComponent) {
                             // this._isResizing = true
-                            
+
                             // //console.log(this._resizingComponent.data.propertyCode,this._resizingComponent.type)
                             // if(this._resizingComponent.data.propertyCode && this._resizingComponent.data.propertyCode == 'charCode'){
-                            //   this._resizingComponent.data.width = 30 
+                            //   this._resizingComponent.data.width = 30
                             // }else{
                             //   this._resizingComponent.data.width = Number((this._resizingComponent.data.width + dx).toFixed(1))
                             // }
@@ -1263,6 +1263,7 @@ export default {
             },
             //加载数据
             loadDataBtnHandler() {
+                debugger
                 if (this.menuItems.isLoadDataAvailable) {
                     if (this.template.type == 1) {
                         this.$emit('loadQualityTemplateData')
@@ -1602,7 +1603,7 @@ export default {
             float: left;
             border-right: 1px solid #d6d6d6;
             padding: 0 10px;
-            margin: 10px 0; 
+            margin: 10px 0;
             &:last-child {
                 border-right: none;
             }
@@ -1765,7 +1766,7 @@ export default {
                     &:nth-child(odd){
                         .menu-component {
                             float: right;
-                            margin-right: 5px;    
+                            margin-right: 5px;
                         }
                     }
                     &:nth-child(even){
@@ -1775,7 +1776,7 @@ export default {
                         }
                     }
                 }
-                
+
                 .background-image-btn {
                     position: relative;
                     box-sizing: border-box;
@@ -1814,7 +1815,7 @@ export default {
                         .background-image-menu-list {
                             top: 30px;
                             opacity: 1;
-                            .remove-background-image { 
+                            .remove-background-image {
                                 display: block;
                             }
                         }
@@ -1902,7 +1903,7 @@ export default {
         .right-panel {
             width: 230px;
             @include right;
-            overflow-x: hidden; 
+            overflow-x: hidden;
             overflow-y: auto;
             box-shadow: 0 0 6px #d6d6d6;
             background-color: #fff;

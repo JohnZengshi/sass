@@ -4,8 +4,10 @@ const OrganizationChart = resolve => require(['../layouts/organizationChart/Orga
 const StockStatement = resolve => require(['../layouts/stock/StockStatement'], resolve)
 const jinbaifu = resolve => require(['../layouts/jinbaifu/index'], resolve)
 const text = resolve => require(['../layouts/text/text'], resolve)
-const Laber  = resolve => require(['../layouts/laberDetection/laber'], resolve)  //标签检测
-
+const laofengxiang  = resolve => require(['../layouts/laberDetection/laofengxiang'], resolve)  //老凤祥模板
+const laofengxiangSu = resolve => require(['../layouts/laberDetection/laofengxiang_su'], resolve)  //江苏老凤祥模板
+const laofengxiangSuSub = resolve => require(['../layouts/laberDetection/laofengxiang_su_sub'], resolve)  //江苏老凤祥查询数据模板
+const ernuoer = resolve => require(['../layouts/laberDetection/ernuoer'], resolve)  //伊诺尔钻石模板
 import member from './member' // 登录注册
 import additional from './additional' // 数据中心
 
@@ -101,10 +103,25 @@ const routes = [
         ]
     },
     {
-        path: '/laber',
-        name: 'Laber',
-        component: Laber
-    }
+        path: '/laofengxiang',
+        name: 'laofengxiang',
+        component: laofengxiang //老凤祥模板
+    },
+    {
+        path: '/laofengxiang_su',
+        name: 'laofengxiang_su',
+        component: laofengxiangSu   //江苏老凤祥模板
+    },
+    {
+        path: '/laofengxiang_su_sub',
+        name: 'laofengxiang_su_sub',
+        component: laofengxiangSuSub    //江苏老凤祥数据查询子模板
+    },
+    {
+        path: '/ernuoer',
+        name: 'ernuoer',
+        component: ernuoer  //伊诺尔模板
+    },
 ]
 routes.push(member)
 export default routes

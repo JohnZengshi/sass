@@ -4,7 +4,9 @@
 
         <com-menu :rootList="rootList" @setScopeSize="setScopeSize"></com-menu>
         <div class="app-main" @click="wholdClick" @scroll="scrollFun($event)">
-            <router-view></router-view>
+
+            <!--页面主路由入口-->
+            <router-view class="child-router"></router-view>
 
             <div class="index-img" v-if="isImg">
                 <img src="~static/img/index.png">
