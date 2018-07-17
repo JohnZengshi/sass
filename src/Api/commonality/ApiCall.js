@@ -24,7 +24,7 @@ function apiCall (parm, URL) {
     // 正式
     // let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
     // 本地
-    // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.109:8080/yunzhubao' : ''
+    // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.106:8080/yunzhubao' : ''
     let url = serverHost + URL
     return Vue.http.post(url, data).then(res => {
         return Promise.resolve(res)

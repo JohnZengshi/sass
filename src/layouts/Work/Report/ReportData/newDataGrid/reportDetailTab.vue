@@ -9,17 +9,18 @@
 	<template v-if="this.type == 'edit'">
 	  <!--表格内容区  -->
     <data-edit-body 
-      ref="DataEditBody"
-      :detailDataGridColumn="detailDataGridColumn" 
-      :dataGridStorage="dataGridStorage" 
-      :reportType="reportType"
-      :isEditReport="type"
-      :positionSwitch="positionSwitch"
-      :dataGridOptions="dataGridOptions"
+        ref="DataEditBody"
+        :isProductStyle="isProductStyle"
+        :detailDataGridColumn="detailDataGridColumn" 
+        :dataGridStorage="dataGridStorage" 
+        :reportType="reportType"
+        :isEditReport="type"
+        :positionSwitch="positionSwitch"
+        :dataGridOptions="dataGridOptions"
         :orderType="orderType"
-      @scrollClass = "scrollClass"
-      @lazyloadSend = "lazyloadSend"
-      @tabCell="tabCell">
+        @scrollClass = "scrollClass"
+        @lazyloadSend = "lazyloadSend"
+        @tabCell="tabCell">
     </data-edit-body>
 
 	  <!--表尾  -->
@@ -36,6 +37,7 @@
 	<!--表格内容区  -->
     <data-grid-body 
         ref="DataGridBody"
+        :isProductStyle="isProductStyle"
         :detailDataGridColumn="detailDataGridColumn" 
         :dataGridStorage="dataGridStorage" 
         :reportType="reportType"
@@ -109,7 +111,7 @@ export default {
             this.$set(this,'configData', editConfigData)
         }
 	},
-	props : ['dataGridStorage','reportType','tabSwitch','isOld', 'positionSwitch', 'newList','type', 'dataGridOptions', 'orderType'],
+	props : ['dataGridStorage','reportType','tabSwitch','isOld', 'positionSwitch', 'newList','type', 'dataGridOptions', 'orderType', 'isProductStyle'],
 	methods:{
         sortList (val) {
             this.$emit('sortList', val)

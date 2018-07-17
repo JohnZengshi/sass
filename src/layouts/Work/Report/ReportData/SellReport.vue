@@ -1,7 +1,7 @@
 <template>
-	<transition name="tp-ani">
+  <transition name="tp-ani">
 
-		<div class="RP_report_wrapper ui-page-max-width " v-if="isPrint==0">
+    <div class="RP_report_wrapper ui-page-max-width " v-if="isPrint==0">
       <div style="height: 41px;">
           <div class="Rp_title_container sell-report-header">
             <div class="Rp_selected_container">
@@ -51,17 +51,18 @@
           </ul>
       </div>
 
-			<!--销售统计-->
-			<div class="dataGrid_statistics_switch" v-if="modleSwitch == 2">
+      <!--销售统计-->
+      <div class="dataGrid_statistics_switch" v-if="modleSwitch == 2">
 
-				<div class="Rp_dataGrid_container last-table mt-0 xj-report-table-wrap" v-loading="loading" element-loading-text="数据查询中">
-					<div class="rp_gridState">
-						<!--<p class="side-nav"><i class="iconfont icon-liebiao"></i>收银报表</p>-->
-						<div class="side-nav">
-							<i class="iconfont icon-liebiao"></i>{{currentReportName}}
-						</div>
+        <div class="Rp_dataGrid_container last-table mt-0 xj-report-table-wrap" v-loading="loading" element-loading-text="数据查询中">
+          <div class="rp_gridState">
+            <!--<p class="side-nav"><i class="iconfont icon-liebiao"></i>收银报表</p>-->
+            <div class="side-nav">
+              <i class="iconfont icon-liebiao"></i>{{currentReportName}}
+            </div>
 
             <filter-header
+              class="sell-report-filter-header-wrap"
               v-if="sellShowId == 'sales' || sellShowId == 'buyback'"
               @complate="filterHeaderComplate"
               @reportSwitch="reportSwitch"
@@ -75,7 +76,7 @@
              <cut-bg class="cut-bg-btn-wrap ml-10" :showList="sellTypeList" :current="sellShowId" @pitchOn="madeUpOnSell"></cut-bg>
 
 
-					</div>
+          </div>
 
 					<!--收银报表-->
 					<div class="xj-report-rp_dataGridTemp" style="padding-top: 0;" :class="tabShow" v-if="sellShowId == 'collect'">
@@ -162,34 +163,36 @@
           </div>
 
           <!-- 加载条数选择 -->
-          <div class="LoaderNumBtn">
-            <LoaderNum ref="LoaderNum"></LoaderNum>
+          <div class="LoaderNumBtn" v-show="dataGridOptions.type == '1'">
+            <LoaderNum ref="LoaderNum" @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
           </div>
         </div>
 
 <!--         <intelligence-type-template v-if="this.tabClassActive.index==1" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :title="'智能分类'" :headerData="printSelectDate"></intelligence-type-template> -->
-				<!--打印模块-->
-				<div style="display: none;">
-						<detail-template v-if="dataGridOptions.type==1" ref="detailTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
+        <!--打印模块-->
+        <div style="display: none;">
+            <detail-template v-if="dataGridOptions.type==1" ref="detailTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :title="'明细'"
             :tabSwitch="tabSwitch"
             ></detail-template>
-						<intelligence-type-template v-if="dataGridOptions.type==2" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
+            <intelligence-type-template v-if="dataGridOptions.type==2" ref="intelligenceTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :tabSwitch="tabSwitch"
             :isBuyBack="isBuyBack"
             :title="'智能分类'"
             ></intelligence-type-template>
-						<project-type-template v-if="dataGridOptions.type==3" ref="projectTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
+            <project-type-template v-if="dataGridOptions.type==3" ref="projectTypeTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :title="'产品分类'"
+            :tabSwitch="tabSwitch"
+            :isBuyBack="isBuyBack"
             ></project-type-template>
-						<custom-template v-if="dataGridOptions.type==4" ref="customTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
+            <custom-template v-if="dataGridOptions.type==4" ref="customTemplate" :types="selectValue" :sellList="sellStorage" :buyBackList="tradeStorage" :headerData="printSelectDate"
             :title="'自定义'"
             :tabSwitch="tabSwitch"
             :isBuyBack="isBuyBack"
             ></custom-template>
-				</div>
-				
-			</div>
+        </div>
+        
+      </div>
 
 
 
@@ -211,19 +214,19 @@
 		
 		
 
-		<!--打印模块-->
-		<div ref="tablePrint" v-else-if="isPrint==1" class="tablePrint_style">
-			<table-print-sell v-if="printSellShow" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" :reportTypeHeaderData="reportTypeHeaderData.sell" :printSelectDate="printSelectDate" :reportType="getReportType()" :dataGridStorage="sellStorage">
-			</table-print-sell>
-			<table-print-trade v-if="printBuybackShow" :printSelectDate="printSelectDate" :reportTypeHeaderData="reportTypeHeaderData.trade" :reportType="getReportType()" :dataGridStorage="tradeStorage">
-			</table-print-trade>
-			<table-print-collect v-if="printCollectShow" :reportTypeHeaderData="reportTypeHeaderData.collect" :printSelectDate="printSelectDate" :dataGridStorage="collectStorage">
-			</table-print-collect>
-		</div>
+    <!--打印模块-->
+    <div ref="tablePrint" v-else-if="isPrint==1" class="tablePrint_style">
+      <table-print-sell v-if="printSellShow" :tabSwitch="tabSwitch" :isBuyBack="isBuyBack" :reportTypeHeaderData="reportTypeHeaderData.sell" :printSelectDate="printSelectDate" :reportType="getReportType()" :dataGridStorage="sellStorage">
+      </table-print-sell>
+      <table-print-trade v-if="printBuybackShow" :printSelectDate="printSelectDate" :reportTypeHeaderData="reportTypeHeaderData.trade" :reportType="getReportType()" :dataGridStorage="tradeStorage">
+      </table-print-trade>
+      <table-print-collect v-if="printCollectShow" :reportTypeHeaderData="reportTypeHeaderData.collect" :printSelectDate="printSelectDate" :dataGridStorage="collectStorage">
+      </table-print-collect>
+    </div>
 
-		
+    
 
-	</transition>
+  </transition>
 </template>
 
 <script>
@@ -547,7 +550,7 @@ export default {
         ],
         type: 2,
         page: 1,
-        pageSize: 30,
+        pageSize: 100,
         keyWord: "",
         wColorId: "",
         wGemId: "",
@@ -607,7 +610,7 @@ export default {
       // this.send();
     },
     "sellShowId": function () {
-      this.dataGridOptions.pageSize = 30
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
     }
   },
@@ -660,7 +663,7 @@ export default {
         }
       ]);
       
-      this.dataGridOptions.pageSize = 30
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
       this.send();
@@ -731,7 +734,7 @@ export default {
             sortFlag: "0",
             type: 1,
             page: 1,
-            pageSize: 30,
+            pageSize: this.dataGridOptions.pageSize,
             keyWord: ""
           });
         } else if (port == 2) {
@@ -750,7 +753,7 @@ export default {
             // productClass: '1',
             sortFlag: this.positionSwitch ? "1" : "0",
             type: 1,
-            pageSize:30
+            pageSize:this.dataGridOptions.pageSize
           });
         } else if (port == 3) {
           delete this.dataGridOptions.page;
@@ -768,7 +771,7 @@ export default {
             // productClass: '1',
             sortFlag: this.positionSwitch ? "1" : "0",
             type: 1,
-            pageSize:30
+            pageSize:this.dataGridOptions.pageSize
           });
         } else if (port == 4) {
           Object.assign(this.dataGridOptions, {
@@ -785,7 +788,7 @@ export default {
             nColorId: "",
             nGemId: "",
             nJewelryId: "1",
-            pageSize:30
+            pageSize:this.dataGridOptions.pageSize
           });
         }
       }
@@ -800,7 +803,7 @@ export default {
       this.loading = true;
       //this.page = 1
       this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize;
       this.tabClassActive.index = index;
       this.setReportType(type);
     },
@@ -983,7 +986,7 @@ export default {
           // }
         ]);
 
-        this.dataGridOptions.pageSize = 30
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
         // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
         this.send();
@@ -1000,7 +1003,7 @@ export default {
         // this.beginTime = this.getDate(0, "start").format;
         // this.endTime = this.getDate(0, "end").format;
 
-        this.dataGridOptions.pageSize = 30
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
         // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
         // this.send()
@@ -1045,7 +1048,7 @@ export default {
         this.printSelectDate.shop = this.shopList[0] ? this.shopList[0].shopName : "";
         this.dataGridOptions.shopId = this.shopList[0] ? this.shopList[0].shopId : "";
         this.dataGridOptions.size = 1
-        this.dataGridOptions.pageSize = 30
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
         this.send();
         return
         this.printSelectDate.preparedBy = "";
@@ -1088,12 +1091,12 @@ export default {
         });
       }
       this.dataGridOptions.size = 1
-      this.dataGridOptions.pageSize = 15
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
     dropReturn(val) {
-      this.dataGridOptions.pageSize = 30
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       this.send();
     },
     dropReturn(val) {
@@ -1146,7 +1149,7 @@ export default {
       }
 
       this.currentPage = 1;
-      this.dataGridOptions.pageSize = 30
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
@@ -1172,7 +1175,7 @@ export default {
           value: "1"
         }
       ]);
-      this.dataGridOptions.pageSize = 30
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
@@ -1199,7 +1202,7 @@ export default {
         }
       ]);
       
-      this.dataGridOptions.pageSize = 30
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
 
       this.send();
@@ -1217,7 +1220,7 @@ export default {
     },
 
     storageFunc() {
-      this.dataGridOptions.pageSize = 30
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
       // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
       this.send();
     },
@@ -1299,7 +1302,7 @@ export default {
           .split("-")
           .join("") + "000000";
       this.printSelectDate.startTime = val;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize;
       // 回购
       if(this.sellShowId == 'buyback'){
         if (this.$refs["ReportDetailTrade"]) {
@@ -1321,7 +1324,7 @@ export default {
           .split("-")
           .join("") + "235959";
       this.printSelectDate.endTime = val;
-      this.dataGridOptions.pageSize = 30;
+      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize;
       // 回购
       if(this.sellShowId == 'buyback'){
         this.$refs["ReportDetailTrade"].$children[1].tempArray = [];
@@ -1354,13 +1357,13 @@ export default {
       let currentData = new Date();
 
       if (type == "end") {
-        //					if(Year < currentData.getFullYear() ||
-        //						month < currentData.getMonth() + 1 ||
-        //						Day < currentData.getDate()
-        //					) {
+        //          if(Year < currentData.getFullYear() ||
+        //            month < currentData.getMonth() + 1 ||
+        //            Day < currentData.getDate()
+        //          ) {
         hours = "23";
         mins = seconds = "59";
-        //					}
+        //          }
       } else if (type == "start") {
         hours = mins = seconds = "00";
       }
@@ -1386,8 +1389,8 @@ export default {
     },
 
     /*
-			 * 销售数据请求
-			 */
+       * 销售数据请求
+       */
     sellSend() {
       this.loading = true;
       //明细
@@ -1608,6 +1611,10 @@ export default {
           this.sellCollectSend()
         }
       },
+      // 同步loaderNum组件的页数
+      changeUpdataPageSize(val){
+        this.dataGridOptions.pageSize = val;
+      }
   },
 
   mounted() {
@@ -1615,11 +1622,11 @@ export default {
       //获取公司信息
       let companyName = JSON.parse(localStorage.getItem("companyInfo"));
       if (companyName) {
-        this.printSelectDate.companyName = "公司名：" + companyName.companyName;
+        this.printSelectDate.companyName = companyName.companyName;
       }
-	  });
-	
-	  var $btn = $('')
+    });
+  
+    var $btn = $('')
     },
 
     
@@ -1777,7 +1784,7 @@ export default {
   }
 }
 .exportBtn {
-	bottom: 60px;
+  bottom: 60px;
 }
 .sell-report-header{
   float: right;
@@ -1809,5 +1816,10 @@ export default {
 .cut-bg-btn-wrap{
   float: right;
   margin-top: 10px;
+}
+.sell-report-filter-header-wrap{
+  margin-top: 10px;
+  float: right;
+  margin-right: 10px;
 }
 </style>

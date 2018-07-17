@@ -1,6 +1,6 @@
 <template>
 <!--表尾-->
-<div class="ui-table_footer">
+<div class="xj-report-table-footer">
   <div class="th_footer" v-for="(tab,f) in detailDataGridColumn" 
     :style="tableCell(tab.width)">
       <p class="totalNum" v-html="v_html(tab)"></p>

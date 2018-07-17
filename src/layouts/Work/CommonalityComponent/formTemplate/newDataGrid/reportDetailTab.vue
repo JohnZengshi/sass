@@ -227,7 +227,7 @@ export default {
             var pageSize = 0
             //   this.dgDataList = [];
             // console.log(Number(upDataNum))
-    	    if (Number(upDataNum)) {
+    	    if (Number(upDataNum) != 0) {
     	      upDataNum = Number(upDataNum);
     	      if (totalNum - length < upDataNum) {
     	        pageSize = 0

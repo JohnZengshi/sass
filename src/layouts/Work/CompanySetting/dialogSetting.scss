@@ -234,6 +234,7 @@
         }
     }
 }
+
 .operateDig {
     width: 320px;
     height: 530px;
@@ -381,6 +382,169 @@
 
     }
 }
+
+.product-class-dig-main {
+    width: 640px;
+    height: 560px;
+    border-radius:10px;
+    .title {
+        width: 46px;
+        position: absolute;
+        left: 50%;
+        margin-left: -24px;
+        text-align: center;
+        img {
+            width: 46px;
+            height: 46px;
+        }
+        &>div {
+            font-size: 14px;
+            color: #333;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    }
+    .ope-body {
+        margin-top: 104px;
+        .input-block-left {
+            width: 270px;
+            display: inline-block;
+            vertical-align: top;
+            margin-left: 30px;
+            .input-block-title {
+                margin-top: 30px;
+                height: 32px;
+                i {
+                    display: block;
+                    float: left;
+                    width: 3px;
+                    height: 14px;
+                    background:#2993f8;
+                    font-size: 14px;
+                    color: #333;
+                    margin-right: 7px;
+                    margin-top: 3px;
+                }
+                span {
+                    float: left;
+                    font-weight: bold;
+                }
+            }
+            .input-block-title:first-child{
+                margin-top: 0;
+            }
+            .textarea-wrap{
+                position: relative;
+                height: 70px;
+                padding: 10px 10px 0 10px;
+                border-radius: 2px;
+                background-color: #f6f7f8;
+                >textarea{
+                    width: 100%;
+                    height: 60px;
+                    background-color: #f6f7f8;
+                }
+                >span{
+                    position: absolute;
+                    bottom: 5px;
+                    right: 5px;
+                    color: #666;
+                    z-index: 10px;
+                } 
+            }
+            &>input {
+                width: 268px;
+                height: 36px;
+                border-radius: 4px;
+                background:#f6f7f8;
+                padding-left: 15px;
+                border: 1px solid #fff;
+            }
+            &>input:hover {
+                border: 1px solid #2993f8;
+            }
+            .body1-wrap {
+                margin: 0 auto;
+                width: 268px;
+                height: 36px;
+                input {
+                    width: 166px;
+                    height: 36px;
+                    display: block;
+                    background:#f6f7f8;
+                    border-radius: 4px;
+                    padding-left: 23px;
+                    float:left;
+                    border: 1px solid #fff;
+                }
+                input:hover {
+                    border: 1px solid #2993f8;
+                }
+                .el-select {
+                    float: right;
+                    width: 90px;
+                    height: 36px;
+                    .el-input {
+                        position: relative;
+                        width: 90px;
+                            height: 36px;
+                        .el-input__icon {
+                            right: 0;
+                            top: 20px;
+                            font-size: 10px;
+                            width: 20px;
+                        }
+                        .el-input__inner {
+                            width: 90px;
+                            height: 36px;
+                            padding-right: 20px;
+                            padding-left: 10px;
+                        }
+                    }
+                }
+            }
+            
+        }
+        .product-class-chart{
+            display: inline-block;
+            height: 230px;
+            width: 270px;
+            margin-left: 30px;
+            margin-top: 20px;
+            // margin:0 auto;
+        }
+        .p-c-btn-list{
+            // border: 1px solid red;
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            right: 0;
+            margin: auto;
+            text-align: center;
+            font-size: 0;
+            li{
+                width: 90px;
+                height: 28px;
+                display: inline-block;
+                border-radius: 4px;
+                background:#2993f8;
+                text-align:center;
+                color:#fff;
+                font-size: 14px;
+                font-weight: bold;
+                line-height: 28px;
+                cursor: pointer;
+                margin: 0 10px;
+                border: 1px solid #d6d6d6;
+            }
+            li:nth-child(3){
+                background:#fff;
+                color: #666;
+            }
+        }
+    }
+}
+
 .certificateDig {
     width: 360px;
     height: 646px;

@@ -10,9 +10,11 @@
 	  @tabCell="tabCell"></data-grid-header>
 	<!--表格内容区  -->
 	<data-grid-body 
+        :orderType="orderType"
 		:detailDataGridColumn="detailDataGridColumn" 
 		:dataGridStorage="dataGridStorage" 
 		:reportType="reportType"
+        :dataGridOptions="dataGridOptions"
         :positionSwitch="positionSwitch"
 		@scrollClass = "scrollClass"
         @lazyloadSend = "lazyloadSend"
@@ -56,7 +58,7 @@ export default {
 			this.posSwitch()
 		},
 	},
-	props : ['dataGridStorage','reportType','tabSwitch', 'positionSwitch','newList'],
+	props : ['dataGridStorage','reportType','tabSwitch', 'positionSwitch','newList', 'orderType', 'dataGridOptions'],
 	methods:{
     sortList (val) {
       //console.log(val)

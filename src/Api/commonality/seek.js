@@ -869,3 +869,9 @@ export const seekGetReportsPrintRK = function (parm) {
   let URL = "/v1/reports/getReportsPrintRK";
   return apiCall(parm, URL);
 }
+
+export const seekGetReportsPrintXG = function (parm) {
+  let URL = "/v1/reports/getReportsPrintXG";
+  return apiCall(parm, URL);
+}
+

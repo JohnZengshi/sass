@@ -126,7 +126,8 @@ export default {
        fatchGold(){
           this.loading = true
           seekGoldPrice({
-              search : ''
+              search : '',
+              shopId: this.shopId,
           }).then((res)=>{
               setTimeout(()=>{
                 this.loading = false
@@ -203,6 +204,7 @@ export default {
        //弹出框回调
        dialogCallback( updateList ){
           modifyGoldPrice({
+              shopId: this.shopId,
               updateList : updateList
           }).then((res)=>{
               

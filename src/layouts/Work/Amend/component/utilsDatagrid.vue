@@ -37,7 +37,7 @@
     <i class="iconfont icon-shenhebohui"></i>
   </span>
 
-  <print-label :orderData="orderData" :orderNum="synopsiData.orderNum" @tabPrint="tabPrint"></print-label>
+  <print-label :orderData="orderData" :dataGridOptions="dataGridOptions" :orderNum="synopsiData.orderNum" @tabPrint="tabPrint"></print-label>
   
   <span data-text="添加备注" @click="popupShow(true,'添加备注')">
     <i class="iconfont icon-beizhu"></i>
@@ -47,7 +47,10 @@
     <i class="iconfont icon-shanchu1"></i>
   </span>
   <!-- 加载页数 -->
-  <LoaderNum ref="LoaderNum"></LoaderNum>
+  <LoaderNum 
+  ref="LoaderNum"
+  v-show="dataGridOptions.type == '1'"
+  ></LoaderNum>
 
   <!-- 弹出框 -->
   <orderPopup 
@@ -84,8 +87,6 @@ export default{
      // 弹出框 显示 隐藏
      isShowPopup : false,
      companyPosition : '',
-     // 选择更新页数
-    pageSize: "30",
     }
   },
   components: {
@@ -93,7 +94,7 @@ export default{
     printLabel,
     LoaderNum
   },
-  props: ['dataList','orderData','curStatus'],
+  props: ['dataList','orderData','curStatus', 'dataGridOptions'],
   
   watch : {
     curStatus:{

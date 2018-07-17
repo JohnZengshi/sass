@@ -114,15 +114,20 @@
 
 <style lang="scss">
 .report-filter-height-main{
-  margin-top: 10px;
-  float: right;
+  display: inline-block;
+  vertical-align: top;
   font-size: 0;
-  margin-right: 10px;
+  &.fl-t10{
+    margin-top: 10px;
+    float: right;
+    margin-right: 10px;
+  }
   .cost-btn{
     display: inline-block;
     font-size: 12px;
+    line-height: 12px;
     font-weight: bold;
-    padding: 5px 8px;
+    padding: 6px 8px;
     cursor: pointer;
     border-radius: 5px;
     transition: all .3s;

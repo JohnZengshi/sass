@@ -41,25 +41,25 @@
             text-align: center;
         }
 
-        .lodopContainer a {
-            color: #2993f8;
-        }
-        #closePrint{
-            display:none;
-            position:fixed;
-            top:10px;
-            right:200px;
-            border:none;
-            background:#2993f8;
-            color:#fff;
-            padding:5px 10px;
-            border-radius:4px;
-            z-index:999999;
-            cursor:pointer;
-        }
 
-    </style>
-    <!--     <script src="./static/js/pingpp.js" type="text/javascript"></script> -->
+  .lodopContainer a {
+    color: #2993f8;
+  }
+  input::-webkit-input-placeholder{
+    color:#757575!important;
+  }
+  input::-moz-placeholder{
+    color:#757575!important;
+  }
+  input:-moz-placeholder{
+    color:#757575!important;
+  }
+  input:-ms-input-placeholder{
+    color:#757575!important;
+  }
+  </style>
+  <!--     <script src="./static/js/pingpp.js" type="text/javascript"></script> -->
+
 </head>
 
 <body id="body" class="body-shield">
@@ -89,13 +89,7 @@
 <script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
 </body>
 
-<script>
-    $(function () {
-        $('#closePrint').on('click',function () {
-            $('#iframe,#closePrint').hide();
-        })
-    })
-</script>
+
 <script>
     totalActualPrice
         :
@@ -152,4 +146,5 @@
         :
         ""
 </script>
+
 </html>

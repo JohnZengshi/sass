@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <filter-header :isOld="true" :specialItem="true" @complate="filterHeaderComplate" @reportSwitch="reportSwitch"></filter-header>
+            <filter-header class="hz-report-filter-header-wrap" :isOld="true" :specialItem="true" @complate="filterHeaderComplate" @reportSwitch="reportSwitch"></filter-header>
 
     </div>
     
@@ -93,11 +93,32 @@
     <!--打印模块-->
     <div style="display: none;">
     
-        <intelligence-type-template v-if="this.dataGridOptions.type==2" title="进销存-智能分类-汇总" ref="intelligenceTypeTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></intelligence-type-template>
+        <intelligence-type-template 
+            v-if="this.dataGridOptions.type==2" 
+            title="进销存汇总表" 
+            tabTitle="智能分类"
+            ref="intelligenceTypeTemplate" 
+            :sellList="filterHasData(dataGridStorage.dataList)" 
+            :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"></intelligence-type-template>
 
-        <project-type-template v-if="this.dataGridOptions.type==3" title="进销存-产品类别-汇总" ref="projectTypeTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></project-type-template>
+        <project-type-template 
+            v-if="this.dataGridOptions.type==3" 
+            title="进销存汇总表" 
+            tabTitle="产品分类"
+            ref="projectTypeTemplate" 
+            :sellList="filterHasData(dataGridStorage.dataList)" 
+            :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"></project-type-template>
 
-        <custom-template v-if="this.dataGridOptions.type==4" title="进销存-自定义-汇总" ref="customTemplate" :sellList="filterHasData(dataGridStorage.dataList)" :headerData="printSelectDate"></custom-template>
+        <custom-template 
+            v-if="this.dataGridOptions.type==4" 
+            title="进销存汇总表" 
+            tabTitle="自定义"
+            ref="customTemplate" 
+            :sellList="filterHasData(dataGridStorage.dataList)" 
+            :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"></custom-template>
 
     </div>
 </div>
@@ -114,9 +135,6 @@
 </transition>
 </template>
 
-<style scoped>
-    
-</style>
 
 
 <script>
@@ -245,18 +263,19 @@ export default {
         //打印0,1
         isPrint : 0,
         printSelectDate : {
-          storage : '',//发货库位
-          productType : '',//产品类别
-          shop :'', //收货铺位
-          preparedBy: '',//制单人
-          auditor: '',//审核人
-          takeUser: '',//收货人
-          startTime : '',//制单时间
-          endTime : '',
-          headerData : '发货', //制单大标题
-          reportType : '4',//1代表入库、2退库、3调库、4发货、5调柜、6退货
-            companyName : '', //公司名,
-            showCompany : true //是否显示公司名  在用户不选择条件筛选的情况下 默认显示公司名
+            storage: '', //发货库位
+            productType: '', //产品类别
+            productClass: '1', //商品属性
+            shop: '', //收货铺位
+            preparedBy: '', //制单人
+            auditor: '', //审核人
+            takeUser: '', //收货人
+            startTime: '', //制单时间
+            endTime: '',
+            headerData: '发货', //制单大标题
+            reportType: '4', //1代表入库、2退库、3调库、4发货、5调柜、6退货
+            companyName: '', //公司名,
+            showCompany: true //是否显示公司名  在用户不选择条件筛选的情况下 默认显示公司名
         },
         //
         tabShow: 'tabShow',
@@ -455,6 +474,7 @@ export default {
         /* ---new--- */
         // 完成
         filterHeaderComplate (parm) {
+            this.printSelectDate.productClass = parm.productClass;
             Object.assign(this.dataGridOptions, parm)
             this.send()
         },
@@ -471,11 +491,11 @@ export default {
           seekGetReportsComprehensive(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
                 this.dataGridStorage = res.data.data
-                setTimeout(() => {
-                    if (this.$refs.reportDetailWrap) {
-                        this.$refs.reportDetailWrap._setMCustomScrollbar()
-                    }
-                }, 800)
+                // setTimeout(() => {
+                //     if (this.$refs.reportDetailWrap) {
+                //         this.$refs.reportDetailWrap._setMCustomScrollbar()
+                //     }
+                // }, 800)
                 this.loading = false
             }  else {
                 this.$message({
@@ -513,16 +533,23 @@ export default {
           }
         },
         changeVaue (parm) {
+            console.log(parm)
             this.dataGridOptions.storageId = ''
             this.dataGridOptions.shopId = ''
             this.dataGridOptions.shopFlag = ''
             this.dataGridOptions.storageFlag = ''
             if (parm.type == 1) {
                 this.dataGridOptions.receiveObject = parm.type
+                // 打印报表的筛选条件
+                this.printSelectDate.shop = "";
+                this.printSelectDate.storage = ""
             } else if (parm.type == 2) {
                 if (parm.item.operateId) {
                     this.dataGridOptions.receiveObject = 4
                     this.dataGridOptions.storageId = parm.item.operateId
+                    // 打印报表的筛选条件
+                    this.printSelectDate.shop = ""
+                    this.printSelectDate.storage = parm.item.operateName
                 } else {
                     this.dataGridOptions.receiveObject = parm.type
                     this.dataGridOptions.storageFlag = '1'
@@ -532,6 +559,9 @@ export default {
                 if (parm.item.operateId) {
                     this.dataGridOptions.receiveObject = 5
                     this.dataGridOptions.shopId = parm.item.operateId
+                    // 打印报表的筛选条件
+                    this.printSelectDate.storage = ""
+                    this.printSelectDate.shop = parm.item.operateName
                 } else {
                     this.dataGridOptions.receiveObject = parm.type
                     this.dataGridOptions.shopFlag = '1'
@@ -544,6 +574,9 @@ export default {
             this.dataGridOptions.receiveObject = 1
             this.dataGridOptions.shopId = ''
             this.dataGridOptions.storageId = ''
+            // 打印报表的筛选条件
+            this.printSelectDate.shop = "";
+            this.printSelectDate.storage = ""
             this.send()
         },
 
@@ -779,11 +812,11 @@ export default {
           seekGetReportsComprehensive(this.dataGridOptions).then((res) => {
             if (res.data.state == 200) {
               this.dataGridStorage = res.data.data
-              setTimeout(() => {
-                if (this.$refs.reportDetailWrap) {
-                  this.$refs.reportDetailWrap._setMCustomScrollbar()
-                }
-              }, 800)
+            //   setTimeout(() => {
+            //     if (this.$refs.reportDetailWrap) {
+            //       this.$refs.reportDetailWrap._setMCustomScrollbar()
+            //     }
+            //   }, 800)
               this.loading = false
             } else {
               this.$message({
@@ -804,11 +837,16 @@ export default {
             //获取公司信息
             let companyName = JSON.parse(localStorage.getItem('companyInfo'))
             if(companyName){
-              this.printSelectDate.companyName = '公司名：'+ companyName.companyName 
+              this.printSelectDate.companyName = companyName.companyName 
             }
             this._seekRepositoryList()
         })
     }
  }
 </script>
-
+<style lang="scss" scoped>
+.hz-report-filter-header-wrap{
+    float: right;
+    margin-top: 10px;
+} 
+</style>

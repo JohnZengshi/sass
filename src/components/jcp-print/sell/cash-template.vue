@@ -3,130 +3,133 @@
     <div class="print-header">
       <h1 class="title center">收银统计</h1>
       <div class="head-option">
-        <div class="left">{{printSelectDate.companyName}}</div>
-        <div class="right">时间 {{printSelectDate.startTime}} 至 {{printSelectDate.endTime}}</div>
+        <div class="left">公司名称：{{printSelectDate.companyName}}</div>
+        <div class="right">时间： {{printSelectDate.startTime}} 至 {{printSelectDate.endTime}}</div>
       </div>
-      <div class="explain-box">
+      <!-- <div class="explain-box">
         店铺名称：{{printSelectDate.shop}}
-      </div>
-      <!--<div class="explain-box">
-				班组名称：{{printSelectDate.}}
-			</div>-->
+      </div> -->
+      <filtrateBox :headerData="printSelectDate" title="收银"></filtrateBox>
     </div>
     <div id="win">
       <table class="table-box">
-        <tr>
+        <tr class="tm">
           <!-- <td>序号</td> -->
-          <td class="tm">销售类型</td>
-          <td class="tm">回购类型</td>
-          <td class="tm">产品类别</td>
-          <td class="tm">件数(件)</td>
-          <td class="tm">件重(g)</td>
-          <td class="tm">金重(g)</td>
-          <td class="tm">标价/原售价 (元)</td>
-          <td class="tm">工费总额(元)</td>
-          <td class="tm">实售价/回购价(元)</td>
+          <td>销售类型</td>
+          <td>回购类型</td>
+          <td>产品类别</td>
+          <td>件数(件)</td>
+          <td>件重(g)</td>
+          <td>金重(g)</td>
+          <td>标价/原售价 (元)</td>
+          <td>工费总额(元)</td>
+          <td>实售价/回购价(元)</td>
         </tr>
-        <template v-if="sellStorage.productTypeList" v-for="(productTypeList,j) in sellStorage.productTypeList">
-          <template v-if="productTypeList.productSellTypeList" v-for="(productSellTypeList,i) in productTypeList.productSellTypeList">
-
-            <tr v-for="(item,index) in productSellTypeList.productTypeList" :key="index">
+        <!-- 销售 -->
+        <template v-if="sellStorage.totalNum > 0" v-for="(productTypeList,j) in sellStorage.productTypeList">
+          <template v-for="(productSellTypeList,i) in productTypeList.productSellTypeList">
+            <tr class="tr" v-for="(item,index) in productSellTypeList.productTypeList" :key="index">
               <td class="tm" v-if="j == 0 && index == 0 && i == 0" :rowspan="sellLength(sellStorage.productTypeList)">销售</td>
               <td class="tm" v-if="index == 0 && productSellTypeList.classesType == '1'" :rowspan="productSellTypeList.productTypeList.length">计重</td>
               <td class="tm" v-else-if="index == 0 && productSellTypeList.classesType == '2'" :rowspan="productSellTypeList.productTypeList.length">计件</td>
               <!-- <td>{{index+1}}</td> -->
               <td class="tl">{{item.className}}</td>
-              <td class="tr">{{item.totalNum}}</td>
-              <td class="tr">{{item.totalWeight}}</td>
-              <td class="tr">{{item.totalGoldWeight}}</td>
-              <td class="tr">{{item.totalSoldPrice}}</td>
-              <td class="tr">{{item.totalWage}}</td>
-              <td class="tr">{{item.totalRealPrice}}</td>
+              <td>{{item.totalNum}}</td>
+              <td>{{item.totalWeight}}</td>
+              <td>{{item.totalGoldWeight}}</td>
+              <td>{{item.totalSoldPrice}}</td>
+              <td>{{item.totalWage}}</td>
+              <td>{{item.totalRealPrice}}</td>
             </tr>
-            <tr>
+            <tr class="tr">
               <td class="tm" colspan="2">小计</td>
-              <td class="tr">{{productSellTypeList.totalNum}}</td>
-              <td class="tr">{{productSellTypeList.totalWeight}}</td>
-              <td class="tr">{{productSellTypeList.totalGoldWeight}}</td>
-              <td class="tr">{{productSellTypeList.totalSoldPrice}}</td>
-              <td class="tr">{{productSellTypeList.totalWage}}</td>
-              <td class="tr">{{productSellTypeList.totalRealPrice}}</td>
+              <td>{{productSellTypeList.totalNum}}</td>
+              <td>{{productSellTypeList.totalWeight}}</td>
+              <td>{{productSellTypeList.totalGoldWeight}}</td>
+              <td>{{productSellTypeList.totalSoldPrice}}</td>
+              <td>{{productSellTypeList.totalWage}}</td>
+              <td>{{productSellTypeList.totalRealPrice}}</td>
             </tr>
           </template>
-          <tr>
+          <tr class="tr">
             <td class="tm" colspan="3">销售合计</td>
-            <td class="tr">{{productTypeList.totalNum}}</td>
-            <td class="tr">{{productTypeList.totalWeight}}</td>
-            <td class="tr">{{productTypeList.totalGoldWeight}}</td>
-            <td class="tr">{{productTypeList.totalSoldPrice}}</td>
-            <td class="tr">{{productTypeList.totalWage}}</td>
-            <td class="tr">{{productTypeList.totalRealPrice}}</td>
+            <td>{{productTypeList.totalNum}}</td>
+            <td>{{productTypeList.totalWeight}}</td>
+            <td>{{productTypeList.totalGoldWeight}}</td>
+            <td>{{productTypeList.totalSoldPrice}}</td>
+            <td>{{productTypeList.totalWage}}</td>
+            <td>{{productTypeList.totalRealPrice}}</td>
           </tr>
         </template>
-
-        <template v-if="buyBackStorage.productTypeList" v-for="(productTypeList,j) in buyBackStorage.productTypeList">
-          <template v-if="productTypeList.productSellTypeList" v-for="(productSellTypeList,i) in productTypeList.productSellTypeList">
-
-            <tr v-for="(item,index) in productSellTypeList.productTypeList" :key="index">
+        <!-- 回购 -->
+        <template v-if="buyBackStorage.totalNum > 0" v-for="(productTypeList,j) in buyBackStorage.productTypeList">
+          <template v-for="(productSellTypeList,i) in productTypeList.productSellTypeList">
+            <tr class="tr" v-for="(item,index) in productSellTypeList.productTypeList" :key="index">
               <td class="tm" v-if="j == 0 && index == 0 && i == 0" :rowspan="sellLength(buyBackStorage.productTypeList)">回购</td>
               <td class="tm" v-if="index == 0" :rowspan="productSellTypeList.productTypeList.length">{{productSellTypeList.sellTypeName}}</td>
               <td class="tl">{{item.className}}</td>
-              <td class="tr">{{item.totalNum}}</td>
-              <td class="tr">{{item.totalWeight}}</td>
-              <td class="tr">{{item.totalGoldWeight}}</td>
-              <td class="tr">{{item.totalSoldPrice}}</td>
-              <td class="tr">{{item.totalWage}}</td>
-              <td class="tr">{{item.totalActualPrice}}</td>
+              <td>{{item.totalNum}}</td>
+              <td>{{item.totalWeight}}</td>
+              <td>{{item.totalGoldWeight}}</td>
+              <td>{{item.totalSoldPrice}}</td>
+              <td>{{item.totalWage}}</td>
+              <td>{{item.totalActualPrice}}</td>
             </tr>
-            <tr>
+            <tr class="tr">
               <td class="tm" colspan="2">小计</td>
-              <td class="tr">{{productSellTypeList.totalNum}}</td>
-              <td class="tr">{{productSellTypeList.totalWeight}}</td>
-              <td class="tr">{{productSellTypeList.totalGoldWeight}}</td>
-              <td class="tr">{{productSellTypeList.totalSoldPrice}}</td>
-              <td class="tr">{{productSellTypeList.totalWage}}</td>
-              <td class="tr">{{productSellTypeList.totalActualPrice}}</td>
+              <td>{{productSellTypeList.totalNum}}</td>
+              <td>{{productSellTypeList.totalWeight}}</td>
+              <td>{{productSellTypeList.totalGoldWeight}}</td>
+              <td>{{productSellTypeList.totalSoldPrice}}</td>
+              <td>{{productSellTypeList.totalWage}}</td>
+              <td>{{productSellTypeList.totalActualPrice}}</td>
             </tr>
           </template>
-          <tr>
+          <tr class="tr">
             <td class="tm" colspan="3">回购合计</td>
-            <td class="tr">{{productTypeList.totalNum}}</td>
-            <td class="tr">{{productTypeList.totalWeight}}</td>
-            <td class="tr">{{productTypeList.totalGoldWeight}}</td>
-            <td class="tr">{{productTypeList.totalSoldPrice}}</td>
-            <td class="tr">{{productTypeList.totalWage}}</td>
-            <td class="tr">{{productTypeList.totalActualPrice}}</td>
+            <td>{{productTypeList.totalNum}}</td>
+            <td>{{productTypeList.totalWeight}}</td>
+            <td>{{productTypeList.totalGoldWeight}}</td>
+            <td>{{productTypeList.totalSoldPrice}}</td>
+            <td>{{productTypeList.totalWage}}</td>
+            <td>{{productTypeList.totalActualPrice}}</td>
           </tr>
         </template>
-
-        <tr>
-          <!-- <td>收款方式与金额</td> -->
-          <td class="tm" colspan="2">刷卡(元)</td>
-          <td class="tm">现金(元)</td>
-          <td class="tm" colspan="2">微信(元)</td>
-          <td class="tm" colspan="2">支付宝(元)</td>
-          <td class="tm">其他(元)</td>
-          <td class="tm">实际收银(元)</td>
+      </table>
+      <table class="bottom-box">
+        <tr class="tm">
+          <td>刷卡(元)</td>
+          <td>现金(元)</td>
+          <td>微信(元)</td>
+          <td>支付宝(元)</td>
+          <td>其他(元)</td>
+          <td>实际收银(元)</td>
         </tr>
-        <tr>
-          <!-- <td>收款方式与金额</td> -->
-          <td class="tr" colspan="2">{{cashierStatistics.slotCard || 0}}</td>
-          <td class="tr">{{cashierStatistics.cash || 0}}</td>
-          <td class="tr" colspan="2">{{cashierStatistics.weixin || 0}}</td>
-          <td class="tr" colspan="2">{{cashierStatistics.zhifubao || 0}}</td>
-          <td class="tr">{{cashierStatistics.other || 0}}</td>
-          <td class="tr">{{cashierStatistics.totalMoney || 0}}</td>
+        <tr class="tr">
+          <td>{{cashierStatistics.slotCard || 0}}</td>
+          <td>{{cashierStatistics.cash || 0}}</td>
+          <td>{{cashierStatistics.weixin || 0}}</td>
+          <td>{{cashierStatistics.zhifubao || 0}}</td>
+          <td>{{cashierStatistics.other || 0}}</td>
+          <td>{{cashierStatistics.totalMoney || 0}}</td>
         </tr>
       </table>
     </div>
+    <div class="printDate">
+			打印时间：{{printDate}}
+		</div>
   </div>
 </template>
 <script>
+  import moment from "moment";
   import {
     jcpPrint
   } from "@/tools/jcp-print";
+  import filtrateBox from "../components/filtrateBox.vue"
   export default {
-    components: {},
+    components: {
+      filtrateBox
+    },
     props: {
       cashierStatistics: {
         type: Object
@@ -154,7 +157,8 @@
         totalRealPrice: 0,
         totalBuy: 0,
         sellStorageLength: 6,
-        buyBackStorageLength: 0
+        buyBackStorageLength: 0,
+        printDate:'',
       }
     },
     methods: {
@@ -182,70 +186,39 @@
         };
         jcpPrint.printPreview(doc);
       }
-    }
+    },
+    mounted() {
+			this.printDate = moment().format("YYYY-MM-DD HH:mm");
+		},
   }
 
 </script>
 
 <style lang="scss" scoped>
-  .center {
-    text-align: center;
+  @import "../../../assets/css/print.scss";
+  .print-box{
+		width: 197mm;
   }
-
-  .font-bold {
-    font-weight: bold;
-  }
-
-  .print-box {
-    font-size: 12px;
-    width: 197mm;
-    margin: 0 auto;
-    padding: 20px;
-  }
-
-  .explain-box {
-	display: inline-block;
-	width: 100%;
-	border: 1px solid;
-	border-top: none;
-	border-bottom: none;
+    .explain-box {
+    width: 100%;
+    border: 1px solid;
+    border-top: none;
+    border-bottom: none;
     padding: 10px 10px 10px 10px;
+    box-sizing: border-box;
+    div {
+      display: inline-block;
+      width: 33%;
+      margin-bottom: 10px;
+      &:nth-last-of-type(3),
+      &:nth-last-of-type(2),
+      &:nth-last-of-type(1) {
+        margin-bottom: 0;
+      }
+    }
   }
-
-  .head-option div {
-    display: table-cell;
-  }
-
-  .right {
-    text-align: right;
-  }
-
-  .head-option {
-	display: table;
-	padding: 10px 10px 10px 10px;
-	width: 100%;
-	border: 1px solid;
-  }
-
-  .table-box {
+  .bottom-box {
     width: 100%;
     border-collapse: collapse;
   }
-
-  td {
-    font-size: 12px;
-    border: 1px solid;
-    line-height: 25px;
-    padding: 5px;
-  }
-  .tl{
-    text-align: left;
-  }
-  .tr{
-    text-align: right;
-  }
-  .tm{
-    text-align: center;
-  }
-
 </style>

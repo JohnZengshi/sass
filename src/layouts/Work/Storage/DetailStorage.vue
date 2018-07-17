@@ -5,13 +5,17 @@
                 <div class="header-seek">
                     <ul>
                         <li>
-                            <span>产品类别：</span> <span class="main-color" v-if="receiptDetail.cargoType">{{receiptDetail.cargoType}}</span>
+                            <span>产品类别：</span>
+                            <span class="main-color" v-if="receiptDetail.cargoType">{{receiptDetail.cargoType}}</span>
                         </li>
                         <li>
                             <span>供应商：</span>
                             <div class="select-w100">
                                 <el-select ref="supplierDefault" filterable v-model="header.supplierId" placeholder="">
-                                    <el-option v-for="(item,index) in supplierListData" :label="item.supplierName" :key="index" :value="item.supplierId"></el-option>
+                                    <el-option v-for="(item,index) in supplierListData"
+                                        :label="item.supplierName" :key="index"
+                                        :value="item.supplierId">
+                                    </el-option>
                                 </el-select>
                             </div>
                         </li>
@@ -19,7 +23,10 @@
                             <span>入库库位：</span>
                             <div class="select-w100">
                                 <el-select ref="warehouseDefault" filterable v-model="header.warehouseId" placeholder="">
-                                    <el-option v-for="(item,index) in repositoryList" :label="item.repositoryName" :key="index" :value="item.repositoryId"></el-option>
+                                    <el-option v-for="(item,index) in repositoryList"
+                                        :label="item.repositoryName" :key="index"
+                                        :value="item.repositoryId">
+                                    </el-option>
                                 </el-select>
                             </div>
                         </li>
@@ -27,7 +34,10 @@
                             <span>计划分销：</span>
                             <div class="select-w100">
                                 <el-select ref="shopDefault" filterable v-model="header.shopId" placeholder="">
-                                    <el-option v-for="(item,index) in applyOnlyShop" :label="item.depShopName" :key="index" :value="item.depShopId"></el-option>
+                                    <el-option v-for="(item,index) in applyOnlyShop"
+                                        :label="item.depShopName" :key="index"
+                                        :value="item.depShopId">
+                                    </el-option>
                                 </el-select>
                             </div>
                         </li>
@@ -50,13 +60,15 @@
                         <span class="el-checkbox__input is-focus mr0" v-bind:class="{'is-checked': crudData.checked}">
                         <span class="el-checkbox__inner mr0"></span>
                         <input type="checkbox" class="el-checkbox__original" v-model="crudData.checked" @click="cutSelect(crudData.checked)"/>
-                        </span> </label>
+                        </span>
+                                    </label>
                                 </th>
                                 <th rowspan="2">序号</th>
                                 <th rowspan="2">条码号</th>
                                 <th rowspan="2">当前状态</th>
                                 <th v-for="(item,index) in littleClass" :key="index" :colspan="item.colspan">
-                                    <span>{{item.name}}</span> <i v-if="item.name !== '首饰名称'" class="open-icon" v-bind:class="{ 'el-icon-arrow-right': !item.stateOpen, 'el-icon-arrow-left': item.stateOpen }" @click="cutIncident(item)"></i>
+                                    <span>{{item.name}}</span>
+                                    <i v-if="item.name !== '首饰名称'" class="open-icon" v-bind:class="{ 'el-icon-arrow-right': !item.stateOpen, 'el-icon-arrow-left': item.stateOpen }" @click="cutIncident(item)"></i>
                                 </th>
                                 <th rowspan="2" class="border-r-no">商品备注</th>
                             </tr>
@@ -109,16 +121,37 @@
                                                 <template v-if="!noPullDown([littleClassKey])">
                                                     <!-- 售价，倍率的联动 -->
                                                     <template v-if="getSpecialComputed(littleClassKey)">
-                                                        <input-computed v-model="AllData[littleClassKey]" :costPrice=showData[index].costPrice :ratio=showData[index].ratio :soldPrice=showData[index].soldPrice :littleClassKey=littleClassKey></input-computed>
+                                                        <input-computed
+                                                            v-model="AllData[littleClassKey]"
+                                                            :costPrice = showData[index].costPrice
+                                                            :ratio = showData[index].ratio
+                                                            :soldPrice = showData[index].soldPrice
+                                                            :littleClassKey = littleClassKey
+                                                        ></input-computed>
                                                     </template>
                                                     <!-- 特定输入 -->
                                                     <template v-else>
                                                         <!-- 纯数字（当前值，纯数字，最大输入值） -->
-                                                        <pure-numbers :value="AllData[littleClassKey]" :pureNumber="limitInput[littleClassKey].pureNumber" :maxLengthSix="limitInput[littleClassKey].maxlength" v-model.number="AllData[littleClassKey]"></pure-numbers>
+                                                        <pure-numbers
+                                                            :value = "AllData[littleClassKey]"
+                                                            :pureNumber = "limitInput[littleClassKey].pureNumber"
+                                                            :maxLengthSix = "limitInput[littleClassKey].maxlength"
+                                                            v-model.number="AllData[littleClassKey]"
+                                                        ></pure-numbers>
                                                         <!-- 整数（当前值，整数，最大输入值） -->
-                                                        <integer :value="AllData[littleClassKey]" :integer="limitInput[littleClassKey].integer" :maxLengthSix="limitInput[littleClassKey].maxlength" v-model.number="AllData[littleClassKey]"></integer>
+                                                        <integer
+                                                            :value = "AllData[littleClassKey]"
+                                                            :integer = "limitInput[littleClassKey].integer"
+                                                            :maxLengthSix = "limitInput[littleClassKey].maxlength"
+                                                            v-model.number="AllData[littleClassKey]"
+                                                        ></integer>
                                                         <!-- 小数（当前值，小数，最大输入值） -->
-                                                        <slice-number :value="AllData[littleClassKey]" :sliceNumber="limitInput[littleClassKey].sliceNumber" :maxLengthSix="limitInput[littleClassKey].maxlength" v-model.number="AllData[littleClassKey]"></slice-number>
+                                                        <slice-number
+                                                            :value = "AllData[littleClassKey]"
+                                                            :sliceNumber = "limitInput[littleClassKey].sliceNumber"
+                                                            :maxLengthSix = "limitInput[littleClassKey].maxlength"
+                                                            v-model.number="AllData[littleClassKey]"
+                                                        ></slice-number>
                                                         <!-- 只限制长度（当前值，最大输入值） -->
                                                         <input v-if="limitInput[littleClassKey].onlyMaxlength" class="form-input" :maxlength="limitInput[littleClassKey].maxlength" v-model="AllData[littleClassKey]"></input>
                                                     </template>
@@ -126,7 +159,10 @@
                                                 <!-- 下拉 -->
                                                 <template v-else>
                                                     <el-select filterable v-model="AllData[littleClassKey]" placeholder="">
-                                                        <el-option v-for="item in configPullDownData[littleClassKey]" :label="item.name || item.classesName || item.certificateName || item.name" :value="item.type || item.classesName || item.certificateName || item.name"></el-option>
+                                                        <el-option v-for="item in configPullDownData[littleClassKey]"
+                                                            :label="item.name || item.classesName || item.certificateName || item.name"
+                                                            :value="item.type || item.classesName || item.certificateName || item.name"
+                                                        ></el-option>
                                                     </el-select>
                                                 </template>
                                             </template>
@@ -158,7 +194,14 @@
                 </div>
                 <div class="body-page">
                     <div class="paga-30">
-                        <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="crudData.currentPage" :page-size="30" layout="total, sizes, prev, pager, next, jumper" :total="paginationSize"></el-pagination>
+                        <el-pagination
+                            @size-change="handleSizeChange"
+                            @current-change="handleCurrentChange"
+                            :current-page="crudData.currentPage"
+                            :page-size="30"
+                            layout="total, sizes, prev, pager, next, jumper"
+                            :total="paginationSize">
+                        </el-pagination>
                     </div>
                 </div>
             </section>
@@ -177,7 +220,8 @@
                     </ul>
                 </div>
                 <div class="footer-affirm" v-if="!crudData.operationCut">
-                    <a href="javascript: null" class="cancel-btn-lg" @click="crudData.operationCut = true">取 消</a> <a href="javascript: null" class="confirm-btn-lg" @click="batchDelect">删 除</a>
+                    <a href="javascript: null" class="cancel-btn-lg" @click="crudData.operationCut = true">取 消</a>
+                    <a href="javascript: null" class="confirm-btn-lg" @click="batchDelect">删 除</a>
                 </div>
             </footer>
             <!-- 弹窗 -->
@@ -187,7 +231,10 @@
                     <el-dialog title="复制当前产品信息" v-model="popup.copys">
                         <section class="copy-body">
                             <p>复制行数</p>
-                            <el-input placeholder="请输入复制行数" v-model="popup.copyNumber"></el-input>
+                            <el-input
+                                placeholder="请输入复制行数"
+                                v-model="popup.copyNumber">
+                            </el-input>
                         </section>
                         <span slot="footer">
                               <a href="javascript: null" class="cancel-btn-w120" @click="popup.copys = false">取 消</a>
@@ -200,13 +247,16 @@
                     <el-dialog title="批量修改" v-model="popup.amendings">
                         <section>
                             <div class="rectangle-icon">
-                                <i></i> <span>请选择需要修改的内容</span>
+                                <i></i>
+                                <span>请选择需要修改的内容</span>
                             </div>
                             <ul class="amending-select">
                                 <li>请选择大类别：</li>
                                 <li class="select-w200">
                                     <el-select filterable v-model="popup.amendingLargeClass" placeholder="大类别">
-                                        <el-option v-for="(item,index) in littleClass" :label="item.name" :key="index" :value="item.englishName">
+                                        <el-option v-for="(item,index) in littleClass"
+                                            :label="item.name" :key="index"
+                                            :value="item.englishName">
                                             <span @click="popup.admentUrl = item.admentUrl">{{item.name}}</span>
                                         </el-option>
                                     </el-select>
@@ -214,7 +264,10 @@
                                 <li>请选择小类别：</li>
                                 <li class="select-w200">
                                     <el-select filterable ref='littleClass' v-model="popup.amendingLittleClass" placeholder="小类别">
-                                        <el-option v-for="(item,index) in getLittleClass(littleClass, popup.amendingLargeClass)" :label="item.name" :key="index" :value="item.englishName"></el-option>
+                                        <el-option v-for="(item,index) in getLittleClass(littleClass, popup.amendingLargeClass)"
+                                            :label="item.name" :key="index"
+                                            :value="item.englishName">
+                                        </el-option>
                                     </el-select>
                                 </li>
                                 <li>请选择或输入内容：</li>
@@ -223,12 +276,16 @@
                                         <el-input v-model="popup.amendingData"></el-input>
                                     </div>
                                     <el-select filterable v-else v-model="popup.amendingData">
-                                        <el-option v-for="(item,index) in getAmendData(popup.amendingLittleClass)" :key="index" :label="item.name || item.brandName || item.certificateName || item.classesName" :value="item.name || item.brandName || item.certificateName || item.classesName"></el-option>
+                                        <el-option v-for="(item,index) in getAmendData(popup.amendingLittleClass)" :key="index"
+                                            :label="item.name || item.brandName || item.certificateName || item.classesName"
+                                            :value="item.name || item.brandName || item.certificateName || item.classesName">
+                                        </el-option>
                                     </el-select>
                                 </li>
                             </ul>
                             <div class="rectangle-icon">
-                                <i></i> <span>请选择需要修改的范围</span>
+                                <i></i>
+                                <span>请选择需要修改的范围</span>
                             </div>
                             <ul class="amending-scope">
                                 <el-radio-group v-model="popup.amendingPitchOn">
@@ -263,14 +320,13 @@
 <script>
 import Vue from 'vue'
 import {mapActions, mapGetters} from 'vuex'
-import {seekProductClassList, seekProductPropertyList, seekCertificateList} from './../../../Api/commonality/seek'
+import { seekProductClassList, seekProductPropertyList, seekCertificateList } from './../../../Api/commonality/seek'
 import {productDetailStatus} from './../../../Api/commonality/status'
 import {operateProductList} from './../../../Api/commonality/operate'
 import pureNumbers from "./../CommonalityComponent/input/pureNumbers.vue" // 纯数字
 import integer from "./../CommonalityComponent/input/integer.vue" // 整数
 import sliceNumber from "./../CommonalityComponent/input/sliceNumber.vue" // 小数
 import inputComputed from "./inputComputed.vue"
-
 export default {
     components: {
         inputComputed,
@@ -278,7 +334,7 @@ export default {
         integer,
         sliceNumber
     },
-    data() {
+    data () {
         var checkAge = (rule, value, callback) => {
             if (!value) {
                 return callback(new Error('不能为空'));
@@ -734,7 +790,7 @@ export default {
             this.crudData.operationCut = true;
         }
     },
-    created() { // 获取下拉数据
+    created () { // 获取下拉数据
         this.header.orderRemark = this.receiptDetail.orderRemark;
         this.initData(); // 初始化数据（默认数据）
         this.workSupplierList(); // 获取供应商列表
@@ -758,18 +814,18 @@ export default {
             // "operateProductList", // 删除商品
             "workReceiptDetail" // 单据详情
         ]),
-        initData() { // 初始化数据（默认数据）
+        initData () { // 初始化数据（默认数据）
             this.header.currentProduct = this.receiptDetail.cargoType; // 当前的单据数据
             this.header.supplierId = this.receiptDetail.supplier; // 供应商Id
             this.header.shopId = this.receiptDetail.shop; // 计划分销商
             this.header.warehouseId = this.receiptDetail.warehouse; // 入库库位Id
             this.header.orderRemark = this.receiptDetail.orderRemark; // 单据备注
         },
-        judgeProductDetail() { // 如果没有商品列表重新获取一次(避免用户刷新)
+        judgeProductDetail () { // 如果没有商品列表重新获取一次(避免用户刷新)
             if (!this.getProductDetail.rowDataList) {
                 this.workProductDetail({
                     "page": "1",
-                    "pageSize": "30",
+                    "pageSize": "100",
                     "objId": this.newDatas.orderNumber,
                     // "objId": this.newDatas.orderNumber,
                     "type": "1",
@@ -777,10 +833,10 @@ export default {
                 });
             }
         },
-        handleSizeChange(val) {
+        handleSizeChange (val) {
             console.log(`每页 ${val} 条`);
         },
-        handleCurrentChange(val) {
+        handleCurrentChange (val) {
             var data = {
                 "objId": this.newDatas.orderNumber,
                 "type": "1",
@@ -791,7 +847,7 @@ export default {
             this.crudData.currentPage = val;
             console.log(`当前页: ${val}`);
         },
-        getConfigInto() { // 初始化一些配置数据
+        getConfigInto () { // 初始化一些配置数据
             if (this.littleClassList) { // 初始化小类
                 this.littleClass = this.littleClassList;
             }
@@ -800,13 +856,13 @@ export default {
             }
         },
         // 删除的选择监听
-        cutSelect(parm) { // 切换全选
+        cutSelect (parm) { // 切换全选
             var _self = this;
-            setTimeout(function () {
+            setTimeout(function() {
                 _self.cutSelectFun();
             }, 13);
         },
-        cutSelectFun() { // 切换全选方法
+        cutSelectFun () { // 切换全选方法
             // function sortNumber (a, b) {
             //     return b - a;
             // }
@@ -820,7 +876,7 @@ export default {
                 this.crudData.checkList = [];
             }
         },
-        pageJudgeFun() { // 判断是否全选
+        pageJudgeFun () { // 判断是否全选
             var judgeChecked = []
             for (let i of this.crudData.checkList) {
                 for (let j of this.getCheckedPage) {
@@ -835,7 +891,7 @@ export default {
                 this.crudData.checked = false;
             }
         },
-        getconfigData(parm) { // 得到配置代码
+        getconfigData (parm) { // 得到配置代码
             var configData = [];
             if (parm) {
                 for (let i = 0; i < parm.length; i++) {
@@ -850,11 +906,10 @@ export default {
         },
         // ///////////   查询数据   /////////////
         // ///////////(获取下拉数据)//////////////
-        productClassList() { // 获取商品大小类的下拉列表
+        productClassList () { // 获取商品大小类的下拉列表
             var _self = this;
             var requestNumber = 1;
-
-            function cbFunction() {
+            function cbFunction () {
                 seekProductClassList(requestNumber).then((response) => {
                     var pullDowndata = [];
                     for (let i = 0; i < response.data.data.list.length; i++) {
@@ -918,14 +973,12 @@ export default {
                     console.log(response)
                 })
             }
-
             cbFunction();
         },
-        productPropertyList() { // 获取商品属性下拉列表
+        productPropertyList () { // 获取商品属性下拉列表
             var _self = this;
             var requestNumber = 1;
-
-            function cbFunction() {
+            function cbFunction () {
                 seekProductPropertyList(requestNumber).then((response) => {
                     var pullDowndata = [];
                     for (let i = 0; i < response.data.data.list.length; i++) {
@@ -953,10 +1006,9 @@ export default {
                     console.log(response + "获取商品属性下拉列表");
                 })
             }
-
             cbFunction();
         },
-        productCertificateList() { // 证书下拉列表
+        productCertificateList () { // 证书下拉列表
             seekCertificateList().then((response) => {
                 console.log("证书下拉列表");
                 console.log(response);
@@ -969,7 +1021,7 @@ export default {
             })
         },
         // ///////////   下拉数据   /////////////
-        noPullDown(parm) { // 没有下拉数据
+        noPullDown (parm) { // 没有下拉数据
             if (parm) {
                 if (this.configPullDownData[parm]) {
                     return true;
@@ -977,13 +1029,13 @@ export default {
             }
             return false;
         },
-        getSpecialComputed(parm) { // 过滤联动的计算值
+        getSpecialComputed (parm) { // 过滤联动的计算值
             var filterName = new Set(['ratio', 'soldPrice']); // 倍率，售价
             let getName = [parm].filter(x => filterName.has(x))
             return getName[0];
         },
         // ///////////   处理数据 （保存后的数据）  /////////////
-        cutIncident(parm) { // 伸缩总开关按钮
+        cutIncident (parm) { // 伸缩总开关按钮
             if (parm.colspan === 1) { // 从闭合恢复展开
                 parm.colspan = parm.colspanOpen;
                 parm.propertyDatas = parm.open;
@@ -994,14 +1046,14 @@ export default {
                 parm.stateOpen = "";
             }
         },
-        getStateOpen(parm, parm2) { // 大类过滤的开关
+        getStateOpen (parm, parm2) { // 大类过滤的开关
             if (parm2 !== "") {
                 return parm.propertyDatas;
             } else {
                 return false;
             }
         },
-        clearExcess(largeClassKey, littleClassKey) { // 清掉后台多余数据  可以去掉
+        clearExcess (largeClassKey, littleClassKey) { // 清掉后台多余数据  可以去掉
             if (largeClassKey === "deputyStoneFus") {
                 let littleClassKeyFilter = new Set(['shape', 'color', 'neatness', 'blackout', 'polishing', 'symmetry', 'fluorescent']);
                 let littleClass = [littleClassKey].filter(x => !littleClassKeyFilter.has(x));
@@ -1009,7 +1061,7 @@ export default {
             }
             return true;
         },
-        getReadOnly(littleClassKey) { // 过滤只读值
+        getReadOnly (littleClassKey) { // 过滤只读值
             let onlyReady = new Set(['status', 'checkCode', 'supervisionCode', 'totalWeight', 'heavyCode', 'goldE', 'mainPrice', 'deputyPrice', 'inMoney', 'price', 'costPrice']);
             let onlyState = [littleClassKey].filter(x => onlyReady.has(x));
             if (onlyState.length > 0) {
@@ -1018,7 +1070,7 @@ export default {
                 return false
             }
         },
-        getStringClass(littleClassKey) { // 筛选字符串
+        getStringClass (littleClassKey) { // 筛选字符串
             let stringName = new Set(['modelNo', 'certifiNo', 'authCode', 'otherFeeName']); // 款号，证书号，验证码，其它费用名
             let getName = [littleClassKey].filter(x => stringName.has(x));
             if (getName.length > 0) {
@@ -1027,7 +1079,7 @@ export default {
                 return false;
             }
         },
-        computedData(littleClassKey, index) { // 进行计算操作
+        computedData (littleClassKey, index) { // 进行计算操作
             let computedVal = null;
             switch (littleClassKey) { // 定位
                 case "totalWeight": // 总件量
@@ -1092,17 +1144,17 @@ export default {
             }
             return computedVal;
         },
-        getComputed(littleClassKey, AllData, index) { // 得到计算值
+        getComputed (littleClassKey, AllData, index) { // 得到计算值
             console.log(1111111111, '计算')
             var Result = this.computedData(littleClassKey, index);
             AllData[littleClassKey] = Result;
             return Result;
         },
         // ///////////   核心过滤器   /////////////
-        getStatus(parm) { // 审核状态
+        getStatus (parm) { // 审核状态
             return productDetailStatus(parm);
         },
-        getLittleClassKey(parm) { // 开关过滤器
+        getLittleClassKey (parm) { // 开关过滤器
             var getOpenName = ['barcode', 'status', 'remark'];
             for (let i = 0; i < this.littleClass.length; i++) {
                 if (this.littleClass[i].stateOpen) {
@@ -1122,7 +1174,7 @@ export default {
                 return;
             }
         },
-        getCertificate(parm) { // 选择证书
+        getCertificate (parm) { // 选择证书
             for (let i = 0; i < this.configPullDownData.certifiName.length; i++) {
                 if (this.configPullDownData.certifiName[i].certificateName === parm) {
                     return [this.configPullDownData.certifiName[i]];
@@ -1130,7 +1182,7 @@ export default {
             }
             return false;
         },
-        getLittleClass(littleDatas, currentData) { // 自定义过滤器 小类别
+        getLittleClass (littleDatas, currentData) { // 自定义过滤器 小类别
             if (littleDatas && currentData) {
                 let arr = littleDatas.filter(function (littleData) {
                     return littleData.englishName === currentData; // || littleData.name === currentData
@@ -1138,7 +1190,7 @@ export default {
                 return arr[0].open;
             }
         },
-        getAmendData(amendData) { // 自定义过滤器  得到修改的内容 小类别
+        getAmendData (amendData) { // 自定义过滤器  得到修改的内容 小类别
             for (let i in this.configPullDownData) {
                 if (i === amendData) {
                     return this.configPullDownData[i];
@@ -1147,7 +1199,7 @@ export default {
             return false;
         },
         // ///////////   核心功能   /////////////
-        uploadingOne(e) { // 表格导入数据 one
+        uploadingOne (e) { // 表格导入数据 one
             var files = e.currentTarget.files[0];
             var fileData = new FormData(); // 创建表单数据对象(本地上传服务器文件对象)
             fileData.append("excelFile", files); // 将文件对象append进去
@@ -1177,7 +1229,7 @@ export default {
                 console.log("导入表格失败" + response)
             })
         },
-        pitchOn(parm, index, e) { // 选中样式和数据
+        pitchOn (parm, index, e) { // 选中样式和数据
             this.operate.selectedRow = [];
             Vue.set(this.operate.selectedRow, index, true);
             this.crudData.selectedData = parm;
@@ -1186,7 +1238,7 @@ export default {
                 this.recordFun(parm);
             }
         },
-        recordFun(parm) { // 记录变化
+        recordFun (parm) { // 记录变化
             var initialValue = JSON.stringify(parm);
             if (this.aloneAmendingData.initialValue.length < 1) { // 初始值为空时,直接添加
                 this.aloneAmendingData.changeValue.push(parm);
@@ -1206,12 +1258,12 @@ export default {
             }
             console.log(this.aloneAmendingData.initialValue);
         },
-        appendRow() { // 新增
+        appendRow () { // 新增
             var rowData = JSON.stringify(this.rowConfigData);
             var newRowData = JSON.parse(rowData);
             this.crudData.newAddData.push(newRowData);
         },
-        copyRowData() { // 复制数据
+        copyRowData () { // 复制数据
             this.popup.copys = false;
             var copyRows = [];
             if (this.crudData.selectedData <= 0) { // 如果没有选中数据
@@ -1226,7 +1278,7 @@ export default {
             }
             this.crudData.newAddData = [...this.crudData.newAddData, ...copyRows];
         },
-        batchAmending() { // 批量修改
+        batchAmending () { // 批量修改
             var amendingLittleClass = this.popup.amendingLittleClass
             if (this.popup.amendingPitchOn === "2") { // 全选
                 for (let i = 0; i < this.showData.length; i++) {
@@ -1251,7 +1303,7 @@ export default {
             }
             this.popup.amendings = false;
         },
-        batchDelect() { // 删除
+        batchDelect () { // 删除
             // 删除成功后，再提示要不要保存新增数据(如果要，就直接保存新增的，不要，就把刚才新建的给删除)
             // 第一个判断，是不是只删除新增的，如果是，就直接删除
             // 第二个判断，是不是删除里有保存了的，是，就请求后台，成功后，就把新增选中的删除，然后判断还有新增数据，如果有就询问顾客要不要保存之前新增的
@@ -1273,7 +1325,7 @@ export default {
                 if (response.data.state === 200) {
                     this.workProductDetail({
                         "page": "1",
-                        "pageSize": "30",
+                        "pageSize": "100",
                         "objId": this.newDatas.orderNumber,
                         "type": "1",
                         "applyType": 4
@@ -1285,7 +1337,7 @@ export default {
                 console.log(response);
             })
         },
-        admendFun(initialValue, changeValue) { // 修改商品列表
+        admendFun (initialValue, changeValue) { // 修改商品列表
             let admendList = [];
             sessionStorage.setItem("AAA", JSON.stringify(initialValue));
             sessionStorage.setItem("BBB", JSON.stringify(changeValue));
@@ -1329,7 +1381,7 @@ export default {
                 console.log(response);
             })
         },
-        addSingleAll() { // 保存（单个添加/批量添加）
+        addSingleAll () { // 保存（单个添加/批量添加）
             console.log("进来了");
             console.log(this.aloneAmendingData.initialValue);
             if (this.aloneAmendingData.initialValue.length > 0) { // 如果有变化，就调用修改
@@ -1340,7 +1392,7 @@ export default {
                 this.brandNewAdd();
             }
         },
-        brandNewAdd(parm) { // 继续添加
+        brandNewAdd (parm) { // 继续添加
             let data = {
                 "data": {
                     "type": 2, // 1 无单据号，新增单据 2已存在单据
@@ -1385,7 +1437,7 @@ export default {
                 console.log(response);
             })
         },
-        continueAdd() { // 继续添加（已经保存的情况下）
+        continueAdd () { // 继续添加（已经保存的情况下）
             const checkUrl = "http://119.29.138.104:9083/v1/product/kPutOrderDetail/addPutOrderDetailByWeb/" + sessionStorage.getItem("tokenId");
             this.$http.put(checkUrl, this.crudData.newAddData).then((response) => {
                 console.log(response);
@@ -1397,7 +1449,7 @@ export default {
                 this.$store.dispatch('workPopupError', "请求失败!!!");
             })
         },
-        closeStorage() { // 关闭
+        closeStorage () { // 关闭
             this.$router.push('/work/storage');
         }
         // //////////////  测试代码  ////////////////////
@@ -1405,23 +1457,23 @@ export default {
 }
 </script>
 <style lang="scss">
-    $oa:#0abfab; // 主色
-    $d6:#d6d6d6; // 分割线颜色
-    $c3:#333333; // 导航栏文字颜色
-    $c2:#333742; // 标签栏底色
-    $es:#esfsfd; // 标签设置编辑文本 出现旋转框
-    $f7:#f74c31; // 消息红点颜色
-    $a8:#a8a8a8; // 搜索页面icon 为选中的底色
-    $fb:#fb6155; // 删除按钮未选中的底色
-    $c9:#c9e5e2; // 按钮没选中状态
-    $f0:#f0f0f0; // 细线颜色
-    $c9:#999; // 列表内容文字色值
-    $c6:#666; // 写在标签栏块上的文字图标选中加深颜色
-    $e6:#e6f8f6; // 选中列表时的状态色
-    $f6:#f6f6f6; // 没选中列表时的状态色（偶）
-    $fd:#fd9526; // 按钮图标颜色
-    $bf:#49bbf3; // 标签设置编辑文本 出现旋转框描边
-    $e8:#e8e9eb; // 表格头部的颜色
+    $oa: #0abfab; // 主色
+    $d6: #d6d6d6; // 分割线颜色
+    $c3: #333333; // 导航栏文字颜色
+    $c2: #333742; // 标签栏底色
+    $es: #esfsfd; // 标签设置编辑文本 出现旋转框
+    $f7: #f74c31; // 消息红点颜色
+    $a8: #a8a8a8; // 搜索页面icon 为选中的底色
+    $fb: #fb6155; // 删除按钮未选中的底色
+    $c9: #c9e5e2; // 按钮没选中状态
+    $f0: #f0f0f0; // 细线颜色
+    $c9: #999; // 列表内容文字色值
+    $c6: #666; // 写在标签栏块上的文字图标选中加深颜色
+    $e6: #e6f8f6; // 选中列表时的状态色
+    $f6: #f6f6f6; // 没选中列表时的状态色（偶）
+    $fd: #fd9526; // 按钮图标颜色
+    $bf: #49bbf3; // 标签设置编辑文本 出现旋转框描边
+    $e8: #e8e9eb; // 表格头部的颜色
     // .new-storage{
     //     width: 100%;
     //     height: 100%;

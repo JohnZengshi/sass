@@ -35,6 +35,7 @@
                 <div class="branch-tb category-td"
                   :key="index4"
                   v-if="tab.text == '产品类别'" 
+                  @click="openLabel({}, tb)"
                   :style="calculateClass(tab)"
                   >
                   {{tb[tab.childType]}}
@@ -68,7 +69,9 @@
         <div v-for="(tb, index) in caty.productTypeList" :key="index">
           <div class="tb-tr" v-for="(tb1, index1) in tb.detailList" :key="index1" :index="addIndex()">
             <template v-for="(tab,index) in detailDataGridColumn">
-              <div class="branch-tb category-td" :key="index" v-if="tab.text == '产品类别' && index1 == 0" :style="calculateClass(tab)">
+              <div class="branch-tb category-td" :key="index" v-if="tab.text == '产品类别' && index1 == 0" :style="calculateClass(tab)"
+                @click="openLabel({}, tb)"
+              >
                 <i :style="'height:'+ tb.detailList.length * 40 +'px;'">{{tb[tab.childType]}}</i>
               </div>
               <div class="branch-tb category-td" :key="index" v-else-if="tab.text == '回购类型' && index1 == 0" :style="calculateClass(tab)">
@@ -82,7 +85,7 @@
           <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div>
           <div v-show="tb.detailList.length" class="tb-total" style="background:#ECF3FF;" v-if="!positionSwitch">
             <!-- 类型小计 -->
-            <div class="tb-td" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 0 ? '<b>小计</b>' : tb[tab.totalType]"></div>
+            <div class="tb-td" @click="openLabel({}, tb)" v-for="(tab,f) in detailDataGridColumn" :key="f" :style="calculateClass(tab)" v-html="f == 0 ? '<b>小计</b>' : tb[tab.totalType]"></div>
           </div>
         </div>
         <div class="tb-total" style="background:#ECF3FF;" v-if="positionSwitch">
@@ -127,7 +130,7 @@
       }
     },
     mounted() {
-    	
+      
       let _this = this
       this.$nextTick(() => {
         // console.log(1111, this.dataGridStorage.productTypeList)
@@ -157,23 +160,23 @@
       //   },
       //   callbacks: {
       //     onTotalScroll: function () {
-			// 		// console.log('滚轮到底了')
-			// 		$('.loadControl').css({
-			// 			opacity:1
-			// 		})
+      //    // console.log('滚轮到底了')
+      //    $('.loadControl').css({
+      //      opacity:1
+      //    })
       //           },
-			// 	onUpdate(){
-			// 		// console.log('滚动条更新')
-			// 		$('.loadControl').css({
-			// 			opacity:0
-			// 		})
-			// 	},
-			// 	whileScrolling(){
-			// 		// console.log('滚动条活动')
-			// 		$('.loadControl').css({
-			// 			opacity:0
-			// 		})
-			// 	}
+      //  onUpdate(){
+      //    // console.log('滚动条更新')
+      //    $('.loadControl').css({
+      //      opacity:0
+      //    })
+      //  },
+      //  whileScrolling(){
+      //    // console.log('滚动条活动')
+      //    $('.loadControl').css({
+      //      opacity:0
+      //    })
+      //  }
       //   }
       // });
       this.tabCellHeight()
@@ -182,10 +185,13 @@
       openLabel (parm, caty) {
         this.$store.dispatch('getLabelData', {
           type: '3',
-          data: Object.assign({}, parm, {
+          data: Object.assign({}, parm, this.dataGridOptions,{
             productTypeId: caty.productTypeId,
             orderType: this.orderType,
-          }, this.dataGridOptions)
+            sellType: '1',
+          },  {
+            sellStatus: '1'
+          })
         })
       },
       //重置index
@@ -285,9 +291,9 @@
         let length = this.dataGridStorage.detailList.length;
         let upDataNum = this.$parent.$parent.$refs["LoaderNum"].pageSize;
         this.pageNum = 1;
-        let pageSize = 30
+        let pageSize = 50
         //   this.dgDataList = [];
-        if (Number(upDataNum)) {
+        if (Number(upDataNum) != 0) {
           upDataNum = Number(upDataNum);
           if (totalNum - length < upDataNum) {
             pageSize = 0

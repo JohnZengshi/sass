@@ -51,10 +51,10 @@
        :orderNum="orderData.orderNum">
    </dgridfooter>
 
-			<!--打印模块-->
-			<div style="display: none;">
-				<detail-template title="修改" ref="detailTemplate" :sellList="sellList" :headerData="orderData"></detail-template>
-			</div> 
+      <!--打印模块-->
+      <div style="display: none;">
+        <detail-template title="修改" ref="detailTemplate" :sellList="sellList" :headerData="orderData"></detail-template>
+      </div> 
 </div>
 </template>
 
@@ -79,7 +79,7 @@ export default{
   props:['orderData','slipPointer','goodsAdd', 'seekBarcode', 'seekFlag'],
   data(){
     return {
-    	sellList:{old:{},now:{}},
+      sellList:{old:{},now:{}},
       dgDataList: [],
       // 页脚 修改前、后的数据
       footerData : {
@@ -96,22 +96,25 @@ export default{
       activeClassIndex: -1,
       // 小类
       smallDataList: configData.jewelryNameData,
-      
+
       //浏览器检测
-      browserType : false,
-       
-      synopsiData : {},
-      
+      browserType: false,
+
+      synopsiData: {},
+
       selectContainer: {
-        selectfIndex : -1,
-        selectcIndex : -1,
-        fixedfIndex : -1,
-        fixedcIndex : -1
+        selectfIndex: -1,
+        selectcIndex: -1,
+        fixedfIndex: -1,
+        fixedcIndex: -1
       },
       pageNum: 1,
-      pageSize: 30,
-      // upDataNum: 30
-      
+      pageSize: 100,
+      sellList_print: {
+        old: {},
+        now: {}
+      }
+
     }
   },
   watch: {
@@ -134,11 +137,10 @@ export default{
   },
   
   methods: {
-  	tabPrint(){
-  		this.$refs.detailTemplate.print();
-  	},
+    tabPrint(){
+      this.$refs.detailTemplate.print();
+    },
     watchScroll (el) { // 下拉加载数据
-      // console.log(el)
       let scrollHeight = el.target.scrollHeight; // 元素可以滚动的高度
       let clientHeight = el.target.clientHeight; // 元素的高度
       let scrollTop = el.target.scrollTop; // 滚动了的距离
@@ -279,24 +281,24 @@ export default{
       this.$emit('updataAdd', type)
     },
 
-    	//加载更多数据
-    	readMoreData() {
-    	    let totalNum = this.synopsiData.totalNum;
-    	    let length = this.dgDataList.length;
+      //加载更多数据
+      readMoreData() {
+          let totalNum = this.synopsiData.totalNum;
+          let length = this.dgDataList.length;
           let upDataNum = this.$parent.$refs["utilsdatagrid"].$refs["LoaderNum"].pageSize;
-    	    this.pageNum = 1;
-    	    if (Number(upDataNum)) {
-    	      upDataNum = Number(upDataNum);
-    	      if (totalNum - length < upDataNum) {
-    	        this.pageSize = 0
-    	      } else {
-    	        this.pageSize = length + upDataNum
-    	      }
-    	    } else {
-    	      this.pageSize = 0
-    	    }
-    	    this.fetchGoodList();
-    	  },
+          this.pageNum = 1;
+          if (Number(upDataNum)) {
+            upDataNum = Number(upDataNum);
+            if (totalNum - length < upDataNum) {
+              this.pageSize = 0
+            } else {
+              this.pageSize = length + upDataNum
+            }
+          } else {
+            this.pageSize = 0
+          }
+          this.fetchGoodList();
+        },
   },
   
   mounted(){

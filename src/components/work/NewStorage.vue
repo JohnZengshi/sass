@@ -40,7 +40,7 @@
             <div class="classes-block" v-if="cutData.four">
                 <div class="title">选择计划分销商</div>
                 <ul class="list">
-                    <li :title="item.shopName" v-for="item in shopListByCo" @click="getshopId(item.shopId)">{{item.shopName}}</li>
+                    <li :title="item.shopName" v-for="item in allShopList" @click="getshopId(item.shopId)">{{item.shopName}}</li>
                 </ul>
                 <div class="footer">
                     <span class="pre" @click="toPageFun('three', 'four')">上一步</span>
@@ -105,9 +105,12 @@
 <script>
 import {mapGetters, mapActions} from "vuex"
 import {operateCreateRKReceipt} from './../../Api/commonality/operate'
+import {seekGetShopListByCo} from 'Api/commonality/seek'
+
 export default {
     data () {
         return {
+            "allShopList": [],
             "productTypeList": null,
             "productTypeListSmall": null,
             "transform": true,
@@ -167,7 +170,8 @@ export default {
     },
     created () {
         this.getProduct();
-        this.getShopListByCo();
+        // this.getShopListByCo();
+        this._seekGetShopListByCo()
         this.workRepositoryList();
         this.workSupplierList();
         this.isShow = this.newPopup;
@@ -199,6 +203,21 @@ export default {
             "getShopListByCo", // 店铺列表
             "workSupplierList" // 供应商
         ]),
+        _seekGetShopListByCo () {
+            var options = {
+              "page": "1",
+              "pageSize": "0",
+              "type": 3
+            }
+            seekGetShopListByCo(options).then((res) => {
+                if (res.data.state === 200) {
+                   this.allShopList = res.data.data.shopList
+                } else {
+
+                }
+            })
+            
+        },
         getActions (parm) {
             if (parm === this.chooseData.chooseBig) {
                 return true;

@@ -17,7 +17,7 @@
             <div class="classes-block" v-if="cutData.two" v-loading="isLoading" element-loading-text="拼命加载中">
                 <div class="title">选择收货店铺</div>
                 <ul class="list">
-                    <li v-for="item in shopListByCo" @click="getShopId(item.shopId)">{{item.shopName}}</li>
+                    <li v-for="item in allShopList" @click="getShopId(item.shopId)">{{item.shopName}}</li>
                 </ul>
                 <div class="footer">
                     <span class="pre" @click="toPageFun('one', 'two')">上一步</span>
@@ -45,10 +45,11 @@
 <script>
 import {mapGetters, mapActions} from "vuex"
 import {operateCreateFHReceipt} from './../../Api/commonality/operate'
-import {seekShowCounterList} from '../../Api/commonality/seek'
+import {seekShowCounterList, seekGetShopListByCo} from '../../Api/commonality/seek'
 export default {
     data () {
         return {
+            "allShopList": [],
             "counterList": [], // 柜组列表
             "productTypeList": null,
             "productTypeListSmall": null,
@@ -97,7 +98,8 @@ export default {
     created () {
         this.workRepositoryList();
         this.workSupplierList();
-        this.getShopListByCo();
+        // this.getShopListByCo();
+        this._seekGetShopListByCo()
         this.isShow = this.newPopup;
     },
     computed: {
@@ -116,6 +118,21 @@ export default {
         toPageFun (to, from) { // 去到的， 目前的
             this.cutData[to] = true;
             this.cutData[from] = false;
+        },
+        _seekGetShopListByCo () {
+            var options = {
+              "page": "1",
+              "pageSize": "0",
+              "type": 3
+            }
+            seekGetShopListByCo(options).then((res) => {
+                if (res.data.state === 200) {
+                   this.allShopList = res.data.data.shopList
+                } else {
+
+                }
+            })
+            
         },
         // getCounterList (parm) { // 柜组列表
         //     this.shopId = parm

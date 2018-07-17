@@ -8,7 +8,7 @@
           </div>
       </div>
 
-      <div class="search-block t-center" @click="openLittleBatch">
+      <div class="search-block t-center" :class="{actions: filterCondition.newOrderId ? filterCondition.newOrderId.length : ''}" @click="openLittleBatch">
         单据搜索
       </div>
 
@@ -35,45 +35,12 @@
           
       </div>
 
-      <div class="class-btn-wrap">
+      <combination-drop-down-colums
+          ref="combinationDropDownColumsBox"
+          class="class-btn-wrap"
+          @dataBack="combinationHeaderComplate"
+      ></combination-drop-down-colums>
 
-          <dropDownColums
-              ref="productTypeIdWrap"
-              :propsList="proList"
-              :keyName="'productTypeId'"
-              titleData="产品类别"
-              @dataBack="dataBack"
-          >
-          </dropDownColums>
-
-          <dropDownColums
-              ref="colourIdWrap"
-              :propsList="conditionList"
-              :keyName="'colourId'"
-              titleData="成色名称"
-              @dataBack="dataBack"
-          >
-          </dropDownColums>
-
-          <dropDownColums
-              ref="jeweIdWrap"
-              :propsList="jewelList"
-              :keyName="'jeweId'"
-              titleData="宝石名称"
-              @dataBack="dataBack"
-          >
-          </dropDownColums>
-
-          <dropDownColums
-              ref="jewelryIdWrap"
-              :propsList="jewelryList"
-              :keyName="'jewelryId'"
-              titleData="首饰类别"
-              @dataBack="dataBack"
-          >
-          </dropDownColums>
-
-      </div>
 
       <div class="search-block t-center">
         <alone-drop-down-colums 
@@ -118,6 +85,7 @@ import DownMenu from 'base/menu/DownMenu'
 import downInput from 'base/menu/down-input'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
+import combinationDropDownColums from 'base/menu/combination-drop-down-colums'
 export default {
   components: {
     dropDownColums,
@@ -125,7 +93,8 @@ export default {
     littleBatch,
     DownMenu,
     downInput,
-    aloneDropDownColums
+    aloneDropDownColums,
+    combinationDropDownColums
   },
   data () {
     return {
@@ -180,7 +149,7 @@ export default {
             name: "修改中"
         },
         {
-            id: "40,101",
+            id: "40",
             name: "已调库"
         },
         {
@@ -188,7 +157,7 @@ export default {
             name: "调库中"
         },
         {
-            id: "50,100",
+            id: "50",
             name: "已发货"
         },
         {
@@ -337,13 +306,25 @@ export default {
     }
   },
   methods: {
+    combinationHeaderComplate (parm) {
+      this.filterCondition = Object.assign(this.filterCondition, parm)
+      this.$emit('filterData', this.filterCondition)
+    },
     initData (parm) {
       this.filterCondition = parm
+      this.$refs.combinationDropDownColumsBox.initData(parm)
       this.$refs.storageLocationWrap.initData(parm.storageId)
-      this.$refs.productTypeIdWrap.initData(parm.productTypeId)
-      this.$refs.colourIdWrap.initData(parm.colourId)
-      this.$refs.jeweIdWrap.initData(parm.jeweId)
-      this.$refs.jewelryIdWrap.initData(parm.jewelryId)   
+      if (parm.newOrderId) {
+        this.$refs.littleBatchWrap.initData(parm.newOrderId)
+      }
+      if (parm.shopId) {
+        this.$refs.shopWrap.initData(parm.shopId)
+      }
+      // this.$refs.combinationDropDownColumsBox.initData(parm)
+      // this.$refs.productTypeIdWrap.initData(parm.productTypeId)
+      // this.$refs.colourIdWrap.initData(parm.colourId)
+      // this.$refs.jeweIdWrap.initData(parm.jeweId)
+      // this.$refs.jewelryIdWrap.initData(parm.jewelryId)   
     },
     choseMenu () {
       this.tabSwitch = !this.tabSwitch
@@ -360,25 +341,31 @@ export default {
       })
     },
     resetData () {
-      this.filterCondition.keyWord = ''
-      this.filterCondition.newOrderId = ''
-      this.filterCondition.storageId = []
-      this.filterCondition.shopId = []
-      this.filterCondition.productTypeId = []
-      this.filterCondition.colourId = []
-      this.filterCondition.jeweId = []
-      this.filterCondition.jewelryId = [] // 首饰类别
-      this.filterCondition.productStatus = [] // 产品状态
-      this.filterCondition.sortList = []
+      this.keyword = ''
+      this.filterCondition = {
+        keyWord: '',
+        newOrderId: '',
+        // page: '1',
+        // pageSize: '30',
+        storageId: [],
+        shopId: [],
+        productTypeId: [],
+        colourId: [],
+        jeweId: [],
+        jewelryId: [], // 首饰类别
+        productStatus: [], // 产品状态
+        sortList: []
+      }
       this.$refs.moreWrap.reset()
       this.$refs.stateWrap.reset()
-      this.$refs.jewelryIdWrap.reset()
-      this.$refs.jeweIdWrap.reset()
-      this.$refs.colourIdWrap.reset()
-      this.$refs.productTypeIdWrap.reset()
+      // this.$refs.jewelryIdWrap.reset()
+      // this.$refs.jeweIdWrap.reset()
+      // this.$refs.colourIdWrap.reset()
+      // this.$refs.productTypeIdWrap.reset()
       this.$refs.shopWrap.reset()
       this.$refs.storageLocationWrap.reset()
       this.$refs.littleBatchWrap.reset()
+      this.$refs.combinationDropDownColumsBox.reset()
       // this.$refs.littleBatchWrap.close()
       this.$emit('resetData')
     },
@@ -396,6 +383,7 @@ export default {
       this.$emit('seekProduct', options)
     },
     storageLocation (parm) {
+      debugger
       this.filterCondition.storageId = parm.bigList
       this.$emit('filterData', this.filterCondition)
     },
@@ -426,8 +414,6 @@ export default {
               for (let i of res.data.data.shopList) {
                 this._showCounterList(i.shopId, i)
               }
-              // this.shopDataList.childrenList = 
-              // this.productCategory[1].children = res.data.data.repositoryList
             } else {
               this.$message({
                 message: res.data.msg,
@@ -465,16 +451,36 @@ export default {
       }
       showCounterList(options)
         .then(res => {
-          item.childrenList = res.data.data.counterList
-          item.id = item.shopId
-          item.name = item.shopName
-          for (let j of item.childrenList) {
-            j.name = j.counterName
-            j.id = j.counterId
+          if (res.data.state == 200) {
+            item.childrenList = res.data.data.counterList
+            item.id = item.shopId
+            item.name = item.shopName
+            for (let j of item.childrenList) {
+              j.name = j.counterName
+              j.id = j.counterId
+            }
+            this.shopDataList.push(item)
+          } else {
+            this.$message({
+              type: "info",
+              message: res.data.msg
+            })
           }
-          this.shopDataList.push(item)
         })
     },
+    // initShowCounterList (parm) {
+    //   let options = {
+    //     shopId: parm
+    //   }
+    //   showCounterList(options)
+    //     .then(res => {
+    //       let datas = []
+    //       for (let i of res.data.data.counterList) {
+    //         datas.push(j.counterId)
+    //       }
+    //       this.$refs.shopWrap.initData(datas)
+    //     })
+    // },
     changeStateData () {
 
     },
@@ -492,6 +498,7 @@ export default {
 
     },
     dataBack (parm) {
+      debugger
       this.filterCondition[parm.keyName] = parm.samllList
       this.$emit('filterData', this.filterCondition)
     },
@@ -614,6 +621,9 @@ export default {
           float: left;
           cursor: pointer;
           text-align: left;
+          &.actions{
+              color: #2993f8;
+          }
       }
       .t-center{
         text-align: center;
@@ -622,12 +632,12 @@ export default {
         font-size: 12px;
       }
       .class-btn-wrap {
-          width: 346px;
-          height: 28px;
-          border-radius: 4px;
-          border: 1px solid #d6d6d6;
-          float: left;
-          margin-left: 10px;
+          // width: 346px;
+          // height: 28px;
+          // border-radius: 4px;
+          // border: 1px solid #d6d6d6;
+          // float: left;
+          // margin-left: 10px;
       }
       .drop-block {
           width: 90px;

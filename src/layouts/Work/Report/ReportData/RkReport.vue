@@ -47,25 +47,24 @@
             <label>排序:</label>
             <div v-for="(item, index) in sortList" :key="index">
               {{item.name}}
-              <img v-if="item.value == '2'" src="./../../../../../static/img/sort/down1.png">
-              <img v-if="item.value == '1'" src="./../../../../../static/img/sort/up1.png">
+              <img v-if="item.value == '2'" src="~static/img/sort/down1.png">
+              <img v-if="item.value == '1'" src="~static/img/sort/up1.png">
               <i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
             </div>
           </div>
-          <div class="xj-switch" v-if="isShowCost == 'Y'">
+         <!--  <div class="xj-switch" v-if="isShowCost == 'Y'">
             <span class="btn" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" :class="{active: tabSwitch}">专列项</span>
-          </div>
+          </div> -->
 
          
           <!-- 表格的筛选 -->
-          <div class="tab_wrap">
+<!--           <div class="tab_wrap">
             <span :class="0 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(0, 1)">明细</span>
             <span style="color: #d6d6d6">丨</span>						
             <span :class="1 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(1, 2)">智能分类</span>
             <span style="color: #d6d6d6">丨</span>
 						<span :class="2 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(2, 3)">产品分类</span>
             <span style="color: #d6d6d6">丨</span>
-            <!-- 自定义 -->
             <span style="position: relative" :class="3 == tabClassActive.index ? 'myspanactive' : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)" @click="tabs(3,4)">自定义
               <div class="customDia site" ref="customDia" style="display: none;">
                 <div class="body">
@@ -160,7 +159,10 @@
 
               </div>
             </span>
-          </div>
+          </div> -->
+          
+          <filter-header class="report-filter-header-f-r-wrap" :customList="customList" :specialItem="true" @complate="filterHeaderComplate" @reportSwitch="reportSwitch"></filter-header>
+
            <!-- 新增的一些筛选 -->
           <div class="xj-report-multi-select-wrap">
             <dropDownColum
@@ -255,23 +257,59 @@
         </div>
 
         <!-- 加载条数选择 -->
-        <div class="LoaderNumBtn">
-          <LoaderNum ref="LoaderNum"></LoaderNum>
+        <div class="LoaderNumBtn" v-show="dataGridOptions.type == '1'">
+          <LoaderNum 
+          ref="LoaderNum" @changeUpdataPageSize="changeUpdataPageSize"></LoaderNum>
         </div>
       </div>
       
 			<!--打印模块-->
-			<div style="display: none;">
-					<detail-template v-if="this.tabClassActive.index==0" title="入库" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detail-template>
-					<intelligence-type-template v-if="this.tabClassActive.index==1" title="入库" ref="intelligenceTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></intelligence-type-template>
-					<project-type-template v-if="this.tabClassActive.index==2" title="入库" ref="projectTypeTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></project-type-template>
-					<custom-template v-if="this.tabClassActive.index==3" title="入库" ref="customTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></custom-template>
+			<div style="display: none;" v-if="printDataGrid">
+					<detail-template 
+            v-if="this.tabClassActive.index==0" 
+            title="入库" 
+            tabTitle="明细"
+            ref="detailTemplate" 
+            :sellList="printDataGrid" 
+            :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"></detail-template>
+					<intelligence-type-template 
+            v-if="this.tabClassActive.index==1" 
+            title="入库" 
+            tabTitle="智能分类"
+            ref="intelligenceTypeTemplate" 
+            :sellList="printDataGrid" 
+            :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"></intelligence-type-template>
+					<project-type-template 
+            v-if="this.tabClassActive.index==2" 
+            title="入库" 
+            tabTitle="产品分类"
+            ref="projectTypeTemplate" 
+            :sellList="printDataGrid" 
+            :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"></project-type-template>
+					<custom-template 
+            v-if="this.tabClassActive.index==3" 
+            title="入库" 
+            tabTitle="自定义"
+            ref="customTemplate" 
+            :sellList="printDataGrid" 
+            :headerData="printSelectDate"
+            :tabSwitch="tabSwitch"></custom-template>
 			</div>
     </div>
     <!--打印模块-->
     <div ref="tablePrint" v-if="isPrint==1">
-      <table-print typeName="入库" :tabSwitch="tabSwitch" :reportType="getReportType()" @sortList="sortListAct" :positionSwitch="positionSwitch" :printSelectDate="printSelectDate" :dataGridStorage="dataGridStorage">
-      </table-print>
+      <table-print 
+        typeName="入库" 
+        :tabSwitch="tabSwitch" 
+        :reportType="getReportType()" 
+        @sortList="sortListAct" 
+        :positionSwitch="positionSwitch" 
+        :printSelectDate="printSelectDate" 
+        :dataGridStorage="dataGridStorage">
+        </table-print>
     </div>
   </transition>
 </template>
@@ -319,6 +357,7 @@ import dropDownColum from 'base/menu/drop-down-colums'
 import {seekProductClassList,showCounterList} from "Api/commonality/seek"
 // 选择加载页数组件
 import LoaderNum from 'components/work/loaderNum.vue'
+import filterHeader from './base/filter-header'
   export default {
     components: {
       ReportDetail,
@@ -333,10 +372,25 @@ import LoaderNum from 'components/work/loaderNum.vue'
       ReportLoad,
       HeaderDropDownMenu,
       dropDownColum,
-      LoaderNum
+      LoaderNum,
+      filterHeader
     },
     data() {
       return {
+        customList: [
+            {
+                name: '明细',
+                id: 1
+            },
+            {
+                name: '智能分类',
+                id: 2
+            },
+            {
+                name: '产品分类',
+                id: 3
+            }
+        ],
         inconspanactive1: true,
         inconspanactive2: false,
         openReset: true,
@@ -471,7 +525,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
           }],
           type: 2,
           page: 1,
-          pageSize: 30,
+          pageSize: 100,
           keyWord: '',
           wColorId: '',
           wGemId: '',
@@ -508,6 +562,8 @@ import LoaderNum from 'components/work/loaderNum.vue'
         conditionList:[],
         jewelList:[],
         jewelryList:[],
+        // 打印的数据
+        printDataGrid:{}
       };
     },
     created() {
@@ -575,6 +631,15 @@ import LoaderNum from 'components/work/loaderNum.vue'
       }
     },
     methods: {
+      filterHeaderComplate (parm) {
+        this.printSelectDate.productClass = parm.productClass;
+        Object.assign(this.dataGridOptions, parm)
+        this.send()
+      },
+      //成本控制
+      reportSwitch(parm){
+        this.tabSwitch = parm
+      },
       choseMenu(type) {
          
           console.log(this.dataGridOptions)
@@ -590,10 +655,6 @@ import LoaderNum from 'components/work/loaderNum.vue'
           }
       },
       resetOption() {
-        // this.openReset = false
-        // setTimeout(() => {
-        //    this.openReset = true 
-        // }, 100)
         this.dataGridOptions.wColorId = ''
         this.dataGridOptions.wGemId = ''
         this.dataGridOptions.wJewelryId = '1'
@@ -601,7 +662,6 @@ import LoaderNum from 'components/work/loaderNum.vue'
         this.dataGridOptions.nGemId = ''
         this.dataGridOptions.nJewelryId = '1'
         this.resetFlag = true
-        // this.send()
       },
       compOption() {
         if(this.dataGridOptions.type != 4) {
@@ -623,7 +683,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
               sortFlag: '0',
               type: 1,
               page: 1,
-              pageSize: 30,
+              pageSize: this.dataGridOptions.pageSize,
               keyWord: ''
             })
           } else if(port == 2) {
@@ -642,7 +702,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
               // productClass: '1',
               sortFlag: this.positionSwitch ? "1" : "0",
               type: 1,
-              pageSize: 30
+              pageSize: this.dataGridOptions.pageSize
             })
           } else if(port == 3) {
             delete this.dataGridOptions.page
@@ -660,7 +720,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
               // productClass: '1',
               sortFlag: this.positionSwitch ? "1" : "0",
               type: 1,
-              pageSize: 15
+              pageSize: this.dataGridOptions.pageSize
             })
           } else if(port == 4) {
             Object.assign(this.dataGridOptions, {
@@ -677,7 +737,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
               nColorId: '',
               nGemId: '',
               nJewelryId: '1',
-              pageSize: 30
+              pageSize: this.dataGridOptions.pageSize
             })
           }
         }
@@ -707,7 +767,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
         //this.page = 1
         this.dataGridOptions.page = 1
         // this.dataGridOptions.pageSize = 9999
-        this.dataGridOptions.pageSize = 30
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
 
         this.tabClassActive.index = index;
         this.setReportType(type)
@@ -828,7 +888,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
                 this.inconspanactive2 = true;
             }
             this.dataGridOptions.page = 1;
-            this.dataGridOptions.pageSize = 30;
+            this.dataGridOptions.pageSize = this.dataGridOptions.pageSize;
             this.dataGridOptions.productClass = val;
             console.log("切换成旧料", this.dataGridOptions.productClass);
             //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
@@ -856,27 +916,27 @@ import LoaderNum from 'components/work/loaderNum.vue'
           this.dataGridOptions.shopId = ''
           this.printSelectDate.takeUser = ''
           this.takeUserDisabled = true
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
           
         } else if(val.type == "库位") {
           this.dataGridOptions.storageId = ''
           this.printSelectDate.storage = ''
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
           
         } else if(val.type == "供应商") {
           this.dataGridOptions.supplierId = ''
           this.printSelectDate.supplier = ''
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
           
         } else if(val.type == "制单人") {
           this.printSelectDate.preparedBy = ''
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
           
@@ -885,7 +945,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
           })
         } else if(val.type == "审核人") {
           this.printSelectDate.auditor = ''
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
           
@@ -903,7 +963,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
         } else if(val.type == "店铺") {
           this.printSelectDate.shop = val.item.operateName
           this.dataGridOptions.shopId = val.item.operateId
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
 
@@ -911,18 +971,18 @@ import LoaderNum from 'components/work/loaderNum.vue'
         } else if(val.type == "库位") {
           this.dataGridOptions.storageId = val.item.operateId
           this.printSelectDate.storage = val.item.operateName
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
         } else if(val.type == "供应商") {
           this.dataGridOptions.supplierId = val.item.operateId
           this.printSelectDate.supplier = val.item.operateName
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
         } else if(val.type == "制单人") {
           this.printSelectDate.preparedBy = val.item.operateName
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
           Object.assign(this.dataGridOptions, {
@@ -933,7 +993,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
           this.dataGridOptions.makeUserList[0].makeUserId = val.item.operateId
         } else if(val.type == "审核人") {
           this.printSelectDate.auditor = val.item.operateName
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
           
           Object.assign(this.dataGridOptions, {
@@ -963,7 +1023,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
         if(res.length == 0) {
           this.printSelectDate.productType = ''
           this.dataGridOptions.productTypeId = ''
-          this.dataGridOptions.pageSize = 30
+          this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
           $('.loadControl span').html('更多未读取数据').css('color','#e99a1d') 
           this.send()
           return
@@ -1013,7 +1073,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
       getShopListByCo() {
         let options = {
           page: '1',
-          pageSize: '30'
+          pageSize: this.dataGridOptions.pageSize
         }
         seekGetShopListByCo(options).then((res) => {
           this.distributorList = res.body.data.shopList
@@ -1070,7 +1130,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
       getTimeData(val) {
         this.dataGridOptions.beginTime = val.substr(0, 10).split('-').join("") + "000000"
         this.printSelectDate.startTime = val
-        this.dataGridOptions.pageSize = 30;
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize;
         this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')                   
         this.currentPage = 1
@@ -1079,7 +1139,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
       overTimeDate(val) {
         this.dataGridOptions.endTime = val.substr(0, 10).split('-').join("") + "235959"
         this.printSelectDate.endTime = val
-        this.dataGridOptions.pageSize = 30
+        this.dataGridOptions.pageSize = this.dataGridOptions.pageSize
         this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
         $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')        
         this.currentPage = 1
@@ -1157,23 +1217,27 @@ import LoaderNum from 'components/work/loaderNum.vue'
 
       //打印表格 
       tabPrin() {
-    		switch (this.tabClassActive.index){
-					case 0:
-						this.$refs.detailTemplate.print();
-						break;
-					case 1:
-						this.$refs.intelligenceTypeTemplate.print();
-						break;
-					case 2:
-						this.$refs.projectTypeTemplate.print();
-						break;
-					case 3:
-						this.$refs.customTemplate.print();
-						break;
-					default:
-						break;
-				}
-
+         (async () => {
+           let res = await this.getPrintData();
+           if (res) {
+             switch (this.tabClassActive.index) {
+               case 0:
+                 this.$refs.detailTemplate.print();
+                 break;
+               case 1:
+                 this.$refs.intelligenceTypeTemplate.print();
+                 break;
+               case 2:
+                 this.$refs.projectTypeTemplate.print();
+                 break;
+               case 3:
+                 this.$refs.customTemplate.print();
+                 break;
+               default:
+                 break;
+             }
+           }
+         })()
       },
 
       // 导出报表
@@ -1296,6 +1360,37 @@ import LoaderNum from 'components/work/loaderNum.vue'
             }
             this.send()
         },
+      // 获取打印数据
+      getPrintData() {
+        // 请求所有数据
+        Object.assign(this.dataGridOptions, {
+          page: 1,
+          pageSize: 0
+        })
+        let res = seekEntryStorage(this.dataGridOptions).then((res) => {
+          if (res.data.state == 200) {
+            this.printDataGrid = res.data.data;
+            // 还原设置
+            Object.assign(this.dataGridOptions, {
+              page: 1,
+              pageSize: this.dataGridOptions.pageSize
+            })
+            return true;
+          }
+          if (res.data.state == 200101) {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            })
+            return false;
+          }
+        })
+        return res
+      },
+      // 同步loaderNum组件的页数
+      changeUpdataPageSize(val){
+        this.dataGridOptions.pageSize = val;
+      }
     },
 
     mounted() {
@@ -1305,7 +1400,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
         //获取公司信息
         let companyName = JSON.parse(localStorage.getItem('companyInfo'))
         if(companyName) {
-          this.printSelectDate.companyName = '公司名：' + companyName.companyName
+          this.printSelectDate.companyName = companyName.companyName
         }
       })
     }
@@ -1416,4 +1511,8 @@ import LoaderNum from 'components/work/loaderNum.vue'
       color: #2993f8;
     }
   }
+  .report-filter-header-f-r-wrap{
+    float: right;
+    margin-top: 10px;
+  } 
 </style>

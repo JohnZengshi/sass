@@ -20,7 +20,8 @@
     <span data-text="撤回审核" @click="popupShow(true,'撤回审核')" v-if="(synopsiData.isRole == 'Y' || synopsiData.isCheckOrderMan == 'Y') && curStatus.nowStatus == 3">
       <i class="iconfont icon-shenhebohui"></i>
     </span>
-    <print-label :orderNum="synopsiData.orderNum" :orderData="orderData"></print-label>
+
+    <print-label :dataGridOptions="dataGridOptions" :orderNum="synopsiData.orderNum" :orderData="orderData"></print-label>
 
     <span data-text="添加备注" @click="popupShow(true,'添加备注')">
       <i class="iconfont icon-beizhu"></i>
@@ -32,6 +33,7 @@
     <!-- 加载页数 -->
     <LoaderNum 
     ref="LoaderNum"
+    v-show="dataGridOptions.type == '1'"
     ></LoaderNum>
     <!-- 弹出框 -->
     <orderPopup @submit="popupSubmit" @popupShow="popupShow" :title="title" :isShowPopup="isShowPopup">
@@ -72,7 +74,7 @@
       printLabel,
       LoaderNum
     },
-    props: ['dataList', 'orderData', 'curStatus'],
+    props: ['dataList', 'orderData', 'curStatus', 'dataGridOptions'],
 
     watch: {
       curStatus: {

@@ -22,52 +22,54 @@
 <!--   {{dataGridStorage.dataList}} -->
    <!--  <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in dataGridStorage.dataList" :index="resetIndex(ind)" :key="ind"> -->
     <div class="tb-category hz-tb-category" v-if="caty.productTypeList.length" v-for="(caty, ind) in filterHasData(dataGridStorage.dataList)" :index="resetIndex(ind)" :key="ind">
-      <div class="left-type-name-wrap" :style="getRightH(caty)">
-        <p>{{caty.typeName}}</p>
-      </div>
-      <div class="right-type-inner-wrap">
-
-        <div style="margin-bottom: 2px;" v-for="(tb, index) in caty.productTypeList" :key="index">
-          <template v-for="(tb1, index1) in tb.detailList">
-           <!-- :class="{'hz-td-tr': index1%2 == 0}" -->
-            <div class="tb-tr" :class="{'hz-td-tr': filterEvent(index, index1, caty.productTypeList)}" :index="addIndex()" :key="index1">
-              <template v-for="(tab,index2) in detailDataGridColumn">
-                <div class="branch-tb category-td"
-                  :key="index2"
-                  v-if="tab.text == '产品类别' && index1 == 0" 
-                  :style="_calculateClass(tab)" >
-                  <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f9f9; line-height: 20px;'">{{tb[tab.childType]}}</i>
-                </div>
-                <div class="branch-tb category-td"
-                  :key="index2"
-                  v-else-if="tab.text == '位置名称' && index == 0 && index1 == 0"
-                  :style="_calculateClass(tab)"
-                > 
-                  <i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;'">{{caty[tab.childType]}}</i>
-                </div>
-                <div class="tb-td"
-                  v-else
-                  :key="index2"
-                  style="overflow: hidden;"
-                  :class="{backLine:tab.childType != ''}"
-                  :style="_calculateClass(tab)" 
-                  v-text = "tab.childType == ''? getIndex() : tb1[tab.childType]">
-                </div>
-              </template>
-            </div>
-            
-            
-          </template>
-          
-          <!-- <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div> -->
-              <div class="tb-total" style="background:#eee;" v-if="!positionSwitch">
-          <div class="tb-td"
-            v-for="(tab,f) in detailDataGridColumn" 
-            :key="f"
-            :style="_calculateClass(tab)" 
-            v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
-          ></div>
+      <div class="left-right-wrap">
+        <div class="left-type-name-wrap" :style="getRightH(caty)">
+          <p>{{caty.typeName}}</p>
         </div>
+        <div class="right-type-inner-wrap">
+
+          <div style="margin-bottom: 2px;" v-for="(tb, index) in caty.productTypeList" :key="index">
+            <template v-for="(tb1, index1) in tb.detailList">
+             <!-- :class="{'hz-td-tr': index1%2 == 0}" -->
+              <div class="tb-tr" :class="{'hz-td-tr': filterEvent(index, index1, caty.productTypeList)}" :index="addIndex()" :key="index1">
+                <template v-for="(tab,index2) in detailDataGridColumn">
+                  <div class="branch-tb category-td"
+                    :key="index2"
+                    v-if="tab.text == '产品类别' && index1 == 0" 
+                    :style="_calculateClass(tab)" >
+                    <i :style="'height:'+ tb.detailList.length * 40 +'px;  background: #f9f9f9; line-height: 20px;'">{{tb[tab.childType]}}</i>
+                  </div>
+                  <div class="branch-tb category-td"
+                    :key="index2"
+                    v-else-if="tab.text == '位置名称' && index == 0 && index1 == 0"
+                    :style="_calculateClass(tab)"
+                  > 
+                    <i :style="'height:'+ heightArr[ind] +'px;  background: #fff; width: 100%; line-height: 20px;'">{{caty[tab.childType]}}</i>
+                  </div>
+                  <div class="tb-td"
+                    v-else
+                    :key="index2"
+                    style="overflow: hidden;"
+                    :class="{backLine:tab.childType != ''}"
+                    :style="_calculateClass(tab)" 
+                    v-text = "tab.childType == ''? getIndex() : tb1[tab.childType]">
+                  </div>
+                </template>
+              </div>
+              
+              
+            </template>
+            
+            <!-- <div style="height: 2px; width: 100%; background:#fff;" v-if="positionSwitch"></div> -->
+                <div class="tb-total" style="background:#eee;" v-if="!positionSwitch">
+            <div class="tb-td"
+              v-for="(tab,f) in detailDataGridColumn" 
+              :key="f"
+              :style="_calculateClass(tab)" 
+              v-html = "f == 0 ? '<b>小计</b>' : tab.toFixed ? toFixed(tb[tab.totalType], tab.countCut) : tb[tab.totalType]"
+            ></div>
+          </div>
+          </div>
         </div>
       </div>
 
@@ -123,39 +125,43 @@
 <div class="xj-report-table-container produc-line" ref="tableContainer" v-else-if="reportType == 3">
   <div>
     <div class="tb-category hz-tb-category hz-tb-category-two" v-if="caty.productTypeList.length" v-for="(caty,index) in dataGridStorage.dataList" :key="index">
-      <div class="left-type-name-wrap left-y" :style="getClassRightH(caty)">
-        <p>{{caty.typeName}}</p>
-      </div>
-      <div class="right-type-inner-wrap">
-        <template v-for="(tb, index) in caty.productTypeList">
-          <div class="tb-tr" :key="index">
-            <template v-for="(tab,index4) in detailDataGridColumn">
-              <div class="branch-tb category-td"
-                :key="index4"
-                v-if="tab.text == '产品类别' && index == 0" 
-                :style="_calculateClass(tab)"
-                v-text="tb[tab.childType]"
-                >
-              </div>
-              <div class="branch-tb category-td"
-                :key="index4"
-                v-else-if="tab.text == '位置名称' && index == 0"
-                :style="_calculateClass(tab)"
-              > 
-                <i :style="'height:'+ caty.productTypeList.length * 40 +'px;  color: #2993f8; background:#fff;'">{{caty[tab.childType]}}</i>
-              </div>
-              <div class="tb-td"
-                v-else
-                :key="index4"
-                :style="_calculateClass(tab)"
-                v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
-                >
-              </div>
-            </template>
-          </div>
-          
-          
-        </template>
+      <div class="left-right-wrap">
+
+        <div class="left-type-name-wrap left-y" :style="getClassRightH(caty)">
+          <p>{{caty.typeName}}</p>
+        </div>
+        <div class="right-type-inner-wrap">
+          <template v-for="(tb, index) in caty.productTypeList">
+            <div class="tb-tr" :key="index">
+              <template v-for="(tab,index4) in detailDataGridColumn">
+                <div class="branch-tb category-td"
+                  :key="index4"
+                  v-if="tab.text == '产品类别' && index == 0" 
+                  :style="_calculateClass(tab)"
+                  v-text="tb[tab.childType]"
+                  >
+                </div>
+                <div class="branch-tb category-td"
+                  :key="index4"
+                  v-else-if="tab.text == '位置名称' && index == 0"
+                  :style="_calculateClass(tab)"
+                > 
+                  <i :style="'height:'+ caty.productTypeList.length * 40 +'px;  color: #2993f8; background:#fff;'">{{caty[tab.childType]}}</i>
+                </div>
+                <div class="tb-td"
+                  v-else
+                  :key="index4"
+                  :style="_calculateClass(tab)"
+                  v-text = "tab.childType == ''? (index+1) : tb[tab.childType]">
+                  >
+                </div>
+              </template>
+            </div>
+            
+            
+          </template>
+        </div>
+
       </div>
 
       <div class="total-num-wrap" v-if="!positionSwitch">
@@ -321,7 +327,7 @@ export default {
       if (parm) {
         for (let i of parm.productTypeList) {
           if (i) {
-            Num += 40
+            Num += 42
             for (let j of i.detailList) {
               Num += 40
             }
@@ -371,7 +377,7 @@ export default {
       
       cheackData(){
         let isHas = true
-        for (let i of dataGridStorage.dataList) {
+        for (let i of this.dataGridStorage.dataList) {
           if (i.productTypeList.length) {
             isHas = false
           }
@@ -422,7 +428,7 @@ export default {
     .hz-tb-category{
       overflow: hidden;
       font-size: 0;
-      // display: flex;
+
     }
     .hz-type-wrap{
       position: absolute;
@@ -430,6 +436,11 @@ export default {
       bottom: 0;
       left: 0;
       right: 0;
+    }
+    .left-right-wrap{
+      font-size: 0;
+      width: 100%;
+      display: flex;
     }
     .left-type-name-wrap{
       position: relative;
@@ -456,10 +467,10 @@ export default {
       background-color: #f9f9f9;
     }
     .right-type-inner-wrap{
-      // flex: 1;
+      flex: 1;
       display: inline-block;
       // width: 1029px;
-      width: 1038px;
+      // width: 1038px;
       overflow: hidden;
     }
     .total-num-wrap{
