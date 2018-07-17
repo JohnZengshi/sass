@@ -7,94 +7,12 @@
 				<div class="left">分类：{{tabTitle}}</div>
 				<div class="right">制单时间:{{headerData.createDate|DATA_FORMAT}}</div>
 			</div>
-			<!-- <div>
-				<div class="explain-box">
-					单据号：{{headerData.orderNum}}
-				</div>
-				<template v-if="reportType==2">
-					<div class="explain-box">
-						退库库位：{{headerData.storageName}}
-					</div>
-					<div class="explain-box">
-						供应商：{{headerData.supplierName}}
-					</div>
-				</template>
-				<template v-else-if="reportType==3">
-					<div class="explain-box">
-						调出位置：{{headerData.storageName}}
-					</div>
-					<div class="explain-box">
-						调入位置：{{headerData.storageName2}}
-					</div>
-				</template>
-				<template v-else-if="reportType==4">
-					<div class="explain-box">
-						发货库位：{{headerData.storageName}}
-					</div>
-					<div class="explain-box">
-						收货店铺：{{headerData.shopName}}
-					</div>
-					<div class="explain-box">
-						存放柜组：{{headerData.counterName}}
-					</div>
-				</template>
-				<template v-else-if="reportType==5">
-					<div class="explain-box">
-						调柜店铺：{{headerData.distributor}}
-					</div>
-					<div class="explain-box">
-						调出柜组：{{headerData.groupName2}}
-					</div>
-					<div class="explain-box">
-						调入柜组：{{headerData.groupName2}}
-					</div>
-				</template>
-				<template v-else-if="reportType==6">
-					<div class="explain-box">
-						退货库位：{{headerData.storageName}}
-					</div>
-					<div class="explain-box">
-						退货铺位：{{headerData.shopName}}
-					</div>
-				</template>
-			</div>
-			<div>
-				<div class="explain-box" v-show="headerData.makeOrderManName">
-					制单人：{{headerData.makeOrderManName}}
-				</div>
-				<template v-if="reportType==2">
-					<div class="explain-box" v-show="headerData.checkName">
-						审核人：{{headerData.checkName}}
-					</div>
-				</template>
-				<template v-else-if="reportType==3">
-					<div class="explain-box" v-show="headerData.consigneeName">
-						收货人：{{headerData.consigneeName}}
-					</div>
-				</template>
-				<template v-else-if="reportType==4">
-					<div class="explain-box" v-show="headerData.checkName">
-						审核人：{{headerData.checkName}}
-					</div>
-					<div class="explain-box" v-show="headerData.consigneeName">
-						收货人：{{headerData.consigneeName}}
-					</div>
-				</template>
-				<template v-else-if="reportType==6">
-					<div class="explain-box" v-show="headerData.checkName">
-						审核人：{{headerData.checkName}}
-					</div>
-					<div class="explain-box" v-show="headerData.consigneeName">
-						收货人：{{headerData.consigneeName}}
-					</div>
-				</template>
-			</div> -->
 			<filtrateBoxByInvoices :headerData="headerData" :title="title" :reportType="reportType"></filtrateBoxByInvoices>
 		</div>
 		<div>
 			<table class="table-box">
 				<tr class="tm noBorderTop">
-					<td>序号</td>
+					<!-- <td>序号</td> -->
 					<td>产品类别</td>
 					<td>件数(件)</td>
 					<td>件重(g)</td>
@@ -106,7 +24,7 @@
 				</tr>
 				<template v-for="dataList in sellList.dataList">
 					<tr class="tr" v-for="(item, index) in dataList.productTypeList" :key="index">
-						<td>{{index+1}}</td>
+						<!-- <td>{{index+1}}</td> -->
 						<td class="tl">{{item.className}}</td>
 						<td>{{item.totalNum1|NOUNIT}}</td>
 						<td>{{item.totalWeight1|NOUNIT}}</td>
@@ -117,8 +35,8 @@
 						<td v-show="tabSwitch">{{item.totalCost1|NOUNIT}}</td>
 					</tr>
 					<tr class="tr">
-						<td class="tm" colspan="2">合计</td>
-						<td>{{dataList.totalNum0}}件</td>
+						<td class="tm" colspan="1">合计</td>
+						<td>{{dataList.totalNum0}}</td>
 						<td>{{dataList.totalWeight0|GRAMUNIT}}</td>
 						<td>{{dataList.totalGoldWeight0|GRAMUNIT}}</td>
 						<td>{{dataList.totalMain0}}</td>
@@ -175,9 +93,9 @@
 			GRAMUNIT:(num)=>{
 				if(num){
 					if(Number(num)){
-						return num+"g";
+						return num;
 					}
-					return "0g";
+					return "0";
 				}else{
 					return "-";
 				}
@@ -185,9 +103,9 @@
 			RMBUNIT:(num)=>{
 				if(num){
 					if(Number(num)){
-						return num+"元";
+						return num+"";
 					}
-					return "0元";
+					return "0";
 				}else{
 					return "-";
 				}
