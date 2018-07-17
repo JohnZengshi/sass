@@ -1053,7 +1053,8 @@ export default {
         getShopListByCo(){
         	let options = {
                 page: '1',
-                pageSize: '90'
+                type: 3,
+                pageSize: '0'
             }
             seekGetShopListByCo(options).then((res) => {
                 console.log('收货列表',res.body.data.shopList)

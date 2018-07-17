@@ -58,6 +58,9 @@
         titleName="更多筛选"
       ></down-input>
 
+      <!-- 成品旧料 -->
+      <cut-bg v-if="filterCondition.productClassList" class="ml-10" :showList="madeUpList" :current="filterCondition.productClassList[0].productClass" @pitchOn="madeUpOnProductClass"></cut-bg>
+
     </div>
 
     <div class="right-btn-wrap">
@@ -86,6 +89,7 @@ import downInput from 'base/menu/down-input'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
 import combinationDropDownColums from 'base/menu/combination-drop-down-colums'
+import cutBg from "base/cut/cut-bg";
 export default {
   components: {
     dropDownColums,
@@ -94,16 +98,32 @@ export default {
     DownMenu,
     downInput,
     aloneDropDownColums,
-    combinationDropDownColums
+    combinationDropDownColums,
+    cutBg
   },
   data () {
     return {
+      madeUpList: [
+          {
+              name: '成品',
+              id: '1'
+          },
+          {
+              name: '旧料',
+              id: '2'
+          }
+      ],
       isShowCost: '',
       keyword: '',
       tabSwitch: false,
       repositoryList: [], // 仓库列表
       shopDataList: [],
       filterCondition: {
+        productClassList: [
+          {
+            productClass: '1'
+          }
+        ],
         keyWord: '',
         newOrderId: '',
         // page: '1',
@@ -306,6 +326,11 @@ export default {
     }
   },
   methods: {
+    madeUpOnProductClass (parm) {
+      this.filterCondition.productClassList =  [{productClass: parm.id}]
+      // this.filterCondition.productClass = parm.id
+      this.$emit('filterData', this.filterCondition)
+    },
     combinationHeaderComplate (parm) {
       this.filterCondition = Object.assign(this.filterCondition, parm)
       this.$emit('filterData', this.filterCondition)

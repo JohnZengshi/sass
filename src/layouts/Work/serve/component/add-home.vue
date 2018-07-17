@@ -257,6 +257,9 @@ export default {
             // 用户
             if (this.listType == 1) {
               let datas = res.data.data
+              if (!datas.memberId) {
+                return
+              }
               this.userData.memberId = datas.memberId,
               this.userData.memberName = datas.memberName,
               this.userData.phone = datas.phone,

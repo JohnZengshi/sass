@@ -2,11 +2,11 @@
   <div class="no-border-down-menu-main">
     <span class="title-name" :class="titleInfo ? '' : 'select'">
       {{titleInfo}}
-      <i v-show="!isSolid" class="iconfont icon-arrow-down drop-triangle" v-if="noChange"></i><i v-show="isSolid" class="iconfont icon-xiala drop-triangle"></i><i class="el-icon-circle-close" title="清除" @click="clearTitleInfo"
+      <i v-show="!isSolid" class="iconfont icon-arrow-down drop-triangle" v-if="noChange"></i><i v-show="isSolid" class="iconfont icon-xiala drop-triangle"></i><i class="el-icon-circle-close" title="清除" @click="clearInfo"
       v-if="!noChange && !noClear"></i>
     </span>
     <ul class="drop-list">
-      <li :class="{active: actIndex == index}" v-for="(item, index) in showList" @click="itemClick(item, index)">{{nameKey ? item[nameKey] : item.name}}</li>
+      <li :class="{active: actIndex === index}" v-for="(item, index) in showList" @click="itemClick(item, index)">{{nameKey ? item[nameKey] : item.name}}</li>
     </ul>
   </div>
 </template>
@@ -33,7 +33,7 @@ export default {
     clearInfo () {
       this.actIndex = ''
       this.noChange = true
-      this.$emit('clearTitleInfo', {keyName: this.keyName})
+      this.$emit('clearInfo', {keyName: this.keyName})
     },
     itemClick (item, index) {
         this.$emit('changeData', {item: item, keyName: this.keyName})

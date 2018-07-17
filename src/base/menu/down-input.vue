@@ -108,6 +108,7 @@ export default {
     cursor: pointer;
     border: 1px solid #d6d6d6;
     border-radius: 5px;
+    vertical-align: top;
     &:after{
     content:'';
         border: 6px solid transparent;
