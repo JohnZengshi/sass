@@ -22,6 +22,7 @@ import HelpCenter from './../layouts/HelpCenter/HelpCenter'
 import BillSearch from './../layouts/SearchPage/BillSearch'
 import GoodsSearch from './../layouts/SearchPage/GoodsSearch'
 import Inventory from './../layouts/Inventory/Inventory'
+import memberManage from './member-manage/index'
 /*
   分为 Main 和 member 两部分
   Main 为项目主内容
@@ -95,7 +96,8 @@ const routes = [{
     {...admin},
     {...leaguer},
     {...faceRecognitionRouter},
-    {...work}
+    {...work},
+    {...memberManage}
   ]
 }]
 routes.push(member)

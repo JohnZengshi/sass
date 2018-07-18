@@ -1,8 +1,8 @@
 // 会员管理
-import memberList from './../../layouts/member-manage/member-list'
-import interflow from './../../layouts/member-manage/interflow'
-import compileTemplate from './../../layouts/member-manage/compile-template'
-import discount from './../../layouts/member-manage/discount'
+import memberList from './../../layouts/member-manage/member/member-list'
+import interflow from './../../layouts/member-manage/member/interflow'
+import compileTemplate from './../../layouts/member-manage/member/compile-template'
+import discount from './../../layouts/member-manage/member/discount'
 const routes = [
     {
       path: "memberList",
