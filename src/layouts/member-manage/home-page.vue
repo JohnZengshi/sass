@@ -1,6 +1,6 @@
 <!-- 首页 -->
 <template>
-  <div class="m-m-home-page-main xj-right-wrap-box xj-box-shadow">
+  <div class="m-m-home-page-main xj-right-box xj-box-shadow">
     <header-nav></header-nav>
     <div class="body-scorll-wrap">
       <member></member>
