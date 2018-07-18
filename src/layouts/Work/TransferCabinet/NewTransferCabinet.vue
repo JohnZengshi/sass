@@ -90,6 +90,8 @@
                             :isRemark="isRemark"
                             :orderNum="$route.query.orderNumber"
                             :statusREfresh="statusREfresh"
+                            :receiptData="receiptData"
+                            :makeOrderManName="receiptsIntroList.makeOrderManName"
                             @setStatus="getStatus">
                         </steps-path>
                         <!--备注-->

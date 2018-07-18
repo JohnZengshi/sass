@@ -10,46 +10,13 @@
     <ul class="amending-select">
       <li class="selectBox flex flex-r">
         <span class="selTittle">选择内容</span>
-        <!-- --------------------------------修改前 -->
-        <!-- <el-select class="options" filterable @change="bigClasschange" v-model="popup.amendingLargeClass" placeholder="大类别">
-          <el-option v-for="item in littleClass" :label="item.name" :value="item.englishName">
-          </el-option>
-        </el-select> -->
-        <!-- -------------------------------- -->
         <el-cascader expand-trigger="hover" :options="littleClass" :props="props" v-model="selectValue" popper-class="multiSelectBox"
           :clearable="true" @change="selectChange">
         </el-cascader>
         <span class="titleBox1" v-if="popup.isShowBigClass">请选择内容</span>
       </li>
-      <!-- --------------------------------修改前 -->
-      <!-- <li class="selectBox">
-        <span class="selTittle">小类别</span>
-        <el-select class="options" filterable ref='littleClass' @change="littleClasschange" v-model="popup.amendingLittleClass" placeholder="小类别">
-          <el-option v-for="item in getLittleClass(littleClass, popup.amendingLargeClass)" :label="item.name" :value="item.englishName">
-          </el-option>
-        </el-select>
-        <span class="titleBox1" v-if="popup.isShowLittleClass">请选择小类</span>
-      </li> -->
-      <!-- -------------------------------- -->
       <li class="selectBox">
         <span class="selTittle">选择/输入</span>
-        <!-- --------------------------------修改前 -->
-        <!-- 输入框 -->
-        <!-- <div v-if="!getAmendData(popup.amendingLittleClass)" class="input-w200">
-          <el-input v-model="popup.amendingData"></el-input>
-        </div> -->
-        <!-- 选择框 -->
-        <!-- <el-select v-else class="options" filterable v-model="popup.amendingData">
-          <el-option v-for="item in getAmendData(popup.amendingLittleClass)" :label="item.name || item.brandName || item.certificateName || item.classesName"
-            :value="item.name || item.brandName || item.certificateName || item.classesName">
-          </el-option>
-        </el-select> -->
-        <!-- --------------------------- -->
-        <!-- 输入框 -->
-        <!-- <div v-show="selectOrInput == 'input'" class="input-w200">
-          <el-input v-model="popup.amendingData"></el-input>
-        </div> -->
-        <!-- ------------------------------修改前 -->
         <div v-show="selectOrInput == 'input'" class="input-w200">
           <el-input v-model="amendingData"></el-input>
         </div>
@@ -64,7 +31,6 @@
     <ul class="amending-scope">
       <el-radio-group v-model="popup.amendingPitchOn">
         <li class="li-bottom">
-          <!--<el-radio :label='popup.amendingCustomRow'>修改范围</el-radio>-->
           <span class="selTel">修改范围</span>
           <div class="input-s82">
             <el-input @input.native="selectInput($event,'amendingStartRow')" @blur="selectRange('sel1')" v-model="popup.amendingStartRow"
@@ -79,7 +45,6 @@
         </li>
         <li class="all-check">
           <span class="selTel">全选</span>
-          <!--<el-radio :label='popup.amendingAllRow'>全选</el-radio>-->
           <el-switch v-model="switchType" on-text="" off-text="" @change="switchAct">
           </el-switch>
         </li>
