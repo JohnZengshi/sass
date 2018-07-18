@@ -700,7 +700,7 @@ export default {
                 .main-left-menu-item {
                     text-align: center;
                     font-size: 14px;
-                    height:51px;
+                    height:56px;
                     color: #999;
                     font-weight: bold;
                     position: relative;

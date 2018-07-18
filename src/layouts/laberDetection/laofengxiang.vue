@@ -22,8 +22,7 @@
             </div>
             <div class="content">
 
-                <img v-if="normal == 1" class="pass msg" src="~src/assets/img/laberDetection/pass.png" alt="">
-                <img v-if="normal == 2" class="refuse msg" src="~src/assets/img/laberDetection/refuse.png" alt="">
+                <img v-if="normal == 1" class="pass msg" src="~src/assets/img/laberDetection/pass.png" alt=""> <img v-if="normal == 2" class="refuse msg" src="~src/assets/img/laberDetection/refuse.png" alt="">
                 <div id="main-content" v-html="innerHtml" :style="getWidth"></div>
             </div>
             <div class="footer">
@@ -36,7 +35,9 @@
 
 <script>
     import apiCall from '@/Api/ApiCall'
-    import {JaTools} from '@/utils/JaTool.js';
+    import {laberPrint} from '@/utils/laberPrint.js';
+
+
     export default {
         data() {
             return {
@@ -44,7 +45,9 @@
                 barcode: '',
                 innerHtml: '',
                 normal: 0,
-                width: ''
+                width: 0,
+                height: 0,
+                backgroundImage: ''
             }
         },
         mounted() {
@@ -60,10 +63,26 @@
                 this.barcode = data.barcode;
             }
         },
+        beforeRouteEnter(to, from, next) {
+            $('#qrcodeUrl').children().remove();
+            next()
+        },
+
+        beforeRouteLeave(to, from, next) {
+            // 导航离开该组件的对应路由时调用
+            $('#qrcodeUrl').children().remove();
+            next()
+        },
         computed: {
-            getWidth(){
+            getWidth() {
                 return {
-                    width: this.width + 'mm'
+                    width: this.width + 'mm',
+                    height: this.height + 'mm',
+                }
+            },
+            getBackgroundImage(){
+                return {
+                    backgroundImage: this.backgroundImage
                 }
             }
         },
@@ -76,7 +95,7 @@
                 }
                 this.getPrintLabelData(data);
             },
-            getPrintLabelData(data){
+            getPrintLabelData(data) {
                 let _this = this;
                 let _data = {
                     data: {
@@ -94,21 +113,37 @@
                 }
                 apiCall(_data, '/v1/print/previewTemplate').then((res) => {
                     debugger
-                    if (res.data.state == 200){
+                    if (res.data.state == 200) {
                         let canvas = JSON.parse(res.data.data.content);
                         _this.width = res.data.data.width;
+                        _this.height = res.data.data.height;
+                        if (canvas.backgroundImage) {
+                            console.log(canvas.backgroundImage)
+                            $('#main-content').css('background-image','url(' + canvas.backgroundImage + ')' );
+                        }
+                        $('#qrcodeUrl').children().remove();
                         apiCall(_json, '/v1/print/getPrintLabelData').then((json) => {
-                            if (json.data.state == 200 && json.data.data.productList.length){
+                            if (json.data.state == 200 && json.data.data.productList.length) {
                                 let dataList = json.data.data.productList;
-                                let pageList = JaTools.transformation(canvas, dataList);
+                                let pageList = laberPrint.transformation(canvas, dataList);
                                 _this.normal = 1;
-                                _this.innerHtml = JaTools.transformationDataToHtml(pageList[0]);
-                            }else{
+                                _this.innerHtml = laberPrint.transformationDataToHtml(pageList[0]);
+                                _this.$nextTick(function () {
+                                    let offset = $('#qrcode').offset();
+                                    $('#qrcodeUrl').css({
+                                        position: 'absolute',
+                                        top: offset.top,
+                                        left: offset.left
+                                    })
+
+                                })
+                            } else {
                                 _this.normal = 2;
                                 _this.innerHtml = '';
                             }
                         });
-                    }else{
+                    } else {
+                        $('#qrcodeUrl').children().remove();
                         _this.normal = 2;
                         _this.innerHtml = '';
                     }
@@ -125,8 +160,10 @@
 
 <style lang="scss" scoped>
     .main-warp{
+        min-width:992px;
         width:100%;
         height:100%;
+        min-height:800px;
         background-image:url(~assets/img/laberDetection/image.png) !important;
     }
     .main{
@@ -147,15 +184,15 @@
         overflow:hidden;
     }
     #main-content{
-        height: 96px;
-        display: inline-block;
-        overflow: hidden;
-        text-align: center;
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 267px;
-        margin: auto;
+        /*height: 96px;*/
+        display:inline-block;
+        overflow:hidden;
+        text-align:center;
+        position:absolute;
+        left:0;
+        right:0;
+        top:267px;
+        margin:auto;
     }
     .aside-top{
         width:100%;

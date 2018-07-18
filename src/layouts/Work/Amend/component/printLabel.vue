@@ -14,36 +14,36 @@
 </span>
 
 <!--打印标签-->
-<PrintLabelByOrderDialog 
-  ref="printLabelByOrderDialog" 
-  :orderNum="orderNum" 
-  :labelTemplateList="labelTemplateList" 
-  :productList="print.productList" 
-  :totalNum="print.totalNum" 
-  @requestProductList="requestProductList" 
+<PrintLabelByOrderDialog
+  ref="printLabelByOrderDialog"
+  :orderNum="orderNum"
+  :labelTemplateList="labelTemplateList"
+  :productList="print.productList"
+  :totalNum="print.totalNum"
+  @requestProductList="requestProductList"
   @printTemplate="printTemplate"
   @getPrintLabelData="getPrintLabelData"
   @previewTemplate="previewTemplate">
 </PrintLabelByOrderDialog>
 
-<lodop 
-  ref="lodop" 
-  :canvas="print.canvas"  
-  :templateData="print.templateData" 
+<lodop
+  ref="lodop"
+  :canvas="print.canvas"
+  :templateData="print.templateData"
   :page="print.templateData.productList.length" >
 </lodop>
 
-<!--<TemplatePreviewDialog 
-  ref="templatePreviewDialog" 
-  @print="printTemplate" 
-  :canvas="print.canvas" 
-  :templateData="print.templateData" 
+<!--<TemplatePreviewDialog
+  ref="templatePreviewDialog"
+  @print="printTemplate"
+  :canvas="print.canvas"
+  :templateData="print.templateData"
   :pageNumber="print.templateData.productList.length">
 </TemplatePreviewDialog>-->
 
 <!--打印模块-->
 <div ref="tablePrint" v-if="isPrint" >
-    <table-print 
+    <table-print
         :tabSwitch = "tabSwitch"
         :reportType="reportType"
         :printSelectDate = "printSelectDate"
@@ -221,7 +221,7 @@ export default{
       this.print.currentOrderNum = this.orderNum
       this.$refs.printLabelByOrderDialog.show()
     },
-    //打印表格 
+    //打印表格
     tabPrin () {
       if( this.dataGridStorage.detailList && this.dataGridStorage.detailList.length ==0 ){
         this.$message({
@@ -232,19 +232,19 @@ export default{
       }
       this.isPrint = true;
       let print = null;
-      
+
       this.appPrint = document.getElementById('appPrint')
-      
+
       if( this.IntervalOut ) clearInterval( this.IntervalOut )
       document.getElementById('app').style.display = 'none';
-      
+
       setTimeout(()=>{
         this.appPrint.innerHTML = this.$refs.tablePrint.innerHTML
       },1000)
       setTimeout(()=>{
-        print = document.execCommand('print');  
+        print = document.execCommand('print');
       },1500)
-      
+
       this.IntervalOut = setInterval(()=>{
         if( print ){
           document.getElementById('app').style.display = 'block';
@@ -262,7 +262,7 @@ export default{
           }
         }
       },10)
-      
+
     },
     getPrintLabelData(type, orderId, beginNum, endNum, canvas, selectedProducts, isPrint){
       this.print.canvas = canvas
@@ -375,7 +375,7 @@ export default{
       border-top: 1px solid #ededed;
     }
     >i{font-size: 24px;}
-    
+
     &:after{
       content: attr(data-text);
       position: absolute;
@@ -393,7 +393,7 @@ export default{
       visibility: hidden;
       z-index: 2;
     }
-    
+
     &:hover{
       &:after{
         opacity: 1;

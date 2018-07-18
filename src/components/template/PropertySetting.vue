@@ -3,7 +3,7 @@
         <div class="property-setting-title">
             <span class="property-setting-span1">动态数据项：</span><span class="property-setting-span2">{{ data.propertyName }}</span>
         </div>
-        <div class="property-setting-body" v-if="data.propertyType != 4 && data.propertyType != 5">
+        <div class="property-setting-body" v-if="data.propertyType != 4">
             <el-form label-width="38px" label-position="left" class="property-setting-form1">
                 <div class="el-form-item" v-show="data.propertyType == 1 || data.propertyType == 3">
                     <label class="el-label">保留小数点位数</label><el-select class="to-fixed" v-model.number="data.toFixed" placeholder="请选择" size="small">
@@ -33,7 +33,7 @@
                 </el-form-item>
             </el-form>
         </div>
-        <div class="property-setting-body" v-if="data.propertyType != 4 && data.propertyType != 5">
+        <div class="property-setting-body" v-if="data.propertyType != 4">
             <p class="property-setting-text">{{ propertySettingText }}</p>
             <div class="font-style">
                 <el-tooltip effect="dark" content="加粗" placement="top">
@@ -63,7 +63,7 @@
                 </div>
             </el-form>
         </div>
-        <div class="property-setting-body" v-if="data.propertyType != 4 && data.propertyType != 5">
+        <div class="property-setting-body" v-if="data.propertyType != 4">
             <el-form class="property-setting-form4" label-width="80px" label-position="left">
                 <el-form-item label="横轴">
                     <LengthInput :length="data.left" @change="(value)=>{this.data.left = value}"></LengthInput>
@@ -109,14 +109,22 @@
         </div>
         <div class="property-setting-body" v-if="data.propertyType == 4">
             <el-form class="property-setting-form4" ref="form" label-width="80px" :model="data" label-position="left" @submit.native.prevent>
-                <el-form-item label="样本">
+                <el-select v-if="data.propertyCode == 'barcode2'" v-model="data.sample" placeholder="请选择" @change="selectChange">
+                    <el-option
+                        v-for="item in options"
+                        :key="item.url"
+                        :label="item.name"
+                        :value="item.url">
+                    </el-option>
+                </el-select>
+                <el-form-item v-else label="样本">
                     <div class="el-form-item__content">
                         <div class="sample-input el-input el-input--small">
                             <input type="text" v-model="data.sample" @input="sampleInputHandler" placeholder="" maxlength="15" autocomplete="off" class="el-input__inner" />
                         </div>
                     </div>
                 </el-form-item>
-                <div class="el-form-item">
+                <div class="el-form-item" v-if="data.propertyCode != 'barcode2'">
                     <label class="el-form-item__label" style="width: 80px;">宽</label>
                     <div class="el-form-item__content" style="margin-left: 80px;">
                         <div class="el-form-item__content">
@@ -127,26 +135,27 @@
                         </div>
                     </div>
                 </div>
-                <!--<el-form-item label="宽">
-                    <LengthInput :length="data.width" ></LengthInput>
-                </el-form-item>-->
+                <el-form-item label="宽" v-else>
+                    <LengthInput :length="data.width" @change="inputChange"></LengthInput>
+                </el-form-item>
                 <el-form-item label="高">
                     <LengthInput :length="data.height" @change="(value)=>{this.data.height = value}"></LengthInput>
                 </el-form-item>
+
                 <el-form-item label="横轴">
                     <LengthInput :length="data.left" @change="(value)=>{this.data.left = value}"></LengthInput>
                 </el-form-item>
                 <el-form-item label="竖轴">
                     <LengthInput :length="data.top" @change="(value)=>{this.data.top = value}"></LengthInput>
                 </el-form-item>
-                <el-form-item label="编码">
+                <el-form-item v-if="data.propertyCode != 'barcode2'" label="编码">
                     <div class="el-form-item__content">
                         <div class="sample-input el-input el-input--small">
                             <input type="text" value="CODE128Auto" readonly  disabled class="el-input__inner" />
                         </div>
                     </div>
                 </el-form-item>
-                <div class="el-form-item">
+                <div class="el-form-item" v-if="data.propertyCode != 'barcode2'">
                     <label class="el-form-item__label" style="width: 80px;">密度</label>
                     <div class="el-form-item__content" style="margin-left: 80px;">
                         <div class="el-form-item__content">
@@ -157,43 +166,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="barcode-tips"><i style="color: #F7BA2A;" class="el-icon-information"></i> 条形码说明：<br>
+                <div class="barcode-tips" v-if="data.propertyCode != 'barcode2'"><i style="color: #F7BA2A;" class="el-icon-information"></i> 条形码说明：<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;条形码是将宽度不等的多个黑条和空白，按照一定的编码规则排列，条形码宽度是有严格比例的，其最小宽度叫一个模块，一个条码由很多个模块构成，模块的宽度增加导致条码的宽度增加。<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;假设一个条码由20个模块构成，那么一个模块增加一个像素，条码就会增加20个像素，因此，条码的宽度是不能任意增加的，否则就有可能造成条空宽度比例不准，条码扫描不出来 </div>
             </el-form>
         </div>
-        <div class="property-setting-body" v-if="data.propertyType == 5">
-            <el-form class="property-setting-form4" ref="form" label-width="80px" :model="data" label-position="left" @submit.native.prevent>
-                <el-select v-model="data.sample" placeholder="请选择" @change="selectChange">
-                    <el-option
-                        v-for="item in options"
-                        :key="item.url"
-                        :label="item.name"
-                        :value="item.url">
-                    </el-option>
-                </el-select>
-                <el-form-item label="宽">
-                    <LengthInput :length="data.width" @change="(value)=>{this.data.width = value}"></LengthInput>
-                </el-form-item>
-                <div class="el-form-item">
-                    <label class="el-form-item__label" style="width: 80px;">高</label>
-                    <div class="el-form-item__content" style="margin-left: 80px;">
-                        <div class="el-form-item__content">
-                            <div class="el-input el-input--small el-input-group el-input-group--append">
-                                <input type="text" placeholder="" :value="data.width" disabled autocomplete="off" class="el-input__inner">
-                                <div class="el-input-group__append">mm</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <el-form-item label="横轴">
-                    <LengthInput :length="data.left" @change="(value)=>{this.data.left = value}"></LengthInput>
-                </el-form-item>
-                <el-form-item label="竖轴">
-                    <LengthInput :length="data.top" @change="(value)=>{this.data.top = value}"></LengthInput>
-                </el-form-item>
-            </el-form>
-        </div>
 
 
 
@@ -299,7 +276,6 @@
                     _this.options = res.data.data.dataList;
                 }
             })
-            debugger
             this.templateId = this.$route.query.templateId;
             this.unit = {
                 "channel": 3,
@@ -330,6 +306,10 @@
         },
         methods: {
 
+            inputChange(val){
+                this.data.width = val;
+                this.data.height = val;
+            },
             //字体选择
             selectFonts(ev){
                 console.log(ev)

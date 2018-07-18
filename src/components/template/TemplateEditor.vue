@@ -1288,7 +1288,7 @@ export default {
                 }
             },
             uploadSuccess(response) {
-                this.canvas.backgroundImage = response.resource_path
+                this.canvas.backgroundImage = response.source_url
                 this.isBackgroundImageActive = false
                 this.record()
             },

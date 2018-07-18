@@ -30,6 +30,13 @@ module.exports = {
                 pathRewrite: {
                     '^/yunzhubao': '/yunzhubao/'
                 }
+            },
+            '/shortUrl':{//此处并非一定和url一致。
+                target:'http://api.t.sina.com.cn/short_url',
+                changeOrigin:true,//允许跨域
+                pathRewrite:{
+                    '^/shortUrl': '/shortUrl/'
+                }
             }
         },
         // CSS Sourcemaps off by default because relative paths are "buggy"

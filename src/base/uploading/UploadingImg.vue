@@ -53,6 +53,7 @@ export default {
         console.log(result)
         console.log(result.data.source_url)
         if (result.code == 0) {
+            debugger
           _self.$emit('cosImg', result.data.source_url)
         }
       }

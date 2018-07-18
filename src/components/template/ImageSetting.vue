@@ -67,7 +67,7 @@ export default {
     },
     methods: {
         uploadSuccess(response) {
-            this.data.src = response.resource_path
+            this.data.src = response.source_url
         },
         uploadFail(error) {
             alert(error)

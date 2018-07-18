@@ -38,6 +38,7 @@ export default {
                         dir_name = encodeURIComponent(dir_name)
                         filename = Date.now() + '_' + filename
                         let url = 'https://gz.file.myqcloud.com/files/v2/' + appid + '/' + bucket_name + '/' + dir_name + '/' + encodeURIComponent(filename) + '?sign=' + encodeURIComponent(sign)
+                        debugger
                         fetch(url, {method: 'POST', body: new FormData(this.$refs.form)}).then(res => res.json()).then(json => {
                             if (json.code) {
                                 this.$emit('uploadFail', json.message)
@@ -72,7 +73,7 @@ export default {
             filter: alpha(opacity=0);
         }
     }
-    
+
     iframe {
         display: none;
     }

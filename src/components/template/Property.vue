@@ -1,16 +1,17 @@
 <template>
         <div class="property-component barcode" v-show="isShown" :style="componentStyle" v-if="data.propertyType == 4">
             <div  :style="barcodeStyle">
-            <img ref="barcode" src="/static/img/barcode-sample.png" @dragstart.prevent  :style="imgStyle">
+            <img ref="barcode" v-if="data.propertyCode == 'charCode'" width="100%" src="/static/img/barcode-sample.png" @dragstart.prevent  :style="imgStyle">
+                <img ref="qrcode" v-else src="/static/img/qrcode.png" width="100%" @dragstart.prevent  :style="imgStyle">
             </div>
             <div class="resize" v-if="!isPreview"></div>
         </div>
-        <div class="property-component qrcode" :style="componentStyle" v-else-if="data.propertyType == 5">
-            <div  :style="qrCodeStyle">
-                <img ref="qrcode" src="/static/img/qrcode.png" @dragstart.prevent>
-            </div>
-            <div class="resize" v-if="!isPreview"></div>
-        </div>
+    <!--<div class="property-component barcode" v-show="isShown" :style="componentStyle" v-else-if="data.propertyType == 5">-->
+        <!--<div  :style="barcodeStyle">-->
+            <!--<img ref="barcode" src="/static/img/barcode-sample.png" @dragstart.prevent  :style="imgStyle">-->
+        <!--</div>-->
+        <!--<div class="resize" v-if="!isPreview"></div>-->
+    <!--</div>-->
         <div class="property-component string" v-show="isShown" :style="componentStyle" :class="{borderRender: data.border}" v-else>
             <span v-if="filterShow(value)" :style="prefixStyle" v-html="rawPrefix"></span>
             <span v-if="filterShow(value)" :style="valueStyle">{{ value }}</span>
@@ -174,6 +175,7 @@ export default {
                             value = mapcode.value
                             // this.isNull = mapcode.isNull != 0
                             if (value != this.data.sample) {
+                                debugger
                                 this.$emit('changeComponentData', {
                                     data: {
                                         sample: value
@@ -344,6 +346,7 @@ export default {
                     if (w != this.data.width || h != this.data.height || l != this.data.left) {
                         // console.log(this.$el, this.data.propertyCode, this.value, this.data.width, this.data.height, this.data.left, w, h, l)
                         if (!(isNaN(w) || isNaN(h) || isNaN(l))) {
+                            debugger
                             this.$emit('changeComponentData', {
                                 data: {
                                     width: w,
