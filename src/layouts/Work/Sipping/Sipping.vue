@@ -66,7 +66,7 @@
                             <li 
                                 @click="getsupplier(item, index)" 
                                 :class = "optionData.receivingShop == item.shopName ? 'active' :''"
-                                v-for="(item, index) in shopListByCo">
+                                v-for="(item, index) in allShopList">
                                 {{item.shopName}}
                             </li>
                         </ul>
@@ -112,7 +112,7 @@
 <script>
 import Vue from 'vue'
 import {mapGetters, mapActions} from "vuex"
-import {seekSendStorageList} from 'Api/commonality/seek'
+import {seekSendStorageList, seekGetShopListByCo} from 'Api/commonality/seek'
 import {operateDelReceipt} from 'Api/commonality/operate'
 import {receiptOptionsName} from 'Api/commonality/status'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
@@ -221,6 +221,7 @@ export default {
         this.getShopListByCo(); // 店铺列表
         this.workProductClass(); // 产品类别
         this.workSupplierList(); // 供应商
+        this.getShopList()
         this.companyPosition = sessionStorage.getItem('companyPosition')
         this.multipleIdentities = sessionStorage.getItem('multipleIdentities')
     },
@@ -293,6 +294,24 @@ export default {
             this.showList = []
             this.filterFun(this.cbFun); // 获取单据列表
             // this.getList();
+        },
+        getShopList() { // 店铺列表
+            let options = {
+                page: 1,
+                pageSize: 9999,
+                type: 3
+            };
+            let _self = this;
+            seekGetShopListByCo(options).then((response) => {
+                if(response.data.state === 200) {
+                    this.allShopList = response.data.data.shopList;
+                    // if(response.data.data.shopList.length === 1) { // 只有一个店铺的情况下
+                    //     _self.onData.shopId = response.data.data.shopList[0].shopId;
+                    // }
+                } else {
+                    this.$store.dispatch('workPopupError', response.data.msg);
+                }
+            }, (response) => {});
         },
         closePopup (parm) { // 关闭新建弹窗
             this.newPopup.main = parm;

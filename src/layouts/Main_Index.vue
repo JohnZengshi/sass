@@ -179,8 +179,13 @@
           $('#body').removeClass('body-shield')
         }
 
+      } else {
+        this.skinConf.forEach((currentValue, index) => {
+          if (currentValue.skinNmae == '默认') {
+            this.switchSkin(currentValue, index)
+          }
+        })
       }
-
       // this.$refs.skin_switch.className= 'skin-switch animated swing' 
       // setTimeout(() => {
       //   this.$refs.skin_switch.className= 'skin-switch swing'

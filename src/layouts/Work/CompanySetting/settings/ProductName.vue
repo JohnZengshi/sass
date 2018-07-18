@@ -103,7 +103,7 @@
 </template>
 <script>
 import {getProductTypeList, seekInsertProductType} from './../../../../Api/commonality/seek'
-import {operateProductTypeOrderBy, operateDelProductTypeByList, operateUpdateProductType, operateProductTypeDragSord} from './../../../../Api/commonality/operate'
+import {operateProductTypeOrderBy, operateDelProductTypeByList, operateUpdateProductType, operateProductTypeDragSord, operateAddClassesRemark} from './../../../../Api/commonality/operate'
 
 import BigPopup from './../settingComponents/bigPopup'
 import productClassPopup from './../settingComponents/product-class-popup'
@@ -274,6 +274,7 @@ export default {
             console.log(val)
             this.operateDialog = val.status
             this.updateProductType(val.operateId, val.operateName)
+            this._operateAddClassesRemark(val)
             if (val.type == 10) {
                 this.margeDialog = true
                 this.startId = val.operateId
@@ -297,7 +298,6 @@ export default {
                 objectData: data
             }
             operateUpdateProductType(options).then((res) => {
-                console.log(res)
                 if (res.data.state == 200) {
                     // this.$message({
                     //     type: 'success',
@@ -317,6 +317,19 @@ export default {
                     message: res.data.msg
                 })
             })
+        },
+        _operateAddClassesRemark (parm) {
+            operateAddClassesRemark(parm)
+                .then(res => {
+                    if (res.data.state == 200) {
+
+                    } else {
+                        this.$message({
+                            type: 'warning',
+                            message: res.data.msg
+                        })
+                    }
+                })
         },
         productTypeDragSord(type, id, list) { // 跨类排序操作
             let options = {

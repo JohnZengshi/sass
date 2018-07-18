@@ -50,7 +50,7 @@
                     <p class="item-card-info"><i class="color2">●</i><span class="card-info-label">交易总额：</span><span>{{ memberInfo.totalPrice ? memberInfo.totalPrice+'元' : '-' }}</span></p>
                     <p class="item-card-info"><i class="color2">●</i><span class="card-info-label">交易次数：</span><span>{{ memberInfo.totalNum != 0 ? memberInfo.totalNum+'次' : '-' }}</span></p>
                     <div class="btn-group-jy">
-                        <div v-if="isShopMan" class="btn-kj" @click="openSales">快捷开单</div>
+                        <div v-if="isShopMan" class="btn-kj" @click.stop="openSales">快捷开单</div>
                         <div v-if="isShopMan" class="btn-kj" @click.stop="relevanceSales">关联销售单</div>
                     </div>
                 </div>
@@ -231,7 +231,7 @@
 import FormatImg from "components/template/DefaultHeadFormat.vue"
 import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
 import SellOrderList from '../sellOrderList'
-import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention,operateFollowCreate} from 'Api/commonality/operate'
+import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention,operateFollowCreate, operateCreateSellOrder} from 'Api/commonality/operate'
 import { memberIntegralUpdate,memberBuyIntegral } from 'Api/member'
 import {seekGetUserInfo} from 'Api/commonality/seek'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
@@ -524,7 +524,27 @@ export default {
     },
     // 快捷开单
     openSales(){
-        this.$router.push({path:'/work/sell'})        
+        var options = {
+            "shopId": this.shopId
+        }
+        operateCreateSellOrder(options).then((response) => {
+            if (response.data.state === 200) {
+                this.$router.push({
+                    path: "/work/sell/sellReceiptsList",
+                    query: {
+                        path: this.$route.path,
+                        orderNumber: response.data.data.orderNum
+                    }
+                })
+            } else {
+                this.$store.dispatch('workPopupError', response.data.msg);
+            }
+        }, (response) => {
+            console.log(response);
+        })
+        // debugger
+        // console.log(this.shopId)
+        // this.$router.push({path:'/work/sell'})        
     },
     // 创建跟进
     returnBack () {
