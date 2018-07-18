@@ -371,7 +371,7 @@ export default {
 .ui-table-container{
     // height: 556px;
     overflow-y: auto;
-	height: 428px;
+	// height: 428px;
     position: relative; 	
     &.produc-line {
 		.tb-tr:nth-child(even){
