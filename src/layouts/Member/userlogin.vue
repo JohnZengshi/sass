@@ -9,13 +9,18 @@
           <!-- <h5>扫描登录</h5> -->
           <div class="login_btns">
               <span class="login_btn_app" :class="{ 'actionColor' : actionType === 0 }" @click="appClick()">扫描登录</span>
-              <span class="login-btn" :class="{ 'actionColor' : actionType === 1 }" title="使用微信绑定云珠宝登录的手机号，可进行微信扫一扫登录" @click="wxClick">微信登录</span>
+              <span class="login-btn" :class="{ 'actionColor' : actionType === 'wx' }" title="使用微信绑定云珠宝登录的手机号，可进行微信扫一扫登录" @click="wxClick">微信登录</span>
               <span class="login-btn" :class="{ 'actionColor' : actionType === 2 }" title="短信密码登录" @click="smsClick()">短信登录</span>
           </div>
           <!-- app二维码 -->
           <div v-show="actionType === 0 || actionType === 1">
             <QRcode @getCompanyId="getCompanyId"></QRcode>
             <p class="txt">登录App进行扫码登录</p>
+          </div>
+
+          <div v-if="actionType == 'wx'">
+            <wxCode></wxCode>
+           <!--  <p class="txt">登录微信进行扫码登录</p> -->
           </div>
 
           <!-- 验证码登录 -->
@@ -95,6 +100,7 @@ import QRcode from './page/Qrcode'
 import experienceNum from './page/experienceNum'
 import chooseUser from './page/chooseUser'
 import dialogComponent from './page/wxDialog'
+import wxCode from './page/wx-code'
 import {sellBackRandomOneAdminList} from 'Api/commonality/seek'
 import {userLogin, getVcCode} from '../../Api/auth_v1'
 import * as types from '../../vuex/mutation-types.js'
@@ -106,7 +112,7 @@ export default {
     phoneNumber : '',
     dialogVisible : false,
     isShowAboutusdialog:false,
-    actionType: 0,
+    actionType: 'wx',
     userInfo:{
       phoneNumber: '',
       SMSCode:''
@@ -122,7 +128,8 @@ export default {
     experienceNum,
     chooseUser,
     dialogComponent,
-    aboutUs
+    aboutUs,
+    wxCode
   },
   created(){
       this.getsellBackRandomOneAdminList();
@@ -174,7 +181,8 @@ export default {
         this.isShowAboutusdialog = isShow;
     },
     wxClick(){
-      this.setDialogVisible(true)
+      this.actionType = 'wx'
+      // this.setDialogVisible(true)
     },
     setDialogVisible(type){
       this.dialogVisible = type
@@ -347,7 +355,6 @@ export default {
       line-height: 45px;
       text-align: center;
     }
-    
     .wx-login-btn{
       height: 50px;
       // display: flex;

@@ -234,8 +234,8 @@
         </div>
         <div class="return-btn-group">
             <div class="btn" @click="goBack">返回</div>
-            <div class="btn" v-if="isShopMan" @click="openSales">快捷开单</div>
-            <div class="btn" v-if="isShopMan" @click="relevanceSales">关联销售单</div>
+            <div class="btn" v-if="isShopMan" @click.stop="openSales">快捷开单</div>
+            <div class="btn" v-if="isShopMan" @click.stop="relevanceSales">关联销售单</div>
         </div>
 
         <!-- 关联销售单 -->
@@ -376,7 +376,7 @@
 <script>
 import {GetNYR, GetSF, GetChineseNYR} from 'assets/js/getTime'
 import SellOrderList from '../sellOrderList'
-import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention} from 'Api/commonality/operate'
+import {operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention, operateCreateSellOrder} from 'Api/commonality/operate'
 import { memberIntegralUpdate,memberBuyIntegral } from 'Api/member'
 
 import {mapActions, mapGetters} from 'vuex'
@@ -419,7 +419,23 @@ export default {
             return GetNYR(parm)
         },
         openSales(){
-            this.$router.push({path:'/work/sell'})
+            var options = {
+                "shopId": this.shopId
+            }
+            operateCreateSellOrder(options).then((response) => {
+                if (response.data.state === 200) {
+                    this.$router.push({
+                        path: "/work/sell/sellReceiptsList",
+                        query: {
+                            path: this.$route.path,
+                            orderNumber: response.data.data.orderNum
+                        }
+                    })
+                } else {
+                    this.$store.dispatch('workPopupError', response.data.msg);
+                }
+            })
+            // this.$router.push({path:'/work/sell'})
         },
         closeOrderList (val) { // 选择单据结束的回调
             this.saveSuccess = false

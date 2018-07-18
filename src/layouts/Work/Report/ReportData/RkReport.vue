@@ -1073,6 +1073,7 @@ import filterHeader from './base/filter-header'
       getShopListByCo() {
         let options = {
           page: '1',
+          type: 3,
           pageSize: this.dataGridOptions.pageSize
         }
         seekGetShopListByCo(options).then((res) => {

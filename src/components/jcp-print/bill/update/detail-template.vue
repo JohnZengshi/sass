@@ -65,7 +65,7 @@
         <tr class="tr">
           <td class="tm" colspan="2" rowspan="2">合计</td>
           <td class="tl">修改前</td>
-          <template v-if="headerData.status == 1 || headerData.status == 2">
+          <template v-if="(headerData.status == 1 || headerData.status == 2) && sellList.now">
             <td>{{sellList.now.weight}}</td>
             <td>{{sellList.now.netWeight}}</td>
             <td>{{sellList.now.mainWeight}}</td>
@@ -73,7 +73,7 @@
             <td>{{sellList.now.price}}</td>
             <td>{{sellList.now.cost}}</td>
           </template>
-          <template v-else-if="headerData.status == 3 || headerData.status == 6">
+          <template v-else-if="(headerData.status == 3 || headerData.status == 6) && sellList.old">
             <td>{{sellList.old.weight}}</td>
             <td>{{sellList.old.netWeight}}</td>
             <td>{{sellList.old.mainWeight}}</td>
@@ -85,7 +85,7 @@
         </tr>
         <tr class="tr">
           <td class="tl">修改后</td>
-          <template v-if="headerData.status == 1 || headerData.status == 2">
+          <template v-if="(headerData.status == 1 || headerData.status == 2) && sellList.old">
             <td>{{sellList.old.weight}}</td>
             <td>{{sellList.old.netWeight}}</td>
             <td>{{sellList.old.mainWeight}}</td>
@@ -93,7 +93,7 @@
             <td>{{sellList.old.price}}</td>
             <td>{{sellList.old.cost}}</td>
           </template>
-          <template v-else-if="headerData.status == 3 || headerData.status == 6">
+          <template v-else-if="(headerData.status == 3 || headerData.status == 6) && sellList.now">
             <td>{{sellList.now.weight}}</td>
             <td>{{sellList.now.netWeight}}</td>
             <td>{{sellList.now.mainWeight}}</td>

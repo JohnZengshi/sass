@@ -598,3 +598,7 @@ export const operateLogout = function(parm) {
     let url = "/v1/auth/logout";
     return new Axios(url, parm).apiCall();
 }
+export const operateAddClassesRemark = function(parm) {
+    let url = "/v1/headquarter/addClassesRemark";
+    return new Axios(url, parm).apiCall();
+}

@@ -857,7 +857,8 @@
 			getShopList() { // 店铺列表
 				let options = {
 					page: 1,
-					pageSize: 9999
+					pageSize: 9999,
+					type: 3
 				};
 				let _self = this;
 				seekGetShopListByCo(options).then((response) => {

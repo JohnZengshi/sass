@@ -14,7 +14,7 @@ let option = {
             y: 'center',
             textStyle: {
                 fontSize: 16,
-                color: '#ff8d43'
+                color: '#333333'
             }
         },
         series: [{

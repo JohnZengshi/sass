@@ -25,6 +25,12 @@
 				   <!-- <i class="del iconfont icon-lajitong" v-if="isRole == 'Y'"  title="删除" @click="productDetail(tb)"></i> -->
 			</div>
 		</div>
+		<!-- 加载更多未读数据 -->
+        <ReadMoreData 
+        :allData="dataGridStorage" 
+        :dgDataList="dataGridStorage.detailList" 
+        ref="ReadMoreDataDmo" 
+        ></ReadMoreData>
 		<div v-if="isDate" class="no-data"></div>
 	</div>
 	
@@ -116,12 +122,15 @@
 
 
 </div>
+
+
 </template>
 
 <script>
 let applyIndex = 0
 import {operateProductList} from 'Api/commonality/operate'
 import dataisdelete from './dataisDelete'
+import ReadMoreData from 'components/work/readMoreData.vue'
 export default {
 	data(){
 		return{
@@ -134,7 +143,8 @@ export default {
 	},
 	props : ['detailDataGridColumn','dataGridStorage','tabCell','reportType','isRole', 'positionSwitch', 'dataGridOptions', 'orderType'], // orderType -> 报表类型
     components:{
-       dataisdelete
+	   dataisdelete,
+	   ReadMoreData
 	},
 	watch:{
 		'dataGridStorage':function(){
@@ -361,6 +371,8 @@ export default {
 .ui-table-container{
     // height: 556px;
     overflow-y: auto;
+	// height: 428px;
+    position: relative; 	
     &.produc-line {
 		.tb-tr:nth-child(even){
 			background-color: #f9f9f9;

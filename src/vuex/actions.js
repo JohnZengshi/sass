@@ -502,8 +502,8 @@ export const getLabelData = ({commit}, parm) => { // 打印标签数据
 
             datas.productClassList = [{productClass: queryData.productClass}]
         }
-        
-        // 成品旧料
+
+        // 类型
         if (queryData.type) {
 
             datas.type = queryData.type

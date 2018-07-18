@@ -1,6 +1,7 @@
 <template>
   <div class="bottomBox">
     <!-- <div class="readMoreData"  :class="{'active':MoreData}" @click="readMoreData">查看更多未读数据</div> -->
+    <div class="readerDataLoading" v-loading="MoreData"></div>
     <div class="noMoreData" :class="{'active':noMoreData}">
       <span>数据展示到底了啦~</span>
     </div>
@@ -110,6 +111,12 @@
       }
     }
 
+    .readerDataLoading{
+      width: 100%;
+      height: 36px;
+      position: absolute;
+    }
+
     .noMoreData {
       width: 100%;
       position: absolute;
@@ -118,11 +125,13 @@
       font-size: 12px;
       // height: 50px;
       // line-height: 50px;
-      display: none;
+      // display: none;
       transition: all 0s;
       margin: 10px 0;
+      opacity: 0;
       &.active {
-        display: block;
+        // display: block;
+        opacity: 1;
       }
       >span {
         color: #999;

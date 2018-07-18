@@ -185,7 +185,7 @@ export default {
             counterId: this.changeCounter.counterId, // 柜组
             productClassList: [{productClass: this.dataGridOptions.productClass}],
             inLocation: '1',
-            beginTime: formattingTime(this.beginTime),
+            beginTime: "20000717000000",
             endTime: xjEndTime(this.beginTime),
             type: this.dataGridOptions.type
           }

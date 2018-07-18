@@ -31,7 +31,7 @@
               </h6>
               <ul :id="'manage' + item.shopId" style="height: 0;">
                 <template v-for="(storeManagerData,index) in item.storeManager">
-                  <li class="isHas" @click="lookDetail(storeManagerData, index)" :key="index" :class="{actions: storeManagerData.userId == organizatonChangeId && userIndex == storeManagerData.role && listIndex == index}">
+                  <li class="isHas" @click="lookDetail(storeManagerData, index, item)" :key="index" :class="{actions: storeManagerData.userId == organizatonChangeId && userIndex == storeManagerData.role && listIndex == index}">
                     <img src="./../../assets/img/manage-icon.png" alt="">
                     <div class="title-wrap">
                       <p>{{storeManagerData.username}}</p>
@@ -51,7 +51,7 @@
                 </h6>
                 <ul :id="'person' + item.shopId" style="height: 0;">
                   <template v-for="(storeManagerData,index) in item.shopAssistant">
-                    <li class="isHas" @click="lookDetail(storeManagerData, index)" :key="index" :class="{actions: storeManagerData.userId == organizatonChangeId && userIndex == storeManagerData.role && listIndex == index}">
+                    <li class="isHas" @click="lookDetail(storeManagerData, index, item)" :key="index" :class="{actions: storeManagerData.userId == organizatonChangeId && userIndex == storeManagerData.role && listIndex == index}">
                       <img src="./../../assets/img/clear-icon.png" alt="">
                       <div class="title-wrap">
                         <p>{{storeManagerData.username}}</p>
@@ -250,9 +250,11 @@
           datas.style.height = 0 + 'px';
         }
       },
-      lookDetail (item, index) {
+      lookDetail (item, index, allData) {
+        debugger
         // this.$store.dispatch('workOrganizationChange', item.userId)
         console.log(item)
+        console.log(allData)
         let isShopMap = true
         this.userIndex = item.role
         this.listIndex = index
