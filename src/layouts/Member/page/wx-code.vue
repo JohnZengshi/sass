@@ -86,7 +86,6 @@ export default{
           })
         }
       })
-      console.log('二维码参数', location)
     }
     
   },

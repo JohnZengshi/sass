@@ -35,7 +35,7 @@
                 </div>
             </div>
             <div>
-                <el-dialog :visible.sync="addDialog" customClass="addDig">
+<!--                 <el-dialog :visible.sync="addDialog" customClass="addDig">
                     <div class="title" slot="title">
                         <img src="./../../../../../static/img/piliang.png">
                         <div>添加产品小类</div>
@@ -46,9 +46,9 @@
                     <div class="foot" solt="footer">
                         <div class="ope-btn" @click="insertProductType">确定</div>
                     </div>
-                </el-dialog>
+                </el-dialog> -->
                 
-<!--                 <el-dialog :visible.sync="operateDialog" customClass="product-class-dig-main">
+                <el-dialog :visible.sync="operateDialog" customClass="product-class-dig-main">
                     <product-class-popup
                         v-if="operateDialog"
                         :item='item'
@@ -60,7 +60,7 @@
                         :bigClass="bigClass"
                     >
                     </product-class-popup>
-                </el-dialog> -->
+                </el-dialog>
                 
                 <el-dialog :visible.sync="operateDialog" customClass="operateDig">
                     <big-popup
