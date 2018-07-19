@@ -7,12 +7,15 @@
                     <p>
                         <img class="js-view-image-item" src="~src/assets/img/laberDetection/yinuoer.png"></p>
                     <p style="text-align:center">
-                        <input type="text" id="txtsearch" style="width:60%;font-weight:bold;font-size:16px;height:21px;vertical-align:middle;padding:8px;border:1px solid #ccc">
-                        <input type="button" style="height:40px;width:20%;font-size:14px;vertical-align:bottom" id="btnSearch" value="查 询">
+                        <input type="text" v-model="barcode" id="txtsearch" style="width:60%;font-weight:bold;font-size:16px;height:21px;vertical-align:middle;padding:8px;border:1px solid #ccc">
+                        <input type="button" @click="getLaberData" style="height:40px;width:20%;font-size:14px;vertical-align:bottom" id="btnSearch" value="查 询">
                     </p>
                     <p style="text-align: center;">
-                        <strong><span style="color: rgb(255, 0, 0);" id="lblresult">经验证 本产品为伊诺尔钻石正品</span></strong></p>
-                    <section id="prod_title">
+                        <strong>
+                            <span v-if="normal" style="color: rgb(255, 0, 0);">经验证 本产品为伊诺尔钻石正品</span>
+                            <span v-else style="color: rgb(255, 0, 0);">未查询到产品相关信息，请留下您的联系方式</span>
+                        </strong></p>
+                    <section id="prod_title" v-if="normal">
                         <section>
                             <section>
                                 <section><br>
@@ -29,17 +32,17 @@
                             </section>
                         </section>
                     </section>
-                    <p style="text-align: center;">
+                    <p style="text-align: center;"  v-if="normal">
                         <strong><span style="color: rgb(255, 0, 0);"></span></strong>
                     </p>
-                    <table id="prod_info" data-sort="sortDisabled">
+                    <table id="prod_info" v-if="normal" data-sort="sortDisabled">
                         <tbody>
                             <tr>
                                 <td width="100" valign="top" style="word-break: break-all;">
                                     <span style="font-size: 14px;">品名</span>
                                 </td>
                                 <td width="299" valign="top" style="word-break: break-all;">
-                                    <span style="font-size: 14px;" id="lblprod_name"></span>
+                                    <span style="font-size: 14px;" id="lblprod_name" v-text="brandName"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -47,7 +50,7 @@
                                     <span style="font-size: 14px;">证书编号</span>
                                 </td>
                                 <td width="299" valign="top" style="word-break: break-all;">
-                                    <span style="font-size: 14px;" id="lblcert_no"></span>
+                                    <span style="font-size: 14px;" id="lblcert_no" v-text="certifiNo"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -55,7 +58,7 @@
                                     <span style="font-size: 14px;">款号</span>
                                 </td>
                                 <td width="299" valign="top" style="word-break: break-all;">
-                                    <span style="font-size: 14px;" id="lblstyle_no"></span>
+                                    <span style="font-size: 14px;" id="lblstyle_no" v-text="modelNo"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -63,7 +66,7 @@
                                     <span style="font-size: 14px;">主石</span>
                                 </td>
                                 <td valign="top" colspan="1" rowspan="1" style="word-break: break-all;">
-                                    <span style="font-size: 14px;" id="lblmstone_name"></span>
+                                    <span style="font-size: 14px;" id="lblmstone_name" v-text="mainJewelryName"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -71,7 +74,7 @@
                                     <span style="font-size: 14px;">重量</span>
                                 </td>
                                 <td valign="top" colspan="1" rowspan="1" style="word-break: break-all;">
-                                    <span style="font-size: 14px;" id="lblgoods_wgt"></span>
+                                    <span style="font-size: 14px;" id="lblgoods_wgt" v-text="totalWeight"></span>
                                 </td>
                             </tr>
                             <tr>
@@ -79,12 +82,12 @@
                                     <span style="font-size: 14px;">标签价</span>
                                 </td>
                                 <td width="299" valign="top" style="word-break: break-all;">
-                                    <span style="font-size: 14px;" id="lblsale_amt"></span>
+                                    <span style="font-size: 14px;" id="lblsale_amt" v-text="soldPrice"></span>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <section id="buy_title" style="box-sizing: border-box; background-color: rgb(255, 255, 255);">
+                    <section id="buy_title" v-if="normal" style="box-sizing: border-box; background-color: rgb(255, 255, 255);">
                         <section style="position: static; box-sizing: border-box;">
                             <section class="" style="margin-top: 10px; margin-bottom: 10px; text-align: center; position: static; box-sizing: border-box;">
                                 <section class="" style="padding: 3px; display: inline-block; border-bottom-width: 5px; border-bottom-style: solid; border-bottom-color: rgb(249, 110, 87); box-sizing: border-box;">
@@ -93,7 +96,7 @@
                             </section>
                         </section>
                     </section>
-                    <table id="buy">
+                    <table v-if="normal" id="buy">
                         <tbody>
                             <tr class="firstRow">
                                 <td width="100" valign="top" style="word-break: break-all;">
@@ -121,7 +124,8 @@
                             </tr>
                         </tbody>
                     </table>
-                    <section id="my_title" style="display:none; box-sizing: border-box; background-color: rgb(255, 255, 255);">
+
+                    <section  v-if="!normal" id="my_title" style="box-sizing: border-box; background-color: rgb(255, 255, 255);">
                         <section style="position: static; box-sizing: border-box;">
                             <section class="" style="margin-top: 10px; margin-bottom: 10px; text-align: center; position: static; box-sizing: border-box;">
                                 <section class="" style="padding: 3px; display: inline-block; border-bottom-width: 5px; border-bottom-style: solid; border-bottom-color: rgb(249, 110, 87); box-sizing: border-box;">
@@ -130,14 +134,14 @@
                             </section>
                         </section>
                     </section>
-                    <table id="my_info" style="display:block;">
+                    <table v-if="!normal" id="my_info">
                         <tbody>
                             <tr class="firstRow">
                                 <td width="100" valign="top" style="word-break: break-all;">
                                     <span style="font-size: 14px;">姓名</span>
                                 </td>
                                 <td width="299" valign="top" style="word-break: break-all;">
-                                    <input type="text" id="txtname" style="width:100%;height:26px;border:1px solid #ccc;">
+                                    <input type="text" v-model="userName" id="txtname" style="width:100%;height:26px;border:1px solid #ccc;">
                                 </td>
                             </tr>
                             <tr>
@@ -145,7 +149,7 @@
                                     <span style="font-size: 14px;">联系电话</span>
                                 </td>
                                 <td width="299" valign="top" style="word-break: break-all;">
-                                    <input type="text" id="txttel" style="width:100%;height:26px;border:1px solid #ccc;">
+                                    <input type="text" v-model="mobile" id="txttel" style="width:100%;height:26px;border:1px solid #ccc;">
                                 </td>
                             </tr>
                             <tr>
@@ -169,7 +173,7 @@
                                     <span style="font-size: 14px;"></span>
                                 </td>
                                 <td valign="top" colspan="1" rowspan="1" style="word-break: break-all;text-align:center">
-                                    <input type="button" value="提 交" id="btnOK" style="width:50%;height:40px;font-size:14px">
+                                    <input type="button" @click="sendMessage" value="提 交" id="btnOK" style="width:50%;height:40px;font-size:14px">
                                 </td>
                             </tr>
                         </tbody>
@@ -202,8 +206,95 @@
 </template>
 
 <script>
+    import apiCall from '@/Api/apiCall';
     export default {
-        name: "ernuoer"
+        data(){
+            return {
+                barcode: '', //条码
+                brandName: '', //品名
+                certifiNo: '', //证书编号
+                modelNo: '',   //款号
+                mainJewelryName: '',  //主石
+                totalWeight: '',   //重量
+                soldPrice: '',     //标签价
+                normal: true,
+                userNmae: '',
+                mobile: ''
+            }
+        },
+        beforeRouteEnter(to, from, next) {
+            document.title = '伊诺尔钻石验证';
+            next()
+        },
+        mounted(){
+            this.query = this.$route.query;
+            this.barcode = this.query.barcode;
+            let data = {
+                data: {
+                    barcode: this.query.barcode,
+                    templateId: this.query.templateId
+                },
+                unit: {
+                    companyId: this.query.companyId
+                }
+            }
+            this.getPrintLabelData(data);
+        },
+        methods:{
+            getLaberData(){
+                let data = {
+                    data: {
+                        barcode: this.barcode,
+                        templateId: this.query.templateId
+                    },
+                    unit: {
+                        companyId: this.query.companyId
+                    }
+                }
+                this.getPrintLabelData(data);
+            },
+            getPrintLabelData(data){
+                let _this = this;
+                apiCall(data, '/v1/print/getPrintLabelData').then((json) => {
+                    if (json.data.state == 200 && json.data.data.productList.length) {
+                        let dataList = json.data.data.productList[0].codeList;
+                        this.normal = true;
+                        for (let item of dataList){
+                            let obj = {
+                                'brand_name': () => _this.brandName = item.value, //品名
+                                'certifi_no': () => _this.certifiNo = item.value, //证书编号
+                                'model_no': () => _this.modelNo = item.value,   //款号
+                                'main_jewelry_name': () => _this.mainJewelryName = item.value,  //主石
+                                'total_weight': () => _this.totalWeight = item.value,   //重量
+                                'sold_price': () => _this.soldPrice = item.value,     //标签价
+                            }[item.key];
+                            obj && obj();
+                        }
+                    }else{
+                        [
+                            _this.brandName,
+                            _this.certifiNo,
+                            _this.modelNo,
+                            _this.mainJewelryName,
+                            _this.totalWeight,
+                            _this.soldPrice,
+                            _this.normal
+                        ] = ['','','','','','',false]
+                    }
+                });
+            },
+            sendMessage(){
+                if (!this.userName) {
+                    alert('请填写姓名');
+                    return
+                }
+                if (!this.mobile) {
+                    alert('请填写联系电话');
+                    return
+                }
+                alert('提交成功');
+            }
+        }
     }
 </script>
 

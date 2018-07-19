@@ -9,7 +9,7 @@
                     查询码：&nbsp;<input v-model="identifyingCode" type="text" id="QueryNo" name="QueryNo" class="w200 h25" style="border: 1px solid #B98C01;"><br>
                 </li>
                 <li class="h50 line50 t-c">
-                    <input type="button" id="cert_query">
+                    <input type="button" id="cert_query" @click="checkData">
                 </li>
             </ul>
         </div>
@@ -31,14 +31,22 @@
                 identifyingCode: ''
             }
         },
-        mounted(){
-            let data = {
-                identifyingCode: this.identifyingCode,
-                barcode: this.barcode
+        beforeRouteEnter(to, from, next) {
+            document.title = '老凤祥江苏运营管理查询平台';
+            next()
+        },
+        methods: {
+            checkData(){
+                this.$router.push({
+                    path: '/laofengxiang_su_sub',
+                    query: {
+                        'templateId': this.$route.query.templateId || '',
+                        'companyId': this.$route.query.companyId || '',
+                        'vcode': this.identifyingCode,
+                        'barcode': this.barcode,
+                    }
+                })
             }
-            apiCall(data, '/v1/print/getLaoFengXiangProductDate').then((res) => {
-                console.log(res);
-            });
         }
     }
 </script>

@@ -22,8 +22,9 @@
             </div>
             <div class="content">
 
-                <img v-if="normal == 1" class="pass msg" src="~src/assets/img/laberDetection/pass.png" alt=""> <img v-if="normal == 2" class="refuse msg" src="~src/assets/img/laberDetection/refuse.png" alt="">
-                <div id="main-content" v-html="innerHtml" :style="getWidth"></div>
+                <img v-if="normal == 1" class="pass msg" src="~src/assets/img/laberDetection/pass.png" alt="">
+                <img v-if="normal == 2" class="refuse msg" src="~src/assets/img/laberDetection/refuse.png" alt="">
+                <div v-show="normal == 1" id="main-content" v-html="innerHtml" :style="getWidth"></div>
             </div>
             <div class="footer">
                 <a href="http://www.laofengxiang.com">http://www.laofengxiang.com</a>
@@ -36,7 +37,6 @@
 <script>
     import apiCall from '@/Api/ApiCall'
     import {laberPrint} from '@/utils/laberPrint.js';
-
 
     export default {
         data() {
@@ -64,15 +64,16 @@
             }
         },
         beforeRouteEnter(to, from, next) {
-            $('#qrcodeUrl').children().remove();
+            // $('#qrcodeUrl').children().remove();
+            document.title = '检验标签查询';
             next()
         },
 
-        beforeRouteLeave(to, from, next) {
-            // 导航离开该组件的对应路由时调用
-            $('#qrcodeUrl').children().remove();
-            next()
-        },
+        // beforeRouteLeave(to, from, next) {
+        //     // 导航离开该组件的对应路由时调用
+        //     $('#qrcodeUrl').children().remove();
+        //     next()
+        // },
         computed: {
             getWidth() {
                 return {
@@ -80,7 +81,7 @@
                     height: this.height + 'mm',
                 }
             },
-            getBackgroundImage(){
+            getBackgroundImage() {
                 return {
                     backgroundImage: this.backgroundImage
                 }
@@ -112,16 +113,21 @@
                     }
                 }
                 apiCall(_data, '/v1/print/previewTemplate').then((res) => {
-                    debugger
                     if (res.data.state == 200) {
                         let canvas = JSON.parse(res.data.data.content);
                         _this.width = res.data.data.width;
                         _this.height = res.data.data.height;
                         if (canvas.backgroundImage) {
-                            console.log(canvas.backgroundImage)
-                            $('#main-content').css('background-image','url(' + canvas.backgroundImage + ')' );
+                            let style = {
+                                'background-size': '100% 100%',
+                                'background-repeat': 'no-repeat',
+                                'transform': 'rotate(0deg) scale(1)',
+                                'transform-origin': '0px 0px 0px',
+                                'background-image': 'url(' + canvas.backgroundImage + ')'
+                            }
+                            $('#main-content').css(style);
                         }
-                        $('#qrcodeUrl').children().remove();
+                        // $('#qrcodeUrl').children().remove();
                         apiCall(_json, '/v1/print/getPrintLabelData').then((json) => {
                             if (json.data.state == 200 && json.data.data.productList.length) {
                                 let dataList = json.data.data.productList;
@@ -129,13 +135,17 @@
                                 _this.normal = 1;
                                 _this.innerHtml = laberPrint.transformationDataToHtml(pageList[0]);
                                 _this.$nextTick(function () {
+                                    let scale = 567 / $('#main-content').width();
                                     let offset = $('#qrcode').offset();
-                                    $('#qrcodeUrl').css({
-                                        position: 'absolute',
-                                        top: offset.top,
-                                        left: offset.left
-                                    })
-
+                                    let node = document.getElementById('qrcode');
+                                    let width = node.dataset.width;
+                                    new QRCode('qrcode', {
+                                        render : 'canvas',
+                                        text: node.dataset.url,
+                                        width: width * 3.78,
+                                        height: width * 3.78
+                                    });
+                                    $('#main-content').css('transform','scale(' + scale + ')');
                                 })
                             } else {
                                 _this.normal = 2;
@@ -143,7 +153,7 @@
                             }
                         });
                     } else {
-                        $('#qrcodeUrl').children().remove();
+                        // $('#qrcodeUrl').children().remove();
                         _this.normal = 2;
                         _this.innerHtml = '';
                     }
@@ -184,13 +194,12 @@
         overflow:hidden;
     }
     #main-content{
-        /*height: 96px;*/
+        height: 96px;
         display:inline-block;
         overflow:hidden;
         text-align:center;
         position:absolute;
-        left:0;
-        right:0;
+        left:90px;
         top:267px;
         margin:auto;
     }

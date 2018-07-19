@@ -1,12 +1,12 @@
 <template>
     <div class="main-warp">
-        <div class="error-msg" style="display:none">
-            <div><a href="" style="color:#ff0000;font-size:20px;font-weight:bold;text-decoration:underline">回到首页</a></div>
+        <div class="error-msg" v-if="normal == 2">
+            <div><a href="javascript:;" @click="loaclMain" style="color:#ff0000;font-size:20px;font-weight:bold;text-decoration:underline">回到首页</a></div>
             <div style="margin-top:124px"><img src="~src/assets/img/laberDetection/error-msg.png" alt=""></div>
             <div style="margin-top:20px;text-align:center;font-weight:600;font-size:13px;font-weight:600;">技术支持：<a href="" style="display:inline-block;font-size:13px;color:#1a00ee">南京深信软件</a></div>
         </div>
-        <div class="w581 mar0auto">
-            <div style="font: bold 22px/40px normal;"><a href="/index.html" style="color:#ff0000">回到首页</a></div>
+        <div class="w581 mar0auto" v-if="normal == 1">
+            <div style="font: bold 22px/40px normal;"><a href="javascript:;" @click="loaclMain" style="color:#ff0000">回到首页</a></div>
 
             <table class="w_100 f16 b-bor f-f-h">
 
@@ -15,7 +15,7 @@
                         纯度:
                     </td>
                     <td class="t-c c-blue" width="70%">
-                        足金
+                        {{color_name}}
                     </td>
                 </tr>
                     <tr>
@@ -23,7 +23,7 @@
                             金含量:
                         </td>
                         <td class="t-c c-blue" width="70%">
-                            金含量：999‰
+                            <span v-show="gold_content">金含量：</span>{{gold_content}}
                         </td>
                     </tr>
                     <tr>
@@ -31,7 +31,7 @@
                             品名:
                         </td>
                         <td class="t-c c-blue" width="70%">
-                            挂坠
+                            {{jewelry_name}}
                         </td>
                     </tr>
                     <tr>
@@ -39,7 +39,7 @@
                             质量:
                         </td>
                         <td class="t-c c-blue" width="70%">
-                            8.89g
+                            {{total_weight}}<span v-show="total_weight">g</span>
                         </td>
                     </tr>
 
@@ -49,7 +49,7 @@
                             加工费:
                         </td>
                         <td class="t-c c-blue" width="70%">
-                            10元/克
+                            {{operate_fee}}<span v-show="operate_fee">元/g</span>
                         </td>
                     </tr>
 
@@ -59,7 +59,7 @@
                             条码号:
                         </td>
                         <td class="t-c c-blue" width="70%">
-                            16700277041318
+                            {{barcode}}
                         </td>
                     </tr>
                     <tr>
@@ -87,8 +87,80 @@
 </template>
 
 <script>
+    import apiCall from '@/Api/apiCall';
+
     export default {
-        name: "laofengxiang_su_sub"
+        data(){
+            return {
+                color_name: '',     //纯度
+                gold_content: '',   //金含量
+                jewelry_name: '',   // 品名
+                total_weight: '',   //质量
+                operate_fee: '',    //加工费
+                barcode: '',        //条码号
+                normal: 0
+            }
+        },
+        beforeRouteEnter(to, from, next) {
+            document.title = '老凤祥江苏运营管理查询平台';
+            next()
+        },
+        mounted(){
+            this.query = this.$route.query;
+            this.barcode = this.query.barcode;
+            let data = {
+                data: {
+                    code: this.query.vcode,
+                    barcode: this.query.barcode,
+                    templateId: this.query.templateId
+                },
+                unit: {
+                    companyId: this.query.companyId
+                }
+            }
+            this.getPrintLabelData(data);
+        },
+        methods:{
+            getPrintLabelData(data){
+                let _this = this;
+                apiCall(data, '/v1/print/getPrintLabelData').then((json) => {
+                    if (json.data.state == 200 && json.data.data.productList.length) {
+                        let dataList = json.data.data.productList[0].codeList;
+                        _this.normal = 1;
+                        for (let item of dataList){
+                            let obj = {
+                                'color_name': () => _this.color_name = item.value, //品名
+                                'gold_content': () => _this.gold_content = item.value, //证书编号
+                                'jewelry_name': () => _this.jewelry_name = item.value,   //款号
+                                'total_weight': () => _this.total_weight = item.value,  //主石
+                                'operate_fee': () => _this.operate_fee = item.value,   //重量
+                                'barcode': () => _this.barcode = item.value,     //标签价
+                            }[item.key];
+                            obj && obj();
+                        }
+                    }else{
+                        [
+                            _this.color_name,
+                            _this.gold_content,
+                            _this.jewelry_name,
+                            _this.total_weight,
+                            _this.operate_fee,
+                            _this.barcode,
+                            _this.normal
+                        ] = ['','','','','','',2]
+                    }
+                });
+            },
+            loaclMain(){
+                this.$router.push({
+                    path: '/laofengxiang_su',
+                    query: {
+                        'templateId': this.query.templateId || '',
+                        'companyId': this.query.companyId || ''
+                    }
+                })
+            }
+        }
     }
 </script>
 

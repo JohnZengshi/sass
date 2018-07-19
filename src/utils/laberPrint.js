@@ -5,7 +5,6 @@
 import JsBarcode from 'jsbarcode'
 
 
-
 export const laberPrint = {
 
     /**
@@ -13,28 +12,32 @@ export const laberPrint = {
      * template
      * dataList
      */
-    transformation(template, dataList){
+    transformation(template, dataList) {
         let pageList = [];
-        for(let item of dataList){
+        for (let item of dataList) {
             let page = [];
-            for(let components of template.components){
-                let mapcode = _.find(item.codeList, {key:components.data.propertyCode});
-                if(!mapcode)mapcode = new Object();
+            for (let components of template.components) {
+                let mapcode = _.find(item.codeList, {key: components.data.propertyCode});
+                if (!mapcode) mapcode = new Object();
                 let componnent = laberPrint.getComponnent(components.type, components.data.propertyType, components.data.propertyCode);
-                let temp = _.cloneDeep(_.assignIn(components.data, {sample:mapcode.value, componnent:componnent, type:components.type}));
+                let temp = _.cloneDeep(_.assignIn(components.data, {
+                    sample: mapcode.value,
+                    componnent: componnent,
+                    type: components.type
+                }));
                 page.push(temp);
             }
-            pageList.push({page:page, width:template.width, height:template.height, rotateDeg:template.rotateDeg});
+            pageList.push({page: page, width: template.width, height: template.height, rotateDeg: template.rotateDeg});
         }
         return pageList;
     },
     /**
      * 获取类型
      */
-    getComponnent(type, propertyType, propertyCode){
-        switch(type){
+    getComponnent(type, propertyType, propertyCode) {
+        switch (type) {
             case "PropertyComponent":
-                return propertyType == 4?"charCode":propertyCode;
+                return propertyType == 4 ? "charCode" : propertyCode;
                 break
             case "LineComponent":
                 return "line";
@@ -49,9 +52,9 @@ export const laberPrint = {
                 break
         }
     },
-    getCode(pageList){
-        for(let item of pageList){
-            if (item.propertyCode == 'code'){
+    getCode(pageList) {
+        for (let item of pageList) {
+            if (item.propertyCode == 'code') {
                 return item.sample;
             }
         }
@@ -67,15 +70,15 @@ export const laberPrint = {
             "height": page.height + "mm",
             "transform": "rotate(" + page.rotateDeg + "deg)",
         });
-        for(let data of list) {
-            if(!data.isNullPrint && !data.sample && (data.type == "PropertyComponent" && data.componnent !="barcode2")){
+        for (let data of list) {
+            if (!data.isNullPrint && !data.sample && (data.type == "PropertyComponent" && data.componnent != "barcode2")) {
                 continue;
             }
             let box = $("<div>");
-            if(data.componnent =="line"){//线条
+            if (data.componnent == "line") {//线条
                 box = $("<hr>");
             }
-            if(data.propertyCode =="charCode"){//条码
+            if (data.propertyCode == "charCode") {//条码
                 box = $("<img class='barcode'>");
                 box.JsBarcode(data.sample, {
                     format: 'CODE128',
@@ -85,30 +88,21 @@ export const laberPrint = {
                 });
 
             }
-            if(data.propertyCode =="barcode2"){//二维码
-
+            if (data.propertyCode == "barcode2") {//二维码
                 let url = data.codeUrl + '&barcode=' + data.sample + '&vcode=' + laberPrint.getCode(list);
                 console.log('qrcode:' + url);
-                debugger
-
-                box = $('<div id="qrcode" data-top="' + data.top + '" data-left="' + data.left + '">')
-                var qrcode = new QRCode('qrcodeUrl', {
-                    render : 'canvas',
-                    text: url,
-                    width: data.width * 3.78,
-                    height: data.width * 3.78
-                });
+                box = $('<div id="qrcode" data-width="' + data.width + '" data-url="' + url + '">')
             }
             box.css({
                 "-webkit-font-smoothing": "antialiased",
                 "font-smoothing": "antialiased",
                 "position": "absolute",
-                "white-space":"nowrap",
+                "white-space": "nowrap",
                 "border": (data.border ? '1px solid #000;' : 'none'),
                 "top": data.top + "mm",
                 "left": data.left + "mm",
             });
-            switch(data.rotateDeg) {
+            switch (data.rotateDeg) {
                 case 90:
                     box.css({
                         "transform": "rotate(" + data.rotateDeg + "deg) translateY(-" + data.height + "mm)",
@@ -130,12 +124,12 @@ export const laberPrint = {
                 default:
                     break;
             }
-            switch(data.componnent) {
+            switch (data.componnent) {
                 //线条
                 case "line":
                     box.css({
                         "border": "0.5px solid",
-                        "margin":"0",
+                        "margin": "0",
                         "width": data.width + "mm",
                     });
                     break;
@@ -149,7 +143,7 @@ export const laberPrint = {
                 //默认文本
                 default:
                     //前缀
-                    if(data.prefix) {
+                    if (data.prefix) {
                         box.append($("<span>").html(data.prefix).css({
                             "font-size": data.prefixStyle.fontSize + "px",
                             "color": data.prefixStyle.color,
@@ -163,7 +157,7 @@ export const laberPrint = {
                     //正文
                     let _span = $("<span>");
                     box.append(_span);
-                    if(data.valueStyle) {
+                    if (data.valueStyle) {
                         let value = data.sample
                         if (data.propertyType == 1 || data.propertyType == 3) {
                             value = Number(value).toFixed(data.toFixed)
@@ -184,7 +178,7 @@ export const laberPrint = {
                             "font-style": (isItalic ? 'italic' : 'normal'),
                             "font-weight": (isBold ? 'bold' : 'normal')
                         })
-                    }else{
+                    } else {
                         let {content, fontSize, color, fontFamily, isUnderline, isItalic, isBold} = data;
                         _span.html(content).css({
                             "font-size": fontSize + "px",
@@ -199,7 +193,7 @@ export const laberPrint = {
                         })
                     }
                     //后缀
-                    if(data.suffix) {
+                    if (data.suffix) {
                         box.append($("<span>").html(data.suffix).css({
                             "font-size": data.suffixStyle.fontSize + "px",
                             "color": data.suffixStyle.color,
