@@ -3,7 +3,7 @@
 <!--明细-->
 <div @scroll="watchScroll($event)" class="ui-table-container default-line" ref="tableContainer" v-if="reportType == 1">
 	<div>
-		<dataisdelete 
+		<dataisdelete
 			:isdeletedialogvisibly="deletedialogvisi"
 			:isDeleteRole="isRole"
 			:asrequestData="asData"
