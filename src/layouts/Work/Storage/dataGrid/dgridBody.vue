@@ -349,6 +349,12 @@
 								deputyPrice: item['deputyPrice'],
 								productId: productId
 							})
+						} else if (tab.type === 'deputyCalcMethod') {
+							this.dgDataList[fIndex][tab.type] = this.dgDataList[fIndex][tab.type]
+							tempArray.push({
+								deputyPrice: item['deputyPrice'],
+								productId: productId
+							})
 						} else {
 							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 							tempArray.push({
@@ -389,6 +395,12 @@
 					) {
 						if(tab.type === 'count') {
 							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type])
+							tempArray.push({
+								mainPrice: item['mainPrice'],
+								productId: productId
+							})
+						} else if (tab.type === 'mainCalcMethod') {
+							this.dgDataList[fIndex][tab.type] = this.dgDataList[fIndex][tab.type]
 							tempArray.push({
 								mainPrice: item['mainPrice'],
 								productId: productId
@@ -1012,7 +1024,7 @@
 
 						// 对重定向的处理
 						if(config.resDataRedirect == undefined) {
-							// 拿到对应的请求接口
+							// 拿到对应的请求接口 
 							if(fetch[config.fetchType]) {
 								this.fetchData(fetch[config.fetchType], config)
 							}
@@ -1038,7 +1050,6 @@
 
 					let tempData = JSON.parse(decodeURIComponent(localStorage[config.localStorage])).filter(f => f.classesName == config.classesName)
 					this.$set(this.datagridSelectData, config.resData, tempData[0].childrenList)
-
 				} else if(typeof fetch === 'function') {
 
 					fetch(config, (res) => {
