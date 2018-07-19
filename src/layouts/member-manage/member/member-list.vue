@@ -2,21 +2,22 @@
 <template>
   <transition name="tp-ani">
     <div class="RP_report_wrapper ui-page-max-width report_table_fixed dc-label-print-main" v-if="isPrint==0">
+      <memberInfo
+        @closeReturn="closeEditReturn"
+        :memberInfoFlag="memberInfoFlag"
+        :shopId="shopId"
+        :memberId="memberId"
+      ></memberInfo>
       <div class="Rp_title_container">
         <!--面包屑-->
         <div class="Rp_crumbs">
           <i class="iconfont icon-baobiao1"></i>
           <router-link tag="span" to="/memberManage" class="path_crumbs">会员列表</router-link>
         </div>
-
       </div>
-
       <div class="Rp_dataGrid_container">
-
         <div class="rp_gridState">
-
           <p class="side-nav"><i class="iconfont icon-liebiao"></i>商品列表</p>
-
           <div class="sort-wrap">
             <label>排序:</label>
             <div v-for="(item, index) in sortList" :key="index">
@@ -26,11 +27,8 @@
               <i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
             </div>
           </div>
-
         </div>
-
         <filter-header @seekProduct="seekProduct" :shopId="shopId" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
-
       </div>
       <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
         <report-detail
@@ -47,6 +45,7 @@
           @sortListAct="sortListAct"
           @scrollClass="tabScrollShow"
           @delData="delData"
+          @change="changeMember"
         >
         </report-detail>
       </div>
@@ -74,8 +73,9 @@ import DownMenu from 'base/menu/DownMenu'
 import ReportDetail from 'base/newDataGrid/reportDetailTab'
 import DropDownMenu from '@/components/template/DropDownMenu'
 import filterHeader from './../base/filter-header'
+import memberInfo from '@/layouts/Leaguer/components/memberInfo'
 // import btnHeader from './base/btn-header'
-import {productTpyeState, newProductDetailStatus} from 'Api/commonality/status'
+import { productTpyeState, newProductDetailStatus } from 'Api/commonality/status'
 
 export default {
   components: {
@@ -83,10 +83,13 @@ export default {
     DropDownMenu,
     DownMenu,
     filterHeader,
+    memberInfo
     // btnHeader
   },
-  data () {
+  data() {
     return {
+      memberId: '',
+      memberInfoFlag: false,
       shopId: this.$route.query.shopId,
       configData: configData,
       addData: [], // 让后台过滤的数据源
@@ -113,8 +116,7 @@ export default {
       currentTemplate: '', // 当前的模板
       printList: [], // 打印机列表
       currentPrint: "", // 当前打印机             
-      productCategory: [
-        {
+      productCategory: [{
           classesName: '全公司',
           classesType: '1',
           children: []
@@ -378,10 +380,20 @@ export default {
 
   },
   methods: {
-    delData (parm) {
+    closeEditReturn () {
+
+    },
+    changeMember (parm) {
+      debugger
+      // this.memberId = parm.memberId
+      this.memberId = "73fa61bdbcef4aeaa7e59e346278d195"
+      this.memberInfoFlag = true
+      debugger
+    },
+    delData(parm) {
       this.dataGridStorage.splice(parm.index, 1)
     },
-    resetData () {
+    resetData() {
       this.filterCondition = {
         keyWord: '',
         newOrderId: '',
@@ -394,11 +406,11 @@ export default {
       this.dataGridStorage = []
       this.sortList = []
     },
-    amendNum (parm) {
+    amendNum(parm) {
       this.printNum = parm
     },
     // 查询商品
-    seekProduct (parm) {
+    seekProduct(parm) {
       this.loading = true
       let barcode = {
         barcodeList: []
@@ -409,7 +421,7 @@ export default {
         })
       }
 
-      seekGetPrintLabelList(Object.assign(parm, barcode, {page: '1', pageSize: '30'}))
+      seekGetPrintLabelList(Object.assign(parm, barcode, { page: '1', pageSize: '30' }))
         .then(res => {
           if (res.data.state == 200) {
             this.allData = res.data.data
@@ -432,7 +444,7 @@ export default {
           this.loading = false
         })
     },
-    filterData (parm) {
+    filterData(parm) {
       if (parm) {
         this.dataGridStorage = []
         this.paging.page = 1
@@ -465,21 +477,21 @@ export default {
           this.loading = false
         })
     },
-    formattingData (parm) {
-        let datas = {
-          sortList: []
+    formattingData(parm) {
+      let datas = {
+        sortList: []
+      }
+      for (let i of parm) {
+        if (i.value) {
+          datas.sortList.push({
+            [i.childType]: i.value
+          })
         }
-        for (let i of parm) {
-          if (i.value) {
-            datas.sortList.push({
-              [i.childType]: i.value
-            })
-          }
-        }
-        // 产品类别
-        return datas
+      }
+      // 产品类别
+      return datas
     },
-    filterSeekData (parm, aaa) {
+    filterSeekData(parm, aaa) {
       let datas = []
       for (let i of parm) {
         datas.push({
@@ -488,7 +500,7 @@ export default {
       }
       return datas
     },
-    checkedAll () {
+    checkedAll() {
 
     },
     // 提取有数据的值
@@ -820,7 +832,7 @@ export default {
 
 </script>
 <style lang="scss">
-.ml-10{
+.ml-10 {
   margin-left: 10px;
 }
 

@@ -3,7 +3,7 @@
   <div class="xj-report-table-container-img default-line" ref="tableContainer">
     <div>
       <template v-for="(tb, index) in dataGridStorage">
-        <div class="tb-tr" :key="index" :class="{'print-on': filterChange(index)}">
+        <div @click.stop="change(tb)" class="tb-tr" :key="index" :class="{'print-on': filterChange(index)}">
           <template v-for="(tab,num) in detailDataGridColumn">
             
             <div class="tb-td pd-10" v-if="tab.childType == 'url'" :style="tableCell(tab.width)" :key="num">
@@ -13,7 +13,7 @@
             </div>
 
             <div class="tb-td" v-else-if="tab.childType == 'del'" :style="tableCell(tab.width)" :key="num">
-              <i @click="delData(tb, index)" class="iconfont icon-shanchu1 del-icon"></i>
+              <i @click.stop="delData(tb, index)" class="iconfont icon-shanchu1 del-icon"></i>
             </div>
   
             <div class="tb-td" v-else-if="tab.childType == 'time'" :style="tableCell(tab.width)" :key="num">
@@ -106,6 +106,9 @@ export default {
         data: parm,
         index: index
       })
+    },
+    change (parm) {
+      this.$emit('change', parm)
     },
     filterChange(Index) {
       if (this.printNum) {

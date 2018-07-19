@@ -16,6 +16,7 @@
           @lazyloadSend="lazyloadSend"
           @tabCell="tabCell"
           @delData="delData"
+          @change="change"
         >
         </data-grid-body>
         <!--表尾  -->
@@ -54,6 +55,9 @@ export default {
   methods: {
     delData (parm) {
       this.$emit("delData", parm)
+    },
+    change (parm) {
+      this.$emit("change", parm)
     },
     cancelSort (parm) {
       this.$refs.headerBox.cancelSort(parm)
