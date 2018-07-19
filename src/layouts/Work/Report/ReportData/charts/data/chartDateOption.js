@@ -104,7 +104,8 @@ let option = {
                             title:{
                                 fontSize: 14,
                                 fontWeight: 'bold',
-                                align: 'left'
+                                align: 'left',
+                                color: '#fff'
                             },
                             item:{
                                 fontSize: 10,
@@ -274,7 +275,7 @@ let option = {
         formatter : function( params ){
             var data = params.data;
             if(data.tempData){
-               return '<span style="font-weight:bold;font-size:14px;color:'+ params.color +'">'+ data.name+'</span><br>'+
+               return '<span style="font-weight:bold;font-size:14px;color:#fff">'+ data.name+'</span><br>'+
                '<p style="color:#fff;font-size:10px;line-height:15px;margin:0;">'+ data.tempData.price+
                '<span style="color:#ccc;"> 元</span><br>'+
                data.tempData.weight+'<span style="color:#ccc;"> g</span><br>'+

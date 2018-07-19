@@ -557,7 +557,7 @@
       <remarkTit ref="remarkTitWrap" :boundingData="boundingData"></remarkTit>
       
       <!--打印模块-->
-      <div style="display: block;">
+      <div style="display: none;">
         <sell-template 
           title="销售" 
           ref="sellTemplate" 
