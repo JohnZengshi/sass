@@ -108,7 +108,7 @@
 			SELL_TYPE:(key)=>{
 				let obj = new Map();
 				obj.set("1","销售");
-				obj.set("2","换货");
+				obj.set("2","退换");
 				obj.set("3","回收");
 				return obj.get(key);
 			}
