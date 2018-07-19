@@ -1,17 +1,4 @@
 <!-- 会员列表 -->
-<!-- <template>
-  <div class="m-m-member-list-main xj-right-box xj-box-shadow">
-    会员列表
-  </div>
-</template>
-<style lang="scss" scoped>
-.m-m-member-list-main{
-  margin-top: 40px;
-  background-color: #fff;
-  padding-bottom: 15px;
-  border-radius: 10px;
-}
-</style> -->
 <template>
   <transition name="tp-ani">
     <div class="RP_report_wrapper ui-page-max-width report_table_fixed dc-label-print-main" v-if="isPrint==0">
@@ -21,8 +8,6 @@
           <i class="iconfont icon-baobiao1"></i>
           <router-link tag="span" to="/memberManage" class="path_crumbs">会员列表</router-link>
         </div>
-
-<!--         <btn-header @amendNum="amendNum" :filterCondition="formattingData(filterCondition)" :addData="addData" :dataGridStorage="dataGridStorage"></btn-header> -->
 
       </div>
 
@@ -61,6 +46,7 @@
           @lazyloadSend="lazyloadSend"
           @sortListAct="sortListAct"
           @scrollClass="tabScrollShow"
+          @delData="delData"
         >
         </report-detail>
       </div>
@@ -118,7 +104,7 @@ export default {
         // colourId: [],
         // jeweId: [],
         // jewelryId: [], // 首饰类别
-        sortList: [{ classTypeName: '1' }],
+        sortList: [],
         productStatus: [], // 产品状态
       },
       openReset: true,
@@ -281,7 +267,7 @@ export default {
         takeUserList: [],
         // productClass: '1',
         sortFlag: '0',
-        sortList: [{ classTypeName: '1' }],
+        sortList: [],
         type: 2,
         page: 1,
         pageSize: 30,
@@ -389,44 +375,24 @@ export default {
         return jurisdictions.jurisdictionJCY(this.userPositionInfo.roleList);
       }
     },
-    // productCategory () {
-    //     return [
-    //         {
-    //             classesName: '全公司',
-    //             classesType: '1',
-    //             childen: []
-    //         },
-    //         {
-    //             classesName: '全仓库',
-    //             classesType: '2',
-    //             childen: this.repositoryList
-    //         },
-    //         {
-    //             classesName: '全店铺',
-    //             classesType: '3',
-    //             childen: this.shopListByCo
 
-    //         }
-    //     ]
-    // }
   },
   methods: {
+    delData (parm) {
+      this.dataGridStorage.splice(parm.index, 1)
+    },
     resetData () {
       this.filterCondition = {
         keyWord: '',
         newOrderId: '',
         storageId: [],
         shopId: [],
-        // productTypeId: [],
-        // colourId: [],
-        // jeweId: [],
-        // jewelryId: [], // 首饰类别
-        sortList: [{ classTypeName: '1' }],
+        sortList: [],
         productStatus: [], // 产品状态
       }
       this.addData = []
       this.dataGridStorage = []
-      this.sortList = [{ name: '产品类别', value: '1' }]
+      this.sortList = []
     },
     amendNum (parm) {
       this.printNum = parm
@@ -472,15 +438,10 @@ export default {
         this.paging.page = 1
         this.filterCondition = Object.assign({}, this.filterCondition, parm)
       }
-      let barcode = {
-        barcodeList: []
-      }
-      for (let i of this.addData) {
-        barcode.barcodeList.push({barcode: i.barcode})
-      }
+
       this.loading = true
 
-      seekGetPrintLabelList(Object.assign({}, this.formattingData(this.filterCondition), barcode, this.paging, {}))
+      seekGetPrintLabelList(Object.assign({}, this.filterCondition, this.formattingData(this.sortList), this.paging))
         .then(res => {
           if (res.data.state == 200) {
             this.paging.page += 1
@@ -505,79 +466,17 @@ export default {
         })
     },
     formattingData (parm) {
-        let datas = parm
-        // 产品类别
-        if (datas.productTypeId) {
-          if (datas.productTypeId.length) {
-            datas.productTypeList = this.filterSeekData(datas.productTypeId, 'productTypeId')
-            delete datas.productTypeId
-          } else {
-            delete datas.productTypeId
-          }
+        let datas = {
+          sortList: []
         }
-        // 成色名称
-        if (datas.colourId) {
-          if (datas.colourId.length) {
-            datas.colourList = this.filterSeekData(datas.colourId, 'colourId')
-            delete datas.colourId
-          } else {
-            delete datas.colourId
-          }
-        }
-        // 宝石名称
-        if (datas.jeweId) {
-          if (datas.jeweId.length) {
-            datas.jeweList = this.filterSeekData(datas.jeweId, 'jeweId')
-            delete datas.jeweId
-          } else {
-            delete datas.jeweId
+        for (let i of parm) {
+          if (i.value) {
+            datas.sortList.push({
+              [i.childType]: i.value
+            })
           }
         }
         // 产品类别
-        if (datas.jewelryId) {
-          if (datas.jewelryId.length) {
-            datas.jewelryList = this.filterSeekData(datas.jewelryId, 'jewelryId')
-            delete datas.jewelryId
-          } else {
-            delete datas.jewelryId
-          }
-        }
-        // 单据id
-        if (datas.newOrderId) {
-          if (datas.newOrderId.length) {
-            datas.newOrderList = this.filterSeekData(datas.newOrderId, 'newOrderId')
-            delete datas.newOrderId
-          } else {
-            delete datas.newOrderId
-          }
-        }
-        // 库位id
-        if (datas.storageId) {
-          if (datas.storageId.length) {
-            datas.storageList = this.filterSeekData(datas.storageId, 'storageId')
-            delete datas.storageId
-          } else {
-            delete datas.storageId
-          }
-        }
-        // 店铺id
-        if (datas.shopId) {
-          if (datas.shopId.length) {
-            datas.shopList = this.filterSeekData(datas.shopId, 'shopId')
-            delete datas.shopId
-          } else {
-            delete datas.shopId
-          }
-        }
-        // 当前状态
-        if (datas.productStatus) {
-          if (datas.productStatus.length) {
-            datas.productStatusList = this.filterSeekData(datas.productStatus, 'productStatus')
-            delete datas.productStatus
-          } else {
-            delete datas.productStatus
-          }
-        }
         return datas
     },
     filterSeekData (parm, aaa) {
@@ -652,41 +551,6 @@ export default {
       this.dataGridOptions.shopId = ''
       this.dataGridOptions.storageId = ''
       // this.send()
-    },
-    _seekRepositoryList() {
-      if (this.userPositionInfo.roleList) {
-        let options = {
-          page: '1',
-          pageSize: 9999,
-          type: 1 // 1.可查看 2.所属 3.全部
-        }
-
-        if (this.computedManageRole || this.officeClerk) { // 管理员 // 职员
-          options.type = 3
-        } else if (this.shopManageRole) { // 店长
-          options.type = 2
-        } else if (this.shopRole) { // 店员
-          options.type = 1
-        } else if (this.isJrole) { // 监察员
-          options.type = 2
-        }
-
-        seekRepositoryList(options)
-          .then(res => {
-            if (res.data.state == 200) {
-              this.productCategory[1].children = res.data.data.repositoryList
-            } else {
-              this.$message({
-                message: res.data.msg,
-                type: 'warning'
-              })
-            }
-          })
-      } else {
-        setTimeout(() => {
-          this._seekRepositoryList()
-        }, 1500)
-      }
     },
     resetOption() {
       this.openReset = false
@@ -808,37 +672,7 @@ export default {
       // this.newList = this.sortList
     },
     sortListAct(val) { // 列表排序
-      // this.filterCondition.sortList.push(val)
       this.sortList.push(val)
-      // val.forEach((item, index) => {
-      //   switch (Object.keys(item)[0]) {
-      //     case 'barcode':
-      //       this.keys.push({ name: '条码号', value: item.barcode })
-      //       break;
-      //     case 'weight':
-      //       this.sortList.push({ name: '件重', value: item.weight })
-      //       break;
-      //     case 'className':
-      //       this.sortList.push({ name: '首饰名称', value: item.className })
-      //       break;
-      //     case 'classTypeName':
-      //       this.sortList.push({ name: '产品类别', value: item.classTypeName })
-      //       break;
-      //     case 'goldWeight':
-      //       this.sortList.push({ name: '金重', value: item.goldWeight })
-      //       break;
-      //     case 'price':
-      //       this.sortList.push({ name: '售价', value: item.price })
-      //       break;
-      //     case 'cost':
-      //       this.sortList.push({ name: '成本', value: item.cost })
-      //       break;
-      //     case 'num':
-      //       this.sortList.push({ name: '件数', value: item.num })
-      //       break;
-      //   }
-
-      // })
       this.dataGridStorage = []
       this.paging.page = 1
       this.filterData()
@@ -980,7 +814,6 @@ export default {
         this.printSelectDate.companyName = '公司名：' + companyName.companyName
       }
 
-      this._seekRepositoryList()
     })
   }
 }

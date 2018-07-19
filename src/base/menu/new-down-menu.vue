@@ -48,6 +48,7 @@ export default {
     position: relative;
     cursor: pointer;
     vertical-align: top;
+    width: 100px;
     &:after{
         content:'';
         border: 6px solid transparent;
@@ -88,7 +89,7 @@ export default {
         padding: 0 8px;
         border: 1px solid #d6d6d6;
         border-radius: 5px;
-        width: 100px;
+        width: 100%;
         margin-left: 10px;
         overflow-x: hidden; 
         text-overflow: ellipsis;

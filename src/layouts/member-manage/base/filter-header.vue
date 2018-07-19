@@ -13,6 +13,7 @@
       </div> -->
 
       <DownMenu
+          class="w-110"
           ref="memberRankBox"
           :isSolid="true"
           :titleInfo="memberRank.name ? memberRank.name : '选择会员级别'"
@@ -23,6 +24,7 @@
       ></DownMenu>
 
       <DownMenu
+          class="w-110"
           ref="memberClassBox"
           :isSolid="true"
           :titleInfo="memberClass.name ? memberClass.name : '选择会员类型'"
@@ -33,59 +35,18 @@
       ></DownMenu>
 
       <DownMenu
+          class="w-110"
           ref="memberClassBox"
           :isSolid="true"
           :titleInfo="user.username ? user.username : '选择负责人'"
           :showList="userList"
           :nameKey="'username'"
-          @changeData="changeMemberClass"
-          @clearInfo="clearMemberClass"
+          @changeData="changeUser"
+          @clearInfo="clearUser"
       ></DownMenu>
 
-<!--       <div class="search-block">
-          <dropDownColums
-              ref="shopWrap"
-              :propsList="shopDataList"
-              :allName="'全部店铺'"
-              :keyName="'shopId'"
-              titleData="店铺名称"
-              @dataBack="dataBack"
-          >
-          </dropDownColums>
-          
-      </div> -->
-
-<!--       <combination-drop-down-colums
-          ref="combinationDropDownColumsBox"
-          class="class-btn-wrap"
-          @dataBack="combinationHeaderComplate"
-      ></combination-drop-down-colums> -->
-
-
-<!--       <div class="search-block t-center">
-        <alone-drop-down-colums 
-            ref="stateWrap"
-            :propsList="stateList"
-            titleData="当前状态"
-            @dataBack="dataBackProductTypeId"
-        ></alone-drop-down-colums>
-      </div> -->
-
-      <!-- 成品旧料 -->
-<!--       <cut-bg v-if="filterCondition.productClassList" class="ml-10" :showList="madeUpList" :current="filterCondition.productClassList[0].productClass" @pitchOn="madeUpOnProductClass"></cut-bg> -->
 
     </div>
-
-<!--     <div class="right-btn-wrap">
-        <div class="reset-btn" @click="resetData">
-          重置
-        </div>
-
-        <div class="cost-btn" v-if="isShowCost == 'Y'" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu" :class="{active: tabSwitch}">
-          专列项
-        </div>
-      
-    </div> -->
 
   </div>
 </template>
@@ -187,146 +148,6 @@ export default {
       },
       littleBatch: false,
       isLoading: false,
-      proList: [],
-      conditionList: [], // 成色列表
-      jewelList: [], // 宝石列表
-      jewelryList: [], // 首饰列表
-      stateList: [
-        {
-            id: "10",
-            name: "已入库"
-        },
-        {
-            id: "11",
-            name: "入库中"
-        },
-        {
-            id: "20",
-            name: "已退库"
-        },
-        {
-            id: "21",
-            name: "退库中"
-        },
-        {
-            id: "30",
-            name: "已修改"
-        },
-        {
-            id: "31",
-            name: "修改中"
-        },
-        {
-            id: "40",
-            name: "已调库"
-        },
-        {
-            id: "41",
-            name: "调库中"
-        },
-        {
-            id: "50",
-            name: "已发货"
-        },
-        {
-            id: "51",
-            name: "发货中"
-        },
-        {
-            id: "60",
-            name: "已退货"
-        },
-        {
-            id: "61",
-            name: "退货中"
-        },
-        {
-            id: "70",
-            name: "已调柜"
-        },
-        // {
-        //     id: "71",
-        //     name: "调柜中"
-        // },
-        {
-            id: "80",
-            name: "已销售"
-        },
-        {
-            id: "81",
-            name: "销售中"
-        },
-        {
-            id: "90",
-            name: "已销退"
-        },
-        {
-            id: "91",
-            name: "销退中"
-        },
-        {
-            id: "92",
-            name: "已换货"
-        },
-        {
-            id: "93",
-            name: "换货中"
-        },
-        {
-            id: "94",
-            name: "已回收"
-        },
-        {
-            id: "95",
-            name: "回收中"
-        },
-        // {
-        //     id: "100",
-        //     name: "店铺收货"
-        // },
-        // {
-        //     id: "101",
-        //     name: "仓库收货"
-        // }
-      ],
-      "supplierListData": [
-          {
-            name: "全部",
-            type: ""
-          },
-          {
-            name: "入库单",
-            type: "01"
-          },
-          {
-            name: "退库单",
-            type: "02"
-          },
-          {
-            name: "发货单",
-            type: "03"
-          },
-          {
-            name: "退货单",
-            type: "04"
-          },
-          {
-            name: "销售单",
-            type: "05"
-          },
-          {
-            name: "调柜单",
-            type: "06"
-          },
-          {
-            name: "调库单",
-            type: "07"
-          },
-          {
-            name: "修改单",
-            type: "10"
-          }
-      ],
     }
   },
   created () {
@@ -378,12 +199,20 @@ export default {
       this.memberRank = {}
       this.$emit('filterData', this.filterCondition)
     },
-    changeMemberClass () {
+    changeMemberClass (parm) {
       this.memberClass = parm
       this.$emit('filterData', this.filterCondition)
     },
     clearMemberClass () {
       this.memberClass = {}
+      this.$emit('filterData', this.filterCondition)
+    },
+    changeUser (parm) {
+      this.user = parm
+      this.$emit('filterData', this.filterCondition)
+    },
+    clearUser () {
+      this.user = {}
       this.$emit('filterData', this.filterCondition)
     },
     _seekMemberList () {
@@ -760,5 +589,7 @@ export default {
     margin-left: 10px;
   }
 }
-
+.w-110{
+  width: 120px!important;
+}
 </style>

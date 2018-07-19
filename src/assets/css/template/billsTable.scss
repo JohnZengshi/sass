@@ -1,4 +1,182 @@
 $report-p-r: 20px;
+@mixin xj-report-table-box($allH: 555px, $trH: 40px){
+    height: $allH;
+    background-color: #fff;
+    .tb-tr{
+      height: $trH;
+      display: flex;
+      border-bottom: 1px solid #f0f2f5;
+      transition: background .3s;
+      &:nth-child(even){
+        background-color: #fbfbfb;
+      }
+      &:hover{
+         background-color: #FFFBF3;
+      }
+      &.table-evet{
+        background-color: #fbfbfb;
+      }
+      // 特殊处理跨行
+      .branch-tb{
+            float: left;
+            display: inline-block;
+            height: $trH;
+            line-height: $trH;    
+            text-align: center;
+            font-size: 14px; 
+            -webkit-align-items: center;
+            align-items: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            transition: all .3s;
+            color: #333;
+            &.category-td{
+                position: relative;
+                border-right: 1px solid #f0f2f5;
+                >i{
+                    font-style: normal;
+                    font-size: 15px;
+                    position: absolute;
+                    background-color: #f9f9f9;
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+                    left: 0;
+                    top: 0;
+                    z-index: 100;
+                    text-align: center;
+                    justify-content:center
+                }
+            }
+      }
+      // .pd-10{
+      //   padding: 10px;
+      // }
+      .tb-td{
+        position: relative;
+        float: left;
+        display: inline-block;
+        height: $trH;
+        line-height: $trH;    
+        text-align: center;
+        font-size: 14px; 
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+        transition: all .3s;
+        color: #333;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        >.del-icon{
+            color: #666;
+            font-size: 16px;
+            text-align: center;
+            cursor: pointer;
+            &:hover{
+                color: #2993f8;
+            }
+        }
+        >.head-portrait-wrap{
+            width: 60px;
+            height: 100%;
+            margin: 10px;
+            overflow: hidden;
+            >.head-portrait{
+                width: 100%;
+                border-radius: 5px;
+            }
+        }
+        >.time-wrap{
+            width: 100%;
+            height: 100%;
+            padding-top: 18px;
+            overflow: hidden;
+            >p{
+                font-size: 14px;
+                margin-top: 8px;
+                line-height: 14px;
+            }
+        }
+        &.category-td{
+            position: relative;
+            border-right: 1px solid #f0f2f5;
+            >i{
+                font-style: normal;
+                font-size: 15px;
+                position: absolute;
+                background-color: #f9f9f9;
+                display: flex;
+                align-items: center;
+                width: 100%;
+                left: 0;
+                top: 0;
+                z-index: 100;
+                text-align: center;
+                justify-content: center;
+            }
+        }
+      }
+      .tb-td:last-child{
+        padding-right: $report-p-r;
+      }
+    }
+    // 单据里的表格高度
+    &.xj-product-report-table-container{
+        height: 467px;
+        background-color: #fff;
+    }
+    .total-num-wrap{
+        height: $trH;
+        width: 100%;
+        margin-top: 2px;
+        background: #ECF3FF;
+        >div:first-child{
+            float: left;
+            display: inline-block;
+            height: $trH;
+            line-height: $trH;
+            text-align: center;
+            font-size: 14px;
+            color: #2993f8;
+            transition: all .3s;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            width: 148px;
+        }
+    }
+    .tb-total{
+      background-color: #ECF3FF;
+      height: $trH;
+      display: flex;
+      position: relative;
+      z-index: 1;
+      
+      .tb-td{
+        float: left;
+        display: inline-block;
+        height: $trH;
+        line-height: $trH;   
+        text-align: center;
+        font-size: 14px; 
+        color: #333;
+        transition: all .3s;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        b {
+            font-weight: normal;
+            color: #2993f8;
+        }
+      }
+      .tb-td:last-child{
+        padding-right: $report-p-r;
+      }
+    }
+}
+
 /* 模块切换 */
 .tp-ani-enter-active {
   transition: all 1s ease;
@@ -398,155 +576,10 @@ $report-p-r: 20px;
     padding-left: 10px;
 }
 .xj-report-table-container{
-    // height: 515px;
-    height: 555px;
-    background-color: #fff;
-    //overflow-y: auto;
-    .tb-tr{
-      height: 40px;
-      display: flex;
-      border-bottom: 1px solid #f0f2f5;
-      transition: background .3s;
-      &:nth-child(even){
-        background-color: #fbfbfb;
-      }
-      &:hover{
-         background-color: #FFFBF3;
-      }
-      &.table-evet{
-        background-color: #fbfbfb;
-      }
-      // 特索处理跨行
-      .branch-tb{
-            float: left;
-            display: inline-block;
-            height: 40px;
-            line-height: 40px;    
-            text-align: center;
-            font-size: 14px; 
-            // display: flex;
-            -webkit-align-items: center;
-            align-items: center;
-            -webkit-justify-content: center;
-            justify-content: center;
-            transition: all .3s;
-            color: #333;
-            &.category-td{
-                position: relative;
-                border-right: 1px solid #f0f2f5;
-                >i{
-                    font-style: normal;
-                    font-size: 15px;
-                    position: absolute;
-                    background-color: #f9f9f9;
-                    display: flex;
-                    align-items: center;
-                    width: 100%;
-                    left: 0;
-                    top: 0;
-                    z-index: 100;
-                    text-align: center;
-                    justify-content:center
-                }
-            }
-      }
-      .tb-td{
-        float: left;
-        display: inline-block;
-        height: 40px;
-        line-height: 40px;    
-        text-align: center;
-        font-size: 14px; 
-        // display: flex;
-        -webkit-align-items: center;
-        align-items: center;
-        -webkit-justify-content: center;
-        justify-content: center;
-        transition: all .3s;
-        color: #333;
-
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-
-        &.category-td{
-            position: relative;
-            border-right: 1px solid #f0f2f5;
-            >i{
-                font-style: normal;
-                font-size: 15px;
-                position: absolute;
-                background-color: #f9f9f9;
-                display: flex;
-                align-items: center;
-                width: 100%;
-                left: 0;
-                top: 0;
-                z-index: 100;
-                text-align: center;
-                justify-content:center
-            }
-        }
-      }
-      .tb-td:last-child{
-        padding-right: $report-p-r;
-      }
-    }
-    // 单据里的表格高度
-    &.xj-product-report-table-container{
-        height: 467px;
-        background-color: #fff;
-    }
-  .total-num-wrap{
-    height: 40px;
-    width: 100%;
-    margin-top: 2px;
-    background: #ECF3FF;
-    >div:first-child{
-        float: left;
-        display: inline-block;
-        height: 40px;
-        line-height: 40px;
-        text-align: center;
-        font-size: 14px;
-        // font-weight: bold;
-        color: #2993f8;
-        transition: all .3s;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        width: 148px;
-    }
-  }
-  .tb-total{
-      background-color: #ECF3FF;
-      height: 40px;
-      display: flex;
-      position: relative;
-      z-index: 1;
-      
-      .tb-td{
-        float: left;
-        display: inline-block;
-        height: 40px;
-        line-height: 40px;   
-        // font-weight: bold; 
-        text-align: center;
-        font-size: 14px; 
-        color: #333;
-        transition: all .3s;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        b {
-            font-weight: normal;
-            color: #2993f8;
-        }
-      }
-      .tb-td:last-child{
-        padding-right: $report-p-r;
-      }
-  }
+    @include xj-report-table-box;
+}
+.xj-report-table-container-img{
+    @include xj-report-table-box($trH: 80px);
 }
 // 小计
 .subtotal-main{

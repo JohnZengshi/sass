@@ -5,10 +5,21 @@
       <data-grid-header ref="headerBox" :newList="newList" :tabSwitch="tabSwitch" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header>
       <template>
         <!--表格内容区  -->
-        <data-grid-body :printNum="printNum" :tabSwitch="tabSwitch" :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="dataGridStorage" :reportType="reportType" :positionSwitch="positionSwitch" @scrollClass="scrollClass" @lazyloadSend="lazyloadSend" @tabCell="tabCell">
+        <data-grid-body
+          :printNum="printNum"
+          :tabSwitch="tabSwitch"
+          :detailDataGridColumn="detailDataGridColumn"
+          :dataGridStorage="dataGridStorage"
+          :reportType="reportType"
+          :positionSwitch="positionSwitch"
+          @scrollClass="scrollClass"
+          @lazyloadSend="lazyloadSend"
+          @tabCell="tabCell"
+          @delData="delData"
+        >
         </data-grid-body>
         <!--表尾  -->
-        <data-grid-footer  :tabSwitch="tabSwitch" :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="allData" :reportType="reportType" :configData="configData" @tabCell="tabCell">
+        <data-grid-footer :tabSwitch="tabSwitch" :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="allData" :reportType="reportType" :configData="configData" @tabCell="tabCell">
         </data-grid-footer>
       </template>
     </div>
@@ -26,7 +37,7 @@ export default {
   data() {
     return {
       tempDatagrid: [],
-      detailDataGridColumn: configData.detailConfing
+      detailDataGridColumn: this.configData.detailConfing
       // configData: configData
     }
   },
@@ -41,8 +52,11 @@ export default {
     this.setColumn()
   },
   methods: {
+    delData (parm) {
+      this.$emit("delData", parm)
+    },
     cancelSort (parm) {
-      this.$refs.headerBox.cancelSort(item)
+      this.$refs.headerBox.cancelSort(parm)
     },
     sortList(val) {
       this.$emit('sortListAct', val)
