@@ -416,6 +416,7 @@ export default {
     height: 90px;
     >img{
       max-height: 90px;
+      margin: 18px;
     }
   }
   
