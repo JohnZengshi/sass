@@ -7,8 +7,8 @@
             <div class="aside">
                 <div class="aside-top">
                     <div>
-                        <input type="text" class="barcode text" v-model="barcode"/>
-                        <input type="text" class="identifyingCode" v-model="code"/>
+                        <input type="text" class="barcode text" v-model="barcode" placeholder="请输入检测编号"/>
+                        <input type="text" class="identifyingCode" v-model="code" placeholder="请输入校验码"/>
                     </div>
                     <div>
                         <button class="start_detection" @click="check"></button>
@@ -22,8 +22,7 @@
             </div>
             <div class="content">
 
-                <img v-if="normal == 1" class="pass msg" src="~src/assets/img/laberDetection/pass.png" alt="">
-                <img v-if="normal == 2" class="refuse msg" src="~src/assets/img/laberDetection/refuse.png" alt="">
+                <img v-if="normal == 1" class="pass msg" src="~src/assets/img/laberDetection/pass.png" alt=""> <img v-if="normal == 2" class="refuse msg" src="~src/assets/img/laberDetection/refuse.png" alt="">
                 <div v-show="normal == 1" id="main-content" v-html="innerHtml" :style="getWidth"></div>
             </div>
             <div class="footer">
@@ -92,9 +91,13 @@
                 let data = {
                     code: this.code,
                     barcode: this.barcode,
-                    templateId: this.$route.query.templateId
+                    templateId: this.$route.query.templateId,
+                    companyId: this.$route.query.companyId
                 }
-                this.getPrintLabelData(data);
+                let url = location.origin + '/#/laofengxiang?templateId=' + data.templateId + '&companyId=' +
+                    data.companyId + '&vcode=' + data.code + '&barcode=' + data.barcode;
+                location.href = url;
+                location.reload()
             },
             getPrintLabelData(data) {
                 let _this = this;
@@ -140,12 +143,12 @@
                                     let node = document.getElementById('qrcode');
                                     let width = node.dataset.width;
                                     new QRCode('qrcode', {
-                                        render : 'canvas',
+                                        render: 'canvas',
                                         text: node.dataset.url,
                                         width: width * 3.78,
                                         height: width * 3.78
                                     });
-                                    $('#main-content').css('transform','scale(' + scale + ')');
+                                    $('#main-content').css('transform', 'scale(' + scale + ')');
                                 })
                             } else {
                                 _this.normal = 2;
@@ -194,7 +197,7 @@
         overflow:hidden;
     }
     #main-content{
-        height: 96px;
+        height:96px;
         display:inline-block;
         overflow:hidden;
         text-align:center;
