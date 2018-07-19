@@ -135,7 +135,8 @@ export const tadaySellData = ( optionData ) =>{
                               title:{
                                   fontSize: 14,
                                   fontWeight: 'bold',
-                                  align: 'left'
+                                  align: 'left',
+                                  color: '#fff'
                               },
                               item:{
                                   fontSize: 10,

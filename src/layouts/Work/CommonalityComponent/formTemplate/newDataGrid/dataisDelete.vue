@@ -1,5 +1,5 @@
 <template>
-   <el-dialog :modal="false" class="dialog-w320-hAuto-hn TKclass" :before-close="handleclose" :visible.sync="isDeletevisibly">
+   <el-dialog :modal="false" class="dialog-w320-hAuto-hn delectInvoicesClass" :before-close="handleclose" :visible.sync="isDeletevisibly">
         <div class="outeronehtml">
             <img class="close-icon" src="../../../../../assets/img/close-preview.png" @click.stop="handleclose" />
             <img class="headerimg" src="../../../../../../static/img/message/5.png" />
