@@ -1,9 +1,9 @@
 <!-- 首页 -->
 <template>
   <div class="m-m-home-page-main xj-right-box xj-box-shadow">
-    <header-nav></header-nav>
+    <header-nav @filterData="filterData"></header-nav>
     <div class="body-scorll-wrap">
-      <member></member>
+      <member :filterOption="filterOption"></member>
     </div>
   </div>
 </template>
@@ -14,6 +14,19 @@
     components: {
       headerNav,
       member
+    },
+    data () {
+      return {
+        filterOption: {
+          shopId: '',
+          type: 1
+        }
+      }
+    },
+    methods: {
+      filterData (parm) {
+        Object.assign(this.filterOption, parm)
+      }
     }
   }
 </script>

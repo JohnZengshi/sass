@@ -36,7 +36,6 @@ export default {
     },
     itemClick (item, index) {
       this.noChange = false
-      console.log('选中', item)
       this.actIndex = index,
       this.$emit("changeData", item)
     }

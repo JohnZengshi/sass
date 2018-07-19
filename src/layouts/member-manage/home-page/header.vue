@@ -31,7 +31,8 @@
       return {
         filterData: {
           current: "1",
-          shop: {}
+          shopName: '',
+          shopId: ''
         },
         navData: [
           {
@@ -62,10 +63,13 @@
         this.current = parm.id
       },
       changeShop (parm) {
-
+        Object.assign(this.filterData, parm)
+        this.$emit("filterData", this.filterData)
       },
       clearShop (parm) {
-
+        this.filterData.shopName = ''
+        this.filterData.shopId = ''
+        this.$emit("filterData", this.filterData)
       },
       _seekGetShopListByCo() { // 店铺列表
         let options = {
@@ -76,9 +80,7 @@
         seekGetShopListByCo(options).then((res) => {
           if(res.data.state == 200) {
             this.shopList = res.data.data.shopList
-            // if(response.data.data.shopList.length === 1) { // 只有一个店铺的情况下
-            //   _self.onData.shopId = response.data.data.shopList[0].shopId;
-            // }
+            this.changeShop(this.shopList[0])
           } else {
             this.$message({
               type: 'error',

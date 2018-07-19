@@ -44,11 +44,24 @@
 
         </div>
 
-        <filter-header @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
+        <filter-header @seekProduct="seekProduct" :shopId="shopId" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
 
       </div>
       <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
-        <report-detail ref="reportDetailWrap" :printNum="printNum" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow">
+        <report-detail
+          ref="reportDetailWrap"
+          :printNum="printNum"
+          :allData="allData"
+          :dataGridStorage="dataGridStorage"
+          :tabSwitch="tabSwitch"
+          :positionSwitch="positionSwitch"
+          :newList="newList"
+          :reportType="getReportType"
+          :configData="configData"
+          @lazyloadSend="lazyloadSend"
+          @sortListAct="sortListAct"
+          @scrollClass="tabScrollShow"
+        >
         </report-detail>
       </div>
     </div>
@@ -59,6 +72,7 @@
 import Vue from 'vue'
 import { mapGetters, mapState } from 'vuex'
 import find from 'lodash/find'
+let configData = require('./../config/config')
 import {
   seekRepositoryList,
   seekGetDepUserList,
@@ -87,6 +101,8 @@ export default {
   },
   data () {
     return {
+      shopId: this.$route.query.shopId,
+      configData: configData,
       addData: [], // 让后台过滤的数据源
       printNum: { // 打印行数
         allChecked: false, // 全部选中
@@ -788,40 +804,41 @@ export default {
     },
     cancelSort(item, index) { // 取消排序
       this.sortList.splice(index, 1)
-      this.newList = this.sortList
+      this.$refs.reportDetailWrap.cancelSort(item)
+      // this.newList = this.sortList
     },
     sortListAct(val) { // 列表排序
-      this.filterCondition.sortList = val
-      this.sortList = []
-      val.forEach((item, index) => {
-        switch (Object.keys(item)[0]) {
-          case 'barcode':
-            this.keys.push({ name: '条码号', value: item.barcode })
-            break;
-          case 'weight':
-            this.sortList.push({ name: '件重', value: item.weight })
-            break;
-          case 'className':
-            this.sortList.push({ name: '首饰名称', value: item.className })
-            break;
-          case 'classTypeName':
-            this.sortList.push({ name: '产品类别', value: item.classTypeName })
-            break;
-          case 'goldWeight':
-            this.sortList.push({ name: '金重', value: item.goldWeight })
-            break;
-          case 'price':
-            this.sortList.push({ name: '售价', value: item.price })
-            break;
-          case 'cost':
-            this.sortList.push({ name: '成本', value: item.cost })
-            break;
-          case 'num':
-            this.sortList.push({ name: '件数', value: item.num })
-            break;
-        }
+      // this.filterCondition.sortList.push(val)
+      this.sortList.push(val)
+      // val.forEach((item, index) => {
+      //   switch (Object.keys(item)[0]) {
+      //     case 'barcode':
+      //       this.keys.push({ name: '条码号', value: item.barcode })
+      //       break;
+      //     case 'weight':
+      //       this.sortList.push({ name: '件重', value: item.weight })
+      //       break;
+      //     case 'className':
+      //       this.sortList.push({ name: '首饰名称', value: item.className })
+      //       break;
+      //     case 'classTypeName':
+      //       this.sortList.push({ name: '产品类别', value: item.classTypeName })
+      //       break;
+      //     case 'goldWeight':
+      //       this.sortList.push({ name: '金重', value: item.goldWeight })
+      //       break;
+      //     case 'price':
+      //       this.sortList.push({ name: '售价', value: item.price })
+      //       break;
+      //     case 'cost':
+      //       this.sortList.push({ name: '成本', value: item.cost })
+      //       break;
+      //     case 'num':
+      //       this.sortList.push({ name: '件数', value: item.num })
+      //       break;
+      //   }
 
-      })
+      // })
       this.dataGridStorage = []
       this.paging.page = 1
       this.filterData()

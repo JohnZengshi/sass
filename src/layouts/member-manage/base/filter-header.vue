@@ -2,27 +2,47 @@
   <div class="d-c-filter-header-main">
     <div class="operate-bar-bottom">
       <div class="search">
-          <input type="text" v-model="keyword" placeholder="请输入正确的条码号" @keyup.enter="batchAddByOrderNum">
+          <input type="text" v-model="keyword" placeholder="手机号/姓名" @keyup.enter="batchAddByOrderNum">
           <div class="search-btn" @click="batchAddByOrderNum">
               <i class="iconfont icon-sousuo"></i>
           </div>
       </div>
 
-      <div class="search-block t-center" :class="{actions: filterCondition.newOrderId ? filterCondition.newOrderId.length : ''}" @click="openLittleBatch">
+<!--       <div class="search-block t-center" :class="{actions: filterCondition.newOrderId ? filterCondition.newOrderId.length : ''}" @click="openLittleBatch">
         单据搜索
-      </div>
+      </div> -->
 
-      <div class="search-block t-center">
-        <alone-drop-down-colums 
-            ref="storageLocationWrap"
-            :propsList="repositoryList"
-            :allName="'全部库位'"
-            titleData="库位名称"
-            @dataBack="storageLocation"
-        ></alone-drop-down-colums>
-      </div>
+      <DownMenu
+          ref="memberRankBox"
+          :isSolid="true"
+          :titleInfo="memberRank.name ? memberRank.name : '选择会员级别'"
+          :showList="memberRankList"
+          :nameKey="'name'"
+          @changeData="changeMemberRank"
+          @clearInfo="clearMemberRank"
+      ></DownMenu>
 
-      <div class="search-block">
+      <DownMenu
+          ref="memberClassBox"
+          :isSolid="true"
+          :titleInfo="memberClass.name ? memberClass.name : '选择会员类型'"
+          :showList="memberClassList"
+          :nameKey="'name'"
+          @changeData="changeMemberClass"
+          @clearInfo="clearMemberClass"
+      ></DownMenu>
+
+      <DownMenu
+          ref="memberClassBox"
+          :isSolid="true"
+          :titleInfo="user.username ? user.username : '选择负责人'"
+          :showList="userList"
+          :nameKey="'username'"
+          @changeData="changeMemberClass"
+          @clearInfo="clearMemberClass"
+      ></DownMenu>
+
+<!--       <div class="search-block">
           <dropDownColums
               ref="shopWrap"
               :propsList="shopDataList"
@@ -33,37 +53,30 @@
           >
           </dropDownColums>
           
-      </div>
+      </div> -->
 
-      <combination-drop-down-colums
+<!--       <combination-drop-down-colums
           ref="combinationDropDownColumsBox"
           class="class-btn-wrap"
           @dataBack="combinationHeaderComplate"
-      ></combination-drop-down-colums>
+      ></combination-drop-down-colums> -->
 
 
-      <div class="search-block t-center">
+<!--       <div class="search-block t-center">
         <alone-drop-down-colums 
             ref="stateWrap"
             :propsList="stateList"
             titleData="当前状态"
             @dataBack="dataBackProductTypeId"
         ></alone-drop-down-colums>
-      </div>
-
-      <down-input
-        ref="moreWrap"
-        class="ml-10"
-        @filterData="filterData"
-        titleName="更多筛选"
-      ></down-input>
+      </div> -->
 
       <!-- 成品旧料 -->
-      <cut-bg v-if="filterCondition.productClassList" class="ml-10" :showList="madeUpList" :current="filterCondition.productClassList[0].productClass" @pitchOn="madeUpOnProductClass"></cut-bg>
+<!--       <cut-bg v-if="filterCondition.productClassList" class="ml-10" :showList="madeUpList" :current="filterCondition.productClassList[0].productClass" @pitchOn="madeUpOnProductClass"></cut-bg> -->
 
     </div>
 
-    <div class="right-btn-wrap">
+<!--     <div class="right-btn-wrap">
         <div class="reset-btn" @click="resetData">
           重置
         </div>
@@ -72,20 +85,17 @@
           专列项
         </div>
       
-    </div>
-
-<!--     <little-batch ref="littleBatchWrap" @changeOrderId="changeOrderId" :supplierListData="supplierListData"></little-batch> -->
+    </div> -->
 
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList,seekSettingUserRole} from "Api/commonality/seek"
+// import {getProductTypeList, seekProductClassList, seekGetShopListByCo, showCounterList, seekRepositoryList,seekSettingUserRole} from "Api/commonality/seek"
+import {seekMemberList} from "Api/commonality/seek"
 import dropDownColums from 'base/menu/drop-down-colums'
 import aloneDropDownColums from 'base/menu/alone-drop-down-colums'
-// import littleBatch from './little-batch'
-import DownMenu from 'base/menu/DownMenu'
-import downInput from 'base/menu/down-input'
+import DownMenu from 'base/menu/new-down-menu'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
 import combinationDropDownColums from 'base/menu/combination-drop-down-colums'
@@ -94,15 +104,54 @@ export default {
   components: {
     dropDownColums,
     DropDownMenu,
-    // littleBatch,
     DownMenu,
-    downInput,
     aloneDropDownColums,
     combinationDropDownColums,
     cutBg
   },
+  props: ['shopId'],
   data () {
     return {
+      memberRank: { // 会员级别
+        name: '',
+        type: ''
+      },
+      memberClass: {
+        name: '',
+        type: ''
+      },
+      user: {
+
+      },
+      memberRankList: [
+        {
+          name: '普通',
+          type: '1'
+        },
+        {
+          name: '中级',
+          type: '2'
+        },
+        {
+          name: '高级',
+          type: '3'
+        }
+      ],
+      memberClassList: [
+        {
+          name: '共有',
+          type: '1'
+        },
+        {
+          name: '私有',
+          type: '2'
+        },
+        {
+          name: '公共',
+          type: '3'
+        }
+      ],
+      userList: [],
       madeUpList: [
           {
               name: '成品',
@@ -129,7 +178,6 @@ export default {
         // page: '1',
         // pageSize: '30',
         storageId: [],
-        shopId: [],
         productTypeId: [],
         colourId: [],
         jeweId: [],
@@ -282,13 +330,9 @@ export default {
     }
   },
   created () {
-    this.seekProductTypeList()
-    this.productClassList(1)
-    this.productClassList(2)
-    this.productClassList(3)
-    this._seekGetShopListByCo()
-    this._seekRepositoryList()
-    this.settingUserRole()
+    // this._seekRepositoryList()
+    // this.settingUserRole()
+    this._seekMemberList()
   },
   computed: {
     ...mapGetters([
@@ -326,30 +370,37 @@ export default {
     }
   },
   methods: {
-    madeUpOnProductClass (parm) {
-      this.filterCondition.productClassList =  [{productClass: parm.id}]
-      // this.filterCondition.productClass = parm.id
+    changeMemberRank (parm) {
+      this.memberRank = parm
       this.$emit('filterData', this.filterCondition)
+    },
+    clearMemberRank () {
+      this.memberRank = {}
+      this.$emit('filterData', this.filterCondition)
+    },
+    changeMemberClass () {
+      this.memberClass = parm
+      this.$emit('filterData', this.filterCondition)
+    },
+    clearMemberClass () {
+      this.memberClass = {}
+      this.$emit('filterData', this.filterCondition)
+    },
+    _seekMemberList () {
+        let options = {
+          type: '2',
+          shopId: this.shopId,
+        }
+        seekMemberList(options)
+          .then(res => {
+            if (res.data.state == 200) {
+              this.userList = res.data.data.dataList
+            }
+          })
     },
     combinationHeaderComplate (parm) {
       this.filterCondition = Object.assign(this.filterCondition, parm)
       this.$emit('filterData', this.filterCondition)
-    },
-    initData (parm) {
-      this.filterCondition = parm
-      this.$refs.combinationDropDownColumsBox.initData(parm)
-      this.$refs.storageLocationWrap.initData(parm.storageId)
-      if (parm.newOrderId) {
-        this.$refs.littleBatchWrap.initData(parm.newOrderId)
-      }
-      if (parm.shopId) {
-        this.$refs.shopWrap.initData(parm.shopId)
-      }
-      // this.$refs.combinationDropDownColumsBox.initData(parm)
-      // this.$refs.productTypeIdWrap.initData(parm.productTypeId)
-      // this.$refs.colourIdWrap.initData(parm.colourId)
-      // this.$refs.jeweIdWrap.initData(parm.jeweId)
-      // this.$refs.jewelryIdWrap.initData(parm.jewelryId)   
     },
     choseMenu () {
       this.tabSwitch = !this.tabSwitch
@@ -365,35 +416,6 @@ export default {
         }
       })
     },
-    resetData () {
-      this.keyword = ''
-      this.filterCondition = {
-        keyWord: '',
-        newOrderId: '',
-        // page: '1',
-        // pageSize: '30',
-        storageId: [],
-        shopId: [],
-        productTypeId: [],
-        colourId: [],
-        jeweId: [],
-        jewelryId: [], // 首饰类别
-        productStatus: [], // 产品状态
-        sortList: []
-      }
-      this.$refs.moreWrap.reset()
-      this.$refs.stateWrap.reset()
-      // this.$refs.jewelryIdWrap.reset()
-      // this.$refs.jeweIdWrap.reset()
-      // this.$refs.colourIdWrap.reset()
-      // this.$refs.productTypeIdWrap.reset()
-      this.$refs.shopWrap.reset()
-      this.$refs.storageLocationWrap.reset()
-      this.$refs.littleBatchWrap.reset()
-      this.$refs.combinationDropDownColumsBox.reset()
-      // this.$refs.littleBatchWrap.close()
-      this.$emit('resetData')
-    },
     batchAddByOrderNum () {
       if (!this.keyword) {
         this.$message({
@@ -408,49 +430,11 @@ export default {
       this.$emit('seekProduct', options)
     },
     storageLocation (parm) {
-      debugger
       this.filterCondition.storageId = parm.bigList
       this.$emit('filterData', this.filterCondition)
     },
     filterData (parm) {
       this.$emit('filterData', Object.assign(this.filterCondition, parm))
-    },
-    _seekGetShopListByCo() {
-      if (this.userPositionInfo.roleList) {
-        let options = {
-          page: '1',
-          pageSize: 9999,
-          type: 1 // 1.可查看 2.所属 3.全部
-        }
-
-        if (this.computedManageRole || this.officeClerk) { // 管理员 // 职员
-          options.type = 3
-        } else if (this.shopManageRole) { // 店长
-          options.type = 2
-        } else if (this.shopRole) { // 店员
-          options.type = 1
-        } else if (this.isJrole) { // 监察员
-          options.type = 2
-        }
-
-        seekGetShopListByCo(options)
-          .then(res => {
-            if (res.data.state == 200) {
-              for (let i of res.data.data.shopList) {
-                this._showCounterList(i.shopId, i)
-              }
-            } else {
-              this.$message({
-                message: res.data.msg,
-                type: 'warning'
-              })
-            }
-          })
-      } else {
-        setTimeout(() => {
-          this._seekGetShopListByCo()
-        }, 1500)
-      }
     },
     _seekRepositoryList () {
       seekRepositoryList()
@@ -530,51 +514,7 @@ export default {
     dataBackProductTypeId (parm) { // 产品类别过滤
       this.filterCondition.productStatus = parm.bigList
       this.$emit('filterData', this.filterCondition)
-    },
-    seekProductTypeList () { // 产品类别列表
-      getProductTypeList().then((res) => {
-        if (res.data.state == 200) {
-          this.isLoading = false
-          let datas = res.data.data.list
-          for (let i of datas) {
-            i.id = i.classesType
-            i.name = i.classesName
-            i.childrenList = i.typeList
-            for (let j of i.childrenList) {
-              j.name = j.classesName
-              j.id = j.classesId
-            }
-          }
-          this.proList = datas
-        }
-      })
-    },
-    productClassList (type) { // 商品大小类列表
-        let options = {
-            type: type
-        }
-        seekProductClassList(options).then((res) => {
-            if (res.data.state == 200) {
-                this.isLoading = false
-                let datas =  res.data.data.list
-                for (let i of datas) {
-                  i.id = i.classesId
-                  i.name = i.classesName
-                  for (let j of i.childrenList) {
-                    j.name = j.classesName
-                    j.id = j.classesId
-                  }
-                }
-                if (type == 1) {
-                    this.conditionList = datas
-                } else if (type == 2) {
-                    this.jewelList = datas
-                } else {
-                    this.jewelryList = datas
-                }
-            }
-        })
-    },
+    }
   }
 }
 </script>
@@ -777,11 +717,11 @@ export default {
           }
       }
   }
-  .right-btn-wrap{
-    position: absolute;
-    right: 20px;
-    bottom: 15px;
-  }
+  // .right-btn-wrap{
+  //   position: absolute;
+  //   right: 20px;
+  //   bottom: 15px;
+  // }
   .reset-btn{
     float: left;
     border: 1px solid #d6d6d6;

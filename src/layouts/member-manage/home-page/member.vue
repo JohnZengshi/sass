@@ -23,12 +23,13 @@
       <li>+会员</li>
     </ul>
 
-    <router-link class="member-list-btn" to="/memberManage/memberList">会员列表></router-link>
+    <router-link class="member-list-btn" :to="{path: '/memberManage/memberList', query: {shopId: filterOption.shopId}}">会员列表></router-link>
 
   </div>
 </template>
 <script>
   export default {
+    props: ['filterOption'],
     data () {
       return {
         centerBtnList: [
