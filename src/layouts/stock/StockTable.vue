@@ -31,115 +31,6 @@
             </ul>
             </i>
           </div>
-          <!-- 成品旧料的切换 -->
-<!--           <div class="iconfont_wrap fl">
-            <span :class="inconspanactive1 == true ? 'myspanactive' : ''" @click="toggleAttribute(1)">成品</span>
-            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
-            <span :class="inconspanactive2 == true ? 'myspanactive' : ''" @click="toggleAttribute(2)">旧料</span>
-          </div> -->
-          <!-- 表格的筛选 -->
-<!--           <div class="tab_wrap">
-            <span :class="0 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(0, 1)">明细</span>
-            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>           
-            <span :class="1 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(1, 2)">智能分类</span>
-            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
-            <span :class="2 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(2, 3)">产品分类</span>
-            <span style="color: #d6d6d6;margin:0 1px;font-size: 13px;">丨</span>
-            <span style="position: relative" :class="3 == tabClassActive.index ? 'myspanactive' : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)" @click="tabs(3,4)">自定义
-              <div class="customDia site" ref="customDia" style="display: none;">
-                <div class="body">
-                  <div class="list-wrap">
-                    <ul>
-                        <li></li>
-                        <li>成色名称</li>
-                        <li>宝石名称</li>
-                        <li>首饰类别</li>
-                    </ul>
-                    <ul>
-                        <li>计重类</li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="成色名称-计重"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="宝石名称-计重"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="大类"
-                          dataType="customDia"
-                          dataDataType="首饰类别-计重"
-                          :propList="dialogOptions.jewelryList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>计件类</li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="成色名称-计件"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="宝石名称-计件"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="大类"
-                          dataType="customDia"
-                          dataDataType="首饰类别-计件"
-                          :propList="dialogOptions.jewelryList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div class="foot" solt="footer">
-                  <div class="btn-wrap">
-                    <div @click.stop="resetOption" class="reset btn">重置</div>
-                    <div @click.stop="compOption" class="comp btn">完成</div>
-                  </div>
-                </div>
-
-              </div>
-            </span>
-          </div> -->
           <filter-header
             class="stock-table-filter-header-wrap"
             @complate="filterHeaderComplate"
@@ -932,6 +823,7 @@ export default {
       })
     },
     dataBack(parm) {
+      this.dataGridOptions.page = 1;
       let optionsList = []
       switch (parm.keyName) {
         case 'productTypeId':
