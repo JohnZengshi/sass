@@ -48,7 +48,7 @@
                     </div>
                 </el-dialog>
                 
-<!--                 <el-dialog :visible.sync="operateDialog" customClass="product-class-dig-main">
+                <el-dialog :visible.sync="operateDialog" customClass="product-class-dig-main">
                     <product-class-popup
                         v-if="operateDialog"
                         :item='item'
@@ -60,9 +60,9 @@
                         :bigClass="bigClass"
                     >
                     </product-class-popup>
-                </el-dialog> -->
+                </el-dialog>
                 
-                <el-dialog :visible.sync="operateDialog" customClass="operateDig">
+<!--                 <el-dialog :visible.sync="operateDialog" customClass="operateDig">
                     <big-popup
                         v-if="operateDialog"
                         :item='item'
@@ -74,7 +74,7 @@
                         :bigClass="bigClass"
                     >
                     </big-popup>
-                </el-dialog>
+                </el-dialog> -->
                 <el-dialog :visible.sync="margeDialog" customClass="margeDig">
                     <marge-popup
                         classType='5'

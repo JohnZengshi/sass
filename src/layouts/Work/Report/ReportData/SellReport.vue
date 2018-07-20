@@ -114,6 +114,7 @@
 					<div class="xj-report-rp_dataGridTemp" :class="tabShow" v-if="sellShowId == 'sales'">
 
 						<report-detail
+              ref="ReportDetail"
               :dataGridStorage="sellStorage"
               :tabSwitch="tabSwitch"
               :isBuyBack="isBuyBack"
@@ -1302,19 +1303,8 @@ export default {
           .split("-")
           .join("") + "000000";
       this.printSelectDate.startTime = val;
-      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize;
-      // 回购
-      if(this.sellShowId == 'buyback'){
-        if (this.$refs["ReportDetailTrade"]) {
-          this.$refs["ReportDetailTrade"].$children[1].tempArray = [];
-        }
-      }
-      // 销售
-      else if(this.sellShowId == 'sales'){
-        if (this.$refs["ReportDetail"]) {
-          this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
-        }
-      }
+      // 明细列表清空，防止页面默认底部展示
+      this.resetDetailData();
       this.send();
     },
     overTimeDate(val) {
@@ -1324,16 +1314,8 @@ export default {
           .split("-")
           .join("") + "235959";
       this.printSelectDate.endTime = val;
-      this.dataGridOptions.pageSize = this.dataGridOptions.pageSize;
-      // 回购
-      if(this.sellShowId == 'buyback'){
-        this.$refs["ReportDetailTrade"].$children[1].tempArray = [];
-      }
-      // 销售
-      else if(this.sellShowId == 'sales'){
-        this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
-      }
-      // $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')
+      // 明细列表清空，防止页面默认底部展示
+      this.resetDetailData();
       this.send();
     },
     getDate(day, type) {
@@ -1614,6 +1596,23 @@ export default {
       // 同步loaderNum组件的页数
       changeUpdataPageSize(val){
         this.dataGridOptions.pageSize = val;
+      },
+      // 重置明细列表（数据刷新）
+      resetDetailData() {
+        if (this.dataGridOptions.type == 1) {
+          // 回购
+          if (this.sellShowId == 'buyback') {
+            if (this.$refs["ReportDetailTrade"]) {
+              this.$refs["ReportDetailTrade"].$children[1].tempArray = [];
+            }
+          }
+          // 销售
+          else if (this.sellShowId == 'sales') {
+            if (this.$refs["ReportDetail"]) {
+              this.$refs["ReportDetail"].$refs["DataGridBody"].tempArray = [];
+            }
+          }
+        }
       }
   },
 

@@ -86,7 +86,6 @@ export default{
           })
         }
       })
-      console.log('二维码参数', location)
     }
     
   },
@@ -150,7 +149,7 @@ export default{
   text-align: center;
   >iframe{
     height: 230px;
-    width: 250px;
+    width: 273px;
     margin: 0 auto;
     background-color: #fff;
     color: #666;

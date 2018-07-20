@@ -20,7 +20,7 @@
 
           <div v-if="actionType == 'wx'">
             <wxCode></wxCode>
-            <p class="txt">登录微信进行扫码登录</p>
+           <!--  <p class="txt">登录微信进行扫码登录</p> -->
           </div>
 
           <!-- 验证码登录 -->
@@ -416,6 +416,7 @@ export default {
     height: 90px;
     >img{
       max-height: 90px;
+      margin: 18px;
     }
   }
   

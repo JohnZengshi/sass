@@ -3,7 +3,8 @@
   <div class="steps-item" :class="item.statusClass"  v-for="item,i in stepItem">
       <span class="status" @click="showData">{{item.statusName}}</span>
       <div class="user">
-          <p class="time" v-text="item.createTime"></p>
+          <p class="time" v-if="item.status == '1'">{{receiptData}}</p>
+          <p class="time" v-else></p>
           <p class="name"v-text="item.userName"></p>
       </div>
   </div>
@@ -17,7 +18,7 @@ export default {
     return{
       stepItem: [
         {
-          createTime : '',
+          createTime : "",
           userName : '',
           status: '1',
           id: '1',
@@ -37,7 +38,13 @@ export default {
       ]
     }
   },
-  props: ['orderNum', 'statusREfresh', 'isRemark'],
+  props: [
+    'orderNum', 
+    'statusREfresh', 
+    'isRemark',
+		'receiptData', //单据创建时间
+    'makeOrderManName' //制单人名字（先不加）
+    ],
   watch: {
     'statusREfresh': function (val) {
       if (val == true) {
@@ -155,7 +162,7 @@ export default {
      
    }
   },
-  
+
   mounted(){
     this.$nextTick(() => {
       this.fetchFootData()

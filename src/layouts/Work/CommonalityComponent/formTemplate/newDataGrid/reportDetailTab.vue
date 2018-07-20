@@ -5,6 +5,7 @@
 	<data-grid-header :newList="newList" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header>
         <!--表格内容区  -->
         <data-grid-body 
+            ref="dataGridBody"
             :detailDataGridColumn="detailDataGridColumn" 
             :dataGridStorage="dataGridStorage" 
             :reportType="reportType"
@@ -20,12 +21,12 @@
             >
         </data-grid-body>
     <!-- 加载更多未读数据 -->
-        <ReadMoreData 
+        <!-- <ReadMoreData 
         :allData="dataGridStorage" 
         :dgDataList="dataGridStorage.detailList" 
         ref="ReadMoreDataDmo" 
         @readMoreData="readMoreData"
-        ></ReadMoreData>
+        ></ReadMoreData> -->
 	<!--表尾  -->
 	<data-grid-footer :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="dataGridStorage" :reportType = "reportType" @tabCell="tabCell"></data-grid-footer>
     <!-- 加载条数选择 -->
@@ -214,7 +215,8 @@ export default {
         },
         // 监听表格滚动
         watchScroll(scrollHeight,clientHeight,scrollTop){
-            let res = this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+            // let res = this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
+            let res = this.$refs['dataGridBody'].$refs['ReadMoreDataDmo'].isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
             if(res){
                 this.readMoreData();
             }

@@ -400,6 +400,8 @@
         }
         this.settingUserRole.timeRange = parm 
         this._operateUserSetting(timeoptions)
+        // 关闭修改编辑
+        this.operateNum = null;
       },
       setCostFlag (parm) { // 设置成本
         let flagoptions = {
@@ -411,6 +413,8 @@
            flagoptions.costFlag = '1' // 1 代表开启成本 0 代表关闭成本
         }
         this._operateUserSetting(flagoptions)
+        // 关闭修改编辑
+        this.operateNum = null;
       },
       _operateUserSetting (options) { // 用户设置
         operateUserSetting(options)
