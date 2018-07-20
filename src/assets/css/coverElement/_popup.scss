@@ -209,6 +209,9 @@
 .new-popup-dialog{
     @include all-no-dialog($w:1200px,$h:770px,$t:7%,$hn:none);
 }
+.xj-input-dialog{
+    @include all-no-dialog($w:700px,$h:730px,$t:7%,$hn:none);
+}
 .dialog-w500-h650-hn{
     
     @include dialog($w:500px,$h:650px,$t:18%);

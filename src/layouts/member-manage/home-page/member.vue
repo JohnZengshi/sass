@@ -25,10 +25,15 @@
 
     <router-link class="member-list-btn" :to="{path: '/memberManage/memberList', query: {shopId: filterOption.shopId}}">会员列表></router-link>
 
+    <add-member></add-member>
   </div>
 </template>
 <script>
+  import addMember from './../base/add-member.vue'
   export default {
+    components: {
+      addMember
+    },
     props: ['filterOption'],
     data () {
       return {
@@ -125,6 +130,18 @@
       border: 1px solid red;
       padding: 10px 15px;
       font-size: 22px;
+    }
+  }
+  .top-btn{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    li{
+      padding: 10px 20px;
+      font-size: 14px;
+      color: #fff;
+      cursor: pointer;
+      background-color: red;
     }
   }
 }
