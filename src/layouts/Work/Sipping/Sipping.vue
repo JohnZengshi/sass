@@ -212,7 +212,8 @@ export default {
                receivingShop : '',//收货店铺
                 beginTime: '',
                 endTime: '',
-            }
+            },
+            allShopList:[]
         }
     },
     created () {
