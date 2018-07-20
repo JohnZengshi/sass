@@ -636,7 +636,7 @@ export default {
             } else if (this.shopRole) { // 店员
                 options.type = 1
             } else if (this.isJrole) { // 监察员
-                options.type = 2
+                options.type = 3
             }
             seekGetShopListByCo(options).then((res) => {
                 this.productCategory[2].children = res.body.data.shopList
