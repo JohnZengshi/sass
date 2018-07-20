@@ -20,12 +20,12 @@
     </ul>
 
     <ul class="top-btn">
-      <li>+会员</li>
+      <li @click="openAdd">+会员</li>
     </ul>
 
     <router-link class="member-list-btn" :to="{path: '/memberManage/memberList', query: {shopId: filterOption.shopId}}">会员列表></router-link>
 
-    <add-member></add-member>
+    <add-member ref="addMemberBox"></add-member>
   </div>
 </template>
 <script>
@@ -71,7 +71,9 @@
       }
     },
     methods: {
-
+      openAdd () {
+        this.$refs.addMemberBox.open()
+      }
     }
   }
 </script>

@@ -275,3 +275,43 @@
 .xj-box-shadow{
   box-shadow: 0px 0 15px #e2e2e2;
 }
+// 所有的按钮样式
+.xj-btn-list {
+    display:flex;
+    justify-content: center;
+    .btn {
+        width: 90px;
+        height: 28px;
+        border-radius: 4px;
+        background: #2993f8;
+        color: #fff;
+        text-align: center;
+        line-height: 28px;
+        margin-right: 16px;
+        cursor: pointer;
+        transition: all .3s;
+        &:hover {
+            background: #4db3ff;
+        }
+    }
+
+    .cnacel-btn{
+        border: 1px solid #d6d6d6;
+        background: #fff;
+        color: #333;
+        transition: all .3s;
+        &:hover {
+            border: 1px solid #2993f8;
+            background: #fff;
+            color: #2993f8;
+        }
+    }
+}
+// icon和文字组合
+.side-nav{
+    height:inherit;
+    line-height: 50px;
+    float: left;
+    
+    >i{ margin-right: 7px; color:#2993f8;}
+}

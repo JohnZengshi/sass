@@ -1,9 +1,8 @@
 <template>
   <div class="m-m-home-page-header-main">
-
-      <div class="fr ml-10">
-        设置
-      </div>
+    
+      <router-link class="fr ml-10" :to="{path: '/memberManage/compileTemplate', query: {shopId: filterData.shopId}}">设置</router-link>
+      
       <navSegmentation class="fr ml-10" :showList="navData" :current="filterData.current" @pitchOn="pitchOn"></navSegmentation>
 
       <down-menu

@@ -1,10 +1,12 @@
 <template>
-  <el-dialog top="7%" :visible.sync="listDetails" class="xj-input-dialog">
+  <el-dialog top="7%" :visible.sync="isDialog" class="xj-input-dialog">
     <div class="m-m-add-member-main">
-      <div class="p-close-icon" @click="listDetails = false">
+      <div class="p-close-icon" @click="isDialog = false">
         <i class="el-dialog__close el-icon el-icon-close"></i>
       </div>
-      <div>
+      <div class="add-member-body">
+        <h3>添加会员</h3>
+
         <div class="member-edit">
           <h4>基本信息</h4>
           <div class="member-edit-info">
@@ -26,7 +28,6 @@
 
             <div class="item">
               <span class="item-label"><i class="mandatory-icon">*</i>性别</span>
-              <!-- <span>{{ dataInfo.sex == '3' ? '无': dataInfo.sex == '1'? '男':'女' }}</span> -->
               <el-radio-group v-model="dataInfo.sex" @change="setSex" :disabled="!isShopMan">
                 <el-radio :label="'1'">男</el-radio>
                 <el-radio :label="'2'">女</el-radio>
@@ -51,30 +52,7 @@
                 </ul>
               </div>
             </div>
-
-            <!--            <div class="item">
-              <span class="item-label">微信号</span>
-              <input type="text" :disabled="!isShopMan" maxlength="20" v-model="dataInfo.weixin" @blur="setWeixin">
-            </div>
-            <div class="item">
-              <span class="item-label">邮箱</span>
-              <input type="email" :disabled="!isShopMan" v-model="dataInfo.email" @blur="setEmail">
-            </div> -->
           </div>
-    <!--       <div class="member-edit-bottom">
-            <div class="member-edit-bz">
-              <div class="title">备注</div>
-              <el-input type="textarea" :rows="4" :maxlength="50" :disabled="!isShopMan" placeholder="请输入备注" v-model="dataInfo.remark" @blur="setRemark">
-              </el-input>
-            </div>
-            <div class="member-edit-bq">
-              <div class="title fl">标签</div>
-              <div class="bq-item fl" v-for="(item,index) in dataInfo.signList" :key="index">
-                <i v-if="isShopMan" @click.stop="delLabel(item, index)" class="iconfont icon-guanbi-copy"></i> {{item.signName}}
-              </div>
-              <input @blur="followCreateSign" :disabled="!isShopMan" v-model="signName" type="text" placeholder="添加标签" maxlength="8" class="bq-add fl" />
-            </div>
-          </div> -->
         </div>
 
         <div class="member-edit">
@@ -119,10 +97,10 @@
           </div>
 
         </div>
-        <!-- 返回按钮 -->
-        <div class="return-btn">
-          <el-button style="width:80px" type="primary" size="medium" @click="goBack">返回</el-button>
-        </div>
+      </div>
+      <div class="xj-btn-list">
+          <div class="btn cnacel-btn">取消</div>
+          <div class="btn" v-if="isShopMan">确定</div>
       </div>
     </div>
   </el-dialog>
@@ -132,7 +110,7 @@ import { operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, op
 export default {
   data() {
     return {
-      listDetails: true,
+      isDialog: false,
       isShopMan: true, // 操作权限
       isShowInd: false,
       signName:'',
@@ -217,6 +195,9 @@ export default {
     }
   },
   methods: {
+    open () {
+      this.isDialog = true
+    },
     goBack() {
 
     },
@@ -545,6 +526,16 @@ export default {
   position: relative;
   .mandatory-icon{
     color: red;
+  }
+  .add-member-body{
+    height: 660px;
+    >h3{
+      line-height: 1;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #333;
+    }
   }
   .p-close-icon {
     position: absolute;
