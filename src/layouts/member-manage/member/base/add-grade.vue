@@ -1,7 +1,7 @@
 <!-- 新增店铺组合 -->
 <template>
   <el-dialog top="7%" :visible.sync="isDialog" class="xj-input-dialog">
-    <div class="m-m-add-group-main">
+    <div class="m-m-add-group-main" v-show="!issellDiscountBox">
       <div class="p-close-icon" @click="isDialog = false">
         <i class="el-dialog__close el-icon el-icon-close"></i>
       </div>
@@ -32,25 +32,36 @@
 
         <div class="input-wrap">
           <span class="item-label">销售折扣设置</span>
-          <input type="Number" placeholder="点击设置销售折扣" v-model="name">
+          <input type="Number" placeholder="点击设置销售折扣" v-model="name" @click="openSellDiscount">
         </div>
       </div>
       <div class="xj-btn-list">
         <div class="btn cnacel-btn" @click="close">取消</div>
         <div class="btn" @click="confirm">确定</div>
       </div>
+
     </div>
+
+    <sell-discount
+      v-show="issellDiscountBox"
+      @close="discountClose"
+      @confirm="discountConfirm"
+      ref="sellDiscountBox"
+    ></sell-discount>
   </el-dialog>
 </template>
 <script>
 import { seekGetShopListByCo } from 'Api/commonality/seek'
 import downMenu from 'base/menu/new-down-menu'
+import sellDiscount from './sell-discount'
 export default {
   components: {
-    downMenu
+    downMenu,
+    sellDiscount
   },
   data() {
     return {
+      issellDiscountBox: false,
       checkList: [],
       shopList: [],
       name: '',
@@ -61,6 +72,16 @@ export default {
     open (parm) {
       this.checkList = []
       this.isDialog = true
+    },
+    discountClose () {
+      this.issellDiscountBox = false
+    },
+    discountConfirm (parm) {
+      this.issellDiscountBox = false
+    },
+    openSellDiscount () {
+      this.issellDiscountBox = true
+      // this.$refs.sellDiscountBox.open()
     },
     change () {
 
