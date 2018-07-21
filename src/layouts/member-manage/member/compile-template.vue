@@ -12,16 +12,24 @@
 
     <div class="m-m-compile-template-body xj-right-box xj-box-shadow">
       <!-- 会员互通 -->
-      <eachOther></eachOther>
+      <each-other></each-other>
+      <!-- 独立店铺 -->
+      <shop-list></shop-list>
+      <!-- 积分模板 -->
+      <integral></integral>
     </div>
   </div>
 </transition>
 </template>
 <script>
 import eachOther from './base/each-other'
+import shopList from './base/shop-list'
+import integral from './base/integral'
 export default {
   components: {
-    eachOther
+    eachOther,
+    shopList,
+    integral
   }
 }
 </script>
@@ -32,7 +40,8 @@ export default {
     background-color: #fff;
     padding-bottom: 15px;
     border-radius: 10px;
-    height: 760px;
+    height: 680px;
+    overflow: scroll;
   }
 }
 </style>

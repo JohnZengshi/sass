@@ -251,7 +251,6 @@
         }
       },
       lookDetail (item, index, allData) {
-        debugger
         // this.$store.dispatch('workOrganizationChange', item.userId)
         console.log(item)
         console.log(allData)

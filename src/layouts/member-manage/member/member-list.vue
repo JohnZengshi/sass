@@ -2,12 +2,12 @@
 <template>
   <transition name="tp-ani">
     <div class="RP_report_wrapper ui-page-max-width report_table_fixed dc-label-print-main" v-if="isPrint==0">
-      <memberInfo
+<!--       <memberInfo
         @closeReturn="closeEditReturn"
         :memberInfoFlag="memberInfoFlag"
         :shopId="shopId"
         :memberId="memberId"
-      ></memberInfo>
+      ></memberInfo> -->
       <div class="Rp_title_container">
         <!--面包屑-->
         <div class="Rp_crumbs">

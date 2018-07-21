@@ -15,7 +15,7 @@
             <!-- 标题 0.1 end -->
 
             <!-- 积分模板应用店铺 0.2 begin -->
-            <div class="shop-setting">
+            <div class="shop-setting" v-if="false">
                 <div class="shop-setting-title">
                     <p>积分模板应用店铺</p>
                 </div>
@@ -295,631 +295,6 @@
 
     </div>
 </template>
-
-<style lang="scss">
-$fontColor:#47a3fb;
-.member-points-wrap {
-    width: 1250px;
-    margin: 0 auto;
-    margin-top: 40px;
-    h1 {
-        font-size: 16px;
-        color:#4e4e4e;        
-        i{
-            color: $fontColor;
-        }
-        span{
-            color: $fontColor;            
-        }
-        .gobackBtn {
-            color: #333;
-            &:hover {
-                color: #2993f8;
-                cursor: pointer;
-            }
-        }
-        margin-bottom: 30px;
-    }
-    .member-content {
-        // height: 730px;
-        background-color: #fff;
-        box-shadow: 0px 0 15px #ddd;
-        border-radius: 10px;
-        padding-bottom: 30px;
-        .content-title {
-            height: 50px;
-            line-height: 50px;
-            margin-bottom: 20px;
-            padding: 0 15px 0 25px;
-            color:#333;
-            i {
-                color: $fontColor;
-            }
-        }
-        .shop-setting{
-            // height: 250px;
-            padding: 0 40px;
-            margin-bottom: 40px;
-            .shop-setting-title{
-                margin-bottom: 30px;
-                p{
-                    position: relative;
-                    padding-left: 10px;
-                    color: #666;
-                    font-weight: bold;
-                    &::before{
-                        content: '';
-                        position: absolute;
-                        top: 3px;
-                        left: 0;
-                        display: inline-block;
-                        width: 2px;
-                        height: 17px;
-                        background: $fontColor;
-                    }
-                }
-            }
-            .shop-setting-content {
-                display: flex;
-                flex-wrap: wrap;
-                width: 100%;
-                // height: 200px;
-                padding: 30px 34px;
-                background: #f6f7f8;
-                border-radius: 10px;
-
-                // overflow-y:scroll;
-                .checkbox-item {
-                    width: 33.33%;
-                    margin: 0;
-                    span{
-                        font-size: 16px;
-                    }
-                }
-                
-            }
-        }
-        .integral-add-subtract{
-            padding: 0 40px;
-            margin-bottom: 40px;
-            .integral-setting-title {
-                margin-bottom: 30px;
-                p{
-                    position: relative;
-                    padding-left: 10px;
-                    color: #666;
-                    font-weight: bold;
-                    &::before{
-                        content: '';
-                        position: absolute;
-                        top: 3px;
-                        left: 0;
-                        display: inline-block;
-                        width: 2px;
-                        height: 17px;
-                        background: $fontColor;
-                    }
-                }
-            }
-            .integral-content{
-                width: 100%;
-                display:flex;
-                justify-content: space-between;
-                border-radius: 10px;                
-                // padding: 0 50px;
-                position: relative;
-                .el-radio__label {
-                    color: #666;
-                }
-                .el-radio__label {
-                    padding-left: 8px;
-                }
-                .integral-xs{
-                    width: 25%;
-                    display: flex;
-                    justify-content: space-around;
-                    color: #2993f8;
-
-                }
-                .integral-th{
-                    width: 25%;
-                    display: flex;
-                    justify-content: space-around;
-                    color: #ff6071;
-                    
-                }
-                .integral-hh{
-                    width: 25%;
-                    display: flex;
-                    justify-content: space-around;
-                    color: #fd914f;
-                    
-                }
-                .integral-hs{
-                    width: 25%;
-                    display: flex;
-                    justify-content: space-around;
-                    color: #c46de8;
-                }
-                .xs{
-                    border: 2px solid #47a3fb;
-                    background: rgba(41, 147, 248, .1);
-                    font-weight: bold;                         
-                }
-                .hh{
-                    border: 2px solid #fd914f;
-                    background: rgba(253, 145, 79, .1);     
-                    font-weight: bold;                    
-                }
-                .th{
-                    border: 2px solid #ff8c97;
-                    background: rgba(255, 96, 113, .1);    
-                    font-weight: bold;                     
-                }
-                .hs{
-                    border: 2px solid #c46de8;
-                    background: rgba(196, 109, 233, .1);     
-                    font-weight: bold;                    
-                }
-                .integral-left{
-                    width: 66px;
-                    height: 66px;
-                    border-radius: 50%;
-                    text-align: center;
-                    line-height: 64px;
-                                   
-                }
-                .integral-right{
-                    width: 62%;
-                    .intergral-item{
-                        display: block;
-                        width: 100%;
-                        height: 22px;
-                        line-height: 22px;
-                        margin: 0;
-                        color: #666;
-                    }
-                }
-                .modalBox {
-                    width: 100%; 
-                    height: 100%;
-                    background: transparent;
-                    position: absolute;
-                    
-                }
-            }
-        }
-        .product-setting{
-            // height: 900px;
-            margin-bottom: 40px;
-            padding: 0 40px;
-            .product-setting-content{
-                background: #f6f7f8;
-                padding: 26px 30px;
-                border-radius: 10px;    
-                .producet-jz{
-                    margin-bottom: 20px;
-                }
-                .producet-jj{
-                    // height: 500px;
-                }
-                // 计件计重公共部分
-                .title{
-                    margin-bottom: 27px;
-                    color: #333;
-                    font-weight: bold;
-                    display: flex;
-                    justify-content: space-between;
-                }
-                .content{
-                    display: flex;
-                    // justify-content: space-between;
-                    flex-wrap: wrap;
-                    .item{
-                        width: 206px;
-                        height: 138px;
-                        background: #fff;
-                        border-radius: 10px;
-                        padding: 23px 23px 20px;
-                        margin-bottom: 20px;
-                        margin-right: 16px;
-                        .item-title{
-                            color: #2993f8;
-                            font-size: 16px;
-                            margin-bottom: 10px;
-                            font-weight: bold;
-                        }
-                        .item-input{
-                            overflow: hidden;
-                            display:flex;
-                            justify-content: space-between;
-                            margin-bottom: 12px;
-                            input{
-                                width: 60px;
-                                height: 28px;
-                                background-color:transparent;
-                                text-align: center;
-                                font-size: 14px;
-                                border-radius: 3px;
-                                &:active,
-                                &:hover,
-                                &:focus{
-                                    border: 1px solid #2993f8;
-                                    background-color: #f4f9ff;
-                                }
-                            }
-                            // 移除number的箭头
-                            input::-webkit-outer-spin-button,
-                            input::-webkit-inner-spin-button {
-                                -webkit-appearance: none;
-                            }
-                            input[type="number"]{
-                                -moz-appearance: textfield;
-                            }
-                        }
-                        .item-message{
-                            font-size: 12px;
-                            color: #666;
-                            display:flex;
-                            justify-content: space-between;
-                        }
-                    }
-                }
-            }            
-        }   
-        .issue{
-            height: 280px;
-            padding: 0 40px;
-            margin-bottom: 40px;      
-            .issue-content {
-                // height: 220px;
-                background: #f6f7f8;
-                padding: 40px 30px 0;
-                border-radius: 10px;
-                .cycle-box {
-                    padding-bottom: 30px;
-                }
-                .item {
-                    height: 38px;
-                    color: #333;
-                    font-size: 14px;
-                    .item-circle{
-                        display: inline-block;
-                        width: 8px;
-                        height: 8px;
-                        border-radius: 50%;
-                        background: #fdb133;
-                        margin-right: 20px;
-                    }
-                    .item-title{
-                        margin-right: 28px;
-                    }
-                    .input-box {
-                        display: inline-block;
-                        
-                        input{
-                                width: 100px;
-                                height: 28px;
-                                background-color:transparent;
-                                text-align: left;
-                                font-size: 14px;
-                                border-radius: 3px;
-                                border: 1px solid #dcdfe6;     
-                                text-align: center;                           
-                                &:active,
-                                &:hover,
-                                &:focus{
-                                    border: 1px solid #2993f8;
-                                    background-color: #f4f9ff;
-                                }
-                        }
-
-                        // 移除number的箭头
-                        input::-webkit-outer-spin-button,
-                        input::-webkit-inner-spin-button {
-                            -webkit-appearance: none;
-                        }
-                        input[type="number"]{
-                            -moz-appearance: textfield;
-                        }
-                    }
-                    .item-input{
-                        width: 100px;
-                        border-radius: 4px;
-                        .el-input__inner {
-                            border-radius: 10px !important;
-                        }
-                    }
-                    .fg-fen {
-                        margin-right: 38px;
-                    }
-                    i{
-                        margin-left: 20px;
-                        &:hover {
-                            color: #2993f8;
-                            cursor: pointer;
-                        }
-                    }
-                    .el-icon-delete {
-                        opacity: 0;
-                    }
-                    &:hover {
-                        .el-icon-delete {
-                            opacity: 1;
-                        }
-                    }
-                }
-            }     
-        }
-        .consumption {
-            // height: 400px;
-            padding: 0 40px;
-            margin-bottom: 40px; 
-            .consumption-content {
-                // height: 310px;
-                padding: 40px 30px 30px;
-                background: #f6f7f8;
-                border-radius: 10px;
-                position: relative;
-                .item {
-                    height: 38px;
-                    margin-bottom: 24px;
-                    color: #333;
-                    font-size: 14px;
-                    &:nth-last-of-type(1) {
-                        margin: 0;
-                    }
-                    .item-circle{
-                        display: inline-block;
-                        width: 8px;
-                        height: 8px;
-                        border-radius: 50%;
-                        background: #fdb133;
-                        margin-right: 20px;
-                    }
-                    .item-title{
-                        margin-right: 32px;
-                    }
-                    .input-box {
-                        display: inline-block;
-                        
-                        input{
-                                width: 100px;
-                                height: 28px;
-                                background-color:transparent;
-                                text-align: left;
-                                font-size: 14px;
-                                border-radius: 3px;
-                                text-align: center;
-                                border: 1px solid #dcdfe6;
-                                &:active,
-                                &:hover,
-                                &:focus{
-                                    border: 1px solid #2993f8;
-                                    background-color: #f4f9ff;
-                                }
-                        }
-
-                        // 移除number的箭头
-                        input::-webkit-outer-spin-button,
-                        input::-webkit-inner-spin-button {
-                            -webkit-appearance: none;
-                        }
-                        input[type="number"]{
-                            -moz-appearance: textfield;
-                        }
-                    }
-                    .item-input{
-                        width: 100px;
-                        border-radius: 4px;
-                        .el-input__inner {
-                            border-radius: 10px !important;
-                        }
-                    }
-                    .fg-fen {
-                        margin-right: 50px;
-                    }
-                    
-                }
-                .modalBox {
-                    width: 100%; 
-                    height: 100%;
-                    background: transparent;
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                }
-            }
-        }
-        // 大标题
-        .all-title {
-            margin-bottom: 30px;
-                p{
-                    position: relative;
-                    padding-left: 10px;
-                    color: #666;
-                    font-weight: bold;
-                    &::before{
-                        content: '';
-                        position: absolute;
-                        top: 3px;
-                        left: 0;
-                        display: inline-block;
-                        width: 2px;
-                        height: 17px;
-                        background: $fontColor;
-                    }
-                }
-        }
-    }
-
-}
-.sell-type-one-main.me-style{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    // width: 100%;
-    // height: 100%;
-	transform:translate(-50%,-50%);
-    background: #fff;
-    z-index: 10;
-    .dia-title {
-        // width: 78px;
-        position: absolute;
-        top:24px;
-        left: 50%;
-        margin-left: -28px;
-        img {
-            display: block;
-            margin: 0 auto;
-            width: 46px;
-            height: 46px;
-            margin-bottom: 12px;
-        }
-        h3 {
-            font-size: 12px;
-            color:#333;
-            text-align: center;
-        }
-    }
-    .list-wrap {
-        width: 320px;
-        height: 271px;
-        padding-top: 180px;
-        margin-bottom: 130px;
-        .btn-wrap {
-            width: 180px;
-            // height: 70px;
-            margin: 0 auto;
-			.disabledActive {
-                color: #d6d6d6;
-				cursor: not-allowed;
-			}
-            li {
-                display: block;
-                height: 40px;
-                font-style: normal;
-                text-align:center;
-                background-color: rgb(244, 244, 244);
-                color: #2993f8;
-                // background: #2993f8;
-                // color:#fff;
-                font-size: 14px;
-                line-height: 40px;
-                border-radius: 4px;
-                cursor: pointer;
-                transition: all 0.6s;
-                &:hover{
-                    background: #2993f8;
-                    color: #fff;
-                }
-            }
-            li:nth-child(2) {
-                margin-top: 40px;
-                // color: #2993f8;
-               // background-color: rgb(244, 244, 244);
-            }
-			li:nth-child(3){
-				margin-top: 40px;
-			}
-        }
-        .left-list {
-            width: 108px;
-            height: 100%;
-            border-right: 1px solid #f1f2f3;
-            float: left;
-            overflow-x: hidden;
-            overflow-y: auto;
-            li {
-                width: 108px;
-                height: 41px;
-                border-bottom: 1px solid #f1f2f3;
-                line-height: 41px;
-                font-size: 14px;
-                color:#333;
-                text-align: center;
-                cursor: pointer;
-                .active-block {
-                    display: none;
-                }
-            }
-            li:hover {
-                background:#f6f7f8;
-                color: #2993f8;
-            }
-            li.active {
-                .active-block {
-                    display: block;
-                    height: 100%;
-                    float: left;
-                    width: 3px;
-                    background:#2993f8;
-                }
-            }
-        }
-        .right-list {
-            width: 211px;
-            height: 100%;
-            float: left;
-            overflow-x: hidden;
-            overflow-y: auto;
-            li {
-                width: 192px;
-                height: 41px;
-                line-height: 41px;
-                font-size: 14px;
-                color:#333;
-                cursor: pointer;
-                margin-left: 19px;
-            }
-            li:hover {
-                background:#f6f7f8;
-                color: #2993f8;
-            }
-            li.active {
-                color:#2993f8;
-            }
-        }
-    }
-    .footer {
-        height: 50px;
-        width: 100%;
-        float: left;
-        border-top: 1px solid #f1f2f3;
-        padding-left: 22px;
-        padding-right: 22px;
-        line-height: 50px;
-        padding-top: 0;
-        background:#fff;
-        .footer-left {
-            height: 100%;
-            float: left;
-            font-size: 14px;
-            color:#999999;
-            cursor: pointer;
-        }
-        .footer-right {
-            height: 100%;
-            float: right;
-            span {
-                float: left;
-                font-size: 14px;
-                cursor: pointer;
-                color: #333;
-            }
-            span:nth-child(1) {
-                margin-right: 15px;
-                color: #999;
-            }
-        }
-    }
-}
-#shopList .disColor .is-checked .el-checkbox__inner{
-    background-color: #ccc;
-    border-color: #ccc;
-}
-
-</style>
 
 <script>
 import Swichs from './Swichs'
@@ -1874,3 +1249,627 @@ export default {
 }
 </script>
 
+<style lang="scss">
+$fontColor:#47a3fb;
+.member-points-wrap {
+    width: 1250px;
+    margin: 0 auto;
+    margin-top: 40px;
+    h1 {
+        font-size: 16px;
+        color:#4e4e4e;        
+        i{
+            color: $fontColor;
+        }
+        span{
+            color: $fontColor;            
+        }
+        .gobackBtn {
+            color: #333;
+            &:hover {
+                color: #2993f8;
+                cursor: pointer;
+            }
+        }
+        margin-bottom: 30px;
+    }
+    .member-content {
+        // height: 730px;
+        background-color: #fff;
+        box-shadow: 0px 0 15px #ddd;
+        border-radius: 10px;
+        padding-bottom: 30px;
+        .content-title {
+            height: 50px;
+            line-height: 50px;
+            margin-bottom: 20px;
+            padding: 0 15px 0 25px;
+            color:#333;
+            i {
+                color: $fontColor;
+            }
+        }
+        .shop-setting{
+            // height: 250px;
+            padding: 0 40px;
+            margin-bottom: 40px;
+            .shop-setting-title{
+                margin-bottom: 30px;
+                p{
+                    position: relative;
+                    padding-left: 10px;
+                    color: #666;
+                    font-weight: bold;
+                    &::before{
+                        content: '';
+                        position: absolute;
+                        top: 3px;
+                        left: 0;
+                        display: inline-block;
+                        width: 2px;
+                        height: 17px;
+                        background: $fontColor;
+                    }
+                }
+            }
+            .shop-setting-content {
+                display: flex;
+                flex-wrap: wrap;
+                width: 100%;
+                // height: 200px;
+                padding: 30px 34px;
+                background: #f6f7f8;
+                border-radius: 10px;
+
+                // overflow-y:scroll;
+                .checkbox-item {
+                    width: 33.33%;
+                    margin: 0;
+                    span{
+                        font-size: 16px;
+                    }
+                }
+                
+            }
+        }
+        .integral-add-subtract{
+            padding: 0 40px;
+            margin-bottom: 40px;
+            .integral-setting-title {
+                margin-bottom: 30px;
+                p{
+                    position: relative;
+                    padding-left: 10px;
+                    color: #666;
+                    font-weight: bold;
+                    &::before{
+                        content: '';
+                        position: absolute;
+                        top: 3px;
+                        left: 0;
+                        display: inline-block;
+                        width: 2px;
+                        height: 17px;
+                        background: $fontColor;
+                    }
+                }
+            }
+            .integral-content{
+                width: 100%;
+                display:flex;
+                justify-content: space-between;
+                border-radius: 10px;                
+                // padding: 0 50px;
+                position: relative;
+                .el-radio__label {
+                    color: #666;
+                }
+                .el-radio__label {
+                    padding-left: 8px;
+                }
+                .integral-xs{
+                    width: 25%;
+                    display: flex;
+                    justify-content: space-around;
+                    color: #2993f8;
+
+                }
+                .integral-th{
+                    width: 25%;
+                    display: flex;
+                    justify-content: space-around;
+                    color: #ff6071;
+                    
+                }
+                .integral-hh{
+                    width: 25%;
+                    display: flex;
+                    justify-content: space-around;
+                    color: #fd914f;
+                    
+                }
+                .integral-hs{
+                    width: 25%;
+                    display: flex;
+                    justify-content: space-around;
+                    color: #c46de8;
+                }
+                .xs{
+                    border: 2px solid #47a3fb;
+                    background: rgba(41, 147, 248, .1);
+                    font-weight: bold;                         
+                }
+                .hh{
+                    border: 2px solid #fd914f;
+                    background: rgba(253, 145, 79, .1);     
+                    font-weight: bold;                    
+                }
+                .th{
+                    border: 2px solid #ff8c97;
+                    background: rgba(255, 96, 113, .1);    
+                    font-weight: bold;                     
+                }
+                .hs{
+                    border: 2px solid #c46de8;
+                    background: rgba(196, 109, 233, .1);     
+                    font-weight: bold;                    
+                }
+                .integral-left{
+                    width: 66px;
+                    height: 66px;
+                    border-radius: 50%;
+                    text-align: center;
+                    line-height: 64px;
+                                   
+                }
+                .integral-right{
+                    width: 62%;
+                    .intergral-item{
+                        display: block;
+                        width: 100%;
+                        height: 22px;
+                        line-height: 22px;
+                        margin: 0;
+                        color: #666;
+                    }
+                }
+                .modalBox {
+                    width: 100%; 
+                    height: 100%;
+                    background: transparent;
+                    position: absolute;
+                    
+                }
+            }
+        }
+        .product-setting{
+            // height: 900px;
+            margin-bottom: 40px;
+            padding: 0 40px;
+            .product-setting-content{
+                background: #f6f7f8;
+                padding: 26px 30px;
+                border-radius: 10px;    
+                .producet-jz{
+                    margin-bottom: 20px;
+                }
+                .producet-jj{
+                    // height: 500px;
+                }
+                // 计件计重公共部分
+                .title{
+                    margin-bottom: 27px;
+                    color: #333;
+                    font-weight: bold;
+                    display: flex;
+                    justify-content: space-between;
+                }
+                .content{
+                    display: flex;
+                    // justify-content: space-between;
+                    flex-wrap: wrap;
+                    .item{
+                        width: 206px;
+                        height: 138px;
+                        background: #fff;
+                        border-radius: 10px;
+                        padding: 23px 23px 20px;
+                        margin-bottom: 20px;
+                        margin-right: 16px;
+                        .item-title{
+                            color: #2993f8;
+                            font-size: 16px;
+                            margin-bottom: 10px;
+                            font-weight: bold;
+                        }
+                        .item-input{
+                            overflow: hidden;
+                            display:flex;
+                            justify-content: space-between;
+                            margin-bottom: 12px;
+                            input{
+                                width: 60px;
+                                height: 28px;
+                                background-color:transparent;
+                                text-align: center;
+                                font-size: 14px;
+                                border-radius: 3px;
+                                &:active,
+                                &:hover,
+                                &:focus{
+                                    border: 1px solid #2993f8;
+                                    background-color: #f4f9ff;
+                                }
+                            }
+                            // 移除number的箭头
+                            input::-webkit-outer-spin-button,
+                            input::-webkit-inner-spin-button {
+                                -webkit-appearance: none;
+                            }
+                            input[type="number"]{
+                                -moz-appearance: textfield;
+                            }
+                        }
+                        .item-message{
+                            font-size: 12px;
+                            color: #666;
+                            display:flex;
+                            justify-content: space-between;
+                        }
+                    }
+                }
+            }            
+        }   
+        .issue{
+            height: 280px;
+            padding: 0 40px;
+            margin-bottom: 40px;      
+            .issue-content {
+                // height: 220px;
+                background: #f6f7f8;
+                padding: 40px 30px 0;
+                border-radius: 10px;
+                .cycle-box {
+                    padding-bottom: 30px;
+                }
+                .item {
+                    height: 38px;
+                    color: #333;
+                    font-size: 14px;
+                    .item-circle{
+                        display: inline-block;
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: #fdb133;
+                        margin-right: 20px;
+                    }
+                    .item-title{
+                        margin-right: 28px;
+                    }
+                    .input-box {
+                        display: inline-block;
+                        
+                        input{
+                                width: 100px;
+                                height: 28px;
+                                background-color:transparent;
+                                text-align: left;
+                                font-size: 14px;
+                                border-radius: 3px;
+                                border: 1px solid #dcdfe6;     
+                                text-align: center;                           
+                                &:active,
+                                &:hover,
+                                &:focus{
+                                    border: 1px solid #2993f8;
+                                    background-color: #f4f9ff;
+                                }
+                        }
+
+                        // 移除number的箭头
+                        input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                        }
+                        input[type="number"]{
+                            -moz-appearance: textfield;
+                        }
+                    }
+                    .item-input{
+                        width: 100px;
+                        border-radius: 4px;
+                        .el-input__inner {
+                            border-radius: 10px !important;
+                        }
+                    }
+                    .fg-fen {
+                        margin-right: 38px;
+                    }
+                    i{
+                        margin-left: 20px;
+                        &:hover {
+                            color: #2993f8;
+                            cursor: pointer;
+                        }
+                    }
+                    .el-icon-delete {
+                        opacity: 0;
+                    }
+                    &:hover {
+                        .el-icon-delete {
+                            opacity: 1;
+                        }
+                    }
+                }
+            }     
+        }
+        .consumption {
+            // height: 400px;
+            padding: 0 40px;
+            margin-bottom: 40px; 
+            .consumption-content {
+                // height: 310px;
+                padding: 40px 30px 30px;
+                background: #f6f7f8;
+                border-radius: 10px;
+                position: relative;
+                .item {
+                    height: 38px;
+                    margin-bottom: 24px;
+                    color: #333;
+                    font-size: 14px;
+                    &:nth-last-of-type(1) {
+                        margin: 0;
+                    }
+                    .item-circle{
+                        display: inline-block;
+                        width: 8px;
+                        height: 8px;
+                        border-radius: 50%;
+                        background: #fdb133;
+                        margin-right: 20px;
+                    }
+                    .item-title{
+                        margin-right: 32px;
+                    }
+                    .input-box {
+                        display: inline-block;
+                        
+                        input{
+                                width: 100px;
+                                height: 28px;
+                                background-color:transparent;
+                                text-align: left;
+                                font-size: 14px;
+                                border-radius: 3px;
+                                text-align: center;
+                                border: 1px solid #dcdfe6;
+                                &:active,
+                                &:hover,
+                                &:focus{
+                                    border: 1px solid #2993f8;
+                                    background-color: #f4f9ff;
+                                }
+                        }
+
+                        // 移除number的箭头
+                        input::-webkit-outer-spin-button,
+                        input::-webkit-inner-spin-button {
+                            -webkit-appearance: none;
+                        }
+                        input[type="number"]{
+                            -moz-appearance: textfield;
+                        }
+                    }
+                    .item-input{
+                        width: 100px;
+                        border-radius: 4px;
+                        .el-input__inner {
+                            border-radius: 10px !important;
+                        }
+                    }
+                    .fg-fen {
+                        margin-right: 50px;
+                    }
+                    
+                }
+                .modalBox {
+                    width: 100%; 
+                    height: 100%;
+                    background: transparent;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                }
+            }
+        }
+        // 大标题
+        .all-title {
+            margin-bottom: 30px;
+                p{
+                    position: relative;
+                    padding-left: 10px;
+                    color: #666;
+                    font-weight: bold;
+                    &::before{
+                        content: '';
+                        position: absolute;
+                        top: 3px;
+                        left: 0;
+                        display: inline-block;
+                        width: 2px;
+                        height: 17px;
+                        background: $fontColor;
+                    }
+                }
+        }
+    }
+
+}
+.sell-type-one-main.me-style{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    // width: 100%;
+    // height: 100%;
+    transform:translate(-50%,-50%);
+    background: #fff;
+    z-index: 10;
+    .dia-title {
+        // width: 78px;
+        position: absolute;
+        top:24px;
+        left: 50%;
+        margin-left: -28px;
+        img {
+            display: block;
+            margin: 0 auto;
+            width: 46px;
+            height: 46px;
+            margin-bottom: 12px;
+        }
+        h3 {
+            font-size: 12px;
+            color:#333;
+            text-align: center;
+        }
+    }
+    .list-wrap {
+        width: 320px;
+        height: 271px;
+        padding-top: 180px;
+        margin-bottom: 130px;
+        .btn-wrap {
+            width: 180px;
+            // height: 70px;
+            margin: 0 auto;
+            .disabledActive {
+                color: #d6d6d6;
+                cursor: not-allowed;
+            }
+            li {
+                display: block;
+                height: 40px;
+                font-style: normal;
+                text-align:center;
+                background-color: rgb(244, 244, 244);
+                color: #2993f8;
+                // background: #2993f8;
+                // color:#fff;
+                font-size: 14px;
+                line-height: 40px;
+                border-radius: 4px;
+                cursor: pointer;
+                transition: all 0.6s;
+                &:hover{
+                    background: #2993f8;
+                    color: #fff;
+                }
+            }
+            li:nth-child(2) {
+                margin-top: 40px;
+                // color: #2993f8;
+               // background-color: rgb(244, 244, 244);
+            }
+            li:nth-child(3){
+                margin-top: 40px;
+            }
+        }
+        .left-list {
+            width: 108px;
+            height: 100%;
+            border-right: 1px solid #f1f2f3;
+            float: left;
+            overflow-x: hidden;
+            overflow-y: auto;
+            li {
+                width: 108px;
+                height: 41px;
+                border-bottom: 1px solid #f1f2f3;
+                line-height: 41px;
+                font-size: 14px;
+                color:#333;
+                text-align: center;
+                cursor: pointer;
+                .active-block {
+                    display: none;
+                }
+            }
+            li:hover {
+                background:#f6f7f8;
+                color: #2993f8;
+            }
+            li.active {
+                .active-block {
+                    display: block;
+                    height: 100%;
+                    float: left;
+                    width: 3px;
+                    background:#2993f8;
+                }
+            }
+        }
+        .right-list {
+            width: 211px;
+            height: 100%;
+            float: left;
+            overflow-x: hidden;
+            overflow-y: auto;
+            li {
+                width: 192px;
+                height: 41px;
+                line-height: 41px;
+                font-size: 14px;
+                color:#333;
+                cursor: pointer;
+                margin-left: 19px;
+            }
+            li:hover {
+                background:#f6f7f8;
+                color: #2993f8;
+            }
+            li.active {
+                color:#2993f8;
+            }
+        }
+    }
+    .footer {
+        height: 50px;
+        width: 100%;
+        float: left;
+        border-top: 1px solid #f1f2f3;
+        padding-left: 22px;
+        padding-right: 22px;
+        line-height: 50px;
+        padding-top: 0;
+        background:#fff;
+        .footer-left {
+            height: 100%;
+            float: left;
+            font-size: 14px;
+            color:#999999;
+            cursor: pointer;
+        }
+        .footer-right {
+            height: 100%;
+            float: right;
+            span {
+                float: left;
+                font-size: 14px;
+                cursor: pointer;
+                color: #333;
+            }
+            span:nth-child(1) {
+                margin-right: 15px;
+                color: #999;
+            }
+        }
+    }
+}
+#shopList .disColor .is-checked .el-checkbox__inner{
+    background-color: #ccc;
+    border-color: #ccc;
+}
+
+</style>

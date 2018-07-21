@@ -1,42 +1,25 @@
-<!-- 会员汇通 -->
+<!-- 独立店铺 -->
 <template>
   <div class="m-m-each-other-main">
     <div class="header">
-      <p class="side-nav"><i class="iconfont icon-liebiao"></i>会员汇通</p>
-      <div class="right-btn" @click="openAdd">
-        +店铺组合
-      </div>
+      <p class="side-nav"><i class="iconfont icon-liebiao"></i>独立店铺</p>
     </div>
     <div class="each-table">
       <ul class="header-tit">
-        <li>组合名称</li>
         <li>店铺名称</li>
-        <li>应用模板</li>
-        <li>操作</li>
+        <li>积分模板</li>
       </ul>
       <div class="scroll-wrap">
         <ul v-for="item in combinationList">
           <li>{{item.AA}}</li>
           <li>{{item.BB}}</li>
-          <li>{{item.CC}}</li>
-          <li>
-            <i @click="compile" class="iconfont icon-bianji"></i>
-            <i @click="del" class="iconfont icon-lajitong"></i>
-          </li>
         </ul> 
       </div>
     </div>
-
-    <add-group ref="addGroupBox"></add-group>
-
   </div>
 </template>
 <script>
-  import addGroup from './add-group'
   export default {
-    components: {
-      addGroup
-    },
     data () {
       return {
         combinationList: [
@@ -74,11 +57,8 @@
       }
     },
     methods: {
-      openAdd () {
-        this.$refs.addGroupBox.open()
-      },
-      compile (parm) {
-        this.$refs.addGroupBox.open(parm)
+      compile () {
+
       },
       del () {
 
@@ -154,7 +134,7 @@
         width: 100px;
         i{
           transition: all .3s;
-          corsur: pointer;
+          cursor: pointer;
           &:hover{
             color: #2993f8;
           } 
@@ -173,9 +153,6 @@
       border-bottom: 2px solid #e7e7e7;
     }
   }
-  // p{
-  //   text-align: center;
-  // }
 }
 
 </style>

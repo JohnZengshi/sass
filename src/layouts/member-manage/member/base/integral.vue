@@ -1,24 +1,22 @@
-<!-- 会员汇通 -->
+<!-- 积分模板管理 -->
 <template>
-  <div class="m-m-each-other-main">
+  <div class="m-m-integral-main">
     <div class="header">
-      <p class="side-nav"><i class="iconfont icon-liebiao"></i>会员汇通</p>
-      <div class="right-btn" @click="openAdd">
-        +店铺组合
-      </div>
+      <p class="side-nav"><i class="iconfont icon-liebiao"></i>会员管理模板</p>
+      <router-link tag="div" class="right-btn" :to="{path: '/memberManage/addTemplate', query: {shopId: shopId}}">
+        +模板
+      </router-link>
     </div>
     <div class="each-table">
       <ul class="header-tit">
-        <li>组合名称</li>
+        <li>模板名称</li>
         <li>店铺名称</li>
-        <li>应用模板</li>
         <li>操作</li>
       </ul>
       <div class="scroll-wrap">
         <ul v-for="item in combinationList">
           <li>{{item.AA}}</li>
           <li>{{item.BB}}</li>
-          <li>{{item.CC}}</li>
           <li>
             <i @click="compile" class="iconfont icon-bianji"></i>
             <i @click="del" class="iconfont icon-lajitong"></i>
@@ -26,19 +24,13 @@
         </ul> 
       </div>
     </div>
-
-    <add-group ref="addGroupBox"></add-group>
-
   </div>
 </template>
 <script>
-  import addGroup from './add-group'
   export default {
-    components: {
-      addGroup
-    },
     data () {
       return {
+        shopId: this.$route.query.shopId,
         combinationList: [
           {
             AA: 'AA',
@@ -74,11 +66,8 @@
       }
     },
     methods: {
-      openAdd () {
-        this.$refs.addGroupBox.open()
-      },
-      compile (parm) {
-        this.$refs.addGroupBox.open(parm)
+      compile () {
+
       },
       del () {
 
@@ -87,7 +76,7 @@
   }
 </script>
 <style lang="scss">
-.m-m-each-other-main{
+.m-m-integral-main{
   overflow: hidden;
   width: 100%;
   margin-bottom: 10px;
@@ -143,18 +132,15 @@
         width: 100px;
       }
       li:nth-child(2){
-        width: 580px;
+        width: 680px;
         word-wrap: break-word; 
         word-break: normal; 
       }
-      li:nth-child(3){
-        width: 100px;
-      }
-      li:nth-child(4){
+      li:last-child{
         width: 100px;
         i{
           transition: all .3s;
-          corsur: pointer;
+          cursor: pointer;
           &:hover{
             color: #2993f8;
           } 

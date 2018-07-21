@@ -90,7 +90,6 @@ export default {
         border: 1px solid #d6d6d6;
         border-radius: 5px;
         width: 100%;
-        margin-left: 10px;
         overflow-x: hidden; 
         text-overflow: ellipsis;
         white-space: nowrap;

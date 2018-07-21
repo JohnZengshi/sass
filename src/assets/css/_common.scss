@@ -315,3 +315,10 @@
     
     >i{ margin-right: 7px; color:#2993f8;}
 }
+
+input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
+        -webkit-appearance:textfield;
+}
+input[type="number"]{
+        -moz-appearance:textfield;
+}

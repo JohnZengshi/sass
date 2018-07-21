@@ -2,7 +2,9 @@
 import memberList from './../../layouts/member-manage/member/member-list'
 import interflow from './../../layouts/member-manage/member/interflow'
 import compileTemplate from './../../layouts/member-manage/member/compile-template'
+import addTemplate from './../../layouts/member-manage/member/add-template'
 import discount from './../../layouts/member-manage/member/discount'
+
 const routes = [
     {
       path: "memberList",
@@ -18,6 +20,11 @@ const routes = [
       path: "compileTemplate",
       name: "编辑模板",
       component: compileTemplate
+    },
+    {
+      path: "addTemplate",
+      name: "新增模板",
+      component: addTemplate
     },
     {
       path: "discount",
