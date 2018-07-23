@@ -26,7 +26,7 @@
 
 			</div>
 
-			<div v-if="status != 1" class="del-btn" @click="delGoods"></div>
+			<div v-if="status != 1 && isCanDelCurrentInvoices" class="del-btn" @click="delGoods"></div>
 			
 			<div ref="remarkWrap" class="remark-tit" @click="openRemarkDialog(item)" @mouseenter="seekRemark(item)" @mouseleave="remarkOut">
 		    <i class="iconfont icon-bianjixiugai move-sign"></i>
@@ -190,7 +190,8 @@ export default {
 		'status',
 		"shopRole",
 		'mantissa', // 1.四舍五入 2.抹掉小数 3.不处理
-		'memberDataInfo'
+		'memberDataInfo',
+		'isCanDelCurrentInvoices'  //是否是该店铺的人员
 	],
 	components: {
 		remarkDialog
