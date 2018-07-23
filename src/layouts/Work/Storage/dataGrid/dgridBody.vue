@@ -200,6 +200,7 @@
 
 			// 文本框失去焦点
 			inputFocusout(evt, item, tab, fIndex, type) {
+				debugger
 				let tempData = evt.target.getAttribute('temp-data') // || evt.target.getAttribute('title') //拿到原始的数据
 				let itemData = item[tab.type]
 				let productId = this.dgDataList[fIndex].productId
@@ -230,6 +231,8 @@
 					if(tab.type == 'partCount' || tab.type === 'calcMethod' || tab.type === 'partPrice') {
 						if(tab.type == 'partCount') {
 							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type])
+						} else if (tab.type == 'calcMethod'){
+							this.dgDataList[fIndex][tab.type] = this.dgDataList[fIndex][tab.type]
 						} else {
 							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 						}
@@ -290,7 +293,11 @@
 					 */
 					if(tab.type === 'goldCost' || tab.type === 'goldPrice' || tab.type === 'netWeight') {
 						//四舍五入保留3位小数
-						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+						if (tab.type === 'netWeight') {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
+						} else {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+						}
 //						if(item.goldCost == 0 || item.goldCost == '0.00') {
 //							item.goldCost = 1
 //						}
@@ -315,8 +322,11 @@
 					 * 2、修改进货工费方式同步更新进货工费额
 					 */
 					if(tab.type === 'inFee' || tab.type === 'inMethod') {
-						console.log(this.dgDataList[fIndex])
-						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+						if (tab.type === 'inMethod') {
+							this.dgDataList[fIndex][tab.type] = this.dgDataList[fIndex][tab.type]
+						} else {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+						}
 						tempArray.push({
 							inMoney: item['inMoney'],
 							productId: productId
@@ -345,6 +355,12 @@
 					) {
 						if(tab.type === 'deputyCount') {
 							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type])
+							tempArray.push({
+								deputyPrice: item['deputyPrice'],
+								productId: productId
+							})
+						} else if (tab.type === 'deputyCalcMethod') {
+							this.dgDataList[fIndex][tab.type] = this.dgDataList[fIndex][tab.type]
 							tempArray.push({
 								deputyPrice: item['deputyPrice'],
 								productId: productId
@@ -389,6 +405,12 @@
 					) {
 						if(tab.type === 'count') {
 							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type])
+							tempArray.push({
+								mainPrice: item['mainPrice'],
+								productId: productId
+							})
+						} else if (tab.type === 'mainCalcMethod') {
+							this.dgDataList[fIndex][tab.type] = this.dgDataList[fIndex][tab.type]
 							tempArray.push({
 								mainPrice: item['mainPrice'],
 								productId: productId
@@ -1012,7 +1034,7 @@
 
 						// 对重定向的处理
 						if(config.resDataRedirect == undefined) {
-							// 拿到对应的请求接口
+							// 拿到对应的请求接口 
 							if(fetch[config.fetchType]) {
 								this.fetchData(fetch[config.fetchType], config)
 							}
@@ -1038,7 +1060,6 @@
 
 					let tempData = JSON.parse(decodeURIComponent(localStorage[config.localStorage])).filter(f => f.classesName == config.classesName)
 					this.$set(this.datagridSelectData, config.resData, tempData[0].childrenList)
-
 				} else if(typeof fetch === 'function') {
 
 					fetch(config, (res) => {

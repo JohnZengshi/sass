@@ -22,15 +22,23 @@
                 <div class="left-main">
                   <h5>{{receiptsIntroList.orderNum}}</h5>
                   <div class="select-container">
-                    <div class="item supplier">
+                    <div class="item supplier flex flex-v flex-pack-justify">
                       <span>{{receiptsIntroList.shopName}}</span>
-                                      <div class="item-name">店铺</div>
+                      <div class="item-name">店铺</div>
                   </div>
-                    <div class="item shop">
+                    <div class="item shop flex flex-v flex-pack-justify">
                       <!-- 注： orderData.shopName 店铺名需要另外一个接口去拿  5.38 单据简介  表尾组件已经做了接口调用，直接传过来即可 -->
-                      <select-drop v-if="nowStatus != 2 && nowStatus != 3 && nowStatus != 5 && nowStatus != 6 && nowStatus != 1 && nowStatus != 4" class="selected_dropdown" :titleName="receiptsIntroList.storageName" dataType="库位" :propList="repositoryList" @dropReturn="dropReturn">
+                      <select-drop 
+                      class="selected_dropdown" 
+                      :titleName="receiptsIntroList.storageName" 
+                      dataType="库位" 
+                      v-if="nowStatus != 2 && nowStatus != 3 && nowStatus != 5 && nowStatus != 6 && nowStatus != 1 && nowStatus != 4" 
+                      :propList="repositoryList" 
+                      @dropReturn="dropReturn">
                       </select-drop>
-                      <span v-else>{{receiptsIntroList.storageName}}</span>
+                      <span v-else>
+                        {{receiptsIntroList.storageName}}
+                      </span>
                       <div class="item-name" style="margin-top:-4px;" :class=" nowStatus != 2 && nowStatus != 3 && nowStatus != 5 && nowStatus != 6 && nowStatus != 1 && nowStatus != 4 ? 'myclasspan' :'' ">库位</div>
                     </div>
                   </div>

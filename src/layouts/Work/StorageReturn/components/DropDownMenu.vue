@@ -313,7 +313,7 @@ export default {
         }
     }
     .title-name {
-        padding: 0 20px 0 8px;
+        // padding: 0 20px 0 8px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -337,7 +337,7 @@ export default {
     
     .drop-triangle {
         position: absolute;
-        right:3px;
+        right:-5px;
         top: 3px;
         font-size:12px;
         display: inline-block;

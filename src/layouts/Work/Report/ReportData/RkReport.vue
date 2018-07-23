@@ -246,7 +246,7 @@
         </Lodop>
       
       <div class="utilsBtn flex flex-v flex-pack-justify">
-        <div v-if="tabClassActive.index != 0" class="btn" @click="exportTab()">
+        <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
           <i class="iconfont icon-daochu"></i>
           <span>导出报表</span>
         </div>
@@ -266,7 +266,7 @@
 			<!--打印模块-->
 			<div style="display: none;" v-if="printDataGrid">
 					<detail-template 
-            v-if="this.tabClassActive.index==0" 
+            v-if="dataGridOptions.type==1" 
             title="入库" 
             tabTitle="明细"
             ref="detailTemplate" 
@@ -274,7 +274,7 @@
             :headerData="printSelectDate"
             :tabSwitch="tabSwitch"></detail-template>
 					<intelligence-type-template 
-            v-if="this.tabClassActive.index==1" 
+            v-if="dataGridOptions.type==2" 
             title="入库" 
             tabTitle="智能分类"
             ref="intelligenceTypeTemplate" 
@@ -282,7 +282,7 @@
             :headerData="printSelectDate"
             :tabSwitch="tabSwitch"></intelligence-type-template>
 					<project-type-template 
-            v-if="this.tabClassActive.index==2" 
+            v-if="dataGridOptions.type==3" 
             title="入库" 
             tabTitle="产品分类"
             ref="projectTypeTemplate" 
@@ -290,7 +290,7 @@
             :headerData="printSelectDate"
             :tabSwitch="tabSwitch"></project-type-template>
 					<custom-template 
-            v-if="this.tabClassActive.index==3" 
+            v-if="dataGridOptions.type==4" 
             title="入库" 
             tabTitle="自定义"
             ref="customTemplate" 
@@ -1221,17 +1221,17 @@ import filterHeader from './base/filter-header'
          (async () => {
            let res = await this.getPrintData();
            if (res) {
-             switch (this.tabClassActive.index) {
-               case 0:
+             switch (this.dataGridOptions.type) {
+               case 1:
                  this.$refs.detailTemplate.print();
                  break;
-               case 1:
+               case 2:
                  this.$refs.intelligenceTypeTemplate.print();
                  break;
-               case 2:
+               case 3:
                  this.$refs.projectTypeTemplate.print();
                  break;
-               case 3:
+               case 4:
                  this.$refs.customTemplate.print();
                  break;
                default:

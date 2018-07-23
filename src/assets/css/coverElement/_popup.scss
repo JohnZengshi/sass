@@ -233,6 +233,12 @@
 }
 .dialog-w320-hAuto-hn{
     @include dialog($w:320px,$h:'auto' ,$t:18% ,$hn:none);
+    // 退库/调柜/发货/调库/退货单据里的弹窗特殊位置处理
+    &.delectInvoicesClass{
+        .el-dialog--small{
+            top: 30% !important;
+        }
+    }
     .el-dialog--small{
         position: relative;
         .el-dialog__header{

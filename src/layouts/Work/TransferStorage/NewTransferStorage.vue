@@ -26,11 +26,11 @@
                                     <div class="left-main">
                                         <h5>{{receiptsIntroList.orderNum}}</h5>
                                         <div class="select-container">
-                                            <div class="item supplier">
+                                            <div class="item supplier flex flex-v flex-pack-justify">
                                                 <span v-text="receiptsIntroList.storageName2"></span>
                                                 <div class="item-name">调出库位</div>
                                             </div>
-                                            <div class="item shop">
+                                            <div class="item shop flex flex-v flex-pack-justify">
                                                     <!-- 注： orderData.shopName 店铺名需要另外一个接口去拿  5.38 单据简介  表尾组件已经做了接口调用，直接传过来即可 -->
                                                 <select-drop
                                                     class="selected_dropdown"

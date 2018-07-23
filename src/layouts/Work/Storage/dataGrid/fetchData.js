@@ -29,20 +29,21 @@ export const typeList = (config, resolve) =>{
 
 // 获取商品大小类列表数据
 export const classlist = (config, resolve) =>{
-  
   seekProductClassList(config.option)
   .then((res) => {
     let datas = res.data.data.list
-    // if (config.option.type == 1) {
-      for (let i of datas) {
-        i.typeList = i.childrenList
-        delete i.childrenList
-      }
-    // }
     // 宝石属性
     if (config.option.type && config.option.type == 4) {
-      localStorage.setItem('jewelProperty',encodeURIComponent(JSON.stringify(datas)))
+      localStorage.setItem('jewelProperty',encodeURIComponent(JSON.stringify(res.data.data.list)))
+      resolve && resolve(datas)
+      return
     }
+    // if (config.option.type == 1) {
+    for (let i of datas) {
+      i.typeList = i.childrenList
+      delete i.childrenList
+    }
+    // }
     resolve && resolve(datas)
   }).catch((res) => {
     console.log(res)
