@@ -860,3 +860,23 @@ export const seekGetReportsPrintXG = function (parm) {
   let URL = "/v1/reports/getReportsPrintXG";
   return apiCall(parm, URL);
 }
+export const seekFindMemberList = function (parm) {
+  let URL = "/v1/member/findMemberList";
+  return apiCall(parm, URL);
+}
+// 会员互通
+export const seekFindTemplateGroupAll = function (parm) {
+  let URL = "/v1/member/findTemplateGroupAll";
+  return apiCall(parm, URL);
+}
+//独立店铺
+export const seekFindTemplateShopAll = function (parm) {
+  let URL = "/v1/member/findTemplateShopAll";
+  return apiCall(parm, URL);
+}
+//会员模板管理
+export const seekFindTemplateAll = function (parm) {
+  let URL = "/v1/member/findTemplateAll";
+  return apiCall(parm, URL);
+}
+

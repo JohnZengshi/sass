@@ -121,8 +121,8 @@ export default {
 <style lang="scss">
 .alone-drop-down-colums-main{
   .el-checkbox{
-    height: 20px!important;
-    line-height: 20px!important;
+    height: 40px!important;
+    line-height: 40px!important;
   }
   .el-checkbox-group .el-checkbox__inner{
     border-radius: 5px!important;
@@ -134,28 +134,6 @@ export default {
     }
   }
 }
-</style>
-<style lang="scss">
-// .checkbox-font {
-//     width: 30px;
-//     .el-checkbox__input{
-//         border-radius: 4px;
-//         height: 20px;
-//         width: 20px;
-//         .el-checkbox__inner{
-//             border-radius: 4px;
-//         }
-        
-//     }
-//     .el-checkbox__input.is-checked {
-//         background-color: #2993f8 !important;
-//         border-color: #2993f8 !important;
-//         .el-checkbox__inner{
-//             background-color: #2993f8 !important;
-//             border-color: #2993f8 !important;
-//         }
-//     }
-// }
 </style>
 <style scoped lang="scss">
 .alone-drop-down-colums-main {

@@ -14,6 +14,15 @@
           <i class="iconfont icon-baobiao1"></i>
           <router-link tag="span" to="/memberManage" class="path_crumbs">会员列表</router-link>
         </div>
+        <down-menu
+          class="fr"
+          :isSolid="true"
+          :titleInfo="filterCondition.shopName ? filterCondition.shopName : '店铺名称'"
+          :showList="shopList"
+          :nameKey="'shopName'"
+          @changeData="changeShop"
+          @clearInfo="clearShop"
+        ></down-menu>
       </div>
       <div class="Rp_dataGrid_container">
         <div class="rp_gridState">
@@ -66,7 +75,8 @@ import {
   // seekGetShopListByCo,
   seekGetUserInfo,
   seekMemberList,
-  seekGetPrintLabelList
+  seekGetPrintLabelList,
+  seekGetShopListByCo
 } from 'Api/commonality/seek.js'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DownMenu from 'base/menu/DownMenu'
@@ -74,6 +84,7 @@ import ReportDetail from 'base/newDataGrid/reportDetailTab'
 import DropDownMenu from '@/components/template/DropDownMenu'
 import filterHeader from './../base/filter-header'
 import memberInfo from '@/layouts/Leaguer/components/memberInfo'
+import downMenu from 'base/menu/new-down-menu'
 // import btnHeader from './base/btn-header'
 import { productTpyeState, newProductDetailStatus } from 'Api/commonality/status'
 
@@ -83,7 +94,8 @@ export default {
     DropDownMenu,
     DownMenu,
     filterHeader,
-    memberInfo
+    memberInfo,
+    downMenu
     // btnHeader
   },
   data() {
@@ -102,7 +114,8 @@ export default {
         keyWord: '',
         newOrderId: '',
         storageId: [],
-        shopId: [],
+        shopId: this.$route.query.shopId,
+        shopName: '',
         // productTypeId: [],
         // colourId: [],
         // jeweId: [],
@@ -182,7 +195,23 @@ export default {
       loading: false,
 
       allData: {},
-      dataGridStorage: [],
+      dataGridStorage: [
+        {
+          memberId: 'memberId',
+          avatarUrl: '//y.gtimg.cn/music/photo_new/T001R300x300M000002EI0UQ3vJz5h.jpg?max_age=2592000',
+          nickname: 'nickname',
+          phone: 'phone',
+          name: 'name',
+          grade: 'grade',
+          typeName: 'typeName',
+          withScore: 'withScore',
+          score: 'score',
+          guestPrice: 'guestPrice',
+          sumPrice: 'sumPrice',
+          sumSize: 'sumSize',
+          createTime: '20180709000000',
+        }
+      ],
       dataGridDetailList: [],
 
       //成本核算
@@ -289,14 +318,13 @@ export default {
       paging: {
         page: 1,
         pageSize: '30'
-      }
-    };
+      },
+      shopList: [] 
+    }
   },
   created() {
-    this.getShop(); //库位
+    this._seekGetShopListByCo()
     this.getProductTypeList() //产品类别
-    // this.getShopListByCo() //店铺
-    this.getUserList(); //制单人
     this.getGetUserList() //审核人
     // this.send()
     this.$store.dispatch('checkBrowser', (type) => {
@@ -380,6 +408,38 @@ export default {
 
   },
   methods: {
+    _seekGetShopListByCo() { // 店铺列表
+      let options = {
+        page: 1,
+        pageSize: 0,
+        type: 1,
+      };
+      seekGetShopListByCo(options).then((res) => {
+        if(res.data.state == 200) {
+          this.shopList = res.data.data.shopList
+          for (let i of res.data.data.shopList) {
+            if (i.shopId == this.shopId) {
+              this.changeShop(i)
+              return
+            }
+          }
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.data.msg
+          })
+        }
+      });
+    },
+    changeShop (parm) {
+     // Object.assign(this.filterCondition, parm)
+      this.filterData(parm)
+        // this.$emit("filterData", this.filterData)
+    },
+    clearShop () {
+      this.filterCondition.shopName = ''
+      this.filterCondition.shopId = ''
+    },
     closeEditReturn () {
 
     },
@@ -757,19 +817,6 @@ export default {
       })
     },
 
-    //制单人
-    getUserList() {
-      let options = {
-        type: 1,
-        companyId: sessionStorage.getItem('companyId'),
-        shopId: ''
-      }
-      seekMemberList(options).then((res) => {
-        this.shopUserList = res.data.data.dataList.filter(item => item.role != '店长' && item.role != '店员');
-      }, (res) => {
-        console.log(res);
-      })
-    },
 
     //审核人
     getGetUserList() {
@@ -791,14 +838,6 @@ export default {
 
     },
 
-    //获取库位列表
-    getShop() {
-      seekRepositoryList().then((res) => {
-        this.repositoryList = res.data.data.repositoryList;
-      }, (res) => {
-
-      })
-    },
 
     //获取当前的接口类型
     getReportType() {

@@ -36,8 +36,8 @@
         </div>
 
         <sell-discount
-          ref="sellDiscountBox"
           :isDialog="isDialog"
+          ref="sellDiscountBox"
           @close="discountClose"
           @confirm="discountConfirm"
         ></sell-discount>

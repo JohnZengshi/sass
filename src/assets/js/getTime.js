@@ -1,4 +1,4 @@
-export const GetDateStr = function (AddDayCount) { // 获取某天的时间值
+export const GetDateStr = function(AddDayCount) { // 获取某天的时间值
   var today = new Date();
   today.setDate(today.getDate() + AddDayCount); // 获取AddDayCount天后的日期
   var y = today.getFullYear();
@@ -7,7 +7,7 @@ export const GetDateStr = function (AddDayCount) { // 获取某天的时间值
   return `${y}-${m}-${d}`;
 }
 
-export const GetDateYR = function (AddDayCount) { // 获取某天的时间值
+export const GetDateYR = function(AddDayCount) { // 获取某天的时间值
   var today = new Date();
   today.setDate(today.getDate() + AddDayCount); // 获取AddDayCount天后的日期
   var y = today.getFullYear();
@@ -16,15 +16,15 @@ export const GetDateYR = function (AddDayCount) { // 获取某天的时间值
   return `${m}-${d}`;
 }
 
-export const stringTime = function (AddDayCount) {
+export const stringTime = function(AddDayCount) {
   var today = new Date();
   today.setDate(today.getDate() + AddDayCount); // 获取AddDayCount天后的日期
   var N = today.getFullYear();
-  var Y = today.getMonth() + 1;//获取当前月份的日期
+  var Y = today.getMonth() + 1; //获取当前月份的日期
   var R = today.getDate();
   var S = today.getHours();
   var F = today.getMinutes();
-  var M  = today.getSeconds();
+  var M = today.getSeconds();
   if (Y.toString().length == 1) {
     Y = `0${Y}`
   }
@@ -43,26 +43,26 @@ export const stringTime = function (AddDayCount) {
   return `${N}${Y}${R}${S}${F}${M}`;
 }
 
-export const GetNYR = function (AddDayCount) {
+export const GetNYR = function(AddDayCount) {
   if (AddDayCount) {
     return `${AddDayCount.slice(0, 4)}-${AddDayCount.slice(4, 6)}-${AddDayCount.slice(6, 8)}`
   }
 }
 
-export const GetChineseNYR = function (AddDayCount) {
+export const GetChineseNYR = function(AddDayCount) {
   if (AddDayCount) {
     return `${AddDayCount.slice(0, 4)}年${AddDayCount.slice(4, 6)}月${AddDayCount.slice(6, 8)}日`
   }
 }
 
-export const GetSF = function (AddDayCount) {
+export const GetSF = function(AddDayCount) {
   if (AddDayCount) {
     return `${AddDayCount.slice(8, 10)}:${AddDayCount.slice(10, 12)}`
   }
 }
 
-export const GetMonth = function () { // 获取上个月的开始和结束
-  var lastMonthDate = new Date();  //上月日期
+export const GetMonth = function() { // 获取上个月的开始和结束
+  var lastMonthDate = new Date(); //上月日期
   var nowYear = lastMonthDate.getYear(); //当前年
   nowYear += (nowYear < 2000) ? 1900 : 0;
 
@@ -71,36 +71,33 @@ export const GetMonth = function () { // 获取上个月的开始和结束
   //格式化日期：yyyy-MM-dd
   function formatDate(date) {
     var myyear = date.getFullYear();
-    var mymonth = date.getMonth()+1;
+    var mymonth = date.getMonth() + 1;
     var myweekday = date.getDate();
-    console.log(myyear)
-    console.log(mymonth)
-    console.log(myweekday)
-    if(mymonth < 10){
-        mymonth = "0" + mymonth;
+    if (mymonth < 10) {
+      mymonth = "0" + mymonth;
     }
-    if(myweekday < 10){
-        myweekday = "0" + myweekday;
+    if (myweekday < 10) {
+      myweekday = "0" + myweekday;
     }
-    return (myyear+"-"+mymonth + "-" + myweekday);
+    return (myyear + "-" + mymonth + "-" + myweekday);
   }
 
   //获得某月的天数
-  function getMonthDays(myMonth){
+  function getMonthDays(myMonth) {
     var monthStartDate = new Date(nowYear, myMonth, 1);
     var monthEndDate = new Date(nowYear, myMonth + 1, 1);
-    var   days   =   (monthEndDate   -   monthStartDate)/(1000   *   60   *   60   *   24);
-    return   days;
+    var days = (monthEndDate - monthStartDate) / (1000 * 60 * 60 * 24);
+    return days;
   }
 
   //获得上月开始时间
-  function getLastMonthStartDate(){
+  function getLastMonthStartDate() {
     var lastMonthStartDate = new Date(nowYear, lastMonth - 1, 1);
     return formatDate(lastMonthStartDate);
   }
 
   //获得上月结束时间
-  function getLastMonthEndDate(){
+  function getLastMonthEndDate() {
     var lastMonthEndDate = new Date(nowYear, lastMonth - 1, getMonthDays(lastMonth - 1));
     return formatDate(lastMonthEndDate);
   }
@@ -112,15 +109,15 @@ export const GetMonth = function () { // 获取上个月的开始和结束
   return timeData
 }
 
-export const GetNewMonth = function () { // 获取当个月的开始和结束
+export const GetNewMonth = function() { // 获取当个月的开始和结束
   var today = new Date();
   today.setDate(today.getDate() + 0); // 获取AddDayCount天后的日期
   var N = today.getFullYear();
-  var Y = today.getMonth() + 1;//获取当前月份的日期
+  var Y = today.getMonth() + 1; //获取当前月份的日期
   var R = today.getDate();
   var S = today.getHours();
   var F = today.getMinutes();
-  var M  = today.getSeconds();
+  var M = today.getSeconds();
 
   if (Y.toString().length == 1) {
     Y = `0${Y}`
@@ -150,7 +147,7 @@ export const GetNewMonth = function () { // 获取当个月的开始和结束
   return timeData
 }
 
-export const getMonthStart = function (AddDayCount) {  // 获得本月的开始日期
+export const getMonthStart = function(AddDayCount) { // 获得本月的开始日期
   let now = new Date()
   let nowMonth = now.getMonth()
   let nowYear = now.getYear()
@@ -158,7 +155,7 @@ export const getMonthStart = function (AddDayCount) {  // 获得本月的开始�
   return new Date(nowYear, nowMonth, 1)
 }
 
-export const formattingXjTime = function (parm) { // 格式化西金的时间--到日
+export const formattingXjTime = function(parm) { // 格式化西金的时间--到日
   if (parm) {
     let year = parm.substring(0, 4)
     let month = parm.substring(5, 7)
@@ -167,7 +164,7 @@ export const formattingXjTime = function (parm) { // 格式化西金的时间--�
   }
 }
 
-export const formattingTime = function (parm) { // 格式化时间开始
+export const formattingTime = function(parm) { // 格式化时间开始
   if (!parm) {
     return ''
   }
@@ -183,7 +180,7 @@ export const formattingTime = function (parm) { // 格式化时间开始
   return `${N}${Y}${R}000000`
 }
 
-export const xjEndTime = function (parm) { // 格式化时间结束
+export const xjEndTime = function(parm) { // 格式化时间结束
   if (!parm) {
     return ''
   }
@@ -199,7 +196,7 @@ export const xjEndTime = function (parm) { // 格式化时间结束
   return `${N}${Y}${R}235959`
 }
 
-export const formattingEndTime = function (parm) { // 当日结束时间
+export const formattingEndTime = function(parm) { // 当日结束时间
   if (!parm) {
     return ''
   }

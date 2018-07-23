@@ -25,7 +25,7 @@
 
     <router-link class="member-list-btn" :to="{path: '/memberManage/memberList', query: {shopId: filterOption.shopId}}">会员列表></router-link>
 
-    <add-member ref="addMemberBox"></add-member>
+    <add-member ref="addMemberBox" :shopId="filterOption.shopId"></add-member>
   </div>
 </template>
 <script>

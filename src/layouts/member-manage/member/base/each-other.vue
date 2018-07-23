@@ -7,7 +7,7 @@
         +店铺组合
       </div>
     </div>
-    <div class="each-table">
+    <div class="each-table" v-loading="loading">
       <ul class="header-tit">
         <li>组合名称</li>
         <li>店铺名称</li>
@@ -15,13 +15,13 @@
         <li>操作</li>
       </ul>
       <div class="scroll-wrap">
-        <ul v-for="item in combinationList">
-          <li>{{item.AA}}</li>
-          <li>{{item.BB}}</li>
-          <li>{{item.CC}}</li>
+        <ul v-for="(item, index) in combinationList">
+          <li>{{item.name}}</li>
+          <li>{{item.shopName}}</li>
+          <li>{{item.groupName}}</li>
           <li>
             <i @click="compile" class="iconfont icon-bianji"></i>
-            <i @click="del" class="iconfont icon-lajitong"></i>
+            <i @click="del(item, index)" class="iconfont icon-lajitong"></i>
           </li>
         </ul> 
       </div>
@@ -33,12 +33,16 @@
 </template>
 <script>
   import addGroup from './add-group'
+  import {
+    seekFindTemplateGroupAll
+  } from 'Api/commonality/seek.js'
   export default {
     components: {
       addGroup
     },
     data () {
       return {
+        loading: true,
         combinationList: [
           {
             AA: 'AA',
@@ -73,15 +77,53 @@
         ]
       }
     },
+    created () {
+      this._seekFindTemplateGroupAll()
+    },
     methods: {
+      _seekFindTemplateGroupAll () {
+        this.loading = true
+        let datas = {
+          dataList: [
+            {
+              groupId: 'groupId',
+              groupName: 'groupName',
+              name: 'name',
+              groupShopList: [
+                {
+                  shopId: 'shopId',
+                  shopName: 'shopName'
+                },
+                {
+                  shopId: 'shopId2',
+                  shopName: 'shopName2'
+                }
+              ]
+            }
+          ]
+        }
+        for (let i of datas.dataList) {
+          let shopName = ''
+          for (let j of i.groupShopList) {
+            shopName += shopName ? '、' + j.shopName : j.shopName
+          }
+          i.shopName = shopName
+        }
+        this.combinationList = datas.dataList
+        this.loading = false
+        seekFindTemplateGroupAll()
+          .then(res => {
+
+          })
+      },
       openAdd () {
         this.$refs.addGroupBox.open()
       },
       compile (parm) {
         this.$refs.addGroupBox.open(parm)
       },
-      del () {
-
+      del (item, index) {
+        this.combinationList.splice(index, 1)
       }
     }
   }

@@ -19,6 +19,7 @@
   </div>
 </template>
 <script>
+  import { seekFindTemplateShopAll } from 'Api/commonality/seek'
   export default {
     data () {
       return {

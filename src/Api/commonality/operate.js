@@ -602,3 +602,7 @@ export const operateAddClassesRemark = function(parm) {
     let url = "/v1/headquarter/addClassesRemark";
     return new Axios(url, parm).apiCall();
 }
+export const operateAddMember = function(parm) {
+    let url = "/v1/member/addMember";
+    return new Axios(url, parm).apiCall();
+}

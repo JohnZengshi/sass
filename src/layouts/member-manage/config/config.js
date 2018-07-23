@@ -23,7 +23,7 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'url', //单元格类型
+      childType: 'avatarUrl', //单元格类型
       totalType: 'totalNum', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
@@ -38,7 +38,7 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'classTypeName', //单元格类型
+      childType: 'nickname', //单元格类型
       totalType: 'totalNum', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
@@ -52,7 +52,7 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'jewelryName', //单元格类型
+      childType: 'phone', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
@@ -62,11 +62,11 @@ module.exports = {
       id: '8', //id 
       text: '负责人', //头部title文字
       width: '120', //单元格宽
-      type: 'totalWeight', //合计类型值
+      type: 'name', //合计类型值
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'weight', //单元格类型
+      childType: 'name', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
@@ -80,7 +80,7 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'goldWeight', //单元格类型
+      childType: 'grade', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
@@ -94,7 +94,7 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'main', //单元格类型
+      childType: 'typeName', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
@@ -108,7 +108,7 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'deputy', //单元格类型
+      childType: 'withScore', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
@@ -123,7 +123,7 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'price', //单元格类型
+      childType: 'score', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
@@ -138,7 +138,7 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'cost', //单元格类型
+      childType: 'guestPrice', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
@@ -154,7 +154,7 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'productClass', //单元格类型
+      childType: 'sumPrice', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
@@ -170,7 +170,7 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'locationName', //单元格类型
+      childType: 'sumSize', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
@@ -186,7 +186,7 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'time', //单元格类型
+      childType: 'createTime', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数

@@ -6,9 +6,9 @@
         <div @click.stop="change(tb)" class="tb-tr" :key="index" :class="{'print-on': filterChange(index)}">
           <template v-for="(tab,num) in detailDataGridColumn">
             
-            <div class="tb-td pd-10" v-if="tab.childType == 'url'" :style="tableCell(tab.width)" :key="num">
+            <div class="tb-td pd-10" v-if="tab.childType == 'avatarUrl'" :style="tableCell(tab.width)" :key="num">
               <div class="head-portrait-wrap">
-                <img class="head-portrait" src="//y.gtimg.cn/music/photo_new/T001R300x300M000002EI0UQ3vJz5h.jpg?max_age=2592000" alt="">
+                <img class="head-portrait" :src="tab.avatarUrl" alt="">
               </div>
             </div>
 
@@ -16,10 +16,10 @@
               <i @click.stop="delData(tb, index)" class="iconfont icon-shanchu1 del-icon"></i>
             </div>
   
-            <div class="tb-td" v-else-if="tab.childType == 'time'" :style="tableCell(tab.width)" :key="num">
+            <div class="tb-td" v-else-if="tab.childType == 'createTime'" :style="tableCell(tab.width)" :key="num">
               <div class="time-wrap">
-                <p>{{_GetNYR('20180911000000')}}</p>
-                <p>{{_GetSF('20180911000000')}}</p>
+                <p>{{_GetNYR(tb.createTime)}}</p>
+                <p>{{_GetSF(tb.createTime)}}</p>
               </div>
             </div>
 
