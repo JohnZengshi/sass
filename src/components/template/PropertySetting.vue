@@ -112,9 +112,9 @@
                 <el-select v-if="data.propertyCode == 'barcode2'" v-model="data.sample" placeholder="请选择" @change="selectChange">
                     <el-option
                         v-for="item in options"
-                        :key="item.url"
+                        :key="item.id"
                         :label="item.name"
-                        :value="item.url">
+                        :value="item.id">
                     </el-option>
                 </el-select>
                 <el-form-item v-else label="样本">
@@ -271,7 +271,7 @@
         created(){
             let _this = this;
             this.fonts.push(...fonts.Fonts)
-            apiCall(null, '/v1/print/getValidUrl').then(res => {
+            apiCall({}, '/v1/print/getSettingLabel').then(res => {
                 if (res.data.state == 200){
                     _this.options = res.data.data.dataList;
                 }
@@ -321,9 +321,9 @@
                 }
                 //
             },
-            selectChange(url){
-                this.data.sample = url;
-                this.data.codeUrl = url + '?templateId=' + this.templateId + '&companyId=' + this.unit.companyId;
+            selectChange(id){
+                this.data.sample = id;
+                this.data.codeUrl = 'http://label.yunzhubao.com/#/laberIndex?templateId=' + id + '&companyId=' + this.unit.companyId;
             },
 
             fontFamily(k){

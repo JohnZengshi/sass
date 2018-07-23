@@ -36,6 +36,7 @@
     @import "./assets/css/common.scss";
 </style>
 <style scoped lang="scss">
+
     #app{
         height:100%;
     }

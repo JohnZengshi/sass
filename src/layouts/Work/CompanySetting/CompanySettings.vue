@@ -538,6 +538,9 @@ export default {
                 case '12':
                     this.panel = VerificationCode
                     break
+                // case '13':
+                //     this.panel = VerificationCode
+                //     break
             }
         },
         openMenberPoint(index,type){
@@ -700,7 +703,7 @@ export default {
                 .main-left-menu-item {
                     text-align: center;
                     font-size: 14px;
-                    height:56px;
+                    height:51.7px;
                     color: #999;
                     font-weight: bold;
                     position: relative;
