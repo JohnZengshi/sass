@@ -1,37 +1,39 @@
 <!-- 新增店铺组合 -->
 <template>
-  <div class="m-m-add-group-main">
-    <div class="p-close-icon" @click="isDialog = false">
-      <i class="el-dialog__close el-icon el-icon-close"></i>
-    </div>
-    <div class="add-group-body">
-      <h3>销售折扣设置</h3>
-      <div class="input-wrap">
-        <span class="item-label">设置最低折扣</span>
-        <input placeholder="请输入" v-model="name">
-      </div>
-    </div>
-    <div class="xj-btn-list">
-      <div class="btn cnacel-btn" @click="close">取消</div>
-      <div class="btn" @click="confirm">确定</div>
+  <div class="m-m-sell-discount-main">
+    <div v-for="item in productTypeList">
+      <h6>{{item.classesName}}</h6>
+      <ul v-for="list in item.typeList">
+          <li>
+            {{list.classesName}}
+          </li>
+      </ul>
     </div>
   </div>
 </template>
 <script>
-import { seekGetShopListByCo } from 'Api/commonality/seek'
+import { seekGetShopListByCo, getProductTypeList } from 'Api/commonality/seek'
 export default {
+  props: ['isDialog'],
   data() {
     return {
+      productTypeList: [],
       checkList: [],
       shopList: [],
-      name: '',
-      isDialog: false
+      name: ''
     }
+  },
+  // watch: {
+  //   isDialog () {
+  //     this._getProductTypeList()
+  //   }
+  // },
+  created () {
+    this._getProductTypeList()
   },
   methods: {
     open (parm) {
       this.checkList = []
-      this.isDialog = true
       this._seekGetShopListByCo()
     },
     close () {
@@ -59,13 +61,27 @@ export default {
             })
           }
         })
+    },
+    _getProductTypeList () {
+      getProductTypeList()
+        .then(res => {
+          if (res.data.state == 200) {
+            debugger
+            this.productTypeList = res.data.data.list
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            })
+          }
+        })
     }
   }
 }
 
 </script>
 <style lang="scss">
-.m-m-add-group-main{
+.m-m-sell-discount-main{
   .el-checkbox{
     height: 40px!important;
     line-height: 40px!important;
@@ -82,84 +98,85 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
-.m-m-add-group-main {
-  height: 100%;
-  width: 700px;
-  height: 730px;
+.m-m-sell-discount-main {
+  border: 1px solid red;
   background-color: #fff;
-  border-radius: 5px;
-  padding: 20px 30px;
   position: relative;
-  .p-close-icon {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    height: 20px;
-    width: 20px;
-    cursor: pointer;
-    >i {
-      color: #bfcbd9;
-    }
-  }
-  .add-group-body {
-    height: 660px;
-    >h3 {
-      line-height: 1;
+  height: 350px;
+  overflow: scroll;
+  >div{
+    h5{
       font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: #333;
     }
-    .input-wrap {
-      width: 300px;
-      margin-bottom: 34px;
-      .item-label {
+    ul{
+      li{
         display: inline-block;
-        width: 90px;
-      }
-      input {
-        height: 28px;
-        background-color: transparent;
-        font-size: 14px;
-        border-radius: 3px;
-        text-indent: 10px;
-        border: 1px solid #d6d6d6;
-        &:active,
-        &:hover,
-        &:focus {
-          border: 1px solid #2993f8;
-          background-color: #f4f9ff;
-        }
-      }
-    }
-    .shop-list {
-      .list-wrap {
-        height: 460px;
-        margin: 20px;
-        overflow: scroll;
-        li {
-          height: 40px;
-          padding: 0 10px;
-          display: inline-block;
-          line-height: 40px;
-          border: 1px solid #d6d6d6;
-          text-align: left;
-          padding-left: 14px;
-          font-size: 14px;
-          border-bottom: 1px solid #f1f2f3;
-          cursor: pointer;
-          margin-right: 10px;
-          &:hover {
-            background: #f6f7f8;
-            color: #3195f5;
-          }
-        }
-        li.active {
-          color: #2993f8;
-        }
+        height: 80px;
       }
     }
   }
+  // .sell-discount-body {
+  //   height: 660px;
+  //   >h3 {
+  //     line-height: 1;
+  //     font-size: 16px;
+  //     font-weight: 700;
+  //     margin-bottom: 20px;
+  //     color: #333;
+  //   }
+  //   .product-list{
+  //     border: 1px solid red;
+  //   }
+  //   .input-wrap {
+  //     width: 300px;
+  //     margin-bottom: 34px;
+  //     .item-label {
+  //       display: inline-block;
+  //       width: 90px;
+  //     }
+  //     input {
+  //       height: 28px;
+  //       background-color: transparent;
+  //       font-size: 14px;
+  //       border-radius: 3px;
+  //       text-indent: 10px;
+  //       border: 1px solid #d6d6d6;
+  //       &:active,
+  //       &:hover,
+  //       &:focus {
+  //         border: 1px solid #2993f8;
+  //         background-color: #f4f9ff;
+  //       }
+  //     }
+  //   }
+  //   .shop-list {
+  //     .list-wrap {
+  //       height: 460px;
+  //       margin: 20px;
+  //       overflow: scroll;
+  //       li {
+  //         height: 40px;
+  //         padding: 0 10px;
+  //         display: inline-block;
+  //         line-height: 40px;
+  //         border: 1px solid #d6d6d6;
+  //         text-align: left;
+  //         padding-left: 14px;
+  //         font-size: 14px;
+  //         border-bottom: 1px solid #f1f2f3;
+  //         cursor: pointer;
+  //         margin-right: 10px;
+  //         &:hover {
+  //           background: #f6f7f8;
+  //           color: #3195f5;
+  //         }
+  //       }
+  //       li.active {
+  //         color: #2993f8;
+  //       }
+  //     }
+  //   }
+  // }
 }
 
 </style>

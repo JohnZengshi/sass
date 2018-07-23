@@ -1,7 +1,7 @@
 <!-- 新增店铺组合 -->
 <template>
   <el-dialog top="7%" :visible.sync="isDialog" class="xj-input-dialog">
-    <div class="m-m-add-group-main" v-show="!issellDiscountBox">
+    <div class="m-m-add-group-main">
       <div class="p-close-icon" @click="isDialog = false">
         <i class="el-dialog__close el-icon el-icon-close"></i>
       </div>
@@ -31,9 +31,17 @@
         </div>
 
         <div class="input-wrap">
-          <span class="item-label">销售折扣设置</span>
-          <input type="Number" placeholder="点击设置销售折扣" v-model="name" @click="openSellDiscount">
+          <span class="item-label">设置最低折扣</span>
+          <input type="Number" placeholder="请输入" v-model="name" @click="openSellDiscount">
         </div>
+
+        <sell-discount
+          ref="sellDiscountBox"
+          :isDialog="isDialog"
+          @close="discountClose"
+          @confirm="discountConfirm"
+        ></sell-discount>
+
       </div>
       <div class="xj-btn-list">
         <div class="btn cnacel-btn" @click="close">取消</div>
@@ -41,13 +49,6 @@
       </div>
 
     </div>
-
-    <sell-discount
-      v-show="issellDiscountBox"
-      @close="discountClose"
-      @confirm="discountConfirm"
-      ref="sellDiscountBox"
-    ></sell-discount>
   </el-dialog>
 </template>
 <script>
@@ -72,6 +73,9 @@ export default {
     open (parm) {
       this.checkList = []
       this.isDialog = true
+      // if (this.$refs.sellDiscountBox) {
+      //   this.$refs.sellDiscountBox.initData() 
+      // }
     },
     discountClose () {
       this.issellDiscountBox = false
