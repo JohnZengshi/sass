@@ -26,20 +26,19 @@
                                     <div class="left-main">
                                         <h5>{{receiptsIntroList.orderNum}}</h5>
                                         <div class="select-container">
-                                            <div class="item supplier">    
-                                               
+                                            <div class="item supplier flex flex-v flex-pack-justify">    
                                                 <span>
                                                     {{receiptsIntroList.storageName}}
                                                 </span>
                                                 <div class="item-name">库位</div>
                                             </div>
-                                            <div class="item shop">
+                                            <div class="item shop flex flex-v flex-pack-justify">
                                                     <!-- 注： orderData.shopName 店铺名需要另外一个接口去拿  5.38 单据简介  表尾组件已经做了接口调用，直接传过来即可 -->
                                                 <select-drop
-                                                    v-if="nowStatus == 1 && isSinglePerson"
                                                     class="selected_dropdown"
                                                     :titleName="receiptsIntroList.shopName" 
                                                     dataType="店铺"
+                                                    v-if="nowStatus == 1 && isSinglePerson"
                                                     :propList="shopListByCo"
                                                     @clearInfo="clearInfo"
                                                     @dropReturn="dropReturn">

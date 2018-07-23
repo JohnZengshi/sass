@@ -128,7 +128,7 @@ export const jurisdictionComputedManageRole = function (parm) { // 公司管理�
     }
     return false;
 }
-export const jurisdictionJCY = function (parm) {
+export const jurisdictionJCY = function (parm) {  //观察员
     for (let i of parm) {
         switch (i.role) {
             case "6":

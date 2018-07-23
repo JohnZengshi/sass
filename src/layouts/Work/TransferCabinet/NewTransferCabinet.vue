@@ -25,10 +25,11 @@
                             <div class="left-main">
                                 <h5>{{receiptsIntroList.orderNum}}</h5>
                                 <div class="select-container">
-                                    <div class="item supplier">
+                                    <div class="item supplier flex flex-v flex-pack-justify">
                                         <span v-text="receiptsIntroList.groupName2"></span>
+                                        <div class="item-name">调出柜组</div>
                                     </div>
-                                    <div class="item shop">
+                                    <div class="item shop flex flex-v flex-pack-justify">
                                             <!-- 注： orderData.shopName 店铺名需要另外一个接口去拿  5.38 单据简介  表尾组件已经做了接口调用，直接传过来即可 -->
                                         <select-drop
                                             class="selected_dropdown"
@@ -42,11 +43,12 @@
                                         <span v-else>
                                             {{receiptsIntroList.groupName}}
                                         </span>
+                                        <div class="item-name">调入柜组</div>
                                     </div>
-                                     <div class="select-container-name">
+                                     <!-- <div class="select-container-name">
                                         <div class="item">调出柜组</div>
                                         <div class="item" style="margin-left:-6px;">调入柜组</div>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 
                             </div>
@@ -1939,6 +1941,10 @@ color: #d6d6d6;
         right: -2px;
     }
 }
+    .item-name{
+	    font-size: 12px;
+	    color: #a9a8a7;
+    }
 .select-container-name{
   position: absolute;
   bottom: 10px;

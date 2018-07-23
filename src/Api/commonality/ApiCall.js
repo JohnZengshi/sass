@@ -60,8 +60,8 @@ export default apiCall
 //     let foo = function* (data) {
 //         yield Vue.http.post(url, data)
 //     }
-    
-    
+
+
 //     let resourcePromise = foo(data).next().value
 //     // 中间件
 //     // resourcePromise.then( res =>{
@@ -70,9 +70,9 @@ export default apiCall
 //     //   if(res.data.state == 100 ){
 //     //     Vue.prototype.loginPopup.show()
 //     //   }
-      
+
 //     // })
-    
+
 //     return resourcePromise
 // }
 

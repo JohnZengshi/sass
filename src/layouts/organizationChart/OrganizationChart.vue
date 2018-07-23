@@ -6,9 +6,9 @@
       :shopDataList="shopDataList">
     </CompanyEdit> -->
     <section class="body-wrap">
-    
+
       <div class="body-left-wrap">
-        
+
         <DepUserList
           :updatas="updatas"
           class="member-list-main"
@@ -258,10 +258,10 @@ import CompanyDetail from './CompanyDetail'
                   }
                   if (A2 === '1' || A2 === '2') { // 改需求，管理层都可以操作
                     return false
-                  } 
+                  }
                   return false
               }
-            } 
+            }
           }
         }
         return false
@@ -343,7 +343,7 @@ import CompanyDetail from './CompanyDetail'
                   }
                   return false
               }
-            } 
+            }
           }
         }
         return false
@@ -373,7 +373,7 @@ import CompanyDetail from './CompanyDetail'
         if (this.positionData.roleList) {
           if (this.isShopManager && getRole('5', this.positionData.roleList)) {
             return true
-          } 
+          }
         }
         return false
       },
@@ -420,7 +420,7 @@ import CompanyDetail from './CompanyDetail'
             if (i.role === '4') {
               return true
             }
-          }   
+          }
         }
         return false
       },
@@ -442,7 +442,7 @@ import CompanyDetail from './CompanyDetail'
             if (i.role === '4') {
               return true
             }
-          }   
+          }
         }
         return false
       },
@@ -454,7 +454,7 @@ import CompanyDetail from './CompanyDetail'
           if(userPositionInfo[index].role === '1' || userPositionInfo[index].role === '2'){
             sessionStorage.setItem('guanliyuan',true)
           }else {
-            sessionStorage.setItem('guanliyuan','')            
+            sessionStorage.setItem('guanliyuan','')
           }
           if(userPositionInfo[index].role === '1' || userPositionInfo[index].role === '2' || userPositionInfo[index].role === '3' || userPositionInfo[index].role === '6'){
             // this.headquartersShow = true
@@ -462,7 +462,7 @@ import CompanyDetail from './CompanyDetail'
             return;
           }
         }
-        sessionStorage.setItem('headquartersShow',false)        
+        sessionStorage.setItem('headquartersShow',false)
       }
     },
     created () {
@@ -668,7 +668,7 @@ import CompanyDetail from './CompanyDetail'
                 sessionStorage.setItem('multipleIdentities', 'N')
                 }
                 sessionStorage.setItem('userType', this.userType)
-                
+
                 if (sessionStorage.getItem('userType') == 2) {
                 this.shopManage = true
                 }
@@ -824,7 +824,7 @@ import CompanyDetail from './CompanyDetail'
             this.showList = false
           }
         } else {
-            this.showList = true          
+            this.showList = true
         }
       },
       checekAllRole(data){
@@ -869,7 +869,7 @@ import CompanyDetail from './CompanyDetail'
     .body-left-wrap, .body-right-wrap{
       vertical-align: top;
     }
-    .body-left-wrap{ 
+    .body-left-wrap{
       position: relative;
       display: inline-block;
       height: 100%;

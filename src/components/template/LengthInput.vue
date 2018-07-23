@@ -19,6 +19,7 @@ export default {
     },
     methods: {
         inputHandler(e) {
+            debugger
             let value = e.target.value
             if (value && /[^\d.]+/.test(value)) {
                 value = /\d+\.?\d?/.test(value) ? Number(value.match(/\d+\.?\d?/)[0]) : ''
@@ -35,6 +36,7 @@ export default {
             this.$emit('change', Number(value || 0))
         },
         blurHandler(e) {
+            debugger
             let value = e.target.value
             if (!value) {
                 value = 0

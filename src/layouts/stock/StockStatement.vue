@@ -354,11 +354,17 @@
         seekGetShopListByCo(options)
           .then(res => {
             if (res.data.state === 200) {
-              this.shopList = [...res.data.data.shopList, {
-                shopId: '0',
-                // shopId: '',
-                shopName: '全部店铺'
-              }]
+              let shopListLength = res.data.data.shopList.length;
+              if (shopListLength > 1) {
+                this.shopList = [...res.data.data.shopList, {
+                  shopId: '0',
+                  // shopId: '',
+                  shopName: '全部店铺'
+                }]
+              }else{
+                this.shopList = res.data.data.shopList;
+              }
+              
             }
           })
       },

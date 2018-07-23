@@ -10,6 +10,7 @@ import noticeList from './NoticeList'
 import addNoticet from './AddNotice'
 import editNotice from './EditNotice'
 export default {
+    name: 'notice',
     data () {
         return {
             currentView: 'noticeList',
