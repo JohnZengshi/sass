@@ -317,7 +317,7 @@ export default {
         
     }
     .title-name {
-        padding: 0 20px 0 8px;
+        // padding: 0 20px 0 8px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
