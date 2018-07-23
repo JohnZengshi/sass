@@ -4,6 +4,7 @@ IM                          IM模块
 contacts                    联系人
 Admin                       我的
 organizationChart           组织架构
+laberDetection              标签检测
 
 /Work       工作
 /

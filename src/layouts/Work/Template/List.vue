@@ -24,7 +24,7 @@
                     </p>
                     <el-row class="quality-list" justify="space-between" :gutter="20">
                         <el-col :span="4" v-for="qualityTemplate in qualityList" :key="qualityTemplate.content">
-                            <QualityTemplate 
+                            <QualityTemplate
                             :qualityTemplate="qualityTemplate"
                             :openRenameTemplateDialog="openRenameTemplateDialog"
                             :openCopyTemplateDialog="openCopyTemplateDialog"
@@ -39,7 +39,7 @@
                     </p>
                     <el-row class="label-list" justify="space-between" :gutter="20">
                         <el-col :span="4" v-for="labelTemplate in labelList" :key="labelTemplate.content">
-                            <LabelTemplate 
+                            <LabelTemplate
                                 :labelTemplate="labelTemplate"
                                 :openRenameTemplateDialog="openRenameTemplateDialog"
                                 :openCopyTemplateDialog="openCopyTemplateDialog"
@@ -121,10 +121,10 @@ export default {
             isPreview: false
         }
     },
-    
+
     created(){
     },
-    
+
     computed: {
         // 打印总页数
         pageNumber() {
@@ -171,7 +171,7 @@ export default {
         TemplatePreviewCanvasComponent
     },
     methods: {
-        
+
         openRenameTemplateDialog(type, {
             templateId,
             templateName
@@ -361,8 +361,8 @@ export default {
             type: 2,
             fieldType: 'full'
         })
-       
-       
+
+
     }
 }
 </script>
@@ -438,7 +438,7 @@ export default {
                         @include F(18);
                         font-weight: bold;
                         padding-left: 10px;
-                        border-left: 5px solid $C1;  
+                        border-left: 5px solid $C1;
                     }
                 }
                 .label-list-text {

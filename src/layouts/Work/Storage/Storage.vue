@@ -52,7 +52,7 @@
                                 {{optionData.distributor == '' ? '计划分销商' : optionData.distributor}}
                               <i class="iconfont icon-arrow-down" v-if="optionData.distributor ==''"></i>
                               <i class="el-icon-circle-close" @click="getAllquery('shop','distributor')" title="清除" v-else></i>
-                            
+
                             </span>
 						<ul>
 							<li @click="getShop(item, index)" :key="index" :class="optionData.distributor == item.shopName ? 'active' :''" v-for="(item, index) in datas.shopList">
@@ -272,7 +272,7 @@
 				applyData: [],
 
 				optionData: {
-					storage: '', //入库车位 
+					storage: '', //入库车位
 					auditStatus: '', //审核状态
 					supplier: '', //供应商
 					distributor: '', // 分销商
@@ -315,7 +315,7 @@
 			//         this.applyData = this.$store.state.datas.applyList.twoDataList[i]
 			//     }
 			// }
-			
+
 		},
 		mounted() {
 			let self = this
@@ -334,8 +334,9 @@
 					}
 				}
 			});
+
 		},
-		computed: {
+        computed: {
 			...mapGetters([
 				"repositoryList", // 库位列表
 				"shopListByCo", // 店铺列表
@@ -927,7 +928,7 @@
 			opacity: 0;
 		}
 	}
-	
+
 	@media print {
 		@import "~assets/css/template/templatePrint";
 		body {
@@ -937,7 +938,7 @@
 			display: none!important;
 		}
 	}
-	
+
 	.Rp_title_container {
 		padding-top: 0px !important;
 	}

@@ -141,12 +141,12 @@ export default {
     },
     _getVersion () {
       let noSetup = true
-      var JCP = {  
-          setup : {  
+      var JCP = {
+          setup : {
               noSetupHandle : function() {
                   noSetup = false
-              }  
-          }  
+              }
+          }
       }
       JCP.setup.noSetupHandle()
       setTimeout(() => {

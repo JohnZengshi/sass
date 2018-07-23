@@ -9,7 +9,7 @@
                     <h3><i class="iconfont icon-liebiao"></i>商品设置</h3>
                 </div>
                 <el-menu class="main-left-menu" @select="selectItem">
-                    
+
                     <el-menu-item :class="{active: actIndex == index}" class="main-left-menu-item" :index="index + ''" v-for="(item, index) in catalog" :key="index">
                         <span :class="{active: actIndex == index}" class="active-bar"></span>
                         {{item.name}}
@@ -97,7 +97,7 @@
                     @delAction="delBack"
                 >
                 </big-popup>
-            </el-dialog>       
+            </el-dialog>
         </div>
     </div>
 </template>
@@ -120,6 +120,7 @@ import MetalColor from "./settings/MetalColor"
 import Certificate from "./settings/Certificate"
 import BarCodeManage from './settings/BarCodeManage'
 import ServeManage from './settings/ServeManage'
+import VerificationCode from './settings/VerificationCode'
 import menu from './menu.json'
 
 import BigPopup from './settingComponents/bigPopup'
@@ -133,7 +134,7 @@ export default {
             item: '',  // 弹框数据
             operateDialog: false,
             newPopupType: null,
-            addTypeText: '', 
+            addTypeText: '',
             supplierName: '', // 供应商名
             repositoryName: '', // 库位名
             addDialog: false,
@@ -187,7 +188,8 @@ export default {
         BarCodeManage,
         ServeManage,
         BigPopup,  // 操作弹框
-        draggable //拖动插件
+        draggable, //拖动插件
+        VerificationCode
     },
     computed: {
         ...mapGetters([
@@ -522,7 +524,7 @@ export default {
                     this.panel = Certificate
                     break
                 case '8':
-                    this.panel = GemAttribute 
+                    this.panel = GemAttribute
                     break
                 case '9':
                     this.panel = PartsName
@@ -533,6 +535,12 @@ export default {
                 case '11':
                     this.panel = ServeManage
                     break
+                case '12':
+                    this.panel = VerificationCode
+                    break
+                // case '13':
+                //     this.panel = VerificationCode
+                //     break
             }
         },
         openMenberPoint(index,type){
@@ -553,8 +561,8 @@ export default {
             }
             templateCreate(options).then(res => {
                 if(res.data.state == 200) {
-                    this.addDialog = false                    
-                    this.templateName = ''                    
+                    this.addDialog = false
+                    this.templateName = ''
                     this.$message({
                         type: 'success',
                         message: '添加成功!'
@@ -695,6 +703,7 @@ export default {
                 .main-left-menu-item {
                     text-align: center;
                     font-size: 14px;
+                    height:56px;
                     color: #999;
                     font-weight: bold;
                     position: relative;
@@ -714,7 +723,7 @@ export default {
                 .main-left-menu-item.active {
                     color: #2993f8;
                 }
-                    
+
             }
             .main-left-content {
                 position: absolute;
@@ -937,7 +946,7 @@ export default {
                                 opacity: 1;
                             }
                         }
-                        
+
                     }
                 }
             }

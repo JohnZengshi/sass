@@ -1,15 +1,22 @@
 <template>
-<div class="property-component barcode" v-show="isShown" :style="componentStyle" v-if="data.propertyType == 4">
-    <div  :style="barcodeStyle">
-    <img ref="barcode" src="/static/img/barcode-sample.png" @dragstart.prevent  :style="imgStyle">
-    </div>
-    <div class="resize" v-if="!isPreview"></div>
-</div>
-<div class="property-component string" v-show="isShown" :style="componentStyle" :class="{borderRender: data.border}" v-else>
-    <span v-if="filterShow(value)" :style="prefixStyle" v-html="rawPrefix"></span>
-    <span v-if="filterShow(value)" :style="valueStyle">{{ value }}</span>
-    <span v-if="filterShow(value)" :style="suffixStyle" v-html="rawSuffix"></span>
-</div>
+        <div class="property-component barcode" v-show="isShown" :style="componentStyle" v-if="data.propertyType == 4">
+            <div  :style="barcodeStyle">
+            <img ref="barcode" v-if="data.propertyCode == 'charCode'" width="100%" src="/static/img/barcode-sample.png" @dragstart.prevent  :style="imgStyle">
+                <img ref="qrcode" v-else src="/static/img/qrcode.png" width="100%" @dragstart.prevent  :style="imgStyle">
+            </div>
+            <div class="resize" v-if="!isPreview"></div>
+        </div>
+    <!--<div class="property-component barcode" v-show="isShown" :style="componentStyle" v-else-if="data.propertyType == 5">-->
+        <!--<div  :style="barcodeStyle">-->
+            <!--<img ref="barcode" src="/static/img/barcode-sample.png" @dragstart.prevent  :style="imgStyle">-->
+        <!--</div>-->
+        <!--<div class="resize" v-if="!isPreview"></div>-->
+    <!--</div>-->
+        <div class="property-component string" v-show="isShown" :style="componentStyle" :class="{borderRender: data.border}" v-else>
+            <span v-if="filterShow(value)" :style="prefixStyle" v-html="rawPrefix"></span>
+            <span v-if="filterShow(value)" :style="valueStyle">{{ value }}</span>
+            <span v-if="filterShow(value)" :style="suffixStyle" v-html="rawSuffix"></span>
+        </div>
 </template>
 
 <script>
@@ -41,7 +48,7 @@ export default {
             componentStyle() {
                 let top = this.parent ? this.data.top - this.parent.top : this.data.top
                 let left = this.parent ? this.data.left - this.parent.left : this.data.left
-                 
+
                 return {
                     top: top + 'mm',
                     left: left + 'mm',
@@ -58,9 +65,16 @@ export default {
                     overflow : 'hidden'
                 }
             },
+            qrCodeStyle(){
+                return {
+                    // width: this.data.width + 'mm',
+                    // height: this.data.width + 'mm',
+                    // overflow : 'hidden'
+                }
+            },
             imgStyle(){
               // console.log('type类型：', this.mapTemplate.type)
-               
+
                let Style = {
                    maxWidth:'100%'
                 }
@@ -114,17 +128,17 @@ export default {
                 return this.data.suffix.replace(/ /g, '&nbsp;').replace(/\n/g, '<br/>')
             },
             value() {
-                
+
                 let code = this.data.propertyCode
-                let backuProductList = null 
-                
+                let backuProductList = null
+
                 let product = this.templateData.productList[this.data.productIndex || (this.page - 1) || 0]
 //              if(!product){
 //                  //回购
 //                  backuProductList = this.templateData.backuProductList[this.data.productIndex || (this.page - 1) || 0]
 //              }
                 let value = null
-                
+
                 if(this.isPreview){
 //                  if (backuProductList) {
 //                     let mapcode = find(backuProductList.codeList, {
@@ -135,7 +149,7 @@ export default {
 //                              key: code
 //                          })
 //                      }
-//                     
+//
 //                      if (mapcode) {
 //                          value = mapcode.value
 //                          if (value != this.data.sample) {
@@ -161,6 +175,7 @@ export default {
                             value = mapcode.value
                             // this.isNull = mapcode.isNull != 0
                             if (value != this.data.sample) {
+                                debugger
                                 this.$emit('changeComponentData', {
                                     data: {
                                         sample: value
@@ -171,7 +186,7 @@ export default {
                         }
                     }
                 }else {
-                    
+
                     if (this.data.sample) {
                         value = this.data.sample
                         //this.isNull = false
@@ -210,12 +225,12 @@ export default {
             },
             //新增回购列表
 //          'templateData.backuProductList' () {
-//             
+//
 //             let code = this.data.propertyCode
 //              let product = this.templateData.backuProductList[this.data.productIndex || (this.page - 1) || 0]
 //              let value = null
 //              let mapcode = null
-//              
+//
 //              if (product) {
 //                  mapcode = find(product.codeList, {
 //                      key: code
@@ -244,7 +259,7 @@ export default {
                 let product = this.templateData.productList[this.data.productIndex || (this.page - 1) || 0]
                 let value = null
                 let mapcode = null
-                
+
                 if (product) {
                     mapcode = find(product.codeList, {
                         key: code
@@ -331,6 +346,7 @@ export default {
                     if (w != this.data.width || h != this.data.height || l != this.data.left) {
                         // console.log(this.$el, this.data.propertyCode, this.value, this.data.width, this.data.height, this.data.left, w, h, l)
                         if (!(isNaN(w) || isNaN(h) || isNaN(l))) {
+                            debugger
                             this.$emit('changeComponentData', {
                                 data: {
                                     width: w,
@@ -343,9 +359,9 @@ export default {
                     }
                 }
             },
-            
+
             resetBarcode(){
-              
+
               if( this.mapTemplate.type == 1 ){
                   JsBarcode(this.$refs.barcode, this.data.sample, {
                         displayValue: false,
@@ -432,6 +448,20 @@ export default {
         cursor: nwse-resize;
     }
     &.barcode {
+        img {
+            display: block;
+            box-sizing: border-box;
+        }
+        &.active {
+            opacity: .7;
+            padding: 0;
+            border: 1px dashed #4ec0ff;
+            .resize {
+                display: block;
+            }
+        }
+    }
+    &.qrcode {
         img {
             display: block;
             box-sizing: border-box;

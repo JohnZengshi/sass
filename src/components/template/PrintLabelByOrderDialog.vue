@@ -294,8 +294,10 @@
 								return v.productId;
 							}
 						})
+                        //入库标签打印
 						this.$store.dispatch('previewTemplate', this.templateId).then(json => {
 							if(json.state == 200) {
+							    debugger
 								let canvas = json.data.content
 								this.$emit('getPrintLabelData', this.radio, this.orderNum,this.value1, this.value2, JSON.parse(canvas), selectedProducts, isPrint)
 							}
@@ -335,7 +337,7 @@
 	.el-select-dropdown {
 		z-index: 9999!important;
 	}
-	
+
 	.order-product-list-dialog {
 		@import "~assets/css/template/dialog.scss";
 		.el-dialog {
@@ -499,7 +501,7 @@
 			}
 		}
 	}
-	
+
 	.el-icon-close:hover {
 		color: #2993f8 !important;
 	}

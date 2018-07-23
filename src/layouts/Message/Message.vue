@@ -27,7 +27,7 @@
                     </li>
                 </ul>
                 <ul class="message-list">
-                    
+
                     <li v-for="(item, index) in messageDataList" :key="index" v-if="switchMenu(item.messageType)">
                         <div class="item-left"><img :src="getImg(item.messageType)"></div>
                         <div class="item-right">
@@ -46,7 +46,7 @@
                 </ul>
             </div>
         </div>
-    </div>  
+    </div>
 </template>
 
 <script>
@@ -138,26 +138,26 @@ export default {
                         this.$message({
                             type: 'success',
                             message: '删除成功'
-                        }); 
+                        });
                     } else {
                         this.$message({
                             type: 'warning',
                             message: res.data.msg
-                        }); 
+                        });
                     }
                 }, (res) => {
                     this.$message({
                         type: 'warning',
                         message: res.data.msg
-                    }); 
+                    });
                 })
             }).catch(() => {
                 this.$message({
                     type: 'info',
                     message: '已取消删除'
-                });          
+                });
             });
-            
+
         },
         getImg (type) { // 匹配图片
             switch (type) {
@@ -341,7 +341,7 @@ export default {
                 let time = createDate.substring(10, 12)
                 return year + "-" + month + "-" + data + " " + hour + ":" + time
             }
-            
+
         },
         systemMessageList () { // 系统消息列表
             let options = {
@@ -599,7 +599,7 @@ export default {
                                 cursor: pointer;
                             }
                         }
-                    } 
+                    }
                 }
             }
         }

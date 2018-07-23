@@ -1,17 +1,18 @@
 // 查询接口
 // import Vue from 'vue'
 import apiCall from './ApiCall.js'
+
 export const seekGetUserInfo = function (parm) { // 用户职位信息
-  if (parm) {
-    let URL = "/v1/auth/getUserInfo";
-    return apiCall(parm, URL);
-  } else {
-    let options = {
-      "userId": sessionStorage.getItem("id")
+    if (parm) {
+        let URL = "/v1/auth/getUserInfo";
+        return apiCall(parm, URL);
+    } else {
+        let options = {
+            "userId": sessionStorage.getItem("id")
+        }
+        let URL = "/v1/auth/getUserInfo";
+        return apiCall(options, URL);
     }
-    let URL = "/v1/auth/getUserInfo";
-    return apiCall(options, URL);
-  }
 }
 export const seekCompanyInfo = function (parm) { // 公司详情
     let options = {
@@ -47,8 +48,8 @@ export const seekProductDetail = function (parm) { // 商品列表 // 带废除
     return apiCall(data, URL);
 }
 export const seekGetCOSSign = function (parm) { // 获取cos签名
-  let url = '/v1/apply/getCOSSign'
-  return apiCall(parm, url);
+    let url = '/v1/apply/getCOSSign'
+    return apiCall(parm, url);
 }
 export const seekNewGoodsInfoList = function (parm) { // 商品列表（入库）
     let URL = "/v1/goods/newGoodsInfoList";
@@ -59,13 +60,13 @@ export const seekMySelfWorkApplyList = function (parm) { // 获取应用
     return apiCall(parm, URL);
 }
 export const seekSettingUserRole = function (parm) {
-  let URL = "/v1/public/settingUserRole";
-  return apiCall(parm, URL);
+    let URL = "/v1/public/settingUserRole";
+    return apiCall(parm, URL);
 }
 export const seekUserRoleList = function (parm) { //4.1	用户角色列表
     let URL = "/v1/public/userRoleList";
     return apiCall(parm, URL);
-  }
+}
 export const seekGoodsList = function (parm) { // 商品列表
     let URL = "/v1/order/goodsList"
     return apiCall(parm, URL);
@@ -165,9 +166,9 @@ export const downloadTable = function (parm) { // 模板下载
     let URL = "/v1/public/getResourcesUrl"
     return apiCall(parm, URL);
 }
-export const sellBackRandomOneAdminList = function(opt){
+export const sellBackRandomOneAdminList = function (opt) {
     let URL = '/v1/public/sellBackRandomOneAdminList';
-    return apiCall(opt,URL);//获取 联系我们  数据
+    return apiCall(opt, URL);//获取 联系我们  数据
 }
 export const seekStockData = function (parm) { // 21.7库存数据
     let URL = "/v1/stock/stockData";
@@ -336,90 +337,90 @@ export const seekGetNoticeList = function (parm) { // 9.1公告列表
     return apiCall(parm, URL);
 }
 export const seekGetNoticeInfo = function (parm) { // 9.4公告详情
-  let URL = "/v1/notice/getNoticeInfo";
-  return apiCall(parm, URL);
+    let URL = "/v1/notice/getNoticeInfo";
+    return apiCall(parm, URL);
 }
 
 export const seekUserInfo = function (parm) { // 用户（好友）列表
-  let URL = "/v1/public/userInfo";
-  return apiCall(parm, URL);
+    let URL = "/v1/public/userInfo";
+    return apiCall(parm, URL);
 }
 
 export const seekGetUserList = function (parm) { // 4.11用户（好友）列表
-  let URL = "/v1/auth/userList";
-  return apiCall(parm, URL);
+    let URL = "/v1/auth/userList";
+    return apiCall(parm, URL);
 }
 export const seekAllFriend = function (parm) { // 4.13查找用户 – 所有系统用户
-  let URL = "/v1/auth/lookupAllFriends";
-  return apiCall(parm, URL);
+    let URL = "/v1/auth/lookupAllFriends";
+    return apiCall(parm, URL);
 }
 export const seekGetUserApply = function (parm) { // 查找用户 – 所有系统用户
-  let URL = "/v1/auth/getUserApply";
-  return apiCall(parm, URL);
+    let URL = "/v1/auth/getUserApply";
+    return apiCall(parm, URL);
 }
 export const seekUserDirectories = function (parm) { // 4.9通讯录
-  let URL = "/v1/auth/userDirectories";
-  return apiCall(parm, URL);
+    let URL = "/v1/auth/userDirectories";
+    return apiCall(parm, URL);
 }
 export const seekMemberList = function (parm) { // 成员列表
-  let URL = "/v1/public/memberList";
-  return apiCall(parm, URL);
+    let URL = "/v1/public/memberList";
+    return apiCall(parm, URL);
 }
 export const seekCreateTaste = function (parm) { // 成员列表
-  let URL = "/v1/taste/createTaste";
-  return apiCall(parm, URL);
+    let URL = "/v1/taste/createTaste";
+    return apiCall(parm, URL);
 }
 export const seekShopInfo = function (parm) { //8.4店铺详情
-  let URL = "/v1/public/shopInfo";
-  return apiCall(parm, URL);
+    let URL = "/v1/public/shopInfo";
+    return apiCall(parm, URL);
 }
 export const seekGoldPrice = function (parm) { //6.31金价列表
-  let URL = "/v1/configurationSetting/newGetGoodsInfo";
-  return apiCall(parm, URL);
+    let URL = "/v1/configurationSetting/newGetGoodsInfo";
+    return apiCall(parm, URL);
 }
 export const seekGetDiscount = function (parm) { //6.34折扣列表
-  let URL = "/v1/configurationSetting/newDiscountInfo";
-  return apiCall(parm, URL);
+    let URL = "/v1/configurationSetting/newDiscountInfo";
+    return apiCall(parm, URL);
 }
 export const seekGetClassGroup = function (parm) { //6.39班组列表
-  let URL = "/v1/configurationSetting/getClassGroup";
-  return apiCall(parm, URL);
+    let URL = "/v1/configurationSetting/getClassGroup";
+    return apiCall(parm, URL);
 }
 export const seekGetNewClassGroup = function (parm) { //6.40班组列表
-  let URL = "/v1/configurationSetting/getNewClassGroup";
-  return apiCall(parm, URL);
+    let URL = "/v1/configurationSetting/getNewClassGroup";
+    return apiCall(parm, URL);
 }
 export const seekGetShopUserList = function (parm) { //10.6店铺员工
-  let URL = "/v1/auth/getShopUserList";
-  return apiCall(parm, URL);
+    let URL = "/v1/auth/getShopUserList";
+    return apiCall(parm, URL);
 }
 export const seekGetUserClassGroup = function (parm) { //56.用户班组信息
-  let URL = "/v1/configurationSetting/getUserClassGroup";
-  return apiCall(parm, URL);
+    let URL = "/v1/configurationSetting/getUserClassGroup";
+    return apiCall(parm, URL);
 }
 export const seekGetDepUserList = function (parm) { //10.4.总部成员列表
-  let URL = "/v1/auth/getDepUserList";
-  return apiCall(parm, URL);
+    let URL = "/v1/auth/getDepUserList";
+    return apiCall(parm, URL);
 }
 export const seekGetStatisticalSummary = function (parm) { //11.9WEB报表-汇总
-  let URL = "/v1/reports/getReportsSummary";
-  return apiCall(parm, URL);
+    let URL = "/v1/reports/getReportsSummary";
+    return apiCall(parm, URL);
 }
 export const seekPermissionList = function (parm) { //11.12.功能权限列表
-  let URL = "/v1/order/permissionList";
-  return apiCall(parm, URL);
+    let URL = "/v1/order/permissionList";
+    return apiCall(parm, URL);
 }
 export const seekSearchReceipt = function (parm) { //5.53单据搜索
-  let URL = "/v1/order/searchReceipt";
-  return apiCall(parm, URL);
+    let URL = "/v1/order/searchReceipt";
+    return apiCall(parm, URL);
 }
 export const seekSearchProduct = function (parm) { //6.55商品搜索
-  let URL = "/v1/order/searchProduct";
-  return apiCall(parm, URL);
+    let URL = "/v1/order/searchProduct";
+    return apiCall(parm, URL);
 }
 export const seekShowhCertificateList = function (parm) { //6.31证书列表
-  let URL = "/v1/headquarter/showhCertificateList";
-  return apiCall(parm, URL);
+    let URL = "/v1/headquarter/showhCertificateList";
+    return apiCall(parm, URL);
 }
 export const seekBatchAddByOrderNum = function (parm) { //5.60批量添加-单据列表
     let URL = "/v1/order/batchAddByOrderNum";
@@ -435,106 +436,106 @@ export const seekBatchAddByProductList = function (parm) { //5.61批量添加-�
 }
 //************************************** WEB首页 *********************************************************
 export const seekDataStatistics = function (parm) { //5.55单据数据统计
-  let URL = "/v1/order/dataStatistics";
-  return apiCall(parm, URL);
+    let URL = "/v1/order/dataStatistics";
+    return apiCall(parm, URL);
 }
 export const seekSalesStatistics = function (parm) { //5.56销量统计
-  let URL = "/v1/order/salesStatistics";
-  return apiCall(parm, URL);
+    let URL = "/v1/order/salesStatistics";
+    return apiCall(parm, URL);
 }
 export const seekSalesTrend = function (parm) { //5.57销量走势
-  let URL = "/v1/order/salesTrend";
-  return apiCall(parm, URL);
+    let URL = "/v1/order/salesTrend";
+    return apiCall(parm, URL);
 }
 export const seekPendingOrder = function (parm) { //5.58待处理单据
-  let URL = "/v1/order/pendingOrder";
-  return apiCall(parm, URL);
+    let URL = "/v1/order/pendingOrder";
+    return apiCall(parm, URL);
 }
 export const seekCompanyList = function (parm) { //7.4.公司列表
-  let URL = "/v1/public/companyList";
-  return apiCall(parm, URL);
+    let URL = "/v1/public/companyList";
+    return apiCall(parm, URL);
 }
 //************************************** WEB数据中心 *********************************************************
 export const seekBackup = function (parm) { //17.1备份接口
-  let URL = "/v1/backups/backups";
-  return apiCall(parm, URL);
+    let URL = "/v1/backups/backups";
+    return apiCall(parm, URL);
 }
 export const seekRestore = function (parm) { //17.2还原接口
-  let URL = "/v1/backups/restore";
-  return apiCall(parm, URL);
+    let URL = "/v1/backups/restore";
+    return apiCall(parm, URL);
 }
 export const seekListlog = function (parm) { //17.4备份列表
-  let URL = "/v1/backups/listlog";
-  return apiCall(parm, URL);
+    let URL = "/v1/backups/listlog";
+    return apiCall(parm, URL);
 }
 export const seekOperate = function (parm) { //17.4备份操作
-  let URL = "/v1/backups/operate";
-  return apiCall(parm, URL);
+    let URL = "/v1/backups/operate";
+    return apiCall(parm, URL);
 }
 export const seekGetBackupsStatus = function (parm) { //17.6备份开启状态
-  let URL = "/v1/backups/getBackupsStatus";
-  return apiCall(parm, URL);
+    let URL = "/v1/backups/getBackupsStatus";
+    return apiCall(parm, URL);
 }
 export const seekUpload = function (parm) { //17.6备份开启状态
-  let URL = "/v1/backups/upload";
-  return apiCall(parm, URL);
+    let URL = "/v1/backups/upload";
+    return apiCall(parm, URL);
 }
 export const seekGetAddress = function (parm) { // 获取省市区
-  let URL = '/v1/public/getAddress'
-  return apiCall(parm, URL);
+    let URL = '/v1/public/getAddress'
+    return apiCall(parm, URL);
 }
 export const seekOrderQueries = function (parm) { // 查询订单
-  let URL = '/v1/pay/orderQueries'
-  return apiCall(parm, URL);
+    let URL = '/v1/pay/orderQueries'
+    return apiCall(parm, URL);
 }
 export const seekDynamic = function (parm) { // 动态
-  let URL = '/v1/public/dynamic'
-  return apiCall(parm, URL);
+    let URL = '/v1/public/dynamic'
+    return apiCall(parm, URL);
 }
 export const seekOrderPayStatus = function (parm) { // 动态
-  let URL = '/v1/pay/orderPayStatus'
-  return apiCall(parm, URL);
+    let URL = '/v1/pay/orderPayStatus'
+    return apiCall(parm, URL);
 }
 export const seekFinishedData = function (parm) { // 成品
-  let URL = '/v1/stock/finishedData'
-  return apiCall(parm, URL);
+    let URL = '/v1/stock/finishedData'
+    return apiCall(parm, URL);
 }
 export const seekOldMaterial = function (parm) { // 旧料
-  let URL = '/v1/stock/oldMaterial'
-  return apiCall(parm, URL);
+    let URL = '/v1/stock/oldMaterial'
+    return apiCall(parm, URL);
 }
 export const seekStockTrend = function (parm) { // 库存走势
-  let URL = '/v1/stock/stockTrend'
-  return apiCall(parm, URL);
+    let URL = '/v1/stock/stockTrend'
+    return apiCall(parm, URL);
 }
 export const seekStatisticalIndex = function (parm) { // 库存走势
-  let URL = '/v1/stock/statisticalIndex'
-  return apiCall(parm, URL);
+    let URL = '/v1/stock/statisticalIndex'
+    return apiCall(parm, URL);
 }
 
 export const seekGetEndMoneySetting = function (parm) { // 尾数列表
-  let URL = '/v1/configurationSetting/getEndMoneySetting'
-  return apiCall(parm, URL);
+    let URL = '/v1/configurationSetting/getEndMoneySetting'
+    return apiCall(parm, URL);
 }
 
 export const seekSetEndMoney = function (parm) { // 尾数设置
-  let URL = '/v1/configurationSetting/setEndMoney'
-  return apiCall(parm, URL);
+    let URL = '/v1/configurationSetting/setEndMoney'
+    return apiCall(parm, URL);
 }
 
 export const seekGetSetting = function (parm) { // 收款方式 回购设置列表
-  let URL = '/v1/configurationSetting/getSetting'
-  return apiCall(parm, URL);
+    let URL = '/v1/configurationSetting/getSetting'
+    return apiCall(parm, URL);
 }
 //************************************** 库存新 *********************************************************
 export const seekStockProductList = function (parm) { // 21.8库存列表
     let URL = '/v1/stock/stockProductList'
     return apiCall(parm, URL);
-  }
+}
 //************************************** 短信套餐 *********************************************************
 export const seekGetMoneyList = function (parm) { // 21.8库存列表
-let URL = '/v1/public/getMoneyList'
-return apiCall(parm, URL);
+    let URL = '/v1/public/getMoneyList'
+    return apiCall(parm, URL);
 }
 export const seekGetImportSetting = function (parm) { // 5.63获取智能配置信息
     let URL = '/v1/import/getImportSetting'
@@ -623,223 +624,223 @@ export const seekMemberTotalNum = function (parm) { // 会员总数
 }
 //************************************** 短信 *********************************************************
 export const seekGetSMSLog = function (parm) { // 短信日志表
-  let URL = '/v1/member/getSMSLog'
-  return apiCall(parm, URL);
+    let URL = '/v1/member/getSMSLog'
+    return apiCall(parm, URL);
 }
 export const seekGetSMSSignatureList = function (parm) { // 短信签名列表
-  let URL = '/v1/member/getSMSSignatureList'
-  return apiCall(parm, URL);
+    let URL = '/v1/member/getSMSSignatureList'
+    return apiCall(parm, URL);
 }
 export const seekFollowTimingList = function (parm) { // 定时跟进列表
     let URL = '/v1/member/followTimingList'
     return apiCall(parm, URL);
 }
 export const seekMessageOperation = function (parm) { // 短信签名列表
-  let URL = '/v1/member/messageOperation'
-  return apiCall(parm, URL);
+    let URL = '/v1/member/messageOperation'
+    return apiCall(parm, URL);
 }
 export const seekGetSignList = function (parm) { // 短信模板列表
-  let URL = '/v1/member/getSignList'
-  return apiCall(parm, URL);
+    let URL = '/v1/member/getSignList'
+    return apiCall(parm, URL);
 }
 export const seekSignOperation = function (parm) { // 短信模板创建/修改/删除
-  let URL = '/v1/member/signOperation'
-  return apiCall(parm, URL);
+    let URL = '/v1/member/signOperation'
+    return apiCall(parm, URL);
 }
 export const seekSendSMS = function (parm) { // 发送短信
-  let URL = '/v1/member/sendSMS'
-  return apiCall(parm, URL);
+    let URL = '/v1/member/sendSMS'
+    return apiCall(parm, URL);
 }
 export const seekChargePay = function (parm) { // 充值支付
-  let URL = '/v1/pay/chargePay'
-  return apiCall(parm, URL);
+    let URL = '/v1/pay/chargePay'
+    return apiCall(parm, URL);
 }
 export const seekGetSMSAccountInfo = function (parm) { // 账户信息
-  let URL = '/v1/member/getSMSAccountInfo'
-  return apiCall(parm, URL);
+    let URL = '/v1/member/getSMSAccountInfo'
+    return apiCall(parm, URL);
 }
 export const seekListIntention = function (parm) { // 意向列表
-  let URL = '/v1/facepass/listIntention'
-  return apiCall(parm, URL);
+    let URL = '/v1/facepass/listIntention'
+    return apiCall(parm, URL);
 }
 export const seekListVisitor = function (parm) { // 来访用户列表
-  let URL = '/v1/facepass/listVisitor'
-  return apiCall(parm, URL);
+    let URL = '/v1/facepass/listVisitor'
+    return apiCall(parm, URL);
 }
 export const seekListDevice = function (parm) { // 设备列表
-  let URL = '/v1/facepass/listDevice'
-  return apiCall(parm, URL);
+    let URL = '/v1/facepass/listDevice'
+    return apiCall(parm, URL);
 }
 export const seekInfoVisitor = function (parm) { // 查看顾客详情
-  let URL = '/v1/facepass/infoVisitor'
-  return apiCall(parm, URL);
+    let URL = '/v1/facepass/infoVisitor'
+    return apiCall(parm, URL);
 }
 export const seekGetVisitLog = function (parm) { // 历史到店记录
-  let URL = '/v1/facepass/getVisitLog'
-  return apiCall(parm, URL);
+    let URL = '/v1/facepass/getVisitLog'
+    return apiCall(parm, URL);
 }
 export const seekFaceUserImageList = function (parm) { // 获取用户的人脸图片列表
-  let URL = '/v1/facepass/faceUserImageList'
-  return apiCall(parm, URL);
+    let URL = '/v1/facepass/faceUserImageList'
+    return apiCall(parm, URL);
 }
 export const seekGetFaceByShop = function (parm) {
-  let URL = '/v1/facepass/getFaceByShop'
-  return apiCall(parm, URL);
+    let URL = '/v1/facepass/getFaceByShop'
+    return apiCall(parm, URL);
 }
 export const seekOneProductStatus = function (parm) { // 商品状态查询
-  let URL = '/v1/public/oneProductStatus'
-  return apiCall(parm, URL);
+    let URL = '/v1/public/oneProductStatus'
+    return apiCall(parm, URL);
 }
 export const seekReportHours = function (parm) { // 日流量图
-  let URL = '/v1/facepass/reportHours'
-  return apiCall(parm, URL);
+    let URL = '/v1/facepass/reportHours'
+    return apiCall(parm, URL);
 }
 export const seekReportAges = function (parm) { // 访客年龄段图
-  let URL = '/v1/facepass/reportAges'
-  return apiCall(parm, URL);
+    let URL = '/v1/facepass/reportAges'
+    return apiCall(parm, URL);
 }
 export const seekReportSex = function (parm) { // 访客男女比例图
-  let URL = '/v1/facepass/reportSex'
-  return apiCall(parm, URL);
+    let URL = '/v1/facepass/reportSex'
+    return apiCall(parm, URL);
 }
 export const seekReportVisit = function (parm) { // 会员访店图
-  let URL = '/v1/facepass/reportVisit'
-  return apiCall(parm, URL);
+    let URL = '/v1/facepass/reportVisit'
+    return apiCall(parm, URL);
 }
 
-export const mallsClassification = function(parm) {
+export const mallsClassification = function (parm) {
     //款式设置---列表
     let URL = "/v1/weChat/mallsClassification";
     return apiCall(parm, URL);
 }
 
-export const programGirardInfo = function(parm) {
-     // 款式 明细--编辑的时候进去用这个接口获取数据
-     let URL = "/v1/weChat/programGirardInfo";
-     return apiCall(parm, URL);
+export const programGirardInfo = function (parm) {
+    // 款式 明细--编辑的时候进去用这个接口获取数据
+    let URL = "/v1/weChat/programGirardInfo";
+    return apiCall(parm, URL);
 }
-export const programProductAdd = function(parm) {
-     //新增 款号
-     let URL = "/v1/weChat/programProductAdd";
-     return apiCall(parm, URL);
+export const programProductAdd = function (parm) {
+    //新增 款号
+    let URL = "/v1/weChat/programProductAdd";
+    return apiCall(parm, URL);
 }
-export const programGirardImageHandler = function(parm) {
+export const programGirardImageHandler = function (parm) {
     //款式 图片操作
     let URL = "/v1/weChat/programGirardImageHandler";
     return apiCall(parm, URL);
 }
-export const programGirardUpdate = function(parm) {
+export const programGirardUpdate = function (parm) {
     //款式更新-删除-修改
     let URL = "/v1/weChat/programGirardUpdate";
     return apiCall(parm, URL);
 }
-export const programProductGirardList = function(parm) {
-   //款式--关联商品列表
-   let URL = "/v1/weChat/programProductGirardList";
-   return apiCall(parm, URL);
+export const programProductGirardList = function (parm) {
+    //款式--关联商品列表
+    let URL = "/v1/weChat/programProductGirardList";
+    return apiCall(parm, URL);
 }
-export const programGirardProductHandler = function(parm) {
+export const programGirardProductHandler = function (parm) {
     //款式---添加商品  删除 或新增
     let URL = "/v1/weChat/programGirardProductHandler";
     return apiCall(parm, URL);
 }
 
-export const mallsShopInfo = function(parm) {
+export const mallsShopInfo = function (parm) {
     //获取店铺信息
     let URL = "/v1/weChat/mallsShopInfo";
     return apiCall(parm, URL);
 }
-export const mallsShopImageOperation = function(parm) {
+export const mallsShopImageOperation = function (parm) {
     //商城店铺图片 操作
     let URL = "/v1/weChat/mallsShopImageOperation";
     return apiCall(parm, URL);
 }
-export const mallsShopInfoUpdate = function(parm) {
+export const mallsShopInfoUpdate = function (parm) {
     //商城店铺信息更新---
     let URL = "/v1/weChat/mallsShopInfoUpdate";
     return apiCall(parm, URL);
 }
-export const mallsOtherShopAdd = function(parm) {
+export const mallsOtherShopAdd = function (parm) {
     //商城分店 新增
     let URL = "/v1/weChat/mallsOtherShopAdd";
     return apiCall(parm, URL);
 }
-export const mallsOtherShopOperation = function(parm) {
+export const mallsOtherShopOperation = function (parm) {
     //商城分店操作
     let URL = "/v1/weChat/mallsOtherShopOperation";
     return apiCall(parm, URL);
 }
-export const mallsOtherShopUpdate = function(parm) {
+export const mallsOtherShopUpdate = function (parm) {
     //商城分店信息更新
     let URL = "/v1/weChat/mallsOtherShopUpdate";
     return apiCall(parm, URL);
 }
 
-export const settingHandler = function(parm) {
+export const settingHandler = function (parm) {
     //金价设置 开关
     let URL = "/v1/weChat/settingHandler";
     return apiCall(parm, URL);
 }
-export const goldPriceEnableInfo = function(parm) {
+export const goldPriceEnableInfo = function (parm) {
     //获取金价开关状态
     let URL = "/v1/weChat/goldPriceEnableInfo";
     return apiCall(parm, URL);
 }
-export const shelvesGroupInfo = function(parm) {
+export const shelvesGroupInfo = function (parm) {
     //获取柜组信息状态
     let URL = "/v1/weChat/shelvesGroupInfo";
     return apiCall(parm, URL);
 }
-export const seekGetShopRoleList = function(parm) {
+export const seekGetShopRoleList = function (parm) {
     //获取柜组信息状态
     let URL = "/v1/auth/getShopRoleList";
     return apiCall(parm, URL);
 }
-export const seekCreateQRCode = function(parm) {
+export const seekCreateQRCode = function (parm) {
     //获取柜组信息状态
     let URL = "/v1/web/createQRCode";
     return apiCall(parm, URL);
 }
-export const seekSmallProgramShopList = function(parm) {
+export const seekSmallProgramShopList = function (parm) {
     let URL = "/v1/weChat/smallProgramShopList";
     return apiCall(parm, URL);
 }
 
-export const seekGetServiceTypeList = function(parm) { // 服务售后类型
+export const seekGetServiceTypeList = function (parm) { // 服务售后类型
     let URL = "/v1/public/getServiceTypeList";
     return apiCall(parm, URL);
 }
 
-export const seekGetMemberInfoByService = function(parm) { // 获取会员全称
+export const seekGetMemberInfoByService = function (parm) { // 获取会员全称
     let URL = "/v1/public/getMemberInfoByService";
     return apiCall(parm, URL);
 }
 
-export const seekAfterProductList = function(parm) { // 售后商品列表
+export const seekAfterProductList = function (parm) { // 售后商品列表
     let URL = "/v1/public/afterProductList";
     return apiCall(parm, URL);
 }
-export const seekServiceAfterList = function(parm) { // 5.73
+export const seekServiceAfterList = function (parm) { // 5.73
     let URL = "/v1/public/serviceAfterList";
     return apiCall(parm, URL);
 }
-export const seekReceiptFWSynopsis = function(parm) { // 单据简介-服务
+export const seekReceiptFWSynopsis = function (parm) { // 单据简介-服务
     let URL = "/v1/public/receiptFWSynopsis";
     return apiCall(parm, URL);
 }
-export const seekProductListByService = function(parm) { // 商品列表-服务模块
+export const seekProductListByService = function (parm) { // 商品列表-服务模块
     let URL = "/v1/public/productListByService";
     return apiCall(parm, URL);
 }
-export const seekGetServiceStatusList = function(parm) { // 服务单据状态列表
+export const seekGetServiceStatusList = function (parm) { // 服务单据状态列表
     let URL = "/v1/public/getServiceStatusList";
     return apiCall(parm, URL);
 }
-export const seekGetMemberInfoByPhone = function(parm) { // 根据手机号查询会员信息
+export const seekGetMemberInfoByPhone = function (parm) { // 根据手机号查询会员信息
     let URL = "/v1/public/getMemberInfoByPhone";
     return apiCall(parm, URL);
 }
-export const seekGetReportsComprehensive = function(parm) { // 报表-进销存汇总
+export const seekGetReportsComprehensive = function (parm) { // 报表-进销存汇总
     let URL = "/v1/reports/getReportsComprehensive";
     return apiCall(parm, URL);
 }
@@ -851,12 +852,26 @@ export const seekGetPrintLabelList = function (parm) { // 标签打印
     let URL = "/v1/print/getPrintLabelList"
     return apiCall(parm, URL);
 }
+export const getIdentifyingCode = function (parm) { // 验证码获取
+    let URL = "/v1/public/getIdentifyingCode"
+    return apiCall(parm, URL);
+}
+export const updateIdentifyingCode = function (parm) { // 验证码更新
+    let URL = "/v1/public/updateIdentifyingCode"
+    return apiCall(parm, URL);
+}
+export const identifyingCode = function (parm) { // 验证码验证
+    let URL = "/v1/public/identifyingCode"
+    return apiCall(parm, URL);
+}
 // 11.20 入库单据打印
 export const seekGetReportsPrintRK = function (parm) {
   let URL = "/v1/reports/getReportsPrintRK";
   return apiCall(parm, URL);
 }
+
 export const seekGetReportsPrintXG = function (parm) {
   let URL = "/v1/reports/getReportsPrintXG";
   return apiCall(parm, URL);
 }
+
