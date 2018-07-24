@@ -1059,10 +1059,11 @@
 				if(config.localStorage && localStorage[config.localStorage]) {
 
 					let tempData = JSON.parse(decodeURIComponent(localStorage[config.localStorage])).filter(f => f.classesName == config.classesName)
-					this.$set(this.datagridSelectData, config.resData, tempData[0].childrenList)
+					this.$set(this.datagridSelectData, config.resData, tempData[0].childrenList ? tempData[0].childrenList : tempData[0].typeList)
 				} else if(typeof fetch === 'function') {
 
 					fetch(config, (res) => {
+
 						// 回调方法
 						let resArray = res
 						let rpData = []
@@ -1077,7 +1078,14 @@
 							if(rpData.length > 0) {
 								this.$set(this.datagridSelectData, config.resData, rpData)
 							} else {
-								this.$set(this.datagridSelectData, config.resData, resArray)
+								if (config.option.type && config.option.type == 4) {
+									let tempData = resArray.filter(f => f.classesName == config.classesName)
+									this.$set(this.datagridSelectData, config.resData, tempData[0].childrenList ? tempData[0].childrenList : tempData[0].typeList)
+								} else {
+									this.$set(this.datagridSelectData, config.resData, resArray)
+								}
+								debugger
+								
 							}
 						}
 
