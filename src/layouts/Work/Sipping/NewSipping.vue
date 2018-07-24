@@ -903,6 +903,7 @@ export default {
             conditionList:[],
             jewelList:[],
             jewelryList:[],
+            userInfoData:null //之前没有申明（不知道为啥）
         }
     },
     created () {
