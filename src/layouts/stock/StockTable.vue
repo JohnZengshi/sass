@@ -1101,21 +1101,26 @@ export default {
     // 懒加载
     sendlayLoad() {
       this.loading = true;
-      //初始化数据
-      seekStockProductList(this.dataGridOptions).then(
-        res => {
-          if (res.data.state == 200) {
-            this.dataGridOptions.page += 1;
-            if (this.dataGridStorage.detailList ? this.dataGridStorage.detailList.length : '') {
-              this.dataGridStorage.detailList.push(...res.data.data.detailList)
-            } else {
-              this.dataGridStorage = res.data.data;
-            }
-            this.loading = false;
-          }
-        },
-        res => {}
-      );
+      return (async () => {
+          //初始化数据
+          let res = await seekStockProductList(this.dataGridOptions).then(
+              res => {
+                  if (res.data.state == 200) {
+                      this.dataGridOptions.page += 1;
+                      if (this.dataGridStorage.detailList ? this.dataGridStorage.detailList.length : '') {
+                          this.dataGridStorage.detailList.push(...res.data.data.detailList)
+                      } else {
+                          this.dataGridStorage = res.data.data;
+                      }
+                      this.loading = false;
+                      return true;
+                  } else {
+                      return false
+                  }
+              }
+          );
+          return res;
+      })()
     },
     // 请求获取数据
     send() {
