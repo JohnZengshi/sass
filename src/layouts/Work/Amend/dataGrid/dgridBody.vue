@@ -262,6 +262,10 @@ export default{
               // 更新商品列表
               this.$emit('updataApi')
               //this.$emit('updataAdd', false)
+              this.$message({
+                  message: '商品添加成功',
+                  type: 'success'
+              });
             }else {
               this.$message({
                 type : 'error',

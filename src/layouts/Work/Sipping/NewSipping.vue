@@ -1958,14 +1958,14 @@ export default {
                         this.send();
                         this.receiptStatusList();
                         this.enterOrderNum = ''
-                        if (operate === "1") { // 新增
+                        if (operate == "1") { // 新增
                             // this.savaOperateSuccess(response.data.data, index);
                             this.send();
                             this.$message({
                                 message: '添加成功',
                                 type: 'success'
                             });
-                        } else if (operate === "2") { // 删除
+                        } else if (operate == "2") { // 删除
                             this.delOperateSuccess(index);
                             this.$message({
                                 message: '删除成功',
