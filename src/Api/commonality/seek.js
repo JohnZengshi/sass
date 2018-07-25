@@ -545,6 +545,10 @@ export const seekAddImportSetting = function (parm) { // 5.64添加智能配置
     let URL = '/v1/import/addImportSetting'
     return apiCall(parm, URL);
 }
+export const seekAmendImportSetting = function (parm) { // 5.68修改智能配置
+    let URL = '/v1/import/updateImportSetting'
+    return apiCall(parm, URL);
+}
 export const seekDelImportSetting = function (parm) { // 5.65删除智能配置
     let URL = '/v1/import/delImportSetting'
     return apiCall(parm, URL);
