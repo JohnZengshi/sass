@@ -2,7 +2,7 @@
   <div class="m-m-template-shop-main">
     <div class="input-wrap">
       <span class="item-label">模板名称</span>
-      <input maxlength="8" placeholder="请输入模板名称" v-model="name">
+      <input maxlength="8" @blur="amendData()" placeholder="请输入模板名称" v-model="name">
     </div>
     <div class="shop-list">
 
@@ -10,7 +10,7 @@
       <ul class="list-wrap">
         <el-checkbox-group v-model="checkList">
           <li v-for="(item, index) in shopList">
-            <el-checkbox :label="item.shopId" :class="{active: true}" style="font-size: 14px;">{{item.shopName}}</el-checkbox>
+            <el-checkbox @change="amendShop" :label="item.shopId" :class="{active: true}" style="font-size: 14px;">{{item.shopName}}</el-checkbox>
           </li>
         </el-checkbox-group>
       </ul>
@@ -19,7 +19,7 @@
       <ul class="list-wrap">
         <el-checkbox-group v-model="checkRule">
           <li v-for="(item, index) in ruleList">
-            <el-checkbox :label="item.id" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
+            <el-checkbox @change="amendRule" :label="item.id" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
           </li>
         </el-checkbox-group>
       </ul>
@@ -28,7 +28,7 @@
       <ul class="list-wrap">
         <el-checkbox-group v-model="checkDiscount">
           <li v-for="(item, index) in discountList">
-            <el-checkbox :label="item.id" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
+            <el-checkbox @change="amendDiscount" :label="item.id" :class="{active: true}" style="font-size: 14px;">{{item.name}}</el-checkbox>
           </li>
         </el-checkbox-group>
       </ul>
@@ -39,9 +39,10 @@
       </h5>
       
       <ul>
-        <li class="input-wrap" v-for="item in gradeList">
+        <li class="input-wrap" v-for="(item, index) in gradeList">
           <span class="item-label">{{item.name}}</span>
           <input placeholder="请输入模板名称" v-model="item.value">
+          <i class="iconfont icon-lajitong bianji" @click="delGrade(item, index)"></i>
           <i class="iconfont icon-bianji bianji" @click="openGrade(item)"></i>
         </li>
       </ul>
@@ -59,6 +60,7 @@
 <script>
 import addGrade from './add-grade'
 import { seekGetShopListByCo } from 'Api/commonality/seek'
+import { operateUpdateGrade } from 'Api/commonality/operate'
 export default {
   components: {
     addGrade
@@ -106,6 +108,9 @@ export default {
           id: '2'
         }
       ],
+      showList: {
+        templateId: 'a436606db0974f68a365966a3fbffb25'
+      }
     }
   },
   created() {
@@ -144,6 +149,78 @@ export default {
         this.$refs.addGradeBox.open(parm)
       } else {
         this.$refs.addGradeBox.open()
+      }
+    },
+    delGrade (item, index) {
+      let options = {
+        gradeId: item.gradeId,
+        type: '2' // 删除
+      }
+      operateUpdateGrade()
+        .then(res => {
+          if (res.data.state == 200) {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
+            this.gradeList.splice(index, 1)
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            })
+          }
+        })
+    },
+    amendShop (val) {
+      let opations = []
+      if (val.target.checked) { // 新增
+        opations = [{
+          type: '0',
+          shopId: val.target.value
+        }]
+      } else { // 删除
+        opations = [{
+          type: '1',
+          shopId: val.target.value
+        }]
+      }
+      this.amendData(opations)
+    },
+    amendRule (val) {
+      let opations = []
+      if (val.target.checked) { // 新增
+        opations = [{
+          type: '0',
+          shopId: val.target.value
+        }]
+      } else { // 删除
+        opations = [{
+          type: '1',
+          shopId: val.target.value
+        }]
+      }
+      this.amendData(opations)
+    },
+    amendDiscount (val) {
+      let opations = []
+      if (val.target.checked) { // 新增
+        this.checkDiscount = []
+        this.checkDiscount.push(val.target.value)
+        opations = [{
+          discount: val.target.value
+        }]
+      } else {
+        opations = [{
+          discount: 0
+        }]
+      }
+      this.amendData(opations)
+    },
+    amendData (parm) {
+      let opations = {
+        dataList: parm, // []
+        templateId: this.showList.templateId
       }
     }
   }

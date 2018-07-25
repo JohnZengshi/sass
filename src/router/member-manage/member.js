@@ -1,5 +1,6 @@
 // 会员管理
 import memberList from './../../layouts/member-manage/member/member-list'
+import jt from './../../layouts/member-manage/member/jt'
 import interflow from './../../layouts/member-manage/member/interflow'
 import compileTemplate from './../../layouts/member-manage/member/compile-template'
 import addTemplate from './../../layouts/member-manage/member/add-template'
@@ -10,6 +11,11 @@ const routes = [
       path: "memberList",
       name: "会员列表",
       component: memberList
+    },
+    {
+      path: "jt",
+      name: "截图",
+      component: jt
     },
     {
       path: "interflow",

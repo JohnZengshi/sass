@@ -879,4 +879,3 @@ export const seekFindTemplateAll = function (parm) {
   let URL = "/v1/member/findTemplateAll";
   return apiCall(parm, URL);
 }
-

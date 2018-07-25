@@ -1,9 +1,18 @@
 <template>
   <div class="m-m-home-page-header-main">
     
-      <router-link class="fr ml-10" :to="{path: '/memberManage/compileTemplate', query: {shopId: filterData.shopId}}">设置</router-link>
+<!--       <router-link class="fr ml-10" :to="{path: '/memberManage/compileTemplate', query: {shopId: filterData.shopId}}">设置</router-link> -->
       
-      <navSegmentation class="fr ml-10" :showList="navData" :current="filterData.current" @pitchOn="pitchOn"></navSegmentation>
+<!--       <navSegmentation class="fr ml-10" :showList="navData" :current="filterData.current" @pitchOn="pitchOn"></navSegmentation> -->
+
+      <div class="report-data">
+          <div class="block until" data-txt="至">
+              <el-date-picker size="mini" v-model="filterData.beginTime"  type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
+          </div>
+          <div class="block">
+              <el-date-picker size="mini" v-model="filterData.endTime" type="date" placeholder="选择结束时间" :picker-options="pickerOptions1"></el-date-picker>
+          </div>
+      </div>
 
       <down-menu
         class="fr"
@@ -30,6 +39,8 @@
       return {
         filterData: {
           current: "1",
+          beginTime: '',
+          endTime: '',
           shopName: '',
           shopId: ''
         },

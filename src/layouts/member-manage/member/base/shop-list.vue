@@ -4,15 +4,15 @@
     <div class="header">
       <p class="side-nav"><i class="iconfont icon-liebiao"></i>独立店铺</p>
     </div>
-    <div class="each-table">
+    <div class="each-table" v-loading="loading">
       <ul class="header-tit">
         <li>店铺名称</li>
         <li>积分模板</li>
       </ul>
       <div class="scroll-wrap">
         <ul v-for="item in combinationList">
-          <li>{{item.AA}}</li>
-          <li>{{item.BB}}</li>
+          <li>{{item.shopName}}</li>
+          <li>{{item.templateName}}</li>
         </ul> 
       </div>
     </div>
@@ -23,41 +23,36 @@
   export default {
     data () {
       return {
-        combinationList: [
-          {
-            AA: 'AA',
-            BB: 'BB',
-            CC: 'CC'
-          },
-          {
-            AA: 'AA',
-            BB: 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-            CC: 'CC',
-          },
-          {
-            AA: 'AA',
-            BB: 'BB',
-            CC: 'CC',
-          },
-          {
-            AA: 'AA',
-            BB: 'BB',
-            CC: 'CC'
-          },
-          {
-            AA: 'AA',
-            BB: 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-            CC: 'CC',
-          },
-          {
-            AA: 'AA',
-            BB: 'BB',
-            CC: 'CC',
-          }
-        ]
+        loading: false,
+        combinationList: []
       }
     },
+    created () {
+      this._seekFindTemplateShopAll()
+    },
     methods: {
+      _seekFindTemplateShopAll () {
+        this.loading = true
+        let datas = {
+          shopList: [
+            {
+              shopId: 'shopId',
+              shopName: 'shopName',
+              templateName: 'templateName',
+            }
+          ]
+        }
+        this.combinationList = datas.shopList
+        setTimeout(() => {
+          this.loading = false
+        }, 1000)
+        seekFindTemplateShopAll()
+          .then(res => {
+            if (res.data.state == 200) {
+
+            }
+          })
+      },
       compile () {
 
       },

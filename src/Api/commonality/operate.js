@@ -606,3 +606,17 @@ export const operateAddMember = function(parm) {
     let url = "/v1/member/addMember";
     return new Axios(url, parm).apiCall();
 }
+export const operateDeleteMemberTemplaet = function(parm) {
+    let url = "/v1/member/deleteMemberTemplaet";
+    return new Axios(url, parm).apiCall();
+}
+//新增管理会员模板
+export const operateAddMemberTemplaet = function(parm) {
+    let url = "/v1/member/addMemberTemplaet";
+    return new Axios(url, parm).apiCall();
+}
+//修改等级或删除
+export const operateUpdateGrade = function (parm) {
+  let URL = "/v1/groupTemplate/updateGrade";
+  return apiCall(parm, URL);
+}

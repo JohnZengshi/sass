@@ -87,6 +87,13 @@
                 <input class="score" v-model="score" type="text">
                 <p style="color:#2993f8;font-size:12px;">（消费金额 : 兑换积分）</p>
             </div>
+            
+            <!-- 会员的 -->
+            <div class="input-number-pl" v-else-if="dialog.setjz == 'hy'">
+                <input class="yuan" v-model="yuan" type="text">
+<!--                 <input class="score" v-model="score" type="text"> -->
+                <p style="color:#2993f8;font-size:12px;">{{dialog.amendN}}</p>
+            </div>
 
             <div class="input-number" v-else>
                 <i class="el-icon-minus" title="减" @click="selectMinus"></i>
@@ -162,7 +169,16 @@ export default{
                 }
               )
             })
-          }else {
+          } else if (this.dialog.setjz === 'hy'){ // 会员
+             this.dialog.smallDataList.forEach( (f,i) => {
+              Object.assign(f,
+                { 
+                   selected : false,//i == 0,
+                   classesId : f.classesId 
+                }
+              )
+            })
+          } else {
             this.dialog.smallDataList.forEach( (f,i) => {
                 Object.assign(f,
                   { 
@@ -295,6 +311,17 @@ export default{
            }
          })
          return selectedData
+       } else if (this.dialog.setjz == 'hy') {
+          this.dialog.smallDataList.forEach(item => {
+             if(item.selected){
+               Object.assign(item,{
+                 yuan:this.yuan,
+                 score:this.score,
+               })
+               selectedData.push(item)
+             }
+           })
+           return selectedData
        } else {
          this.dialog.smallDataList.forEach((key)=>{
            if( key.selected){

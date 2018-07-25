@@ -6,7 +6,7 @@
         <i class="el-dialog__close el-icon el-icon-close"></i>
       </div>
       <div class="add-group-body">
-        <h3>添加会员</h3>
+        <h3>新增店铺组合</h3>
         <div class="input-wrap">
           <span class="item-label">组合名称</span>
           <input placeholder="请输入组合名称" v-model="name">

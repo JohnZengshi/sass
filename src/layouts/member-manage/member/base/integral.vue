@@ -1,25 +1,28 @@
 <!-- 积分模板管理 -->
 <template>
   <div class="m-m-integral-main">
+
+    <input-popup ref="inputPopupBox" :headTit="'请输入模板名称'" @confirm="confirmAdd"></input-popup>
+
     <div class="header">
       <p class="side-nav"><i class="iconfont icon-liebiao"></i>会员管理模板</p>
-      <router-link tag="div" class="right-btn" :to="{path: '/memberManage/addTemplate', query: {shopId: shopId}}">
+      <div class="right-btn" @click="openAdd" :to="{path: '/memberManage/addTemplate', query: {shopId: shopId}}">
         +模板
-      </router-link>
+      </div>
     </div>
-    <div class="each-table">
+    <div class="each-table" v-loading="loading">
       <ul class="header-tit">
         <li>模板名称</li>
-        <li>店铺名称</li>
+<!--         <li>店铺名称</li> -->
         <li>操作</li>
       </ul>
       <div class="scroll-wrap">
-        <ul v-for="item in combinationList">
-          <li>{{item.AA}}</li>
-          <li>{{item.BB}}</li>
+        <ul v-for="(item, index) in combinationList">
+          <li>{{item.templateName}}</li>
+<!--           <li>{{item.BB}}</li> -->
           <li>
-            <i @click="compile" class="iconfont icon-bianji"></i>
-            <i @click="del" class="iconfont icon-lajitong"></i>
+            <i @click="compile(item, index)" class="iconfont icon-bianji"></i>
+            <i @click="del(item, index)" class="iconfont icon-lajitong"></i>
           </li>
         </ul> 
       </div>
@@ -27,50 +30,101 @@
   </div>
 </template>
 <script>
+  import { seekFindTemplateAll } from 'Api/commonality/seek'
+  import { operateDeleteMemberTemplaet, operateAddMemberTemplaet } from 'Api/commonality/operate'
+  import inputPopup from 'base/popup/input-popup'
   export default {
+    components: {
+      inputPopup
+    },
     data () {
       return {
+        loading: false,
         shopId: this.$route.query.shopId,
-        combinationList: [
-          {
-            AA: 'AA',
-            BB: 'BB',
-            CC: 'CC'
-          },
-          {
-            AA: 'AA',
-            BB: 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-            CC: 'CC',
-          },
-          {
-            AA: 'AA',
-            BB: 'BB',
-            CC: 'CC',
-          },
-          {
-            AA: 'AA',
-            BB: 'BB',
-            CC: 'CC'
-          },
-          {
-            AA: 'AA',
-            BB: 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-            CC: 'CC',
-          },
-          {
-            AA: 'AA',
-            BB: 'BB',
-            CC: 'CC',
-          }
-        ]
+        combinationList: []
       }
     },
+    created () {
+      this._seekFindTemplateAll()
+    },
     methods: {
-      compile () {
-
+      openAdd () {
+        this.$refs.inputPopupBox.open()
       },
-      del () {
+      confirmAdd (parm) {
+        let options = {
+          name: parm
+        }
+        operateAddMemberTemplaet(options)
+          .then(res => {
+            if (res.data.state == 200) {
+              this.$message({
+                type: 'success',
+                message: '新建成功'
+              })
+              this._seekFindTemplateAll()
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.msg
+              })
+            }
+          })
+      },
+      _seekFindTemplateAll () {
+        this.loading = true
+        let datas = {
+          templateList: [
+            {
+              templateId: 'templateId',
+              templateName: 'templateName'
+            },
+            {
+              templateId: 'templateId',
+              templateName: 'templateName'
+            }
+          ]
+        }
+        this.combinationList = datas.templateList
+        setTimeout(() => {
+          this.loading = false
+        }, 1000)
+        seekFindTemplateAll()
+          .then(res => {
+            if (res.data.state == 200) {
 
+            }
+          })
+      },
+      compile (item, index) {
+        this.$router.push({
+          path: 'addTemplate',
+          query: {
+            shopId: this.shopId,
+            templateId: item.templateId
+          }
+        })
+      },
+      del (item, index) {
+        this.loading = true
+        this.combinationList.splice(index, 1)
+        setTimeout(() => {
+          this.loading = false
+        }, 1000)
+        let options = {
+          templateId: item.templateId
+        }
+        operateDeleteMemberTemplaet(options)
+          .then(res => {
+            if (res.data.state == 200) {
+
+            } else {
+              this.$message({
+                type: 'error',
+                message: res.data.msg
+              })
+            }
+          })
       }
     }
   }
@@ -129,7 +183,7 @@
         display: inline-block;
       }
       li:nth-child(1){
-        width: 100px;
+        width: 160px;
       }
       li:nth-child(2){
         width: 680px;

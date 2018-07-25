@@ -322,3 +322,7 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
 input[type="number"]{
         -moz-appearance:textfield;
 }
+// 必填icon
+.mandatory-icon{
+  color: red;
+}

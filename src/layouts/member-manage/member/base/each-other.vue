@@ -2,7 +2,7 @@
 <template>
   <div class="m-m-each-other-main">
     <div class="header">
-      <p class="side-nav"><i class="iconfont icon-liebiao"></i>会员汇通</p>
+      <p class="side-nav"><i class="iconfont icon-liebiao"></i>会员互通</p>
       <div class="right-btn" @click="openAdd">
         +店铺组合
       </div>
