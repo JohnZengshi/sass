@@ -124,6 +124,30 @@
                 Object.assign(self.systemItemClass,data.systemItemClass);
             })
         },
+        watch:{
+            $route:{
+                handler:function(newVal,oldVal){                    
+                    var i;
+                    this.systemMenu.forEach((val, index) => {
+                        let res = val.children.find((v) => {
+                            return newVal.path.includes(v.path)
+                        })
+                        if (res) {
+                            i = index;
+                            // return true
+                        } else {
+                            let res = (newVal.path == val.path);
+                            if (res) {
+                                i = index;
+                                // return true
+                            }
+                        }
+                    })
+                    this.systemItemClass.rootIndex = i;
+                },
+                deep:true
+            }
+        },
         computed: {
             ...mapGetters([
                 "shopListByCo" // 店铺列表
