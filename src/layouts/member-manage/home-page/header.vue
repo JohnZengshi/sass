@@ -4,18 +4,22 @@
 <!--       <router-link class="fr ml-10" :to="{path: '/memberManage/compileTemplate', query: {shopId: filterData.shopId}}">设置</router-link> -->
       
 <!--       <navSegmentation class="fr ml-10" :showList="navData" :current="filterData.current" @pitchOn="pitchOn"></navSegmentation> -->
+    <div class="fr right-box">
 
-      <div class="report-data">
-          <div class="block until" data-txt="至">
+      <div class="xj-time-box">
+        <div class="time-inner">
+          <div class="block until">
               <el-date-picker size="mini" v-model="filterData.beginTime"  type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
           </div>
+          <span class="center-tit">至</span>
           <div class="block">
               <el-date-picker size="mini" v-model="filterData.endTime" type="date" placeholder="选择结束时间" :picker-options="pickerOptions1"></el-date-picker>
           </div>
+        </div>
       </div>
 
       <down-menu
-        class="fr"
+        class="down-menu-box ml-10"
         :isSolid="true"
         :titleInfo="filterData.shopName ? filterData.shopName : '店铺名称'"
         :showList="shopList"
@@ -23,6 +27,8 @@
         @changeData="changeShop"
         @clearInfo="clearShop"
       ></down-menu>
+      
+    </div>
 
   </div>
 </template>
@@ -30,6 +36,7 @@
   import navSegmentation from 'base/cut/nav-segmentation'
   import downMenu from 'base/menu/new-down-menu'
   import {seekGetShopListByCo} from 'Api/commonality/seek'
+  import {getMonthStart} from 'assets/js/getTime'
   export default {
     components: {
       navSegmentation,
@@ -39,8 +46,8 @@
       return {
         filterData: {
           current: "1",
-          beginTime: '',
-          endTime: '',
+          beginTime: getMonthStart(),
+          endTime: new Date(),
           shopName: '',
           shopId: ''
         },
@@ -106,6 +113,13 @@
 .m-m-home-page-header-main{
   min-height: 50px;
   padding: 10px;
+  border-bottom: 1px solid #e9e9e9;
+  .right-box{
+    font-size: 0;
+  }
+  .down-menu-box{
+    display: inline-block;
+  }
   .ml-10{
     margin-left: 10px;
   }
