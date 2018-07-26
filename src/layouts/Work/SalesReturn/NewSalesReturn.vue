@@ -32,7 +32,7 @@
                       class="selected_dropdown" 
                       :titleName="receiptsIntroList.storageName" 
                       dataType="库位" 
-                      v-if="nowStatus != 2 && nowStatus != 3 && nowStatus != 5 && nowStatus != 6 && nowStatus != 1 && nowStatus != 4" 
+                      v-if="nowStatus == 1 && isMakeMan" 
                       :propList="repositoryList" 
                       @dropReturn="dropReturn">
                       </select-drop>
@@ -1276,11 +1276,11 @@ import LoaderNum from 'components/work/loaderNum';
       dropReturn(data) {
         let options = {
           modifyList: [{
-            dataType: '2',
+            dataType: '1',  // 1位库位ID
             objectData: data.item.operateId
           }],
           orderNum: this.$route.query.orderNumber,
-          modelType: '2'
+          modelType: '7'  // 7为退货单据
         }
         operateHandleXGReceipt(options).then((res) => {
           this.getSeekSellReceiptsIntro()
