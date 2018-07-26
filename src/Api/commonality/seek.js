@@ -875,3 +875,11 @@ export const seekGetReportsPrintXG = function (parm) {
   return apiCall(parm, URL);
 }
 
+export const seekOpSettingLabel = function (parm) { //13.4标签设置接口
+    let URL = "/v1/print/opSettingLabel";
+    return apiCall(parm, URL);
+}
+export const seekGetSettingLabel = function (parm) { //13.5标签设置获取接口
+    let URL = "/v1/print/getSettingLabel";
+    return apiCall(parm, URL);
+}
