@@ -72,7 +72,7 @@
                     <li>
                         <label>姓 名<i></i></label>
                         <div class="operate-block">
-                            <input class="input-class" v-focus="editType == 1" v-if="editType == 1" v-model="userInfo.userName" type="text" @blur="blurAndUpdateUser($event, 2)">
+                            <input maxlength="10" class="input-class" v-focus="editType == 1" v-if="editType == 1" v-model="userInfo.userName" type="text" @blur="blurAndUpdateUser($event, 2)">
                             <span class="show-box" @click="toEdting(1)" v-else>{{userInfo.userName}}</span>
                         </div>
                     </li>
