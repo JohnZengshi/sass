@@ -207,8 +207,8 @@
                     <input v-show="haveTem && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0" v-model="daiding" type="text" :placeholder="'本次最多使用'+integralNow.offsetScore+'积分'" @keyup.enter="shiyongjifen">&nbsp;&nbsp;&nbsp;&nbsp;
                     <!-- <span v-show="haveTem && memberDataInfo.phone && priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">(总积分{{ integralNow.totalScore || 0 }})</span> -->
 
-                    <span v-show="priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">详情说明</span>
-                    <input v-show="priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0" :class="{borderColor:isFocusinput}" ref="detailInputWrap" v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @focus="taggleChangeBorder" @blur="taggleChangeBorder" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
+                    <!-- <span v-show="priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">详情说明</span> -->
+                    <input v-show="priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0 && curStatus.status == 8" :class="{borderColor:isFocusinput}" ref="detailInputWrap" v-if="nowStatus != 6 || nowStatus != 7" v-model="barCode" v-focus="isFocus" type="text" placeholder="输入/扫描条码号" @focus="taggleChangeBorder" @blur="taggleChangeBorder" @click="closeTooltip" @keyup.enter="addNewGoodOperate">
                     <span v-show="priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0" class="tooltip" v-if="isShowTooltip" >输入/扫描条码号</span>
                   </div>
                 </div>
