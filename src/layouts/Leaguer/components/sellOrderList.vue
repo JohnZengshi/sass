@@ -10,37 +10,45 @@
                             <i class="iconfont icon-sousuo"></i>
                         </div>
                     </div> -->
-                    <div class="batch-time-wrap">
-                        <div class="date-w81">
-                            <el-date-picker
-                                format
-                                v-model="orderOptions.startTime"
-                                type="date"
-                                placeholder="选择日期"
-                                @change="dateChange()"
-                            >
-                            </el-date-picker>
-                        </div>
-                        <span>至</span>
-                        <div class="date-w81">
-                            <el-date-picker
-                                v-model="orderOptions.endTime"
-                                type="date"
-                                placeholder="选择日期"
-                                @change="dateChange()"
-                            >
-                            </el-date-picker>
+                    <!-- 制单日期范围 -->
+                    <div>
+                        <span class="range-title">制单日期范围</span>
+                        <div class="batch-time-wrap">
+                            <div class="date-w81">
+                                <el-date-picker
+                                    format
+                                    v-model="orderOptions.startTime"
+                                    type="date"
+                                    placeholder="选择日期"
+                                    @change="dateChange()"
+                                >
+                                </el-date-picker>
+                            </div>
+                            <span>至</span>
+                            <div class="date-w81">
+                                <el-date-picker
+                                    v-model="orderOptions.endTime"
+                                    type="date"
+                                    placeholder="选择日期"
+                                    @change="dateChange()"
+                                >
+                                </el-date-picker>
+                            </div>
                         </div>
                     </div>
-                    <div class="drop-block" v-if="!shopManRole">
-                        <DropDownMenu
-                            titleName="销售人"
-                            dataType="发送人"
-                            :propList="shopUserList"
-                            @dropReturn="dropReturn"
-                            @clearInfo="clearInfo"
-                        >
-                        </DropDownMenu>
+                    <!-- 销售人 -->
+                    <div v-if="!shopManRole">
+                        <span class="range-title">销售员</span>
+                        <div class="drop-block">
+                            <DropDownMenu
+                                titleName="销售人"
+                                dataType="发送人"
+                                :propList="shopUserList"
+                                @dropReturn="dropReturn"
+                                @clearInfo="clearInfo"
+                            >
+                            </DropDownMenu>
+                        </div>
                     </div>
                     <!-- <div class="drop-block">
                         <DropDownMenu
@@ -52,20 +60,32 @@
                         >
                         </DropDownMenu>
                     </div> -->
-                    <div title="条码" class="range-box" style="background:url(../../../static/img/batch/barcode.png) no-repeat 5px center;">
-                        <input type="text" @keyup.enter="goodsSellOrder" v-model="orderOptions.sNumRange" placeholder="件数" @blur="goodsSellOrder()">
-                        <span>-</span>
-                        <input type="text" @keyup.enter="goodsSellOrder" v-model="orderOptions.eNumRange" placeholder="件数" @blur="goodsSellOrder()">
+                    <!-- 件数范围 -->
+                    <div>
+                        <span class="range-title">件数范围</span>
+                        <div title="件数" class="range-box" style="background:url(../../../static/img/batch/barcode.png) no-repeat 5px center;">
+                            <input type="text" @keyup.enter="goodsSellOrder" v-model="orderOptions.sNumRange" placeholder="件数" @blur="goodsSellOrder()">
+                            <span>-</span>
+                            <input type="text" @keyup.enter="goodsSellOrder" v-model="orderOptions.eNumRange" placeholder="件数" @blur="goodsSellOrder()">
+                        </div>
                     </div>
-                    <div title="件重" class="range-box" style="background:url(../../../static/img/batch/weight.png) no-repeat 5px center;">
-                        <input type="text" @keyup.enter="goodsSellOrder" v-model="orderOptions.sWeightRange" placeholder="件重" @blur="goodsSellOrder()">
-                        <span>-</span>
-                        <input type="text" @keyup.enter="goodsSellOrder" v-model="orderOptions.eWeightRange" placeholder="件重" @blur="goodsSellOrder()">
+                    <!-- 件重范围 -->
+                    <div>
+                        <span class="range-title">件重范围</span>
+                        <div title="件重" class="range-box" style="background:url(../../../static/img/batch/weight.png) no-repeat 5px center;">
+                            <input type="text" @keyup.enter="goodsSellOrder" v-model="orderOptions.sWeightRange" placeholder="件重" @blur="goodsSellOrder()">
+                            <span>-</span>
+                            <input type="text" @keyup.enter="goodsSellOrder" v-model="orderOptions.eWeightRange" placeholder="件重" @blur="goodsSellOrder()">
+                        </div>
                     </div>
-                    <div title="售价" class="range-box" style="background:url(../../../static/img/batch/price.png) no-repeat 5px center;">
-                        <input type="text" @keyup.enter="goodsSellOrder" v-model="orderOptions.sPriceRange" placeholder="售价" @blur="goodsSellOrder()">
-                        <span>-</span>
-                        <input type="text" @keyup.enter="goodsSellOrder" v-model="orderOptions.ePriceRange" placeholder="售价" @blur="goodsSellOrder()">
+                    <!-- 售价范围 -->
+                    <div>
+                        <span class="range-title">售价范围</span>
+                        <div title="售价" class="range-box" style="background:url(../../../static/img/batch/price.png) no-repeat 5px center;">
+                            <input type="text" @keyup.enter="goodsSellOrder" v-model="orderOptions.sPriceRange" placeholder="售价" @blur="goodsSellOrder()">
+                            <span>-</span>
+                            <input type="text" @keyup.enter="goodsSellOrder" v-model="orderOptions.ePriceRange" placeholder="售价" @blur="goodsSellOrder()">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -749,9 +769,15 @@ export default {
                     height: 100%;
                 }
             }
+            .range-title{
+                float: left;
+                line-height: 28px;    
+                margin-left: 16px;
+            }
             .range-box {
                 float: left;
-                margin-left: 16px;
+                // margin-left: 16px;
+                margin-left:5px;
                 width: 168px;
                 height: 28px;
                 border-radius: 4px;
@@ -794,7 +820,7 @@ export default {
             }
             .range-box {
                 float: left;
-                margin-left: 16px;
+                // margin-left: 16px;
                 width: 168px;
                 height: 28px;
                 border-radius: 4px;
