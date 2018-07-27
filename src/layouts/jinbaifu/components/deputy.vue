@@ -12,13 +12,14 @@
                         可识别列名
                         <i class="iconfont icon-jia" @click="showNew(item.coreName, 1)"></i>
                     </div>
+
                     <ul class="Recognizable-list">
                         <dl>
                             <dd v-for="(t, f) in item.classList" v-if="t.type == 1 && t.editable == 0" :key="f">{{t.aliasName}}</dd>
                             <span></span>
                         </dl>
                         <li v-for="(t, f) in item.classList" v-if="t.type == 1 && t.editable == 1" :key="f">
-                            <input type="text" v-model="t.aliasName" placeholder="名称替换">
+                            <input type="text" v-model="t.aliasName" placeholder="名称替换" @focus="oldValue = t.aliasName" @blur="amendNameAct(t)">
                             <i class="iconfont icon-jian" @click="delImportSetting(t)"></i>
                         </li>
                         <li class="add-input" v-if="getFlagType(item.coreName, 1)">
@@ -31,6 +32,7 @@
                         数值转换
                         <i class="iconfont icon-jia" @click="showNew(item.coreName, 2)"></i>
                     </div>
+
                     <ul class="numerical-list" v-if="item.isNumTrans == 'Y'">
                         <li v-for="(t, f) in item.classList" v-if="t.type == 2" :key="f">
                             <div class="input-wrap" :class="{disabled: t.editable==0}">
@@ -44,6 +46,7 @@
                             </div>
                             <i class="iconfont icon-jian" @click="delImportSetting(t)"></i>
                         </li>
+
                         <li v-if="getFlagType(item.coreName, 2)">
                             <div class="input-wrap">
                                 <input class="inp1" type="text" placeholder="输入..." v-model="item.numName">
@@ -57,10 +60,12 @@
                             <i class="iconfont icon-jian" @click="cancelNew(item.coreName, 2)"></i>
                         </li>
                     </ul>
+
                     <div class="item-footer">
                         <div class="footer-title"><i class="iconfont icon-qc-required"></i>约束条件</div>
                         <p>{{item.remark}}</p>
                     </div>
+
                 </div>
             <!-- </div> -->
         </div>
@@ -71,11 +76,13 @@
 import {
     seekGetImportSetting,
     seekAddImportSetting,
+    seekAmendImportSetting,
     seekDelImportSetting,
     seekProductPropertyList,
     seekProductClassList // 大小类列表
     } from "Api/commonality/seek"
 export default {
+
     data () {
         return {
             dataObj: {},
@@ -116,7 +123,9 @@ export default {
             scdwFlag: false,
             beiFlag: false,
             beiFlag1: false,
-            feeFlag: false
+            feeFlag: false,
+            // 输入框获取焦点时的值
+            oldValue:null
 
         }
     },
@@ -310,6 +319,7 @@ export default {
                 }
             } 
         },
+        // 新增数据
         addNameAct (type, item) {
             if (!item.addName) {
                 return
@@ -324,6 +334,10 @@ export default {
             seekAddImportSetting(options).then((res) => {
                 if (res.data.state == 200) {
                     this.getImportSetting()
+                    this.$message({
+                        message: "新增成功",
+                        type: 'success'
+                    });
                 } else {
                     this.$message({
                         message: res.data.msg,
@@ -334,6 +348,31 @@ export default {
 
             })
         },
+        // 修改数据（新增）
+        amendNameAct (item){
+            if (!item.aliasName || this.oldValue == item.aliasName) {
+                return
+            }
+            let options = {
+                workId: item.id,
+                newValue: item.aliasName,
+            }
+            seekAmendImportSetting(options).then((res)=>{
+                if (res.data.state == 200) {
+                    this.getImportSetting()
+                    this.$message({
+                        message: "修改成功",
+                        type: 'success'
+                    });
+                } else {
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'warning'
+                    });
+                }
+            })
+        },
+        
         delImportSetting (item) { // 删除数据
             //console.log(item)
             let options = {

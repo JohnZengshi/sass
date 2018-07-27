@@ -93,7 +93,7 @@
                         <li class="ind">
                             <label>行业</label>
                             <div>
-                                <input @click="isShowInd = !isShowInd" v-model="dataInfo.industry" class="inp" type="text" placeholder="选择行业">
+                                <input @focus="isShowInd = true;isShowPCA = false" @blur="isShowInd = false" v-model="dataInfo.industry" class="inp" type="text" placeholder="选择行业">
                                 <ul :class="{active: isShowInd}">
                                     <li @click="choseIndustry(item)" :class="{active:dataInfo.industry == item.inName}" v-for="(item, index) in industryList" :key="index">{{item.inName}}</li>
                                 </ul>
@@ -102,7 +102,7 @@
                         <li class="address">
                             <label>省市区</label>
                             <div>
-                                <input v-model="PCAData" @click.stop="isShowPCA = !isShowPCA" class="inp" type="text" placeholder="选择省市区">
+                                <input @focus="isShowPCA = true" v-model="PCAData" class="inp" type="text" placeholder="选择省市区">
                                 <AddressSelect v-if="isShowPCA" @addressReturn="SelectArea"></AddressSelect>
                             </div>
                         </li>
@@ -236,7 +236,8 @@ export default {
             signName: '',
             industryList: industryList, // 行业数据
             isShowInd: false,
-            leaderStr: '' // 负责人数据字符串
+            leaderStr: '', // 负责人数据字符串
+            flage:false
 
         }
     },

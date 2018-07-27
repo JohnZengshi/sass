@@ -424,12 +424,12 @@
                                     </report-detail>
                                 </div>
                                 <div class="btn-list">
-                                    <div class="btn" v-if="companyPosition == '4' && nowStatus != 6 && nowStatus == 4 || 
+                                    <div class="btn" v-if="(companyPosition == '4' && nowStatus != 6 && nowStatus == 4 || 
                                     	companyPosition == '4' && nowStatus != 6 && nowStatus == 3 || 
                                     	companyPosition == '5' && nowStatus == 4 || 
                                     	companyPosition == '5' && nowStatus == 3 || 
                                     	multipleIdentities == 'Y'  && nowStatus == 3 || 
-                                    	multipleIdentities == 'Y'  && nowStatus == 4"  
+                                    	multipleIdentities == 'Y'  && nowStatus == 4) && isCurrentShopPreson"  
                                     	@click="showCounterList">
                                         <span class="iconfont icon-shouhuo"></span>
                                         <span>接收</span>
@@ -903,6 +903,7 @@ export default {
             conditionList:[],
             jewelList:[],
             jewelryList:[],
+            userInfoData:null //之前没有申明（不知道为啥）
         }
     },
     created () {
@@ -1062,6 +1063,12 @@ export default {
             } else {
                 return false;
             }
+        },
+        isCurrentShopPreson: function() {  //判断是不是本店铺的人员
+            let res = this.userInfoData.roleList.find((val)=>{
+                return val.shopName == this.receiptsIntroList.shopName;  //用shopId有问题
+            })
+            return Boolean(res);
         }
     },
     methods: {
@@ -1958,14 +1965,14 @@ export default {
                         this.send();
                         this.receiptStatusList();
                         this.enterOrderNum = ''
-                        if (operate === "1") { // 新增
+                        if (operate == "1") { // 新增
                             // this.savaOperateSuccess(response.data.data, index);
                             this.send();
                             this.$message({
                                 message: '添加成功',
                                 type: 'success'
                             });
-                        } else if (operate === "2") { // 删除
+                        } else if (operate == "2") { // 删除
                             this.delOperateSuccess(index);
                             this.$message({
                                 message: '删除成功',

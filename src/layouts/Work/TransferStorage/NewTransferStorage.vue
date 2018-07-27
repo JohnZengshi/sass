@@ -1886,13 +1886,13 @@ export default {
                     if (response.data.state === 200) {
                         this.$emit("closePopup", false)
                         this.$emit("getSeekSellReceiptsIntro")
-                        if (operate === "1") { // 新增
+                        if (operate == "1") { // 新增
                             // this.savaOperateSuccess(response.data.data, index);
                             this.$message({
                                 message: '添加成功',
                                 type: 'success'
                             });
-                        } else if (operate === "2") { // 删除
+                        } else if (operate == "2") { // 删除
                             this.delOperateSuccess(index);
                             this.$message({
                                 message: '删除成功',

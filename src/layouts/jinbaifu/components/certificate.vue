@@ -12,13 +12,14 @@
                         可识别列名
                         <i class="iconfont icon-jia" @click="showNew(item.coreName, 1)"></i>
                     </div>
+
                     <ul class="Recognizable-list">
                         <dl>
                             <dd v-for="(t, f) in item.classList" v-if="t.type == 1 && t.editable == 0" :key="f">{{t.aliasName}}</dd>
                             <span></span>
                         </dl>
                         <li v-for="(t, f) in item.classList" v-if="t.type == 1 && t.editable == 1" :key="f">
-                            <input type="text" v-model="t.aliasName" placeholder="名称替换">
+                            <input type="text" v-model="t.aliasName" placeholder="名称替换" @focus="oldValue = t.aliasName" @blur="amendNameAct(t)">
                             <i class="iconfont icon-jian" @click="delImportSetting(t)"></i>
                         </li>
                         <li class="add-input" v-if="getFlagType(item.coreName, 1)">
@@ -31,6 +32,7 @@
                         数值转换
                         <i class="iconfont icon-jia" @click="showNew(item.coreName, 2)"></i>
                     </div>
+
                     <ul class="numerical-list" v-if="item.isNumTrans == 'Y'">
                         <li v-for="(t, f) in item.classList" v-if="t.type == 2" :key="f">
                             <div class="input-wrap" :class="{disabled: t.editable==0}">
@@ -44,6 +46,7 @@
                             </div>
                             <i class="iconfont icon-jian" @click="delImportSetting(t)"></i>
                         </li>
+
                         <li v-if="getFlagType(item.coreName, 2)">
                             <div class="input-wrap">
                                 <input class="inp1" type="text" placeholder="输入..." v-model="item.numName">
@@ -57,10 +60,12 @@
                             <i class="iconfont icon-jian" @click="cancelNew(item.coreName, 2)"></i>
                         </li>
                     </ul>
+
                     <div class="item-footer">
                         <div class="footer-title"><i class="iconfont icon-qc-required"></i>约束条件</div>
                         <p>{{item.remark}}</p>
                     </div>
+
                 </div>
             <!-- </div> -->
         </div>
@@ -71,10 +76,12 @@
 import {
     seekGetImportSetting,
     seekAddImportSetting,
+    seekAmendImportSetting,
     seekDelImportSetting,
     seekShowhCertificateList
     } from "Api/commonality/seek"
 export default {
+
     data () {
         return {
             dataObj: {},
@@ -274,6 +281,7 @@ export default {
                 }
             }
         },
+        // 新增数据
         addNameAct (type, item) {
             if (!item.addName) {
                 return
@@ -287,7 +295,12 @@ export default {
             }
             seekAddImportSetting(options).then((res) => {
                 if (res.data.state == 200) {
+                    this.initData()
                     this.getImportSetting()
+                    this.$message({
+                        message: "新增成功",
+                        type: 'success'
+                    });
                 } else {
                     this.$message({
                         message: res.data.msg,
@@ -297,6 +310,79 @@ export default {
             }, (res) => {
 
             })
+        },
+        // 修改数据（新增）
+        amendNameAct (item){
+            if (!item.aliasName || this.oldValue == item.aliasName) {
+                return
+            }
+            let options = {
+                workId: item.id,
+                newValue: item.aliasName,
+            }
+            seekAmendImportSetting(options).then((res)=>{
+                if (res.data.state == 200) {
+                    this.initData()
+                    this.getImportSetting()
+                    this.$message({
+                        message: "修改成功",
+                        type: 'success'
+                    });
+                } else {
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'warning'
+                    });
+                }
+            })
+        },
+        initData () {
+            this.barFlag = false
+            this.hanFlag = false
+            this.hanFlag1 = false
+            this.pinFlag = false
+            this.pinFlag1 = false
+            this.kuanFlag = false
+            this.scFlag = false
+            this.scdwFlag = false
+            this.scdwFlag1 = false
+            this.beiFlag = false
+
+            this.djFlag=false
+            this.ztFlag=false
+            this.cpFlag=false
+            this.jsFlag=false
+            this.bsFlag=false
+            this.ssFlag=false
+            this.jjFlag=false
+            this.jzFlag=false
+            this.bjFlag=false
+            this.sjFlag=false
+            this.zkFlag=false
+            this.cbFlag=false
+
+            this.gfFlag=false
+            this.tradeManFlag=false
+            this.createTimeFlag=false
+            this.cashTimeFlag=false
+            this.cashierFlag=false
+            this.memberNumFlag=false
+            this.memberNameFlag=false
+            this.memberPhoneFlag=false
+            this.memberSexFlag=false
+            this.supplierFlag=false
+            this.certifiNoFlag=false
+            this.sectionNumFlag=false
+            this.fusWeightFlag=false
+            this.neatnessFlag=false
+            this.colorFlag=false
+            this.orderRemarkFlag=false
+            this.mainWeightFlag=false
+            this.payWeixinFlag=false
+            this.payAlipayFlag=false
+            this.payUnionpayFlag=false
+            this.payOtherFlag=false
+            this.payCashFlag=false
         },
         delImportSetting (item) { // 删除数据
             //console.log(item)
