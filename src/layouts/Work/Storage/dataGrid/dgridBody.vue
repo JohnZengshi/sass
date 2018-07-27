@@ -200,7 +200,6 @@
 
 			// 文本框失去焦点
 			inputFocusout(evt, item, tab, fIndex, type) {
-				debugger
 				let tempData = evt.target.getAttribute('temp-data') // || evt.target.getAttribute('title') //拿到原始的数据
 				let itemData = item[tab.type]
 				let productId = this.dgDataList[fIndex].productId
@@ -1084,7 +1083,6 @@
 								} else {
 									this.$set(this.datagridSelectData, config.resData, resArray)
 								}
-								debugger
 								
 							}
 						}

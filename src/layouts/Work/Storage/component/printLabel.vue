@@ -1,6 +1,6 @@
 <template>
 	<div class="receipts" v-loading="loading">
-		<span v-if="dataGridOptions.type==1" data-text="导出表格" @click="exportTab()">
+		<span data-text="导出表格" @click="exportTab()">
 			<i class="iconfont icon-daochu"></i>
 		</span>
 		<span data-text="打印标签" @click="printLabel">
@@ -136,7 +136,7 @@
 				// 导出报表数据
 				exportTabData: {
 					"orderNum": this.$route.query.orderNumber,
-					"exportType": 'RK',
+					"eType": 'RK',
 					"type": '1',
 					"page": 1,
 					"pageSize": 9999,
@@ -247,7 +247,7 @@
 		methods: {
 			// 导出表格
 			exportTab(){
-				downLoaderFile('/v1/export/exportExcelByBusinss',this.exportTabData)
+				downLoaderFile('/v1/export/exportDetailExcel',this.exportTabData)
 
 			},
 			// 打印标签
