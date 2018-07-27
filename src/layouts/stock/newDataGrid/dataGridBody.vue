@@ -1,7 +1,7 @@
 <template>
 <!--表格内容区-->
 <!--明细-->
-<div @scroll="watchScroll($event)" class="xj-report-table-container default-line" ref="tableContainer" v-if="reportType == 1">
+<div @scroll="flag && watchScroll($event)" class="xj-report-table-container default-line" ref="tableContainer" v-if="reportType == 1">
   <div>
     <div class="tb-tr" v-for="(tb,index) in tempArray" :key="index">
       <div class="tb-td"
@@ -143,6 +143,7 @@ export default {
       tempArray : [],
       heightArr: [],
       addNum: 0,
+      flag:true
     }
   },
   components:{
@@ -286,6 +287,7 @@ export default {
       // this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
       let res = this.$refs.ReadMoreDataDmo.isShowMoreDataTip(scrollHeight, clientHeight, scrollTop);
       if(res){
+        this.flag = false
         this.readMoreData();
       }
     },
@@ -309,11 +311,12 @@ export default {
         this.$parent.$parent.dataGridStorage.detailList = [];
         pageSize = 0
       }
-    //   this.$parent.$parent.dataGridOptions.page += 1
       this.$parent.$parent.dataGridOptions.pageSize = pageSize;
-    //   console.log(this.$parent.$parent.dataGridOptions.pageSize)
-    //   this.$parent.$parent.send();
-    this.$parent.$parent.sendlayLoad();
+      (async()=>{
+        let res = await this.$parent.$parent.sendlayLoad();
+        this.flag = true; //数据请求渲染完才会触发watchScroll
+        console.log(res)
+      })()
     }
       
   },

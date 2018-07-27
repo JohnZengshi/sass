@@ -18,7 +18,7 @@
                             <span></span>
                         </dl>
                         <li v-for="(t, f) in item.classList" v-if="t.type == 1 && t.editable == 1" :key="f">
-                            <input type="text" v-model="t.aliasName" placeholder="名称替换">
+                            <input type="text" v-model="t.aliasName" placeholder="名称替换" @focus="oldValue = t.aliasName" @blur="amendNameAct(t)">
                             <i class="iconfont icon-jian" @click="delImportSetting(t)"></i>
                         </li>
                         <li class="add-input" v-if="getFlagType(item.coreName, 1)">
@@ -71,6 +71,7 @@
 import {
     seekGetImportSetting,
     seekAddImportSetting,
+    seekAmendImportSetting,
     seekDelImportSetting,
     seekProductPropertyList
     } from "Api/commonality/seek"
@@ -94,6 +95,8 @@ export default {
             scFlag: false,
             scFlag1: false,
             scdwFlag: false,
+            // 输入框获取焦点时的值
+            oldValue:null
         }
     },
     props: ['ruleOptionDia'],
@@ -194,6 +197,7 @@ export default {
                 }
             }
         },
+        // 新增数据
         addNameAct (type, item) {
             if (!item.addName) {
                 return
@@ -208,6 +212,10 @@ export default {
             seekAddImportSetting(options).then((res) => {
                 if (res.data.state == 200) {
                     this.getImportSetting()
+                    this.$message({
+                        message: "新增成功",
+                        type: 'success'
+                    });
                 } else {
                     this.$message({
                         message: res.data.msg,
@@ -216,6 +224,30 @@ export default {
                 }
             }, (res) => {
 
+            })
+        },
+        // 修改数据（新增）
+        amendNameAct (item){
+            if (!item.aliasName || this.oldValue == item.aliasName) {
+                return
+            }
+            let options = {
+                workId: item.id,
+                newValue: item.aliasName,
+            }
+            seekAmendImportSetting(options).then((res)=>{
+                if (res.data.state == 200) {
+                    this.getImportSetting()
+                    this.$message({
+                        message: "修改成功",
+                        type: 'success'
+                    });
+                } else {
+                    this.$message({
+                        message: res.data.msg,
+                        type: 'warning'
+                    });
+                }
             })
         },
         delImportSetting (item) { // 删除数据
