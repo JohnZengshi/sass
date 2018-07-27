@@ -275,7 +275,7 @@ export default {
 			return val
 		},
 		delGoods () { // 删除商品
-			this.$confirm('此操作将永久删除该商品, 是否继续?', '提示', {
+			this.$confirm('此操作将'+ (this.goodType == 1 ? '' : '永久') +'删除该商品, 是否继续?', '提示', {
 				confirmButtonText: '确定',
 				cancelButtonText: '取消'
 			}).then(() => {
