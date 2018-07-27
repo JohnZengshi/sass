@@ -883,3 +883,7 @@ export const seekGetSettingLabel = function (parm) { //13.5标签设置获取接
     let URL = "/v1/print/getSettingLabel";
     return apiCall(parm, URL);
 }
+export const seekGetLabelResultList = function (parm) { //13.7标签获取结果页数据接口
+    let URL = "/v1/print/getLabelResultList";
+    return apiCall(parm, URL);
+}

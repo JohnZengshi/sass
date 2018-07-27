@@ -7,62 +7,102 @@
             </div>
             <div class="model-content">
                 <div class="model-content-group">
-                    <el-select v-model="id" placeholder="请选择模板">
-                        <el-option v-for="item in templateList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <el-select v-model="dataList.id" @change="selectChangeId" placeholder="请选择模板">
+                        <el-option v-for="item in templateList" :key="item.id" :label="item.name" :value="item.id"></el-option>
                     </el-select>
-                    <el-select v-model="url" placeholder="请选择结果页">
-                        <el-option v-for="item in laberList" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <el-select v-model="dataList.url" @change="selectChangeUrl" placeholder="请选择结果页">
+                        <el-option v-for="item in laberList" :key="item.url" :label="item.name" :value="item.url"></el-option>
                     </el-select>
                     <el-button type="primary" @click="editTemplate">编辑模板</el-button>
                 </div>
                 <div class="model-content-group">
                     <div class="model-content-title">
                         <div class="border-left"></div>
+                        <p>URL</p>
+                        <div class="model-radio">
+                            <div class="laber-radio">
+                                <input type="radio" id="male1" value="0" name="url" v-model="isUrl"/>
+                                <label for="male1">显示</label>
+                            </div>
+                            <div class="laber-radio">
+                                <input type="radio" id="male3" value="1" name="url" v-model="isUrl" />
+                                <label for="male3">隐藏</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-show="isUrl == '0'" class="url-text">
+                        {{url}}
+                    </div>
+
+                </div>
+                <div class="model-content-group" v-show="dataList.url === 'publicLabel'">
+                    <div class="model-content-title">
+                        <div class="border-left"></div>
                         <p>LOGO上传</p>
                     </div>
                     <el-upload class="avatar-uploader" action="" :show-file-list="false" :before-upload="beforeAvatarUploadLogo">
-                        <img v-if="imgCom" :src="imgCom" class="avatar"> <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        <img v-if="dataList.imgCom" :src="dataList.imgCom" class="avatar"> <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
 
                 </div>
-                <div class="model-content-group">
+                <div class="model-content-group" v-show="dataList.url === 'publicLabel'">
                     <div class="border-left"></div>
                     <div class="model-content-title">
                         <p>店铺信息</p>
-                        <el-radio-group>
-                            <el-radio :label="1">显示默认</el-radio>
-                            <el-radio :label="2">显示且跟随商品位置</el-radio>
-                            <el-radio :label="3">隐藏</el-radio>
-                        </el-radio-group>
+                        <div class="model-radio">
+                            <div class="laber-radio">
+                                <input type="radio" id="male4" name="sex" value="0" v-model="dataList.isShop"/>
+                                <label for="male4">显示默认</label>
+                            </div>
+                            <div class="laber-radio">
+                                <input type="radio" id="male5" name="sex" value="1" v-model="dataList.isShop"/>
+                                <label for="male5">显示且跟随商品位置</label>
+                            </div>
+                            <div class="laber-radio">
+                                <input type="radio" id="male6" name="sex" value="2" v-model="dataList.isShop"/>
+                                <label for="male6">隐藏</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="model-checkbox">
-                        <label>店铺名称：</label>
-                        <input type="text">
-                    </div>
-                    <div class="model-checkbox">
-                        <label>店铺地址：</label>
-                        <input type="text">
-                    </div>
-                    <div class="model-checkbox">
-                        <label>店铺电话：</label>
-                        <input type="text">
+                    <div v-show="dataList.isShop === '0'">
+                        <div class="model-checkbox">
+                            <label>店铺名称：</label>
+                            <input type="text" v-model="dataList.shopName" @blur="inputBlur">
+                        </div>
+                        <div class="model-checkbox">
+                            <label>店铺地址：</label>
+                            <input type="text" v-model="dataList.shopAddress" @blur="inputBlur">
+                        </div>
+                        <div class="model-checkbox">
+                            <label>店铺电话：</label>
+                            <input type="text" v-model="dataList.shopPhone" @blur="inputBlur">
+                        </div>
                     </div>
 
+
                 </div>
-                <div class="model-content-group company">
+                <div class="model-content-group company" v-show="dataList.url === 'publicLabel'">
                     <div class="model-content-title">
                         <div class="border-left"></div>
                         <p>公司信息<span class="company-info">（公司名称，公司地址，公司电话，公司二维码）</span></p>
-                        <el-radio-group>
-                            <el-radio :label="1">显示</el-radio>
-                            <el-radio :label="2">隐藏</el-radio>
-                        </el-radio-group>
+                        <div class="model-radio">
+                            <div class="laber-radio">
+                                <input type="radio" id="male7" name="company" value="0" v-model="dataList.isCom"/>
+                                <label for="male7">显示</label>
+                            </div>
+                            <div class="laber-radio">
+                                <input type="radio" id="male8" name="company" value="1" v-model="dataList.isCom" />
+                                <label for="male8">隐藏</label>
+                            </div>
+                        </div>
                     </div>
-                    <div class="erweima">二维码上传</div>
-                    <el-upload class="avatar-uploader" action="" :show-file-list="false" :before-upload="beforeAvatarUpload">
-                        <img v-if="imgUrl" :src="imgUrl" class="avatar"> <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
 
+                    <div v-show="dataList.isCom === '0'">
+                        <div class="erweima">二维码上传</div>
+                        <el-upload class="avatar-uploader" action="" :show-file-list="false" :before-upload="beforeAvatarUpload">
+                            <img v-if="dataList.imgUrl" :src="dataList.imgUrl" class="avatar"> <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                        </el-upload>
+                    </div>
                 </div>
                 <div class="model-content-group">
                     <div class="model-content-title">
@@ -70,7 +110,7 @@
                         <p>结果样式页</p>
                     </div>
                     <div>
-                        <img src="" alt="">
+                        <img :src="laberImg" alt="">
                     </div>
                 </div>
             </div>
@@ -81,10 +121,19 @@
                     <div>新增模板</div>
                 </div>
                 <div class="body">
-                    <input type="text" placeholder="输入模板名称">
+                    <input type="text" placeholder="输入模板名称" v-model="addTempName">
+                    <div class="radio-temp">
+                        <p>指定结果页面</p>
+                        <div class="model-radio" id="edit-model">
+                            <div class="laber-radio" v-for="(item,index) in laberList">
+                                <input type="radio" :id="'add' + index" :value="item.url" v-model="addUrl" name="addTempl" />
+                                <label :for="'add' + index">{{item.name}}</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="foot" solt="footer">
-                    <div class="ope-btn">确定</div>
+                    <div class="ope-btn" @click="addTemplateFun">确定</div>
                 </div>
             </el-dialog>
 
@@ -94,19 +143,20 @@
                     <div>编辑模板</div>
                 </div>
                 <div class="body">
-                    <input type="text" placeholder="输入模板名称">
+                    <input type="text" placeholder="输入模板名称" v-model="editTempName">
                     <div class="radio-temp">
                         <p>指定结果页面</p>
-                        <el-radio-group>
-                            <el-radio :label="1">模板1</el-radio>
-                            <el-radio :label="2">模板2</el-radio>
-                            <el-radio :label="3">模板3</el-radio>
-                        </el-radio-group>
+                        <div class="model-radio" id="edit-model">
+                            <div class="laber-radio" v-for="(item,index) in laberList">
+                                <input type="radio" :id="'female' + index" :value="item.url" v-model="dataList.url" name="editTempl" />
+                                <label :for="'female' + index">{{item.name}}</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="foot" solt="footer">
-                    <div class="ope-btn">确定</div>
-                    <div class="del-btn"></div>
+                    <div class="ope-btn" @click="editTemplateFun">确定</div>
+                    <div class="del-btn" @click="delTemplateFun"></div>
                 </div>
             </el-dialog>
 
@@ -115,7 +165,7 @@
 </template>
 
 <script>
-    import {seekOpSettingLabel, seekGetSettingLabel} from './../../../../Api/commonality/seek'
+    import {seekOpSettingLabel, seekGetSettingLabel,seekGetLabelResultList} from './../../../../Api/commonality/seek'
     import base from '@/config/base/index';
     import baseApi from '@/Api/Base/base'
 
@@ -124,39 +174,157 @@
             return {
                 templateList: [], //模板集合
                 laberList: [],  //结果页集合
-                id: '', //模板id
-                url: '',    //模板结果页id
-                imgUrl: '', //二维码
-                imgCom: '', //logo
-                shopName: '',
-                shopAddress: '',
-                shopPhone: '',
+                dataList: {
+                    id: '', //模板id
+                    url: '',    //模板结果页id
+                    imgUrl: '', //二维码
+                    imgCom: '', //logo
+                    shopName: '',
+                    shopAddress: '',
+                    shopPhone: '',
+                    isCom: '0',
+                    isShop: '0',
+                },
+                url: '',        //URL地址
+                isUrl: '0',     //是否显示URL
+                editTempName: '',   //编辑模板输入的名称
+                addTempName: '',    //新增模板输入的名称
+                addUrl: '',     //新增模板选中的结果页url
+                laberImg: '',   //结果页图片地址
                 addDialog: false,
                 editDialog: false
             }
         },
-        mounted() {
-            this.initData()
+        created() {
+            this.getSettingLabel();
+            this.getLabelResultList();
+        },
+        watch:{
+            'dataList.isCom':function(val,oldval){
+                this.opSettingLabel();
+            },
+            'dataList.isShop': function(val,oldval){
+                this.opSettingLabel();
+            },
+            'dataList.url': function(val,oldval){
+                this.laberImg = `./static/img/laberImg/${val}.png`;
+            }
         },
         methods: {
-            initData() {
-                let data = {
-                    opType: '0'
-                }
-                seekOpSettingLabel(data).then((res) => {
-                    if (res.data.state == 200) {
-
+            getSettingLabel(){
+                //获取模板集合
+                seekGetSettingLabel({}).then(res => {
+                    if (res.data.state == 200){
+                        this.templateList = [];
+                        Object.assign(this.templateList,res.data.data.dataList);
                     }
                 });
-                seekGetSettingLabel({}).then(res => {
-
+            },
+            getLabelResultList() {
+                //获取结果页集合
+                seekGetLabelResultList({}).then(res => {
+                    if (res.data.state == 200){
+                        this.laberList = [];
+                        Object.assign(this.laberList,res.data.data.dataList);
+                    }
                 });
+            },
+            opSettingLabel(data = {
+                opType: '2',//0=查询,1=写入,2=更新,3=删除
+                name: this.dataList.name,
+                id: this.dataList.id, //模板id
+                url: this.dataList.url,    //模板结果页id
+                imgUrl: this.dataList.imgUrl, //二维码
+                imgCom: this.dataList.imgCom, //logo
+                shopName: this.dataList.shopName,
+                shopAddress: this.dataList.shopAddress,
+                shopPhone: this.dataList.shopPhone,
+                isCom: this.dataList.isCom,
+                isShop: this.dataList.isShop
+            },type = '0'){
+                seekOpSettingLabel(data).then((res) => {
+                    if (res.data.state == 200) {
+                        switch (type){
+                            case 'add':
+                                this.getSettingLabel();
+                                Object.assign(this.dataList,res.data.data);
+                                break;
+                            case 'edit':
+                                this.editTempName = res.data.data.name;
+                                this.dataList.name = res.data.data.name;
+                                this.getSettingLabel();
+                                break;
+                            case 'del':
+                                this.getSettingLabel();
+                                this.dataList.id = '';
+                                break;
+                            default:
+                                this.editTempName = res.data.data.name;
+                                Object.assign(this.dataList,res.data.data);
+                        }
+                    }
+                });
+            },
+            inputBlur(){
+                this.opSettingLabel();
+            },
+            selectChangeId(id){
+                let data = {
+                    opType: '0',
+                    id: this.dataList.id
+                }
+                this.opSettingLabel(data);
+                if (this.dataList.url){
+                    let companyId = sessionStorage.getItem('companyId');
+                    this.url = `http://label.yunzhubao.com/#/${this.dataList.url}?templateId=${id}&companyId=${companyId}`;
+                }
+            },
+            selectChangeUrl(url){
+                if (this.dataList.id){
+                    let companyId = sessionStorage.getItem('companyId');
+                    this.url = `http://label.yunzhubao.com/#/${url}?templateId=${this.dataList.id}&companyId=${companyId}`;
+                }
             },
             addTemplate() {
                 this.addDialog = true;
             },
             editTemplate() {
-                this.editDialog = true;
+                if (this.dataList.id){
+                    this.editDialog = true;
+                }else{
+                    this.$message({
+                        type: 'warning',
+                        message: '请选选择模板！'
+                    });
+                }
+            },
+            addTemplateFun(){
+                this.opSettingLabel({
+                    name: this.addTempName,
+                    url: this.addUrl,
+                    opType: '1',
+                    isCom: '0',
+                    isShop: '0'
+                },'add');
+                this.addDialog = false;
+            },
+            editTemplateFun(){
+                let data = {
+                    opType: '2',
+                    id: this.dataList.id,
+                    name: this.editTempName,
+                    url: this.dataList.url
+                }
+                this.opSettingLabel(data,'edit');
+                this.editDialog = false;
+            },
+            delTemplateFun(){
+                this.opSettingLabel({
+                    name: this.dataList.name,
+                    id: this.dataList.id,
+                    opType: '3'
+                },'del');
+                this.editDialog = false;
             },
             beforeAvatarUpload(file) {
                 this.cosCloud(file, 'imgUrl');
@@ -199,7 +367,8 @@
                 })
                 let successCallBack = function (result) {
                     console.log('获取上传结果:', result);
-                    _this[type] = result.data.source_url;
+                    _this.dataList[type] = result.data.source_url;
+                    _this.opSettingLabel();
                 }
                 let errorCallBack = function (result) {
                 }
@@ -279,6 +448,10 @@
             padding-left:20px;
             position:relative;
 
+            .url-text{
+                font-size:12px;
+                user-select:text;
+            }
             .border-left{
                 width:5px;
                 height:18px;
@@ -349,6 +522,54 @@
 
 </style>
 <style lang="scss" scoped>
+    .model-radio{
+        float:right;
+        overflow:hidden;
+        position: relative;
+        top: 3px;
+        .laber-radio{
+            display:inline-block;
+            margin-left:20px;
+            cursor:pointer;
+            label{
+                font-size: 14px;
+                color:#666;
+            }
+            input[type="radio"] + label::before {
+                content: "\A0";
+                display: inline-block;
+                vertical-align: middle;
+                width: 8px;
+                height: 8px;
+                padding: 2px;
+                margin-right: 6px;
+                margin-top: -3px;
+                border-radius: 50%;
+                border: 1px solid #d6d6d6;
+                line-height: 1;
+            }
+            input[type="radio"]:checked + label{
+                color:#2993f8;
+            }
+            input[type="radio"]:checked + label::before {
+                background-color: #2993f8;
+                border: 1px solid #2993f8;
+                background-clip: content-box;
+            }
+            input[type="radio"] {
+                position: absolute;
+                clip: rect(0, 0, 0, 0);
+            }
+        }
+    }
+    #edit-model{
+        float:none;
+        .laber-radio{
+            display:block;
+            margin:0;
+        }
+    }
+
     .addDig{
         .body{
             padding:0 35px;
