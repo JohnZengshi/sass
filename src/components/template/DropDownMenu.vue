@@ -1,9 +1,11 @@
 <template>
-    <div class="dropDown-wrap">
+    <div class="dropDown-wrap" :class="{Filtrate : propList.length > 1}">
         <span class="title-name" :class="optionData.titleInfo == '' ? '' : 'select'">
             {{optionData.titleInfo == '' ? titleName : optionData.titleInfo}}
-            <i class="iconfont icon-arrow-down drop-triangle" v-if="optionData.titleInfo ==''"></i>
-            <i v-else-if="isClear == undefined ? true : isClear == true ? true : false" class="el-icon-circle-close" title="清除" @click="clearTitleInfo"></i>
+            <template v-if="propList.length > 1">
+                <i class="iconfont icon-arrow-down drop-triangle" v-if="optionData.titleInfo ==''" title="筛选"></i>
+                <i class="el-icon-circle-close" v-else-if="(isClear == undefined ? true : isClear == true ? true : false)" title="清除" @click="clearTitleInfo"></i>
+            </template>
         </span>
         <ul class="drop-list">
             <li :class="{active: actIndex == index}" :key="index" v-for="(item, index) in propList" @click="itemClick(item, index)">{{getDataType(dataType, item)}}</li>
@@ -34,6 +36,12 @@ export default {
               this.dataType = '库位';
               this.clearTitletext();
           }
+       },
+       'propList':function(){
+           let propListLength = this.propList.length;
+           if(propListLength == 1){
+               this.itemClick(this.propList[0],0)
+           }
        }
     },
     data () {
@@ -356,28 +364,30 @@ export default {
         transition: all .3s;
         margin-left: -3px;
     }
-    &:hover{
-        background:#e0ecf7;
-        color:#3195f5;
-        >ul{
-            opacity: 1;
-            visibility: visible;
-            top:30px;
+    // 增加是否可以下拉筛选
+    &.Filtrate {
+      &:hover {
+        background: #e0ecf7;
+        color: #3195f5;
+        >ul {
+          opacity: 1;
+          visibility: visible;
+          top: 30px;
         }
-        &:after{
-            top: 18px;
-            border-bottom-color: #fff;
+        &:after {
+          top: 18px;
+          border-bottom-color: #fff;
         }
         >.title-name .drop-triangle {
-            transform: rotate(180deg);
-            //color:#2993f8;
+          transform: rotate(180deg); //color:#2993f8;
         }
         >.title-name {
-            color:#3195f5;
+          color: #3195f5;
         }
         .title-name .el-icon-circle-close {
-            color:#2993f8;
+          color: #2993f8;
         }
+      }
     }
     .title-name {
         padding: 0 8px;

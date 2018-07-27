@@ -22,7 +22,7 @@
                     class="selected_dropdown"
                     titleName="全部" 
                     dataType="公告类型"
-                    :propList="noticeTypeList"
+                    :propList=" Jrole ? noticeTypeList1 : noticeTypeList "
                     @dropReturn="dropReturn"
                 >
                 </select-drop>
@@ -32,7 +32,7 @@
                     class="selected_dropdown"
                     titleName="全部" 
                     dataType="公告位置"
-                    :propList="(noticeType == 2 && shopRole) ? sendPosition1 : sendPosition"
+                    :propList="sendPosition"
                     @dropReturn="dropReturn"
                 >
                 </select-drop>
@@ -126,6 +126,14 @@ export default {
                     value: ''
                 }
             ],
+            noticeTypeList1:[{
+                    itemName: '我收到的',
+                    value: 2
+                },
+                {
+                    itemName: '全部',
+                    value: ''
+                }],
             sendPosition: [
                 {
                     itemName: '全部',
@@ -186,10 +194,80 @@ export default {
                 return jurisdictions.jurisdictionShopRole(this.userPositionInfo.roleList);
             }
         },
-        Jrole: function () {
+        Jrole: function () { // 观察员
             if (this.userPositionInfo) {
                 return jurisdictions.jurisdictionJCY(this.userPositionInfo.roleList);
             }
+        },
+        administrator: function () { // 管理员
+            if (this.userPositionInfo) {
+                return jurisdictions.jurisdictionComputedManageRole(this.userPositionInfo.roleList);
+            }
+        },
+        employee: function () { // 职员
+          if (this.userPositionInfo) {
+            return jurisdictions.jurisdictionOfficeClerk(this.userPositionInfo.roleList);
+          }
+        }
+    },
+    watch:{
+        "noticeType": function (val) {
+          if (val == 1 || val == 3) {
+            //  管理员或者职员
+            if (this.administrator || this.employee) {
+              this.sendPosition = [{
+                  itemName: '全部',
+                  value: ''
+                },
+                {
+                  itemName: '全公司',
+                  value: 1
+                },
+                {
+                  itemName: '总部',
+                  value: 2
+                },
+                {
+                  itemName: '店铺',
+                  value: 3
+                },
+
+              ]
+            }
+            //  观察员或者店铺人员
+            else if (this.Jrole || this.shopRole) {
+              this.sendPosition = [{
+                  itemName: '全部',
+                  value: ''
+                },
+                {
+                  itemName: '店铺',
+                  value: 3
+                },
+              ]
+            }
+            
+          }
+          else {
+            this.sendPosition = [{
+                itemName: '全部',
+                value: ''
+              },
+              {
+                itemName: '全公司',
+                value: 1
+              },
+              {
+                itemName: '总部',
+                value: 2
+              },
+              {
+                itemName: '店铺',
+                value: 3
+              },
+
+            ]
+          }
         }
     },
     methods: {

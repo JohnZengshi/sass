@@ -2997,9 +2997,9 @@
           orderNum:this.$route.query.orderNumber,
           type: 1
         }
-              exportTabData['exportType'] = 'XS'
+              exportTabData['eType'] = 'XS'
               console.log(exportTabData)
-              downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
+              downLoaderFile('/v1/export/exportDetailExcel',exportTabData)
       },
 
       // 积分操作

@@ -280,7 +280,7 @@
 	</div>
     
     <div class="utilsBtn flex flex-v flex-pack-justify">
-        <div v-if="tabClassActive.index != 0" class="btn" @click="exportTab()">
+        <div class="btn" @click="exportTab()">
             <i class="iconfont icon-daochu"></i>
             <span>导出报表</span>
         </div>
@@ -1218,13 +1218,12 @@ export default {
         },
         // 导出报表
         exportTab(){
-            console.log('导出报表')
             let exportTabData =Object.assign({},this.dataGridOptions)
-            exportTabData['exportType'] = 'FH'
+            exportTabData['eType'] = 'FH'
             console.log(exportTabData.type)
             console.log(exportTabData)
             if(exportTabData.type === 1){
-            	downLoaderFile('/v1/export/exportExcelByReport',exportTabData)
+            	downLoaderFile('/v1/export/reportsDetailExcel',exportTabData)
             } else {
             	downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)          
             }

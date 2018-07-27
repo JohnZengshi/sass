@@ -233,19 +233,6 @@ export default {
     /* 已经操作过的状态 */
     &.past{
       .user{
-        &:after{background-color: #2993f8;left: -10px;}
-        &:before{left: -8px;}
-        width: 96px;
-        border-left:6px solid #9bceff;
-        >.time{ color: #333;}
-        >.name{ color: #b3b4b3;}
-      }
-      >.status{color:#2993f8;}
-    }
-    
-    /* 进行中的状态 */
-    &.ing{
-      .user{
         &:after{background-color: #ffbf42; width: 16px; height: 16px;}
         &:before{left: -6px;top:3px;}
         >.time{ color: #333; }
@@ -263,6 +250,19 @@ export default {
           z-index: 2;
         }
       }
+    }
+    
+    /* 进行中的状态 */
+    &.ing{
+      .user{
+        &:after{background-color: #2993f8;left: -10px;}
+        &:before{left: -8px;}
+        width: 96px;
+        border-left:6px solid #9bceff;
+        >.time{ color: #333;}
+        >.name{ color: #b3b4b3;}
+      }
+      >.status{color:#2993f8;}
     }
     
     &:last-child{

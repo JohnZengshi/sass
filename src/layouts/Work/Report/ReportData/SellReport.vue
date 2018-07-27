@@ -1537,10 +1537,9 @@ export default {
     },
     // 导出报表
     exportTab() {
-      console.log("导出报表");
       let exportTabData =Object.assign({},this.dataGridOptions);
 
-      exportTabData["exportType"] = "XS";
+      exportTabData["eType"] = "XS";
 
       if (this.sellShowId === "sales") {
         exportTabData["sellFlag"] = "1";

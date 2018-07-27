@@ -223,7 +223,7 @@
       </div>
 
       <div class="utilsBtn flex flex-v flex-pack-justify">
-        <div v-if="tabClassActive.index != 0" class="btn" @click="exportTab()">
+        <div class="btn" @click="exportTab()">
           <i class="iconfont icon-daochu"></i>
           <span>导出报表</span>
         </div>
@@ -1098,10 +1098,10 @@ import LoaderNum from 'components/work/loaderNum.vue'
       exportTab(){
         console.log('导出报表')
         let exportTabData = Object.assign({},this.dataGridOptions)
-        exportTabData['exportType'] = 'XG'
+        exportTabData['eType'] = 'XG'
         console.log(exportTabData)
         if(exportTabData.type === 1){
-          downLoaderFile('/v1/export/exportExcelByReport',exportTabData)
+          downLoaderFile('/v1/export/reportsDetailExcel',exportTabData)
         } else {
           downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)          
         }
