@@ -1,89 +1,149 @@
 <template>
   <el-dialog top="7%" :visible.sync="isDialog" class="xj-input-dialog">
-    <div class="m-m-add-member-main">
+    <div class="m-m-add-member-main" :class="{'m-m-add-member-isShowMore-box': isShowMore}">
       <div class="p-close-icon" @click="isDialog = false">
         <i class="el-dialog__close el-icon el-icon-close"></i>
       </div>
       <div class="add-member-body">
         <h3>添加会员</h3>
-        <div class="member-edit">
-          <h4>基本信息</h4>
-          <div class="member-edit-info">
-            <div class="item">
-              <span class="item-label"><i class="mandatory-icon">*</i>性名</span>
-              <input :disabled="!isShopMan" maxlength="6" v-model="dataInfo.username" @blur="setEmail">
-            </div>
-            <div class="item">
-              <span class="item-label"><i class="mandatory-icon">*</i>手机号</span>
-              <input type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="setEmail">
-            </div>
-            <div class="item">
-              <span class="item-label">备注名</span>
-              <input maxlength="6" placeholder="仅内部人员可查看" :disabled="!isShopMan" v-model="dataInfo.name" @blur="setEmail">
-            </div>
-            <div class="item">
-              <span class="item-label"><i class="mandatory-icon">*</i>性别</span>
-              <div class="right-wrap radio-20">
-                <el-radio-group v-model="dataInfo.sex" @change="setSex" :disabled="!isShopMan">
-                  <el-radio :label="'1'">男</el-radio>
-                  <el-radio :label="'2'">女</el-radio>
-                </el-radio-group>
-              </div>
-            </div>
-            <div class="item">
-              <span class="item-label">生日</span>
-              <el-date-picker v-model="dataInfo.birthday" type="date" placeholder="选择日期" :disabled="!isShopMan" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" @change="setBirthday">
-              </el-date-picker>
-
-              <span class="item-label"></span>
-              <el-date-picker v-model="dataInfo.maleBirthday" type="date" placeholder="选择日期" :disabled="!isShopMan" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" @change="setBirthday">
-              </el-date-picker>
-            </div>
-            <div class="item">
-              <span class="item-label">负责人</span>
-              <div class="right-wrap">
-                <alone-drop-down-colums ref="stateWrap" :propsList="userList" titleData="负责人" @dataBack="choseUser"></alone-drop-down-colums>
-                <!-- <input @click="isShowInd = !isShowInd" v-model="dataInfo.principalList" class="inp" type="text" placeholder="选择负责人">
-                <ul class="click-select-wrap" :class="{active: isShowInd}">
-                    <li @click="choseGrade(item)" :class="{active:dataInfo.industry == item.inName}" v-for="(item, index) in industryList" :key="index">{{item.inName}}</li>
-                </ul> -->
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="member-edit">
-          <h4>其它信息</h4>
-          <div class="member-edit-info">
-            <div class="item">
-              <span class="item-label">会员等级</span>
-              <div class="right-wrap">
-                <input @click="isGrade = !isGrade" v-model="dataInfo.gradeName" class="inp" type="text" placeholder="选择会员等级">
-                <ul class="click-select-wrap" :class="{active: isGrade}">
-                  <li @click="choseGrade(item)" :class="{active:dataInfo.grade == item.id}" v-for="(item, index) in gradeList" :key="index">{{item.name}}</li>
-                </ul>
-              </div>
-            </div>
-            <div class="item">
-              <span class="item-label">会员类型</span>
-              <div class="right-wrap">
-                <input @click="isType = !isType" v-model="dataInfo.typeName" class="inp" type="text" placeholder="选择会员等级">
-                <ul class="click-select-wrap" :class="{active: isType}">
-                  <li @click="choseType(item)" :class="{active:dataInfo.type == item.id}" v-for="(item, index) in typeList" :key="index">{{item.name}}</li>
-                </ul>
-              </div>
-            </div>
-            <div class="item">
-              <span class="item-label">纪念日</span>
-              <el-date-picker v-model="dataInfo.memorial" type="date" placeholder="选择日期" :disabled="!isShopMan" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" @change="setBirthday">
-              </el-date-picker>
-            </div>
-            <div class="member-edit-bq">
-              <div class="title fl">标签</div>
-              <div class="bq-item-wrap fl">
-                <div class="bq-item fl" v-for="(item,index) in dataInfo.signList" :key="index">
-                  <i v-if="isShopMan" @click.stop="delLabel(item, index)" class="iconfont icon-guanbi-copy"></i> {{item.signName}}
+        <div class="scroll-box">
+          <div>
+            <div class="member-edit-box">
+              <h4>基本信息</h4>
+              <div class="member-edit-info">
+                <div class="member-item">
+                  <span class="item-label"><i class="mandatory-icon">*</i>性名</span>
+                  <input :disabled="!isShopMan" maxlength="6" v-model="dataInfo.username" @blur="setEmail">
                 </div>
-                <input @blur="followCreateSign" :disabled="!isShopMan" v-model="signName" type="text" placeholder="添加标签" maxlength="8" class="bq-add fl" />
+
+                <div class="member-item">
+                  <span class="item-label">备注名</span>
+                  <input maxlength="6" placeholder="仅内部人员可查看" :disabled="!isShopMan" v-model="dataInfo.name" @blur="setEmail">
+                </div>
+
+                <div class="member-item">
+                  <span class="item-label"><i class="mandatory-icon">*</i>手机号</span>
+                  <input type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="setEmail">
+                </div>
+
+                <div class="member-item"></div>
+
+                <div class="member-item">
+                  <span class="item-label"><i class="mandatory-icon">*</i>性别</span>
+                  <div class="right-wrap radio-20">
+                    <el-radio-group style="margin-top: 7px;" v-model="dataInfo.sex" @change="setSex" :disabled="!isShopMan">
+                      <el-radio :label="'1'">男</el-radio>
+                      <el-radio :label="'2'">女</el-radio>
+                    </el-radio-group>
+                  </div>
+                </div>
+
+                <div class="member-item"></div>
+
+                <div class="member-item">
+                  <span class="item-label">公历生日</span>
+                  <el-date-picker v-model="dataInfo.maleBirthday" type="date" placeholder="选择日期" :disabled="!isShopMan" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" @change="setBirthday">
+                  </el-date-picker>
+                </div>
+
+                <div class="member-item">
+                  <span class="item-label">农历生日</span>
+                  <el-date-picker v-model="dataInfo.birthday" type="date" placeholder="选择日期" :disabled="!isShopMan" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" @change="setBirthday">
+                  </el-date-picker>
+                </div>
+                
+                <div class="member-item">
+                  <span class="item-label">负责人</span>
+                  <div class="right-wrap">
+                    <alone-drop-down-colums class="chose-user-box" ref="stateWrap" :propsList="userList" titleData="负责人" @dataBack="choseUser"></alone-drop-down-colums>
+                    <!-- <input @click="isShowInd = !isShowInd" v-model="dataInfo.principalList" class="inp" type="text" placeholder="选择负责人">
+                    <ul class="click-select-wrap" :class="{active: isShowInd}">
+                        <li @click="choseGrade(item)" :class="{active:dataInfo.industry == item.inName}" v-for="(item, index) in industryList" :key="index">{{item.inName}}</li>
+                    </ul> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="more-tit-wrap">
+              <span class="open-more" @click="isShowMore = !isShowMore">填写更多信息<i class="iconfont icon-arrow-down"></i></span>
+            </div>
+            <div v-show="isShowMore" class="member-edit-box">
+              <h4>其它信息</h4>
+              <div class="member-edit-info">
+                <div class="member-item">
+                  <span class="item-label">会员等级</span>
+                  <div class="right-wrap">
+                    <newDownMenu class="new-down-menu-box" :titleInfo="dataInfo.gradeName ? dataInfo.gradeName : '选择会员等级'" :showList="industryList" :noClear="true" :keep="true" @changeData="choseGrade"></newDownMenu>
+                    <!-- <input @click="isGrade = !isGrade" v-model="dataInfo.gradeName" class="inp" type="text" placeholder="选择会员等级">
+                    <ul class="click-select-wrap" :class="{active: isGrade}">
+                      <li @click="choseGrade(item)" :class="{active:dataInfo.grade == item.id}" v-for="(item, index) in gradeList" :key="index">{{item.name}}</li>
+                    </ul> -->
+                  </div>
+                </div>
+                <div class="member-item">
+                  <span class="item-label">纪念日</span>
+                  <el-date-picker v-model="dataInfo.memorial" type="date" placeholder="选择日期" :disabled="!isShopMan" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" @change="setBirthday">
+                  </el-date-picker>
+                </div>
+                <div class="member-item">
+                  <span class="item-label">行业</span>
+                  <div class="right-wrap">
+                    <newDownMenu class="new-down-menu-box" :titleInfo="dataInfo.profession ? dataInfo.profession : '选择行业'" :showList="industryList" :noClear="true" :keep="true" @changeData="changeProfession"></newDownMenu>
+                  </div>
+                </div>
+                <div class="member-item">
+                  <span class="item-label">微信号</span>
+                  <input type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="setEmail">
+                </div>
+                <div class="member-item">
+                  <span class="item-label">创建时间</span>
+                  <input type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="setEmail">
+                </div>
+                <div class="member-item">
+                  <span class="item-label">订单总额</span>
+                  <input type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="setEmail">
+                </div>
+                <div class="member-item">
+                  <span class="item-label">邮箱</span>
+                  <input type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="setEmail">
+                </div>
+                <div class="member-item">
+                  <span class="item-label">名片上传</span>
+                  <div class="right-wrap">
+                    <img class="card" src="~static/img/member/new/card.png" />
+                    <img class="card-img" v-if="dataInfo.cardSrc" :src="dataInfo.cardSrc" />
+                    <UploadingImg class="uploading-img-box" :type="1" @cosImg="cosImg">
+                      <span>上传</span>
+                    </UploadingImg>
+                  </div>
+                </div>
+                <div class="member-item">
+                  <span class="item-label">省市区</span>
+                  <div class="right-wrap">
+                    <input v-model="PCAData" @click.stop="isShowPCA = !isShowPCA" class="inp" type="text" placeholder="选择省市区">
+                    <AddressSelect style="left: 0;" v-if="isShowPCA" @addressReturn="SelectArea"></AddressSelect>
+                  </div>
+                </div>
+                <div class="member-item">
+                  <span class="item-label">详细地址</span>
+                  <input :disabled="!isShopMan" v-model="dataInfo.username" @blur="setEmail">
+                </div>
+              </div>
+              <div class="remark">
+                <div class="remark-left">
+                  <div class="title"><span></span><em>备注</em></div>
+                  <textarea v-model="dataInfo.remark"></textarea>
+                </div>
+                <div class="remark-right">
+                  <div class="title"><span></span><em>标签</em></div>
+                  <ul class="label-area">
+                    <li class="label" v-for="(item, index) in dataInfo.signList" :key="index">{{item.signName}}
+                      <i @click="delLabel(item, index)" class="iconfont icon-guanbi-copy"></i>
+                    </li>
+                    <!-- <li class="add-label">添加标签</li> -->
+                    <input maxlength="6" v-if="dataInfo.signList.length < 4" @blur="followCreateSign" class="add-label" type="text" placeholder="添加标签" v-model="signName">
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -97,28 +157,48 @@
   </el-dialog>
 </template>
 <script>
-import { operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention,operateAddMember } from 'Api/commonality/operate'
-import { seekGetShopUserList } from 'Api/commonality/seek'
+import { operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention, operateAddMember } from 'Api/commonality/operate'
+import { seekGetShopUserList,seekFindMemberGradeList } from 'Api/commonality/seek'
 import aloneDropDownColums from 'base/menu/alone-drop-down-colums'
-import {formattingTime} from 'assets/js/getTime'
-
+import newDownMenu from 'base/menu/new-down-menu'
+import AddressSelect from 'src/components/template/AddressSelect'
+import UploadingImg from 'base/uploading/UploadingImg'
+import { formattingTime } from 'assets/js/getTime'
+const industryList = require('./data.js')
 export default {
   components: {
-    aloneDropDownColums
+    aloneDropDownColums,
+    newDownMenu,
+    UploadingImg,
+    AddressSelect
   },
   props: ['shopId'],
+  watch: {
+    isShowMore () {
+      $(".scroll-box").mCustomScrollbar({
+        theme: "minimal-dark",
+        scrollInertia: 100, //滚动条移动速度，数值越大滚动越慢
+      })
+    }
+  },
   data() {
     return {
+      isShowMore: false,
+      industryList: industryList, // 行业数据
+      PCAData: '', // 省市区数据
+      isShowPCA: false,
       dataInfo: {
         shopId: '',
         username: '',
         phone: '',
         name: '',
         sex: '',
+        profession: '',
         birthday: '',
         maleBirthday: '',
         principalList: [],
         grade: '',
+        gradeName: '',
         type: '',
         typeName: '',
         memorial: '',
@@ -229,13 +309,52 @@ export default {
       // }
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      $(".scroll-box").mCustomScrollbar({
+        theme: "minimal-dark",
+        scrollInertia: 100, //滚动条移动速度，数值越大滚动越慢
+      })
+    })
+  },
   methods: {
+    SelectArea(val) { // 省市区
+      this.dataInfo.provinceId = val.provId
+      this.dataInfo.cityId = val.cityId
+      this.dataInfo.areaId = val.areaId
+      this.PCAData = val.provName + ' / ' + val.cityName + ' / ' + val.areaName
+      this.isShowPCA = false
+    },
+    cosImg(parm) {
+      console.log('成功上传了图片', parm)
+    },
+    changeProfession(parm) {
+      this.dataInfo.profession = parm.name
+    },
     open() {
+      this.dataInfo = {
+        shopId: '',
+        username: '',
+        phone: '',
+        name: '',
+        sex: '',
+        profession: '',
+        birthday: '',
+        maleBirthday: '',
+        principalList: [],
+        grade: '',
+        gradeName: '',
+        type: '',
+        typeName: '',
+        memorial: '',
+        signList: []
+      }
       this.isDialog = true
       this._seekGetShopUserList()
+      this._seekFindMemberGradeList()
     },
     choseGrade(parm) {
-      this.isGrade = false
+      debugger
       this.dataInfo.grade = parm.id
       this.dataInfo.gradeName = parm.name
     },
@@ -258,24 +377,6 @@ export default {
         })
       }
       this.dataInfo.principalList = datas
-    },
-    _seekGetShopUserList() {
-      let options = {
-        page: 1,
-        pageSize: 0,
-        shopId: this.shopId
-      }
-      seekGetShopUserList(options)
-        .then(res => {
-          if (res.data.state == 200) {
-            let datas = res.data.data.shopUserList
-            for (let i of datas) {
-              i.name = i.userName
-              i.id = i.userId
-            }
-            this.userList = datas
-          }
-        })
     },
     goBack() {
 
@@ -591,29 +692,29 @@ export default {
       }
     },
     // 新增会员
-    _operateAddMember () {
+    _operateAddMember() {
       if (this.dataInfo.username) {
-          this.$message({
-            type: 'error',
-            message: '请输入姓名'
-          })
-          return
+        this.$message({
+          type: 'error',
+          message: '请输入姓名'
+        })
+        return
       }
 
       if (this.dataInfo.phone) {
-          this.$message({
-            type: 'error',
-            message: '请输入手机号'
-          })
-          return
+        this.$message({
+          type: 'error',
+          message: '请输入手机号'
+        })
+        return
       }
 
       if (this.dataInfo.sex) {
-          this.$message({
-            type: 'error',
-            message: '请选择性别'
-          })
-          return
+        this.$message({
+          type: 'error',
+          message: '请选择性别'
+        })
+        return
       }
 
       let options = _.cloneDeep(this.dataInfo)
@@ -624,31 +725,79 @@ export default {
         .then(res => {
 
         })
-    }
+    },
+    /* ----查询接口---- */
+    _seekGetShopUserList() {
+      let options = {
+        page: 1,
+        pageSize: 0,
+        shopId: this.shopId
+      }
+      seekGetShopUserList(options)
+        .then(res => {
+          if (res.data.state == 200) {
+            let datas = res.data.data.shopUserList
+            for (let i of datas) {
+              i.name = i.userName
+              i.id = i.userId
+            }
+            this.userList = datas
+          }
+        })
+    },
+    // 会员等级列表
+    _seekFindMemberGradeList () {
+      let options = {
+        shopId: this.shopId
+      }
+      let datas = [
+        {
+          gradeId: 'gradeId',
+          gradeName: 'gradeName',
+          startScore: 'startScore'
+        }
+      ]
+      seekFindMemberGradeList(options)
+        .then(res => {
+
+        })
+    },
   }
 }
 
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .m-m-add-member-main {
   height: 100%;
   width: 700px;
-  height: 730px;
+  height: 539px;
   background-color: #fff;
   border-radius: 5px;
   padding: 20px 30px;
   position: relative;
+  &.m-m-add-member-isShowMore-box{
+    height: 730px;
+    .add-member-body {
+      height: 660px;
+      .scroll-box {
+        height: 610px;
+      }
+    }
+  }
   .mandatory-icon {
     color: red;
   }
   .add-member-body {
-    height: 660px;
+    height: 466px;
     >h3 {
       line-height: 1;
       font-size: 16px;
       font-weight: 700;
       margin-bottom: 20px;
       color: #333;
+    }
+    .scroll-box {
+      height: 430px;
     }
   }
   .p-close-icon {
@@ -662,7 +811,15 @@ export default {
       color: #bfcbd9;
     }
   }
-  .member-edit {
+  .more-tit-wrap {
+    height: 20px;
+    .open-more {
+      float: right;
+      color: #2993f8;
+      cursor: pointer;
+    }
+  }
+  .member-edit-box {
     margin-bottom: 20px;
     h4 {
       padding-left: 8px;
@@ -684,7 +841,7 @@ export default {
       padding: 0 8px;
       display: flex;
       flex-wrap: wrap;
-      .item {
+      >.member-item {
         width: 48%;
         margin-bottom: 34px;
         .item-label {
@@ -698,6 +855,35 @@ export default {
           position: relative;
           height: 28px;
           display: inline-block;
+          .new-down-menu-box {
+            width: 182px;
+          }
+          .card-img {
+            width: 80px;
+            height: 60px;
+            position: absolute;
+            top: -56px;
+            left: 0;
+            display: none;
+            background: #f6f6f6;
+          }
+          .uploading-img-box {
+            display: inline-block;
+            color: #2993f8;
+            width: 50px;
+            cursor: pointer;
+            span {
+              position: absolute;
+              text-decoration: underline;
+              line-height: 34px;
+              margin-left: 10px;
+              cursor: pointer;
+              z-index: 100;
+            }
+          }
+          .card:hover+.card-img {
+            display: block;
+          }
           .click-select-wrap {
             position: absolute;
             opacity: 0;
@@ -730,6 +916,21 @@ export default {
               color: #2993f8;
             }
           }
+          .chose-user-box {
+            border-radius: 3px;
+            width: 170px;
+            padding-left: 10px;
+            border: 1px solid #dedede;
+            margin: 0;
+            .tltle {
+              color: #757575!important;
+              font-weight: normal;
+              font-size: 14px;
+            }
+            .list-box {
+              left: 0;
+            }
+          }
         }
         input {
           height: 28px;
@@ -737,6 +938,7 @@ export default {
           font-size: 14px;
           padding-left: 10px;
           border-radius: 3px;
+          border: 1px solid #dedede;
           &:active,
           &:hover,
           &:focus {
@@ -745,7 +947,8 @@ export default {
           }
         }
         .el-date-editor.el-input {
-          width: 172px;
+          width: 182px;
+          border-radius: 3px; // border: 1px solid #dedede;
           .el-input__icon {
             display: none;
           }
@@ -934,6 +1137,115 @@ export default {
       //     cursor: pointer;
       //   }
       // }
+    }
+  }
+
+  .remark {
+    height: 135px;
+    padding-top: 30px;
+    &>div {
+      float: left;
+      height: 100%;
+      width: 308px;
+      .title {
+        color: #2993f8;
+        font-size: 14px;
+        width: 53px;
+        float: left;
+
+        &>span {
+          float: left;
+          width: 3px;
+          height: 14px;
+          border-radius: 2px;
+          background: #2993f8;
+          margin-right: 6px;
+        }
+        &>em {
+          height: 14px;
+          float: left;
+          font-style: normal;
+          line-height: 14px;
+        }
+      }
+    }
+    .remark-left {
+      textarea {
+        width: 220px;
+        height: 74px;
+        border-radius: 2px;
+        border: 1px solid #d6d6d6;
+        float: left;
+      }
+    }
+    .remark-right {
+      .label-area {
+        height: 100%;
+        float: left;
+        width: 250px;
+        li,
+        &>input {
+          line-height: 26px;
+          text-align: center;
+          float: left;
+          font-size: 12px;
+          min-width: 86px;
+          margin-right: 16px;
+          margin-bottom: 10px;
+          height: 28px;
+          border-top-left-radius: 2px;
+          border-top-right-radius: 10px;
+          border-bottom-left-radius: 10px;
+          border-bottom-right-radius: 2px;
+        }
+        li {
+          position: relative;
+          &>i {
+            position: absolute;
+            right: -6px;
+            top: -6px;
+            color: #999999;
+            background: #fff;
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            line-height: 14px;
+            font-size: 14px;
+            display: none;
+            &:hover {
+              color: #666;
+              cursor: pointer;
+            }
+          }
+          &:hover {
+            &>i {
+              display: inline-block;
+            }
+          }
+        }
+
+        .add-label {
+          border: 1px dashed #2993f8;
+          color: #666; //cursor: pointer;
+          &::-webkit-input-placeholder {
+            color: #2993f8;
+          }
+          &:-moz-placeholder {
+            color: #2993f8;
+          }
+          &::-moz-placeholder {
+            color: #2993f8;
+          }
+          &:-ms-input-placeholder {
+            color: #2993f8;
+          }
+        }
+        .label {
+          background: #2993f8;
+          border: 1px solid #2993f8;
+          color: #fff;
+        }
+      }
     }
   }
 }

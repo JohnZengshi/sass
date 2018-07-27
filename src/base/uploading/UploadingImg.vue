@@ -49,9 +49,6 @@ export default {
         }
       })
       var successCallBack = function (result) {
-        console.log('successCallBack')
-        console.log(result)
-        console.log(result.data.source_url)
         if (result.code == 0) {
           _self.$emit('cosImg', result.data.source_url)
         }

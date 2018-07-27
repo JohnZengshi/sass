@@ -879,3 +879,13 @@ export const seekFindTemplateAll = function (parm) {
   let URL = "/v1/member/findTemplateAll";
   return apiCall(parm, URL);
 }
+//会员模板管理
+export const seekMemberHomeById = function (parm) {
+  let URL = "/v1/member/memberHomeById";
+  return apiCall(parm, URL);
+}
+// 会员等级列表
+export const seekFindMemberGradeList = function (parm) {
+  let URL = "/v1/groupTemplate/findMemberGradeList";
+  return apiCall(parm, URL);
+}

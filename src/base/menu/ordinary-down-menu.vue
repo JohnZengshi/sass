@@ -1,17 +1,20 @@
 <template>
   <div class="down-menu-main">
     <span class="title-name" :class="titleInfo ? '' : 'select'" :style="specialStyle">
-      {{titleInfo}}<i v-show="!isSolid" class="iconfont icon-arrow-down drop-triangle" v-if="keep ? true : noChange"></i><i v-show="isSolid" class="iconfont icon-xiala drop-triangle"></i><i class="el-icon-circle-close" title="清除" @click="clearTitleInfo"
+      {{titleInfo}}
+      <i v-show="!isSolid" v-if="noChange" class="iconfont icon-arrow-down drop-triangle"></i>
+      <i v-show="isSolid" class="iconfont icon-xiala drop-triangle"></i>
+      <i class="el-icon-circle-close" title="清除" @click="clearTitleInfo"
       v-if="!noChange && !noClear"></i>
     </span>
     <ul class="drop-list">
-      <li :class="{active: actIndex == index}" v-for="(item, index) in showList" @click="itemClick(item, index)">{{nameKey ? item[nameKey] : item.name || item.shopName || item.userName}}</li>
+      <li :class="{active: actIndex == index}" v-for="(item, index) in showList" @click="itemClick(item, index)">{{item[nameKey]}}</li>
     </ul>
   </div>
 </template>
 <script>
 export default {
-  props: ['titleInfo', 'showList', 'isSolid', 'specialStyle', 'noClear', 'nameKey', 'keep'], // isSolid->实心 nameKey->取值的key  keep -> 一直保持着右边的小图标
+  props: ['titleInfo', 'showList', 'isSolid', 'specialStyle', 'noClear', 'nameKey'], // isSolid->实心 nameKey->取值的key
   data () {
     return {
       actIndex: null,
@@ -86,8 +89,9 @@ export default {
         }
     }
     .title-name {
+        padding: 0 8px;
         border: 1px solid #d6d6d6;
-        border-radius: 3px;
+        border-radius: 5px;
         width: 100%;
         overflow-x: hidden; 
         text-overflow: ellipsis;

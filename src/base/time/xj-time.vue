@@ -1,24 +1,26 @@
 <template>
-  <div class="time-main">
-      <div class="new-report-data">
-        <div class="block until" data-txt="至">
-          <el-date-picker class="mydatepicker" size="mini" type="date" @change="changeDate" v-model="optionData.beginTime" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
+    <div class="xj-time-box">
+      <div class="time-inner">
+        <div class="block until">
+            <el-date-picker size="mini" v-model="optionData.beginTime"  type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
         </div>
+        <span class="center-tit">至</span>
         <div class="block">
-          <el-date-picker class="mydatepicker" size="mini" type="date" @change="changeDate" v-model="optionData.endTime" placeholder="选择结束时间" :picker-options="pickerOptions1"></el-date-picker>
+            <el-date-picker size="mini" v-model="optionData.endTime" type="date" placeholder="选择结束时间" :picker-options="pickerOptions1"></el-date-picker>
         </div>
       </div>
-
     </div>
 </template>
 <script>
   import moment from 'moment'
   import {formattingEndTime, formattingTime} from 'assets/js/getTime'
+  import {getMonthStart} from 'assets/js/getTime'
   export default{
+    props: ['isMonth'],
     data () {
       return {
         optionData: {
-          beginTime: new Date(),
+          beginTime: this.isMonth ? getMonthStart() : new Date(),
           endTime: new Date()
         },
         pickerOptions1: {

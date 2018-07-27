@@ -7,34 +7,57 @@
     </div>
 
     <ul class="center-num-list">
-      <li v-for="item in centerBtnList">
+      <!-- <li v-for="item in centerBtnList">
         <p>{{item.value}}</p>
         <p>{{item.name}}</p>
+      </li> -->
+      <li>
+        <p>{{memberList.memberCount}}</p>
+        <p>会员总数</p>
       </li>
+      <li>
+        <p>{{memberList.newMember}}</p>
+        <p>今日新增</p>
+      </li>
+      <li>
+        <p>{{memberList.conversion}}</p>
+        <p>今日转换</p>
+      </li>
+      
     </ul>
 
+    <ul class="center-btn-list">
+      <li v-for="item in memberList.gradeList">
+        <span>{{item.gradeName}}</span>
+        <span>{{item.countGrade}}</span>
+        <span>位</span>
+      </li>
+    </ul>
  <!--    <ul class="grade-list">
       <li v-for="item in gradeList">
         {{item.name}}  {{item.value}}
       </li>
     </ul> -->
 
-    <ul class="top-btn">
-      <li @click="openAdd">+会员</li>
-    </ul>
+    <ul class="top-btn xj-btn-list">
+      <li class="btn" @click="openAdd">+会员</li>
 
-    <router-link class="member-list-btn" :to="{path: '/memberManage/memberList', query: {shopId: filterOption.shopId}}">会员列表></router-link>
+      <router-link tag="li" :to="{path: '/memberManage/memberList', query: {shopId: filterOption.shopId}}" class="btn">会员列表</router-link>
+
+      <router-link tag="li" class="btn" :to="{path: '/memberManage/compileTemplate', query: {shopId: filterOption.shopId}}">会员设置</router-link>
+    </ul>
 
     <add-member ref="addMemberBox" :shopId="filterOption.shopId"></add-member>
   </div>
 </template>
 <script>
   import addMember from './../base/add-member.vue'
+
   export default {
     components: {
       addMember
     },
-    props: ['filterOption'],
+    props: ['filterOption', 'memberList'],
     data () {
       return {
         centerBtnList: [
@@ -54,23 +77,23 @@
             id: ''
           },
         ],
-        gradeList: [
-          {
-            name: '普卡',
-            value: '666',
-            id: ''
-          },
-          {
-            name: '银卡',
-            value: '666',
-            id: ''
-          },
-          {
-            name: '金卡',
-            value: '666',
-            id: ''
-          }
-        ]
+        // gradeList: [
+        //   {
+        //     name: '普卡',
+        //     value: '666',
+        //     id: ''
+        //   },
+        //   {
+        //     name: '银卡',
+        //     value: '666',
+        //     id: ''
+        //   },
+        //   {
+        //     name: '金卡',
+        //     value: '666',
+        //     id: ''
+        //   }
+        // ]
       }
     },
     methods: {
@@ -85,10 +108,11 @@
   position: relative;
   background-color: #F6FBFF;
   font-size: 0;
+  overflow: hidden;
   .decoration{
     position: absolute;
     top: 30px;
-    left: 20px;
+    left: 48px;
     font-size: 12px;
     line-height: 25px;
     color: #333;
@@ -121,25 +145,25 @@
     }
   }
   .center-num-list{
-    display: inline-block;
     font-size: 0;
     // width: 900px;
     // height: 200px;
-    margin: 50px 0 0 80px;
+    margin: 90px 0 0 110px;
     vertical-align: top;
     // text-align: center;
     li{
       vertical-align: center;
       display: inline-block;
       // padding: 15px;
+      width: 206px;
       font-size: 22px;
-      margin-right: 50px;
+      // margin-right: 150px;
       p{
         text-align: center;
       }
       p:nth-child(1){
         color: #333;
-        font-size: 22px;
+        font-size: 30px;
         margin-bottom: 5px;
         font-weight: bold;
       }
@@ -155,23 +179,66 @@
     }
   }
   .center-btn-list{
-    display: inline-block;
     font-size: 0;
-    width: 900px;
-    height: 200px;
-    padding-top: 80px;
+    margin: 30px 0 0 58px;
     vertical-align: top;
-    text-align: center;
-    border: 1px solid red;
     li{
-      vertical-align: center;
       display: inline-block;
-      border: 1px solid red;
-      padding: 15px;
       font-size: 22px;
-      margin: 0 20px;
+      margin-right: 50px;
+      width: 213px;
+      height: 86px;
+      line-height: 80px;
+      text-align: center;
+      background: url('~assets/img/member/member-box-four.png') no-repeat;
+      background-size: 213px 86px;
+      margin-bottom: 30px;
+      span{
+        color: #fff;
+        font-size: 12px;
+        font-weight: bold;
+      }
+      span:nth-child(1){
+        font-size: 22px;
+      }
+      span:nth-child(2){
+        font-size: 36px;
+      }
+      span:nth-child(3){
+        font-size: 16px;
+      }
+    }
+    li:nth-child(1){
+      background: url('~assets/img/member/member-box-one.png') no-repeat;
+      background-size: 213px 86px;
+    }
+    li:nth-child(2){
+      background: url('~assets/img/member/member-box-two.png') no-repeat;
+      background-size: 213px 86px;
+    }
+    li:nth-child(3){
+      background: url('~assets/img/member/member-box-three.png') no-repeat;
+      background-size: 213px 86px;
     }
   }
+  // .center-btn-list{
+  //   display: inline-block;
+  //   font-size: 0;
+  //   width: 900px;
+  //   height: 200px;
+  //   padding-top: 80px;
+  //   vertical-align: top;
+  //   text-align: center;
+  //   border: 1px solid red;
+  //   li{
+  //     vertical-align: center;
+  //     display: inline-block;
+  //     border: 1px solid red;
+  //     padding: 15px;
+  //     font-size: 22px;
+  //     margin: 0 20px;
+  //   }
+  // }
   .grade-list{
     display: inline-block;
     font-size: 0;
@@ -187,13 +254,6 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    li{
-      padding: 10px 20px;
-      font-size: 14px;
-      color: #fff;
-      cursor: pointer;
-      background-color: red;
-    }
   }
 }
 </style>

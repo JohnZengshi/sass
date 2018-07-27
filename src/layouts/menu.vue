@@ -362,7 +362,6 @@
     mounted() {
       let self = this
       this.$nextTick(() => {
-        this.systemTab()
         this.systemItemClass.rootIndex = sessionStorage.getItem('rootIndex')
         this.systemItemClass.childIndex = sessionStorage.getItem('childIndex')
       })

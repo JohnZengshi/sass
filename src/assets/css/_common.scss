@@ -282,11 +282,12 @@
     .btn {
         width: 90px;
         height: 28px;
+        line-height: 29px;
+        font-size: 14px;
         border-radius: 4px;
         background: #2993f8;
         color: #fff;
         text-align: center;
-        line-height: 28px;
         margin-right: 16px;
         cursor: pointer;
         transition: all .3s;
@@ -294,7 +295,6 @@
             background: #4db3ff;
         }
     }
-
     .cnacel-btn{
         border: 1px solid #d6d6d6;
         background: #fff;
@@ -305,6 +305,9 @@
             background: #fff;
             color: #2993f8;
         }
+    }
+    li:last-child{
+      margin-right: 0;
     }
 }
 // icon和文字组合
