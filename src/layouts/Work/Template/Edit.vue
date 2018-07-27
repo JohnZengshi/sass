@@ -11,37 +11,37 @@
                 <span class="breadcrumb-item">编辑{{ templateType }}</span>
             </div>
             <div class="template-edit-content">
-                <TemplateEditor ref="templateEditor" :propList="propList" :template="template" :templateData="templateData" @openBackConfirmDialog="openBackConfirmDialog" @openDeleteConfirmDialog="openDeleteConfirmDialog" @openComponentRangeOutsideAlertDialog="openComponentRangeOutsideAlertDialog" @preview="previewTemplate" @loadQualityTemplateData="loadQualityTemplateData" @openLoadLabelTemplateDataDialog="openLoadLabelTemplateDataDialog"></TemplateEditor>    
+                <TemplateEditor ref="templateEditor" :propList="propList" :template="template" :templateData="templateData" @openBackConfirmDialog="openBackConfirmDialog" @openDeleteConfirmDialog="openDeleteConfirmDialog" @openComponentRangeOutsideAlertDialog="openComponentRangeOutsideAlertDialog" @preview="previewTemplate" @loadQualityTemplateData="loadQualityTemplateData" @openLoadLabelTemplateDataDialog="openLoadLabelTemplateDataDialog"></TemplateEditor>
             </div>
             <ConfirmDialog ref="backConfirmDialog" title="返回" content="还未保存，是否确认要退出？" :onConfirmHandler="backConfirmHandler"></ConfirmDialog>
             <ConfirmDialog ref="deleteConfirmDialog" title="删除" content="确认删除选中的组件？" :onConfirmHandler="deleteConfirmHandler"></ConfirmDialog>
             <AlertDialog ref="componentRangeOutsideAlertDialog" title="警告" content="打印时不打印画布大小以外的数据"></AlertDialog>
-            
+
             <!--预览-->
-            <TemplatePreviewDialog 
-                ref="templatePreviewDialog" 
-                @print="printTemplate" 
-                :canvas="canvas" 
-                :templateData="templateData" 
+            <TemplatePreviewDialog
+                ref="templatePreviewDialog"
+                @print="printTemplate"
+                :canvas="canvas"
+                :templateData="templateData"
                 :pageNumber="pageNumber"
                 @close="templatePreviewDialogCloseHandler"></TemplatePreviewDialog>
             <LoadLabelTemplateDataDialog ref="loadLabelTemplateDataDialog" @loadLabelTemplateData="loadLabelTemplateData"></LoadLabelTemplateDataDialog>
         </div>
-        
-        
+
+
         <!--质保单打印-->
         <div id="windowPrintView"  v-if="isPreview" ref="windowPrintView">
-            <TemplatePreviewCanvasComponent   
-                :isPrintCanvas="true" 
-                :canvas="canvas" 
-                :templateData="templateData" 
+            <TemplatePreviewCanvasComponent
+                :isPrintCanvas="true"
+                :canvas="canvas"
+                :templateData="templateData"
                 :class ="i%2==0 ? 'printViewInside' : ''"
                 v-for="i in pageNumber" :page="i">
             </TemplatePreviewCanvasComponent>
         </div>
-        
+
         <!--单据打印-->
-        <lodop ref="lodop" :canvas="canvas"  :templateData="templateData" :page="templateData.productList.length" ></lodop> 
+        <lodop ref="lodop" :canvas="canvas"  :templateData="templateData" :page="templateData.productList.length" ></lodop>
     </div>
 </template>
 
@@ -190,12 +190,12 @@ export default {
         previewTemplate(canvas) {
             this.canvas = canvas;
             this.$refs.settingTemplate.print(canvas);
-//          
+//
 ////          this.canvas.components.forEach(component => {
 ////             console.log('预览模板:',component.type)
 ////          })
 //          this.isPreview = true
-//          
+//
 //          if(  this.template.type == 2 ){ //标签
 //          	this.printTemplate()
 //          }else{
@@ -224,20 +224,20 @@ export default {
             }else{
                //质保单打印，情况特殊一点 ，需要单独处理
                 let print = null;
-                
+
                 this.appPrint = document.getElementById('appPrint')
-                
+
                 if( this.IntervalOut ) clearInterval( this.IntervalOut )
                 document.getElementById('app').style.display = 'none';
-                
+
                 setTimeout(()=>{
                     this.appPrint.innerHTML = this.$refs.windowPrintView.innerHTML
                 },1000)
                 //return
                 setTimeout(()=>{
-                    print = document.execCommand('print');  
+                    print = document.execCommand('print');
                 },1500)
-                
+
                 this.IntervalOut = setInterval(()=>{
                     if( print ){
                         document.getElementById('app').style.display = 'block';
@@ -253,7 +253,7 @@ export default {
                         }
                     }
                 },10)
-               
+
             }
         },
         // 加载数据用于预览效果
@@ -263,7 +263,7 @@ export default {
                 isTmp: 1
             }).then(json => {
                 if (json.state === 200) {
-                    
+
                     if(json.data.backuProductList && json.data.backuProductList.length > 0 ){
                       if(json.data.productList) json.data.productList.push(...json.data.backuProductList)
                     }
@@ -310,7 +310,7 @@ export default {
 #windowPrintView{
   visibility: hidden;
   opacity: 0;
-}	
+}
 </style>
 
 <style lang="scss">
@@ -341,14 +341,14 @@ export default {
         //opacity: 0;
         //display: none;
         //visibility: hidden;
-    }  
+    }
 }
 
 @media print {
     body, .work, .work-view {
         background-color: #fff !important;
     }
-    
+
     /*.template-edit-page {
         display: none;
     }

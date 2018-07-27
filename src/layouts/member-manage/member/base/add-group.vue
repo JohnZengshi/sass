@@ -21,6 +21,17 @@
               </el-checkbox-group>
           </ul>
         </div>
+
+        <div class="shop-list">
+          <h5>会员模板选择</h5>
+          <ul class="list-wrap">
+              <el-checkbox-group v-model="checkTemplateList">
+                  <li v-for="(item, index) in shopList">
+                     <el-checkbox :label="item.shopId" :class="{active: true}" style="font-size: 14px;">{{item.shopName}}</el-checkbox>
+                  </li>
+              </el-checkbox-group>
+          </ul>
+        </div>
       </div>
       <div class="xj-btn-list">
         <div class="btn cnacel-btn" @click="close">取消</div>
@@ -35,6 +46,7 @@ export default {
   data() {
     return {
       checkList: [],
+      checkTemplateList: [],
       shopList: [],
       name: '',
       isDialog: false
@@ -154,26 +166,41 @@ export default {
       }
     }
     .shop-list {
+      >h5{
+        position: relative;
+        font-size: 14px;
+        line-height: 22px;
+        color: #333;
+        font-weight: bold;
+        padding-left: 8px;
+        color: #2993f8;
+        &:before {
+          content: "";
+          display: inline-block;
+          width: 3px;
+          height: 16px;
+          background: #2993f8;
+          position: absolute;
+          top: 3px;
+          border-radius: 3px;
+          left: 0;
+        }
+      }
       .list-wrap {
-        height: 460px;
-        margin: 20px;
+        margin: 10px;
         overflow: scroll;
         li {
           height: 40px;
-          padding: 0 10px;
           display: inline-block;
           line-height: 40px;
-          border: 1px solid #d6d6d6;
           text-align: left;
-          padding-left: 14px;
           font-size: 14px;
-          border-bottom: 1px solid #f1f2f3;
           cursor: pointer;
-          margin-right: 10px;
-          &:hover {
-            background: #f6f7f8;
-            color: #3195f5;
-          }
+          margin-right: 20px;
+          // &:hover {
+          //   background: #f6f7f8;
+          //   color: #3195f5;
+          // }
         }
         li.active {
           color: #2993f8;

@@ -33,7 +33,7 @@
         <filter-header @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
 
       </div>
-      <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
+      <div :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
         <report-detail ref="reportDetailWrap" :printNum="printNum" :allData="allData" :dataGridStorage="dataGridStorage" :tabSwitch="tabSwitch" :positionSwitch="positionSwitch" :newList="newList" :reportType="getReportType" @lazyloadSend="lazyloadSend" @sortListAct="sortListAct" @scrollClass="tabScrollShow">
         </report-detail>
       </div>

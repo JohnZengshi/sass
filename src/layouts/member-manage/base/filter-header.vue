@@ -1,5 +1,5 @@
 <template>
-  <div class="d-c-filter-header-main">
+  <div class="m-m-filter-header-main">
     <div class="operate-bar-bottom">
       <div class="search">
           <input type="text" v-model="keyword" placeholder="手机号/姓名" @keyup.enter="batchAddByOrderNum">
@@ -8,15 +8,15 @@
           </div>
       </div>
 
-<!--       <div class="search-block t-center" :class="{actions: filterCondition.newOrderId ? filterCondition.newOrderId.length : ''}" @click="openLittleBatch">
-        单据搜索
-      </div> -->
+      <div v-if="false" class="xj-btn-defult ml-10" @click="isSenior = !isSenior">
+        {{isSenior ? '取消高级搜索' : '高级搜索'}}
+      </div>
 
       <DownMenu
-          class="w-110"
+          class="w-110 ml-10"
           ref="memberRankBox"
           :isSolid="true"
-          :titleInfo="memberRank.name ? memberRank.name : '选择会员级别'"
+          :titleInfo="memberRank.name ? memberRank.name : '会员级别'"
           :showList="memberRankList"
           :nameKey="'name'"
           @changeData="changeMemberRank"
@@ -24,10 +24,10 @@
       ></DownMenu>
 
       <DownMenu
-          class="w-110"
+          class="w-110 ml-10"
           ref="memberClassBox"
           :isSolid="true"
-          :titleInfo="memberClass.name ? memberClass.name : '选择会员类型'"
+          :titleInfo="memberClass.name ? memberClass.name : '会员类型'"
           :showList="memberClassList"
           :nameKey="'name'"
           @changeData="changeMemberClass"
@@ -35,10 +35,10 @@
       ></DownMenu>
 
       <DownMenu
-          class="w-110"
+          class="w-110 ml-10"
           ref="memberClassBox"
           :isSolid="true"
-          :titleInfo="user.username ? user.username : '选择负责人'"
+          :titleInfo="user.username ? user.username : '负责人'"
           :showList="userList"
           :nameKey="'username'"
           @changeData="changeUser"
@@ -47,7 +47,6 @@
 
 
     </div>
-
   </div>
 </template>
 <script>
@@ -73,6 +72,7 @@ export default {
   props: ['shopId'],
   data () {
     return {
+      isSenior: false,
       memberRank: { // 会员级别
         name: '',
         type: ''
@@ -354,12 +354,15 @@ export default {
 .batch-main .batch-page-one .operate-bar-bottom .batch-time-wrap:focus{
     border: 1px solid #2993f8 !important;
 }
-.d-c-filter-header-main{
-  border: 1px solid #fff;
+.m-m-filter-header-main{
+  position: absolute;
+  right: 0;
+  right: 20px;
   .operate-bar-bottom {
       height: 28px;
-      margin-bottom: 15px;
-      padding: 0 20px;
+      margin-top: 11px;
+      font-size: 0;
+      // margin-bottom: 15px;
       .search {
           width: 190px;
           height: 28px;
@@ -590,6 +593,6 @@ export default {
   }
 }
 .w-110{
-  width: 120px!important;
+  width: 100px!important;
 }
 </style>

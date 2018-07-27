@@ -230,6 +230,8 @@
 					if(tab.type == 'partCount' || tab.type === 'calcMethod' || tab.type === 'partPrice') {
 						if(tab.type == 'partCount') {
 							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type])
+						} else if (tab.type == 'calcMethod'){
+							this.dgDataList[fIndex][tab.type] = this.dgDataList[fIndex][tab.type]
 						} else {
 							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 						}
@@ -290,7 +292,11 @@
 					 */
 					if(tab.type === 'goldCost' || tab.type === 'goldPrice' || tab.type === 'netWeight') {
 						//四舍五入保留3位小数
-						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+						if (tab.type === 'netWeight') {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
+						} else {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+						}
 //						if(item.goldCost == 0 || item.goldCost == '0.00') {
 //							item.goldCost = 1
 //						}
@@ -315,8 +321,11 @@
 					 * 2、修改进货工费方式同步更新进货工费额
 					 */
 					if(tab.type === 'inFee' || tab.type === 'inMethod') {
-						console.log(this.dgDataList[fIndex])
-						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+						if (tab.type === 'inMethod') {
+							this.dgDataList[fIndex][tab.type] = this.dgDataList[fIndex][tab.type]
+						} else {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
+						}
 						tempArray.push({
 							inMoney: item['inMoney'],
 							productId: productId
@@ -1049,10 +1058,11 @@
 				if(config.localStorage && localStorage[config.localStorage]) {
 
 					let tempData = JSON.parse(decodeURIComponent(localStorage[config.localStorage])).filter(f => f.classesName == config.classesName)
-					this.$set(this.datagridSelectData, config.resData, tempData[0].childrenList)
+					this.$set(this.datagridSelectData, config.resData, tempData[0].childrenList ? tempData[0].childrenList : tempData[0].typeList)
 				} else if(typeof fetch === 'function') {
 
 					fetch(config, (res) => {
+
 						// 回调方法
 						let resArray = res
 						let rpData = []
@@ -1067,7 +1077,13 @@
 							if(rpData.length > 0) {
 								this.$set(this.datagridSelectData, config.resData, rpData)
 							} else {
-								this.$set(this.datagridSelectData, config.resData, resArray)
+								if (config.option.type && config.option.type == 4) {
+									let tempData = resArray.filter(f => f.classesName == config.classesName)
+									this.$set(this.datagridSelectData, config.resData, tempData[0].childrenList ? tempData[0].childrenList : tempData[0].typeList)
+								} else {
+									this.$set(this.datagridSelectData, config.resData, resArray)
+								}
+								
 							}
 						}
 

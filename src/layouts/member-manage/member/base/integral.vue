@@ -1,32 +1,20 @@
+
 <!-- 积分模板管理 -->
 <template>
   <div class="m-m-integral-main">
-
-    <input-popup ref="inputPopupBox" :headTit="'请输入模板名称'" @confirm="confirmAdd"></input-popup>
-
     <div class="header">
-      <p class="side-nav"><i class="iconfont icon-liebiao"></i>会员管理模板</p>
-      <div class="right-btn" @click="openAdd" :to="{path: '/memberManage/addTemplate', query: {shopId: shopId}}">
-        +模板
+      <p class="side-nav"><i class="iconfont icon-liebiao"></i>积分模板管理</p>
+      <div class="xj-btn-defult right-btn" @click="openAdd">
+        +积分模板
       </div>
     </div>
-    <div class="each-table" v-loading="loading">
-      <ul class="header-tit">
-        <li>模板名称</li>
-<!--         <li>店铺名称</li> -->
-        <li>操作</li>
-      </ul>
-      <div class="scroll-wrap">
-        <ul v-for="(item, index) in combinationList">
-          <li>{{item.templateName}}</li>
-<!--           <li>{{item.BB}}</li> -->
-          <li>
-            <i @click="compile(item, index)" class="iconfont icon-bianji"></i>
-            <i @click="del(item, index)" class="iconfont icon-lajitong"></i>
-          </li>
-        </ul> 
-      </div>
-    </div>
+    <ul class="integral-body" v-loadding="loading">
+      <li @click.stop="compile(item, index)" v-for="item in combinationList">
+        {{item.templateName}}
+        <i @click.stop="del"></i>
+      </li>
+    </ul>
+    <input-popup ref="inputPopupBox" :headTit="'请输入模板名称'" @confirm="confirmAdd"></input-popup>
   </div>
 </template>
 <script>
@@ -39,9 +27,58 @@
     },
     data () {
       return {
-        loading: false,
+        loading: true,
         shopId: this.$route.query.shopId,
-        combinationList: []
+        combinationList: [
+          {
+            templateId: 'templateId',
+            templateName: 'templateName'
+          },
+          {
+            templateId: 'templateId',
+            templateName: 'templateName'
+          },
+          {
+            templateId: 'templateId',
+            templateName: 'templateName'
+          },
+          {
+            templateId: 'templateId',
+            templateName: 'templateName'
+          },
+          {
+            templateId: 'templateId',
+            templateName: 'templateName'
+          },
+          {
+            templateId: 'templateId',
+            templateName: 'templateName'
+          },
+          {
+            templateId: 'templateId',
+            templateName: 'templateName'
+          },
+          {
+            templateId: 'templateId',
+            templateName: 'templateName'
+          },
+          {
+            templateId: 'templateId',
+            templateName: 'templateName'
+          },
+          {
+            templateId: 'templateId',
+            templateName: 'templateName'
+          },
+          {
+            templateId: 'templateId',
+            templateName: 'templateName'
+          },
+          {
+            templateId: 'templateId',
+            templateName: 'templateName'
+          }
+        ]
       }
     },
     created () {
@@ -73,26 +110,13 @@
       },
       _seekFindTemplateAll () {
         this.loading = true
-        let datas = {
-          templateList: [
-            {
-              templateId: 'templateId',
-              templateName: 'templateName'
-            },
-            {
-              templateId: 'templateId',
-              templateName: 'templateName'
-            }
-          ]
-        }
-        this.combinationList = datas.templateList
         setTimeout(() => {
           this.loading = false
         }, 1000)
         seekFindTemplateAll()
           .then(res => {
             if (res.data.state == 200) {
-
+              this.combinationList = res.data.data.templateList
             }
           })
       },
@@ -139,83 +163,53 @@
     height: 40px;
     .right-btn{
       float: right;
-      width: 80px;
-      height: 28px;
-      border-radius: 4px;
-      color: #2993f8;
-      border: 1px solid #2993f8;
-      text-align: center;
-      line-height: 28px;
-      font-size: 14px;
       margin-top: 15px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all .3s;
       &:hover {
         background: #2993f8;
         color: #fff;
       }
     }
   }
-  .each-table{
+  .integral-body{
+    width: 930px;
     margin: 10px 0 0 50px;
-    width: 900px;
-    border: 1px solid #dedede;
-    border-radius: 5px;
-    .scroll-wrap{
-      height: 200px;
-      overflow: scroll;
-      >ul{
-        border-bottom: 1px solid #f0f2f5;
-      }
-      >ul:nth-child(2n){
-        background-color: #fbfbfb;
-      }
-    }
-    ul{
-      font-size: 0;
-      li{
-        height: 100%;
-        font-size: 14px;
-        padding: 12px;
-        vertical-align: top;
-        text-align: center;
+    li{
+      position: relative;
+      display: inline-block;
+      height: 44px;
+      line-height: 44px;
+      margin-right: 40px;
+      width: 190px;
+      // padding: 0 15px;
+      text-align: center;
+      font-size: 13px;
+      color: #333;
+      background-color: #F6F8FA;
+      margin: 0 40px 22px 0;
+      transition: all 0.3;
+      border-radius: 5px;
+      i{
         display: inline-block;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        height: 18px;
+        width: 18px;
+        opacity: 0;
+        background: url(~assets/img/triangle-change-icon.png) no-repeat;
+        background-size: 18px 18px;
+        transition: all 0.3;
+        cursor: pointer;
       }
-      li:nth-child(1){
-        width: 160px;
-      }
-      li:nth-child(2){
-        width: 680px;
-        word-wrap: break-word; 
-        word-break: normal; 
-      }
-      li:last-child{
-        width: 100px;
+      &:hover{
+        color: #2993f8;
+        background-color: #F0F7FF;
         i{
-          transition: all .3s;
-          cursor: pointer;
-          &:hover{
-            color: #2993f8;
-          } 
-        }
-        >i:nth-child(2){
-          margin-left: 10px; 
+          opacity: 1;
         }
       }
-    }
-    .header-tit{
-      height: 40px;
-      background-color: #f5f5f5;
-      overflow: hidden;
-      display: -ms-flexbox;
-      display: flex;
-      border-bottom: 2px solid #e7e7e7;
     }
   }
-  // p{
-  //   text-align: center;
-  // }
 }
 
 </style>

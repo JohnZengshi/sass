@@ -55,7 +55,7 @@
       <div class="dataGrid_statistics_switch" v-if="modleSwitch == 2">
 
         <div class="Rp_dataGrid_container last-table mt-0 xj-report-table-wrap" v-loading="loading" element-loading-text="数据查询中">
-          <div class="rp_gridState">
+          <div>
             <!--<p class="side-nav"><i class="iconfont icon-liebiao"></i>收银报表</p>-->
             <div class="side-nav">
               <i class="iconfont icon-liebiao"></i>{{currentReportName}}
@@ -1537,10 +1537,9 @@ export default {
     },
     // 导出报表
     exportTab() {
-      console.log("导出报表");
       let exportTabData =Object.assign({},this.dataGridOptions);
 
-      exportTabData["exportType"] = "XS";
+      exportTabData["eType"] = "XS";
 
       if (this.sellShowId === "sales") {
         exportTabData["sellFlag"] = "1";

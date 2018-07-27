@@ -1,6 +1,6 @@
 <!-- 独立店铺 -->
 <template>
-  <div class="m-m-each-other-main">
+  <div class="m-m-shop-list-main">
     <div class="header">
       <p class="side-nav"><i class="iconfont icon-liebiao"></i>独立店铺</p>
     </div>
@@ -63,32 +63,13 @@
   }
 </script>
 <style lang="scss">
-.m-m-each-other-main{
+.m-m-shop-list-main{
   overflow: hidden;
   width: 100%;
   margin-bottom: 10px;
   .header{
     padding: 0 15px;
     height: 40px;
-    .right-btn{
-      float: right;
-      width: 80px;
-      height: 28px;
-      border-radius: 4px;
-      color: #2993f8;
-      border: 1px solid #2993f8;
-      text-align: center;
-      line-height: 28px;
-      font-size: 14px;
-      margin-top: 15px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all .3s;
-      &:hover {
-        background: #2993f8;
-        color: #fff;
-      }
-    }
   }
   .each-table{
     margin: 10px 0 0 50px;
@@ -119,7 +100,7 @@
         width: 100px;
       }
       li:nth-child(2){
-        width: 580px;
+        width: 480px;
         word-wrap: break-word; 
         word-break: normal; 
       }

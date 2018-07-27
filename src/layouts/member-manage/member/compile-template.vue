@@ -40,7 +40,7 @@ export default {
     background-color: #fff;
     padding-bottom: 15px;
     border-radius: 10px;
-    height: 680px;
+    height: 700px;
     overflow: scroll;
   }
 }

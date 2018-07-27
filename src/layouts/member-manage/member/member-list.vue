@@ -24,9 +24,9 @@
           @clearInfo="clearShop"
         ></down-menu>
       </div>
-      <div class="Rp_dataGrid_container">
+      <div class="new-table-header-layout-main">
         <div class="rp_gridState">
-          <p class="side-nav"><i class="iconfont icon-liebiao"></i>商品列表</p>
+          <p class="side-nav"><i class="iconfont icon-liebiao"></i>商品列表:<span style="color: #2993f8;">{{allData.totalNum}}</span></p>
           <div class="sort-wrap">
             <label>排序:</label>
             <div v-for="(item, index) in sortList" :key="index">
@@ -36,10 +36,15 @@
               <i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
             </div>
           </div>
+          <filter-header @seekProduct="seekProduct" :shopId="shopId" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
         </div>
-        <filter-header @seekProduct="seekProduct" :shopId="shopId" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
       </div>
-      <div class="rp_dataGridTemp" :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
+
+      <div v-if="false" style="border: 2px solid red; height: 200px;">
+        高级搜索
+      </div>
+
+      <div :class="tabShow" v-loading="loading" element-loading-text="数据查询中">
         <report-detail
           ref="reportDetailWrap"
           :printNum="printNum"
@@ -741,10 +746,21 @@ export default {
     cancelSort(item, index) { // 取消排序
       this.sortList.splice(index, 1)
       this.$refs.reportDetailWrap.cancelSort(item)
+      this.initData()
       // this.newList = this.sortList
     },
     sortListAct(val) { // 列表排序
+      for (let i of this.sortList) {
+        if (i.name == val.name) {
+          this.$set(i, 'value', val.value)
+          this.initData()
+          return
+        }
+      }
       this.sortList.push(val)
+      this.initData()
+    },
+    initData () {
       this.dataGridStorage = []
       this.paging.page = 1
       this.filterData()
@@ -871,8 +887,5 @@ export default {
 
 </script>
 <style lang="scss">
-.ml-10 {
-  margin-left: 10px;
-}
 
 </style>

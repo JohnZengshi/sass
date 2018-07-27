@@ -130,7 +130,7 @@
                   <div class="cash-content">
                     <div>
                       <div class="title-info" v-if="priceType.cash == 0 && priceType.card == 0 && priceType.other == 0 && priceType.wechat == 0 && priceType.alipay == 0">
-                        <p v-if="isJrole">
+                        <p v-if="isJrole && !isCurrentShopPreson">
                           暂无收银信息,快去收银吧~
                         </p>
                         <p v-else>
@@ -224,13 +224,13 @@
                   </div>
                   <div class="row4-main-wrap" v-else>
 
-                    <sell-detail-list :memberDataInfo="memberDataInfo" :item="item" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :shopRole="shopRole" :goodType="1" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" v-for="(item, index) in goodsTypeList.saleList" :key="index">
+                    <sell-detail-list :memberDataInfo="memberDataInfo" :item="item" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :shopRole="shopRole" :goodType="1" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" v-for="(item, index) in goodsTypeList.saleList" :key="index" :isCanDelCurrentInvoices="isCanDelCurrentInvoices">
                     </sell-detail-list>
 
-                    <sell-detail-list :memberDataInfo="memberDataInfo" v-for="(item, index) in goodsTypeList.exchangeList" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :item="item" :goodType="2" :shopRole="shopRole" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" :key="index">
+                    <sell-detail-list :memberDataInfo="memberDataInfo" v-for="(item, index) in goodsTypeList.exchangeList" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :item="item" :goodType="2" :shopRole="shopRole" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" :key="index" :isCanDelCurrentInvoices="isCanDelCurrentInvoices">
                     </sell-detail-list>
 
-                    <sell-detail-list :memberDataInfo="memberDataInfo" :item="item" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :goodType="3" :shopRole="shopRole" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" v-for="(item, index) in goodsTypeList.recycleList" :key="index">
+                    <sell-detail-list :memberDataInfo="memberDataInfo" :item="item" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :goodType="3" :shopRole="shopRole" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" v-for="(item, index) in goodsTypeList.recycleList" :key="index" :isCanDelCurrentInvoices="isCanDelCurrentInvoices">
                     </sell-detail-list>
 
                   </div>
@@ -261,7 +261,7 @@
                     <span class="iconfont icon-beizhu"></span>
                     <span>备注</span>
                   </div>
-                  <div class="btn" @click="delOrder" v-if="isMakeMan && receiptsIntroList.cashStatus == 2 || companyPosition == '4' && receiptsIntroList.cashStatus == 2">
+                  <div class="btn" @click="delOrder" v-if="isCanDelCurrentInvoices">
                     <span class="iconfont icon-shanchu1"></span>
                     <span>删除</span>
                   </div>
@@ -1305,6 +1305,18 @@
         if (this.userPositionInfo) {
                   return jurisdictions.jurisdictionJCY(this.userPositionInfo.roleList);
               }
+      },
+      isCurrentShopPreson:function(){
+        if(this.userPositionInfo){
+          let res = this.userPositionInfo.roleList.find((val)=>{
+            return val.shopName == this.receiptsIntroList.shopName;
+          });
+          return Boolean(res);
+        }
+      },
+      // 是否可以删除单据的信息
+      isCanDelCurrentInvoices:function(){
+        return (this.isMakeMan && this.receiptsIntroList.cashStatus == 2 || this.companyPosition == '4' && this.receiptsIntroList.cashStatus == 2) && this.isCurrentShopPreson
       }
     },
     watch: {
@@ -2985,9 +2997,9 @@
           orderNum:this.$route.query.orderNumber,
           type: 1
         }
-              exportTabData['exportType'] = 'XS'
+              exportTabData['eType'] = 'XS'
               console.log(exportTabData)
-              downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
+              downLoaderFile('/v1/export/exportDetailExcel',exportTabData)
       },
 
       // 积分操作

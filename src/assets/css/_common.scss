@@ -275,6 +275,23 @@
 .xj-box-shadow{
   box-shadow: 0px 0 15px #e2e2e2;
 }
+// 通用按钮
+.xj-btn-defult{
+    display: inline-block;
+    height: 28px;
+    line-height: 29px;
+    font-size: 14px;
+    border-radius: 4px;
+    background: #2993f8;
+    color: #fff;
+    text-align: center;
+    cursor: pointer;
+    padding: 0 12px;
+    transition: all .3s;
+    &:hover {
+        background: #4db3ff;
+    }
+}
 // 所有的按钮样式
 .xj-btn-list {
     display:flex;

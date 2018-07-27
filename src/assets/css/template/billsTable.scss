@@ -222,13 +222,331 @@ $report-p-r: 20px;
     background-color: #fff;
     padding: 50px 0 0 0;
     margin-top: 20px;
-    
+
+    // 浮动文档流布局
     >.rp_gridState{
         height: 50px;
         padding: 0 20px;
         position: absolute;
         left: 0;
         top: 0;
+        width: 100%;
+        // z-index: 100;
+        >.header-wrap-btn {
+            box-sizing: border-box;
+            height: 100%;
+            float: right;
+            .confirm-btn {
+                float: left;
+                color: #333;
+                line-height: 50px;
+                font-size: 14px;
+                margin-right: 10px;
+                input {
+                    // width: 198px;
+                    width: 150px;
+                    height: 26px;
+                    // border-radius: 20px;
+                    border-radius: 4px;
+                    text-align: center;
+                    border: 1px solid #eeeeee;
+                }
+                input:hover {  
+                    background-color: #f4f9ff;
+                    border: 1px solid #2993f8;
+                }
+                input::-webkit-input-placeholder{
+                    font-size:10px;
+                }
+                input:-moz-placeholder{
+                    font-size:10px;
+                }
+                input:-ms-input-placeholder{
+                    font-size:10px;
+                }
+            }
+            .confirm-btn:hover {
+                color: #2993f8;
+            }
+            
+        }
+        >.tab{
+            float: right;
+            margin-top: 11px;
+            font-size: 14px;
+            height: 28px;
+            // overflow: hidden;
+            position: relative;
+            >span{
+              float: left;
+              padding: 0 10px;
+              text-align: center;
+              line-height: 27px;
+              cursor: pointer;
+              color: #666;
+              transition: all .1s;
+              &:hover{
+                 color: #2993f8; 
+              }
+              &.active{
+                 color: #2993f8;   
+              }
+              
+              
+            }
+        }
+        >.position-group {
+            // display: inline-block;
+            margin-top: 12px;
+            float: right;
+            //height: 16px;
+            // padding: 0 20px;
+            padding-left: 20px;
+            &>.btn {
+                display: block;
+                width: 52px;
+                height: 26px;
+                text-align: center;
+                line-height: 26px;
+                color:#2993f8;
+                background:#e0ecf7;
+                font-size: 12px;
+                border-radius: 4px;
+                cursor: pointer;
+                border: 1px solid #2993f8;
+            }
+            &>.btn.active {
+                color:#fff;
+                background:#2993f8;
+            }
+        }
+        .xj-switch {
+            //border-left: 1px solid #d6d6d6;
+            // display: inline-block;
+            margin-top: 12px;
+            float: right;
+            // padding: 0 20px;
+            padding-left: 20px;
+            padding-right: 0;
+            &>.btn {
+                font-size: 12px;
+                display: block;
+                width: 52px;
+                height: 26px;
+                text-align: center;
+                line-height: 26px;
+                color:#2993f8;
+                background:#e0ecf7;
+                border-radius: 4px;
+                cursor: pointer;
+                border: 1px solid #2993f8;
+            }
+            &>.btn.active {
+                color:#fff;
+                background:#2993f8;
+            }
+        }
+        // >.el-switch{
+        //     float: right;
+        //     margin-left: 10px;
+        //     margin-top: 13px;
+        // }
+    }
+    
+    // 默认文档流布局
+    >.rp_gridState_df{
+        padding: 0 20px;
+        overflow: hidden;
+        width: 100%;
+        // z-index: 100;
+        >.header-wrap-btn {
+            box-sizing: border-box;
+            height: 100%;
+            float: right;
+            .confirm-btn {
+                float: left;
+                color: #333;
+                line-height: 50px;
+                font-size: 14px;
+                margin-right: 10px;
+                input {
+                    // width: 198px;
+                    width: 150px;
+                    height: 26px;
+                    // border-radius: 20px;
+                    border-radius: 4px;
+                    text-align: center;
+                    border: 1px solid #eeeeee;
+                }
+                input:hover {  
+                    background-color: #f4f9ff;
+                    border: 1px solid #2993f8;
+                }
+                input::-webkit-input-placeholder{
+                    font-size:10px;
+                }
+                input:-moz-placeholder{
+                    font-size:10px;
+                }
+                input:-ms-input-placeholder{
+                    font-size:10px;
+                }
+            }
+            .confirm-btn:hover {
+                color: #2993f8;
+            }
+            
+        }
+        >.tab{
+            float: right;
+            margin-top: 11px;
+            font-size: 14px;
+            height: 28px;
+            // overflow: hidden;
+            position: relative;
+            >span{
+              float: left;
+              padding: 0 10px;
+              text-align: center;
+              line-height: 27px;
+              cursor: pointer;
+              color: #666;
+              transition: all .1s;
+              &:hover{
+                 color: #2993f8; 
+              }
+              &.active{
+                 color: #2993f8;   
+              }
+              
+              
+            }
+        }
+        >.position-group {
+            // display: inline-block;
+            margin-top: 12px;
+            float: right;
+            //height: 16px;
+            // padding: 0 20px;
+            padding-left: 20px;
+            &>.btn {
+                display: block;
+                width: 52px;
+                height: 26px;
+                text-align: center;
+                line-height: 26px;
+                color:#2993f8;
+                background:#e0ecf7;
+                font-size: 12px;
+                border-radius: 4px;
+                cursor: pointer;
+                border: 1px solid #2993f8;
+            }
+            &>.btn.active {
+                color:#fff;
+                background:#2993f8;
+            }
+        }
+        .xj-switch {
+            //border-left: 1px solid #d6d6d6;
+            // display: inline-block;
+            margin-top: 12px;
+            float: right;
+            // padding: 0 20px;
+            padding-left: 20px;
+            padding-right: 0;
+            &>.btn {
+                font-size: 12px;
+                display: block;
+                width: 52px;
+                height: 26px;
+                text-align: center;
+                line-height: 26px;
+                color:#2993f8;
+                background:#e0ecf7;
+                border-radius: 4px;
+                cursor: pointer;
+                border: 1px solid #2993f8;
+            }
+            &>.btn.active {
+                color:#fff;
+                background:#2993f8;
+            }
+        }
+        // >.el-switch{
+        //     float: right;
+        //     margin-left: 10px;
+        //     margin-top: 13px;
+        // }
+    }
+
+    .side-nav{
+        height:inherit;
+        line-height: 50px;
+        float: left;
+        
+        >i{ margin-right: 7px; color:#2993f8;}
+    }
+    .sort-wrap {
+        float: left;
+        height: 50px;
+        width: auto;
+        margin-left: 20px;
+        label {
+            height: 50px;
+            width: 30px;
+            font-size: 12px;
+            color:#2993f8;
+            font-weight: bold;
+            float: left;
+            line-height: 50px;
+            margin-right: 10px;
+        }
+        &>div {
+            //float: left;
+            margin-top: 11px;
+            display: inline-block;
+            padding: 6px;
+            font-size: 12px;
+            color:#585858;
+            background:#f5f5f5;
+            border-radius: 4px;
+            margin-right: 10px;
+            position: relative;
+            &>i {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            font-size: 10px;
+            width: 10px;
+            height: 10px;
+            cursor: pointer;
+            display: none;
+            color:#2993f8;
+            }
+        }
+        &>div:hover {
+            background:#e0ecf8;
+            color:#2993f8;
+            &>i {
+            display: block;
+            }
+        }
+    }
+}
+// 表格头部的布局
+.new-table-header-layout-main{
+    border-radius: 4px;
+    border: 1px solid #dedede;
+    // box-shadow:0px 0 15px #ddd;
+    position: relative;
+    background-color: #fff;
+    margin-top: 20px;
+
+    // 浮动文档流布局
+    >.rp_gridState{
+        padding: 0 20px;
+        overflow: hidden;
         width: 100%;
         // z-index: 100;
         >.header-wrap-btn {
@@ -407,7 +725,6 @@ $report-p-r: 20px;
     }
 }
 
-
 /*  */
 .ui-table_column{
     height: 40px;
@@ -580,7 +897,7 @@ $report-p-r: 20px;
     @include xj-report-table-box;
 }
 .xj-report-table-container-img{
-    @include xj-report-table-box($trH: 80px);
+    @include xj-report-table-box($allH: 595px, $trH: 80px);
 }
 // 小计
 .subtotal-main{
@@ -685,7 +1002,7 @@ $report-p-r: 20px;
 // 所有的表格头部
 .xj-report-table-column{
     height: 40px;
-    margin-top: -40px;
+    // margin-top: -40px;
     background-color: #f5f5f5;
     overflow: hidden;
     display: flex;

@@ -27,8 +27,8 @@
         <div class="btn-header-wrap">
           <btn-header v-if="listDetails" :filterCondition="formattingData(filterCondition)" class="btn-header-inner" :isPopup="true" @amendNum="amendNum" :dataGridStorage="dataGridStorage"></btn-header>
         </div>
-        
-        
+
+
 
         <filter-header ref="filterHeaderBox" @seekProduct="seekProduct" @reportSwitch="reportSwitch" @resetData="resetData" @filterData="filterData"></filter-header>
 
@@ -102,7 +102,7 @@ export default {
       // allChecked: false, // 全部选中
       currentTemplate: '', // 当前的模板
       printList: [], // 打印机列表
-      currentPrint: "", // 当前打印机             
+      currentPrint: "", // 当前打印机
       productCategory: [
         {
           classesName: '全公司',
@@ -207,7 +207,7 @@ export default {
 
       //入库库位
       storageSpaceValue: '',
-      // repositoryList: [], 
+      // repositoryList: [],
 
       provider: '',
       providerId: '',

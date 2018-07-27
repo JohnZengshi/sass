@@ -114,7 +114,7 @@ export default {
           barcode.barcodeList.push({barcode: i.barcode})
         }
       }
-      
+
       this.loading = true
       let checkData = {}
       if (this.printNum.allChecked) {
@@ -154,6 +154,7 @@ export default {
       for (let i of data) {
         productId.push(i.productId)
       }
+      debugger
       this.$store.dispatch('previewTemplate', this.currentTemplate.templateId).then(json => {
         if(json.state == 200) {
           let canvas = json.data.content
@@ -174,6 +175,7 @@ export default {
           // this.$set(this.print, 'templateData', json.data)
           // this.print.isPreview = true;
           this.printTemplate(canvas, json.data.productList, parm)
+
         }
       })
     },
@@ -187,12 +189,12 @@ export default {
     },
     _getVersion () {
       let noSetup = true
-      var JCP = {  
-          setup : {  
+      var JCP = {
+          setup : {
               noSetupHandle : function() {
                   noSetup = false
-              }  
-          }  
+              }
+          }
       }
       JCP.setup.noSetupHandle()
       setTimeout(() => {

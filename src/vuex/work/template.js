@@ -175,6 +175,7 @@ const actions = {
         commit
     }, filter) {
         return printAPI.getPrintLabelData(filter).then(json => {
+
             if (json.state !== 200) {
                 commit(types.RECEIVE_ERROR, json)
             }

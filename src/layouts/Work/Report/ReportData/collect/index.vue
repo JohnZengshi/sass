@@ -8,7 +8,7 @@
 						<i class="iconfont icon-liebiao"></i>收银统计
 					</div>
 				</div>
-				<div class="rp_dataGridTemp">
+				<div>
 					<sell-datagrid :dataGridOptions="selectDate" :orderType="orderType" :dataGridStorage="sellStorage" :cashierStatistics="cashierStatistics" :buyBackStorage="buyBackStorage" reportType="1">
 					</sell-datagrid>
 				</div>

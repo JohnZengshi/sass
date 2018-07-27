@@ -1,6 +1,6 @@
 <template>
 	<div class="receipts" v-loading="loading">
-		<span v-if="dataGridOptions.type==1" data-text="导出表格" @click="exportTab()">
+		<span data-text="导出表格" @click="exportTab()">
 			<i class="iconfont icon-daochu"></i>
 		</span>
 		<span data-text="打印标签" @click="printLabel">
@@ -16,11 +16,11 @@
 		<lodop ref="lodop" :canvas="print.canvas" :templateData="print.templateData" :page="print.templateData.productList.length">
 		</lodop>
 
-		<!--<TemplatePreviewDialog 
-  ref="templatePreviewDialog" 
-  @print="printTemplate" 
-  :canvas="print.canvas" 
-  :templateData="print.templateData" 
+		<!--<TemplatePreviewDialog
+  ref="templatePreviewDialog"
+  @print="printTemplate"
+  :canvas="print.canvas"
+  :templateData="print.templateData"
   :pageNumber="print.templateData.productList.length">
 </TemplatePreviewDialog>-->
 
@@ -29,41 +29,41 @@
 			<table-print :tabSwitch="tabSwitch" :reportType="reportType" :printSelectDate="printSelectDate" :orderData="orderData" :dataGridStorage="dataGridStorage">
 			</table-print>
 		</div>
-		
+
 		<!--打印模块-->
 		<div style="display: none;" class="testClass">
-				<detail-template 
-					title="入库" 
+				<detail-template
+					title="入库"
 					tabTitle="明细"
-					:reportType="1" 
-					v-if="dataGridOptions.type==1" 
-					ref="detailTemplate" 
-					:sellList="dataGridStorage" 
+					:reportType="1"
+					v-if="dataGridOptions.type==1"
+					ref="detailTemplate"
+					:sellList="dataGridStorage"
 					:headerData="orderData"></detail-template>
 <!-- 				<detail-template v-if="this.tabClassActive.index==0" title="入库" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detail-template> -->
 
-					<intelligence-type-template 
-						v-if="dataGridOptions.type==2" 
-						title="入库" 
+					<intelligence-type-template
+						v-if="dataGridOptions.type==2"
+						title="入库"
 						tabTitle="智能分类"
-						ref="intelligenceTypeTemplate" 
-						:sellList="dataGridStorage" 
+						ref="intelligenceTypeTemplate"
+						:sellList="dataGridStorage"
 						:headerData="orderData"></intelligence-type-template>
 
-					<project-type-template 
+					<project-type-template
 						v-if="dataGridOptions.type==3"
-						title="入库" 
+						title="入库"
 						tabTitle="产品分类"
-						ref="projectTypeTemplate" 
-						:sellList="dataGridStorage" 
+						ref="projectTypeTemplate"
+						:sellList="dataGridStorage"
 						:headerData="orderData"></project-type-template>
 
-					<custom-template 
+					<custom-template
 						v-if="dataGridOptions.type==4"
-						title="入库" 
+						title="入库"
 						tabTitle="自定义"
-						ref="customTemplate" 
-						:sellList="dataGridStorage" 
+						ref="customTemplate"
+						:sellList="dataGridStorage"
 						:headerData="orderData"></custom-template>
 		</div>
 	</div>
@@ -80,7 +80,7 @@
 	//打印模块
 	import TablePrint from './../../../Work/CommonalityComponent/print/dataGridPrint'
 
-	
+
 
 	// 导出按钮
 	import {downLoaderFile} from 'Api/downLoaderFile'
@@ -136,7 +136,7 @@
 				// 导出报表数据
 				exportTabData: {
 					"orderNum": this.$route.query.orderNumber,
-					"exportType": 'RK',
+					"eType": 'RK',
 					"type": '1',
 					"page": 1,
 					"pageSize": 9999,
@@ -247,7 +247,7 @@
 		methods: {
 			// 导出表格
 			exportTab(){
-				downLoaderFile('/v1/export/exportExcelByBusinss',this.exportTabData)
+				downLoaderFile('/v1/export/exportDetailExcel',this.exportTabData)
 
 			},
 			// 打印标签
@@ -255,7 +255,7 @@
 				this.print.currentOrderNum = this.orderNum
 				this.$refs.printLabelByOrderDialog.show()
 			},
-			//打印表格 
+			//打印表格
 			tabPrin(){
 				let type = this.dataGridOptions.type
 				if (type == 1) {
@@ -281,10 +281,12 @@
 				})
 			},
 			getPrintLabelData(type, orderId, beginNum, endNum, canvas, selectedProducts, isPrint){
+
 				this.print.canvas = canvas
 				if(type==0){//勾选
 					this.previewTemplate(canvas, selectedProducts, isPrint);
 				}else if(type==1){//全部
+
 					this.$store.dispatch('getPrintLabelData', {orderId:orderId}).then(json => {
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)
@@ -294,6 +296,7 @@
 						}
 					})
 				}else if(type==2){//分页
+
 					this.$store.dispatch('getPrintLabelData', {orderId:orderId,beginNum:beginNum, endNum:endNum}).then(json => {
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)
@@ -305,13 +308,24 @@
 				}
 			},
 			previewTemplate(canvas, selectedProducts, isPrint) {
+
 				if(selectedProducts.length > 0) {
 					let productList = selectedProducts.map(selectedProduct => {
 						return {
 							productId: selectedProduct
 						}
 					});
-					this.$store.dispatch('getPrintLabelData', {productList:productList}).then(json => {
+                    debugger
+					let barcodeArr = canvas.components.filter(item => item.data.propertyCode == 'barcode2');
+					let dataList = {
+                        productList:productList,
+
+                    }
+                    if (barcodeArr.length){
+                        dataList.url = barcodeArr[0].data.codeUrl;
+                    }
+
+					this.$store.dispatch('getPrintLabelData', dataList).then(json => {
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)
 							//this.print.templateData = json.data;
@@ -320,6 +334,7 @@
 						}
 					})
 				} else {
+
 					this.$store.dispatch('getPrintLabelData', {
 						isTmp: 1,
 						productType: 1
@@ -334,6 +349,7 @@
 			},
 			//预览模板
 			printTemplate(templateList, dataList){
+
 				JaTools.print(templateList, dataList);
 			},
 			_seekGetReportsPrintRK () {

@@ -327,7 +327,8 @@ export default {
         .templatenamemes{
           color: #2993f8;
           display: inline-block;
-          width: 90px;
+          // width: 90px;
+          min-width: 170px;
         }
         .templateConten{
           width: 277px;

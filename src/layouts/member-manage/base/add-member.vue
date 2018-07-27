@@ -13,17 +13,17 @@
               <div class="member-edit-info">
                 <div class="member-item">
                   <span class="item-label"><i class="mandatory-icon">*</i>性名</span>
-                  <input :disabled="!isShopMan" maxlength="6" v-model="dataInfo.username" @blur="setEmail">
+                  <input placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.username" @blur="amendData">
                 </div>
 
                 <div class="member-item">
                   <span class="item-label">备注名</span>
-                  <input maxlength="6" placeholder="仅内部人员可查看" :disabled="!isShopMan" v-model="dataInfo.name" @blur="setEmail">
+                  <input maxlength="6" placeholder="仅内部人员可查看" :disabled="!isShopMan" v-model="dataInfo.name" @blur="amendData">
                 </div>
 
                 <div class="member-item">
                   <span class="item-label"><i class="mandatory-icon">*</i>手机号</span>
-                  <input type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="setEmail">
+                  <input placeholder="请输入" type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="amendData">
                 </div>
 
                 <div class="member-item"></div>
@@ -56,12 +56,14 @@
                   <span class="item-label">负责人</span>
                   <div class="right-wrap">
                     <alone-drop-down-colums class="chose-user-box" ref="stateWrap" :propsList="userList" titleData="负责人" @dataBack="choseUser"></alone-drop-down-colums>
-                    <!-- <input @click="isShowInd = !isShowInd" v-model="dataInfo.principalList" class="inp" type="text" placeholder="选择负责人">
-                    <ul class="click-select-wrap" :class="{active: isShowInd}">
-                        <li @click="choseGrade(item)" :class="{active:dataInfo.industry == item.inName}" v-for="(item, index) in industryList" :key="index">{{item.inName}}</li>
-                    </ul> -->
                   </div>
                 </div>
+
+                <div class="member-item">
+                  <span class="item-label">初始积分</span>
+                  <input placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.username" @blur="amendData">
+                </div>
+
               </div>
             </div>
             <div class="more-tit-wrap">
@@ -73,7 +75,15 @@
                 <div class="member-item">
                   <span class="item-label">会员等级</span>
                   <div class="right-wrap">
-                    <newDownMenu class="new-down-menu-box" :titleInfo="dataInfo.gradeName ? dataInfo.gradeName : '选择会员等级'" :showList="industryList" :noClear="true" :keep="true" @changeData="choseGrade"></newDownMenu>
+                    <newDownMenu
+                      class="new-down-menu-box"
+                      :titleInfo="dataInfo.gradeName ? dataInfo.gradeName : '选择会员等级'"
+                      :showList="gradeList"
+                      :noClear="true"
+                      :keep="true"
+                      :nameKey="'gradeName'"
+                      @changeData="choseGrade"
+                    ></newDownMenu>
                     <!-- <input @click="isGrade = !isGrade" v-model="dataInfo.gradeName" class="inp" type="text" placeholder="选择会员等级">
                     <ul class="click-select-wrap" :class="{active: isGrade}">
                       <li @click="choseGrade(item)" :class="{active:dataInfo.grade == item.id}" v-for="(item, index) in gradeList" :key="index">{{item.name}}</li>
@@ -93,19 +103,29 @@
                 </div>
                 <div class="member-item">
                   <span class="item-label">微信号</span>
-                  <input type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="setEmail">
+                  <input placeholder="请输入" type="Number" :disabled="!isShopMan" v-model="dataInfo.weixin" @blur="amendData">
                 </div>
-                <div class="member-item">
+
+                <div class="member-item" v-if="dataInfo.createTime">
                   <span class="item-label">创建时间</span>
-                  <input type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="setEmail">
+                  <div class="right-wrap">
+                    <span class="show-tit">
+                      {{dataInfo.createTime}}
+                    </span>
+                  </div>
                 </div>
-                <div class="member-item">
+                <div class="member-item" v-if="dataInfo.totalMoney">
                   <span class="item-label">订单总额</span>
-                  <input type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="setEmail">
+                  <div class="right-wrap">
+                    <span class="show-tit">
+                      {{dataInfo.totalMoney}}
+                    </span>
+                  </div>
                 </div>
+
                 <div class="member-item">
                   <span class="item-label">邮箱</span>
-                  <input type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="setEmail">
+                  <input type="Number" placeholder="请输入" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="amendData">
                 </div>
                 <div class="member-item">
                   <span class="item-label">名片上传</span>
@@ -126,7 +146,7 @@
                 </div>
                 <div class="member-item">
                   <span class="item-label">详细地址</span>
-                  <input :disabled="!isShopMan" v-model="dataInfo.username" @blur="setEmail">
+                  <input :disabled="!isShopMan" v-model="dataInfo.address" @blur="amendData">
                 </div>
               </div>
               <div class="remark">
@@ -199,6 +219,7 @@ export default {
         principalList: [],
         grade: '',
         gradeName: '',
+        weixin: '',
         type: '',
         typeName: '',
         memorial: '',
@@ -210,17 +231,21 @@ export default {
       isGrade: false,
       isType: false,
       signName: '',
-      gradeList: [{
-          name: '普卡',
-          id: '1'
+      gradeList: [
+        {
+          gradeId: 'gradeId',
+          gradeName: '银卡kk',
+          startScore: 'startScore'
         },
         {
-          name: '银卡',
-          id: '2'
+          gradeId: 'gradeId',
+          gradeName: '银卡',
+          startScore: 'startScore'
         },
         {
-          name: '金卡',
-          id: '3'
+          gradeId: 'gradeId',
+          gradeName: '金卡',
+          startScore: 'startScore'
         }
       ],
       typeList: [{
@@ -249,64 +274,6 @@ export default {
         }
       ],
       userList: []
-      // dataInfo: {
-      //   username: '',
-      //   principalFlag: '',
-      //   followTime: '',
-      //   followStatus: '',
-      //   followUserName: '',
-      //   latelyBuyTime: '',
-      //   latelyBuyNum: '',
-      //   latelyBuyPrice: '',
-      //   logo: '',
-      //   memberName: '', // 名称
-      //   memberNum: '',
-      //   phone: '', // 手机号
-      //   cardSrc: '', // 名片地址
-      //   orderList: [],
-      //   principalList: [], // 负责人列表
-      //   birthday: '', // 生日
-      //   email: '', // 邮箱
-      //   wx: '', // 微信号
-      //   industry: '', // 行业
-      //   sex: '',
-      //   provinceId: '',
-      //   provinceName: '',
-      //   cityId: '',
-      //   cityName: '',
-      //   areaId: '',
-      //   areaName: '',
-      //   address: '',
-      //   remark: '',
-      //   createTime: '',
-      //   totalMoney: '',
-      //   signList: [
-      //     {
-      //       signName: '132'
-      //     },
-      //     {
-      //       signName: '132'
-      //     },
-      //     {
-      //       signName: '132'
-      //     },
-      //     {
-      //       signName: '132'
-      //     },
-      //     {
-      //       signName: '132132132132132'
-      //     },
-      //     {
-      //       signName: '132'
-      //     },
-      //     {
-      //       signName: '132'
-      //     },
-      //     {
-      //       signName: '132'
-      //     }
-      //   ]
-      // }
     }
   },
   mounted() {
@@ -332,31 +299,20 @@ export default {
       this.dataInfo.profession = parm.name
     },
     open() {
-      this.dataInfo = {
-        shopId: '',
-        username: '',
-        phone: '',
-        name: '',
-        sex: '',
-        profession: '',
-        birthday: '',
-        maleBirthday: '',
-        principalList: [],
-        grade: '',
-        gradeName: '',
-        type: '',
-        typeName: '',
-        memorial: '',
-        signList: []
+      for (let i of Object.keys(this.dataInfo)) {
+        if (Array.isArray(this.dataInfo[i])) {
+          this.dataInfo[i] = []
+        } else {
+          this.dataInfo[i] = ''
+        }
       }
       this.isDialog = true
       this._seekGetShopUserList()
       this._seekFindMemberGradeList()
     },
     choseGrade(parm) {
-      debugger
-      this.dataInfo.grade = parm.id
-      this.dataInfo.gradeName = parm.name
+      this.dataInfo.grade = parm.gradeId
+      this.dataInfo.gradeName = parm.gradeName
     },
     choseType(parm) {
       this.isType = false
@@ -469,44 +425,44 @@ export default {
         }
       })
     },
-    // 修改邮箱
-    setEmail() {
+    // 修改数据
+    amendData() {
       // 判断邮箱
-      if (this.dataInfo.email && this.dataInfo.email.search(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/) == -1) {
-        this.$message({
-          type: 'warning',
-          message: '请输入正确的邮箱'
-        })
-        return
-      }
-      let orderList = []
-      if (this.dataInfo.orderList.length != 0) {
-        this.dataInfo.orderList.forEach((item, index) => {
-          orderList[index] = { orderNo: item.orderNum }
-        })
-      }
+      // if (this.dataInfo.email && this.dataInfo.email.search(/^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/) == -1) {
+      //   this.$message({
+      //     type: 'warning',
+      //     message: '请输入正确的邮箱'
+      //   })
+      //   return
+      // }
+      // let orderList = []
+      // if (this.dataInfo.orderList.length != 0) {
+      //   this.dataInfo.orderList.forEach((item, index) => {
+      //     orderList[index] = { orderNo: item.orderNum }
+      //   })
+      // }
 
-      // 生日的时间格式
-      // this.dataInfo.birthday = this.timeFormat(this.dataInfo.birthday)
+      // // 生日的时间格式
+      // // this.dataInfo.birthday = this.timeFormat(this.dataInfo.birthday)
 
-      let options = Object.assign({}, this.dataInfo, {
-        memberId: this.memberId,
-        shopId: this.shopId,
-        orderList,
-        birthday: this.birthday
+      // let options = Object.assign({}, this.dataInfo, {
+      //   memberId: this.memberId,
+      //   shopId: this.shopId,
+      //   orderList,
+      //   birthday: this.birthday
 
-      })
-      operateMemberUpdateBy(options).then(res => {
-        console.log(res.data.state)
-        if (res.data.state === 200) {
+      // })
+      // operateMemberUpdateBy(options).then(res => {
+      //   console.log(res.data.state)
+      //   if (res.data.state === 200) {
 
-        } else {
-          this.$message({
-            type: 'error',
-            message: res.data.msg
-          })
-        }
-      })
+      //   } else {
+      //     this.$message({
+      //       type: 'error',
+      //       message: res.data.msg
+      //     })
+      //   }
+      // })
     },
     // 修改备注
     setRemark() {
@@ -608,15 +564,15 @@ export default {
       // })
     },
     // 格式化日期
-    timeFormat(parm) {
+    // timeFormat(parm) {
 
-      if (parm) {
-        let year = parm.substring(0, 4)
-        let month = parm.substring(5, 7)
-        let data = parm.substring(8, 10)
-        return year + month + data + '000000'
-      }
-    },
+    //   if (parm) {
+    //     let year = parm.substring(0, 4)
+    //     let month = parm.substring(5, 7)
+    //     let data = parm.substring(8, 10)
+    //     return year + month + data + '000000'
+    //   }
+    // },
     // 修改姓名
     setUsername() {
 
@@ -718,8 +674,6 @@ export default {
       }
 
       let options = _.cloneDeep(this.dataInfo)
-      options.birthday = formattingTime(options.birthday)
-      options.maleBirthday = formattingTime(options.maleBirthday)
       options.memorial = formattingTime(options.memorial)
       operateAddMember(options)
         .then(res => {
@@ -750,16 +704,16 @@ export default {
       let options = {
         shopId: this.shopId
       }
-      let datas = [
-        {
-          gradeId: 'gradeId',
-          gradeName: 'gradeName',
-          startScore: 'startScore'
-        }
-      ]
       seekFindMemberGradeList(options)
         .then(res => {
-
+          if (res.data.state == 200) {
+            this.gradeList = res.data.data.list
+          } else {
+            this.$message({
+              type: 'error',
+              message: '请输入手机号'
+            })
+          }
         })
     },
   }
@@ -855,6 +809,9 @@ export default {
           position: relative;
           height: 28px;
           display: inline-block;
+          .show-tit{
+            line-height: 28px;
+          }
           .new-down-menu-box {
             width: 182px;
           }

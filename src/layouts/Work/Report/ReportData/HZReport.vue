@@ -58,7 +58,7 @@
 
     </div>
     
-    <div class="rp_dataGridTemp" :class="tabShow" v-loading = "loading" element-loading-text="数据查询中">
+    <div :class="tabShow" v-loading = "loading" element-loading-text="数据查询中">
         <report-detail
             ref="reportDetailWrap"
             :dataGridStorage="dataGridStorage" 
@@ -792,10 +792,10 @@ export default {
         exportTab(){
             console.log('导出报表')
             let exportTabData =Object.assign({},this.dataGridOptions)
-            exportTabData['exportType'] = 'FH'
+            exportTabData['eType'] = 'FH'
             console.log(exportTabData)
             if(exportTabData.type === 1){
-            downLoaderFile('/v1/export/exportExcelByReport',exportTabData)
+            downLoaderFile('/v1/export/reportsDetailExcel',exportTabData)
             } else {
             downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)          
             }

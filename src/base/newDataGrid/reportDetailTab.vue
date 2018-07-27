@@ -20,7 +20,7 @@
         >
         </data-grid-body>
         <!--表尾  -->
-        <data-grid-footer :tabSwitch="tabSwitch" :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="allData" :reportType="reportType" :configData="configData" @tabCell="tabCell">
+        <data-grid-footer v-if="isFooter" :tabSwitch="tabSwitch" :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="allData" :reportType="reportType" :configData="configData" @tabCell="tabCell">
         </data-grid-footer>
       </template>
     </div>
@@ -34,7 +34,7 @@ import DataGridFooter from './dataGridFooter'
 import DataEditFooter from './editFooter'
 // let configData = require('./config/dataGridConfig')
 export default {
-  props: ['dataGridStorage', 'reportType', 'tabSwitch', 'isOld', 'positionSwitch', 'newList', 'type', 'printNum', 'allData', 'configData'],
+  props: ['dataGridStorage', 'reportType', 'tabSwitch', 'isOld', 'positionSwitch', 'newList', 'type', 'printNum', 'allData', 'configData', 'isFooter'],
   data() {
     return {
       tempDatagrid: [],

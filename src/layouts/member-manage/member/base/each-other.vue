@@ -3,7 +3,7 @@
   <div class="m-m-each-other-main">
     <div class="header">
       <p class="side-nav"><i class="iconfont icon-liebiao"></i>会员互通</p>
-      <div class="right-btn" @click="openAdd">
+      <div class="xj-btn-defult right-btn" @click="openAdd">
         +店铺组合
       </div>
     </div>
@@ -23,7 +23,15 @@
             <i @click="compile" class="iconfont icon-bianji"></i>
             <i @click="del(item, index)" class="iconfont icon-lajitong"></i>
           </li>
-        </ul> 
+        </ul>
+
+        <ul v-if="combinationList.length < 4" v-for="(item, index) in (4 - combinationList.length)">
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+        </ul>
+
       </div>
     </div>
 
@@ -99,6 +107,21 @@
                   shopName: 'shopName2'
                 }
               ]
+            },
+            {
+              groupId: 'groupId',
+              groupName: 'groupName',
+              name: 'name',
+              groupShopList: [
+                {
+                  shopId: 'shopId',
+                  shopName: 'shopName'
+                },
+                {
+                  shopId: 'shopId2',
+                  shopName: 'shopName2'
+                }
+              ]
             }
           ]
         }
@@ -135,35 +158,36 @@
   margin-bottom: 10px;
   .header{
     padding: 0 15px;
-    height: 40px;
-    .right-btn{
+    height: 50px;
+    >.right-btn{
       float: right;
-      width: 80px;
-      height: 28px;
-      border-radius: 4px;
-      color: #2993f8;
-      border: 1px solid #2993f8;
-      text-align: center;
-      line-height: 28px;
-      font-size: 14px;
       margin-top: 15px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: all .3s;
-      &:hover {
-        background: #2993f8;
-        color: #fff;
-      }
+      // width: 80px;
+      // height: 28px;
+      // border-radius: 4px;
+      // color: #2993f8;
+      // border: 1px solid #2993f8;
+      // text-align: center;
+      // line-height: 28px;
+      // font-size: 14px;
+      // margin-top: 15px;
+      // font-weight: bold;
+      // cursor: pointer;
+      // transition: all .3s;
+      // &:hover {
+      //   background: #2993f8;
+      //   color: #fff;
+      // }
     }
   }
   .each-table{
     margin: 10px 0 0 50px;
-    width: 900px;
+    width: 1060px;
     border: 1px solid #dedede;
     border-radius: 5px;
     .scroll-wrap{
       height: 200px;
-      overflow: scroll;
+      overflow-y: scroll;
       >ul{
         border-bottom: 1px solid #f0f2f5;
       }
@@ -173,27 +197,29 @@
     }
     ul{
       font-size: 0;
+      min-height: 50px;
       li{
         height: 100%;
         font-size: 14px;
-        padding: 12px;
+        padding: 15px;
+        border-right: 1px solid #d6d6d6;
         vertical-align: top;
         text-align: center;
         display: inline-block;
       }
       li:nth-child(1){
-        width: 100px;
+        width: 190px;
       }
       li:nth-child(2){
-        width: 580px;
+        width: 480px;
         word-wrap: break-word; 
         word-break: normal; 
       }
       li:nth-child(3){
-        width: 100px;
+        width: 190px;
       }
       li:nth-child(4){
-        width: 100px;
+        width: 190px;
         i{
           transition: all .3s;
           corsur: pointer;
@@ -207,7 +233,7 @@
       }
     }
     .header-tit{
-      height: 40px;
+      height: 50px;
       background-color: #f5f5f5;
       overflow: hidden;
       display: -ms-flexbox;
