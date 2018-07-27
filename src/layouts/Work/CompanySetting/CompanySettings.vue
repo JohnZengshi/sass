@@ -121,6 +121,8 @@ import Certificate from "./settings/Certificate"
 import BarCodeManage from './settings/BarCodeManage'
 import ServeManage from './settings/ServeManage'
 import VerificationCode from './settings/VerificationCode'
+import VerificationLaber from './settings/VerificationLaber'
+
 import menu from './menu.json'
 
 import BigPopup from './settingComponents/bigPopup'
@@ -189,7 +191,8 @@ export default {
         ServeManage,
         BigPopup,  // 操作弹框
         draggable, //拖动插件
-        VerificationCode
+        VerificationCode,
+        VerificationLaber
     },
     computed: {
         ...mapGetters([
@@ -536,7 +539,7 @@ export default {
                     this.panel = ServeManage
                     break
                 case '12':
-                    this.panel = VerificationCode
+                    this.panel = VerificationLaber
                     break
                 // case '13':
                 //     this.panel = VerificationCode
@@ -703,7 +706,7 @@ export default {
                 .main-left-menu-item {
                     text-align: center;
                     font-size: 14px;
-                    height:56px;
+                    height:51.7px;
                     color: #999;
                     font-weight: bold;
                     position: relative;
