@@ -202,7 +202,6 @@
         height: 100%;
         font-size: 14px;
         padding: 15px;
-        border-right: 1px solid #d6d6d6;
         vertical-align: top;
         text-align: center;
         display: inline-block;
