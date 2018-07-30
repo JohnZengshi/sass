@@ -218,6 +218,14 @@
         this.getCanSeeShop()
         this.getAllCheckList()
         // console.log('11111111111111111111112 end')
+      },
+      'checkitemLits'(val){
+        let addnewListData = this.checkList.filter(item => val.includes(item.shopId))
+        console.log(addnewListData)
+        let delnewListData = this.checkList.filter(item => !addnewListData.map(item => item.shopId).includes(item.shopId) )   
+        console.log(delnewListData)
+        if(addnewListData.length != 0) this.getOneCheck(addnewListData,'1')
+        if(delnewListData.length != 0) this.getOneCheck(delnewListData,'2')
       }
 
     },
@@ -573,49 +581,45 @@
 
         this.checkList = newListData
 
-        this.getAllChcek(newListData)
+        // this.getAllChcek(newListData)
         
         // console.log(this.userInfo)
       },
       itemCheckend(val){
-        
-        let newValArray = val.filter(item => {
-          if(item){
-            return true
-          }
-        })
+        let newValArray = val.filter(item => item)
+        // console.log(newValArray)
         // 判断是不是全选
         if(this.checkList.length === (newValArray.length)){
           this.checked = true
-          this.storeCheckAll()
+          // this.storeCheckAll()
           // this.storeCheckAll()
         }else {
           this.checked = false
           // 获取选中的店铺
           if(newValArray.length == 0){
-            this.storeCheckAll()          
+            // this.storeCheckAll()          
           }else {
-            let addnewListData = []
-            let delnewListData = []
+            // let addnewListData = []
+            // let delnewListData = []
 
-            let allListData = this.checkList
+            // let allListData = this.checkList
 
-            for(let i = 0;i<newValArray.length;i++){
-              // console.log(newValArray[i])
-              allListData.forEach(item => {
-                if(item.shopId == newValArray[i]){
-                  addnewListData.push(item)
-                }else {
-                  delnewListData.push(item)
-                }
-            })
+          //   for(let i = 0;i<newValArray.length;i++){
+          //     // console.log(newValArray[i])
+          //     allListData.forEach(item => {
+          //       if(item.shopId == newValArray[i]){
+          //         addnewListData.push(item)
+          //       }else {
+          //         delnewListData.push(item)
+          //       }
+          //   })
 
-            // console.log(addnewListData)
-            // console.log(delnewListData)
-          }
+          //   // console.log(addnewListData)
+          //   // console.log(delnewListData)
+          // }
 
-          this.getOneCheck(addnewListData,'1')
-          this.getOneCheck(delnewListData,'2')
+          // this.getOneCheck(addnewListData,'1')
+          // this.getOneCheck(delnewListData,'2')
           }
         }
 
@@ -678,9 +682,8 @@
       // },
       getOneCheck(data,type){
         let options = []
-        let optionsObj ={}
-
         for(let j = 0;j<data.length;j++){
+          let optionsObj ={}
           optionsObj.operateType = type
           optionsObj.shopId = data[j].shopId
           optionsObj.userId = this.userInfo.userId
