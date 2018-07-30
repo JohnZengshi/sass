@@ -32,6 +32,23 @@
             <span @click.stop="operateNum = 2" v-else style="height: 20px;line-height: 20px">{{settingUserRole.costFlag == 'Y' ? '是' : '否'}}</span>
 
           </li>
+
+          <li style="margin-bottom: 25px">
+            <span>限制登录</span>
+
+            <template v-if="editOrAddRole && operateNum == 5 || Doubleid3">
+              <div class="xj-radio-wrap" @click.stop="setPermissions('1')">
+                <div class="xj-radio-inner"><i :class="{'actions-radius': permissions == '1'}"></i></div><span>正常</span>
+              </div>
+              <div class="xj-radio-wrap" @click.stop="setPermissions('2')">
+                <div class="xj-radio-inner"><i :class="{'actions-radius': permissions == '2'}"></i></div><span>冻结</span>
+              </div> 
+            </template>
+            <span @click.stop="checkPer()" v-else>{{permissions == '1' ? '正常' : '冻结'}}</span>
+            <!-- <Switchs v-if="editOrAddRole && operateNum == 5 || Doubleid" :isDelRole="editOrAddRole" :sex="settingUserRole.permissions" @switchsChange="setPermissions"></Switchs>
+            <span @click.stop="operateNum = 5" v-else style="height: 20px;line-height: 20px">{{settingUserRole.permissions == 'Y' ? '正常' : '冻结'}}</span> -->
+
+          </li>
           <!-- <li><span>  </span><span>是否可以编辑 {{editOrAddRole}}是否是双身份（管理员店长）{{Doubleid}}</span></li> -->
           <li v-if="settingUserRole">
             <span>查看时间</span>
@@ -124,7 +141,7 @@
 </template>
 <script>
   import {mapActions} from 'vuex'
-  import {operateOperateApplyByUserId, operateUserSetting, operatePrivilege,addOrdelInspect,lookStore,setShopSee} from 'Api/commonality/operate'
+  import {operateOperateApplyByUserId, operateLoginPermissions, operateUserSetting, operatePrivilege,addOrdelInspect,lookStore,setShopSee} from 'Api/commonality/operate'
   import {seekUserInfo, seekSettingUserRole, seekGetUserInfo, seekShopInfo} from 'Api/commonality/seek'
   import {statusPosition} from 'Api/commonality/status'
   import Switchs from 'base/switch/Switchs'
@@ -137,6 +154,7 @@
     props: ['deleteRole', 'editOrAddRole', 'roleDataList', 'userRoleDataList', 'userInfo', 'settingUserRole', 'positionData', 'isCompile', 'isWarden', 'isDelRole', 'isAddRole', 'delStaffRole', 'isUserShopManager', 'isSuperTube','showList','storeAllData','checkAll','lookShopMan','checkID'], // 删除权限, 编辑权限, 添加的权限
     data () {
       return {
+        permissions: '',
         //timeRange :'1' 45天  '2' 不限   costFlag:'Y' 开启成本 'N'关闭成本
         Doubleid:false,//这个用于限制是否是  管理员与店长  两个同时拥有的身份
         userPromise:3,
@@ -184,6 +202,7 @@
       },
       'userInfo' (val) {
         // console.log('啦啦啦啦啦啦',val)
+        this.permissions = val.permissions
         this.operateNum = null
       },
       'positionData' (val) {
@@ -227,7 +246,10 @@
       this.checkList = this.storeAllData
       this.getAllCheckList()
       this.getLookShop()
-      this.getCanSeeShop()      
+      this.getCanSeeShop()
+      if (!this.permissions) {
+        this.permissions = this.userInfo.permissions
+      }
     },
     mounted () {
       let _self = this
@@ -415,6 +437,38 @@
         this._operateUserSetting(flagoptions)
         // 关闭修改编辑
         this.operateNum = null;
+      },
+      checkPer() {
+        if (!this.permissions) {
+          this.permissions = this.userInfo.permissions
+        }
+        this.operateNum = 5
+      },
+      setPermissions (parm) { // 设置登录权限
+        this.permissions = parm
+        let flagoptions = {
+          userId: this.userInfo.userId,
+          type: parm
+        }
+        this._operateLoginPermissions(flagoptions)
+        // 关闭修改编辑
+        this.operateNum = null;
+      },
+      _operateLoginPermissions (parm) {
+        operateLoginPermissions(parm)
+          .then(res => {
+            this.$message({type:'success',message:'修改成功'});
+            if (res.data.state === 200) {
+              let option = {
+                userId: this.userInfo.userId 
+              }
+              this._seekUserInfo(option, true)
+              this._seekSettingUserRole(option)
+              this._seekGetUserInfo(option)
+            } else {
+              this.$store.dispatch('workPopupError', res.data.msg);
+            }
+          })
       },
       _operateUserSetting (options) { // 用户设置
         operateUserSetting(options)
