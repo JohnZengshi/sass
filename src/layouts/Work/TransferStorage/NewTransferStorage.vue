@@ -438,7 +438,7 @@
                                         <span class="iconfont icon-shouhuo"></span>
                                         <span>收货</span>
                                     </div>
-                                    <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
+                                    <div class="btn" @click="exportTab()">
                                         <span class="iconfont icon-daochu"></span>
                                         <span>导出表格</span>
                                     </div>
@@ -2065,9 +2065,9 @@ export default {
         // 导出报表
         exportTab(){
             let exportTabData = Object.assign({},this.dataGridOptions)
-            exportTabData['exportType'] = 'DK'
+            exportTabData['eType'] = 'DK'
             if(exportTabData.type == 1){
-                downLoaderFile('/v1/export/exportExcelByBusinss',exportTabData)
+                downLoaderFile('/v1/export/exportDetailExcel',exportTabData)
             } else {
                 downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)                
             }

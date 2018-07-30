@@ -99,7 +99,7 @@ export default{
       },
 	  exportTabData: {
 		"orderNum": this.$route.query.orderNumber,
-		"exportType": 'XG',
+		"eType": 'XG',
 		"type": '1',
 		"page": 1,
 		"pageSize": 9999,
@@ -211,7 +211,7 @@ export default{
   methods: {
 	  // 导出表格
 	exportTab(){
-        downLoaderFile('/v1/export/exportExcelByBusinss',this.exportTabData)
+        downLoaderFile('/v1/export/exportDetailExcel',this.exportTabData)
 	},
   	tabPrint(){
   		this.$emit("tabPrint");

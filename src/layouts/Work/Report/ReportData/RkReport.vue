@@ -246,7 +246,7 @@
         </Lodop>
       
       <div class="utilsBtn flex flex-v flex-pack-justify">
-        <div v-if="dataGridOptions.type != 1" class="btn" @click="exportTab()">
+        <div class="btn" @click="exportTab()">
           <i class="iconfont icon-daochu"></i>
           <span>导出报表</span>
         </div>
@@ -585,7 +585,7 @@ import filterHeader from './base/filter-header'
       this.getProductTypeList() //产品类别
       this.getGetUserList() //审核人
       this.getShopListByCo() //分销商  
-      this.send()
+      // this.send()
       this.$store.dispatch('checkBrowser', (type) => {
         this.reportPrint_fixed = type
       })
@@ -1192,6 +1192,7 @@ import filterHeader from './base/filter-header'
 
       send() {
         this.loading = true;
+        this.dataGridStorage = []
         // this.dataGridOptions.pageSize += 50;
         seekEntryStorage(this.dataGridOptions).then((res) => {
           if(res.data.state == 200) {
@@ -1246,9 +1247,9 @@ import filterHeader from './base/filter-header'
         console.log('导出报表')
         // let exportTabData = this.dataGridOptions
         let exportTabData = Object.assign({},this.dataGridOptions)
-        exportTabData['exportType'] = 'RK'
+        exportTabData['eType'] = 'RK'
         if(exportTabData.type === 1){
-          downLoaderFile('/v1/export/exportExcelByReport',exportTabData)
+          downLoaderFile('/v1/export/reportsDetailExcel',exportTabData)
         } else {
           downLoaderFile('/v1/export/exportExcelBySmart',exportTabData)          
         }
