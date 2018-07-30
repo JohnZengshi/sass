@@ -221,7 +221,7 @@
         width: 190px;
         i{
           transition: all .3s;
-          corsur: pointer;
+          cursor: pointer;
           &:hover{
             color: #2993f8;
           } 

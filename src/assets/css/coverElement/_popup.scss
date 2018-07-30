@@ -212,7 +212,7 @@
     @include all-no-dialog($w:640px,$h:640px,$t:20%,$hn:none);
 }
 .new-popup-dialog{
-    @include all-no-dialog($w:1200px,$h:770px,$t:7%,$hn:none);
+    @include all-no-dialog($w:1200px,$h:770px,$t:9%,$hn:none);
 }
 .xj-input-dialog{
     @include all-no-dialog($w:700px,$h:730px,$t:7%,$hn:none);

@@ -2,7 +2,7 @@
 <template>
   <div>
     <memberDialog v-show="dialog.dialogVisible" :dialog="dialog" @closeDialog="closeDialog" @dialogType="dialogType" @dialogCallback="dialogCallback"></memberDialog>
-    <el-dialog v-show="!dialog.dialogVisible" top="7%" :visible.sync="isDialog" class="xj-input-dialog">
+    <el-dialog v-show="!dialog.dialogVisible" top="10%" :visible.sync="isDialog" class="new-popup-dialog">
       <div class="m-m-add-group-main">
         <div class="p-close-icon" @click="isDialog = false">
           <i class="el-dialog__close el-icon el-icon-close"></i>
@@ -188,8 +188,6 @@ export default {
 <style lang="scss" scoped>
 .m-m-add-group-main {
   height: 100%;
-  width: 700px;
-  height: 730px;
   background-color: #fff;
   border-radius: 5px;
   padding: 20px 30px;
@@ -214,12 +212,15 @@ export default {
       margin-bottom: 20px;
       color: #333;
     }
-    .input-wrap {
+    >.input-wrap {
       width: 300px;
-      margin-bottom: 34px;
+      display: inline-block;
+      margin-bottom: 20px;
       .item-label {
         display: inline-block;
         width: 90px;
+        font-size: 14px;
+        line-height: 28px;
       }
       input {
         height: 28px;

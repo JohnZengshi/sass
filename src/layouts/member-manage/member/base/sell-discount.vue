@@ -8,7 +8,9 @@
           <div class="producet-jz" v-if="templateInfoData.poductTypeList[0].classesType == 1">
               <div class="title">
                   <span>计重类</span>
-                  <el-button v-if="!isDisabled" type="primary" size="mini" @click="jzSetting">批量设置</el-button>
+                  <div v-if="!isDisabled" class="xj-btn-defult" @click="jzSetting">
+                    批量设置
+                  </div>
               </div>
               <div class="content">
                   <div class="item-wrap" v-for="(item,index) in templateInfoData.poductTypeList[0].typeList" :key="index">
@@ -32,7 +34,9 @@
           <div class="porducet-jj" v-if="templateInfoData.poductTypeList[1].classesType == 2">
               <div class="title">
                   <span>计件类</span>
-                  <el-button v-if="!isDisabled" type="primary" size="mini" @click="jjsetting">批量设置</el-button>
+                  <div v-if="!isDisabled" class="xj-btn-defult" @click="jjsetting">
+                    批量设置
+                  </div>
               </div>
               <div class="content">
                   <div class="item-wrap" v-for="(item,index) in templateInfoData.poductTypeList[1].typeList" :key="index">
@@ -285,11 +289,10 @@ export default {
 </style>
 <style lang="scss" scoped>
 .m-m-sell-discount-main {
-  border: 1px solid red;
-  background-color: #fff;
+  background-color: #F6F8F9;
   position: relative;
-  height: 350px;
-  overflow: scroll;
+  height: 490px;
+  overflow-y: scroll;
   >div{
     h5{
       font-size: 16px;
@@ -323,13 +326,12 @@ export default {
           display: flex;
           flex-wrap: wrap;
           .item-wrap{
-              width: 143px;
-              height: 104px;
+              width: 165px;
+              height: 119px;
               background: #fff;
               border-radius: 10px;
               padding: 23px 23px 20px;
-              margin-bottom: 20px;
-              margin-right: 16px;
+              margin: 0 20px 20px 0;
               .item-title{
                   color: #2993f8;
                   font-size: 16px;

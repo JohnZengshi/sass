@@ -31,39 +31,39 @@
         shopId: this.$route.query.shopId,
         combinationList: [
           {
-            templateId: 'templateId',
+            templateId: 'a436606db0974f68a365966a3fbffb25',
             templateName: 'templateName'
           },
           {
-            templateId: 'templateId',
+            templateId: 'a436606db0974f68a365966a3fbffb25',
             templateName: 'templateName'
           },
           {
-            templateId: 'templateId',
+            templateId: 'a436606db0974f68a365966a3fbffb25',
             templateName: 'templateName'
           },
           {
-            templateId: 'templateId',
+            templateId: 'a436606db0974f68a365966a3fbffb25',
             templateName: 'templateName'
           },
           {
-            templateId: 'templateId',
+            templateId: 'a436606db0974f68a365966a3fbffb25',
             templateName: 'templateName'
           },
           {
-            templateId: 'templateId',
+            templateId: 'a436606db0974f68a365966a3fbffb25',
             templateName: 'templateName'
           },
           {
-            templateId: 'templateId',
+            templateId: 'a436606db0974f68a365966a3fbffb25',
             templateName: 'templateName'
           },
           {
-            templateId: 'templateId',
+            templateId: 'a436606db0974f68a365966a3fbffb25',
             templateName: 'templateName'
           },
           {
-            templateId: 'templateId',
+            templateId: 'a436606db0974f68a365966a3fbffb25',
             templateName: 'templateName'
           },
           {
@@ -164,10 +164,6 @@
     .right-btn{
       float: right;
       margin-top: 15px;
-      &:hover {
-        background: #2993f8;
-        color: #fff;
-      }
     }
   }
   .integral-body{

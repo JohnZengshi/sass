@@ -2,6 +2,7 @@
 <template>
 <transition name="tp-ani">
   <div class="m-m-add-template-main xj-right-box">
+  
     <div class="Rp_title_container">
       <!--面包屑-->
       <div class="Rp_crumbs">
@@ -13,6 +14,7 @@
     <div class="m-m-add-template-body xj-right-box xj-box-shadow">
       <template-shop></template-shop>
     </div>
+
   </div>
 </transition>
 </template>
@@ -31,8 +33,8 @@ export default {
     background-color: #fff;
     padding-bottom: 15px;
     border-radius: 10px;
-    height: 680px;
-    overflow: scroll;
+    // height: 680px;
+    // overflow: scroll;
   }
 }
 </style>

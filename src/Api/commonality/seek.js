@@ -904,3 +904,13 @@ export const seekFindMemberGradeList = function (parm) {
   let URL = "/v1/groupTemplate/findMemberGradeList";
   return apiCall(parm, URL);
 }
+// 会员模板管理详情
+export const seekFindMemberTemplaetDetails = function (parm) {
+  let URL = "/v1/groupTemplate/findMemberTemplaetDetails";
+  return apiCall(parm, URL);
+}
+// 会员店铺列表
+export const seekFindShopList = function (parm) {
+  let URL = "/v1/groupTemplate/findShopList";
+  return apiCall(parm, URL);
+}
