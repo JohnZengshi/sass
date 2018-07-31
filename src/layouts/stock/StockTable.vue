@@ -388,6 +388,7 @@ export default {
     //   console.log(this.changeCounter.counterId)
     // },
     "changeCounter.counterId" (val) {
+      this.dataGridOptions.shopId = this.changeShop.shopId;
       this.dataGridOptions.counterId = val;
       this.dataGridOptions.page = 1;
       this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
@@ -459,6 +460,7 @@ export default {
   },
   methods: {
     amendShop () {
+      debugger
       if (this.changeShop.shopId) {
         this.dataGridOptions.shopId = this.changeShop.shopId;
       } else {

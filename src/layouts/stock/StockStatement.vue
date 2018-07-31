@@ -223,7 +223,7 @@
           this.changeCounter.counterId = '';
           this.changeCounter.counterName = '';
         } else if (val.type == "店铺") {
-          this.changeShop.shopId = '0'
+          this.changeShop.shopId = ''
           this.changeShop.shopName = ''
           this.changeCounter.counterId = ''
           this.changeCounter.counterName = ''
@@ -238,7 +238,6 @@
         this._statisticalIndex();
       },
       dropReturn (val) {
-        debugger
         if (val.type == "柜组") {
           this.changeCounter.counterId = val.item.operateId
           this.changeCounter.counterName = val.item.operateName
@@ -260,7 +259,9 @@
               this.changeCounter.counterName = ''
               this.takeUserDisabled = false;
               if (val.item.operateId == '0') {
-                this.$refs.stockTableBox.amendShop()
+                setTimeout(() => {
+                    this.$refs.stockTableBox.amendShop()
+                }, 0)
               } else {
                 this._seekShowCounterList(this.changeShop.shopId);
               }
@@ -270,7 +271,7 @@
           //this._statisticalIndex();
           
         } else if (val.type == "库位") {
-          if(this.changeShop.shopId != null && this.changeShop.shopId != ''){
+          if(this.changeShop.shopId){
              this.$store.dispatch('workPopupError', '库位不可与店铺同选');
               //  this.dpcodedelete = true;// 选库位的时候，店铺不为空，则清除库位请求
               //  this.changeShop.shopId = '';
@@ -350,8 +351,8 @@
             if (res.data.state === 200) {
               this.repositoryList = [...res.data.data.repositoryList, {
                 isDefault: "Y",
-                repositoryId: "0",
-                // repositoryId: "",
+                // repositoryId: "0",
+                repositoryId: "",
                 repositoryName: "全部仓库"
               }]
             }
@@ -368,8 +369,8 @@
               let shopListLength = res.data.data.shopList.length;
               if (shopListLength > 1) {
                 this.shopList = [...res.data.data.shopList, {
-                  shopId: '0',
-                  // shopId: '',
+                  // shopId: '0',
+                  shopId: '',
                   shopName: '全部店铺'
                 }]
               }else{
