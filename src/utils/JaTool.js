@@ -10,7 +10,6 @@ export const JaTools = {
      * 打印
      */
     print(template, dataList) {
-        debugger
         let jcp = getJCP();
         let pageList = JaTools.transformation(template, dataList);
         let html = [];
