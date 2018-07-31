@@ -34,6 +34,7 @@ module.exports = {
       'base': path.resolve(__dirname, '../src/base'),
       'assets': path.resolve(__dirname, '../src/assets'),
       'components': path.resolve(__dirname, '../src/components'),
+      'layouts': path.resolve(__dirname,'../src/layouts'),
     }
   },
   resolveLoader: {

@@ -1,0 +1,157 @@
+.el-form{
+    &.el_form_01{
+        .el-form-item{
+            .el-form-item__label{
+                font-size: 16px;
+                color: #666;
+                font-weight: bold;
+                font-family: MicrosoftYaHei;
+                padding: 0;
+                padding-right: 20px;
+                padding-top: 12px;
+                padding-bottom: 12px;
+            }
+            .el-form-item__content{
+                margin-left: 140px !important;
+                // 输入框
+                .el-input{
+                    border:1px #d6d6d6 solid;
+                    border-radius: 3px;
+                    box-sizing: border-box;
+                    // 短信名称输入框
+                    &.noteName{
+                        width: 400px;
+                        >input{
+                            height: 40px;
+                        }
+                    }
+                    // 输入天数
+                    &.dayNum{
+                        width: 150px;
+                        >input{
+                            height: 40px;
+                        }
+                    }
+                    .el-input__inner{
+                        background-color: #fff;
+                        box-sizing: border-box;
+                        &::-webkit-input-placeholder{
+                            font-size: 14px;
+                            color: #d6d6d6;
+                        }
+                        &::-moz-placeholder{   /* Mozilla Firefox 19+ */
+                            font-size: 14px;
+                            color: #d6d6d6;
+                        }
+                        &:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+                            font-size: 14px;
+                            color: #d6d6d6;
+                        }
+                        &:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+                            font-size: 14px;
+                            color: #d6d6d6;
+                        }
+                    }
+                }
+                // 输入域
+                .el-textarea{
+                    width: auto;
+                    height: 250px;
+                    &.mineTextarea{
+                        >textarea{
+                            display: inline;
+                            width:574px;
+                            min-height:250px !important;
+                            overflow-x:visible;
+                            overflow-y:visible;
+                        }
+                    }
+                }
+                // 单选
+                .el-radio-group{
+                    // 发送方式
+                    &.sendMode{
+                        margin-top: 12px;
+                        >.el-radio{
+                            font-size: 14px;
+                            color: #333;
+                            display: block;
+                            margin-left: 0;
+                            &:last-of-type{
+                                margin-top: 21px;
+                            }
+                            .el-radio__input {
+                                &.is-checked{
+                                    .el-radio__inner{
+                                        background-color: #20a0ff;
+                                        border-color: #0190fe;
+                                        &:after{
+                                            transform: rotate(45deg) scaleY(1);
+                                        }
+                                    }
+                                }
+                                .el-radio__inner {
+                                    display: inline-block;
+                                    position: relative;
+                                    border: 1px solid #bfcbd9;
+                                    border-radius: 4px;
+                                    box-sizing: border-box;
+                                    width: 18px;
+                                    height: 18px;
+                                    background-color: #fff;
+                                    z-index: 1;
+                                    transition: border-color .25s cubic-bezier(.71, -.46, .29, 1.46), background-color .25s cubic-bezier(.71, -.46, .29, 1.46);
+                                    &:after {
+                                        box-sizing: content-box;
+                                        content: "";
+                                        border: 2px solid #fff;
+                                        border-left: 0;
+                                        border-top: 0;
+                                        height: 8px;
+                                        left: 5px;
+                                        position: absolute;
+                                        top: 1px;
+                                        transform: rotate(45deg) scaleY(0);
+                                        width: 4px;
+                                        transition: transform .15s cubic-bezier(.71, -.46, .88, .6) .05s;
+                                        transform-origin: center;
+                                    }
+                                }
+                            }
+                            .el-radio__label{
+                                padding-left: 8px;
+                            }
+                        }
+                    }
+                }
+                // 下拉
+                .el-select{
+                    &.mineSelect{
+                        margin-right: 20px;
+                        .el-input{
+                            width: 150px;
+                            height: 40px;
+                        }
+                    }
+                }
+                // 按钮
+                .el-button{
+                    &.mineBtn{
+                        width: 80px;
+                        height: 28px;
+                        text-align: center;
+                        padding: 0;
+                        // line-height: 28px;
+                        >span{
+                            font-size: 12px;
+                        }
+                        &.primary{
+                            width: 120px;
+                            height: 28px;
+                        }
+                    }
+                }
+            }
+        }    
+    }
+}

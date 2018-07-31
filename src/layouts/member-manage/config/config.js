@@ -208,5 +208,129 @@ module.exports = {
       countCut: 0, //小数点截取位数
       editOldType : ''
     }
+  ],
+  // 短信管理->即时短信->表格头部
+  noteManageHeader01: [{
+          id: "0",
+          text: "排序",
+      },
+      {
+          id: "1",
+          text: "模板类型",
+      },
+      {
+          id: "2",
+          text: "短信名称",
+      },
+      {
+          id: "3",
+          text: "创建人",
+      },
+    //   {
+    //       id: "4",
+    //       text: "模板状态",
+    //       active:true
+    //   },
+      {
+          id: "5",
+          text: "今日发送",
+      },
+      {
+          id: "6",
+          text: "累计发送",
+      },
+      {
+          id: "7",
+          text: "操作",
+          operation:true,
+          operationList:["icon-bianji","icon-lajitong"]
+      },
+
+  ],
+  // 短信管理->触发短信->表格头部
+  noteManageHeader02: [{
+          id: "0",
+          text: "排序",
+      },
+      {
+          id: "1",
+          text: "短信名称",
+      },
+      {
+          id: "2",
+          text: "创建人",
+      },
+      {
+          id: "3",
+          text: "模板状态",
+          active:true
+      },
+      {
+          id: "4",
+          text: "今日发送",
+      },
+      {
+          id: "5",
+          text: "累计发送",
+      },
+      {
+          id: "6",
+          text: "操作",
+          operation:true,
+          operationList:["icon-qidong","icon-bianji","icon-lajitong"]
+      },
+
+  ],
+  // 短信管理->短信日志->表格头部
+  noteManageHeader03: [{
+          id: "0",
+          text: "排序",
+      }, {
+          id: "1",
+          text: "模板类型",
+      },
+      {
+          id: "2",
+          text: "短信名称",
+      },
+      {
+          id: "3",
+          text: "短信内容",
+      },
+      {
+          id: "4",
+          text: "用户姓名",
+      },
+      {
+          id: "5",
+          text: "用户手机",
+      },
+      {
+          id: "6",
+          text: "短信剩余",
+      },
+      {
+          id: "7",
+          text: "发送状态",
+          active:true
+      },
+      {
+          id: "8",
+          text: "发送时间",
+      }
+
+  ],
+  // 短信管理->新增短信->隐藏字段
+  memberListHeader: [{
+          text: "姓名",
+          value: "name",
+          pic: true,//开启头像
+          picValue:"img" //头像字段
+      },
+      {
+          text: "电话",
+          value: "phone"
+      }
   ]
+
 }

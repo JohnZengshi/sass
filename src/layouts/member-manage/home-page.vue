@@ -4,18 +4,21 @@
     <header-nav @filterData="filterData"></header-nav>
     <div class="body-scorll-wrap">
       <member :filterOption="filterOption" :memberList="memberList"></member>
+      <push></push>
     </div>
   </div>
 </template>
 <script>
   import headerNav from './home-page/header'
   import member from './home-page/member'
+  import push from './home-page/push.vue'
   import {seekMemberHomeById} from 'Api/commonality/seek'
   import {formattingTime, xjEndTime} from 'assets/js/getTime'
   export default {
     components: {
       headerNav,
-      member
+      member,
+      push
     },
     data () {
       return {
