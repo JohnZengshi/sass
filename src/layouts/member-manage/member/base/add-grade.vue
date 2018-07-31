@@ -189,10 +189,21 @@ export default {
       let opations = {
         gradeId: parm ? parm : this.gradeId
       }
+
+      let datas = {
+        gradeName: '',
+        startScore: '',
+        gradeId: '',
+        nextGradeName: '',
+        poductList: []
+      }
+
+      this.showData = datas
+      
       seekFindGradeDetails(opations)
         .then(res => {
           if (res.data.state == 200) {
-            this.shopList = res.data.data.shopList
+            this.showData = res.data.data
           } else {
             this.$message({
               type: 'error',
