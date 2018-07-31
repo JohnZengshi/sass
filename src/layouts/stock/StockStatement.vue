@@ -262,7 +262,7 @@
               if (val.item.operateId == '0') {
                 this.$refs.stockTableBox.amendShop()
               } else {
-                this._seekShowCounterList();
+                this._seekShowCounterList(this.changeShop.shopId);
               }
               
           }
