@@ -129,7 +129,7 @@ export default {
       if (this.gradeId) { // 新增
 
       } else { // 修改
-
+        this.close()
       }
 
       if (!this.showData.gradeName) {
