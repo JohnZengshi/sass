@@ -1,8 +1,10 @@
 <template>
-    <div class="dropDown-wrap" :class="{Filtrate : propList.length > 1}">
+<!--     <div class="dropDown-wrap" :class="{Filtrate : propList.length > 1}"> -->
+    <div class="dropDown-wrap" :class="{Filtrate : true}">
         <span class="title-name" :class="optionData.titleInfo == '' ? '' : 'select'">
             {{optionData.titleInfo == '' ? titleName : optionData.titleInfo}}
-            <template v-if="propList.length > 1">
+<!--             <template v-if="propList.length > 1"> -->
+            <template>
                 <i class="iconfont icon-arrow-down drop-triangle" v-if="optionData.titleInfo ==''" title="筛选"></i>
                 <i class="el-icon-circle-close" v-else-if="(isClear == undefined ? true : isClear == true ? true : false)" title="清除" @click="clearTitleInfo"></i>
             </template>
@@ -328,7 +330,6 @@ export default {
             this.$emit("dropReturn", {item: _data, type: this.dataType})
         },
         clearTitleInfo () {
-            debugger
             this.optionData.titleInfo = '';
             //console.log('查看取消类型：'+this.dataType);
             console.log(this.dataType)

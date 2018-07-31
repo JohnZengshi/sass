@@ -281,17 +281,26 @@
 				})
 			},
 			getPrintLabelData(type, orderId, beginNum, endNum, canvas, selectedProducts, isPrint){
+<<<<<<< HEAD
                 let barcodeArr = canvas.components.filter(item => item.data.propertyCode == 'barcode2');
                 let dataList = {};
                 if (barcodeArr.length){
                     dataList.url = barcodeArr[0].data.codeUrl;
                 }
+=======
+				let datas = this.filterBarcode2(canvas)
+>>>>>>> remotes/origin/master
 				this.print.canvas = canvas
 				if(type==0){//勾选
 					this.previewTemplate(canvas, selectedProducts, isPrint);
 				}else if(type==1){//全部
+<<<<<<< HEAD
                     dataList.orderId = orderId
 					this.$store.dispatch('getPrintLabelData', dataList).then(json => {
+=======
+
+					this.$store.dispatch('getPrintLabelData', Object.assign({orderId:orderId}, datas)).then(json => {
+>>>>>>> remotes/origin/master
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)
 							//this.print.templateData = json.data;
@@ -304,7 +313,11 @@
                     dataList.beginNum = beginNum;
                     dataList.endNum = endNum;
 
+<<<<<<< HEAD
                     this.$store.dispatch('getPrintLabelData', dataList).then(json => {
+=======
+					this.$store.dispatch('getPrintLabelData',  Object.assign({orderId:orderId,beginNum:beginNum, endNum:endNum}, datas)).then(json => {
+>>>>>>> remotes/origin/master
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)
 							//this.print.templateData = json.data;
@@ -314,6 +327,18 @@
 					})
 				}
 			},
+			filterBarcode2 (canvas) {
+				let dataList = {}
+				let barcodeArr = canvas.components.filter(item => item.data.propertyCode == 'barcode2');
+        if (barcodeArr.length){
+        	for (let i of barcodeArr) {
+        		if (i.data.codeUrl) {
+							dataList.url = i.data.codeUrl
+        		}
+        	}   
+        }
+        return dataList
+			},
 			previewTemplate(canvas, selectedProducts, isPrint) {
 
 				if(selectedProducts.length > 0) {
@@ -322,16 +347,10 @@
 							productId: selectedProduct
 						}
 					});
-                    debugger
-					let barcodeArr = canvas.components.filter(item => item.data.propertyCode == 'barcode2');
 					let dataList = {
-                        productList:productList,
-
-                    }
-                    if (barcodeArr.length){
-                        dataList.url = barcodeArr[0].data.codeUrl;
-                    }
-
+					  productList:productList
+					}
+					Object.assign(dataList, this.filterBarcode2(canvas))
 					this.$store.dispatch('getPrintLabelData', dataList).then(json => {
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)
