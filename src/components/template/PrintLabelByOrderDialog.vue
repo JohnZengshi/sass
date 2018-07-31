@@ -284,6 +284,7 @@
 			},
 			//预览，是否马上打印
 			preview(isPrint) {
+			    debugger
 				if(this.templateId) {
 					if(!isPrint || this.selectedProducts.length) {
 						if(this.radio == "2") {
@@ -297,7 +298,6 @@
                         //入库标签打印
 						this.$store.dispatch('previewTemplate', this.templateId).then(json => {
 							if(json.state == 200) {
-							    debugger
 								let canvas = json.data.content
 								this.$emit('getPrintLabelData', this.radio, this.orderNum,this.value1, this.value2, JSON.parse(canvas), selectedProducts, isPrint)
 							}

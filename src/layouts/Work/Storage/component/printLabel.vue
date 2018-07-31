@@ -281,13 +281,17 @@
 				})
 			},
 			getPrintLabelData(type, orderId, beginNum, endNum, canvas, selectedProducts, isPrint){
-
+                let barcodeArr = canvas.components.filter(item => item.data.propertyCode == 'barcode2');
+                let dataList = {};
+                if (barcodeArr.length){
+                    dataList.url = barcodeArr[0].data.codeUrl;
+                }
 				this.print.canvas = canvas
 				if(type==0){//勾选
 					this.previewTemplate(canvas, selectedProducts, isPrint);
 				}else if(type==1){//全部
-
-					this.$store.dispatch('getPrintLabelData', {orderId:orderId}).then(json => {
+                    dataList.orderId = orderId
+					this.$store.dispatch('getPrintLabelData', dataList).then(json => {
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)
 							//this.print.templateData = json.data;
@@ -296,8 +300,11 @@
 						}
 					})
 				}else if(type==2){//分页
+                    dataList.orderId = orderId;
+                    dataList.beginNum = beginNum;
+                    dataList.endNum = endNum;
 
-					this.$store.dispatch('getPrintLabelData', {orderId:orderId,beginNum:beginNum, endNum:endNum}).then(json => {
+                    this.$store.dispatch('getPrintLabelData', dataList).then(json => {
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)
 							//this.print.templateData = json.data;
