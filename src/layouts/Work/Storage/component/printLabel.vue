@@ -281,13 +281,13 @@
 				})
 			},
 			getPrintLabelData(type, orderId, beginNum, endNum, canvas, selectedProducts, isPrint){
-
+				let datas = this.filterBarcode2(canvas)
 				this.print.canvas = canvas
 				if(type==0){//勾选
 					this.previewTemplate(canvas, selectedProducts, isPrint);
 				}else if(type==1){//全部
 
-					this.$store.dispatch('getPrintLabelData', {orderId:orderId}).then(json => {
+					this.$store.dispatch('getPrintLabelData', Object.assign({orderId:orderId}, datas)).then(json => {
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)
 							//this.print.templateData = json.data;
@@ -297,7 +297,7 @@
 					})
 				}else if(type==2){//分页
 
-					this.$store.dispatch('getPrintLabelData', {orderId:orderId,beginNum:beginNum, endNum:endNum}).then(json => {
+					this.$store.dispatch('getPrintLabelData',  Object.assign({orderId:orderId,beginNum:beginNum, endNum:endNum}, datas)).then(json => {
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)
 							//this.print.templateData = json.data;
@@ -307,6 +307,18 @@
 					})
 				}
 			},
+			filterBarcode2 (canvas) {
+				let dataList = {}
+				let barcodeArr = canvas.components.filter(item => item.data.propertyCode == 'barcode2');
+        if (barcodeArr.length){
+        	for (let i of barcodeArr) {
+        		if (i.data.codeUrl) {
+							dataList.url = i.data.codeUrl
+        		}
+        	}   
+        }
+        return dataList
+			},
 			previewTemplate(canvas, selectedProducts, isPrint) {
 
 				if(selectedProducts.length > 0) {
@@ -315,16 +327,10 @@
 							productId: selectedProduct
 						}
 					});
-                    debugger
-					let barcodeArr = canvas.components.filter(item => item.data.propertyCode == 'barcode2');
 					let dataList = {
-                        productList:productList,
-
-                    }
-                    if (barcodeArr.length){
-                        dataList.url = barcodeArr[0].data.codeUrl;
-                    }
-
+					  productList:productList
+					}
+					Object.assign(dataList, this.filterBarcode2(canvas))
 					this.$store.dispatch('getPrintLabelData', dataList).then(json => {
 						if(json.state == 200) {
 							this.$set(this.print, 'templateData', json.data)
