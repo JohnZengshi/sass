@@ -19,7 +19,7 @@
           </div>
           <div class="input-wrap">
             <span class="item-label"><i class="mandatory-icon">*</i>下一级别</span>
-            <down-menu :isSolid="true" :titleInfo="showData.nextGradeName ? showData.nextGradeName : '请选择'" :showList="shopList" :nameKey="'gradeName'" @changeData="change" @clearInfo="clear"></down-menu>
+            <down-menu :isSolid="true" :titleInfo="showData.nextGradeName ? showData.nextGradeName : '请选择'" :showList="gradeList" :nameKey="'gradeName'" @changeData="change" @clearInfo="clear"></down-menu>
           </div>
           <div class="input-wrap">
             <span class="item-label">设置最低折扣</span>
@@ -36,7 +36,7 @@
   </div>
 </template>
 <script>
-import { seekGetShopListByCo } from 'Api/commonality/seek'
+import { seekGetShopListByCo, seekFindGradeList } from 'Api/commonality/seek'
 import downMenu from 'base/menu/new-down-menu'
 import sellDiscount from './sell-discount'
 import memberDialog from '@/layouts/Work/ShopSetting/dialog/tplGoldDialog'
@@ -48,6 +48,7 @@ export default {
   },
   data() {
     return {
+      templateId: this.$route.query.templateId,
       showData: {
         gradeName: '',
         startScore: '',
@@ -58,6 +59,7 @@ export default {
       issellDiscountBox: false,
       checkList: [],
       shopList: [],
+      gradeList: [], // 等级列表
       name: '',
       isDialog: false,
       // 弹框数据
@@ -69,6 +71,9 @@ export default {
         smallDataList: []
       },
     }
+  },
+  created () {
+    this._seekFindGradeList()
   },
   methods: {
     setClass(parm) {
@@ -100,8 +105,9 @@ export default {
       this.issellDiscountBox = true
       // this.$refs.sellDiscountBox.open()
     },
-    change() {
-
+    change(parm) {
+      this.showData.gradeId = parm.gradeId
+      this.showData.nextGradeName = parm.gradeName
     },
     clear() {
 
@@ -145,7 +151,28 @@ export default {
         opations.list.push(datas)
       }
     },
-    _seekGetShopListByCo() {
+    _seekFindGradeList () {
+      let opations = {
+        templateId: this.templateId,
+      }
+      let datas = [{
+        gradeId: 'gradeId',
+        gradeName: 'gradeName'
+      }]
+      this.gradeList = datas
+      seekFindGradeList(opations)
+        .then(res => {
+          if (res.data.state == 200) {
+            this.gradeList = res.data.data.list
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            })
+          }
+        })
+    },
+    _seekGetShopListByCo () {
       let opations = {
         page: 1,
         pageSize: '0',
