@@ -1120,13 +1120,20 @@ export default {
       let options = {
         companyId: command.item.companyId
       };
-      this.changeActive = command.index;
 
       operateSwitchCompany(options).then(
         res => {
-          this.$router.push({ path: "/mainIndex" });
-          sessionStorage.setItem("companyId", command.item.companyId);
-          location.reload();
+          if (res.data.state == 200) {
+            this.changeActive = command.index;
+            this.$router.push({ path: "/mainIndex" });
+            sessionStorage.setItem("companyId", command.item.companyId);
+            location.reload();
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
+          }
         },
         res => {}
       );
