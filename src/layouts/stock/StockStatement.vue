@@ -38,6 +38,7 @@
           </li>
           <li>
             <DropDownMenu
+              ref="counterBox"
               v-if="!takeUserDisabled"
               titleName="柜组"
               dataType="柜组"
@@ -91,7 +92,8 @@
       ></OldProduct> 
     </div>
     
-    <StockTable 
+    <StockTable
+      ref="stockTableBox"
       class="stock-table-wrap"
       :beginTime="beginTime"
       :searchDate="_formattingTime(beginTime)"
@@ -252,6 +254,8 @@
           }else{
               this.changeShop.shopId = val.item.operateId;
               this.changeShop.shopName = val.item.operateName;
+              this.changeCounter.counterId = ''
+              this.changeCounter.counterName = ''
               this.takeUserDisabled = false;
               this._seekShowCounterList(val.item.operateId);
           }
@@ -375,6 +379,10 @@
         seekShowCounterList(options)
           .then(res => {
             this.counterList = res.data.data.counterList
+            if (res.data.data.counterList.length > 1) {
+              this.$refs.counterBox.clearTitleInfo()
+              this.$refs.stockTableBox.amendShop()
+            }
           })
       },
       clearRepository () {

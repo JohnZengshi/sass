@@ -371,19 +371,22 @@ export default {
         this.dataGridOptions.page = 1;
         this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       }
+      debugger
       this.send();
     },
-    "changeShop.shopId" (val) {
-      if (this.changeShop.shopId) {
-        this.dataGridOptions.shopId = val;
-      } else {
-        this.dataGridOptions.shopId = "";
-        this.dataGridOptions.counterId = "";
-      }
-      this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
-      this.send();
-    },
+    // "changeShop.shopId" (val) {
+    //   if (this.changeShop.shopId) {
+    //     this.dataGridOptions.shopId = val;
+    //   } else {
+    //     this.dataGridOptions.shopId = "";
+    //     this.dataGridOptions.counterId = "";
+    //   }
+    //   this.dataGridOptions.page = 1;
+    //   this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
+    //   debugger
+    //   this.send();
+    //   console.log(this.changeCounter.counterId)
+    // },
     "changeCounter.counterId" (val) {
       this.dataGridOptions.counterId = val;
       this.dataGridOptions.page = 1;
@@ -397,6 +400,7 @@ export default {
       this.dataGridOptions.page = 1;
       this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       if (this.searchDate) {
+        debugger
         this.send();
       }
     },
@@ -406,6 +410,7 @@ export default {
       } else {
         this.dataGridOptions.sortFlag = 0;
       }
+      debugger
       this.send();
     },
     "changeRepository.repositoryName"(val){
@@ -453,6 +458,17 @@ export default {
     this.settingUserRole();
   },
   methods: {
+    amendShop () {
+      if (this.changeShop.shopId) {
+        this.dataGridOptions.shopId = this.changeShop.shopId;
+      } else {
+        this.dataGridOptions.shopId = "";
+        this.dataGridOptions.counterId = "";
+      }
+      this.dataGridOptions.page = 1;
+      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
+      this.send();
+    },
     filterHeaderComplate(parm) {
       this.dataGridOptions.page = 1;
       this.sortList = []
@@ -467,6 +483,7 @@ export default {
       if (parm.noRefresh) {
         return
       }
+      debugger
       this.send()
     },
     //成本控制
@@ -509,6 +526,7 @@ export default {
       } else {
         this.dataGridOptions.sortFlag = "";
       }
+      debugger
       this.send()
     },
     choseMenu(type) {
@@ -536,6 +554,7 @@ export default {
     sortListAct(val) {
       // 列表排序
       this.dataGridOptions.sortList = val;
+      debugger
       this.send();
       this.sortList = [];
       val.forEach((item, index) => {
@@ -723,6 +742,7 @@ export default {
         this.dataGridOptions.type == 4;
         this.setReportType(4);
       } else {
+        debugger
         this.send();
       }
       this.customDialog = false;
@@ -765,6 +785,7 @@ export default {
       this.dataGridOptions.productClass = val;
       //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
       this.loading = true;
+      debugger
       this.send();
     },
     //收货店铺
@@ -853,6 +874,7 @@ export default {
         default:
           break;
       }
+      debugger
       this.send()
     },
     //产品类别
@@ -873,6 +895,7 @@ export default {
         });
       }
 
+      debugger
       this.send();
     },
     tabs(index, type, evt) {
@@ -1087,6 +1110,7 @@ export default {
        * 20180601 如果重复点击同一筛选条件不重复请求
        */
       if (!this.ajaxStatus) {
+        debugger
         this.send();
       }
     },
@@ -1096,6 +1120,7 @@ export default {
     searchWord() {
       this.dataGridOptions.page = 1;
       this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
+      debugger
       this.send();
     },
     // 懒加载
@@ -1153,6 +1178,7 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
+      debugger
       this.send();
     });
   },
