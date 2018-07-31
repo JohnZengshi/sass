@@ -119,21 +119,21 @@ export default {
     },
     confirm() {
 
-      if (this.showData.gradeName) {
+      if (!this.showData.gradeName) {
         this.$message({
           type: 'error',
           message: '请输入级别名称'
         })
       }
 
-      if (this.showData.startScore) {
+      if (!this.showData.startScore) {
         this.$message({
           type: 'error',
           message: '请输入起始积分'
         })
       }
 
-      if (this.showData.gradeId) {
+      if (!this.showData.gradeId) {
         this.$message({
           type: 'error',
           message: '请选择下一级别'
