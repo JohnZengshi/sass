@@ -39,6 +39,7 @@
 </template>
 <script>
 import { seekGetShopListByCo, seekFindGradeList, seekFindGradeDetails } from 'Api/commonality/seek'
+import { operateAddGrade } from 'Api/commonality/operate'
 import downMenu from 'base/menu/new-down-menu'
 import sellDiscount from './sell-discount'
 import memberDialog from '@/layouts/Work/ShopSetting/dialog/tplGoldDialog'
@@ -155,7 +156,7 @@ export default {
 
       let opations = {
         name: this.name,
-        list: []
+        poductList: []
       }
       for (let i of checkList) {
         let datas = {
@@ -163,6 +164,10 @@ export default {
         }
         opations.list.push(datas)
       }
+      operateAddGrade()
+        .then(res => {
+          
+        })
     },
     _seekFindGradeList () {
       let opations = {

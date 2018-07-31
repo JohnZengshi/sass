@@ -924,3 +924,8 @@ export const seekFindGradeDetails = function (parm) {
   let URL = "/v1/groupTemplate/findGradeDetails";
   return apiCall(parm, URL);
 }
+//销售折扣设置列表
+export const seekFindPoductList = function (parm) {
+  let URL = "/v1/groupTemplate/findPoductList";
+  return apiCall(parm, URL);
+}

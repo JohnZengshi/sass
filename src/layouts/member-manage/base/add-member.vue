@@ -649,7 +649,7 @@ export default {
     },
     // 新增会员
     _operateAddMember() {
-      if (this.dataInfo.username) {
+      if (!this.dataInfo.username) {
         this.$message({
           type: 'error',
           message: '请输入姓名'
@@ -657,7 +657,7 @@ export default {
         return
       }
 
-      if (this.dataInfo.phone) {
+      if (!this.dataInfo.phone) {
         this.$message({
           type: 'error',
           message: '请输入手机号'
@@ -665,7 +665,7 @@ export default {
         return
       }
 
-      if (this.dataInfo.sex) {
+      if (!this.dataInfo.sex) {
         this.$message({
           type: 'error',
           message: '请选择性别'
@@ -675,7 +675,7 @@ export default {
 
       let options = _.cloneDeep(this.dataInfo)
       options.memorial = formattingTime(options.memorial)
-      operateAddMember(options)
+      operateAddMember(Object.assign({}, options, {shopId: this.shopId}))
         .then(res => {
 
         })
