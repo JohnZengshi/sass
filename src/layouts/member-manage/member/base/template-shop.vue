@@ -33,21 +33,21 @@
                 </el-checkbox-group>
             </ul>
             <h5>
-        会员等级默认模板
-        <div class="xj-btn-defult right-btn" @click="openGrade">
-          +级别
-        </div>
-      </h5>
+                会员等级默认模板
+                <div class="xj-btn-defult right-btn" @click="openGrade">
+                +级别
+                </div>
+            </h5>
             <ul class="grade-list-wrap">
-                <li v-for="(item, index) in gradeList">
+                <li v-for="(item, index) in showList.gradeList">
                     <span class="item-label">{{item.gradeName}}</span>
                     <span>积分达到{{item.startScore}}分，升级为{{item.gradeName}}</span>
-                    <i class="iconfont icon-bianji"></i>
+                    <i class="iconfont icon-bianji" @click="openGrade(item)"></i>
                 </li>
             </ul>
         </div>
         <!-- 会员积分配置 -->
-        <memberSetting></memberSetting>
+<!--         <memberSetting></memberSetting> -->
         <add-grade ref="addGradeBox"></add-grade>
     </div>
 </template>
@@ -107,8 +107,8 @@ export default {
     },
     methods: {
         openGrade(parm) {
-            if (parm.id) {
-                this.$refs.addGradeBox.open(parm)
+            if (parm.gradeId) {
+                this.$refs.addGradeBox.open(parm.gradeId)
             } else {
                 this.$refs.addGradeBox.open()
             }
@@ -415,11 +415,12 @@ export default {
                 font-size: 14px;
                 line-height: 14px;
                 margin-bottom: 20px;
-                padding-left: 8px;
+                padding-left: 12px;
                 &:before {
                     content: "";
                     display: inline-block;
                     position: absolute;
+                    left: 0;
                     top: 0;
                     bottom: 0;
                     margin: auto;

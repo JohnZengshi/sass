@@ -1,7 +1,9 @@
 <!-- 新增店铺组合 -->
 <template>
   <div>
+    <!-- 批量修改 -->
     <memberDialog v-show="dialog.dialogVisible" :dialog="dialog" @closeDialog="closeDialog" @dialogType="dialogType" @dialogCallback="dialogCallback"></memberDialog>
+
     <el-dialog v-show="!dialog.dialogVisible" top="10%" :visible.sync="isDialog" class="new-popup-dialog">
       <div class="m-m-add-group-main">
         <div class="p-close-icon" @click="isDialog = false">
@@ -36,7 +38,7 @@
   </div>
 </template>
 <script>
-import { seekGetShopListByCo, seekFindGradeList } from 'Api/commonality/seek'
+import { seekGetShopListByCo, seekFindGradeList, seekFindGradeDetails } from 'Api/commonality/seek'
 import downMenu from 'base/menu/new-down-menu'
 import sellDiscount from './sell-discount'
 import memberDialog from '@/layouts/Work/ShopSetting/dialog/tplGoldDialog'
@@ -49,6 +51,7 @@ export default {
   data() {
     return {
       templateId: this.$route.query.templateId,
+      gradeId: '', // 会员等级id
       showData: {
         gradeName: '',
         startScore: '',
@@ -89,6 +92,10 @@ export default {
       this.$refs.sellDiscountBox.dialogCallback(parm)
     },
     open(parm) {
+      this.gradeId = parm
+      if (parm) {
+        this._seekFindGradeDetails(parm)
+      }
       this.checkList = []
       this.isDialog = true
       // if (this.$refs.sellDiscountBox) {
@@ -118,6 +125,12 @@ export default {
       this.isDialog = false
     },
     confirm() {
+
+      if (this.gradeId) { // 新增
+
+      } else { // 修改
+
+      }
 
       if (!this.showData.gradeName) {
         this.$message({
@@ -164,6 +177,22 @@ export default {
         .then(res => {
           if (res.data.state == 200) {
             this.gradeList = res.data.data.list
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            })
+          }
+        })
+    },
+    _seekFindGradeDetails (parm) {
+      let opations = {
+        gradeId: parm ? parm : this.gradeId
+      }
+      seekFindGradeDetails(opations)
+        .then(res => {
+          if (res.data.state == 200) {
+            this.shopList = res.data.data.shopList
           } else {
             this.$message({
               type: 'error',

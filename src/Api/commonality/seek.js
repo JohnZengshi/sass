@@ -914,8 +914,13 @@ export const seekFindShopList = function (parm) {
   let URL = "/v1/groupTemplate/findShopList";
   return apiCall(parm, URL);
 }
-// 会员店铺列表
+// 会员等级列表
 export const seekFindGradeList = function (parm) {
   let URL = "/v1/groupTemplate/findGradeList";
+  return apiCall(parm, URL);
+}
+// 会员等级详情
+export const seekFindGradeDetails = function (parm) {
+  let URL = "/v1/groupTemplate/findGradeDetails";
   return apiCall(parm, URL);
 }
