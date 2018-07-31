@@ -223,11 +223,12 @@
           this.changeCounter.counterId = '';
           this.changeCounter.counterName = '';
         } else if (val.type == "店铺") {
-          this.changeShop.shopId = ''
+          this.changeShop.shopId = '0'
           this.changeShop.shopName = ''
           this.changeCounter.counterId = ''
           this.changeCounter.counterName = ''
           this.takeUserDisabled = true;
+          this.$refs.stockTableBox.amendShop()
           
         } else if (val.type == "库位") {
           this.changeRepository.repositoryId = ''
@@ -237,6 +238,7 @@
         this._statisticalIndex();
       },
       dropReturn (val) {
+        debugger
         if (val.type == "柜组") {
           this.changeCounter.counterId = val.item.operateId
           this.changeCounter.counterName = val.item.operateName
@@ -257,7 +259,12 @@
               this.changeCounter.counterId = ''
               this.changeCounter.counterName = ''
               this.takeUserDisabled = false;
-              this._seekShowCounterList(val.item.operateId);
+              if (val.item.operateId == '0') {
+                this.$refs.stockTableBox.amendShop()
+              } else {
+                this._seekShowCounterList();
+              }
+              
           }
          
           //this._statisticalIndex();
