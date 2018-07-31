@@ -620,3 +620,8 @@ export const operateUpdateGrade = function (parm) {
   let URL = "/v1/groupTemplate/updateGrade";
   return apiCall(parm, URL);
 }
+// 添加会员等级
+export const operateAddGrade = function (parm) {
+  let URL = "/v1/groupTemplate/addGrade";
+  return apiCall(parm, URL);
+}

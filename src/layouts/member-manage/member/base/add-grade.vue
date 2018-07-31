@@ -125,13 +125,13 @@ export default {
       this.isDialog = false
     },
     confirm() {
-
       if (this.gradeId) { // 新增
-
+        this._operateAddGrade()
       } else { // 修改
         this.close()
       }
-
+    },
+    _operateAddGrade () {
       if (!this.showData.gradeName) {
         this.$message({
           type: 'error',
