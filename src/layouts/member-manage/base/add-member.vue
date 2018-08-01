@@ -177,7 +177,7 @@
   </el-dialog>
 </template>
 <script>
-import { operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention, operateAddMember } from 'Api/commonality/operate'
+import { operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention, operateMemberCreatee } from 'Api/commonality/operate'
 import { seekGetShopUserList,seekFindMemberGradeList } from 'Api/commonality/seek'
 import aloneDropDownColums from 'base/menu/alone-drop-down-colums'
 import newDownMenu from 'base/menu/new-down-menu'
@@ -320,7 +320,7 @@ export default {
       this.dataInfo.typeName = parm.name
     },
     confirm() {
-      this._operateAddMember()
+      this._operateMemberCreatee()
     },
     cancel() {
 
@@ -637,18 +637,8 @@ export default {
       //   }
       // })
     },
-    // 格式化获取的时间
-    formatData(parm) {
-
-      if (parm) {
-        let year = parm.substring(0, 4)
-        let month = parm.substring(4, 6)
-        let data = parm.substring(6, 8)
-        return year + '-' + month + '-' + data
-      }
-    },
     // 新增会员
-    _operateAddMember() {
+    _operateMemberCreatee() {
       if (!this.dataInfo.username) {
         this.$message({
           type: 'error',
@@ -675,9 +665,9 @@ export default {
 
       let options = _.cloneDeep(this.dataInfo)
       options.memorial = formattingTime(options.memorial)
-      operateAddMember(Object.assign({}, options, {shopId: this.shopId}))
+      operateMemberCreatee(Object.assign({}, options, {shopId: this.shopId}))
         .then(res => {
-
+          this.isDialog = false
         })
     },
     /* ----查询接口---- */

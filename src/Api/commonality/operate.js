@@ -625,3 +625,7 @@ export const operateAddGrade = function (parm) {
   let URL = "/v1/groupTemplate/addGrade";
   return apiCall(parm, URL);
 }
+export const operateMemberCreatee = function (parm) {
+  let URL = "/v1/groupTemplate/memberCreate";
+  return apiCall(parm, URL);
+}
