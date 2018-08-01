@@ -1,5 +1,5 @@
 <template>
-  <el-dialog top="7%" :visible.sync="isDialog" class="xj-input-dialog">
+  <el-dialog top="7%" :visible.sync="isDialog" class="xj-input-dialog-bg">
     <div class="m-m-add-member-main" :class="{'m-m-add-member-isShowMore-box': isShowMore}">
       <div class="p-close-icon" @click="isDialog = false">
         <i class="el-dialog__close el-icon el-icon-close"></i>
@@ -8,37 +8,82 @@
         <h3>添加会员</h3>
         <div class="scroll-box">
           <div>
-            <div class="member-edit-box">
-              <h4>基本信息</h4>
-              <div class="member-edit-info">
-                <div class="member-item">
-                  <span class="item-label"><i class="mandatory-icon">*</i>性名</span>
-                  <input placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.username" @blur="amendData">
-                </div>
+            
+            <div class="member-edit-box header-data">
 
-                <div class="member-item">
-                  <span class="item-label">备注名</span>
-                  <input maxlength="6" placeholder="仅内部人员可查看" :disabled="!isShopMan" v-model="dataInfo.name" @blur="amendData">
-                </div>
+              <div class="data-left">
+                <UploadingImg class="header-img-box" :type="1" @cosImg="cosHeadImg">
+                  <img v-if="dataInfo.avatarUrl" class="header-img" :src="dataInfo.avatarUrl" alt="">
+                  <img class="header-img" src="~static/img/default-logo.png" alt="">
+                </UploadingImg>
+              </div>
 
-                <div class="member-item">
-                  <span class="item-label"><i class="mandatory-icon">*</i>手机号</span>
-                  <input placeholder="请输入" type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="amendData">
-                </div>
+              <div class="data-right">
+                <div class="member-edit-box">
+                  <div class="member-edit-info">
 
-                <div class="member-item"></div>
+                    <div class="member-item">
+                      <span class="item-label"><i class="mandatory-icon">*</i>手机号</span>
+                      <input placeholder="请输入" type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="amendData">
+                    </div>
 
-                <div class="member-item">
-                  <span class="item-label"><i class="mandatory-icon">*</i>性别</span>
-                  <div class="right-wrap radio-20">
-                    <el-radio-group style="margin-top: 7px;" v-model="dataInfo.sex" @change="setSex" :disabled="!isShopMan">
-                      <el-radio :label="'1'">男</el-radio>
-                      <el-radio :label="'2'">女</el-radio>
-                    </el-radio-group>
+                    <div class="member-item">
+                      <span class="item-label"><i class="mandatory-icon">*</i>性别</span>
+                      <div class="right-wrap radio-20">
+                        <el-radio-group style="margin-top: 7px;" v-model="dataInfo.sex" @change="setSex" :disabled="!isShopMan">
+                          <el-radio :label="'1'">男</el-radio>
+                          <el-radio :label="'2'">女</el-radio>
+                        </el-radio-group>
+                      </div>
+                    </div>
+
+                    <div class="member-item">
+                      <span class="item-label"><i class="mandatory-icon">*</i>性名</span>
+                      <input placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.username" @blur="amendData">
+                    </div>
+
+                    <div class="member-item">
+                      <span class="item-label">备注名</span>
+                      <input maxlength="6" placeholder="仅内部人员可查看" :disabled="!isShopMan" v-model="dataInfo.name" @blur="amendData">
+                    </div>
+
+                    <div class="member-item">
+                      <span class="item-label">会员等级</span>
+                      <div class="right-wrap">
+                        <newDownMenu
+                          class="header-new-down-menu-box"
+                          :titleInfo="dataInfo.gradeName ? dataInfo.gradeName : '选择会员等级'"
+                          :showList="gradeList"
+                          :noClear="true"
+                          :keep="true"
+                          :nameKey="'gradeName'"
+                          @changeData="choseGrade"
+                        ></newDownMenu>
+                      </div>
+                    </div>
+
+                    <div class="member-item">
+                      <span class="item-label">积分</span>
+                      <input placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.score" @blur="amendData">
+                    </div>
+
+                    <div class="member-item">
+                      <span class="item-label">负责人</span>
+                      <div class="right-wrap">
+                        <alone-drop-down-colums class="chose-user-box" ref="stateWrap" :propsList="userList" titleData="负责人" @dataBack="choseUser"></alone-drop-down-colums>
+                      </div>
+                    </div>
+                    
+
                   </div>
                 </div>
+              </div>
+            </div>
+            
 
-                <div class="member-item"></div>
+            <div class="member-edit-box">
+              <h4>其它信息</h4>
+              <div class="member-edit-info">
 
                 <div class="member-item">
                   <span class="item-label">公历生日</span>
@@ -51,50 +96,21 @@
                   <el-date-picker v-model="dataInfo.birthday" type="date" placeholder="选择日期" :disabled="!isShopMan" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" @change="setBirthday">
                   </el-date-picker>
                 </div>
-                
-                <div class="member-item">
-                  <span class="item-label">负责人</span>
-                  <div class="right-wrap">
-                    <alone-drop-down-colums class="chose-user-box" ref="stateWrap" :propsList="userList" titleData="负责人" @dataBack="choseUser"></alone-drop-down-colums>
-                  </div>
-                </div>
 
                 <div class="member-item">
-                  <span class="item-label">初始积分</span>
-                  <input placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.username" @blur="amendData">
+                  <span class="item-label">邮箱</span>
+                  <input type="Number" placeholder="请输入" :disabled="!isShopMan" v-model="dataInfo.email" @blur="amendData">
                 </div>
 
-              </div>
-            </div>
-            <div class="more-tit-wrap">
-              <span class="open-more" @click="isShowMore = !isShowMore">填写更多信息<i class="iconfont icon-arrow-down"></i></span>
-            </div>
-            <div v-show="isShowMore" class="member-edit-box">
-              <h4>其它信息</h4>
-              <div class="member-edit-info">
-                <div class="member-item">
-                  <span class="item-label">会员等级</span>
-                  <div class="right-wrap">
-                    <newDownMenu
-                      class="new-down-menu-box"
-                      :titleInfo="dataInfo.gradeName ? dataInfo.gradeName : '选择会员等级'"
-                      :showList="gradeList"
-                      :noClear="true"
-                      :keep="true"
-                      :nameKey="'gradeName'"
-                      @changeData="choseGrade"
-                    ></newDownMenu>
-                    <!-- <input @click="isGrade = !isGrade" v-model="dataInfo.gradeName" class="inp" type="text" placeholder="选择会员等级">
-                    <ul class="click-select-wrap" :class="{active: isGrade}">
-                      <li @click="choseGrade(item)" :class="{active:dataInfo.grade == item.id}" v-for="(item, index) in gradeList" :key="index">{{item.name}}</li>
-                    </ul> -->
-                  </div>
-                </div>
                 <div class="member-item">
                   <span class="item-label">纪念日</span>
                   <el-date-picker v-model="dataInfo.memorial" type="date" placeholder="选择日期" :disabled="!isShopMan" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" @change="setBirthday">
                   </el-date-picker>
                 </div>
+
+
+
+
                 <div class="member-item">
                   <span class="item-label">行业</span>
                   <div class="right-wrap">
@@ -106,7 +122,7 @@
                   <input placeholder="请输入" type="Number" :disabled="!isShopMan" v-model="dataInfo.weixin" @blur="amendData">
                 </div>
 
-                <div class="member-item" v-if="dataInfo.createTime">
+                <div class="member-item">
                   <span class="item-label">创建时间</span>
                   <div class="right-wrap">
                     <span class="show-tit">
@@ -114,7 +130,7 @@
                     </span>
                   </div>
                 </div>
-                <div class="member-item" v-if="dataInfo.totalMoney">
+                <div class="member-item">
                   <span class="item-label">订单总额</span>
                   <div class="right-wrap">
                     <span class="show-tit">
@@ -124,9 +140,13 @@
                 </div>
 
                 <div class="member-item">
-                  <span class="item-label">邮箱</span>
-                  <input type="Number" placeholder="请输入" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="amendData">
+                  <span class="item-label">省市区</span>
+                  <div class="right-wrap">
+                    <input v-model="PCAData" @click.stop="isShowPCA = !isShowPCA" class="inp" type="text" placeholder="选择省市区">
+                    <AddressSelect style="left: 0;" v-if="isShowPCA" @addressReturn="SelectArea"></AddressSelect>
+                  </div>
                 </div>
+
                 <div class="member-item">
                   <span class="item-label">名片上传</span>
                   <div class="right-wrap">
@@ -137,13 +157,7 @@
                     </UploadingImg>
                   </div>
                 </div>
-                <div class="member-item">
-                  <span class="item-label">省市区</span>
-                  <div class="right-wrap">
-                    <input v-model="PCAData" @click.stop="isShowPCA = !isShowPCA" class="inp" type="text" placeholder="选择省市区">
-                    <AddressSelect style="left: 0;" v-if="isShowPCA" @addressReturn="SelectArea"></AddressSelect>
-                  </div>
-                </div>
+
                 <div class="member-item">
                   <span class="item-label">详细地址</span>
                   <input :disabled="!isShopMan" v-model="dataInfo.address" @blur="amendData">
@@ -193,14 +207,6 @@ export default {
     AddressSelect
   },
   props: ['shopId'],
-  watch: {
-    isShowMore () {
-      $(".scroll-box").mCustomScrollbar({
-        theme: "minimal-dark",
-        scrollInertia: 100, //滚动条移动速度，数值越大滚动越慢
-      })
-    }
-  },
   data() {
     return {
       isShowMore: false,
@@ -209,6 +215,8 @@ export default {
       isShowPCA: false,
       dataInfo: {
         shopId: '',
+        score: '',
+        avatarUrl: '',
         username: '',
         phone: '',
         name: '',
@@ -261,7 +269,7 @@ export default {
           name: '222'
         },
         {
-          id: '110',
+          id: '120',
           name: '789'
         },
         {
@@ -276,14 +284,14 @@ export default {
       userList: []
     }
   },
-  mounted() {
-    this.$nextTick(() => {
-      $(".scroll-box").mCustomScrollbar({
-        theme: "minimal-dark",
-        scrollInertia: 100, //滚动条移动速度，数值越大滚动越慢
-      })
-    })
-  },
+  // mounted() {
+  //   this.$nextTick(() => {
+  //     $(".scroll-box").mCustomScrollbar({
+  //       theme: "minimal-dark",
+  //       scrollInertia: 100, //滚动条移动速度，数值越大滚动越慢
+  //     })
+  //   })
+  // },
   methods: {
     SelectArea(val) { // 省市区
       this.dataInfo.provinceId = val.provId
@@ -309,6 +317,12 @@ export default {
       this.isDialog = true
       this._seekGetShopUserList()
       this._seekFindMemberGradeList()
+      this.$nextTick(() => {
+        $(".scroll-box").mCustomScrollbar({
+          theme: "minimal-dark",
+          scrollInertia: 100, //滚动条移动速度，数值越大滚动越慢
+        })
+      })
     },
     choseGrade(parm) {
       this.dataInfo.grade = parm.gradeId
@@ -320,6 +334,7 @@ export default {
       this.dataInfo.typeName = parm.name
     },
     confirm() {
+      debugger
       this._operateMemberCreatee()
     },
     cancel() {
@@ -701,7 +716,7 @@ export default {
           } else {
             this.$message({
               type: 'error',
-              message: '请输入手机号'
+              message: res.data.msg
             })
           }
         })
@@ -714,25 +729,18 @@ export default {
 .m-m-add-member-main {
   height: 100%;
   width: 700px;
-  height: 539px;
   background-color: #fff;
   border-radius: 5px;
   padding: 20px 30px;
   position: relative;
-  &.m-m-add-member-isShowMore-box{
-    height: 730px;
-    .add-member-body {
-      height: 660px;
-      .scroll-box {
-        height: 610px;
-      }
-    }
-  }
+  // &.m-m-add-member-isShowMore-box{
+  //   height: 730px;
+  // }
   .mandatory-icon {
     color: red;
   }
   .add-member-body {
-    height: 466px;
+    height: 660px;
     >h3 {
       line-height: 1;
       font-size: 16px;
@@ -741,7 +749,9 @@ export default {
       color: #333;
     }
     .scroll-box {
-      height: 430px;
+      height: 610px;
+      width: 100%;
+      white-space: nowrap;
     }
   }
   .p-close-icon {
@@ -865,7 +875,7 @@ export default {
           }
           .chose-user-box {
             border-radius: 3px;
-            width: 170px;
+            width: 120px;
             padding-left: 10px;
             border: 1px solid #dedede;
             margin: 0;
@@ -1087,6 +1097,61 @@ export default {
     }
   }
 
+  .header-data{
+    height: 180px;
+    display: flex;
+    border-radius: 5px;
+    background-color: #EEF7FF;
+    // >.data-left, >.data-right{
+    //   float: left;
+    // }
+    >.data-left{
+      position: relative;
+      width: 180px;
+      height: 100%;
+      .header-img-box{
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        height: 120px;
+        width: 120px;
+        .header-img{
+          height: 120px;
+          width: 120px;
+        }
+      }
+    }
+  >.data-right{
+      position: relative;
+      width: 180px;
+      height: 100%;
+      flex: 1;
+      padding: 15px 0;
+      >.member-edit-box{
+        .member-edit-info{
+          .member-item{
+            margin-bottom: 10px;
+            .item-label{
+              width: 70px;
+            }
+            input{
+              width: 120px;
+            }
+            .header-new-down-menu-box {
+              width: 120px;
+              .title-name{
+                background-color: transparent;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  
   .remark {
     height: 135px;
     padding-top: 30px;
