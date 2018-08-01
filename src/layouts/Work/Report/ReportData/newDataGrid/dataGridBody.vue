@@ -144,10 +144,12 @@ export default {
 	
 	watch:{
 		'dataGridStorage':function(){
-			this.tempArray = []
-			this.cheackData()
-			this.storageFormatDate()
-			this.tabCellHeight()
+			if(Boolean(this.dataGridStorage.detailList)){  //不判断会报错
+				this.tempArray = []
+				this.cheackData()
+				this.storageFormatDate()
+				this.tabCellHeight()
+			}
 		},
 	},
 	mounted () {
