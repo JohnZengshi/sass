@@ -347,6 +347,11 @@
 					 * 3、修改副石单价同步更新副石额
 					 * 4、修改副石计价方式同步更新副石额 
 					 */
+					// if(tab.type === 'deputyCount' ||
+					// 	tab.type === 'deputyWeight' ||
+					// 	tab.type === 'deputyUnitPrice' ||
+					// 	tab.type === 'deputyCalcMethod'
+					// ) 
 					if(tab.type === 'deputyCount' ||
 						tab.type === 'deputyWeight' ||
 						tab.type === 'deputyUnitPrice' ||
@@ -364,6 +369,12 @@
 								deputyPrice: item['deputyPrice'],
 								productId: productId
 							})
+						} else if (tab.type === 'deputyWeight') {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
+							tempArray.push({
+								deputyPrice: item['deputyPrice'],
+								productId: productId
+							})
 						} else {
 							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(2)
 							tempArray.push({
@@ -375,6 +386,7 @@
 
 					// 修改副石重同步更新总件重
 					if(tab.type === 'deputyWeight') {
+						debugger
 						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
 						tempArray.push({
 							totalWeight: item['totalWeight'],
@@ -410,6 +422,12 @@
 							})
 						} else if (tab.type === 'mainCalcMethod') {
 							this.dgDataList[fIndex][tab.type] = this.dgDataList[fIndex][tab.type]
+							tempArray.push({
+								mainPrice: item['mainPrice'],
+								productId: productId
+							})
+						} else if (tab.type === 'mainWeight') {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
 							tempArray.push({
 								mainPrice: item['mainPrice'],
 								productId: productId
