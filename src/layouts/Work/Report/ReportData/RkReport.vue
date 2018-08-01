@@ -10,24 +10,20 @@
           <router-link tag="span" to="/work/report/" class="path_crumbs">报表</router-link> > <span class="txt">入库</span>
         </div>
         <div class="Rp_selected_container">
-          <HeaderDropDownMenu class="selected_dropdown" titleName="入库库位" dataType="库位" :propList="repositoryList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </HeaderDropDownMenu>
-
-<!--           <span class="spaceMark">|</span>
-          <Cascade :propList="productCategory" titleName="产品类别" @clear="callProductCategory" @dropReturn="changeVaue">
-          </Cascade> -->
-          <span class="spaceMark">|</span>
-          <HeaderDropDownMenu class="selected_dropdown" titleName="供应商" dataType="供应商" :propList="providerList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </HeaderDropDownMenu>
-          <span class="spaceMark">|</span>
-          <HeaderDropDownMenu class="selected_dropdown" titleName="分销商" dataType="店铺" :propList="distributorList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </HeaderDropDownMenu>
-          <span class="spaceMark">|</span>
-          <HeaderDropDownMenu class="selected_dropdown" titleName="制单人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </HeaderDropDownMenu>
-          <span class="spaceMark">|</span>
-          <HeaderDropDownMenu class="selected_dropdown" titleName="审核人" dataType="审核人" :propList="auditorUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </HeaderDropDownMenu>
+          <!-- 头部的筛选条件 -->
+          <template v-for="(item,index) in selectBox">
+            <HeaderDropDownMenu 
+              class="selected_dropdown" 
+              :titleName="item.titleName" 
+              :dataType="item.dataType" 
+              :propList="item.propList" 
+              @dropReturn="dropReturn" 
+              @clearInfo="clearInfo" 
+              @isSelect="(val)=> isSelectArr.push(val)">
+            </HeaderDropDownMenu>
+            <span v-show="index < selectBox.length-1" class="spaceMark">|</span>
+          </template>
+          <!-- 日期筛选条件 -->
           <div class="report-data">
             <div class="block until" data-txt="至">
               <el-date-picker size="mini" v-model="beginTime" @change="getTimeData" type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
@@ -52,115 +48,7 @@
               <i class="el-icon-circle-cross" @click="cancelSort(item, index)"></i>
             </div>
           </div>
-         <!--  <div class="xj-switch" v-if="isShowCost == 'Y'">
-            <span class="btn" :title="tabSwitch?'关闭成本' : '开启成本'" @click="choseMenu(2)" :class="{active: tabSwitch}">专列项</span>
-          </div> -->
 
-         
-          <!-- 表格的筛选 -->
-<!--           <div class="tab_wrap">
-            <span :class="0 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(0, 1)">明细</span>
-            <span style="color: #d6d6d6">丨</span>						
-            <span :class="1 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(1, 2)">智能分类</span>
-            <span style="color: #d6d6d6">丨</span>
-						<span :class="2 == tabClassActive.index ? 'myspanactive' : ''" @click="tabs(2, 3)">产品分类</span>
-            <span style="color: #d6d6d6">丨</span>
-            <span style="position: relative" :class="3 == tabClassActive.index ? 'myspanactive' : ''" @mouseover="tabHover(3, $event)" @mouseout="tabOut(3, $event)" @click="tabs(3,4)">自定义
-              <div class="customDia site" ref="customDia" style="display: none;">
-                <div class="body">
-                  <div class="list-wrap">
-                    <ul>
-                        <li></li>
-                        <li>成色名称</li>
-                        <li>宝石名称</li>
-                        <li>首饰类别</li>
-                    </ul>
-                    <ul>
-                        <li>计重类</li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="成色名称-计重"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="宝石名称-计重"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="大类"
-                          dataType="customDia"
-                          dataDataType="首饰类别-计重"
-                          :propList="dialogOptions.jewelryList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                    </ul>
-                    <ul>
-                        <li>计件类</li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="成色名称-计件"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="不选"
-                          dataType="customDia"
-                          dataDataType="宝石名称-计件"
-                          :propList="dialogOptions.conditionList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                        <li>
-                        <DropDownMenu
-                          titleName="大类"
-                          dataType="customDia"
-                          dataDataType="首饰类别-计件"
-                          :propList="dialogOptions.jewelryList"
-                          :resetFlag='resetFlag'
-                          @infoBack="diaInfoBack"
-                        >
-                        </DropDownMenu>
-                        </li>
-                    </ul>
-                  </div>
-                </div>
-
-                <div class="foot" solt="footer">
-                  <div class="btn-wrap">
-                    <div @click.stop="resetOption" class="reset btn">重置</div>
-                    <div @click.stop="compOption" class="comp btn">完成</div>
-                  </div>
-                </div>
-
-              </div>
-            </span>
-          </div> -->
-          
           <filter-header class="report-filter-header-f-r-wrap" :customList="customList" :specialItem="true" @complate="filterHeaderComplate" @reportSwitch="reportSwitch"></filter-header>
 
            <!-- 新增的一些筛选 -->
@@ -563,8 +451,36 @@ import filterHeader from './base/filter-header'
         jewelList:[],
         jewelryList:[],
         // 打印的数据
-        printDataGrid:{}
+        printDataGrid:{},
+        // 筛选条件判断数组
+        isSelectArr:[],
       };
+    },
+    computed:{
+      // 头部的筛选条件数据
+      selectBox:function(){
+        return [{
+          titleName:"入库库位",
+          dataType:"库位",
+          propList:this.repositoryList
+        },{
+          titleName:"供应商",
+          dataType:"供应商",
+          propList:this.providerList
+        },{
+          titleName:"分销商",
+          dataType:"店铺",
+          propList:this.distributorList
+        },{
+          titleName:"制单人",
+          dataType:"制单人",
+          propList:this.shopUserList
+        },{
+          titleName:"审核人",
+          dataType:"审核人",
+          propList:this.auditorUserList
+        }]
+      }
     },
     created() {
       //后台请求时间
@@ -591,10 +507,10 @@ import filterHeader from './base/filter-header'
       })
 
       // 初始化筛选列表
-        this.seekProductTypeList()
-        this.productClassList(1)
-        this.productClassList(2)
-        this.productClassList(3)
+      this.seekProductTypeList()
+      this.productClassList(1)
+      this.productClassList(2)
+      this.productClassList(3)
     },
     watch: {
       'printSelectDate.storage': function() {
@@ -628,6 +544,17 @@ import filterHeader from './base/filter-header'
           this.dataGridOptions.sortFlag = 0
         }
         this.send()
+      },
+      // 筛选条件判断数组
+      'isSelectArr'(val){
+        if(val.length == this.selectBox.length){
+          if(!val.includes(true)){
+            this.send();
+            console.log("没有选项选中")
+          }else{
+            console.log("已有选项选中")
+          }
+        }
       }
     },
     methods: {
@@ -1205,8 +1132,6 @@ import filterHeader from './base/filter-header'
             })
           }
           this.loading = false
-        }, (res) => {
-
         })
       },
 

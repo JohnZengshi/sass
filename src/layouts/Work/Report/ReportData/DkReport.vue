@@ -10,52 +10,20 @@
 			<router-link tag="span" to="/work/report/" class="path_crumbs">报表</router-link> > <span class="txt">调库</span>
 		</div>
 		<div class="Rp_selected_container">
-            <HeaderDropDownMenu
-                class="selected_dropdown"
-                titleName="调入库位"
-                dataType="库位"
-                :propList="repositoryList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </HeaderDropDownMenu>
-
-            <span class="spaceMark">|</span>
-            
-            <HeaderDropDownMenu
-                class="selected_dropdown"
-                titleName="调出库位"
-                dataType="库位1"
-                :propList="repositoryList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </HeaderDropDownMenu>
-
-            <span class="spaceMark">|</span>
-            
-            <HeaderDropDownMenu
-                class="selected_dropdown"
-                titleName="制单人"
-                dataType="制单人"
-                :propList="shopUserList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </HeaderDropDownMenu>
-
-            <span class="spaceMark">|</span>
-            
-            <HeaderDropDownMenu
-                class="selected_dropdown"
-                titleName="收货人"
-                dataType="收货人"
-                :propList="GetUserInfoList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </HeaderDropDownMenu>
-
+            <!-- 头部的筛选条件 -->
+            <template v-for="(item,index) in selectBox">
+                <HeaderDropDownMenu 
+                    class="selected_dropdown" 
+                    :titleName="item.titleName" 
+                    :dataType="item.dataType" 
+                    :propList="item.propList" 
+                    @dropReturn="dropReturn" 
+                    @clearInfo="clearInfo" 
+                    @isSelect="(val)=> isSelectArr.push(val)">
+                </HeaderDropDownMenu>
+                <span v-show="index < selectBox.length-1" class="spaceMark">|</span>
+            </template>
+            <!-- 日期筛选条件 -->
   			<div class="report-data">
                 <div class="block until" data-txt="至">
                     <el-date-picker size="mini" v-model="beginTime" @change="getTimeData"  type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
@@ -573,10 +541,33 @@ export default {
         jewelList:[],
         jewelryList:[],
         // 打印的数据
-        printDataGrid:null
+        printDataGrid:null,
+        // 筛选条件判断数组
+        isSelectArr:[],
       };
     },
-    
+    computed:{
+      // 头部的筛选条件数据
+      selectBox:function(){
+        return [{
+          titleName:"调入库位",
+          dataType:"库位",
+          propList:this.repositoryList
+        },{
+          titleName:"调出库位",
+          dataType:"库位1",
+          propList:this.repositoryList
+        },{
+          titleName:"制单人",
+          dataType:"制单人",
+          propList:this.shopUserList
+        },{
+          titleName:"收货人",
+          dataType:"收货人",
+          propList:this.GetUserInfoList
+        }]
+      }
+    },
     created() {
         //后台请求时间
         // this.propOptons.beginTime = this.getDate(-((new Date()).getDate()-1),'start').fullData
@@ -593,7 +584,7 @@ export default {
         this.getShop(); //库位
         this.getUserList(); //制单人
         this.getGetUserInfo()//收货人
-        this.send()
+        // this.send()
         this.$store.dispatch('checkBrowser',(type)=>{
            this.reportPrint_fixed = type
         })
@@ -628,6 +619,17 @@ export default {
             this.dataGridOptions.sortFlag = 0
             }
             this.send()
+        },
+        // 筛选条件判断数组
+        'isSelectArr'(val){
+            if(val.length == this.selectBox.length){
+                if(!val.includes(true)){
+                    this.send();
+                    console.log("没有选项选中")
+                }else{
+                    console.log("已有选项选中")
+                }
+            }
         }
     },
     methods: {
@@ -877,8 +879,8 @@ export default {
         },
         //懒加载
         lazyloadSend(){
-           this.currentPage++
-           this.send()
+        //    this.currentPage++
+        //    this.send()
         },
         //成本控制
         reportSwitch(){

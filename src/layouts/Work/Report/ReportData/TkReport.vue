@@ -10,134 +10,28 @@
 			<router-link tag="span" to="/work/report/" class="path_crumbs">报表</router-link> > <span class="txt">退库</span>
 		</div>
 		<div class="Rp_selected_container">
-		    
-  			<!-- <el-dropdown class="selected_dropdown"  :class="printSelectDate.storage =='' ? 'placeholder' : ''">
-              <span class="el-dropdown-link">
-                  {{printSelectDate.storage =='' ? '退库库位' : printSelectDate.storage}}
-              </span>
-              <i class="iconfont icon-xiala" v-if="printSelectDate.storage ==''"></i>
-              <i class="el-icon-circle-close" @click="selectStorage" title="清除" v-else></i>
-              <el-dropdown-menu slot="dropdown" class="selected_dropdown_item">
-                <div class="max-selected-item">
-                    <el-dropdown-item 
-                        v-for="item in repositoryList" 
-                        :class="printSelectDate.storage == item.repositoryName ? 'active' : ''"
-                        @click.native="selectStorage(item)">
-                        {{item.repositoryName}}
-                    </el-dropdown-item>
-                </div>
-              </el-dropdown-menu>
-            </el-dropdown> -->
-            <HeaderDropDownMenu
-                class="selected_dropdown"
-                titleName="退库库位"
-                dataType="库位"
-                :propList="repositoryList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </HeaderDropDownMenu>
-            <span class="spaceMark">|</span>
-  			<!-- <el-cascader 
-  				:options="productCategory" 
-  				v-model="productCategoryType" 
-  				clearable  
-  				:props = "categoryProps" 
-  				:show-all-levels="false" 
-  				placeholder="产品类别" 
-  				@clear = "callProductCategory"
-  				@change = "callProductCategory" 
-  				expand-trigger="hover" 
-  				class="selet_category">
-  			</el-cascader> -->
-            <Cascade
-                :propList="productCategory"
-                titleName="产品类别"
-                @clear = "callProductCategory"
-                @dropReturn = "changeVaue"
-            >
-            </Cascade>
-  			<span class="spaceMark">|</span>
-  			<!-- <el-dropdown class="selected_dropdown" :class="printSelectDate.supplier =='' ? 'placeholder' : ''">
-              <span class="el-dropdown-link">
-                  {{printSelectDate.supplier ==''? '供应商' : printSelectDate.supplier}} 
-              </span>
-              <i class="iconfont icon-xiala" v-if="printSelectDate.supplier ==''"></i>
-              <i class="el-icon-circle-close" @click="selectSupplier" title="清除" v-else></i>
-              <el-dropdown-menu slot="dropdown" class="selected_dropdown_item">
-                <div class="max-selected-item">
-                    <el-dropdown-item 
-                        v-for="item in providerList" 
-                        :class="printSelectDate.supplier == item.supplierName ? 'active' : ''"
-                        @click.native="selectSupplier(item)">
-                        {{item.supplierName}}
-                    </el-dropdown-item>
-                </div>
-              </el-dropdown-menu>
-            </el-dropdown> -->
-            <HeaderDropDownMenu
-                class="selected_dropdown"
-                titleName="供应商"
-                dataType="供应商"
-                :propList="providerList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </HeaderDropDownMenu>
-            <span class="spaceMark">|</span>
-            <!-- <el-dropdown class="selected_dropdown" :class="printSelectDate.preparedBy =='' ? 'placeholder' : ''">
-              <span class="el-dropdown-link">
-                  {{printSelectDate.preparedBy ==''? '制单人' : printSelectDate.preparedBy}}
-              </span>
-              <i class="iconfont icon-xiala" v-if="printSelectDate.preparedBy ==''"></i>
-              <i class="el-icon-circle-close" @click="selectPreparedBy" title="清除" v-else></i>
-              <el-dropdown-menu slot="dropdown" class="selected_dropdown_item">
-                <div class="max-selected-item">
-                    <el-dropdown-item 
-                        v-for="item in shopUserList" 
-                        :class="printSelectDate.preparedBy == item.username ? 'active' : ''"
-                        @click.native="selectPreparedBy(item)">
-                        {{item.username}}
-                    </el-dropdown-item>
-                </div>
-              </el-dropdown-menu>
-            </el-dropdown> -->
-            <HeaderDropDownMenu
-                class="selected_dropdown"
-                titleName="制单人"
-                dataType="制单人"
-                :propList="shopUserList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </HeaderDropDownMenu>
-            <span class="spaceMark">|</span>
-  			<!-- <el-dropdown class="selected_dropdown" :class="printSelectDate.auditor =='' ? 'placeholder' : ''">
-              <span class="el-dropdown-link" >
-                  {{printSelectDate.auditor ==''? '审核人' : printSelectDate.auditor}}
-              </span>
-              <i class="iconfont icon-xiala" v-if="printSelectDate.auditor ==''"></i>
-              <i class="el-icon-circle-close" @click="selectAuditor" title="清除" v-else></i>
-              <el-dropdown-menu slot="dropdown" class="selected_dropdown_item">
-                <div class="max-selected-item">
-                    <el-dropdown-item 
-                        v-for="item in auditorUserList" 
-                        :class="printSelectDate.auditor == item.username ? 'active' : ''"
-                        @click.native="selectAuditor(item)">
-                        {{item.username}}
-                    </el-dropdown-item>
-                </div>
-              </el-dropdown-menu>
-            </el-dropdown> -->
-  			<HeaderDropDownMenu
-                class="selected_dropdown"
-                titleName="审核人"
-                dataType="审核人"
-                :propList="auditorUserList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </HeaderDropDownMenu>
+            <!-- 头部的筛选条件 -->
+            <template v-for="(item,index) in selectBox">
+                <Cascade
+                    v-if="item.titleName == '产品类别'"
+                    :propList="item.propList"
+                    :titleName="item.titleName"
+                    @clear="callProductCategory"
+                    @dropReturn="changeVaue">
+                </Cascade>
+                <HeaderDropDownMenu 
+                    v-else
+                    class="selected_dropdown" 
+                    :titleName="item.titleName" 
+                    :dataType="item.dataType" 
+                    :propList="item.propList" 
+                    @dropReturn="dropReturn" 
+                    @clearInfo="clearInfo" 
+                    @isSelect="(val)=> isSelectArr.push(val)">
+                </HeaderDropDownMenu>
+                <span v-show="index < selectBox.length-1" class="spaceMark">|</span>
+            </template>
+            <!-- 日期筛选条件 -->
   			<div class="report-data">
                 <div class="block until" data-txt="至">
                     <el-date-picker size="mini" v-model="beginTime" @change="getTimeData"  type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
@@ -649,7 +543,35 @@ export default {
         jewelryList:[],
         // 打印的数据
         printDataGrid:null,
+        // 筛选条件判断数组
+        isSelectArr:[],
       };
+    },
+    computed:{
+      // 头部的筛选条件数据
+      selectBox:function(){
+        return [{
+          titleName:"入库库位",
+          dataType:"库位",
+          propList:this.repositoryList
+        },{
+          titleName:"产品类别",
+          dataType:"产品类别",
+          propList:this.productCategory
+        },{
+          titleName:"供应商",
+          dataType:"供应商",
+          propList:this.providerList
+        },{
+          titleName:"制单人",
+          dataType:"制单人",
+          propList:this.shopUserList
+        },{
+          titleName:"审核人",
+          dataType:"审核人",
+          propList:this.auditorUserList
+        }]
+      }
     },
     created() {
         //后台请求时间
@@ -670,7 +592,7 @@ export default {
         this.getProductTypeList() //产品类别
         this.getUserList() //制单人
         this.getGetUserList() //审核人
-        this.send()
+        // this.send()
         this.$store.dispatch('checkBrowser',(type)=>{
            this.reportPrint_fixed = type
         })
@@ -710,6 +632,18 @@ export default {
             this.dataGridOptions.sortFlag = 0
             }
             this.send()
+        },
+        // 筛选条件判断数组
+        'isSelectArr'(val){
+            console.log(val)
+            if((val.length + 1) == this.selectBox.length){ //产品类别不会默认选上，所以加1
+                if(!val.includes(true)){
+                    this.send();
+                    console.log("没有选项选中")
+                }else{
+                    console.log("已有选项选中")
+                }
+            }
         }
     },
     methods: {
@@ -1335,8 +1269,8 @@ export default {
         },
         //懒加载
         lazyloadSend(){
-           this.currentPage++
-           this.send()
+        //    this.currentPage++
+        //    this.send()
         },
         //打印表格
         tabPrin(){

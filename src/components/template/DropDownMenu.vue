@@ -43,6 +43,12 @@ export default {
            let propListLength = this.propList.length;
            if(propListLength == 1){
                this.itemClick(this.propList[0],0)
+            //自动选中了
+               this.$emit("isSelect",true);
+           }
+           else{
+            //没选中
+               this.$emit("isSelect",false);
            }
        }
     },
