@@ -2,11 +2,11 @@
     <div class="xj-time-box">
       <div class="time-inner">
         <div class="block until">
-            <el-date-picker size="mini" v-model="optionData.beginTime"  type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
+            <el-date-picker @change="changeDate" size="mini" v-model="optionData.beginTime"  type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
         </div>
         <span class="center-tit">至</span>
         <div class="block">
-            <el-date-picker size="mini" v-model="optionData.endTime" type="date" placeholder="选择结束时间" :picker-options="pickerOptions1"></el-date-picker>
+            <el-date-picker @change="changeDate" size="mini" v-model="optionData.endTime" type="date" placeholder="选择结束时间" :picker-options="pickerOptions1"></el-date-picker>
         </div>
       </div>
     </div>

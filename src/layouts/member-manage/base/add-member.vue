@@ -1,5 +1,16 @@
 <template>
   <el-dialog top="7%" :visible.sync="isDialog" class="xj-input-dialog-bg">
+
+    <el-dialog :modal="false" :visible.sync="isChoseLeader" top="0%" customClass="choseLeaderDig" :close-on-click-modal="false">
+        <chose-leader
+            :dataInfo="dataInfo"
+            :shopId="shopId"
+            :addModel="1"
+            :isChoseLeader="isChoseLeader"
+            @closeChoMember="closeChoLeader"
+        ></chose-leader>
+    </el-dialog>
+
     <div class="m-m-add-member-main" :class="{'m-m-add-member-isShowMore-box': isShowMore}">
       <div class="p-close-icon" @click="isDialog = false">
         <i class="el-dialog__close el-icon el-icon-close"></i>
@@ -12,7 +23,7 @@
             <div class="member-edit-box header-data">
 
               <div class="data-left">
-                <UploadingImg class="header-img-box" :type="1" @cosImg="cosHeadImg">
+                <UploadingImg class="header-img-box" :type="1" @cosImg="changeHeaderImg">
                   <img v-if="dataInfo.avatarUrl" class="header-img" :src="dataInfo.avatarUrl" alt="">
                   <img class="header-img" src="~static/img/default-logo.png" alt="">
                 </UploadingImg>
@@ -24,7 +35,7 @@
 
                     <div class="member-item">
                       <span class="item-label"><i class="mandatory-icon">*</i>手机号</span>
-                      <input placeholder="请输入" type="Number" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="amendData">
+                      <input placeholder="请输入" maxlength="11" :disabled="!isShopMan" v-model="dataInfo.phone" @blur="amendData">
                     </div>
 
                     <div class="member-item">
@@ -70,7 +81,9 @@
                     <div class="member-item">
                       <span class="item-label">负责人</span>
                       <div class="right-wrap">
-                        <alone-drop-down-colums class="chose-user-box" ref="stateWrap" :propsList="userList" titleData="负责人" @dataBack="choseUser"></alone-drop-down-colums>
+                        <i v-if="isShopMan" @click="isChoseLeader=true" class="iconfont icon-jia add-leader"></i>
+                        <span class="tit-name">{{ dataInfo.principalName || '指派' }}</span>
+<!--                         <alone-drop-down-colums class="chose-user-box" ref="stateWrap" :propsList="userList" titleData="负责人" @dataBack="choseUser"></alone-drop-down-colums> -->
                       </div>
                     </div>
                     
@@ -98,9 +111,13 @@
                 </div>
 
                 <div class="member-item">
-                  <span class="item-label">邮箱</span>
-                  <input type="Number" placeholder="请输入" :disabled="!isShopMan" v-model="dataInfo.email" @blur="amendData">
+                  <span class="item-label">省市区</span>
+                  <div class="right-wrap">
+                    <input v-model="PCAData" @click.stop="isShowPCA = !isShowPCA" class="inp" type="text" placeholder="选择省市区">
+                    <AddressSelect style="left: 0;" v-if="isShowPCA" @addressReturn="SelectArea"></AddressSelect>
+                  </div>
                 </div>
+
 
                 <div class="member-item">
                   <span class="item-label">纪念日</span>
@@ -119,7 +136,7 @@
                 </div>
                 <div class="member-item">
                   <span class="item-label">微信号</span>
-                  <input placeholder="请输入" type="Number" :disabled="!isShopMan" v-model="dataInfo.weixin" @blur="amendData">
+                  <input placeholder="请输入" :disabled="!isShopMan" v-model="dataInfo.weixin" @blur="amendData">
                 </div>
 
                 <div class="member-item">
@@ -140,11 +157,8 @@
                 </div>
 
                 <div class="member-item">
-                  <span class="item-label">省市区</span>
-                  <div class="right-wrap">
-                    <input v-model="PCAData" @click.stop="isShowPCA = !isShowPCA" class="inp" type="text" placeholder="选择省市区">
-                    <AddressSelect style="left: 0;" v-if="isShowPCA" @addressReturn="SelectArea"></AddressSelect>
-                  </div>
+                  <span class="item-label">邮箱</span>
+                  <input placeholder="请输入" :disabled="!isShopMan" v-model="dataInfo.email" @blur="amendData">
                 </div>
 
                 <div class="member-item">
@@ -194,6 +208,7 @@
 import { operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention, operateMemberCreatee } from 'Api/commonality/operate'
 import { seekGetShopUserList,seekFindMemberGradeList } from 'Api/commonality/seek'
 import aloneDropDownColums from 'base/menu/alone-drop-down-colums'
+import choseLeader from './chose-leader'
 import newDownMenu from 'base/menu/new-down-menu'
 import AddressSelect from 'src/components/template/AddressSelect'
 import UploadingImg from 'base/uploading/UploadingImg'
@@ -204,11 +219,13 @@ export default {
     aloneDropDownColums,
     newDownMenu,
     UploadingImg,
-    AddressSelect
+    AddressSelect,
+    choseLeader
   },
   props: ['shopId'],
   data() {
     return {
+      isChoseLeader: false,
       isShowMore: false,
       industryList: industryList, // 行业数据
       PCAData: '', // 省市区数据
@@ -217,6 +234,7 @@ export default {
         shopId: '',
         score: '',
         avatarUrl: '',
+        cardSrc: '',
         username: '',
         phone: '',
         name: '',
@@ -225,6 +243,7 @@ export default {
         birthday: '',
         maleBirthday: '',
         principalList: [],
+        principalName: '', // 负责人名
         grade: '',
         gradeName: '',
         weixin: '',
@@ -293,6 +312,23 @@ export default {
   //   })
   // },
   methods: {
+    changeHeaderImg (parm) {
+      this.dataInfo.avatarUrl = parm
+    },
+    // 选择负责人
+    closeChoLeader (parm) {
+      this.isChoseLeader = false
+      let userList = []
+      for (let i of parm.list) {
+        userList.push({
+          userId: i
+        })
+      }
+      this.dataInfo.principalList = userList
+      for (let i of parm.nameList) {
+        this.dataInfo.principalName += this.dataInfo.principalName ? `,${i}` : i
+      }
+    },
     SelectArea(val) { // 省市区
       this.dataInfo.provinceId = val.provId
       this.dataInfo.cityId = val.cityId
@@ -301,6 +337,7 @@ export default {
       this.isShowPCA = false
     },
     cosImg(parm) {
+      this.dataInfo.cardSrc = parm
       console.log('成功上传了图片', parm)
     },
     changeProfession(parm) {
@@ -334,7 +371,6 @@ export default {
       this.dataInfo.typeName = parm.name
     },
     confirm() {
-      debugger
       this._operateMemberCreatee()
     },
     cancel() {
@@ -680,9 +716,29 @@ export default {
 
       let options = _.cloneDeep(this.dataInfo)
       options.memorial = formattingTime(options.memorial)
+      options.birthday = formattingTime(options.birthday)
+      options.maleBirthday = formattingTime(options.maleBirthday)
+      // let userList = []
+      // for (let i of options.principalList) {
+      //   userList.push({
+      //     userId: 
+      //   })
+      // }
+      
       operateMemberCreatee(Object.assign({}, options, {shopId: this.shopId}))
         .then(res => {
-          this.isDialog = false
+          if (res.data.state == 200) {
+            this.isDialog = false
+            this.$message({
+              type: 'success',
+              message: '新建成功'
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            })
+          }
         })
     },
     /* ----查询接口---- */
@@ -830,12 +886,10 @@ export default {
             width: 50px;
             cursor: pointer;
             span {
-              position: absolute;
               text-decoration: underline;
               line-height: 34px;
               margin-left: 10px;
               cursor: pointer;
-              z-index: 100;
             }
           }
           .card:hover+.card-img {
@@ -1134,6 +1188,20 @@ export default {
         .member-edit-info{
           .member-item{
             margin-bottom: 10px;
+            .right-wrap{
+              .add-leader{
+                line-height: 28px;
+                color: #2993f8;
+                cursor: pointer;
+                display: none;
+              }
+              .tit-name{
+                line-height: 28px;
+              }
+              &:hover > .add-leader{
+                  display: inline-block;
+              }
+            }
             .item-label{
               width: 70px;
             }

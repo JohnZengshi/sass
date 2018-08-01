@@ -504,7 +504,14 @@ export default {
         integralShow(parm) {
             this.integralPage = parm
             this.homePage = false
-        }
+        },
+        open () {
+            debugger
+            this.memberFlag = true
+            // 获取会员信息
+            this.getMemberInfo()
+            this.getOldMemberInfo()
+        },
     },
     watch:{
         memberInfoFlag(val) {

@@ -30,9 +30,9 @@
                     <span @click="getLevel(3)" class="item-level3 item-level">重要<i class="iconfont icon-duigou2 duihao" :class="actionType == 3 ? 'action' : ''"></i></span>
                 </div>
 
-                <div class="item" @mouseover="showBtn" @mouseout="hiddenBtn">
+                <div class="item ">
                     <span class="item-label">负责人</span>
-                    <i v-if="isShopMan" @click="isChoseLeader=true" id="iconjia" class="iconfont icon-jia jia"></i>
+                    <i @click="isChoseLeader=true" class="iconfont icon-jia jia"></i>
                     <span>{{ leaderStr || '指派' }}</span>
                 </div>
             </div>

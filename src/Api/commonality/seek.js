@@ -876,7 +876,7 @@ export const seekGetReportsPrintXG = function (parm) {
 }
 
 export const seekFindMemberList = function (parm) {
-  let URL = "/v1/member/findMemberList";
+  let URL = "/v1/groupTemplate/findMemberList";
   return apiCall(parm, URL);
 }
 // 会员互通

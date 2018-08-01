@@ -82,7 +82,13 @@
     methods: {
       changeTime (parm) {
         Object.assign(this.filterData, parm)
-        this._seekGetShopListByCo()
+        // 有店铺的情况下是二次过滤
+        if (this.shopList.length) {
+          this.$emit("filterData", this.filterData)
+        } else {
+          // 第一次过滤
+          this._seekGetShopListByCo()
+        }
       },
       pitchOn (parm) {
         this.current = parm.id
