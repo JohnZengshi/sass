@@ -41,9 +41,9 @@ export default {
        },
        'propList':function(){
            let propListLength = this.propList.length;
-           if(propListLength == 1){
-               this.itemClick(this.propList[0],0)
-           }
+           // if(propListLength == 1){
+           //     this.itemClick(this.propList[0],0)
+           // }
        }
     },
     data () {

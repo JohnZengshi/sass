@@ -75,7 +75,7 @@
 <!--       <StatisticsNumber :statisticalIndexData="statisticalIndexData"></StatisticsNumber> -->
 <!--       </div> -->
     </div>
-    <div class="footer-wrap" v-show="false">
+    <div class="footer-wrap" v-if="false">
       <!-- 成品 -->
       <FinishedProduct
         class="finished-product-wrap"

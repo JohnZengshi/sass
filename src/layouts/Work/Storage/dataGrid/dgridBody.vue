@@ -1211,11 +1211,23 @@
 
 						} else {
 							el.className = 'item ' + (j.classesName == fg.tr[fg.td.type] ? 'active' : '')
-							el.addEventListener('click', () => {
-								events(j)
-							}, false)
-							el.setAttribute('title', j.classesName)
-							elem.className = 'datagrid-select-container overflow'
+							// 双层下拉
+							if (item[0].typeList) {
+									el.setAttribute('title', j.classesName)
+									elem.className = 'datagrid-select-container'
+							} else { // 单层下拉
+									el.addEventListener('click', () => {
+										events(j)
+									}, false)
+									el.setAttribute('title', j.classesName)
+									elem.className = 'datagrid-select-container overflow'
+							}
+							// el.addEventListener('click', () => {
+							// 	events(j)
+							// }, false)
+							// el.setAttribute('title', j.classesName)
+							// // elem.className = 'datagrid-select-container overflow'
+							// elem.className = 'datagrid-select-container'
 						}
 
 						elem.appendChild(el)

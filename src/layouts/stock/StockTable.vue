@@ -323,6 +323,7 @@ export default {
         storageId: "", //库位id
         shopId: "", //店铺id
         counterId: "", //柜组id
+        searchDate: '', // 时间
         productClass: "1", //商品属性
         sortFlag: "0", //分位置 1=分，0=不分
         sortList: [
@@ -401,7 +402,6 @@ export default {
       this.dataGridOptions.page = 1;
       this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       if (this.searchDate) {
-        debugger
         this.send();
       }
     },
@@ -455,7 +455,6 @@ export default {
     this.productClassList(1)
     this.productClassList(2)
     this.productClassList(3)
-
     this.settingUserRole();
   },
   methods: {
@@ -485,7 +484,6 @@ export default {
       if (parm.noRefresh) {
         return
       }
-      debugger
       this.send()
     },
     //成本控制
@@ -528,7 +526,6 @@ export default {
       } else {
         this.dataGridOptions.sortFlag = "";
       }
-      debugger
       this.send()
     },
     choseMenu(type) {
@@ -556,7 +553,6 @@ export default {
     sortListAct(val) {
       // 列表排序
       this.dataGridOptions.sortList = val;
-      debugger
       this.send();
       this.sortList = [];
       val.forEach((item, index) => {
@@ -628,6 +624,7 @@ export default {
       }
       this.loading = true;
       this.dataGridOptions.pageSize = 0;
+      this.dataGridOptions.searchDate = this.searchDate
       seekStockProductList(this.dataGridOptions).then(res => {
         this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
         if (res.data.state == 200) {
@@ -744,7 +741,6 @@ export default {
         this.dataGridOptions.type == 4;
         this.setReportType(4);
       } else {
-        debugger
         this.send();
       }
       this.customDialog = false;
@@ -787,7 +783,6 @@ export default {
       this.dataGridOptions.productClass = val;
       //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
       this.loading = true;
-      debugger
       this.send();
     },
     //收货店铺
@@ -876,7 +871,6 @@ export default {
         default:
           break;
       }
-      debugger
       this.send()
     },
     //产品类别
@@ -897,7 +891,6 @@ export default {
         });
       }
 
-      debugger
       this.send();
     },
     tabs(index, type, evt) {
@@ -1112,7 +1105,6 @@ export default {
        * 20180601 如果重复点击同一筛选条件不重复请求
        */
       if (!this.ajaxStatus) {
-        debugger
         this.send();
       }
     },
@@ -1122,7 +1114,6 @@ export default {
     searchWord() {
       this.dataGridOptions.page = 1;
       this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
-      debugger
       this.send();
     },
     // 懒加载
@@ -1130,6 +1121,7 @@ export default {
       this.loading = true;
       return (async () => {
           //初始化数据
+          this.dataGridOptions.searchDate = this.searchDate
           let res = await seekStockProductList(this.dataGridOptions).then(
               res => {
                   if (res.data.state == 200) {
@@ -1153,6 +1145,7 @@ export default {
     send() {
       this.loading = true;
       this.dataGridStorage = []
+      this.dataGridOptions.searchDate = this.searchDate
       seekStockProductList(this.dataGridOptions).then(
         res => {
           if (res.data.state == 200) {
@@ -1180,7 +1173,6 @@ export default {
 
   mounted() {
     this.$nextTick(() => {
-      debugger
       this.send();
     });
   },

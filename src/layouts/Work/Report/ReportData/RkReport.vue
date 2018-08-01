@@ -585,7 +585,7 @@ import filterHeader from './base/filter-header'
       this.getProductTypeList() //产品类别
       this.getGetUserList() //审核人
       this.getShopListByCo() //分销商  
-      // this.send()
+      this.send()
       this.$store.dispatch('checkBrowser', (type) => {
         this.reportPrint_fixed = type
       })
