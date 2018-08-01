@@ -17,6 +17,7 @@
               :titleName="item.titleName" 
               :dataType="item.dataType" 
               :propList="item.propList" 
+              :prohibitDdropDown="item.prohibitDdropDown"
               @dropReturn="dropReturn" 
               @clearInfo="clearInfo" 
               @isSelect="(val)=> isSelectArr.push(val)">
@@ -462,23 +463,28 @@ import filterHeader from './base/filter-header'
         return [{
           titleName:"入库库位",
           dataType:"库位",
-          propList:this.repositoryList
+          propList:this.repositoryList,
+          prohibitDdropDown:false, //是否禁止下拉
         },{
           titleName:"供应商",
           dataType:"供应商",
-          propList:this.providerList
+          propList:this.providerList,
+          prohibitDdropDown:false, //是否禁止下拉
         },{
           titleName:"分销商",
           dataType:"店铺",
-          propList:this.distributorList
+          propList:this.distributorList,
+          prohibitDdropDown:false, //是否禁止下拉
         },{
           titleName:"制单人",
           dataType:"制单人",
-          propList:this.shopUserList
+          propList:this.shopUserList,
+          prohibitDdropDown:false, //是否禁止下拉
         },{
           titleName:"审核人",
           dataType:"审核人",
-          propList:this.auditorUserList
+          propList:this.auditorUserList,
+          prohibitDdropDown:false, //是否禁止下拉
         }]
       }
     },

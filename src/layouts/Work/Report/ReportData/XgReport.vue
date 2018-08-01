@@ -17,6 +17,7 @@
               :titleName="item.titleName" 
               :dataType="item.dataType" 
               :propList="item.propList" 
+              :prohibitDdropDown="item.prohibitDdropDown"
               @dropReturn="dropReturn" 
               @clearInfo="clearInfo" 
               @isSelect="(val)=> isSelectArr.push(val)">
@@ -540,15 +541,18 @@ import LoaderNum from 'components/work/loaderNum.vue'
           return [{
             titleName:"修改库位",
             dataType:"库位",
-            propList:this.repositoryList
+            propList:this.repositoryList,
+            prohibitDdropDown:false, //是否禁止下拉
           },{
             titleName:"制单人",
             dataType:"制单人",
-            propList:this.shopUserList
+            propList:this.shopUserList,
+            prohibitDdropDown:false, //是否禁止下拉
           },{
             titleName:"审核人",
             dataType:"审核人",
-            propList:this.auditorUserList
+            propList:this.auditorUserList,
+            prohibitDdropDown:false, //是否禁止下拉
           }]
         }
       },

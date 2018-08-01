@@ -17,6 +17,7 @@
                     :titleName="item.titleName" 
                     :dataType="item.dataType" 
                     :propList="item.propList" 
+                    :prohibitDdropDown="item.prohibitDdropDown"
                     @dropReturn="dropReturn" 
                     @clearInfo="clearInfo" 
                     @isSelect="(val)=> isSelectArr.push(val)">
@@ -552,19 +553,23 @@ export default {
         return [{
           titleName:"调入库位",
           dataType:"库位",
-          propList:this.repositoryList
+          propList:this.repositoryList,
+          prohibitDdropDown:false, //是否禁止下拉
         },{
           titleName:"调出库位",
           dataType:"库位1",
-          propList:this.repositoryList
+          propList:this.repositoryList,
+          prohibitDdropDown:false, //是否禁止下拉
         },{
           titleName:"制单人",
           dataType:"制单人",
-          propList:this.shopUserList
+          propList:this.shopUserList,
+          prohibitDdropDown:false, //是否禁止下拉
         },{
           titleName:"收货人",
           dataType:"收货人",
-          propList:this.GetUserInfoList
+          propList:this.GetUserInfoList,
+          prohibitDdropDown:false, //是否禁止下拉
         }]
       }
     },

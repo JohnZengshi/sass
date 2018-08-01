@@ -25,6 +25,7 @@
                     :titleName="item.titleName" 
                     :dataType="item.dataType" 
                     :propList="item.propList" 
+                    :prohibitDdropDown="item.prohibitDdropDown"
                     @dropReturn="dropReturn" 
                     @clearInfo="clearInfo" 
                     @isSelect="(val)=> isSelectArr.push(val)">
@@ -553,23 +554,28 @@ export default {
         return [{
           titleName:"入库库位",
           dataType:"库位",
-          propList:this.repositoryList
+          propList:this.repositoryList,
+          prohibitDdropDown:false, //是否禁止下拉
         },{
           titleName:"产品类别",
           dataType:"产品类别",
-          propList:this.productCategory
+          propList:this.productCategory,
+          prohibitDdropDown:false, //是否禁止下拉
         },{
           titleName:"供应商",
           dataType:"供应商",
-          propList:this.providerList
+          propList:this.providerList,
+          prohibitDdropDown:false, //是否禁止下拉
         },{
           titleName:"制单人",
           dataType:"制单人",
-          propList:this.shopUserList
+          propList:this.shopUserList,
+          prohibitDdropDown:false, //是否禁止下拉
         },{
           titleName:"审核人",
           dataType:"审核人",
-          propList:this.auditorUserList
+          propList:this.auditorUserList,
+          prohibitDdropDown:false, //是否禁止下拉
         }]
       }
     },
@@ -959,56 +965,6 @@ export default {
             $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send()
         },
-    	//退库位
-    	// selectStorage(e){
-    	    
-    	//     if( e.type == undefined ){
-    	//       this.printSelectDate.storage = e.repositoryName
-    	//       this.propOptons.storageId = e.repositoryId
-    	//     }else{
-    	//       this.printSelectDate.storage = ''
-        //       this.propOptons.storageId = ''  
-    	//     }
-    	    
-    	//     this.send()
-    	// },
-    	
-    	// //供应商选择
-    	// selectSupplier(e){
-    	    
-    	//     if( e.type == undefined ){
-        //       this.printSelectDate.supplier = e.supplierName
-        //       this.propOptons.supplierId = e.supplierId
-        //     }else{
-        //       this.printSelectDate.supplier = ''
-        //       this.propOptons.supplierId = ''  
-        //     }
-        //     this.send()
-    	// },
-    	
-    	// //制单人选择
-    	// selectPreparedBy(e){
-    	//     if( e.type == undefined ){
-        //       this.printSelectDate.preparedBy = e.username
-        //       this.propOptons.makeUserID = e.userId
-        //     }else{
-        //       this.printSelectDate.preparedBy = ''
-        //       this.propOptons.makeUserID = ''  
-        //     }
-        //     this.send()
-    	// },
-    	
-    	// //审核人选择
-    	// selectAuditor(e){
-    	//     if( e.type == undefined ){
-        //       this.printSelectDate.auditor = e.username
-        //       this.propOptons.checkUserId = e.userId
-        //     }else{
-        //       this.printSelectDate.auditor = ''
-        //       this.propOptons.checkUserId = ''  
-        //     }
-        //     this.send()
-    	// },
     	changeVaue (val) {
             this.dataGridOptions.productTypeId = val.item.operateId
             this.printSelectDate.productType = val.item.operateName
@@ -1027,31 +983,8 @@ export default {
     			this.send()
     			return
     		}
-    		
-    		// this.propOptons.productTypeId = res[1]
-    		
-    		// let _categoryDate = this.productCategory.filter((item )=>{
-    		// 	return item.value == res[0]
-    		// })
-    		
-    		// if( _categoryDate[0] && _categoryDate[0].typeList ){
-    			
-	    	// 	let val = find( _categoryDate[0].typeList, {
-	        //         value: this.propOptons.productTypeId
-	        //     })
-	    	// 	this.printSelectDate.productType = val.classesName
-	    	// 	this.send()
-    		// }
-    		
     	},
 
-    	// tabs(index,type){
-    	// 	this.loading = true;
-    	// 	this.tabClassActive.index = index;
-    	// 	this.setReportType(type)
-    	// 	this.send()
-    	// },
-    	
     	//滚动条滚动时不显示总计
     	tabScrollShow( type ){
     		this.tabShow = type ? 'tabShow' : ''
@@ -1206,56 +1139,6 @@ export default {
         formatDate( d ){
            return d < 10 ? ('0' + d ) : d + ''
         },
-        
-        /*
-       	* 数据请求
-        */
-        // send() {
-        	
-        //     this.loading = true;
-        //     if(this.propOptons.reportType == 3){
-        //        Object.assign(this.propOptons,{
-        //           page : 1,
-        //           pageSize : 9999
-        //        })
-        //     }
-        //     if( this.timeOut ) clearTimeout( this.timeOut )
-        //     if (this.propOptons.makeUserList) {
-        //         if (this.propOptons.makeUserList[0].makeUserId == '') {
-        //             for (let i in this.propOptons) {
-        //                 //console.log(i)
-        //                 delete this.propOptons.makeUserList
-        //             }
-        //         }
-        //     }
-        //     if (this.propOptons.checkUserList) {
-        //         if (this.propOptons.checkUserList[0].checkUserId == '') {
-        //             for (let i in this.propOptons) {
-        //                 //console.log(i)
-        //                 delete this.propOptons.checkUserList
-        //             }
-        //         }
-        //     }
-            
-        //     seekOutStorageReport( this.propOptons ).then((res) => {
-        //         if (res.data.state === 200) {
-        //             //数据表格数据
-        //             this.dataGridStorage = res.data.data   
-        //             this.dataGridStorage.printDetailList = res.data.data.detailList
-        //         } else {
-        //             this.$message({
-        //             	type : 'error',
-        //             	message : res.body.msg
-        //             })
-        //         }
-                
-        //         this.timeOut = setTimeout(()=>{
-        //         	 this.loading = false
-        //         	 if( this.timeOut ) clearTimeout( this.timeOut )
-        //         },200)
-               
-        //     })
-        // },
         send () {
           this.loading = true;
           seekOutStorageReport(this.dataGridOptions).then((res) => {
