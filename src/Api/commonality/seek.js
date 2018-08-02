@@ -881,22 +881,22 @@ export const seekFindMemberList = function (parm) {
 }
 // 会员互通
 export const seekFindTemplateGroupAll = function (parm) {
-  let URL = "/v1/member/findTemplateGroupAll";
+  let URL = "/v1/groupTemplate/findTemplateGroupAll";
   return apiCall(parm, URL);
 }
 //独立店铺
 export const seekFindTemplateShopAll = function (parm) {
-  let URL = "/v1/member/findTemplateShopAll";
+  let URL = "/v1/groupTemplate/findTemplateShopAll";
   return apiCall(parm, URL);
 }
 //会员模板管理
 export const seekFindTemplateAll = function (parm) {
-  let URL = "/v1/member/findTemplateAll";
+  let URL = "/v1/groupTemplate/findTemplateAll";
   return apiCall(parm, URL);
 }
 //会员模板管理
 export const seekMemberHomeById = function (parm) {
-  let URL = "/v1/member/memberHomeById";
+  let URL = "/v1/groupTemplate/memberHomeById";
   return apiCall(parm, URL);
 }
 // 会员等级列表
@@ -927,5 +927,10 @@ export const seekFindGradeDetails = function (parm) {
 //销售折扣设置列表
 export const seekFindPoductList = function (parm) {
   let URL = "/v1/groupTemplate/findPoductList";
+  return apiCall(parm, URL);
+}
+//组合店铺与会员模板列表
+export const seekFindShopTemplateList = function (parm) {
+  let URL = "/v1/groupTemplate/findShopTemplateList";
   return apiCall(parm, URL);
 }

@@ -5,21 +5,21 @@
             <span>积分模板</span>
         </div>
         <div class="input-wrap">
-            <h5 class="item-label">组合名称</h5>
-            <input placeholder="请输入组合名称" v-model="showList.templateName">
+            <h5 class="item-label">积分模板名称</h5>
+            <input @blur="amendData({templateName: showList.templateName})" placeholder="请输入组合名称" v-model="showList.templateName">
         </div>
         <div class="shop-list">
             <h5>选择店铺</h5>
             <ul class="list-wrap">
                 <!-- 单店铺 -->
                 <el-checkbox-group style="display: inline-block" v-model="checkShopList">
-                    <li v-for="(item, index) in shopList.shopList">
-                        <el-checkbox :label="item.shopId" style="font-size: 14px;">{{item.shopName}}</el-checkbox>
+                    <li v-for="(item, index) in checkDataList.shopList">
+                        <el-checkbox @click="amendShop" :label="item.shopId" style="font-size: 14px;">{{item.shopName}}</el-checkbox>
                     </li>
                 </el-checkbox-group>
                 <!-- 组合店铺 -->
                 <el-checkbox-group style="display: inline-block" v-model="checkShopGroupList">
-                    <li v-for="(item, index) in shopList.shopGroupList">
+                    <li v-for="(item, index) in checkDataList.shopGroupList">
                         <el-checkbox :label="item.groupId" style="font-size: 14px;">{{item.groupName}}</el-checkbox>
                     </li>
                 </el-checkbox-group>
@@ -65,7 +65,7 @@ export default {
         return {
             templateId: this.$route.query.templateId,
             name: '',
-            shopList: {
+            checkDataList: {
                 shopList: [],
                 shopGroupList: []
             },
@@ -134,8 +134,11 @@ export default {
                     }
                 })
         },
+        // 修改店铺
         amendShop(val) {
-            let opations = []
+            let opations = {
+                shopList: []
+            }
             if (val.target.checked) { // 新增
                 opations = [{
                     type: '0',
@@ -179,42 +182,28 @@ export default {
             }
             this.amendData(opations)
         },
-        amendData(parm) {
-            let opations = {
-                dataList: parm, // []
-                templateId: this.showList.templateId
-            }
+        amendData(opations) {
+            operateUpdateMemberTemplaet(Object.assign({}, opations, {templateId: this.showList.templateId}))
+                .then(res => {
+                    if (res.data.state == 200) {
+                        this.$message({type: 'success',message: '修改成功'})
+                    } else {
+                        this.$message({type: 'error',message: res.data.msg})
+                    }
+                })
         },
         /* -------数据源-------- */
         // 店铺列表
         _seekFindShopList() {
-            let opations = {
-                page: 1,
-                pageSize: '0',
-                type: '1'
-            }
-            let datas = {
-                shopList: [{
-                        shopId: 'shopId',
-                        shopName: 'shopName',
-                        templateType: 'templateType',
-                    },
-                    {
-                        shopId: 'shopId2',
-                        shopName: 'shopName2',
-                        templateType: 'templateType2',
-                    }
-                ],
-                shopGroupList: [{
-                    groupId: 'groupId',
-                    groupName: 'groupName',
-                }]
-            }
-            this.shopList = datas
-            seekFindShopList(opations)
+            // let opations = {
+            //     page: 1,
+            //     pageSize: '0',
+            //     type: '1'
+            // }
+            seekFindShopList()
                 .then(res => {
                     if (res.data.state == 200) {
-                        this.shopList = res.data.data.shopList
+                        this.checkDataList = res.data.data
                     } else {
                         this.$message({
                             type: 'error',
@@ -230,44 +219,53 @@ export default {
             let options = {
                 templateId: this.templateId,
             }
-            let datas = {
-                templateId: 'templateId',
-                templateName: 'templateName',
-                discount: '1',
-                list: {
-                    shopList: [{
-                        shopId: 'shopId',
-                        shopName: 'shopName',
-                    }],
-                    groupList: [{
-                        groupId: 'groupId',
-                        groupName: 'groupName',
-                    }]
-                },
-                gradeList: [{
-                        gradeId: 'gradeId',
-                        gradeName: 'gradeName',
-                        startScore: 'startScore',
-                    },
-                    {
-                        gradeId: 'gradeId',
-                        gradeName: 'gradeName',
-                        startScore: 'startScore',
-                    }
-                ]
-            }
-            for (let i of datas.list.shopList) {
-                this.checkShopList.push(i.shopId)
-            }
-            for (let i of datas.list.groupList) {
-                this.checkShopGroupList.push(i.groupId)
-            }
-            this.checkDiscount.push(datas.discount)
-            this.showList = datas
+            // let datas = {
+            //     templateId: 'templateId',
+            //     templateName: 'templateName',
+            //     discount: '1',
+            //     list: {
+            //         shopList: [{
+            //             shopId: 'shopId',
+            //             shopName: 'shopName',
+            //         }],
+            //         groupList: [{
+            //             groupId: 'groupId',
+            //             groupName: 'groupName',
+            //         }]
+            //     },
+            //     gradeList: [{
+            //             gradeId: 'gradeId',
+            //             gradeName: 'gradeName',
+            //             startScore: 'startScore',
+            //         },
+            //         {
+            //             gradeId: 'gradeId',
+            //             gradeName: 'gradeName',
+            //             startScore: 'startScore',
+            //         }
+            //     ]
+            // }
+            // for (let i of datas.list.shopList) {
+            //     this.checkShopList.push(i.shopId)
+            // }
+            // for (let i of datas.list.groupList) {
+            //     this.checkShopGroupList.push(i.groupId)
+            // }
+            // this.checkDiscount.push(datas.discount)
+            // this.showList = datas
             seekFindMemberTemplaetDetails(options)
                 .then(res => {
                     if (res.data.state == 200) {
-                        this.showList = res.data.data
+                        debugger
+                        let datas = res.data.data
+                        for (let i of datas.shopList) {
+                            this.checkShopList.push(i.shopId)
+                        }
+                        for (let i of datas.groupList) {
+                            this.checkShopGroupList.push(i.groupId)
+                        }
+                        this.checkDiscount.push(datas.discount)
+                        this.showList = datas
                     } else {
                         this.$message({
                             type: 'error',

@@ -6,28 +6,31 @@
         <i class="el-dialog__close el-icon el-icon-close"></i>
       </div>
       <div class="add-group-body">
-        <h3>新增店铺组合</h3>
-        <div class="input-wrap">
-          <span class="item-label">组合名称</span>
-          <input placeholder="请输入组合名称" v-model="name">
-        </div>
-        <div class="shop-list">
-          <h5>选择店铺</h5>
-          <ul class="list-wrap">
-              <el-checkbox-group v-model="checkList">
-                  <li v-for="(item, index) in shopList">
-                     <el-checkbox :label="item.shopId" :class="{active: true}" style="font-size: 14px;">{{item.shopName}}</el-checkbox>
-                  </li>
-              </el-checkbox-group>
-          </ul>
-        </div>
+        <h3>{{titName}}</h3>
+
+        <template v-if="independent">
+          <div class="input-wrap">
+            <span class="item-label">组合名称</span>
+            <input @blur="_operateUpdateShopGroupById({name: name})" placeholder="请输入组合名称" v-model="name">
+          </div>
+          <div class="shop-list">
+            <h5>选择店铺</h5>
+            <ul class="list-wrap">
+                <el-checkbox-group v-model="checkList">
+                    <li v-for="(item, index) in showList.shopList">
+                       <el-checkbox @change="amendShop" :label="item.shopId" :class="{active: true}" style="font-size: 14px;">{{item.shopName}}</el-checkbox>
+                    </li>
+                </el-checkbox-group>
+            </ul>
+          </div>
+        </template>
 
         <div class="shop-list">
           <h5>会员模板选择</h5>
           <ul class="list-wrap">
               <el-checkbox-group v-model="checkTemplateList">
-                  <li v-for="(item, index) in shopList">
-                     <el-checkbox :label="item.shopId" :class="{active: true}" style="font-size: 14px;">{{item.shopName}}</el-checkbox>
+                  <li v-for="(item, index) in showList.templateList">
+                     <el-checkbox @change="amendTemplate" :label="item.templateId" :class="{active: true}" style="font-size: 14px;">{{item.tenplateName}}</el-checkbox>
                   </li>
               </el-checkbox-group>
           </ul>
@@ -41,22 +44,29 @@
   </el-dialog>
 </template>
 <script>
-import { seekGetShopListByCo } from 'Api/commonality/seek'
+import { seekFindShopTemplateList } from 'Api/commonality/seek'
+import { operateAddShopGroup, operateUpdateShopGroupById } from 'Api/commonality/operate'
 export default {
+  props: ['independent', 'titName'], // 独立店铺
   data() {
     return {
+      templateId: '',
       checkList: [],
       checkTemplateList: [],
-      shopList: [],
+      showList: {
+        shopList: [],
+        templateList: []
+      },
       name: '',
       isDialog: false
     }
   },
   methods: {
     open (parm) {
+      this.templateId = parm
       this.checkList = []
       this.isDialog = true
-      this._seekGetShopListByCo()
+      this._seekFindShopTemplateList()
     },
     close () {
       this.checkList = []
@@ -64,32 +74,102 @@ export default {
       this.isDialog = false
     },
     confirm () {
+      this._operateAddShopGroup()
+    },
+    // 修改店铺
+    amendShop(val) {
+      if (!this.templateId) {
+        return
+      }
+      this.filterAmend(val, 'shopList', 'shopId')
+    },
+    amendTemplate (val) {
+      if (!this.templateId) {
+        return
+      }
+      this.filterAmend(val, 'templateList', 'templateId')
+    },
+    filterAmend (val, bigKey, smallKey) {
+      let opations = {
+        type: '',
+        [bigKey]: [
+          {
+            [smallKey]: val.target.value
+          }
+        ]
+      }
+      if (val.target.checked) { // 新增
+        opations.type = 0
+      } else { // 删除
+        opations = [{
+          discount: 1
+        }]
+      }
+      this._operateUpdateShopGroupById(opations)
+    },
+    // 新增
+    _operateAddShopGroup () {
       let opations = {
         name: this.name,
-        list: []
+        shopList: [],
+        templateList: []
       }
-      for (let i of checkList) {
+      if (!this.name) {
+        this.$message({type: 'error',message: '请输入组合名称'})
+        return
+      }
+      if (!this.checkList.length) {
+        this.$message({type: 'error',message: '请选择店铺'})
+        return
+      }
+      for (let i of this.checkList) {
         let datas = {
           shopId: i
         }
-        opations.list.push(datas)
+        opations.shopList.push(datas)
       }
+      for (let i of this.checkTemplateList) {
+        let datas = {
+          templateId: i
+        }
+        opations.templateList.push(datas)
+      }
+      operateAddShopGroup(opations)
+        .then(res => {
+          if (res.data.state == 200) {
+            this.$message({message: '新建成功'})
+            this.close()
+          } else {
+            this.$message({type: 'error',message: res.data.msg})
+          }
+        })
     },
-    _seekGetShopListByCo() {
+    // 修改
+    _operateUpdateShopGroupById (opations) {
+      if (!this.templateId) {
+        return
+      }
+      operateUpdateShopGroupById(Object.assign(opations, {templateId: this.templateId}))
+        .then(res => {
+          if (res.data.state == 200) {
+            this.$message({message: '修改成功'})
+          } else {
+            this.$message({type: 'error',message: res.data.msg})
+          }
+        })
+    },
+    _seekFindShopTemplateList() {
       let opations = {
         page: 1,
         pageSize: '0',
         type: '1'
       }
-      seekGetShopListByCo(opations)
+      seekFindShopTemplateList(opations)
         .then(res => {
           if (res.data.state == 200) {
-            this.shopList = res.data.data.shopList
+            this.showList = res.data.data
           } else {
-            this.$message({
-              type: 'error',
-              message: res.data.msg
-            })
+            this.$message({type: 'error',message: res.data.msg})
           }
         })
     }

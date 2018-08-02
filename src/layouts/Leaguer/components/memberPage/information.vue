@@ -30,9 +30,9 @@
                     <span @click="getLevel(3)" class="item-level3 item-level">重要<i class="iconfont icon-duigou2 duihao" :class="actionType == 3 ? 'action' : ''"></i></span>
                 </div>
 
-                <div class="item ">
+                <div class="item" @mouseover="showBtn" @mouseout="hiddenBtn">
                     <span class="item-label">负责人</span>
-                    <i @click="isChoseLeader=true" class="iconfont icon-jia jia"></i>
+                    <i v-if="isShopMan" @click="isChoseLeader=true" class="iconfont icon-jia jia"></i>
                     <span>{{ leaderStr || '指派' }}</span>
                 </div>
             </div>
@@ -610,6 +610,7 @@ export default {
                 type,
                 birthday: this.birthday                
             })
+            debugger
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
@@ -693,6 +694,7 @@ export default {
                 shopId: this.shopId,
                 orderList
             })
+            debugger
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
@@ -736,6 +738,7 @@ export default {
                 birthday: this.birthday
                 
             })
+            debugger
             operateMemberUpdateBy(options).then(res => {
                 if(res.data.state === 200) {
 
@@ -762,10 +765,12 @@ export default {
                 memberId: this.memberId,
                 shopId: this.shopId,
                 birthday: this.birthday,
+                type: '1',
                 orderList
                 
             })
             console.log(options)
+            debugger
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
@@ -805,6 +810,7 @@ export default {
                 birthday: this.birthday
                 
             })
+            debugger
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
@@ -836,6 +842,7 @@ export default {
                 birthday: this.birthday
                 
             })
+            debugger
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
@@ -887,6 +894,7 @@ export default {
                         birthday:this.birthday
                     })
 
+                    debugger
                     operateMemberUpdateBy(optionsdata).then(res => {
                         if(res.data.state === 200) {
                             // this.$message({
@@ -927,6 +935,7 @@ export default {
                         
                     })
 
+                    debugger
                     operateMemberUpdateBy(optionsdata).then(res => {
                         if(res.data.state === 200) {
                             this.$message({
@@ -959,6 +968,7 @@ export default {
                 birthday: this.timeFormat(val),
                 orderList
             })
+            debugger
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {
@@ -1002,6 +1012,7 @@ export default {
                 orderList
             })
             console.log(options)
+            debugger
             operateMemberUpdateBy(options).then(res => {
                 console.log(res.data.state)
                 if(res.data.state === 200) {

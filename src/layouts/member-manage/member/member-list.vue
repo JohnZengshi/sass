@@ -435,8 +435,11 @@ export default {
 
     },
     changeMember (parm) {
+      debugger
       this.memberId = parm.memberId
-      this.$refs.memberInfoBox.open()
+      setTimeout(() => {
+        this.$refs.memberInfoBox.open()
+      }, 0)
       // this.memberId = "73fa61bdbcef4aeaa7e59e346278d195"
       // this.memberInfoFlag = true
     },

@@ -506,7 +506,6 @@ export default {
             this.homePage = false
         },
         open () {
-            debugger
             this.memberFlag = true
             // 获取会员信息
             this.getMemberInfo()

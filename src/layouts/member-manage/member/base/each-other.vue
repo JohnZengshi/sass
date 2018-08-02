@@ -20,8 +20,8 @@
           <li>{{item.shopName}}</li>
           <li>{{item.groupName}}</li>
           <li>
-            <i @click="compile" class="iconfont icon-bianji"></i>
-            <i @click="del(item, index)" class="iconfont icon-lajitong"></i>
+            <i @click="compile(item.groupId)" class="iconfont icon-bianji"></i>
+            <i @click="del(item.groupId, index)" class="iconfont icon-lajitong"></i>
           </li>
         </ul>
 
@@ -35,15 +35,14 @@
       </div>
     </div>
 
-    <add-group ref="addGroupBox"></add-group>
+    <add-group ref="addGroupBox" :independent="true" :titName="'新增店铺组合'"></add-group>
 
   </div>
 </template>
 <script>
   import addGroup from './add-group'
-  import {
-    seekFindTemplateGroupAll
-  } from 'Api/commonality/seek.js'
+  import {seekFindTemplateGroupAll} from 'Api/commonality/seek.js'
+  import {operateUpdateShopGroupById} from 'Api/commonality/operate.js'
   export default {
     components: {
       addGroup
@@ -51,38 +50,7 @@
     data () {
       return {
         loading: true,
-        combinationList: [
-          {
-            AA: 'AA',
-            BB: 'BB',
-            CC: 'CC'
-          },
-          {
-            AA: 'AA',
-            BB: 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-            CC: 'CC',
-          },
-          {
-            AA: 'AA',
-            BB: 'BB',
-            CC: 'CC',
-          },
-          {
-            AA: 'AA',
-            BB: 'BB',
-            CC: 'CC'
-          },
-          {
-            AA: 'AA',
-            BB: 'BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB',
-            CC: 'CC',
-          },
-          {
-            AA: 'AA',
-            BB: 'BB',
-            CC: 'CC',
-          }
-        ]
+        combinationList: []
       }
     },
     created () {
@@ -91,52 +59,22 @@
     methods: {
       _seekFindTemplateGroupAll () {
         this.loading = true
-        let datas = {
-          dataList: [
-            {
-              groupId: 'groupId',
-              groupName: 'groupName',
-              name: 'name',
-              groupShopList: [
-                {
-                  shopId: 'shopId',
-                  shopName: 'shopName'
-                },
-                {
-                  shopId: 'shopId2',
-                  shopName: 'shopName2'
-                }
-              ]
-            },
-            {
-              groupId: 'groupId',
-              groupName: 'groupName',
-              name: 'name',
-              groupShopList: [
-                {
-                  shopId: 'shopId',
-                  shopName: 'shopName'
-                },
-                {
-                  shopId: 'shopId2',
-                  shopName: 'shopName2'
-                }
-              ]
-            }
-          ]
-        }
-        for (let i of datas.dataList) {
-          let shopName = ''
-          for (let j of i.groupShopList) {
-            shopName += shopName ? '、' + j.shopName : j.shopName
-          }
-          i.shopName = shopName
-        }
-        this.combinationList = datas.dataList
-        this.loading = false
         seekFindTemplateGroupAll()
           .then(res => {
-
+            if (res.data.state == 200) {
+              let datas = res.data.data.dataList
+              for (let i of datas) {
+                let shopName = ''
+                for (let j of i.groupShopList) {
+                  shopName += shopName ? '、' + j.shopName : j.shopName
+                }
+                i.shopName = shopName
+              }
+              this.combinationList = datas
+            } else {
+              this.$message({type: 'error',message: res.data.msg})
+            }
+            this.loading = false
           })
       },
       openAdd () {
@@ -146,7 +84,15 @@
         this.$refs.addGroupBox.open(parm)
       },
       del (item, index) {
-        this.combinationList.splice(index, 1)
+        operateUpdateShopGroupById({templateId: item})
+          .then(res => {
+            if (res.data.state == 200) {
+              this.$message({message: '删除'})
+              this.combinationList.splice(index, 1)
+            } else {
+              this.$message({type: 'error',message: res.data.msg})
+            }
+          })
       }
     }
   }
