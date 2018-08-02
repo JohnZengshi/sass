@@ -14,13 +14,13 @@
                 <!-- 单店铺 -->
                 <el-checkbox-group style="display: inline-block" v-model="checkShopList">
                     <li v-for="(item, index) in checkDataList.shopList">
-                        <el-checkbox @click="amendShop" :label="item.shopId" style="font-size: 14px;">{{item.shopName}}</el-checkbox>
+                        <el-checkbox @change="amendShop" :label="item.shopId" style="font-size: 14px;">{{item.shopName}}</el-checkbox>
                     </li>
                 </el-checkbox-group>
                 <!-- 组合店铺 -->
                 <el-checkbox-group style="display: inline-block" v-model="checkShopGroupList">
                     <li v-for="(item, index) in checkDataList.shopGroupList">
-                        <el-checkbox :label="item.groupId" style="font-size: 14px;">{{item.groupName}}</el-checkbox>
+                        <el-checkbox @change="amendShop" :label="item.groupId" style="font-size: 14px;">{{item.groupName}}</el-checkbox>
                     </li>
                 </el-checkbox-group>
             </ul>
@@ -55,7 +55,7 @@
 import addGrade from './add-grade'
 import memberSetting from '@/layouts/Work/memberSetting/index'
 import { seekFindMemberTemplaetDetails, seekFindShopList } from 'Api/commonality/seek'
-import { operateUpdateGrade } from 'Api/commonality/operate'
+import { operateUpdateGrade, operateUpdateMemberTemplaet } from 'Api/commonality/operate'
 export default {
     components: {
         addGrade,
@@ -136,19 +136,19 @@ export default {
         },
         // 修改店铺
         amendShop(val) {
+            debugger
             let opations = {
-                shopList: []
+                type: '',
+                shopList: [
+                    {
+                        shopId: val.target.value
+                    }
+                ]
             }
             if (val.target.checked) { // 新增
-                opations = [{
-                    type: '0',
-                    shopId: val.target.value
-                }]
+                opations.type = '0'
             } else { // 删除
-                opations = [{
-                    type: '1',
-                    shopId: val.target.value
-                }]
+                opations.type = '1'
             }
             this.amendData(opations)
         },
@@ -168,7 +168,7 @@ export default {
             this.amendData(opations)
         },
         amendDiscount(val) {
-            let opations = []
+            let opations = {}
             if (val.target.checked) { // 新增
                 this.checkDiscount = []
                 this.checkDiscount.push(val.target.value)
