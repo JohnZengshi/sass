@@ -349,12 +349,7 @@
         seekRepositoryList()
           .then(res => {
             if (res.data.state === 200) {
-              this.repositoryList = [...res.data.data.repositoryList, {
-                isDefault: "Y",
-                // repositoryId: "0",
-                repositoryId: "",
-                repositoryName: "全部仓库"
-              }]
+              this.repositoryList = res.data.data.repositoryList
             }
           })
       },
@@ -368,11 +363,7 @@
             if (res.data.state === 200) {
               let shopListLength = res.data.data.shopList.length;
               if (shopListLength > 1) {
-                this.shopList = [...res.data.data.shopList, {
-                  // shopId: '0',
-                  shopId: '',
-                  shopName: '全部店铺'
-                }]
+                this.shopList = res.data.data.shopList
               }else{
                 this.shopList = res.data.data.shopList;
               }
@@ -387,10 +378,10 @@
         seekShowCounterList(options)
           .then(res => {
             this.counterList = res.data.data.counterList
-            if (res.data.data.counterList.length > 1) {
-              this.$refs.counterBox.clearTitleInfo()
-              this.$refs.stockTableBox.amendShop()
-            }
+            // if (res.data.data.counterList.length > 1) {
+            this.$refs.counterBox.clearTitleInfo()
+            this.$refs.stockTableBox.amendShop()
+            // }
           })
       },
       clearRepository () {
