@@ -47,7 +47,7 @@
             </ul>
         </div>
         <!-- 会员积分配置 -->
-<!--         <memberSetting></memberSetting> -->
+        <memberSetting></memberSetting>
         <add-grade ref="addGradeBox"></add-grade>
     </div>
 </template>
@@ -136,7 +136,6 @@ export default {
         },
         // 修改店铺
         amendShop(val) {
-            debugger
             let opations = {
                 type: '',
                 shopList: [
@@ -168,17 +167,15 @@ export default {
             this.amendData(opations)
         },
         amendDiscount(val) {
-            let opations = {}
+            let opations = {
+                discount: ''
+            }
             if (val.target.checked) { // 新增
                 this.checkDiscount = []
                 this.checkDiscount.push(val.target.value)
-                opations = [{
-                    discount: val.target.value
-                }]
+                opations.discount = val.target.value
             } else {
-                opations = [{
-                    discount: 0
-                }]
+                opations.discount = 0
             }
             this.amendData(opations)
         },
@@ -219,44 +216,9 @@ export default {
             let options = {
                 templateId: this.templateId,
             }
-            // let datas = {
-            //     templateId: 'templateId',
-            //     templateName: 'templateName',
-            //     discount: '1',
-            //     list: {
-            //         shopList: [{
-            //             shopId: 'shopId',
-            //             shopName: 'shopName',
-            //         }],
-            //         groupList: [{
-            //             groupId: 'groupId',
-            //             groupName: 'groupName',
-            //         }]
-            //     },
-            //     gradeList: [{
-            //             gradeId: 'gradeId',
-            //             gradeName: 'gradeName',
-            //             startScore: 'startScore',
-            //         },
-            //         {
-            //             gradeId: 'gradeId',
-            //             gradeName: 'gradeName',
-            //             startScore: 'startScore',
-            //         }
-            //     ]
-            // }
-            // for (let i of datas.list.shopList) {
-            //     this.checkShopList.push(i.shopId)
-            // }
-            // for (let i of datas.list.groupList) {
-            //     this.checkShopGroupList.push(i.groupId)
-            // }
-            // this.checkDiscount.push(datas.discount)
-            // this.showList = datas
             seekFindMemberTemplaetDetails(options)
                 .then(res => {
                     if (res.data.state == 200) {
-                        debugger
                         let datas = res.data.data
                         for (let i of datas.shopList) {
                             this.checkShopList.push(i.shopId)

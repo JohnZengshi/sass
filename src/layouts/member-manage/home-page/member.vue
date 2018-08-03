@@ -106,7 +106,7 @@
 <style lang="scss" scoped>
 .m-m-home-page-member-main{
   position: relative;
-  background-color: #F6FBFF;
+  background-color: #fff;
   font-size: 0;
   overflow: hidden;
   .decoration{
@@ -185,9 +185,9 @@
     li{
       display: inline-block;
       font-size: 22px;
-      margin-right: 50px;
-      min-width: 160px;
-      height: 86px;
+      margin-right: 40px;
+      min-width: 115px;
+      height: 94px;
       text-align: center;
       border: 1px solid #d6d6d6;
       border-radius: 5px;
@@ -197,18 +197,19 @@
       p{
         color: #333;
         text-align: left;
-        font-size: 22px;
-        margin: 10px 0 0 10px;
+        font-size: 14px;
+        margin: 10px 0 20px 10px;
       }
       span{
         color: #333;
         font-weight: bold;
       }
       span:nth-child(2){
-        font-size: 36px;
+        font-size: 20px;
       }
       span:nth-child(3){
-        font-size: 16px;
+        font-size: 14px;
+        color: #999;
       }
     }
     // li:nth-child(1){
@@ -255,8 +256,8 @@
   }
   .top-btn{
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 30px;
+    right: 30px;
   }
 }
 </style>

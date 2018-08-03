@@ -30,7 +30,7 @@
           <ul class="list-wrap">
               <el-checkbox-group v-model="checkTemplateList">
                   <li v-for="(item, index) in showList.templateList">
-                     <el-checkbox @change="amendTemplate" :label="item.templateId" :class="{active: true}" style="font-size: 14px;">{{item.tenplateName}}</el-checkbox>
+                     <el-checkbox @change="amendTemplate" :label="item.templateId" :class="{active: true}" style="font-size: 14px;">{{item.templateName}}</el-checkbox>
                   </li>
               </el-checkbox-group>
           </ul>
@@ -216,6 +216,7 @@ export default {
   }
   .add-group-body {
     height: 660px;
+    overflow: scroll;
     >h3 {
       line-height: 1;
       font-size: 16px;

@@ -18,7 +18,14 @@
             <li>
               <i @click="compile" class="iconfont icon-bianji"></i>
             </li>
-          </ul> 
+          </ul>
+
+          <ul class="no-ul" v-if="items.length < 4" v-for="(item, index) in (4 - items.length)">
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+
         </div>
       </div>
     </div>
@@ -27,7 +34,11 @@
 </template>
 <script>
   import { seekFindTemplateShopAll } from 'Api/commonality/seek'
+  import addGroup from './add-group'
   export default {
+    components: {
+      addGroup
+    },
     data () {
       return {
         loading: false,
@@ -68,6 +79,7 @@
   }
   .m-m-shop-list{
     font-size: 0;
+    min-height: 200px;
     margin: 10px 0 0 50px;
     .each-table{
       display: inline-block;
@@ -109,6 +121,9 @@
           word-wrap: break-word; 
           word-break: normal; 
         }
+      }
+      .no-ul{
+        height: 50px;
       }
       .header-tit{
         height:50px;

@@ -644,4 +644,8 @@ export const operateUpdateMemberTemplaet = function (parm) {
   let URL = "/v1/groupTemplate/updateMemberTemplaet";
   return apiCall(parm, URL);
 }
-
+// 修改会员
+export const operateUpdateMember = function (parm) {
+  let URL = "/v1/groupTemplate/updateMember";
+  return apiCall(parm, URL);
+}

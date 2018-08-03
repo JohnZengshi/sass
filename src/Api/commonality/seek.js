@@ -934,3 +934,8 @@ export const seekFindShopTemplateList = function (parm) {
   let URL = "/v1/groupTemplate/findShopTemplateList";
   return apiCall(parm, URL);
 }
+//组合店铺与会员模板列表
+export const seekFindMemberDetails = function (parm) {
+  let URL = "/v1/groupTemplate/findMemberDetails";
+  return apiCall(parm, URL);
+}
