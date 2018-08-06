@@ -47,7 +47,7 @@
           </div>
       </div>
         <!-- <DropDownMenu></DropDownMenu> -->
-        <span class="tolast" @click.stop="goback">返回上一级</span>
+        <!-- <span class="tolast" @click.stop="goback">返回上一级</span> -->
       </div>
     </div>
     <div class="claerfix"></div>

@@ -284,6 +284,7 @@
 			},
 			//预览，是否马上打印
 			preview(isPrint) {
+			    debugger
 				if(this.templateId) {
 					if(!isPrint || this.selectedProducts.length) {
 						if(this.radio == "2") {

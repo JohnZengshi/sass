@@ -10,17 +10,21 @@
           <router-link tag="span" to="/work/report/" class="path_crumbs">报表</router-link> > <span class="txt">修改</span>
         </div>
         <div class="Rp_selected_container">
-
-          <HeaderDropDownMenu class="selected_dropdown" titleName="修改库位" dataType="库位" :propList="repositoryList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </HeaderDropDownMenu>
-          <span class="spaceMark">|</span>
-
-          <HeaderDropDownMenu class="selected_dropdown" titleName="制单人" dataType="制单人" :propList="shopUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </HeaderDropDownMenu>
-          <span class="spaceMark">|</span>
-
-          <HeaderDropDownMenu class="selected_dropdown" titleName="审核人" dataType="审核人" :propList="auditorUserList" @dropReturn="dropReturn" @clearInfo="clearInfo">
-          </HeaderDropDownMenu>
+          <!-- 头部的筛选条件 -->
+          <template v-for="(item,index) in selectBox">
+            <HeaderDropDownMenu 
+              class="selected_dropdown" 
+              :titleName="item.titleName" 
+              :dataType="item.dataType" 
+              :propList="item.propList" 
+              :prohibitDdropDown="item.prohibitDdropDown"
+              @dropReturn="dropReturn" 
+              @clearInfo="clearInfo" 
+              @isSelect="(val)=> isSelectArr.push(val)">
+            </HeaderDropDownMenu>
+            <span v-show="index < selectBox.length-1" class="spaceMark">|</span>
+          </template>
+           <!-- 日期筛选条件 -->
           <div class="report-data">
             <div class="block until" data-txt="至">
               <el-date-picker size="mini" v-model="beginTime" @change="getTimeData" type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
@@ -526,10 +530,32 @@ import LoaderNum from 'components/work/loaderNum.vue'
         jewelList:[],
         jewelryList:[],
         // 打印的数据
-        printDataGrid:null
+        printDataGrid:null,
+        // 筛选条件判断数组
+        isSelectArr:[],
       };
     },
-
+    computed:{
+        // 头部的筛选条件数据
+        selectBox:function(){
+          return [{
+            titleName:"修改库位",
+            dataType:"库位",
+            propList:this.repositoryList,
+            prohibitDdropDown:false, //是否禁止下拉
+          },{
+            titleName:"制单人",
+            dataType:"制单人",
+            propList:this.shopUserList,
+            prohibitDdropDown:false, //是否禁止下拉
+          },{
+            titleName:"审核人",
+            dataType:"审核人",
+            propList:this.auditorUserList,
+            prohibitDdropDown:false, //是否禁止下拉
+          }]
+        }
+      },
     created() {
       //后台请求时间
       this.dataGridOptions.beginTime = this.getDate(-((new Date()).getDate() - 1), 'start').fullData
@@ -545,7 +571,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
       this.getShop() //库位
       this.getUserList() //制单人
       this.getGetUserList() //审核人
-      this.send()
+      // this.send()
       this.$store.dispatch('checkBrowser', (type) => {
         this.reportPrint_fixed = type
       })
@@ -584,6 +610,17 @@ import LoaderNum from 'components/work/loaderNum.vue'
           this.dataGridOptions.sortFlag = 0
         }
         this.send()
+      },
+      // 筛选条件判断数组
+      'isSelectArr'(val){
+        if(val.length == this.selectBox.length){
+          if(!val.includes(true)){
+            this.send();
+            console.log("没有选项选中")
+          }else{
+            console.log("已有选项选中")
+          }
+        }
       }
     },
     methods: {
@@ -1068,7 +1105,7 @@ import LoaderNum from 'components/work/loaderNum.vue'
       //懒加载
       lazyloadSend() {
           // this.dataGridOptions.pageSize += 15
-          this.send()
+          // this.send()
       },
       //打印表格
       tabPrin(){

@@ -96,7 +96,7 @@
               </div>
               <!-- 搜索模块 end  -->
               <div class="info" @click="unreadNoticeNum = 0">
-                <el-badge :value="unreadNoticeNum" :hidden="unreadNoticeNum == 0" class="item" title="公告">
+                <el-badge :value="unreadNoticeNum" :hidden="unreadNoticeNum == 0 || $route.path == '/notice'" class="item" title="公告">
                   <router-link class="iconfont icon-tixing" tag="i" to="/notice"></router-link>
                 </el-badge>
               </div>
