@@ -1,8 +1,10 @@
 <!-- 新增店铺组合 -->
 <template>
   <div>
+    <!-- 批量修改 -->
     <memberDialog v-show="dialog.dialogVisible" :dialog="dialog" @closeDialog="closeDialog" @dialogType="dialogType" @dialogCallback="dialogCallback"></memberDialog>
-    <el-dialog v-show="!dialog.dialogVisible" top="7%" :visible.sync="isDialog" class="xj-input-dialog">
+
+    <el-dialog v-show="!dialog.dialogVisible" top="10%" :visible.sync="isDialog" class="new-popup-dialog">
       <div class="m-m-add-group-main">
         <div class="p-close-icon" @click="isDialog = false">
           <i class="el-dialog__close el-icon el-icon-close"></i>
@@ -19,7 +21,7 @@
           </div>
           <div class="input-wrap">
             <span class="item-label"><i class="mandatory-icon">*</i>下一级别</span>
-            <down-menu :isSolid="true" :titleInfo="showData.nextGradeName ? showData.nextGradeName : '请选择'" :showList="shopList" :nameKey="'gradeName'" @changeData="change" @clearInfo="clear"></down-menu>
+            <down-menu :isSolid="true" :titleInfo="showData.nextGradeName ? showData.nextGradeName : '请选择'" :showList="gradeList" :nameKey="'gradeName'" @changeData="change" @clearInfo="clear"></down-menu>
           </div>
           <div class="input-wrap">
             <span class="item-label">设置最低折扣</span>
@@ -36,7 +38,8 @@
   </div>
 </template>
 <script>
-import { seekGetShopListByCo } from 'Api/commonality/seek'
+import { seekGetShopListByCo, seekFindGradeList, seekFindGradeDetails } from 'Api/commonality/seek'
+import { operateAddGrade } from 'Api/commonality/operate'
 import downMenu from 'base/menu/new-down-menu'
 import sellDiscount from './sell-discount'
 import memberDialog from '@/layouts/Work/ShopSetting/dialog/tplGoldDialog'
@@ -48,6 +51,8 @@ export default {
   },
   data() {
     return {
+      templateId: this.$route.query.templateId,
+      gradeId: '', // 会员等级id
       showData: {
         gradeName: '',
         startScore: '',
@@ -58,6 +63,7 @@ export default {
       issellDiscountBox: false,
       checkList: [],
       shopList: [],
+      gradeList: [], // 等级列表
       name: '',
       isDialog: false,
       // 弹框数据
@@ -69,6 +75,9 @@ export default {
         smallDataList: []
       },
     }
+  },
+  created () {
+    this._seekFindGradeList()
   },
   methods: {
     setClass(parm) {
@@ -84,6 +93,10 @@ export default {
       this.$refs.sellDiscountBox.dialogCallback(parm)
     },
     open(parm) {
+      this.gradeId = parm
+      if (parm) {
+        this._seekFindGradeDetails(parm)
+      }
       this.checkList = []
       this.isDialog = true
       // if (this.$refs.sellDiscountBox) {
@@ -100,8 +113,9 @@ export default {
       this.issellDiscountBox = true
       // this.$refs.sellDiscountBox.open()
     },
-    change() {
-
+    change(parm) {
+      this.showData.gradeId = parm.gradeId
+      this.showData.nextGradeName = parm.gradeName
     },
     clear() {
 
@@ -112,22 +126,28 @@ export default {
       this.isDialog = false
     },
     confirm() {
-
-      if (this.showData.gradeName) {
+      if (this.gradeId) { // 新增
+        this._operateAddGrade()
+      } else { // 修改
+        this.close()
+      }
+    },
+    _operateAddGrade () {
+      if (!this.showData.gradeName) {
         this.$message({
           type: 'error',
           message: '请输入级别名称'
         })
       }
 
-      if (this.showData.startScore) {
+      if (!this.showData.startScore) {
         this.$message({
           type: 'error',
           message: '请输入起始积分'
         })
       }
 
-      if (this.showData.gradeId) {
+      if (!this.showData.gradeId) {
         this.$message({
           type: 'error',
           message: '请选择下一级别'
@@ -136,7 +156,7 @@ export default {
 
       let opations = {
         name: this.name,
-        list: []
+        poductList: []
       }
       for (let i of checkList) {
         let datas = {
@@ -144,8 +164,60 @@ export default {
         }
         opations.list.push(datas)
       }
+      operateAddGrade()
+        .then(res => {
+          
+        })
     },
-    _seekGetShopListByCo() {
+    _seekFindGradeList () {
+      let opations = {
+        templateId: this.templateId,
+      }
+      let datas = [{
+        gradeId: 'gradeId',
+        gradeName: 'gradeName'
+      }]
+      this.gradeList = datas
+      seekFindGradeList(opations)
+        .then(res => {
+          if (res.data.state == 200) {
+            this.gradeList = res.data.data.list
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            })
+          }
+        })
+    },
+    _seekFindGradeDetails (parm) {
+      let opations = {
+        gradeId: parm ? parm : this.gradeId
+      }
+
+      let datas = {
+        gradeName: '',
+        startScore: '',
+        gradeId: '',
+        nextGradeName: '',
+        poductList: []
+      }
+
+      this.showData = datas
+      
+      seekFindGradeDetails(opations)
+        .then(res => {
+          if (res.data.state == 200) {
+            this.showData = res.data.data
+          } else {
+            this.$message({
+              type: 'error',
+              message: res.data.msg
+            })
+          }
+        })
+    },
+    _seekGetShopListByCo () {
       let opations = {
         page: 1,
         pageSize: '0',
@@ -188,8 +260,6 @@ export default {
 <style lang="scss" scoped>
 .m-m-add-group-main {
   height: 100%;
-  width: 700px;
-  height: 730px;
   background-color: #fff;
   border-radius: 5px;
   padding: 20px 30px;
@@ -214,12 +284,15 @@ export default {
       margin-bottom: 20px;
       color: #333;
     }
-    .input-wrap {
+    >.input-wrap {
       width: 300px;
-      margin-bottom: 34px;
+      display: inline-block;
+      margin-bottom: 20px;
       .item-label {
         display: inline-block;
         width: 90px;
+        font-size: 14px;
+        line-height: 28px;
       }
       input {
         height: 28px;

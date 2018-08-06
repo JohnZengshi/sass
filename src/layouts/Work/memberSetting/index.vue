@@ -1,17 +1,17 @@
 <template>
     <div class="member-points-wrap"> 
         <!-- 头部title begin -->
-        <h1 class="header-title">
+<!--         <h1 class="header-title">
             <i class="iconfont icon-dianpu"></i>  <span @click="goBackReturn" class="gobackBtn">{{titleShow}}</span> > <span>会员积分</span> 
-        </h1>
+        </h1> -->
         <!-- 头部title end -->
         <!-- 内容主体 begin-->
         <div class="member-content">
             <!-- 标题 0.1 begin -->
-            <div class="content-title">
+<!--             <div class="content-title">
                 <i class="iconfont icon-liebiao"></i>
                 <span>积分兑换配置</span>
-            </div>
+            </div> -->
             <!-- 标题 0.1 end -->
 
             <!-- 积分模板应用店铺 0.2 begin -->
@@ -1252,7 +1252,6 @@ export default {
 <style lang="scss">
 $fontColor:#47a3fb;
 .member-points-wrap {
-    width: 1250px;
     margin: 0 auto;
     margin-top: 40px;
     h1 {
@@ -1276,9 +1275,9 @@ $fontColor:#47a3fb;
     .member-content {
         // height: 730px;
         background-color: #fff;
-        box-shadow: 0px 0 15px #ddd;
-        border-radius: 10px;
-        padding-bottom: 30px;
+        // box-shadow: 0px 0 15px #ddd;
+        // border-radius: 10px;
+        // padding-bottom: 30px;
         .content-title {
             height: 50px;
             line-height: 50px;

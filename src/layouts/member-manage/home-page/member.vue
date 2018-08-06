@@ -28,7 +28,7 @@
 
     <ul class="center-btn-list">
       <li v-for="item in memberList.gradeList">
-        <span>{{item.gradeName}}</span>
+        <p>{{item.gradeName}}</p>
         <span>{{item.countGrade}}</span>
         <span>位</span>
       </li>
@@ -186,20 +186,23 @@
       display: inline-block;
       font-size: 22px;
       margin-right: 50px;
-      width: 213px;
+      min-width: 160px;
       height: 86px;
-      line-height: 80px;
       text-align: center;
-      background: url('~assets/img/member/member-box-four.png') no-repeat;
+      border: 1px solid #d6d6d6;
+      border-radius: 5px;
+      // background: url('~assets/img/member/member-box-four.png') no-repeat;
       background-size: 213px 86px;
       margin-bottom: 30px;
-      span{
-        color: #fff;
-        font-size: 12px;
-        font-weight: bold;
-      }
-      span:nth-child(1){
+      p{
+        color: #333;
+        text-align: left;
         font-size: 22px;
+        margin: 10px 0 0 10px;
+      }
+      span{
+        color: #333;
+        font-weight: bold;
       }
       span:nth-child(2){
         font-size: 36px;
@@ -208,18 +211,18 @@
         font-size: 16px;
       }
     }
-    li:nth-child(1){
-      background: url('~assets/img/member/member-box-one.png') no-repeat;
-      background-size: 213px 86px;
-    }
-    li:nth-child(2){
-      background: url('~assets/img/member/member-box-two.png') no-repeat;
-      background-size: 213px 86px;
-    }
-    li:nth-child(3){
-      background: url('~assets/img/member/member-box-three.png') no-repeat;
-      background-size: 213px 86px;
-    }
+    // li:nth-child(1){
+    //   background: url('~assets/img/member/member-box-one.png') no-repeat;
+    //   background-size: 213px 86px;
+    // }
+    // li:nth-child(2){
+    //   background: url('~assets/img/member/member-box-two.png') no-repeat;
+    //   background-size: 213px 86px;
+    // }
+    // li:nth-child(3){
+    //   background: url('~assets/img/member/member-box-three.png') no-repeat;
+    //   background-size: 213px 86px;
+    // }
   }
   // .center-btn-list{
   //   display: inline-block;

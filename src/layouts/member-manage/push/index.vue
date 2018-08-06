@@ -69,6 +69,7 @@
             width: 100%;
             // height: 768px;
             border-radius: 8px;
+            overflow: hidden;
             background-color: #fff;
         }
     }

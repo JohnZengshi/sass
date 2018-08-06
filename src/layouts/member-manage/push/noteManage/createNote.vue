@@ -81,12 +81,14 @@
             <el-form-item>
                 <span class="noData" v-if="memberList.length == 0">暂无数据</span>
                 <TableBody
+                    v-else
+                    :headerData="memberListHeader"
                     :showHeader="false"
                     styleClass="el_table_createNote"
                     :tableData="memberList"
-                    :headerData="memberListHeader"
+                    :operationConfig="operationConfig"
                     :optional="true"
-                    v-else></TableBody>
+                    ></TableBody>
             </el-form-item>
             <el-form-item>
                 <div class="bottom">
@@ -144,8 +146,63 @@
                         name: '李微微',
                         phone: '13652548579',
                         img:"https://img04.sogoucdn.com/app/a/100520024/364417139a420a7bd75ebe9cf14d012f",
+                    },{ //会员列表
+                        name: '王微微',
+                        phone: '13652548579',
+                        img:"https://img04.sogoucdn.com/app/a/100520024/364417139a420a7bd75ebe9cf14d012f",
+                    }, {
+                        name: '李微微',
+                        phone: '13652548579',
+                        img:"https://img04.sogoucdn.com/app/a/100520024/364417139a420a7bd75ebe9cf14d012f",
+                    },
+                    {
+                        name: '王微微',
+                        phone: '13652548579',
+                        img:"https://img04.sogoucdn.com/app/a/100520024/364417139a420a7bd75ebe9cf14d012f",
+                    }, {
+                        name: '李微微',
+                        phone: '13652548579',
+                        img:"https://img04.sogoucdn.com/app/a/100520024/364417139a420a7bd75ebe9cf14d012f",
+                    },
+                    {
+                        name: '王微微',
+                        phone: '13652548579',
+                        img:"https://img04.sogoucdn.com/app/a/100520024/364417139a420a7bd75ebe9cf14d012f",
+                    }, {
+                        name: '李微微',
+                        phone: '13652548579',
+                        img:"https://img04.sogoucdn.com/app/a/100520024/364417139a420a7bd75ebe9cf14d012f",
+                    },{ //会员列表
+                        name: '王微微',
+                        phone: '13652548579',
+                        img:"https://img04.sogoucdn.com/app/a/100520024/364417139a420a7bd75ebe9cf14d012f",
+                    }, {
+                        name: '李微微',
+                        phone: '13652548579',
+                        img:"https://img04.sogoucdn.com/app/a/100520024/364417139a420a7bd75ebe9cf14d012f",
+                    },
+                    {
+                        name: '王微微',
+                        phone: '13652548579',
+                        img:"https://img04.sogoucdn.com/app/a/100520024/364417139a420a7bd75ebe9cf14d012f",
+                    }, {
+                        name: '李微微',
+                        phone: '13652548579',
+                        img:"https://img04.sogoucdn.com/app/a/100520024/364417139a420a7bd75ebe9cf14d012f",
+                    },
+                    {
+                        name: '王微微',
+                        phone: '13652548579',
+                        img:"https://img04.sogoucdn.com/app/a/100520024/364417139a420a7bd75ebe9cf14d012f",
+                    }, {
+                        name: '李微微',
+                        phone: '13652548579',
+                        img:"https://img04.sogoucdn.com/app/a/100520024/364417139a420a7bd75ebe9cf14d012f",
                     }
-                ]
+                ],
+                operationConfig:{ //操作配置
+                    operation:false, //是否开启操作
+                },
             }
         },
         methods: {

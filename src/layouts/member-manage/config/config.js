@@ -209,128 +209,176 @@ module.exports = {
       editOldType : ''
     }
   ],
-  // 短信管理->即时短信->表格头部
-  noteManageHeader01: [{
-          id: "0",
-          text: "排序",
-      },
+  // 短信管理->即时短信->表格头部,表格内容字段配置
+  noteManageHeader01: [
       {
           id: "1",
           text: "模板类型",
+          tableValue:"moduleType"
       },
       {
           id: "2",
           text: "短信名称",
+          tableValue:"noteName",
+          isClick:true, //可点击
       },
       {
           id: "3",
           text: "创建人",
+          tableValue:"createdPreson"
       },
-    //   {
-    //       id: "4",
-    //       text: "模板状态",
-    //       active:true
-    //   },
       {
           id: "5",
           text: "今日发送",
+          tableValue:"todaySend"
       },
       {
           id: "6",
           text: "累计发送",
-      },
-      {
-          id: "7",
-          text: "操作",
-          operation:true,
-          operationList:["icon-bianji","icon-lajitong"]
+          tableValue:"totalSend"
       },
 
   ],
-  // 短信管理->触发短信->表格头部
-  noteManageHeader02: [{
-          id: "0",
-          text: "排序",
-      },
+  // 短信管理->触发短信->表格头部,表格内容字段配置
+  noteManageHeader02: [
       {
           id: "1",
           text: "短信名称",
+          tableValue:"noteName",
+          isClick:true, //可点击
       },
       {
           id: "2",
           text: "创建人",
+          tableValue:"createdPreson"
       },
       {
           id: "3",
           text: "模板状态",
-          active:true
+          tableValue:"moduleState",
+          isActive: true, //有活动状态
+          isChangeVal:true, //需要装换值
+          ChangeVal:[{    //需要装换的值
+            "moduleState":true,
+            text:"开启"
+          },{
+            "moduleState":false,
+            text:"禁用"  
+          }]
       },
       {
           id: "4",
           text: "今日发送",
+          tableValue:"todaySend"
       },
       {
           id: "5",
           text: "累计发送",
+          tableValue:"totalSend"
       },
-      {
-          id: "6",
-          text: "操作",
-          operation:true,
-          operationList:["icon-qidong","icon-bianji","icon-lajitong"]
-      },
+    //   {
+    //       id: "6",
+    //       text: "操作",
+    //       operation:true,
+    //       operationList:["icon-qidong","icon-bianji","icon-lajitong"]
+    //   },
 
   ],
-  // 短信管理->短信日志->表格头部
+  // 短信管理->短信日志->表格头部,表格内容字段配置
   noteManageHeader03: [{
-          id: "0",
-          text: "排序",
-      }, {
           id: "1",
           text: "模板类型",
+          tableValue:"moduleType",
+          width:92
       },
       {
           id: "2",
           text: "短信名称",
+          tableValue:"noteName",
+          width:96
       },
       {
           id: "3",
           text: "短信内容",
+          tableValue:"noteContent",
+          width:482
       },
       {
           id: "4",
           text: "用户姓名",
+          tableValue:"userName",
+          width:96
       },
       {
           id: "5",
           text: "用户手机",
+          tableValue:"userPhone",
+          width:106
       },
       {
           id: "6",
           text: "短信剩余",
+          tableValue:"noteSurplus",
+          width:94
       },
       {
           id: "7",
           text: "发送状态",
-          active:true
+          active:true,
+          tableValue:"sendState",
+          isActive: true, //有活动状态
+          isChangeVal:true, //需要装换值
+          ChangeVal:[{    //需要装换的值
+            "sendState":true,
+            text:"发送成功"
+          },{
+            "sendState":false,
+            text:"发送失败"  
+          }],
+          width:108
+          
       },
       {
           id: "8",
           text: "发送时间",
+          tableValue:"sendTime",
+          width:106
       }
 
   ],
-  // 短信管理->新增短信->隐藏字段
+  // 短信管理->新增短信->隐藏字段,表格内容字段配置
   memberListHeader: [{
           text: "姓名",
-          value: "name",
+          tableValue: "name",
           pic: true,//开启头像
           picValue:"img" //头像字段
       },
       {
           text: "电话",
-          value: "phone"
+          tableValue: "phone"
       }
-  ]
+  ],
+  noteLogListHeader:[{
+      text:"用户名",
+      tableValue:"userName",
+  },{
+      text:"用户手机",
+      tableValue:"userPhone",
+  },{
+      text:"发送时间",
+      tableValue:"sendTime",
+  }, {
+      text: "发送状态",
+      tableValue: "sendState",
+      isActive: true,
+      isChangeVal: true, //需要装换值
+      ChangeVal: [{ //需要装换的值
+          "sendState": true,
+          text: "发送成功"
+      }, {
+          "sendState": false,
+          text: "发送失败"
+      }]
+  }]
 
 }

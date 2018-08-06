@@ -3,55 +3,45 @@
   <div class="m-m-sell-discount-main">
 <!--     <div v-for="item in productTypeList"> -->
 <!--       <h6>{{item.classesName}}</h6> -->
-      <div class="product-setting-content" v-if="templateInfoData.poductTypeList">
+      <div class="product-setting-content" v-if="productTypeList">
           <!-- 计重类 begin -->
-          <div class="producet-jz" v-if="templateInfoData.poductTypeList[0].classesType == 1">
+          <div class="producet-jz" v-for="allItme in productTypeList">
               <div class="title">
-                  <span>计重类</span>
-                  <el-button v-if="!isDisabled" type="primary" size="mini" @click="jzSetting">批量设置</el-button>
+                  <span>{{allItme.classesName}}</span>
+                  <div v-if="!isDisabled" class="xj-btn-defult" @click="jzSetting(allItme.typeList, allItme.classesName)">
+                    批量设置
+                  </div>
               </div>
               <div class="content">
-                  <div class="item-wrap" v-for="(item,index) in templateInfoData.poductTypeList[0].typeList" :key="index">
+                  <div class="item-wrap" v-for="(item,index) in allItme.typeList" :key="index">
                       <p class="item-title">{{ item.classesName }}</p>
                       <p class="item-input">
-                          <input type="number" @blur="setConsumeTemplateUpdate(item)" v-model="item.yuan" :disabled="isDisabled">
-<!--                           <input type="number" @blur="setConsumeTemplateUpdate(item)" v-model="item.score" :disabled="isDisabled"> -->
-                          <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
-                          <el-input v-model="input" placeholder="请输入内容"></el-input> -->
+                          <input @blur="setConsumeTemplateUpdate(item)" v-model="item.score" :disabled="isDisabled">
+                          <span>%</span>
                       </p>
-<!--                       <p class="item-message">
-                          <span>消费（元）</span>
-                          <span>可积（分）</span>
-                      </p> -->
                   </div>
               </div>
           </div>
           <!-- 计重类 end -->
 
           <!-- 计件类 begin -->
-          <div class="porducet-jj" v-if="templateInfoData.poductTypeList[1].classesType == 2">
+<!--           <div class="porducet-jj" v-if="productTypeList[1].classesType == 2">
               <div class="title">
                   <span>计件类</span>
-                  <el-button v-if="!isDisabled" type="primary" size="mini" @click="jjsetting">批量设置</el-button>
-              </div>
-              <div class="content">
-                  <div class="item-wrap" v-for="(item,index) in templateInfoData.poductTypeList[1].typeList" :key="index">
-                      <p class="item-title">{{ item.classesName }}</p>
-                      <p class="item-input">
-                          <input type="number" @blur="setConsumeTemplateUpdate(item)" v-model="item.yuan" :disabled="isDisabled">
-                          <span>%</span>
-<!--                           <input type="number" @blur="setConsumeTemplateUpdate(item)" v-model="item.score" :disabled="isDisabled"> -->
-                          <!-- <el-input v-model="input" placeholder="请输入内容"></el-input>
-                          <el-input v-model="input" placeholder="请输入内容"></el-input> -->
-                      </p>
-<!--                       <p class="item-message">
-                          <span>消费（元）</span>
-                          <span>可积（分）</span>
-                      </p> -->
+                  <div v-if="!isDisabled" class="xj-btn-defult" @click="jjsetting">
+                    批量设置
                   </div>
               </div>
-          </div>
-          <!-- 计件类 end -->
+              <div class="content">
+                  <div class="item-wrap" v-for="(item,index) in productTypeList[1].typeList" :key="index">
+                      <p class="item-title">{{ item.classesName }}</p>
+                      <p class="item-input">
+                          <input type="Number" @blur="setConsumeTemplateUpdate(item)" v-model="item.score" :disabled="isDisabled">
+                          <span>%</span>
+                      </p>
+                  </div>
+              </div>
+          </div> -->
       </div>
       <!-- <ul v-for="list in item.typeList">
           <li>
@@ -108,22 +98,17 @@ export default {
     this.getIntegralDetails()
   },
   methods: {
-    // 计重批量设置
-    jzSetting(){
-        this.dialog.dialogVisible = true
-        // this.add({smallDataList:this.templateInfoData.poductTypeList[0].typeList,setjz:1})
-        this.add({smallDataList:this.templateInfoData.poductTypeList[0].typeList, setjz:'hy', amendN: '金价'})
-    },
-    jjsetting(){
+    // 批量设置
+    jzSetting(parm, addCounterName){
+        debugger
         this.dialog.dialogVisible = true          
-        // this.addjj({smallDataList:this.templateInfoData.poductTypeList[1].typeList,setjz:1})
-        this.addjj({smallDataList:this.templateInfoData.poductTypeList[1].typeList, setjz:'hy',amendN: '销售折扣'})
+        this.add({smallDataList:parm, setjz:'hy',amendN: '销售折扣'}, `${addCounterName}批量设置`)
     },
-    add(item){
+    add(item, addCounterName){
         this.dialogType(true)
         Object.assign(this.dialog,{
             dialogSlot: 'goldAdd',
-            addCounterName: '计重类批量设置'
+            addCounterName: addCounterName
         },item)
         this.$emit('setClass', this.dialog)
     },
@@ -140,7 +125,7 @@ export default {
     dialogType(type){
       this.dialog.dialogVisible = type 
     },
-    // 批量
+    // 批量修改
     dialogCallback(data) {
         let options = {
             templateId: this.templateInfoData.templateId,
@@ -253,7 +238,13 @@ export default {
       getProductTypeList()
         .then(res => {
           if (res.data.state == 200) {
-            this.productTypeList = res.data.data.list
+            let datas = res.data.data.list
+            for (let i of datas) {
+              for(let j of i.typeList) {
+                j.score = '100.00'
+              }
+            }
+            this.productTypeList = datas
           } else {
             this.$message({
               type: 'error',
@@ -285,11 +276,10 @@ export default {
 </style>
 <style lang="scss" scoped>
 .m-m-sell-discount-main {
-  border: 1px solid red;
-  background-color: #fff;
+  background-color: #F6F8F9;
   position: relative;
-  height: 350px;
-  overflow: scroll;
+  height: 490px;
+  overflow-y: scroll;
   >div{
     h5{
       font-size: 16px;
@@ -323,13 +313,12 @@ export default {
           display: flex;
           flex-wrap: wrap;
           .item-wrap{
-              width: 143px;
-              height: 104px;
+              width: 165px;
+              height: 119px;
               background: #fff;
               border-radius: 10px;
               padding: 23px 23px 20px;
-              margin-bottom: 20px;
-              margin-right: 16px;
+              margin: 0 20px 20px 0;
               .item-title{
                   color: #2993f8;
                   font-size: 16px;
@@ -342,15 +331,17 @@ export default {
                   justify-content: space-between;
                   margin-bottom: 12px;
                   input{
-                      width: 60px;
+                      width: 45px;
                       height: 28px;
                       background-color:transparent;
                       text-align: center;
                       font-size: 14px;
                       border-radius: 3px;
+                      transition: all .3s;
                       &:active,
                       &:hover,
                       &:focus{
+                          width: 60px;
                           border: 1px solid #2993f8;
                           background-color: #f4f9ff;
                       }

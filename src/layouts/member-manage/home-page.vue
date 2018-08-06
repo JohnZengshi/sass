@@ -22,6 +22,7 @@
     },
     data () {
       return {
+        xxx:"123",
         memberList: {
           gradeList: []
         },

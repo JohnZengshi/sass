@@ -904,3 +904,28 @@ export const seekFindMemberGradeList = function (parm) {
   let URL = "/v1/groupTemplate/findMemberGradeList";
   return apiCall(parm, URL);
 }
+// 会员模板管理详情
+export const seekFindMemberTemplaetDetails = function (parm) {
+  let URL = "/v1/groupTemplate/findMemberTemplaetDetails";
+  return apiCall(parm, URL);
+}
+// 会员店铺列表
+export const seekFindShopList = function (parm) {
+  let URL = "/v1/groupTemplate/findShopList";
+  return apiCall(parm, URL);
+}
+// 会员等级列表
+export const seekFindGradeList = function (parm) {
+  let URL = "/v1/groupTemplate/findGradeList";
+  return apiCall(parm, URL);
+}
+// 会员等级详情
+export const seekFindGradeDetails = function (parm) {
+  let URL = "/v1/groupTemplate/findGradeDetails";
+  return apiCall(parm, URL);
+}
+//销售折扣设置列表
+export const seekFindPoductList = function (parm) {
+  let URL = "/v1/groupTemplate/findPoductList";
+  return apiCall(parm, URL);
+}
