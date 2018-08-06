@@ -205,10 +205,11 @@
 				let productId = this.dgDataList[fIndex].productId
 				// 当input失去焦点时 需要检测下初始数据是否被修改过，如果没有修改 则不需要保存
 				if((tab.canclear || itemData) && tempData != itemData) {
-					let tempArray = [{
-						[tab.type]: itemData,
-						productId: productId
-					}]
+					let tempArray = []
+					// let tempArray = [{
+					// 	[tab.type]: itemData,
+					// 	productId: productId
+					// }]
 
 					// 在修改成本跟倍率时 需要把售价传给后台
 					if(tab.type == 'costPrice' || tab.type == 'ratio') {
@@ -386,7 +387,6 @@
 
 					// 修改副石重同步更新总件重
 					if(tab.type === 'deputyWeight') {
-						debugger
 						this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
 						tempArray.push({
 							totalWeight: item['totalWeight'],
@@ -494,6 +494,11 @@
 							productId: productId
 						});
 					}
+
+					tempArray.push({
+						[tab.type]: this.dgDataList[fIndex][tab.type],
+						productId: productId
+					})
 					this.$emit('updataEditApi', tempArray)
 				}
 				this.updateAmend(item, this.activeSelectOn)

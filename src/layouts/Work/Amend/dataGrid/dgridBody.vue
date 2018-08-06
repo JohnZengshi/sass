@@ -351,11 +351,11 @@ export default{
       //console.log(item, tab.type, itemData, tempData)
       // 当input失去焦点时 需要检测下初始数据是否被修改过，如果没有修改 则不需要保存
       if ( tempData != itemData && (itemData != undefined || tempData.length != 0)) {
-        let tempArray = [{
-          [tab.type]: itemData,
-          productId: productId
-        }]
-        
+        let tempArray = []
+        // let tempArray = [{
+        //   [tab.type]: itemData,
+        //   productId: productId
+        // }]
 //      // 在修改成本跟倍率时 需要把售价传给后台
         if (tab.type == 'costPrice' || tab.type == 'ratio') {
           tempArray.push({
@@ -385,7 +385,10 @@ export default{
             productId: productId
           })
         }
-        
+        //修改配件重保留3位小数
+        if(tab.type === 'partWeight') {
+          this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+        }
         // 修改配件额  同步更新单价字段
         if (tab.type == 'price') {
         	this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
@@ -494,12 +497,37 @@ export default{
           || tab.type === 'deputyUnitPrice'
           || tab.type === 'deputyCalcMethod'
         ){
-        	this.dgDataList[fIndex].old[tab.type] = tab.type == 'deputyCount' ? this.toNum(this.dgDataList[fIndex].old[tab.type]) : this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
-        	tempArray[0][tab.type] = tab.type == 'deputyCount' ? this.toNum(this.dgDataList[fIndex].old[tab.type]) : this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
-          tempArray.push({
-            deputyPrice : item.old['deputyPrice'],
-            productId: productId
-          })
+            if(tab.type === 'deputyCount') {
+              this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type])
+              tempArray.push({
+                deputyPrice: item['deputyPrice'],
+                productId: productId
+              })
+            } else if (tab.type === 'deputyCalcMethod') {
+              this.dgDataList[fIndex].old[tab.type] = this.dgDataList[fIndex].old[tab.type]
+              tempArray.push({
+                deputyPrice: item['deputyPrice'],
+                productId: productId
+              })
+            } else if (tab.type === 'deputyWeight') {
+              this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+              tempArray.push({
+                deputyPrice: item['deputyPrice'],
+                productId: productId
+              })
+            } else {
+              this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+              tempArray.push({
+                deputyPrice: item['deputyPrice'],
+                productId: productId
+              })
+            }
+        	// this.dgDataList[fIndex].old[tab.type] = tab.type == 'deputyCount' ? this.toNum(this.dgDataList[fIndex].old[tab.type]) : this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	// tempArray[0][tab.type] = tab.type == 'deputyCount' ? this.toNum(this.dgDataList[fIndex].old[tab.type]) : this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+         //  tempArray.push({
+         //    deputyPrice : item.old['deputyPrice'],
+         //    productId: productId
+         //  })
         }
         
         // 修改副石重同步更新总件重
@@ -533,12 +561,38 @@ export default{
           || tab.type === 'unitPrice'
           || tab.type === 'mainCalcMethod'
         ){
-        	this.dgDataList[fIndex].old[tab.type] = tab.type == 'count' ? this.toNum(this.dgDataList[fIndex].old[tab.type]) : this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
-        	tempArray[0][tab.type] = tab.type == 'count' ? this.toNum(this.dgDataList[fIndex].old[tab.type]) : this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
-          tempArray.push({
-            mainPrice : item.old['mainPrice'],
-            productId: productId
-          })
+            if(tab.type === 'count') {
+              this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type])
+              tempArray.push({
+                mainPrice: item['mainPrice'],
+                productId: productId
+              })
+            } else if (tab.type === 'mainCalcMethod') {
+              this.dgDataList[fIndex].old[tab.type] = this.dgDataList[fIndex].old[tab.type]
+              tempArray.push({
+                mainPrice: item['mainPrice'],
+                productId: productId
+              })
+            } else if (tab.type === 'mainWeight') {
+              this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(3)
+              tempArray.push({
+                mainPrice: item['mainPrice'],
+                productId: productId
+              })
+            } else {
+              this.dgDataList[fIndex].old[tab.type] = this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+              tempArray.push({
+                mainPrice: item['mainPrice'],
+                productId: productId
+              })
+
+            }
+        	// this.dgDataList[fIndex].old[tab.type] = tab.type == 'count' ? this.toNum(this.dgDataList[fIndex].old[tab.type]) : this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+        	// tempArray[0][tab.type] = tab.type == 'count' ? this.toNum(this.dgDataList[fIndex].old[tab.type]) : this.toNum(this.dgDataList[fIndex].old[tab.type]).toFixed(2)
+         //  tempArray.push({
+         //    mainPrice : item.old['mainPrice'],
+         //    productId: productId
+         //  })
         }
         
         //修改主石重同步更新总件重
@@ -560,7 +614,12 @@ export default{
             productId: productId
           })
         }
-				console.log(tempArray)
+
+        tempArray.push({
+          [tab.type]: this.dgDataList[fIndex].old[tab.type],
+          productId: productId
+        })
+
         this.$emit('updataEditApi', tempArray)
       }
     },
