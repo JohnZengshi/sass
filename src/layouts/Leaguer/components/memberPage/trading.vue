@@ -461,7 +461,7 @@ export default {
                 shopId:this.shopId,
                 orderList:orderList
             })
-
+            debugger
             operateMemberUpdateBy(options).then(res => {
                 console.log('关联成功',res)
                 if(res.data.state === 200) {

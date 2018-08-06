@@ -3,9 +3,9 @@
   <div class="m-m-sell-discount-main">
 <!--     <div v-for="item in productTypeList"> -->
 <!--       <h6>{{item.classesName}}</h6> -->
-      <div class="product-setting-content" v-if="productTypeList">
+      <div class="product-setting-content">
           <!-- 计重类 begin -->
-          <div class="producet-jz" v-for="allItme in productTypeList">
+          <div class="producet-jz" v-for="allItme in showData.list">
               <div class="title">
                   <span>{{allItme.classesName}}</span>
                   <div v-if="!isDisabled" class="xj-btn-defult" @click="jzSetting(allItme.typeList, allItme.classesName)">
@@ -16,57 +16,23 @@
                   <div class="item-wrap" v-for="(item,index) in allItme.typeList" :key="index">
                       <p class="item-title">{{ item.classesName }}</p>
                       <p class="item-input">
-                          <input @blur="setConsumeTemplateUpdate(item)" v-model="item.score" :disabled="isDisabled">
-                          <span>%</span>
-                      </p>
-                  </div>
-              </div>
-          </div>
-          <!-- 计重类 end -->
-
-          <!-- 计件类 begin -->
-<!--           <div class="porducet-jj" v-if="productTypeList[1].classesType == 2">
-              <div class="title">
-                  <span>计件类</span>
-                  <div v-if="!isDisabled" class="xj-btn-defult" @click="jjsetting">
-                    批量设置
-                  </div>
-              </div>
-              <div class="content">
-                  <div class="item-wrap" v-for="(item,index) in productTypeList[1].typeList" :key="index">
-                      <p class="item-title">{{ item.classesName }}</p>
-                      <p class="item-input">
                           <input type="Number" @blur="setConsumeTemplateUpdate(item)" v-model="item.score" :disabled="isDisabled">
                           <span>%</span>
                       </p>
                   </div>
               </div>
-          </div> -->
+          </div>
       </div>
-      <!-- <ul v-for="list in item.typeList">
-          <li>
-            {{list.classesName}}
-          </li>
-      </ul> -->
-<!--     </div> -->
-    <!-- 批量设置 配置条件弹框  -->
-<!--     <div class="member-dialog-box"> -->
-<!--       <memberDialog 
-          :dialog="dialog"
-          @closeDialog="closeDialog"
-          @dialogType = "dialogType"
-          @dialogCallback="dialogCallback"
-      ></memberDialog> -->
-<!--     </div> -->
   </div>
 </template>
 <script>
-import { seekGetShopListByCo, getProductTypeList } from 'Api/commonality/seek'
+import { seekGetShopListByCo } from 'Api/commonality/seek'
+import { operateAddGrade } from 'Api/commonality/operate'
 import memberDialog from '@/layouts/Work/ShopSetting/dialog/tplGoldDialog'
 // 获取模板内容
 import { templateIntegralDetails,consumeTemplateUpdate } from 'Api/member'
 export default {
-  props: ['isDialog'],
+  props: ['isDialog', 'showData'],
   components: {
     memberDialog
   },
@@ -74,7 +40,6 @@ export default {
     return {
       isDisabled:false,
       templateInfoData: {},
-      productTypeList: [],
       checkList: [],
       shopList: [],
       name: '',
@@ -90,17 +55,15 @@ export default {
   },
   // watch: {
   //   isDialog () {
-  //     this._getProductTypeList()
+  //     this._seekFindPoductList()
   //   }
   // },
   created () {
-    this._getProductTypeList()
     this.getIntegralDetails()
   },
   methods: {
     // 批量设置
     jzSetting(parm, addCounterName){
-        debugger
         this.dialog.dialogVisible = true          
         this.add({smallDataList:parm, setjz:'hy',amendN: '销售折扣'}, `${addCounterName}批量设置`)
     },
@@ -114,10 +77,7 @@ export default {
     },
     addjj(item) {
         this.dialogType(true)
-        Object.assign(this.dialog,{
-            dialogSlot : 'goldAdd',
-            addCounterName : '计件类批量设置'
-        },item)
+        Object.assign(this.dialog,{dialogSlot : 'goldAdd',addCounterName : '计件类批量设置'},item)
     },
     closeDialog(parm){
       this.dialog.dialogVisible = parm
@@ -134,15 +94,9 @@ export default {
         consumeTemplateUpdate(options).then(res => {
             if(res.data.state === 200) {
                 this.getIntegralDetails()
-                this.$message({
-                    type:'success',
-                    message:'修改成功'
-                })
+                this.$message({type:'success',message:'修改成功'})
             } else {
-                this.$message({
-                    type:'error',
-                    message:res.data.msg
-                })
+                this.$message({type:'error',message:res.data.msg})
             }
         })
     },
@@ -154,46 +108,12 @@ export default {
         if(item && item.score < 0) {
             item.score = 0
         }
-        let options = {}
-        if(this.templateInfoData.productTypeConfig === 'N'){
-            if(item){
-                options = {
-                    templateId: this.templateInfoData.templateId,
-                    dataList: [item],                
-                }
-            } else {
-                options = {
-                    templateId: this.templateInfoData.templateId,
-                    switch: this.templateInfoData.productTypeConfig
-                }
-            }
-        } else {
-            if(item){
-                options = {
-                    templateId: this.templateInfoData.templateId,
-                    dataList: [item],                
-                }
-            } else {
-                options = {
-                    templateId: this.templateInfoData.templateId,
-                    switch: this.templateInfoData.productTypeConfig
-                }
-            }
-            
+
+        if (!this.showData.gradeId) {
+          return
         }
-        consumeTemplateUpdate(options).then(res => {
-            if(res.data.state === 200) {
-                this.$message({
-                    type:'success',
-                    message:'修改成功'
-                })
-            } else {
-                this.$message({
-                    type:'error',
-                    message:res.data.msg
-                })
-            }
-        })
+        
+        this.$emit('update', item)
     },
     open (parm) {
       this.checkList = []
@@ -234,25 +154,49 @@ export default {
           }
         })
     },
-    _getProductTypeList () {
-      getProductTypeList()
-        .then(res => {
-          if (res.data.state == 200) {
-            let datas = res.data.data.list
-            for (let i of datas) {
-              for(let j of i.typeList) {
-                j.score = '100.00'
-              }
-            }
-            this.productTypeList = datas
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.data.msg
-            })
-          }
-        })
-    }
+    // _seekFindPoductList () {
+    //   seekFindPoductList()
+    //     .then(res => {
+    //       if (res.data.state == 200) {
+    //         this.productTypeList = res.data.data
+    //       } else {
+    //         this.$message({
+    //           type: 'error',
+    //           message: res.data.msg
+    //         })
+    //       }
+    //     })
+    // },
+    // _operateAddGrade () {
+    //   if (!this.showData.gradeName) {
+    //     this.$message({type: 'error',message: '请输入级别名称'})
+    //     return
+    //   }
+
+    //   if (!this.showData.startScore) {
+    //     this.$message({type: 'error',message: '请输入起始积分'})
+    //     return
+    //   }
+
+    //   if (!this.showData.gradeId) {
+    //     this.$message({type: 'error',message: '请选择下一级别'})
+    //     return
+    //   }
+
+    //   let opations = {
+    //     gradeName: this.showData.gradeName,
+    //     startScore: this.showData.startScore,
+    //     gradeId: this.showData.gradeId,
+    //     poductList: []
+    //   }
+    //   for (let i of this.showData.list) {
+    //     opations.poductList.push(...i.typeList)
+    //   }
+    //   operateAddGrade(opations)
+    //     .then(res => {
+          
+    //     })
+    // },
   }
 }
 

@@ -612,7 +612,7 @@ export const operateDeleteMemberTemplaet = function(parm) {
 }
 //新增管理会员模板
 export const operateAddMemberTemplaet = function(parm) {
-    let url = "/v1/member/addMemberTemplaet";
+    let url = "/v1/groupTemplate/addMemberTemplaet";
     return new Axios(url, parm).apiCall();
 }
 //修改等级或删除
@@ -623,5 +623,29 @@ export const operateUpdateGrade = function (parm) {
 // 添加会员等级
 export const operateAddGrade = function (parm) {
   let URL = "/v1/groupTemplate/addGrade";
+  return apiCall(parm, URL);
+}
+export const operateMemberCreatee = function (parm) {
+  let URL = "/v1/groupTemplate/memberCreate";
+  return apiCall(parm, URL);
+}
+// 创建店铺组合
+export const operateAddShopGroup = function (parm) {
+  let URL = "/v1/groupTemplate/addShopGroup";
+  return apiCall(parm, URL);
+}
+// 店铺组合修改或删除
+export const operateUpdateShopGroupById = function (parm) {
+  let URL = "/v1/groupTemplate/updateShopGroupById";
+  return apiCall(parm, URL);
+}
+// 管理会员模板修改
+export const operateUpdateMemberTemplaet = function (parm) {
+  let URL = "/v1/groupTemplate/updateMemberTemplaet";
+  return apiCall(parm, URL);
+}
+// 修改会员
+export const operateUpdateMember = function (parm) {
+  let URL = "/v1/groupTemplate/updateMember";
   return apiCall(parm, URL);
 }

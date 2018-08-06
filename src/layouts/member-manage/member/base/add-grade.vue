@@ -1,325 +1,354 @@
 <!-- 新增店铺组合 -->
 <template>
-  <div>
-    <!-- 批量修改 -->
-    <memberDialog v-show="dialog.dialogVisible" :dialog="dialog" @closeDialog="closeDialog" @dialogType="dialogType" @dialogCallback="dialogCallback"></memberDialog>
-
-    <el-dialog v-show="!dialog.dialogVisible" top="10%" :visible.sync="isDialog" class="new-popup-dialog">
-      <div class="m-m-add-group-main">
-        <div class="p-close-icon" @click="isDialog = false">
-          <i class="el-dialog__close el-icon el-icon-close"></i>
-        </div>
-        <div class="add-group-body">
-          <h3>新增会员等级</h3>
-          <div class="input-wrap">
-            <span class="item-label"><i class="mandatory-icon">*</i>等级名称</span>
-            <input placeholder="请输入级别名称" v-model="showData.gradeName">
-          </div>
-          <div class="input-wrap">
-            <span class="item-label"><i class="mandatory-icon">*</i>起始积分</span>
-            <input type="Number" placeholder="升级到当先级别需要积分" v-model="showData.startScore">
-          </div>
-          <div class="input-wrap">
-            <span class="item-label"><i class="mandatory-icon">*</i>下一级别</span>
-            <down-menu :isSolid="true" :titleInfo="showData.nextGradeName ? showData.nextGradeName : '请选择'" :showList="gradeList" :nameKey="'gradeName'" @changeData="change" @clearInfo="clear"></down-menu>
-          </div>
-          <div class="input-wrap">
-            <span class="item-label">设置最低折扣</span>
-            <!--       <input type="Number" placeholder="请输入" v-model="name" @click="openSellDiscount"> -->
-          </div>
-          <sell-discount :isDialog="isDialog" ref="sellDiscountBox" @setClass="setClass" @close="discountClose" @confirm="discountConfirm"></sell-discount>
-        </div>
-        <div class="xj-btn-list">
-          <div class="btn cnacel-btn" @click="close">取消</div>
-          <div class="btn" @click="confirm">确定</div>
-        </div>
-      </div>
-    </el-dialog>
-  </div>
+    <div>
+        <!-- 批量修改 -->
+        <memberDialog v-show="dialog.dialogVisible" :dialog="dialog" @closeDialog="closeDialog" @dialogType="dialogType" @dialogCallback="dialogCallback"></memberDialog>
+        <el-dialog v-show="!dialog.dialogVisible" top="10%" :visible.sync="isDialog" class="new-popup-dialog">
+            <div class="m-m-add-group-main">
+                <div class="p-close-icon" @click="isDialog = false">
+                    <i class="el-dialog__close el-icon el-icon-close"></i>
+                </div>
+                <div class="add-group-body">
+                    <h3>新增会员等级</h3>
+                    <div class="input-wrap">
+                        <span class="item-label"><i class="mandatory-icon">*</i>等级名称</span>
+                        <input placeholder="请输入级别名称" @blur="_operateUpdateGrade({gradeName: showData.gradeName})" v-model="showData.gradeName">
+                    </div>
+                    <div class="input-wrap">
+                        <span class="item-label"><i class="mandatory-icon">*</i>起始积分</span>
+                        <input type="Number" @blur="_operateUpdateGrade({startScore: showData.startScore})" placeholder="升级到当先级别需要积分" v-model="showData.startScore">
+                    </div>
+                    <div class="input-wrap">
+                        <span class="item-label"><i class="mandatory-icon">*</i>下一级别</span>
+                        <down-menu :isSolid="true" :titleInfo="showData.nextGradeName ? showData.nextGradeName : '请选择'" :showList="gradeList" :nameKey="'gradeName'" @changeData="change" @clearInfo="clear"></down-menu>
+                    </div>
+                    <div class="input-wrap">
+                        <span class="item-label">设置最低折扣</span>
+                        <!--       <input type="Number" placeholder="请输入" v-model="name" @click="openSellDiscount"> -->
+                    </div>
+                    <sell-discount :isDialog="isDialog" :showData="showData" ref="sellDiscountBox" @setClass="setClass" @close="discountClose" @confirm="discountConfirm" @update="updateDiscount"></sell-discount>
+                </div>
+                <div class="xj-btn-list">
+                    <div class="btn cnacel-btn" @click="close">取消</div>
+                    <div class="btn" @click="confirm">确定</div>
+                </div>
+            </div>
+        </el-dialog>
+    </div>
 </template>
 <script>
-import { seekGetShopListByCo, seekFindGradeList, seekFindGradeDetails } from 'Api/commonality/seek'
-import { operateAddGrade } from 'Api/commonality/operate'
+import { seekGetShopListByCo, seekFindGradeList, seekFindGradeDetails, seekFindPoductList } from 'Api/commonality/seek'
+import { operateAddGrade, operateUpdateGrade } from 'Api/commonality/operate'
 import downMenu from 'base/menu/new-down-menu'
 import sellDiscount from './sell-discount'
 import memberDialog from '@/layouts/Work/ShopSetting/dialog/tplGoldDialog'
 export default {
-  components: {
-    downMenu,
-    sellDiscount,
-    memberDialog
-  },
-  data() {
-    return {
-      templateId: this.$route.query.templateId,
-      gradeId: '', // 会员等级id
-      showData: {
-        gradeName: '',
-        startScore: '',
-        gradeId: '',
-        nextGradeName: '',
-        poductList: []
-      },
-      issellDiscountBox: false,
-      checkList: [],
-      shopList: [],
-      gradeList: [], // 等级列表
-      name: '',
-      isDialog: false,
-      // 弹框数据
-      dialog: {
-        dialogVisible: false,
-        dialogSize: 'counter_x_small',
-        dialogSlot: '',
-        addCounterName: '',
-        smallDataList: []
-      },
-    }
-  },
-  created () {
-    this._seekFindGradeList()
-  },
-  methods: {
-    setClass(parm) {
-      this.dialog = parm
+    components: {
+        downMenu,
+        sellDiscount,
+        memberDialog
     },
-    closeDialog(parm) {
-      this.$refs.sellDiscountBox.closeDialog(parm)
-    },
-    dialogType(parm) {
-      this.$refs.sellDiscountBox.dialogType(parm)
-    },
-    dialogCallback(parm) {
-      this.$refs.sellDiscountBox.dialogCallback(parm)
-    },
-    open(parm) {
-      this.gradeId = parm
-      if (parm) {
-        this._seekFindGradeDetails(parm)
-      }
-      this.checkList = []
-      this.isDialog = true
-      // if (this.$refs.sellDiscountBox) {
-      //   this.$refs.sellDiscountBox.initData() 
-      // }
-    },
-    discountClose() {
-      this.issellDiscountBox = false
-    },
-    discountConfirm(parm) {
-      this.issellDiscountBox = false
-    },
-    openSellDiscount() {
-      this.issellDiscountBox = true
-      // this.$refs.sellDiscountBox.open()
-    },
-    change(parm) {
-      this.showData.gradeId = parm.gradeId
-      this.showData.nextGradeName = parm.gradeName
-    },
-    clear() {
-
-    },
-    close() {
-      this.checkList = []
-      this.name = ''
-      this.isDialog = false
-    },
-    confirm() {
-      if (this.gradeId) { // 新增
-        this._operateAddGrade()
-      } else { // 修改
-        this.close()
-      }
-    },
-    _operateAddGrade () {
-      if (!this.showData.gradeName) {
-        this.$message({
-          type: 'error',
-          message: '请输入级别名称'
-        })
-      }
-
-      if (!this.showData.startScore) {
-        this.$message({
-          type: 'error',
-          message: '请输入起始积分'
-        })
-      }
-
-      if (!this.showData.gradeId) {
-        this.$message({
-          type: 'error',
-          message: '请选择下一级别'
-        })
-      }
-
-      let opations = {
-        name: this.name,
-        poductList: []
-      }
-      for (let i of checkList) {
-        let datas = {
-          shopId: i
+    data() {
+        return {
+            templateId: this.$route.query.templateId,
+            gradeId: '', // 会员等级id
+            showData: {
+                gradeName: '',
+                startScore: '',
+                underLevelId: '', // 下一等级
+                gradeId: '',
+                nextGradeName: '',
+                list: []
+            },
+            issellDiscountBox: false,
+            checkList: [],
+            shopList: [],
+            gradeList: [], // 等级列表
+            name: '',
+            isDialog: false,
+            // 弹框数据
+            dialog: {
+                dialogVisible: false,
+                dialogSize: 'counter_x_small',
+                dialogSlot: '',
+                addCounterName: '',
+                smallDataList: []
+            },
         }
-        opations.list.push(datas)
-      }
-      operateAddGrade()
-        .then(res => {
-          
-        })
     },
-    _seekFindGradeList () {
-      let opations = {
-        templateId: this.templateId,
-      }
-      let datas = [{
-        gradeId: 'gradeId',
-        gradeName: 'gradeName'
-      }]
-      this.gradeList = datas
-      seekFindGradeList(opations)
-        .then(res => {
-          if (res.data.state == 200) {
-            this.gradeList = res.data.data.list
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.data.msg
-            })
-          }
-        })
-    },
-    _seekFindGradeDetails (parm) {
-      let opations = {
-        gradeId: parm ? parm : this.gradeId
-      }
+    methods: {
+        initData() {
+            for (let i of Object.keys(this.showData)) {
+                if (Array.isArray(this.showData[i])) {
+                    this.showData[i] = []
+                } else {
+                    this.showData[i] = ''
+                }
+            }
+        },
+        open(parm) {
+            this.initData()
+            this.gradeId = parm
+            this.checkList = []
+            if (parm) { // 查询
+                this._seekFindGradeDetails(parm)
+            } else { // 新建
+                this._seekFindPoductList()
+            }
+            this._seekFindGradeList()
+            this.isDialog = true
+        },
+        setClass(parm) {
+            this.dialog = parm
+        },
+        closeDialog(parm) {
+            this.$refs.sellDiscountBox.closeDialog(parm)
+        },
+        dialogType(parm) {
+            this.$refs.sellDiscountBox.dialogType(parm)
+        },
+        dialogCallback(parm) {
+            this.$refs.sellDiscountBox.dialogCallback(parm)
+        },
+        discountClose() {
+            this.issellDiscountBox = false
+        },
+        discountConfirm(parm) {
+            this.issellDiscountBox = false
+        },
+        openSellDiscount() {
+            this.issellDiscountBox = true
+            // this.$refs.sellDiscountBox.open()
+        },
+        updateDiscount(parm) {
+            this._operateUpdateGrade(parm)
+        },
+        change(parm) {
+            this.showData.underLevelId = parm.gradeId
+            this.showData.nextGradeName = parm.gradeName
+            this._operateUpdateGrade({ underGradeId: parm.gradeId })
+        },
+        clear() {
 
-      let datas = {
-        gradeName: '',
-        startScore: '',
-        gradeId: '',
-        nextGradeName: '',
-        poductList: []
-      }
+        },
+        close() {
+            this.checkList = []
+            this.isDialog = false
+        },
+        confirm() {
+            if (this.gradeId) { // 修改
+                this.close()
+            } else { // 新增
+                this._operateAddGrade()
+            }
+        },
+        _operateAddGrade() {
+            if (!this.showData.gradeName) {
+                this.$message({type: 'error',message: '请输入级别名称'})
+                return
+            }
 
-      this.showData = datas
-      
-      seekFindGradeDetails(opations)
-        .then(res => {
-          if (res.data.state == 200) {
-            this.showData = res.data.data
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.data.msg
-            })
-          }
-        })
-    },
-    _seekGetShopListByCo () {
-      let opations = {
-        page: 1,
-        pageSize: '0',
-        type: '1'
-      }
-      seekGetShopListByCo(opations)
-        .then(res => {
-          if (res.data.state == 200) {
-            this.shopList = res.data.data.shopList
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.data.msg
-            })
-          }
-        })
+            if (!this.showData.startScore) {
+                this.$message({type: 'error',message: '请输入起始积分'})
+                return
+            }
+
+            if (!this.showData.underLevelId) {
+                this.$message({ type: 'error', message: '请选择下一级别' })
+                return
+            }
+
+            let opations = {
+                gradeName: this.showData.gradeName,
+                startScore: this.showData.startScore,
+                underLevelId: this.showData.underLevelId,
+                poductList: []
+            }
+            for (let i of this.showData.list) {
+                opations.poductList.push(...i.typeList)
+            }
+            // for (let i of checkList) {
+            //   let datas = {
+            //     shopId: i
+            //   }
+            //   opations.list.push(datas)
+            // }
+            operateAddGrade(opations)
+                .then(res => {
+
+                })
+        },
+        _seekFindGradeList() {
+            let opations = {
+                templateId: this.templateId,
+            }
+            seekFindGradeList(opations)
+                .then(res => {
+                    if (res.data.state == 200) {
+                        this.gradeList = res.data.data.gradeList
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: res.data.msg
+                        })
+                    }
+                })
+        },
+        _seekFindGradeDetails(parm) {
+            let opations = {
+                gradeId: parm ? parm : this.gradeId
+            }
+
+            let datas = {
+                gradeName: '',
+                startScore: '',
+                gradeId: '',
+                nextGradeName: '',
+                poductList: []
+            }
+
+            this.showData = datas
+
+            seekFindGradeDetails(opations)
+                .then(res => {
+                    if (res.data.state == 200) {
+                        this.showData = res.data.data
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: res.data.msg
+                        })
+                    }
+                })
+        },
+        _seekGetShopListByCo() {
+            let opations = {
+                page: 1,
+                pageSize: '0',
+                type: '1'
+            }
+            seekGetShopListByCo(opations)
+                .then(res => {
+                    if (res.data.state == 200) {
+                        this.shopList = res.data.data.shopList
+                    } else {
+                        this.$message({
+                            type: 'error',
+                            message: res.data.msg
+                        })
+                    }
+                })
+        },
+        // 新建时的销售折扣设置列表
+        _seekFindPoductList() {
+            seekFindPoductList()
+                .then(res => {
+                    if (res.data.state == 200) {
+                        this.showData.list = res.data.data
+                    } else {
+                        this.$message({ type: 'error', message: res.data.msg })
+                    }
+                })
+        },
+        // 修改
+        _operateUpdateGrade(parm) {
+            if (!this.showData.gradeId) {
+                return
+            }
+            operateUpdateGrade(Object.assign({}, { gradeId: this.showData.gradeId }, parm))
+                .then(res => {
+                    if (res.data.state == 200) {
+                        this.$message({ type: 'error', message: '修改成功' })
+                    } else {
+                        this.$message({ type: 'error', message: res.data.msg })
+                    }
+                })
+        }
     }
-  }
 }
 
 </script>
 <style lang="scss">
 .m-m-add-group-main {
-  .el-checkbox {
-    height: 40px!important;
-    line-height: 40px!important;
-  }
-  .el-checkbox-group .el-checkbox__inner {
-    border-radius: 5px!important;
-  }
-  .el-checkbox-group {
-    .el-checkbox__label {
-      font-size: 14px!important;
-      font-weight: normal;
+    .el-checkbox {
+        height: 40px!important;
+        line-height: 40px!important;
     }
-  }
+    .el-checkbox-group .el-checkbox__inner {
+        border-radius: 5px!important;
+    }
+    .el-checkbox-group {
+        .el-checkbox__label {
+            font-size: 14px!important;
+            font-weight: normal;
+        }
+    }
 }
 
 </style>
 <style lang="scss" scoped>
 .m-m-add-group-main {
-  height: 100%;
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 20px 30px;
-  position: relative;
-  .p-close-icon {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    height: 20px;
-    width: 20px;
-    cursor: pointer;
-    >i {
-      color: #bfcbd9;
-    }
-  }
-  .add-group-body {
-    height: 660px;
-    >h3 {
-      line-height: 1;
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: #333;
-    }
-    >.input-wrap {
-      width: 300px;
-      display: inline-block;
-      margin-bottom: 20px;
-      .item-label {
-        display: inline-block;
-        width: 90px;
-        font-size: 14px;
-        line-height: 28px;
-      }
-      input {
-        height: 28px;
-        background-color: transparent;
-        font-size: 14px;
-        border-radius: 3px;
-        text-indent: 10px;
-        border: 1px solid #d6d6d6;
-        &:active,
-        &:hover,
-        &:focus {
-          border: 1px solid #2993f8;
-          background-color: #f4f9ff;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 20px 30px;
+    position: relative;
+    .p-close-icon {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        height: 20px;
+        width: 20px;
+        cursor: pointer;
+        >i {
+            color: #bfcbd9;
         }
-      }
     }
-  }
+    .add-group-body {
+        height: 660px;
+        >h3 {
+            line-height: 1;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        >.input-wrap {
+            width: 300px;
+            display: inline-block;
+            margin-bottom: 20px;
+            .item-label {
+                display: inline-block;
+                width: 90px;
+                font-size: 14px;
+                line-height: 28px;
+            }
+            input {
+                height: 28px;
+                background-color: transparent;
+                font-size: 14px;
+                border-radius: 3px;
+                text-indent: 10px;
+                border: 1px solid #d6d6d6;
+                &:active,
+                &:hover,
+                &:focus {
+                    border: 1px solid #2993f8;
+                    background-color: #f4f9ff;
+                }
+            }
+        }
+    }
 }
 
 .wrap-popup-text {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 2000;
-  background-color: red;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2000;
+    background-color: red;
 }
 
 </style>

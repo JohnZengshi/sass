@@ -1,91 +1,101 @@
 <template>
-    <div class="memberinfo-content">
-        <div class="memberinfo-top">
-            <!-- 头像 -->
-            <div class="member-log">
-                <FormatImg :logo="memberInfo.avatarUrl" :userName="memberInfo.memberName" :size="88"></FormatImg>
-            </div>
-            <!-- 文字内容 -->
-            <div class="member-message">
-                <div class="item">
-                    <span class="item-star item-label">姓名</span>
-                    <span>{{ memberInfo.memberName ? memberInfo.memberName : '-'  }}</span>
-                </div>
-                <div class="item">
-                    <span class="item-star item-label">电话</span>
-                    <span>{{ memberInfo.phone ? memberInfo.phone : '-' }}</span>
-                </div>
-
-                <div class="item">
-                    <span class="item-label">会员积分</span>
-                    <span>{{ memberInfo.score ? memberInfo.score+'分' : '-'}}</span>
-                </div>
-                <div class="item">
-                    <span class="item-label">会员等级</span>
-                    <span class="item-level" v-if="memberInfo.grade ==  1">普通</span>
-                    <span id="color-zj" class="item-level" v-if="memberInfo.grade == 2">中级</span>
-                    <span id="color-zy" class="item-level" v-if="memberInfo.grade == 3">重要</span>
-                </div>
-
-                <div class="item">
-                    <span class="item-label">负责人</span>
-                    <span>{{ getHead(memberInfo.principalList) }}</span>
-                </div>
-            </div>
+    <div class="memberinfo-content n-p-scroll-box">
+        <div class="p-close-icon" @click="closeHome">
+          <i class="el-dialog__close el-icon el-icon-close"></i>
         </div>
-        <div class="memberinfo-bottom">
-                <!-- 信息 -->
-                <div class="item-card" @click="pageShow(1)">
-                    <div class="item-card-message">
-                        <img class="fl" src="../../../../../static/img/xx.png" alt="">信息
-                    </div>
-                    <p class="item-card-info"><i class="color1">●</i><span class="card-info-label">负责人：</span><span>{{ getHead(memberInfo.principalList) }}</span></p>
-                    <p class="item-card-info"><i class="color1">●</i><span class="card-info-label">注册时间：</span><span>{{ _formDataTimeYND(memberInfo.registerTime) ? _formDataTimeYND(memberInfo.registerTime) : '-'  }}</span></p>
+
+        <div class="add-member-body">
+          <h3>会员信息</h3>
+          <div class="scroll-box">
+            <div class="memberinfo-top">
+                <!-- 头像 -->
+                <div class="member-log">
+                    <FormatImg :logo="memberInfo.avatarUrl" :userName="memberInfo.memberName" :size="88"></FormatImg>
                 </div>
-                <!-- 交易 -->
-                <div class="item-card" @click="pageShow(2)" @mousemove="showBtn" @mouseout="hiddenBtn">
-                    <div class="item-card-message">
-                        <img class="fl" src="../../../../../static/img/jy.png" alt="">交易
+                <!-- 文字内容 -->
+                <div class="member-message">
+                    <div class="item">
+                        <span class="item-star item-label">姓名</span>
+                        <span>{{ memberInfo.memberName ? memberInfo.memberName : '-'  }}</span>
                     </div>
-                    <p class="item-card-info"><i class="color2">●</i><span class="card-info-label">交易总额：</span><span>{{ memberInfo.totalPrice ? memberInfo.totalPrice+'元' : '-' }}</span></p>
-                    <p class="item-card-info"><i class="color2">●</i><span class="card-info-label">交易次数：</span><span>{{ memberInfo.totalNum != 0 ? memberInfo.totalNum+'次' : '-' }}</span></p>
-                    <div class="btn-group-jy">
-                        <div v-if="isShopMan" class="btn-kj" @click.stop="openSales">快捷开单</div>
-                        <div v-if="isShopMan" class="btn-kj" @click.stop="relevanceSales">关联销售单</div>
+                    <div class="item">
+                        <span class="item-star item-label">电话</span>
+                        <span>{{ memberInfo.phone ? memberInfo.phone : '-' }}</span>
                     </div>
-                </div>
-                <!-- 来访 -->
-                <div class="item-card" @click="pageShow(3)">
-                    <div class="item-card-message">
-                        <img class="fl" src="../../../../../static/img/lf.png" alt="">来访
+
+                    <div class="item">
+                        <span class="item-label">会员积分</span>
+                        <span>{{ memberInfo.score ? memberInfo.score+'分' : '-'}}</span>
                     </div>
-                    <p class="item-card-info"><i class="color3">●</i><span class="card-info-label">来访总数：</span><span>{{ memberInfo.visitNum != 0 ? memberInfo.visitNum+'次' : '-' }}</span></p>
-                    <p class="item-card-info"><i class="color3">●</i><span class="card-info-label">最近来访：</span><span>{{ _formDataTimeYND(memberInfo.visitTime) ? _formDataTimeYND(memberInfo.visitTime) : '-' }}</span></p>
-                </div>
-                <!-- 跟进 -->
-                <div class="item-card" @click="pageShow(4)" @mouseover="showBtnGJ" @mouseout="hiddenBtnGJ">
-                    <div class="item-card-message">
-                        <img class="fl" src="../../../../../static/img/gj.png" alt="">跟进
+                    <div class="item">
+                        <span class="item-label">会员等级</span>
+                        <span class="item-level" v-if="memberInfo.grade ==  1">普通</span>
+                        <span id="color-zj" class="item-level" v-if="memberInfo.grade == 2">中级</span>
+                        <span id="color-zy" class="item-level" v-if="memberInfo.grade == 3">重要</span>
                     </div>
-                    <p class="item-card-info"><i class="color4">●</i><span class="card-info-label">跟进总数：</span><span>{{ memberInfo.followNum != 0 ? memberInfo.followNum+'次' : '-' }}</span></p>
-                    <p class="item-card-info"><i class="color4">●</i><span class="card-info-label">最近跟进：</span><span>{{ _formDataTimeYND(memberInfo.followTime) ? _formDataTimeYND(memberInfo.followTime) : '-' }}</span></p>
-                    <div class="btn-group-gj">
-                        <div v-if="isShopMan" class="btn-gj" @click.stop="isChoseLeader = true">创建跟进</div>
+
+                    <div class="item">
+                        <span class="item-label">负责人</span>
+                        <span>{{ getHead(memberInfo.principalList) }}</span>
                     </div>
                 </div>
-                <!-- 积分 -->
-                <div class="item-card" @click="pageShow(5)" @mouseover="showBtnJF" @mouseout="hiddenBtnJF">
-                    <div class="item-card-message">
-                        <img class="fl" src="../../../../../static/img/jf.png" alt="">积分
+            </div>
+            <div class="memberinfo-bottom">
+                    <!-- 信息 -->
+                    <div class="item-card" @click="pageShow(1)">
+                        <div class="item-card-message">
+                            <img class="fl" src="../../../../../static/img/xx.png" alt="">信息
+                        </div>
+                        <p class="item-card-info"><i class="color1">●</i><span class="card-info-label">负责人：</span><span>{{ getHead(memberInfo.principalList) }}</span></p>
+                        <p class="item-card-info"><i class="color1">●</i><span class="card-info-label">注册时间：</span><span>{{ _formDataTimeYND(memberInfo.registerTime) ? _formDataTimeYND(memberInfo.registerTime) : '-'  }}</span></p>
                     </div>
-                    <p class="item-card-info"><i class="color5">●</i><span class="card-info-label">积分总数：</span><span>{{ memberInfo.score ? memberInfo.score+'分' : '-'}}</span></p>
-                    <p class="item-card-info"></p>
-                    <div class="btn-group-jf">
-                        <div v-if="isShopMan" class="btn-jf" @click.stop="Integral = true">积分修改</div>
+                    <!-- 交易 -->
+                    <div class="item-card" @click="pageShow(2)" @mousemove="showBtn" @mouseout="hiddenBtn">
+                        <div class="item-card-message">
+                            <img class="fl" src="../../../../../static/img/jy.png" alt="">交易
+                        </div>
+                        <p class="item-card-info"><i class="color2">●</i><span class="card-info-label">交易总额：</span><span>{{ memberInfo.totalPrice ? memberInfo.totalPrice+'元' : '-' }}</span></p>
+                        <p class="item-card-info"><i class="color2">●</i><span class="card-info-label">交易次数：</span><span>{{ memberInfo.totalNum != 0 ? memberInfo.totalNum+'次' : '-' }}</span></p>
+                        <div class="btn-group-jy">
+                            <div v-if="isShopMan" class="btn-kj" @click.stop="openSales">快捷开单</div>
+                            <div v-if="isShopMan" class="btn-kj" @click.stop="relevanceSales">关联销售单</div>
+                        </div>
                     </div>
-                </div>
-                
+                    <!-- 来访 -->
+                    <div class="item-card" @click="pageShow(3)">
+                        <div class="item-card-message">
+                            <img class="fl" src="../../../../../static/img/lf.png" alt="">来访
+                        </div>
+                        <p class="item-card-info"><i class="color3">●</i><span class="card-info-label">来访总数：</span><span>{{ memberInfo.visitNum != 0 ? memberInfo.visitNum+'次' : '-' }}</span></p>
+                        <p class="item-card-info"><i class="color3">●</i><span class="card-info-label">最近来访：</span><span>{{ _formDataTimeYND(memberInfo.visitTime) ? _formDataTimeYND(memberInfo.visitTime) : '-' }}</span></p>
+                    </div>
+                    <!-- 跟进 -->
+                    <div class="item-card" @click="pageShow(4)" @mouseover="showBtnGJ" @mouseout="hiddenBtnGJ">
+                        <div class="item-card-message">
+                            <img class="fl" src="../../../../../static/img/gj.png" alt="">跟进
+                        </div>
+                        <p class="item-card-info"><i class="color4">●</i><span class="card-info-label">跟进总数：</span><span>{{ memberInfo.followNum != 0 ? memberInfo.followNum+'次' : '-' }}</span></p>
+                        <p class="item-card-info"><i class="color4">●</i><span class="card-info-label">最近跟进：</span><span>{{ _formDataTimeYND(memberInfo.followTime) ? _formDataTimeYND(memberInfo.followTime) : '-' }}</span></p>
+                        <div class="btn-group-gj">
+                            <div v-if="isShopMan" class="btn-gj" @click.stop="isChoseLeader = true">创建跟进</div>
+                        </div>
+                    </div>
+                    <!-- 积分 -->
+                    <div class="item-card" @click="pageShow(5)" @mouseover="showBtnJF" @mouseout="hiddenBtnJF">
+                        <div class="item-card-message">
+                            <img class="fl" src="../../../../../static/img/jf.png" alt="">积分
+                        </div>
+                        <p class="item-card-info"><i class="color5">●</i><span class="card-info-label">积分总数：</span><span>{{ memberInfo.score ? memberInfo.score+'分' : '-'}}</span></p>
+                        <p class="item-card-info"></p>
+                        <div class="btn-group-jf">
+                            <div v-if="isShopMan" class="btn-jf" @click.stop="Integral = true">积分修改</div>
+                        </div>
+                    </div>
+                    
+            </div>
+          </div>
         </div>
+
 
         <!-- 关联销售单 -->
         <sellOrderList
@@ -151,80 +161,6 @@
 
     </div>
 </template>
-
-<style lang="scss">
-#color-zj{
-    background: #ffa200;
-}
-#color-zy{
-    background: #ed7000;
-}
-.modify {
-    height: 600px;
-   .aim-wrap {
-        padding-top: 24px;
-        .title {
-            width: 66px;
-            margin: 0 auto;
-            margin-bottom: 30px;
-            padding: 0;
-            img {
-                width: 46px;
-                height: 46px;
-                margin: 10px 0 10px 10px;
-                // margin-bottom: 10px;
-            }
-            .name {
-                width: 100%;
-                text-align: center;
-                color:#333;
-                font-weight: bold;
-            }
-        }
-        .list {
-            
-            li {
-                height: 42px;
-                color:#666666;
-                line-height: 42px;
-                padding-left: 50px;
-                cursor: pointer;
-                .label {
-                    width: 30px;
-                    height: 14px;
-                    display: inline-block;
-                    background:#2993f8;
-                    color:#fff;
-                    border-radius: 4px;
-                    font-size: 12px;
-                    text-align: center;
-                    line-height: 14px;
-                    margin-top: 10px;
-                    margin-left: 15px;
-                }
-            }
-            li.active {
-                color:#2993f8;
-            }
-        }
-        .line1{
-            width: 100%;   
-            height: 50px;
-            line-height: 50px;
-            color: #666666;
-            font-size: 14px;
-            margin-bottom: 20px;
-            span {
-                color: #2993f8
-            }
-        }
-        .btn-line {
-            display: flex;
-            justify-content: center;
-        }
-    }
-}
-</style>
 
 
 <script>
@@ -341,6 +277,9 @@ export default {
     // },
   },
   methods: {
+    closeHome () {
+        this.$emit('close')
+    },
     handleClose(){
         this.Integral = false
         this.score = this.memberInfo.score
@@ -436,6 +375,7 @@ export default {
         })
         console.log('关联的参数',options)
         // return
+        debugger
         operateMemberUpdateBy(options).then(res => {
             console.log('关联成功',res)
             if(res.data.state === 200) {
@@ -689,3 +629,76 @@ export default {
 };
 </script>
 
+<style lang="scss">
+#color-zj{
+    background: #ffa200;
+}
+#color-zy{
+    background: #ed7000;
+}
+.modify {
+    height: 600px;
+   .aim-wrap {
+        padding-top: 24px;
+        .title {
+            width: 66px;
+            margin: 0 auto;
+            margin-bottom: 30px;
+            padding: 0;
+            img {
+                width: 46px;
+                height: 46px;
+                margin: 10px 0 10px 10px;
+                // margin-bottom: 10px;
+            }
+            .name {
+                width: 100%;
+                text-align: center;
+                color:#333;
+                font-weight: bold;
+            }
+        }
+        .list {
+            
+            li {
+                height: 42px;
+                color:#666666;
+                line-height: 42px;
+                padding-left: 50px;
+                cursor: pointer;
+                .label {
+                    width: 30px;
+                    height: 14px;
+                    display: inline-block;
+                    background:#2993f8;
+                    color:#fff;
+                    border-radius: 4px;
+                    font-size: 12px;
+                    text-align: center;
+                    line-height: 14px;
+                    margin-top: 10px;
+                    margin-left: 15px;
+                }
+            }
+            li.active {
+                color:#2993f8;
+            }
+        }
+        .line1{
+            width: 100%;   
+            height: 50px;
+            line-height: 50px;
+            color: #666666;
+            font-size: 14px;
+            margin-bottom: 20px;
+            span {
+                color: #2993f8
+            }
+        }
+        .btn-line {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
+</style>

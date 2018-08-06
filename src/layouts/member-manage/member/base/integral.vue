@@ -8,7 +8,7 @@
         +积分模板
       </div>
     </div>
-    <ul class="integral-body" v-loadding="loading">
+    <ul class="integral-body" v-loading="loading">
       <li @click.stop="compile(item, index)" v-for="item in combinationList">
         {{item.templateName}}
         <i @click.stop="del"></i>
@@ -30,54 +30,10 @@
         loading: true,
         shopId: this.$route.query.shopId,
         combinationList: [
-          {
-            templateId: 'a436606db0974f68a365966a3fbffb25',
-            templateName: 'templateName'
-          },
-          {
-            templateId: 'a436606db0974f68a365966a3fbffb25',
-            templateName: 'templateName'
-          },
-          {
-            templateId: 'a436606db0974f68a365966a3fbffb25',
-            templateName: 'templateName'
-          },
-          {
-            templateId: 'a436606db0974f68a365966a3fbffb25',
-            templateName: 'templateName'
-          },
-          {
-            templateId: 'a436606db0974f68a365966a3fbffb25',
-            templateName: 'templateName'
-          },
-          {
-            templateId: 'a436606db0974f68a365966a3fbffb25',
-            templateName: 'templateName'
-          },
-          {
-            templateId: 'a436606db0974f68a365966a3fbffb25',
-            templateName: 'templateName'
-          },
-          {
-            templateId: 'a436606db0974f68a365966a3fbffb25',
-            templateName: 'templateName'
-          },
-          {
-            templateId: 'a436606db0974f68a365966a3fbffb25',
-            templateName: 'templateName'
-          },
-          {
-            templateId: 'templateId',
-            templateName: 'templateName'
-          },
-          {
-            templateId: 'templateId',
-            templateName: 'templateName'
-          },
-          {
-            templateId: 'templateId',
-            templateName: 'templateName'
-          }
+          // {
+          //   templateId: 'a436606db0974f68a365966a3fbffb25',
+          //   templateName: 'templateName'
+          // }
         ]
       }
     },
@@ -90,7 +46,8 @@
       },
       confirmAdd (parm) {
         let options = {
-          name: parm
+          name: parm,
+          shopId: this.shopId
         }
         operateAddMemberTemplaet(options)
           .then(res => {
@@ -110,14 +67,14 @@
       },
       _seekFindTemplateAll () {
         this.loading = true
-        setTimeout(() => {
-          this.loading = false
-        }, 1000)
         seekFindTemplateAll()
           .then(res => {
             if (res.data.state == 200) {
-              this.combinationList = res.data.data.templateList
+              this.combinationList = res.data.data.dataList
+            } else {
+              this.$message({type: 'error',message: res.data.msg})
             }
+            this.loading = false
           })
       },
       compile (item, index) {

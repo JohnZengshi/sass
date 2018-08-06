@@ -754,6 +754,7 @@ export default {
             if (this.dataInfo.principalList.length == 0) {
                 delete options.principalList
             }
+            debugger
             operateMemberUpdateBy(options).then((res) => {
                 console.log(res)
                 if (res.data.state == 200) {

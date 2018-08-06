@@ -5,7 +5,7 @@
       <p class="side-nav"><i class="iconfont icon-liebiao"></i>独立店铺</p>
     </div>
     <div class="m-m-shop-list" v-loading="loading">
-      <div class="each-table" v-for="items in combinationList">
+      <div class="each-table" :class="{'ml-40': index == 1}" v-for="(items, index) in combinationList">
         <ul class="header-tit">
           <li>店铺名称</li>
           <li>积分模板</li>
@@ -18,16 +18,27 @@
             <li>
               <i @click="compile" class="iconfont icon-bianji"></i>
             </li>
-          </ul> 
+          </ul>
+
+          <ul class="no-ul" v-if="items.length < 4" v-for="(item, index) in (4 - items.length)">
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+
         </div>
       </div>
     </div>
-
+    <add-group ref="addGroupBox"></add-group>
   </div>
 </template>
 <script>
   import { seekFindTemplateShopAll } from 'Api/commonality/seek'
+  import addGroup from './add-group'
   export default {
+    components: {
+      addGroup
+    },
     data () {
       return {
         loading: false,
@@ -40,53 +51,19 @@
     methods: {
       _seekFindTemplateShopAll () {
         this.loading = true
-        let datas = {
-          shopList: [
-            {
-              shopId: 'shopId',
-              shopName: 'shopName',
-              templateName: 'templateName',
-            },
-            {
-              shopId: 'shopId',
-              shopName: 'shopName',
-              templateName: 'templateName',
-            },
-            {
-              shopId: 'shopId',
-              shopName: 'shopName',
-              templateName: 'templateName',
-            },
-            {
-              shopId: 'shopId',
-              shopName: 'shopName',
-              templateName: 'templateName',
-            },
-            {
-              shopId: 'shopId',
-              shopName: 'shopName',
-              templateName: 'templateName',
-            }
-          ]
-        }
-
-        this.combinationList = [datas.shopList.slice(0, parseInt(datas.shopList.length / 2)), datas.shopList.slice(parseInt(datas.shopList.length / 2), datas.shopList.length)]
-
-        setTimeout(() => {
-          this.loading = false
-        }, 1000)
         seekFindTemplateShopAll()
           .then(res => {
             if (res.data.state == 200) {
-
+              let datas = res.data.data.dataList
+              this.combinationList = [datas.slice(0, parseInt(datas.length / 2)), datas.slice(parseInt(datas.length / 2), datas.length)]
+            } else {
+              this.$message({type: 'error',message: res.data.msg})
             }
+            this.loading = false
           })
       },
-      compile () {
-
-      },
-      del () {
-
+      compile (parm) {
+        this.$refs.addGroupBox.open(parm)
       }
     }
   }
@@ -102,6 +79,7 @@
   }
   .m-m-shop-list{
     font-size: 0;
+    min-height: 200px;
     margin: 10px 0 0 50px;
     .each-table{
       display: inline-block;
@@ -144,6 +122,9 @@
           word-break: normal; 
         }
       }
+      .no-ul{
+        height: 50px;
+      }
       .header-tit{
         height:50px;
         background-color: #f5f5f5;
@@ -153,8 +134,8 @@
         border-bottom: 2px solid #e7e7e7;
       }
     }
-    .each-table:nth-child(1){
-      margin-right:40px;
+    .ml-40{
+      margin-left: 40px;
     }
   }
 }

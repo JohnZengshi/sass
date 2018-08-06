@@ -5,22 +5,22 @@
             <span>积分模板</span>
         </div>
         <div class="input-wrap">
-            <h5 class="item-label">组合名称</h5>
-            <input placeholder="请输入组合名称" v-model="showList.templateName">
+            <h5 class="item-label">积分模板名称</h5>
+            <input @blur="amendData({templateName: showList.templateName})" placeholder="请输入组合名称" v-model="showList.templateName">
         </div>
         <div class="shop-list">
             <h5>选择店铺</h5>
             <ul class="list-wrap">
                 <!-- 单店铺 -->
                 <el-checkbox-group style="display: inline-block" v-model="checkShopList">
-                    <li v-for="(item, index) in shopList.shopList">
-                        <el-checkbox :label="item.shopId" style="font-size: 14px;">{{item.shopName}}</el-checkbox>
+                    <li v-for="(item, index) in checkDataList.shopList">
+                        <el-checkbox @change="amendShop" :label="item.shopId" style="font-size: 14px;">{{item.shopName}}</el-checkbox>
                     </li>
                 </el-checkbox-group>
                 <!-- 组合店铺 -->
                 <el-checkbox-group style="display: inline-block" v-model="checkShopGroupList">
-                    <li v-for="(item, index) in shopList.shopGroupList">
-                        <el-checkbox :label="item.groupId" style="font-size: 14px;">{{item.groupName}}</el-checkbox>
+                    <li v-for="(item, index) in checkDataList.shopGroupList">
+                        <el-checkbox @change="amendShop" :label="item.groupId" style="font-size: 14px;">{{item.groupName}}</el-checkbox>
                     </li>
                 </el-checkbox-group>
             </ul>
@@ -47,7 +47,7 @@
             </ul>
         </div>
         <!-- 会员积分配置 -->
-<!--         <memberSetting></memberSetting> -->
+        <memberSetting></memberSetting>
         <add-grade ref="addGradeBox"></add-grade>
     </div>
 </template>
@@ -55,7 +55,7 @@
 import addGrade from './add-grade'
 import memberSetting from '@/layouts/Work/memberSetting/index'
 import { seekFindMemberTemplaetDetails, seekFindShopList } from 'Api/commonality/seek'
-import { operateUpdateGrade } from 'Api/commonality/operate'
+import { operateUpdateGrade, operateUpdateMemberTemplaet } from 'Api/commonality/operate'
 export default {
     components: {
         addGrade,
@@ -65,7 +65,7 @@ export default {
         return {
             templateId: this.$route.query.templateId,
             name: '',
-            shopList: {
+            checkDataList: {
                 shopList: [],
                 shopGroupList: []
             },
@@ -134,18 +134,20 @@ export default {
                     }
                 })
         },
+        // 修改店铺
         amendShop(val) {
-            let opations = []
+            let opations = {
+                type: '',
+                shopList: [
+                    {
+                        shopId: val.target.value
+                    }
+                ]
+            }
             if (val.target.checked) { // 新增
-                opations = [{
-                    type: '0',
-                    shopId: val.target.value
-                }]
+                opations.type = '0'
             } else { // 删除
-                opations = [{
-                    type: '1',
-                    shopId: val.target.value
-                }]
+                opations.type = '1'
             }
             this.amendData(opations)
         },
@@ -165,56 +167,40 @@ export default {
             this.amendData(opations)
         },
         amendDiscount(val) {
-            let opations = []
+            let opations = {
+                discount: ''
+            }
             if (val.target.checked) { // 新增
                 this.checkDiscount = []
                 this.checkDiscount.push(val.target.value)
-                opations = [{
-                    discount: val.target.value
-                }]
+                opations.discount = val.target.value
             } else {
-                opations = [{
-                    discount: 0
-                }]
+                opations.discount = 0
             }
             this.amendData(opations)
         },
-        amendData(parm) {
-            let opations = {
-                dataList: parm, // []
-                templateId: this.showList.templateId
-            }
+        amendData(opations) {
+            operateUpdateMemberTemplaet(Object.assign({}, opations, {templateId: this.showList.templateId}))
+                .then(res => {
+                    if (res.data.state == 200) {
+                        this.$message({type: 'success',message: '修改成功'})
+                    } else {
+                        this.$message({type: 'error',message: res.data.msg})
+                    }
+                })
         },
         /* -------数据源-------- */
         // 店铺列表
         _seekFindShopList() {
-            let opations = {
-                page: 1,
-                pageSize: '0',
-                type: '1'
-            }
-            let datas = {
-                shopList: [{
-                        shopId: 'shopId',
-                        shopName: 'shopName',
-                        templateType: 'templateType',
-                    },
-                    {
-                        shopId: 'shopId2',
-                        shopName: 'shopName2',
-                        templateType: 'templateType2',
-                    }
-                ],
-                shopGroupList: [{
-                    groupId: 'groupId',
-                    groupName: 'groupName',
-                }]
-            }
-            this.shopList = datas
-            seekFindShopList(opations)
+            // let opations = {
+            //     page: 1,
+            //     pageSize: '0',
+            //     type: '1'
+            // }
+            seekFindShopList()
                 .then(res => {
                     if (res.data.state == 200) {
-                        this.shopList = res.data.data.shopList
+                        this.checkDataList = res.data.data
                     } else {
                         this.$message({
                             type: 'error',
@@ -230,44 +216,18 @@ export default {
             let options = {
                 templateId: this.templateId,
             }
-            let datas = {
-                templateId: 'templateId',
-                templateName: 'templateName',
-                discount: '1',
-                list: {
-                    shopList: [{
-                        shopId: 'shopId',
-                        shopName: 'shopName',
-                    }],
-                    groupList: [{
-                        groupId: 'groupId',
-                        groupName: 'groupName',
-                    }]
-                },
-                gradeList: [{
-                        gradeId: 'gradeId',
-                        gradeName: 'gradeName',
-                        startScore: 'startScore',
-                    },
-                    {
-                        gradeId: 'gradeId',
-                        gradeName: 'gradeName',
-                        startScore: 'startScore',
-                    }
-                ]
-            }
-            for (let i of datas.list.shopList) {
-                this.checkShopList.push(i.shopId)
-            }
-            for (let i of datas.list.groupList) {
-                this.checkShopGroupList.push(i.groupId)
-            }
-            this.checkDiscount.push(datas.discount)
-            this.showList = datas
             seekFindMemberTemplaetDetails(options)
                 .then(res => {
                     if (res.data.state == 200) {
-                        this.showList = res.data.data
+                        let datas = res.data.data
+                        for (let i of datas.shopList) {
+                            this.checkShopList.push(i.shopId)
+                        }
+                        for (let i of datas.groupList) {
+                            this.checkShopGroupList.push(i.groupId)
+                        }
+                        this.checkDiscount.push(datas.discount)
+                        this.showList = datas
                     } else {
                         this.$message({
                             type: 'error',

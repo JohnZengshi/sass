@@ -2,12 +2,14 @@
 <template>
   <transition name="tp-ani">
     <div class="RP_report_wrapper ui-page-max-width report_table_fixed dc-label-print-main" v-if="isPrint==0">
-<!--       <memberInfo
+
+      <memberInfo
+        ref="memberInfoBox"
         @closeReturn="closeEditReturn"
-        :memberInfoFlag="memberInfoFlag"
         :shopId="shopId"
         :memberId="memberId"
-      ></memberInfo> -->
+      ></memberInfo>
+
       <div class="Rp_title_container">
         <!--面包屑-->
         <div class="Rp_crumbs">
@@ -80,7 +82,7 @@ import {
   // seekGetShopListByCo,
   seekGetUserInfo,
   seekMemberList,
-  seekGetPrintLabelList,
+  seekFindMemberList,
   seekGetShopListByCo
 } from 'Api/commonality/seek.js'
 import * as jurisdictions from 'Api/commonality/jurisdiction'
@@ -105,8 +107,8 @@ export default {
   },
   data() {
     return {
+      totalNum: '',
       memberId: '',
-      memberInfoFlag: false,
       shopId: this.$route.query.shopId,
       configData: configData,
       addData: [], // 让后台过滤的数据源
@@ -200,23 +202,7 @@ export default {
       loading: false,
 
       allData: {},
-      dataGridStorage: [
-        {
-          memberId: 'memberId',
-          avatarUrl: '//y.gtimg.cn/music/photo_new/T001R300x300M000002EI0UQ3vJz5h.jpg?max_age=2592000',
-          nickname: 'nickname',
-          phone: 'phone',
-          name: 'name',
-          grade: 'grade',
-          typeName: 'typeName',
-          withScore: 'withScore',
-          score: 'score',
-          guestPrice: 'guestPrice',
-          sumPrice: 'sumPrice',
-          sumSize: 'sumSize',
-          createTime: '20180709000000',
-        }
-      ],
+      dataGridStorage: [],
       dataGridDetailList: [],
 
       //成本核算
@@ -450,10 +436,12 @@ export default {
     },
     changeMember (parm) {
       debugger
-      // this.memberId = parm.memberId
-      this.memberId = "73fa61bdbcef4aeaa7e59e346278d195"
-      this.memberInfoFlag = true
-      debugger
+      this.memberId = parm.memberId
+      setTimeout(() => {
+        this.$refs.memberInfoBox.open()
+      }, 0)
+      // this.memberId = "73fa61bdbcef4aeaa7e59e346278d195"
+      // this.memberInfoFlag = true
     },
     delData(parm) {
       this.dataGridStorage.splice(parm.index, 1)
@@ -486,17 +474,17 @@ export default {
         })
       }
 
-      seekGetPrintLabelList(Object.assign(parm, barcode, { page: '1', pageSize: '30' }))
+      seekFindMemberList(Object.assign(parm, barcode, { page: '1', pageSize: '30' }))
         .then(res => {
           if (res.data.state == 200) {
             this.allData = res.data.data
             let datas = res.data.data.dataList
-            for (let i of datas) {
-              // 属性
-              i.productClass = productTpyeState(i.productClass)
-              // 状态
-              i.status = newProductDetailStatus(i.status)
-            }
+            // for (let i of datas) {
+            //   // 属性
+            //   i.productClass = productTpyeState(i.productClass)
+            //   // 状态
+            //   i.status = newProductDetailStatus(i.status)
+            // }
             this.addData = datas
             this.dataGridStorage = datas
             this.loading = false
@@ -510,27 +498,32 @@ export default {
         })
     },
     filterData(parm) {
+      
       if (parm) {
         this.dataGridStorage = []
         this.paging.page = 1
         this.filterCondition = Object.assign({}, this.filterCondition, parm)
+      } else {
+        if (this.paging.page > 1 && this.dataGridStorage.length == this.totalNum) {
+          return
+        }
       }
 
       this.loading = true
 
-      seekGetPrintLabelList(Object.assign({}, this.filterCondition, this.formattingData(this.sortList), this.paging))
+      seekFindMemberList(Object.assign({}, this.filterCondition, this.formattingData(this.sortList), this.paging))
         .then(res => {
           if (res.data.state == 200) {
             this.paging.page += 1
             this.allData = res.data.data
             let datas = res.data.data.dataList
             this.totalNum = res.data.data.totalNum
-            for (let i of datas) {
-              // 属性
-              i.productClass = productTpyeState(i.productClass)
-              // 状态
-              i.status = newProductDetailStatus(i.status)
-            }
+            // for (let i of datas) {
+            //   // 属性
+            //   i.productClass = productTpyeState(i.productClass)
+            //   // 状态
+            //   i.status = newProductDetailStatus(i.status)
+            // }
             this.dataGridStorage.push(...datas)
             this.loading = false
           } else {
