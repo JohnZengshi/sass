@@ -70,7 +70,8 @@ export default{
         this.$emit('updateRemark', this.isRemark)
         setTimeout(() =>{
            this.loading = false
-           this.remarkDataList.push(...remarkData.orderCheckRemarkList, ...remarkData.orderRemarkList)
+          this.remarkDataList =  remarkData.orderCheckRemarkList.concat(remarkData.orderRemarkList)
+          //  this.remarkDataList.push(...remarkData.orderRemarkList)
         }, 300)
         
       })

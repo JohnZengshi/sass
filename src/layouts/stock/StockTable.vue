@@ -323,6 +323,7 @@ export default {
         storageId: "", //库位id
         shopId: "", //店铺id
         counterId: "", //柜组id
+        searchDate: '', // 时间
         productClass: "1", //商品属性
         sortFlag: "0", //分位置 1=分，0=不分
         sortList: [
@@ -371,20 +372,24 @@ export default {
         this.dataGridOptions.page = 1;
         this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       }
+      debugger
       this.send();
     },
-    "changeShop.shopId" (val) {
-      if (this.changeShop.shopId) {
-        this.dataGridOptions.shopId = val;
-      } else {
-        this.dataGridOptions.shopId = "";
-        this.dataGridOptions.counterId = "";
-      }
-      this.dataGridOptions.page = 1;
-      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
-      this.send();
-    },
+    // "changeShop.shopId" (val) {
+    //   if (this.changeShop.shopId) {
+    //     this.dataGridOptions.shopId = val;
+    //   } else {
+    //     this.dataGridOptions.shopId = "";
+    //     this.dataGridOptions.counterId = "";
+    //   }
+    //   this.dataGridOptions.page = 1;
+    //   this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
+    //   debugger
+    //   this.send();
+    //   console.log(this.changeCounter.counterId)
+    // },
     "changeCounter.counterId" (val) {
+      this.dataGridOptions.shopId = this.changeShop.shopId;
       this.dataGridOptions.counterId = val;
       this.dataGridOptions.page = 1;
       this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
@@ -406,6 +411,7 @@ export default {
       } else {
         this.dataGridOptions.sortFlag = 0;
       }
+      debugger
       this.send();
     },
     "changeRepository.repositoryName"(val){
@@ -449,10 +455,21 @@ export default {
     this.productClassList(1)
     this.productClassList(2)
     this.productClassList(3)
-
     this.settingUserRole();
   },
   methods: {
+    amendShop () {
+      debugger
+      if (this.changeShop.shopId) {
+        this.dataGridOptions.shopId = this.changeShop.shopId;
+      } else {
+        this.dataGridOptions.shopId = "";
+        this.dataGridOptions.counterId = "";
+      }
+      this.dataGridOptions.page = 1;
+      this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
+      this.send();
+    },
     filterHeaderComplate(parm) {
       this.dataGridOptions.page = 1;
       this.sortList = []
@@ -607,6 +624,7 @@ export default {
       }
       this.loading = true;
       this.dataGridOptions.pageSize = 0;
+      this.dataGridOptions.searchDate = this.searchDate
       seekStockProductList(this.dataGridOptions).then(res => {
         this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
         if (res.data.state == 200) {
@@ -1103,6 +1121,7 @@ export default {
       this.loading = true;
       return (async () => {
           //初始化数据
+          this.dataGridOptions.searchDate = this.searchDate
           let res = await seekStockProductList(this.dataGridOptions).then(
               res => {
                   if (res.data.state == 200) {
@@ -1126,6 +1145,7 @@ export default {
     send() {
       this.loading = true;
       this.dataGridStorage = []
+      this.dataGridOptions.searchDate = this.searchDate
       seekStockProductList(this.dataGridOptions).then(
         res => {
           if (res.data.state == 200) {

@@ -10,7 +10,29 @@
 			<router-link tag="span" to="/work/report/" class="path_crumbs">报表</router-link> > <span class="txt">发货</span>
 		</div>
 		<div class="Rp_selected_container">
-            <HeaderDropDownMenu
+            <!-- 头部的筛选条件 -->
+            <template v-for="(item,index) in selectBox">
+                <Cascade
+                    v-if="item.titleName == '产品类别'"
+                    :propList="item.propList"
+                    :titleName="item.titleName"
+                    @clear="callProductCategory"
+                    @dropReturn="changeVaue">
+                </Cascade>
+                <HeaderDropDownMenu 
+                    v-else
+                    class="selected_dropdown" 
+                    :titleName="item.titleName" 
+                    :dataType="item.dataType" 
+                    :propList="item.propList" 
+                    :prohibitDdropDown="item.prohibitDdropDown"
+                    @dropReturn="dropReturn" 
+                    @clearInfo="clearInfo" 
+                    @isSelect="(val)=> isSelectArr.push(val)">
+                </HeaderDropDownMenu>
+                <span v-show="index < selectBox.length-1" class="spaceMark">|</span>
+            </template>
+            <!-- <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="发货库位"
                 dataType="库位"
@@ -63,19 +85,19 @@
             <span class="spaceMark">|</span>
             
             <HeaderDropDownMenu
-                v-if="!takeUserDisabled"
                 class="selected_dropdown"
                 titleName="收货人"
                 dataType="收货人"
                 :propList="GetUserInfoList"
                 @dropReturn="dropReturn"
                 @clearInfo="clearInfo"
+                :prohibitDdropDown="takeUserDisabled"
             >
-            </HeaderDropDownMenu>
-            <div v-else class="selected_dropdown el-dropdown placeholder disabled">
+            </HeaderDropDownMenu> -->
+            <!-- <div v-else class="selected_dropdown el-dropdown placeholder disabled">
                <span class="el-dropdown-link">收货人</span>
                <i class="iconfont icon-arrow-down"></i>
-            </div>
+            </div> -->
             
   			<div class="report-data">
                 <div class="block until" data-txt="至">
@@ -589,8 +611,46 @@ export default {
         jewelList:[],
         jewelryList:[],
         // 打印的数据
-        printDataGrid:null
+        printDataGrid:null,
+        // 筛选条件判断数组
+        isSelectArr:[],
       };
+    },
+    computed:{
+      // 头部的筛选条件数据
+      selectBox:function(){
+        return [{
+          titleName:"发货库位",
+          dataType:"库位",
+          propList:this.repositoryList,
+          prohibitDdropDown:false, //是否禁止下拉
+        },{
+          titleName:"产品类别",
+          dataType:"产品类别",
+          propList:this.productCategory,
+          prohibitDdropDown:false, //是否禁止下拉
+        },{
+          titleName:"收货店铺",
+          dataType:"店铺",
+          propList:this.distributorList,
+          prohibitDdropDown:false, //是否禁止下拉
+        },{
+          titleName:"制单人",
+          dataType:"制单人",
+          propList:this.shopUserList,
+          prohibitDdropDown:false, //是否禁止下拉
+        },{
+          titleName:"审核人",
+          dataType:"审核人",
+          propList:this.auditorUserList,
+          prohibitDdropDown:false, //是否禁止下拉
+        },{
+          titleName:"收货人",
+          dataType:"收货人",
+          propList:this.GetUserInfoList,
+          prohibitDdropDown:this.takeUserDisabled, //是否禁止下拉
+        }]
+      }
     },
     created() {
         //后台请求时间
@@ -611,7 +671,7 @@ export default {
         this.getShopListByCo() //收货店铺
         this.getUserList(); //制单人
         this.getGetUserList() //审核人
-        this.send()
+        // this.send()
         this.$store.dispatch('checkBrowser',(type)=>{
            this.reportPrint_fixed = type
         })
@@ -654,6 +714,18 @@ export default {
             this.dataGridOptions.sortFlag = 0
             }
             this.send()
+        },
+        // 筛选条件判断数组
+        'isSelectArr'(val){
+            console.log(val)
+            if(val.length + 2 == this.selectBox.length){ //产品类别不会自动选中
+                if(!val.includes(true)){
+                    this.send();
+                    console.log("没有选项选中")
+                }else{
+                    console.log("已有选项选中")
+                }
+            }
         }
     },
     methods: {
@@ -1190,8 +1262,8 @@ export default {
         
         //懒加载
         lazyloadSend(){
-           this.currentPage++
-           this.send()
+        //    this.currentPage++
+        //    this.send()
         },
         tabPrin(){
             (async () => {

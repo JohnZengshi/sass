@@ -205,10 +205,11 @@
 				let productId = this.dgDataList[fIndex].productId
 				// 当input失去焦点时 需要检测下初始数据是否被修改过，如果没有修改 则不需要保存
 				if((tab.canclear || itemData) && tempData != itemData) {
-					let tempArray = [{
-						[tab.type]: itemData,
-						productId: productId
-					}]
+					let tempArray = []
+					// let tempArray = [{
+					// 	[tab.type]: itemData,
+					// 	productId: productId
+					// }]
 
 					// 在修改成本跟倍率时 需要把售价传给后台
 					if(tab.type == 'costPrice' || tab.type == 'ratio') {
@@ -347,6 +348,11 @@
 					 * 3、修改副石单价同步更新副石额
 					 * 4、修改副石计价方式同步更新副石额 
 					 */
+					// if(tab.type === 'deputyCount' ||
+					// 	tab.type === 'deputyWeight' ||
+					// 	tab.type === 'deputyUnitPrice' ||
+					// 	tab.type === 'deputyCalcMethod'
+					// ) 
 					if(tab.type === 'deputyCount' ||
 						tab.type === 'deputyWeight' ||
 						tab.type === 'deputyUnitPrice' ||
@@ -360,6 +366,12 @@
 							})
 						} else if (tab.type === 'deputyCalcMethod') {
 							this.dgDataList[fIndex][tab.type] = this.dgDataList[fIndex][tab.type]
+							tempArray.push({
+								deputyPrice: item['deputyPrice'],
+								productId: productId
+							})
+						} else if (tab.type === 'deputyWeight') {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
 							tempArray.push({
 								deputyPrice: item['deputyPrice'],
 								productId: productId
@@ -410,6 +422,12 @@
 							})
 						} else if (tab.type === 'mainCalcMethod') {
 							this.dgDataList[fIndex][tab.type] = this.dgDataList[fIndex][tab.type]
+							tempArray.push({
+								mainPrice: item['mainPrice'],
+								productId: productId
+							})
+						} else if (tab.type === 'mainWeight') {
+							this.dgDataList[fIndex][tab.type] = this.toNum(this.dgDataList[fIndex][tab.type]).toFixed(3)
 							tempArray.push({
 								mainPrice: item['mainPrice'],
 								productId: productId
@@ -476,6 +494,11 @@
 							productId: productId
 						});
 					}
+
+					tempArray.push({
+						[tab.type]: this.dgDataList[fIndex][tab.type],
+						productId: productId
+					})
 					this.$emit('updataEditApi', tempArray)
 				}
 				this.updateAmend(item, this.activeSelectOn)
@@ -1193,11 +1216,23 @@
 
 						} else {
 							el.className = 'item ' + (j.classesName == fg.tr[fg.td.type] ? 'active' : '')
-							el.addEventListener('click', () => {
-								events(j)
-							}, false)
-							el.setAttribute('title', j.classesName)
-							elem.className = 'datagrid-select-container overflow'
+							// 双层下拉
+							if (item[0].typeList) {
+									el.setAttribute('title', j.classesName)
+									elem.className = 'datagrid-select-container'
+							} else { // 单层下拉
+									el.addEventListener('click', () => {
+										events(j)
+									}, false)
+									el.setAttribute('title', j.classesName)
+									elem.className = 'datagrid-select-container overflow'
+							}
+							// el.addEventListener('click', () => {
+							// 	events(j)
+							// }, false)
+							// el.setAttribute('title', j.classesName)
+							// // elem.className = 'datagrid-select-container overflow'
+							// elem.className = 'datagrid-select-container'
 						}
 
 						elem.appendChild(el)

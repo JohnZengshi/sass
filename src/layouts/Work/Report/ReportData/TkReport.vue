@@ -10,134 +10,29 @@
 			<router-link tag="span" to="/work/report/" class="path_crumbs">报表</router-link> > <span class="txt">退库</span>
 		</div>
 		<div class="Rp_selected_container">
-		    
-  			<!-- <el-dropdown class="selected_dropdown"  :class="printSelectDate.storage =='' ? 'placeholder' : ''">
-              <span class="el-dropdown-link">
-                  {{printSelectDate.storage =='' ? '退库库位' : printSelectDate.storage}}
-              </span>
-              <i class="iconfont icon-xiala" v-if="printSelectDate.storage ==''"></i>
-              <i class="el-icon-circle-close" @click="selectStorage" title="清除" v-else></i>
-              <el-dropdown-menu slot="dropdown" class="selected_dropdown_item">
-                <div class="max-selected-item">
-                    <el-dropdown-item 
-                        v-for="item in repositoryList" 
-                        :class="printSelectDate.storage == item.repositoryName ? 'active' : ''"
-                        @click.native="selectStorage(item)">
-                        {{item.repositoryName}}
-                    </el-dropdown-item>
-                </div>
-              </el-dropdown-menu>
-            </el-dropdown> -->
-            <HeaderDropDownMenu
-                class="selected_dropdown"
-                titleName="退库库位"
-                dataType="库位"
-                :propList="repositoryList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </HeaderDropDownMenu>
-            <span class="spaceMark">|</span>
-  			<!-- <el-cascader 
-  				:options="productCategory" 
-  				v-model="productCategoryType" 
-  				clearable  
-  				:props = "categoryProps" 
-  				:show-all-levels="false" 
-  				placeholder="产品类别" 
-  				@clear = "callProductCategory"
-  				@change = "callProductCategory" 
-  				expand-trigger="hover" 
-  				class="selet_category">
-  			</el-cascader> -->
-            <Cascade
-                :propList="productCategory"
-                titleName="产品类别"
-                @clear = "callProductCategory"
-                @dropReturn = "changeVaue"
-            >
-            </Cascade>
-  			<span class="spaceMark">|</span>
-  			<!-- <el-dropdown class="selected_dropdown" :class="printSelectDate.supplier =='' ? 'placeholder' : ''">
-              <span class="el-dropdown-link">
-                  {{printSelectDate.supplier ==''? '供应商' : printSelectDate.supplier}} 
-              </span>
-              <i class="iconfont icon-xiala" v-if="printSelectDate.supplier ==''"></i>
-              <i class="el-icon-circle-close" @click="selectSupplier" title="清除" v-else></i>
-              <el-dropdown-menu slot="dropdown" class="selected_dropdown_item">
-                <div class="max-selected-item">
-                    <el-dropdown-item 
-                        v-for="item in providerList" 
-                        :class="printSelectDate.supplier == item.supplierName ? 'active' : ''"
-                        @click.native="selectSupplier(item)">
-                        {{item.supplierName}}
-                    </el-dropdown-item>
-                </div>
-              </el-dropdown-menu>
-            </el-dropdown> -->
-            <HeaderDropDownMenu
-                class="selected_dropdown"
-                titleName="供应商"
-                dataType="供应商"
-                :propList="providerList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </HeaderDropDownMenu>
-            <span class="spaceMark">|</span>
-            <!-- <el-dropdown class="selected_dropdown" :class="printSelectDate.preparedBy =='' ? 'placeholder' : ''">
-              <span class="el-dropdown-link">
-                  {{printSelectDate.preparedBy ==''? '制单人' : printSelectDate.preparedBy}}
-              </span>
-              <i class="iconfont icon-xiala" v-if="printSelectDate.preparedBy ==''"></i>
-              <i class="el-icon-circle-close" @click="selectPreparedBy" title="清除" v-else></i>
-              <el-dropdown-menu slot="dropdown" class="selected_dropdown_item">
-                <div class="max-selected-item">
-                    <el-dropdown-item 
-                        v-for="item in shopUserList" 
-                        :class="printSelectDate.preparedBy == item.username ? 'active' : ''"
-                        @click.native="selectPreparedBy(item)">
-                        {{item.username}}
-                    </el-dropdown-item>
-                </div>
-              </el-dropdown-menu>
-            </el-dropdown> -->
-            <HeaderDropDownMenu
-                class="selected_dropdown"
-                titleName="制单人"
-                dataType="制单人"
-                :propList="shopUserList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </HeaderDropDownMenu>
-            <span class="spaceMark">|</span>
-  			<!-- <el-dropdown class="selected_dropdown" :class="printSelectDate.auditor =='' ? 'placeholder' : ''">
-              <span class="el-dropdown-link" >
-                  {{printSelectDate.auditor ==''? '审核人' : printSelectDate.auditor}}
-              </span>
-              <i class="iconfont icon-xiala" v-if="printSelectDate.auditor ==''"></i>
-              <i class="el-icon-circle-close" @click="selectAuditor" title="清除" v-else></i>
-              <el-dropdown-menu slot="dropdown" class="selected_dropdown_item">
-                <div class="max-selected-item">
-                    <el-dropdown-item 
-                        v-for="item in auditorUserList" 
-                        :class="printSelectDate.auditor == item.username ? 'active' : ''"
-                        @click.native="selectAuditor(item)">
-                        {{item.username}}
-                    </el-dropdown-item>
-                </div>
-              </el-dropdown-menu>
-            </el-dropdown> -->
-  			<HeaderDropDownMenu
-                class="selected_dropdown"
-                titleName="审核人"
-                dataType="审核人"
-                :propList="auditorUserList"
-                @dropReturn="dropReturn"
-                @clearInfo="clearInfo"
-            >
-            </HeaderDropDownMenu>
+            <!-- 头部的筛选条件 -->
+            <template v-for="(item,index) in selectBox">
+                <Cascade
+                    v-if="item.titleName == '产品类别'"
+                    :propList="item.propList"
+                    :titleName="item.titleName"
+                    @clear="callProductCategory"
+                    @dropReturn="changeVaue">
+                </Cascade>
+                <HeaderDropDownMenu 
+                    v-else
+                    class="selected_dropdown" 
+                    :titleName="item.titleName" 
+                    :dataType="item.dataType" 
+                    :propList="item.propList" 
+                    :prohibitDdropDown="item.prohibitDdropDown"
+                    @dropReturn="dropReturn" 
+                    @clearInfo="clearInfo" 
+                    @isSelect="(val)=> isSelectArr.push(val)">
+                </HeaderDropDownMenu>
+                <span v-show="index < selectBox.length-1" class="spaceMark">|</span>
+            </template>
+            <!-- 日期筛选条件 -->
   			<div class="report-data">
                 <div class="block until" data-txt="至">
                     <el-date-picker size="mini" v-model="beginTime" @change="getTimeData"  type="date" placeholder="选择开始时间" :picker-options="pickerOptions1"></el-date-picker>
@@ -649,7 +544,40 @@ export default {
         jewelryList:[],
         // 打印的数据
         printDataGrid:null,
+        // 筛选条件判断数组
+        isSelectArr:[],
       };
+    },
+    computed:{
+      // 头部的筛选条件数据
+      selectBox:function(){
+        return [{
+          titleName:"入库库位",
+          dataType:"库位",
+          propList:this.repositoryList,
+          prohibitDdropDown:false, //是否禁止下拉
+        },{
+          titleName:"产品类别",
+          dataType:"产品类别",
+          propList:this.productCategory,
+          prohibitDdropDown:false, //是否禁止下拉
+        },{
+          titleName:"供应商",
+          dataType:"供应商",
+          propList:this.providerList,
+          prohibitDdropDown:false, //是否禁止下拉
+        },{
+          titleName:"制单人",
+          dataType:"制单人",
+          propList:this.shopUserList,
+          prohibitDdropDown:false, //是否禁止下拉
+        },{
+          titleName:"审核人",
+          dataType:"审核人",
+          propList:this.auditorUserList,
+          prohibitDdropDown:false, //是否禁止下拉
+        }]
+      }
     },
     created() {
         //后台请求时间
@@ -670,7 +598,7 @@ export default {
         this.getProductTypeList() //产品类别
         this.getUserList() //制单人
         this.getGetUserList() //审核人
-        this.send()
+        // this.send()
         this.$store.dispatch('checkBrowser',(type)=>{
            this.reportPrint_fixed = type
         })
@@ -710,6 +638,18 @@ export default {
             this.dataGridOptions.sortFlag = 0
             }
             this.send()
+        },
+        // 筛选条件判断数组
+        'isSelectArr'(val){
+            console.log(val)
+            if((val.length + 1) == this.selectBox.length){ //产品类别不会默认选上，所以加1
+                if(!val.includes(true)){
+                    this.send();
+                    console.log("没有选项选中")
+                }else{
+                    console.log("已有选项选中")
+                }
+            }
         }
     },
     methods: {
@@ -1025,56 +965,6 @@ export default {
             $('.loadControl span').html('更多未读取数据').css('color','#e99a1d')     
             this.send()
         },
-    	//退库位
-    	// selectStorage(e){
-    	    
-    	//     if( e.type == undefined ){
-    	//       this.printSelectDate.storage = e.repositoryName
-    	//       this.propOptons.storageId = e.repositoryId
-    	//     }else{
-    	//       this.printSelectDate.storage = ''
-        //       this.propOptons.storageId = ''  
-    	//     }
-    	    
-    	//     this.send()
-    	// },
-    	
-    	// //供应商选择
-    	// selectSupplier(e){
-    	    
-    	//     if( e.type == undefined ){
-        //       this.printSelectDate.supplier = e.supplierName
-        //       this.propOptons.supplierId = e.supplierId
-        //     }else{
-        //       this.printSelectDate.supplier = ''
-        //       this.propOptons.supplierId = ''  
-        //     }
-        //     this.send()
-    	// },
-    	
-    	// //制单人选择
-    	// selectPreparedBy(e){
-    	//     if( e.type == undefined ){
-        //       this.printSelectDate.preparedBy = e.username
-        //       this.propOptons.makeUserID = e.userId
-        //     }else{
-        //       this.printSelectDate.preparedBy = ''
-        //       this.propOptons.makeUserID = ''  
-        //     }
-        //     this.send()
-    	// },
-    	
-    	// //审核人选择
-    	// selectAuditor(e){
-    	//     if( e.type == undefined ){
-        //       this.printSelectDate.auditor = e.username
-        //       this.propOptons.checkUserId = e.userId
-        //     }else{
-        //       this.printSelectDate.auditor = ''
-        //       this.propOptons.checkUserId = ''  
-        //     }
-        //     this.send()
-    	// },
     	changeVaue (val) {
             this.dataGridOptions.productTypeId = val.item.operateId
             this.printSelectDate.productType = val.item.operateName
@@ -1093,31 +983,8 @@ export default {
     			this.send()
     			return
     		}
-    		
-    		// this.propOptons.productTypeId = res[1]
-    		
-    		// let _categoryDate = this.productCategory.filter((item )=>{
-    		// 	return item.value == res[0]
-    		// })
-    		
-    		// if( _categoryDate[0] && _categoryDate[0].typeList ){
-    			
-	    	// 	let val = find( _categoryDate[0].typeList, {
-	        //         value: this.propOptons.productTypeId
-	        //     })
-	    	// 	this.printSelectDate.productType = val.classesName
-	    	// 	this.send()
-    		// }
-    		
     	},
 
-    	// tabs(index,type){
-    	// 	this.loading = true;
-    	// 	this.tabClassActive.index = index;
-    	// 	this.setReportType(type)
-    	// 	this.send()
-    	// },
-    	
     	//滚动条滚动时不显示总计
     	tabScrollShow( type ){
     		this.tabShow = type ? 'tabShow' : ''
@@ -1272,56 +1139,6 @@ export default {
         formatDate( d ){
            return d < 10 ? ('0' + d ) : d + ''
         },
-        
-        /*
-       	* 数据请求
-        */
-        // send() {
-        	
-        //     this.loading = true;
-        //     if(this.propOptons.reportType == 3){
-        //        Object.assign(this.propOptons,{
-        //           page : 1,
-        //           pageSize : 9999
-        //        })
-        //     }
-        //     if( this.timeOut ) clearTimeout( this.timeOut )
-        //     if (this.propOptons.makeUserList) {
-        //         if (this.propOptons.makeUserList[0].makeUserId == '') {
-        //             for (let i in this.propOptons) {
-        //                 //console.log(i)
-        //                 delete this.propOptons.makeUserList
-        //             }
-        //         }
-        //     }
-        //     if (this.propOptons.checkUserList) {
-        //         if (this.propOptons.checkUserList[0].checkUserId == '') {
-        //             for (let i in this.propOptons) {
-        //                 //console.log(i)
-        //                 delete this.propOptons.checkUserList
-        //             }
-        //         }
-        //     }
-            
-        //     seekOutStorageReport( this.propOptons ).then((res) => {
-        //         if (res.data.state === 200) {
-        //             //数据表格数据
-        //             this.dataGridStorage = res.data.data   
-        //             this.dataGridStorage.printDetailList = res.data.data.detailList
-        //         } else {
-        //             this.$message({
-        //             	type : 'error',
-        //             	message : res.body.msg
-        //             })
-        //         }
-                
-        //         this.timeOut = setTimeout(()=>{
-        //         	 this.loading = false
-        //         	 if( this.timeOut ) clearTimeout( this.timeOut )
-        //         },200)
-               
-        //     })
-        // },
         send () {
           this.loading = true;
           seekOutStorageReport(this.dataGridOptions).then((res) => {
@@ -1335,8 +1152,8 @@ export default {
         },
         //懒加载
         lazyloadSend(){
-           this.currentPage++
-           this.send()
+        //    this.currentPage++
+        //    this.send()
         },
         //打印表格
         tabPrin(){

@@ -10,24 +10,21 @@
 			<router-link tag="span" to="/work/report/" class="path_crumbs">报表</router-link> > <span class="txt">调柜</span>
 		</div>
 		<div class="Rp_selected_container">
-		    <!-- <el-dropdown class="selected_dropdown" :class="printSelectDate.shop =='' ? 'placeholder' : ''">
-              <span class="el-dropdown-link">
-                  {{printSelectDate.shop ==''? '店铺' : printSelectDate.shop}} 
-              </span>
-              <i class="iconfont icon-xiala" v-if="printSelectDate.shop ==''"></i>
-              <i class="el-icon-circle-close" @click="selectShop" title="清除" v-else></i>
-              <el-dropdown-menu slot="dropdown" class="selected_dropdown_item">
-                <div class="max-selected-item">
-                    <el-dropdown-item 
-                        v-for="item in distributorList" 
-                        :class="printSelectDate.shop == item.shopName ? 'active' : ''"
-                        @click.native="selectShop(item)">
-                        {{item.shopName}}
-                    </el-dropdown-item>
-                </div>
-              </el-dropdown-menu>
-            </el-dropdown> -->
-             <HeaderDropDownMenu
+            <!-- 头部的筛选条件 -->
+            <template v-for="(item,index) in selectBox">
+                <HeaderDropDownMenu 
+                    class="selected_dropdown" 
+                    :titleName="item.titleName" 
+                    :dataType="item.dataType" 
+                    :propList="item.propList" 
+                    :prohibitDdropDown="item.prohibitDdropDown"
+                    @dropReturn="dropReturn" 
+                    @clearInfo="clearInfo" 
+                    @isSelect="(val)=> isSelectArr.push(val)">
+                </HeaderDropDownMenu>
+                <span v-show="index < selectBox.length-1" class="spaceMark">|</span>
+            </template>
+             <!-- <HeaderDropDownMenu
                 class="selected_dropdown"
                 titleName="店铺"
                 dataType="店铺"
@@ -37,25 +34,6 @@
             >
             </HeaderDropDownMenu>
             <span class="spaceMark">|</span>
-            
-            <!-- <el-dropdown v-if="!takeUserDisabled" class="selected_dropdown" :class="printSelectDate.preparedBy =='' ? 'placeholder' : ''">
-              <span class="el-dropdown-link">
-                  {{printSelectDate.preparedBy ==''? '制单人' : printSelectDate.preparedBy}}
-              </span>
-              <i class="iconfont icon-xiala" v-if="printSelectDate.preparedBy ==''"></i>
-              <i class="el-icon-circle-close" @click="selectPreparedBy" title="清除" v-else></i>
-              <el-dropdown-menu slot="dropdown" class="selected_dropdown_item">
-                <div class="max-selected-item">
-                    <el-dropdown-item 
-                        v-for="item in shopUserList" 
-                        :class="printSelectDate.preparedBy == item.username ? 'active' : ''"
-                        @click.native="selectPreparedBy(item)">
-                        {{item.username}}
-                    </el-dropdown-item>
-                    <el-dropdown-item v-if="shopUserList.length == 0">暂无数据</el-dropdown-item>
-                </div>
-              </el-dropdown-menu>
-            </el-dropdown> -->
             <HeaderDropDownMenu
                 v-if="!takeUserDisabled"
                 class="selected_dropdown"
@@ -69,7 +47,7 @@
             <div v-else class="selected_dropdown el-dropdown placeholder disabled">
                <span class="el-dropdown-link">制单人</span>
                <i class="iconfont icon-arrow-down"></i>
-            </div>
+            </div> -->
             
   			<div class="report-data">
                 <div class="block until" data-txt="至">
@@ -539,8 +517,26 @@ export default {
         jewelList:[],
         jewelryList:[],
         // 打印的数据
-        printDataGrid:null
+        printDataGrid:null,
+        // 筛选条件判断数组
+        isSelectArr:[],
       };
+    },
+    computed:{
+      // 头部的筛选条件数据
+      selectBox:function(){
+        return [{
+          titleName:"店铺",
+          dataType:"店铺",
+          propList:this.distributorList,
+          prohibitDdropDown:false, //是否禁止下拉
+        },{
+          titleName:"制单人",
+          dataType:"制单人",
+          propList:this.shopUserList,
+          prohibitDdropDown:this.takeUserDisabled, //是否禁止下拉
+        }]
+      }
     },
     created() {
         //后台请求时间
@@ -558,7 +554,7 @@ export default {
         this.printSelectDate.endTime = this.endTime
         this.settingUserRole()
         this.getShopListByCo()
-        this.send()
+        // this.send()
         this.$store.dispatch('checkBrowser',(type)=>{
            this.reportPrint_fixed = type
         })
@@ -585,6 +581,18 @@ export default {
             this.dataGridOptions.sortFlag = 0
             }
             this.send()
+        },
+        // 筛选条件判断数组
+        'isSelectArr'(val){
+            console.log(val)
+            if(val.length + 1 == this.selectBox.length){ //制单人不会选中
+                if(!val.includes(true)){
+                    this.send();
+                    console.log("没有选项选中")
+                }else{
+                    console.log("已有选项选中")
+                }
+            }
         }
     },
     methods: {
@@ -1078,8 +1086,8 @@ export default {
         },
         //懒加载
         lazyloadSend(){
-           this.currentPage++
-           this.send()
+        //    this.currentPage++
+        //    this.send()
         },
         
         //打印表格

@@ -1,9 +1,7 @@
 <template>
-<!--     <div class="dropDown-wrap" :class="{Filtrate : propList.length > 1}"> -->
-    <div class="dropDown-wrap" :class="{Filtrate : true}">
+    <div class="dropDown-wrap" :class="{Filtrate : !prohibitDdropDown , prohibitDdropDown : prohibitDdropDown}">
         <span class="title-name" :class="optionData.titleInfo == '' ? '' : 'select'">
             {{optionData.titleInfo == '' ? titleName : optionData.titleInfo}}
-<!--             <template v-if="propList.length > 1"> -->
             <template>
                 <i class="iconfont icon-arrow-down drop-triangle" v-if="optionData.titleInfo ==''" title="筛选"></i>
                 <i class="el-icon-circle-close" v-else-if="(isClear == undefined ? true : isClear == true ? true : false)" title="清除" @click="clearTitleInfo"></i>
@@ -24,7 +22,8 @@ export default {
         'dataDataType',
         'isClear',
         'isDPCodeDelete',
-        'isKWCodeDelete'
+        'isKWCodeDelete',
+        'prohibitDdropDown' // 禁止下拉
     ],
     watch:{
        'isDPCodeDelete':function(){
@@ -43,6 +42,12 @@ export default {
            let propListLength = this.propList.length;
            if(propListLength == 1){
                this.itemClick(this.propList[0],0)
+            //自动选中了
+               this.$emit("isSelect",true);
+           }
+           else{
+            //没选中
+               this.$emit("isSelect",false);
            }
        }
     },
@@ -389,6 +394,13 @@ export default {
           color: #2993f8;
         }
       }
+    }
+    // 增加禁止下拉
+    &.prohibitDdropDown{
+        cursor: not-allowed;
+        .title-name{
+            color: #ccc;
+        }
     }
     .title-name {
         padding: 0 8px;
