@@ -36,7 +36,7 @@ export default {
     },
     computed: {
         componentStyle() {
-        	
+
             let top = this.parent ? this.data.top - this.parent.top : this.data.top
             let left = this.parent ? this.data.left - this.parent.left : this.data.left
             return {
@@ -50,7 +50,7 @@ export default {
             }
         },
         pageStyle() {
-        	
+
             let top = this.parent ? this.data.top - this.parent.top : this.data.top
             let left = this.parent ? this.data.left - this.parent.left : this.data.left
             return {
@@ -67,7 +67,6 @@ export default {
             return Math.ceil(sumNumber / number)
         },
         items() {
-        	
             //如果预览时，渲染商品列表，返回属性列表
             this.children = []
             let t = this.data.top
@@ -77,13 +76,18 @@ export default {
             //分页商品列表
             let productList = this.templateData.productList.slice((this.page - 1) * number, this.page * number)
             //渲染的行数
+            debugger
+            if (+this.data.salesId){
+                productList = this.judgeProductList(productList);
+            }
             number = Math.min(number, productList.length)
             if (number) {
                 //数据之间的间距
                 let gap = h / (number + 1)
-               
+
                     //每条数据克隆每个属性，定位属性的位置，传递productIndex来定位属性所属的product
                 productList.forEach((item, i) => {
+
                     let items = JSON.parse(JSON.stringify(this.data.children))
                     items.forEach(child => {
                         child.data.productIndex = (this.page - 1) * this.data.number + i
@@ -109,10 +113,25 @@ export default {
                     this.children.push(childClone)
                 })
             }
-            
             return this.children
-        }
+        },
     },
+    methods:{
+        judgeProductList(productList){
+            let list = [];
+            for (let item of productList){
+                for (let obj of item.codeList) {
+                    if (obj.key == 'sellType' && obj.value == '销售' && this.data.salesId == '1') {
+                        list.push(item);
+                    }
+                    if (obj.key == 'sellType' && obj.value == '退换' && this.data.salesId == '2') {
+                        list.push(item);
+                    }
+                }
+            }
+            return list;
+        }
+    }
 }
 </script>
 
