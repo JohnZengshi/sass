@@ -27,57 +27,15 @@ export default {
       return image;
     },
     NAxios () {
-      // var c=this.$refs.mainContent;
-      // var ctx=c.getContext("2d");
-      // ctx.font="18px Verdana";
-      // // 创建一个渐变
-      // var gradient=ctx.createLinearGradient(0,0,c.width,0);
-      // gradient.addColorStop("0","#000");
-      // gradient.addColorStop("1","#000");
-      // // 填充一个渐变
-      // ctx.fillStyle=gradient;
-      // ctx.fillText("足金手镯",0,16);
-      //   var image = c.toDataURL("image/png");
-
-
-
+      
         var c=this.$refs.mainContent
         var ctx=c.getContext("2d");
         ctx.font="bold 14px SimHei";
         ctx.fillStyle = '#000';
         ctx.fillText("足金手镯",10,12);
         var image = c.toDataURL("image/png");
-        console.log('看你是什么===--', image)
+
         this.$emit('getCanvasImg', image)
-
-        // var c=this.$refs.mainContent
-        // var ctx=c.getContext("2d");
-        // ctx.font="bold 26px SimHei";
-        // ctx.fillStyle = 'red';
-        // ctx.fillText("足金手镯",10,16);
-        // var image = c.toDataURL("image/png");
-        // console.log('看你是什么===--', image)
-
-
-        // var mycanvas = document.getElementById("thecanvas");  
-        // var mycanvas = this.$refs.mainContent
-        // var ctx=mycanvas.getContext("2d");
-        // // ctx.font="14px SimHei";
-        // ctx.font="italic small-caps bold 14px SimHei"
-        // ctx.fillText("足金",10,10, 17);
-        // var image = mycanvas.toDataURL("image/png");
-        // console.log('看你是什么', image)
-        // var w=window.open('about:blank','image from canvas');  
-        // w.document.write("<img src='"+image+"' alt='from canvas'/>");  
-        // let _self = this
-        // return new Promise((resolve, reject) => {
-        //   html2canvas(this.$refs.mainContent).then(canvas => {
-        //       console.log('截图出单张图片', canvas)
-        //       let dataUrl = canvas.toDataURL('image/jpeg');
-        //       _self.$emit('getCanvasImg', dataUrl)
-        //       reject(dataUrl)
-        //   });
-        // })
     },
     jtCall () {
       return new Promise((resolve, reject) => {
@@ -91,9 +49,7 @@ export default {
       })
       let _self = this
       html2canvas(this.$refs.mainContent).then(canvas => {
-          console.log('截图出单张图片', canvas)
           let dataUrl = canvas.toDataURL('image/jpeg');
-          _self.$emit('getCanvasImg', dataUrl)
       });
       // let _self = this
       // let scale = 2;

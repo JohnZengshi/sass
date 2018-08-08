@@ -7,7 +7,6 @@
       </div>
       <div class="add-group-body">
         <h3>{{titName}}</h3>
-
         <template v-if="independent">
           <div class="input-wrap">
             <span class="item-label">组合名称</span>
@@ -17,7 +16,7 @@
             <h5>选择店铺</h5>
             <ul class="list-wrap">
                 <el-checkbox-group v-model="checkList">
-                    <li v-for="(item, index) in showList.shopList">
+                    <li v-for="(item, index) in [...nextData, ...showList.shopList]">
                        <el-checkbox @change="amendShop" :label="item.shopId" :class="{active: true}" style="font-size: 14px;">{{item.shopName}}</el-checkbox>
                     </li>
                 </el-checkbox-group>
@@ -44,13 +43,14 @@
   </el-dialog>
 </template>
 <script>
-import { seekFindShopTemplateList } from 'Api/commonality/seek'
-import { operateAddShopGroup, operateUpdateShopGroupById } from 'Api/commonality/operate'
+import { seekFindShopTemplateList, seekFindShopGroupDetails, seekFindTemplateShopAll, seekFindShopTemplateDetails } from 'Api/commonality/seek'
+import { operateAddShopGroup, operateUpdateShopGroupById, operateUpdateShopTemplate } from 'Api/commonality/operate'
 export default {
   props: ['independent', 'titName'], // 独立店铺
   data() {
     return {
       templateId: '',
+      nextData: [], // 上一级数据
       checkList: [],
       checkTemplateList: [],
       showList: {
@@ -65,8 +65,20 @@ export default {
     open (parm) {
       this.templateId = parm
       this.checkList = []
+      this.checkTemplateList = []
       this.isDialog = true
-      this._seekFindShopTemplateList()
+
+      if (this.independent) { // 组合
+        this._seekFindShopTemplateList()
+        if (this.templateId) {
+          this._seekFindShopGroupDetails()
+        }
+      } else { // 独立
+        this._seekFindTemplateShopAll()
+        if (this.templateId) {
+          this._seekFindShopTemplateDetails()
+        }
+      }
     },
     close () {
       this.checkList = []
@@ -74,7 +86,11 @@ export default {
       this.isDialog = false
     },
     confirm () {
-      this._operateAddShopGroup()
+      if (this.independent) { // 新增
+        this._operateAddShopGroup()
+      } else {
+        this.close()
+      }
     },
     // 修改店铺
     amendShop(val) {
@@ -84,6 +100,10 @@ export default {
       this.filterAmend(val, 'shopList', 'shopId')
     },
     amendTemplate (val) {
+      if (val.target.checked) {
+        this.checkTemplateList = []
+        this.checkTemplateList.push(val.target.value)
+      }
       if (!this.templateId) {
         return
       }
@@ -91,21 +111,27 @@ export default {
     },
     filterAmend (val, bigKey, smallKey) {
       let opations = {
-        type: '',
         [bigKey]: [
           {
-            [smallKey]: val.target.value
+            [smallKey]: val.target.value,
+            type: ''
           }
         ]
       }
       if (val.target.checked) { // 新增
-        opations.type = 0
+        opations[bigKey][0].type = 0
       } else { // 删除
-        opations = [{
-          discount: 1
-        }]
+        opations[bigKey][0].type = 1
+        // opations = [{
+        //   discount: 1
+        // }]
       }
-      this._operateUpdateShopGroupById(opations)
+      if (this.independent) { // 组合
+        this._operateUpdateShopGroupById(opations)
+      } else { // 独立
+        this._operateUpdateShopTemplate(opations)
+      }
+      
     },
     // 新增
     _operateAddShopGroup () {
@@ -139,6 +165,7 @@ export default {
           if (res.data.state == 200) {
             this.$message({message: '新建成功'})
             this.close()
+            this.$emit('update')
           } else {
             this.$message({type: 'error',message: res.data.msg})
           }
@@ -153,21 +180,78 @@ export default {
         .then(res => {
           if (res.data.state == 200) {
             this.$message({message: '修改成功'})
+            this.$emit('update')
           } else {
             this.$message({type: 'error',message: res.data.msg})
           }
         })
     },
     _seekFindShopTemplateList() {
-      let opations = {
-        page: 1,
-        pageSize: '0',
-        type: '1'
-      }
-      seekFindShopTemplateList(opations)
+      seekFindShopTemplateList({groupId: this.templateId})
         .then(res => {
           if (res.data.state == 200) {
             this.showList = res.data.data
+          } else {
+            this.$message({type: 'error',message: res.data.msg})
+          }
+        })
+    },
+    // 组合详情
+    _seekFindShopGroupDetails() {
+      seekFindShopGroupDetails({groupId: this.templateId})
+        .then(res => {
+          if (res.data.state == 200) {
+            let datas = res.data.data
+            this.name = datas.groupName
+            for (let i of datas.shopList) {
+              this.checkList.push(i.shopId)
+            }
+            for (let i of datas.templateList) {
+              this.checkTemplateList.push(i.templateId)
+            }
+          } else {
+            this.$message({type: 'error',message: res.data.msg})
+          }
+        })
+    },
+    // 独立店铺列表
+    _seekFindTemplateShopAll() {
+      // seekFindTemplateShopAll()
+      //   .then(res => {
+      //     if (res.data.state == 200) {
+      //       this.showList = res.data.data
+      //     } else {
+      //       this.$message({type: 'error',message: res.data.msg})
+      //     }
+      //   })
+    },
+    // 独立店铺详情
+    _seekFindShopTemplateDetails(){
+      seekFindShopTemplateDetails({shopId: this.templateId})
+        .then(res => {
+          if (res.data.state == 200) {
+            let datas = res.data.data
+            this.showList.templateList = datas
+            for (let i of datas) {
+              if (i.type == 1) {
+                this.checkTemplateList.push(i.templateId)
+              }
+            }
+          } else {
+            this.$message({type: 'error',message: res.data.msg})
+          }
+        })
+    },
+    // 独立店铺修改
+    _operateUpdateShopTemplate (opations) {
+      if (!this.templateId) {
+        return
+      }
+      operateUpdateShopTemplate(Object.assign(opations, {shopId: this.templateId}))
+        .then(res => {
+          if (res.data.state == 200) {
+            this.$message({message: '修改成功'})
+            this.$emit('update')
           } else {
             this.$message({type: 'error',message: res.data.msg})
           }

@@ -40,7 +40,7 @@
 
                       <div class="member-item">
                         <span class="item-label"><i class="mandatory-icon">*</i>性别</span>
-                        <div class="right-wrap radio-20">
+                        <div class="right-wrap radio-20" v-if="memberId ? dataInfo.phone : true">
                           <el-radio-group style="margin-top: 7px;" v-model="dataInfo.sex" @change="setSex" :disabled="!isShopMan">
                             <el-radio :label="'1'">男</el-radio>
                             <el-radio :label="'2'">女</el-radio>
@@ -50,12 +50,12 @@
 
                       <div class="member-item">
                         <span class="item-label"><i class="mandatory-icon">*</i>姓名</span>
-                        <input placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.userName" @blur="amendData">
+                        <input placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.userName" @blur="_operateUpdateMember({userName: dataInfo.userName})">
                       </div>
 
                       <div class="member-item">
                         <span class="item-label">备注名</span>
-                        <input maxlength="6" placeholder="仅内部人员可查看" :disabled="!isShopMan" v-model="dataInfo.name" @blur="amendData">
+                        <input maxlength="6" placeholder="仅内部人员可查看" :disabled="!isShopMan" v-model="dataInfo.name" @blur="_operateUpdateMember({userName: dataInfo.name})">
                       </div>
 
                       <div class="member-item">
@@ -63,7 +63,7 @@
                         <div class="right-wrap">
                           <newDownMenu
                             class="header-new-down-menu-box"
-                            :titleInfo="dataInfo.gradeName ? dataInfo.gradeName : '选择会员等级'"
+                            :titleInfo="dataInfo.grade[0] ? dataInfo.grade[0].gradeName : '选择会员等级'"
                             :showList="gradeList"
                             :noClear="true"
                             :keep="true"
@@ -75,7 +75,7 @@
 
                       <div class="member-item">
                         <span class="item-label">积分</span>
-                        <input placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.score" @blur="amendData">
+                        <input placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.score" @blur="_operateUpdateMember({userName: dataInfo.score})">
                       </div>
 
                       <div class="member-item">
@@ -113,7 +113,7 @@
                     <span class="item-label">省市区</span>
                     <div class="right-wrap">
                       <input v-model="PCAData" @click.stop="isShowPCA = !isShowPCA" class="inp" type="text" placeholder="选择省市区">
-                      <AddressSelect style="left: 0;" v-if="isShowPCA" @addressReturn="SelectArea"></AddressSelect>
+                      <AddressSelect style="left: 0;" v-if="isShowPCA" @addressReturn="selectArea"></AddressSelect>
                     </div>
                   </div>
 
@@ -135,10 +135,10 @@
                   </div>
                   <div class="member-item">
                     <span class="item-label">微信号</span>
-                    <input placeholder="请输入" :disabled="!isShopMan" v-model="dataInfo.weixin" @blur="amendData">
+                    <input placeholder="请输入" :disabled="!isShopMan" v-model="dataInfo.weixin" @blur="_operateUpdateMember({weixin: dataInfo.weixin})">
                   </div>
 
-                  <div class="member-item">
+                  <div class="member-item" v-if="dataInfo.createTime">
                     <span class="item-label">创建时间</span>
                     <div class="right-wrap">
                       <span class="show-tit">
@@ -146,7 +146,8 @@
                       </span>
                     </div>
                   </div>
-                  <div class="member-item">
+
+                  <div class="member-item" v-if="dataInfo.totalMoney">
                     <span class="item-label">订单总额</span>
                     <div class="right-wrap">
                       <span class="show-tit">
@@ -157,7 +158,7 @@
 
                   <div class="member-item">
                     <span class="item-label">邮箱</span>
-                    <input placeholder="请输入" :disabled="!isShopMan" v-model="dataInfo.email" @blur="amendData">
+                    <input placeholder="请输入" :disabled="!isShopMan" v-model="dataInfo.email" @blur="_operateUpdateMember({email: dataInfo.email})">
                   </div>
 
                   <div class="member-item">
@@ -173,13 +174,13 @@
 
                   <div class="member-item">
                     <span class="item-label">详细地址</span>
-                    <input :disabled="!isShopMan" v-model="dataInfo.address" @blur="amendData">
+                    <input :disabled="!isShopMan" v-model="dataInfo.address" @blur="_operateUpdateMember({address: dataInfo.address})">
                   </div>
                 </div>
                 <div class="remark">
                   <div class="remark-left">
                     <div class="title"><span></span><em>备注</em></div>
-                    <textarea v-model="dataInfo.remark"></textarea>
+                    <textarea v-model="dataInfo.remark" @blur="_operateUpdateMember({remark: dataInfo.remark})"></textarea>
                   </div>
                   <div class="remark-right">
                     <div class="title"><span></span><em>标签</em></div>
@@ -204,7 +205,7 @@
   </div>
 </template>
 <script>
-import { operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention, operateMemberCreatee } from 'Api/commonality/operate'
+import { operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention, operateMemberCreatee, operateUpdateMember } from 'Api/commonality/operate'
 import { seekGetShopUserList,seekFindMemberGradeList, seekFindMemberDetails } from 'Api/commonality/seek'
 import aloneDropDownColums from 'base/menu/alone-drop-down-colums'
 import choseLeader from './chose-leader'
@@ -243,13 +244,14 @@ export default {
         maleBirthday: '',
         principalList: [],
         principalName: '', // 负责人名
-        grade: '',
+        grade: [],
         gradeName: '',
         weixin: '',
         type: '',
         typeName: '',
         memorial: '',
-        signList: []
+        signList: [],
+        orderList: []
       },
       isDialog: false,
       isShopMan: true, // 操作权限
@@ -281,29 +283,41 @@ export default {
     closeChoLeader (parm) {
       this.isChoseLeader = false
       let userList = []
+      let datas = {
+        principalList: []
+      }
       for (let i of parm.list) {
         userList.push({
           userId: i
         })
+        datas.principalList.push({userId: i})
       }
       this.dataInfo.principalList = userList
+      this.dataInfo.principalName = ''
       for (let i of parm.nameList) {
         this.dataInfo.principalName += this.dataInfo.principalName ? `,${i}` : i
       }
+      this._operateUpdateMember(datas)
     },
-    SelectArea(val) { // 省市区
+    selectArea(val) { // 省市区
       this.dataInfo.provinceId = val.provId
       this.dataInfo.cityId = val.cityId
       this.dataInfo.areaId = val.areaId
       this.PCAData = val.provName + ' / ' + val.cityName + ' / ' + val.areaName
       this.isShowPCA = false
+      this._operateUpdateMember({
+        provinceId: val.provId,
+        cityId: val.cityId,
+        areaId: val.areaId
+      })
     },
     cosImg(parm) {
       this.dataInfo.cardSrc = parm
-      console.log('成功上传了图片', parm)
+      this._operateUpdateMember({cardSrc: parm})
     },
     changeProfession(parm) {
       this.dataInfo.profession = parm.name
+      this._operateUpdateMember({profession: parm.name})
     },
     close () {
       this.$emit('close')
@@ -327,8 +341,9 @@ export default {
       })
     },
     choseGrade(parm) {
-      this.dataInfo.grade = parm.gradeId
-      this.dataInfo.gradeName = parm.gradeName
+      this.$set(this.dataInfo.grade, '0', parm)
+      // this.dataInfo.grade[0] = parm
+      this._operateUpdateMember({gradeId: parm.gradeId})
     },
     choseType(parm) {
       this.isType = false
@@ -374,35 +389,7 @@ export default {
             signId: res.data.data.signId
           })
           this.signName = ''
-
-          let orderList = []
-          if (this.dataInfo.orderList.length != 0) {
-            this.dataInfo.orderList.forEach((item, index) => {
-              orderList[index] = { orderNo: item.orderNum }
-            })
-          }
-
-          let optionsdata = Object.assign({}, this.dataInfo, {
-            memberId: this.memberId,
-            shopId: this.shopId,
-            orderList,
-            birthday: this.birthday
-          })
-
-          operateMemberUpdateBy(optionsdata).then(res => {
-            if (res.data.state === 200) {
-              // this.$message({
-              //     type: 'success',
-              //     message: '添加标签成功'
-              // })
-            } else {
-              this.$message({
-                type: 'error',
-                message: res.data.msg
-              })
-            }
-          })
-
+          this._operateUpdateMember(this.dataInfo.signList)
         }
       })
     },
@@ -481,58 +468,61 @@ export default {
     // 删除标签
     delLabel(item, index) {
       this.dataInfo.signList.splice(index, 1)
-
-      let orderList = []
-      if (this.dataInfo.orderList.length != 0) {
-        this.dataInfo.orderList.forEach((item, index) => {
-          orderList[index] = { orderNo: item.orderNum }
-        })
+      if (!this.memberId) {
+        return
       }
+      this._operateUpdateMember({signList: this.dataInfo.signList}, '删除成功')
+      // operateUpdateMember(Object.assign({}, item, {memberId: this.memberId}, {shopId: this.shopId}))
+      //   .then(res => {
+      //     if (res.data.state === 200) {
+      //       this.$message({type: 'success',message: '删除'})
+      //       this.dataInfo.signList.splice(index, 1)
+      //     } else {
+      //       this.$message({type: 'error',message: res.data.msg})
+      //     } 
+      //   })
+      
+      // let orderList = []
+      // if (this.dataInfo.orderList.length != 0) {
+      //   this.dataInfo.orderList.forEach((item, index) => {
+      //     orderList[index] = { orderNo: item.orderNum }
+      //   })
+      // }
 
       // 生日的时间格式
 
-      let optionsdata = Object.assign({}, this.dataInfo, {
-        memberId: this.memberId,
-        shopId: this.shopId,
-        orderList,
-        birthday: this.birthday
+      // let optionsdata = Object.assign({}, this.dataInfo, {
+      //   memberId: this.memberId,
+      //   shopId: this.shopId,
+      //   orderList,
+      //   birthday: this.birthday
 
-      })
+      // })
 
-      operateMemberUpdateBy(optionsdata).then(res => {
-        if (res.data.state === 200) {
-          this.$message({
-            type: 'success',
-            message: '删除标签成功'
-          })
-        } else {
-          this.$message({
-            type: 'error',
-            message: '删除标签失败'
-          })
-        }
-      })
+      // operateMemberUpdateBy(optionsdata).then(res => {
+      //   if (res.data.state === 200) {
+      //     this.$message({
+      //       type: 'success',
+      //       message: '删除标签成功'
+      //     })
+      //   } else {
+      //     this.$message({
+      //       type: 'error',
+      //       message: '删除标签失败'
+      //     })
+      //   }
+      // })
     },
     // 修改生日
     setBirthday() {
       this._operateUpdateMember({birthday: formattingTime(this.dataInfo.birthday)})
     },
     setMemorial () {
-      this._operateUpdateMember({memorial: formattingTime(this.dataInfo.memorial)})
+      this._operateUpdateMember({setMemorial: formattingTime(this.dataInfo.memorial)})
     },
     setMaleBirthday () {
       this._operateUpdateMember({maleBirthday: formattingTime(this.dataInfo.maleBirthday)})
     },
-    // 格式化日期
-    // timeFormat(parm) {
-
-    //   if (parm) {
-    //     let year = parm.substring(0, 4)
-    //     let month = parm.substring(5, 7)
-    //     let data = parm.substring(8, 10)
-    //     return year + month + data + '000000'
-    //   }
-    // },
     // 修改姓名
     setUserName() {
 
@@ -565,12 +555,22 @@ export default {
       })
     },
     // 修改性别
-    setSex() {
-      this._operateUpdateMember({sex: dataInfo.sex})
+    setSex(val) {
+      this._operateUpdateMember({sex: this.dataInfo.sex})
     },
     // 修改
-    _operateUpdateMember (parm) {
-      operateUpdateMember(Object.assign({}, parm, {memberId: this.memberId}))
+    _operateUpdateMember (parm, message) {
+      if (!this.memberId) {
+        return
+      }
+      operateUpdateMember(Object.assign({}, parm, {memberId: this.memberId}, {shopId: this.shopId}))
+        .then(res => {
+          if (res.data.state === 200) {
+            this.$message({type: 'success', message: message ? message : '修改成功'})
+          } else {
+            this.$message({type: 'error', message: res.data.msg})
+          } 
+        })
     },
     // 新增会员
     _operateMemberCreatee() {
@@ -669,10 +669,16 @@ export default {
       seekFindMemberDetails(options)
         .then(res => {
           if (res.data.state == 200) {
+            debugger
             let datas = res.data.data
             datas.memorial = GetNYR(datas.memorial)
             datas.birthday = GetNYR(datas.birthday)
             datas.maleBirthday = GetNYR(datas.maleBirthday)
+            datas.principalName = ''
+            for (let i of datas.principalList) {
+              datas.principalName += datas.principalName ? `,${i.nickname}` : i.nickname
+            }
+            debugger
             this.dataInfo = datas
           } else {
             this.$message({type: 'error',message: res.data.msg})
@@ -766,6 +772,10 @@ export default {
           }
           .new-down-menu-box {
             width: 182px;
+            .title-name{
+              text-align: left;
+              text-indent: 10px;
+            }
           }
           .card-img {
             width: 80px;
@@ -1107,6 +1117,8 @@ export default {
             .header-new-down-menu-box {
               width: 120px;
               .title-name{
+                text-align: left;
+                text-indent: 10px;
                 background-color: transparent;
               }
             }

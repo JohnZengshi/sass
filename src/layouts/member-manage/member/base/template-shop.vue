@@ -48,7 +48,7 @@
         </div>
         <!-- 会员积分配置 -->
         <memberSetting></memberSetting>
-        <add-grade ref="addGradeBox"></add-grade>
+        <add-grade ref="addGradeBox" :checkDiscount="checkDiscount" @upload="_seekFindMemberTemplaetDetails"></add-grade>
     </div>
 </template>
 <script>
@@ -137,17 +137,17 @@ export default {
         // 修改店铺
         amendShop(val) {
             let opations = {
-                type: '',
                 shopList: [
                     {
+                        type: '',
                         shopId: val.target.value
                     }
                 ]
             }
             if (val.target.checked) { // 新增
-                opations.type = '0'
+                opations.shopList[0].type = '0'
             } else { // 删除
-                opations.type = '1'
+                opations.shopList[0].type = '1'
             }
             this.amendData(opations)
         },
@@ -214,7 +214,7 @@ export default {
             this.checkShopList = []
             this.checkShopGroupList = []
             let options = {
-                templateId: this.templateId,
+                templateId: this.templateId
             }
             seekFindMemberTemplaetDetails(options)
                 .then(res => {

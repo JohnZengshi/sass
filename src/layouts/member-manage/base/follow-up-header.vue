@@ -16,7 +16,7 @@
           class="w-110 ml-10"
           ref="memberRankBox"
           :isSolid="true"
-          :titleInfo="filterCondition.gradeName ? filterCondition.gradeName : '会员级别'"
+          :titleInfo="filterCondition.gradeName ? filterCondition.gradeName : '跟进状态'"
           :showList="gradeList"
           :nameKey="'gradeName'"
           @changeData="changeMemberRank"
@@ -27,7 +27,7 @@
           class="w-110 ml-10"
           ref="memberClassBox"
           :isSolid="true"
-          :titleInfo="filterCondition.typeName ? filterCondition.typeName : '会员类型'"
+          :titleInfo="filterCondition.typeName ? filterCondition.typeName : '跟进目的'"
           :showList="memberClassList"
           :nameKey="'name'"
           @changeData="changeMemberClass"
@@ -38,7 +38,7 @@
           class="w-110 ml-10"
           ref="userBox"
           :isSolid="true"
-          :titleInfo="filterCondition.username ? filterCondition.username : '负责人'"
+          :titleInfo="filterCondition.username ? filterCondition.username : '跟进类型'"
           :showList="userList"
           :nameKey="'username'"
           @changeData="changeUser"
@@ -157,9 +157,15 @@ export default {
       for (let i in Object.assign(this.filterCondition)) {
         this.filterCondition[i] = ''
       }
-      this.$refs.memberRankBox.init()
-      this.$refs.memberClassBox.init()
-      this.$refs.userBox.init()
+      if (this.$refs.memberRankBox) {
+        this.$refs.memberRankBox.init()
+      }
+      if (this.$refs.memberClassBox) {
+        this.$refs.memberClassBox.init()
+      }
+      if (this.$refs.userBox) {
+        this.$refs.userBox.init()
+      }
       this._seekMemberList()
       this._seekFindMemberGradeList()
     },

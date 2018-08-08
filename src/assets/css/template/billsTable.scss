@@ -536,7 +536,7 @@ $report-p-r: 20px;
 }
 // 表格头部的布局
 .new-table-header-layout-main{
-    border-radius: 4px;
+    border-radius: 4px 4px 0 0;
     border: 1px solid #dedede;
     // box-shadow:0px 0 15px #ddd;
     position: relative;

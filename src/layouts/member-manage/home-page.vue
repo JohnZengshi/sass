@@ -3,26 +3,31 @@
   <div class="m-m-home-page-main xj-right-box xj-box-shadow">
     <header-nav @filterData="filterData"></header-nav>
     <div class="body-scorll-wrap">
+      <!-- 会员 -->
       <member :filterOption="filterOption" :memberList="memberList"></member>
-      <push></push>
+      <!-- 积分 -->
+      <interflow :filterOption="filterOption" :memberList="memberList"></interflow>
+      <!-- 跟进 -->
+      <follow-up :filterOption="filterOption" :memberList="memberList"></follow-up>
     </div>
   </div>
 </template>
 <script>
   import headerNav from './home-page/header'
   import member from './home-page/member'
-  import push from './home-page/push.vue'
+  import interflow from './home-page/interflow'
+  import followUp from './home-page/follow-up'
   import {seekMemberHomeById} from 'Api/commonality/seek'
   import {formattingTime, xjEndTime} from 'assets/js/getTime'
   export default {
     components: {
       headerNav,
       member,
-      push
+      followUp,
+      interflow
     },
     data () {
       return {
-        xxx:"123",
         memberList: {
           gradeList: []
         },

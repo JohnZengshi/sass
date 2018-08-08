@@ -20,7 +20,14 @@
                     </div>
                     <div class="input-wrap">
                         <span class="item-label"><i class="mandatory-icon">*</i>下一级别</span>
-                        <down-menu :isSolid="true" :titleInfo="showData.nextGradeName ? showData.nextGradeName : '请选择'" :showList="gradeList" :nameKey="'gradeName'" @changeData="change" @clearInfo="clear"></down-menu>
+                        <down-menu
+                            :isSolid="true"
+                            :titleInfo="showData.nextGradeName ? showData.nextGradeName : '请选择'"
+                            :showList="gradeList"
+                            :nameKey="'gradeName'"
+                            @changeData="change"
+                            @clearInfo="clear"
+                        ></down-menu>
                     </div>
                     <div class="input-wrap">
                         <span class="item-label">设置最低折扣</span>
@@ -43,6 +50,7 @@ import downMenu from 'base/menu/new-down-menu'
 import sellDiscount from './sell-discount'
 import memberDialog from '@/layouts/Work/ShopSetting/dialog/tplGoldDialog'
 export default {
+    props: ['checkDiscount'],
     components: {
         downMenu,
         sellDiscount,
@@ -57,6 +65,7 @@ export default {
                 startScore: '',
                 underLevelId: '', // 下一等级
                 gradeId: '',
+                grade: [],
                 nextGradeName: '',
                 list: []
             },
@@ -124,6 +133,7 @@ export default {
             this._operateUpdateGrade(parm)
         },
         change(parm) {
+            debugger
             this.showData.underLevelId = parm.gradeId
             this.showData.nextGradeName = parm.gradeName
             this._operateUpdateGrade({ underGradeId: parm.gradeId })
@@ -157,11 +167,12 @@ export default {
                 this.$message({ type: 'error', message: '请选择下一级别' })
                 return
             }
-
             let opations = {
                 gradeName: this.showData.gradeName,
                 startScore: this.showData.startScore,
                 underLevelId: this.showData.underLevelId,
+                templateId: this.templateId,
+                discount: this.checkDiscount[0] ? this.checkDiscount[0] : '0',
                 poductList: []
             }
             for (let i of this.showData.list) {
@@ -175,7 +186,13 @@ export default {
             // }
             operateAddGrade(opations)
                 .then(res => {
-
+                    if (res.data.state == 200) {
+                        this.close()
+                        this.$emit('upload')
+                        this.$message({type: 'error', message: '新建成功'})
+                    } else {
+                        this.$message({type: 'error', message: res.data.msg})
+                    }
                 })
         },
         _seekFindGradeList() {
@@ -199,20 +216,16 @@ export default {
                 gradeId: parm ? parm : this.gradeId
             }
 
-            let datas = {
-                gradeName: '',
-                startScore: '',
-                gradeId: '',
-                nextGradeName: '',
-                poductList: []
-            }
-
-            this.showData = datas
-
             seekFindGradeDetails(opations)
                 .then(res => {
                     if (res.data.state == 200) {
-                        this.showData = res.data.data
+                        let datas = res.data.data
+                        if (datas.grade[0]) {
+                            datas.nextGradeName = datas.grade[0].gradeName
+                        } else {
+                            datas.nextGradeName = ''
+                        }
+                        this.showData = datas
                     } else {
                         this.$message({
                             type: 'error',
@@ -255,7 +268,12 @@ export default {
             if (!this.showData.gradeId) {
                 return
             }
-            operateUpdateGrade(Object.assign({}, { gradeId: this.showData.gradeId }, parm))
+            let options = {
+                discount: this.checkDiscount[0] ? this.checkDiscount[0] : '0',
+                templateId: this.templateId,
+                gradeId: this.showData.gradeId,
+            }
+            operateUpdateGrade(Object.assign({}, options, parm))
                 .then(res => {
                     if (res.data.state == 200) {
                         this.$message({ type: 'error', message: '修改成功' })

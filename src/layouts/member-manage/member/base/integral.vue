@@ -9,24 +9,34 @@
       </div>
     </div>
     <ul class="integral-body" v-loading="loading">
-      <li @click.stop="compile(item, index)" v-for="item in combinationList">
+      <li @click.stop="compile(item.templateId)" v-for="(item, index) in combinationList">
         {{item.templateName}}
-        <i @click.stop="del"></i>
+        <i @click.stop="del(item, index)"></i>
       </li>
     </ul>
+
+    <!-- 新增模板 -->
     <input-popup ref="inputPopupBox" :headTit="'请输入模板名称'" @confirm="confirmAdd"></input-popup>
+
+    <!-- 确认弹窗 -->
+    <confirm-popup ref="confirmPopupBox" :hint="`确认删除${currentData.templateName}？`" @comfirm="_operateDeleteMemberTemplaet"></confirm-popup>
+
   </div>
 </template>
 <script>
   import { seekFindTemplateAll } from 'Api/commonality/seek'
   import { operateDeleteMemberTemplaet, operateAddMemberTemplaet } from 'Api/commonality/operate'
   import inputPopup from 'base/popup/input-popup'
+  import confirmPopup from 'base/popup/confirm-popup'
   export default {
     components: {
-      inputPopup
+      inputPopup,
+      confirmPopup
     },
     data () {
       return {
+        currentData: {},
+        templateId: '',
         loading: true,
         shopId: this.$route.query.shopId,
         combinationList: [
@@ -56,7 +66,8 @@
                 type: 'success',
                 message: '新建成功'
               })
-              this._seekFindTemplateAll()
+              this.compile(res.data.data)
+              // this._seekFindTemplateAll()
             } else {
               this.$message({
                 type: 'error',
@@ -77,34 +88,33 @@
             this.loading = false
           })
       },
-      compile (item, index) {
+      compile (item) {
         this.$router.push({
           path: 'addTemplate',
           query: {
             shopId: this.shopId,
-            templateId: item.templateId
+            templateId: item
           }
         })
       },
-      del (item, index) {
+      del (item) {
+        this.currentData = item
+        this.$refs.confirmPopupBox.open()
+      },
+      _operateDeleteMemberTemplaet () {
         this.loading = true
-        this.combinationList.splice(index, 1)
-        setTimeout(() => {
-          this.loading = false
-        }, 1000)
         let options = {
-          templateId: item.templateId
+          templateId: this.currentData.templateId
         }
         operateDeleteMemberTemplaet(options)
           .then(res => {
             if (res.data.state == 200) {
-
+              this.$message({type: 'error',message: '删除成功'})
+              this._seekFindTemplateAll()
             } else {
-              this.$message({
-                type: 'error',
-                message: res.data.msg
-              })
+              this.$message({type: 'error',message: res.data.msg})
             }
+            this.loading = false
           })
       }
     }
@@ -125,6 +135,7 @@
   }
   .integral-body{
     width: 930px;
+    min-height: 200px;
     margin: 10px 0 0 50px;
     li{
       position: relative;
@@ -139,8 +150,9 @@
       color: #333;
       background-color: #F6F8FA;
       margin: 0 40px 22px 0;
-      transition: all 0.3;
+      transition: all .3s;
       border-radius: 5px;
+      vertical-align: top;
       i{
         display: inline-block;
         position: absolute;

@@ -607,7 +607,7 @@ export const operateAddMember = function(parm) {
     return new Axios(url, parm).apiCall();
 }
 export const operateDeleteMemberTemplaet = function(parm) {
-    let url = "/v1/member/deleteMemberTemplaet";
+    let url = "/v1/groupTemplate/deleteMemberTemplaet";
     return new Axios(url, parm).apiCall();
 }
 //新增管理会员模板
@@ -648,4 +648,17 @@ export const operateUpdateMemberTemplaet = function (parm) {
 export const operateUpdateMember = function (parm) {
   let URL = "/v1/groupTemplate/updateMember";
   return apiCall(parm, URL);
+}
+export const operateUpdateShopTemplate = function (parm) {
+  let URL = "/v1/groupTemplate/updateShopTemplate";
+  return apiCall(parm, URL);
+}
+// 删除会员
+export const operateDeleteMemberId = function (parm) {
+  let URL = "/v1/groupTemplate/deleteMemberId";
+  return apiCall(parm, URL);
+}
+export const operateLoginPermissions = function(parm) {
+    let url = "/v1/auth/loginPermissions";
+    return new Axios(url, parm).apiCall();
 }

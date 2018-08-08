@@ -11,11 +11,6 @@
         border-radius: 10px;
         overflow: hidden;
         box-shadow: 0 0 15px 4px rgba(51,51,51,0.1);
-        transform: translateX(-50%);
-        -ms-transform: translateX(-50%);
-        -moz-transform: translateX(-50%);
-        -webkit-transform: translateX(-50%);
-        -o-transform: translateX(-50%);
         .el-dialog__header{
             // background-color: #fff;
             position: relative;
@@ -75,6 +70,11 @@
     .el-dialog{
       background-color: $bc;
       box-shadow: none;
+      transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+      -moz-transform: translateX(-50%);
+      -webkit-transform: translateX(-50%);
+      -o-transform: translateX(-50%);
     }
     .el-dialog--small{
         top: $t;
@@ -215,6 +215,12 @@
 .new-popup-dialog{
     @include all-no-dialog($w:1200px,$h:770px,$t:9%,$hn:none);
 }
+.new-small-popup-comfirm-dialog{
+    @include all-no-dialog($w:320px,$h:250px,$t:10%,$hn:none, $bc: #fff);
+}
+.new-small-popup-dialog{
+    @include all-no-dialog($w:320px,$h:450px,$t:9%,$hn:none, $bc: #fff);
+}
 .xj-input-dialog{
     @include all-no-dialog($w:700px,$h:730px,$t:7%,$hn:none);
 }
@@ -249,14 +255,6 @@
     &.delectInvoicesClass{
         .el-dialog--small{
             top: 30% !important;
-        }
-    }
-    // 短信日志弹窗
-    &.NotelogDialogClass{
-        .el-dialog--small{
-            width: 700px;
-            height: 730px;
-            top: 202px !important;
         }
     }
     .el-dialog--small{

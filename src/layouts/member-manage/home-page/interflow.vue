@@ -3,14 +3,10 @@
   <div class="m-m-home-page-member-main">
 
     <div class="decoration">
-      积分
+      推送
     </div>
 
     <ul class="center-num-list">
-      <!-- <li v-for="item in centerBtnList">
-        <p>{{item.value}}</p>
-        <p>{{item.name}}</p>
-      </li> -->
       <li>
         <p>{{memberList.memberCount}}</p>
         <p>会员总数</p>
@@ -26,74 +22,13 @@
       
     </ul>
 
-    <ul class="center-btn-list">
-      <li v-for="item in memberList.gradeList">
-        <p>{{item.gradeName}}</p>
-        <span>{{item.countGrade}}</span>
-        <span>位</span>
-      </li>
-    </ul>
- <!--    <ul class="grade-list">
-      <li v-for="item in gradeList">
-        {{item.name}}  {{item.value}}
-      </li>
-    </ul> -->
-
-    <ul class="top-btn xj-btn-list">
-      <li class="btn" @click="openAdd">+会员</li>
-
-      <router-link tag="li" :to="{path: '/memberManage/memberList', query: {shopId: filterOption.shopId}}" class="btn">会员列表</router-link>
-
-      <router-link tag="li" class="btn" :to="{path: '/memberManage/compileTemplate', query: {shopId: filterOption.shopId}}">会员设置</router-link>
-    </ul>
-
-    <add-member ref="addMemberBox" :shopId="filterOption.shopId"></add-member>
   </div>
 </template>
 <script>
-  import addMember from './../base/add-member.vue'
-
   export default {
-    components: {
-      addMember
-    },
     props: ['filterOption', 'memberList'],
     data () {
       return {
-        centerBtnList: [
-          {
-            name: '会员总数',
-            value: '1000',
-            id: ''
-          },
-          {
-            name: '今日新增',
-            value: '1000',
-            id: ''
-          },
-          {
-            name: '今日转化',
-            value: '1000',
-            id: ''
-          },
-        ],
-        // gradeList: [
-        //   {
-        //     name: '普卡',
-        //     value: '666',
-        //     id: ''
-        //   },
-        //   {
-        //     name: '银卡',
-        //     value: '666',
-        //     id: ''
-        //   },
-        //   {
-        //     name: '金卡',
-        //     value: '666',
-        //     id: ''
-        //   }
-        // ]
       }
     },
     methods: {
@@ -183,6 +118,7 @@
   }
   .center-btn-list{
     font-size: 0;
+    margin-bottom: 30px;
     vertical-align: top;
     li{
       display: inline-block;

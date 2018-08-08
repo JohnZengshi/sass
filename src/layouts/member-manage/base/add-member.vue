@@ -20,7 +20,6 @@ export default {
       this.isDialog = true
       this.$nextTick(() => {
         if (this.$refs.editorMemberBox) {
-          debugger
           this.$refs.editorMemberBox.open()
         }
       })

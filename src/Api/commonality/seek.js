@@ -545,6 +545,10 @@ export const seekAddImportSetting = function (parm) { // 5.64添加智能配置
     let URL = '/v1/import/addImportSetting'
     return apiCall(parm, URL);
 }
+export const seekAmendImportSetting = function (parm) { // 5.68修改智能配置
+    let URL = '/v1/import/updateImportSetting'
+    return apiCall(parm, URL);
+}
 export const seekDelImportSetting = function (parm) { // 5.65删除智能配置
     let URL = '/v1/import/delImportSetting'
     return apiCall(parm, URL);
@@ -875,6 +879,7 @@ export const seekGetReportsPrintXG = function (parm) {
   return apiCall(parm, URL);
 }
 
+
 export const seekFindMemberList = function (parm) {
   let URL = "/v1/groupTemplate/findMemberList";
   return apiCall(parm, URL);
@@ -887,6 +892,10 @@ export const seekFindTemplateGroupAll = function (parm) {
 //独立店铺
 export const seekFindTemplateShopAll = function (parm) {
   let URL = "/v1/groupTemplate/findTemplateShopAll";
+  return apiCall(parm, URL);
+}
+export const seekFindShopTemplateDetails = function (parm) {
+  let URL = "/v1/groupTemplate/findShopTemplateDetails";
   return apiCall(parm, URL);
 }
 //会员模板管理
@@ -934,8 +943,24 @@ export const seekFindShopTemplateList = function (parm) {
   let URL = "/v1/groupTemplate/findShopTemplateList";
   return apiCall(parm, URL);
 }
-//组合店铺与会员模板列表
 export const seekFindMemberDetails = function (parm) {
   let URL = "/v1/groupTemplate/findMemberDetails";
   return apiCall(parm, URL);
+}
+// 组合详情
+export const seekFindShopGroupDetails = function (parm) {
+  let URL = "/v1/groupTemplate/findShopGroupDetails";
+  return apiCall(parm, URL);
+}
+export const seekOpSettingLabel = function (parm) { //13.4标签设置接口
+    let URL = "/v1/print/opSettingLabel";
+    return apiCall(parm, URL);
+}
+export const seekGetSettingLabel = function (parm) { //13.5标签设置获取接口
+    let URL = "/v1/print/getSettingLabel";
+    return apiCall(parm, URL);
+}
+export const seekGetLabelResultList = function (parm) { //13.7标签获取结果页数据接口
+    let URL = "/v1/print/getLabelResultList";
+    return apiCall(parm, URL);
 }

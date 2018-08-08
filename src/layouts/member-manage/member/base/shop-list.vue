@@ -7,26 +7,28 @@
     <div class="m-m-shop-list" v-loading="loading">
       <div class="each-table" :class="{'ml-40': index == 1}" v-for="(items, index) in combinationList">
         <ul class="header-tit">
-          <li>店铺名称</li>
-          <li>积分模板</li>
-          <li>操作</li>
-        </ul>
-        <div class="scroll-wrap">
-          <ul v-for="item in items">
-            <li>{{item.shopName}}</li>
-            <li>{{item.templateName}}</li>
-            <li>
-              <i @click="compile" class="iconfont icon-bianji"></i>
-            </li>
+            <li>店铺名称</li>
+            <li>积分模板</li>
+            <li>操作</li>
           </ul>
+          <div class="scroll-wrap">
+            <ul v-for="item in items">
+              <li>{{item.shopName}}</li>
+              <li>{{item.templateName}}</li>
+              <li>
+                <i @click="compile(item.shopId)" class="iconfont icon-bianji"></i>
+              </li>
+            </ul>
+            
+            <template v-if="items.length < 4">
+              <ul class="no-ul" v-for="(item, index) in (4 - items.length)">
+                <li></li>
+                <li></li>
+                <li></li>
+              </ul>
+            </template>
 
-          <ul class="no-ul" v-if="items.length < 4" v-for="(item, index) in (4 - items.length)">
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-
-        </div>
+          </div>
       </div>
     </div>
     <add-group ref="addGroupBox"></add-group>
@@ -45,7 +47,7 @@
         combinationList: []
       }
     },
-    created () {
+    mounted () {
       this._seekFindTemplateShopAll()
     },
     methods: {

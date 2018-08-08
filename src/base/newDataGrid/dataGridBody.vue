@@ -8,7 +8,7 @@
             
             <div class="tb-td pd-10" v-if="tab.childType == 'avatarUrl'" :style="tableCell(tab.width)" :key="num">
               <div class="head-portrait-wrap">
-                <img class="head-portrait" :src="tab.avatarUrl" alt="">
+                <img class="head-portrait" :src="tb.avatarUrl" alt="">
               </div>
             </div>
 

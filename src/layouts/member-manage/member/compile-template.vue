@@ -12,9 +12,9 @@
 
     <div class="m-m-compile-template-body xj-right-box xj-box-shadow">
       <!-- 会员互通 -->
-      <each-other></each-other>
+      <each-other @update="update"></each-other>
       <!-- 独立店铺 -->
-      <shop-list></shop-list>
+      <shop-list ref="shopListBox"></shop-list>
       <!-- 积分模板 -->
       <integral></integral>
     </div>
@@ -30,6 +30,11 @@ export default {
     eachOther,
     shopList,
     integral
+  },
+  methods: {
+    update () {
+      this.$refs.shopListBox._seekFindTemplateShopAll()
+    }
   }
 }
 </script>
