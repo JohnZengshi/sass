@@ -74,9 +74,9 @@ export default {
             }
         },
         mounted() {
-            printAPI.getTemplateList({type: 1, fieldType: 'simple'}).then(json => {
-                this.qualityTemplateList = json.data.qualityList
-            })
+            // printAPI.getTemplateList({type: 1, fieldType: 'simple'}).then(json => {
+            //     this.qualityTemplateList = json.data.qualityList
+            // })
         }
 }
 </script>

@@ -1492,7 +1492,7 @@
         printAPI.getTemplateList({
           type: 1,
           shopId: parm,
-          fieldType: 'simple'
+          fieldType: 'full'
         }).then(json => {
           this.qualityTemplateList = json.data.qualityList
           if(this.qualityTemplateList.length > 0) {
