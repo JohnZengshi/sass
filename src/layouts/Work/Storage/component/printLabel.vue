@@ -249,6 +249,7 @@
             exportTab(){
                 downLoaderFile('/v1/export/exportDetailExcel',this.exportTabData)
 
+<<<<<<< HEAD
             },
             // 打印标签
             printLabel() {
@@ -281,11 +282,46 @@
                 })
             },
             getPrintLabelData(type, orderId, beginNum, endNum, canvas, selectedProducts, isPrint){
+=======
+			},
+			// 打印标签
+			printLabel() {
+				this.print.currentOrderNum = this.orderNum
+				this.$refs.printLabelByOrderDialog.show()
+			},
+			//打印表格
+			tabPrin(){
+				let type = this.dataGridOptions.type
+				if (type == 1) {
+						this.$refs.detailTemplate.print();
+						return
+				} else if (type == 2) {
+						this.$refs.intelligenceTypeTemplate.print();
+						return
+				} else if (type == 3) {
+						this.$refs.projectTypeTemplate.print();
+						return
+				} else if (type == 4){
+						this.$refs.customTemplate.print();
+						return
+				}
+			},
+			requestProductList(filter) {
+				this.$store.dispatch('getPrintLabelByOrder', filter).then(json => {
+					if(json.state == 200) {
+						this.print.productList = json.data.productList
+						this.print.totalNum = json.data.totalNum
+					}
+				})
+			},
+			getPrintLabelData(type, orderId, beginNum, endNum, canvas, selectedProducts, isPrint){
+>>>>>>> remotes/origin/dev-branch
                 let barcodeArr = canvas.components.filter(item => item.data.propertyCode == 'barcode2');
                 let dataList = {};
                 if (barcodeArr.length){
                     dataList.url = barcodeArr[0].data.codeUrl;
                 }
+<<<<<<< HEAD
                 this.print.canvas = canvas
                 if(type==0){//勾选
                     this.previewTemplate(canvas, selectedProducts, isPrint);
@@ -300,11 +336,28 @@
                         }
                     })
                 }else if(type==2){//分页
+=======
+				this.print.canvas = canvas
+				if(type==0){//勾选
+					this.previewTemplate(canvas, selectedProducts, isPrint);
+				}else if(type==1){//全部
+                    dataList.orderId = orderId
+					this.$store.dispatch('getPrintLabelData', dataList).then(json => {
+						if(json.state == 200) {
+							this.$set(this.print, 'templateData', json.data)
+							//this.print.templateData = json.data;
+							this.print.isPreview = true;
+							this.printTemplate(canvas, json.data.productList);
+						}
+					})
+				}else if(type==2){//分页
+>>>>>>> remotes/origin/dev-branch
                     dataList.orderId = orderId;
                     dataList.beginNum = beginNum;
                     dataList.endNum = endNum;
 
                     this.$store.dispatch('getPrintLabelData', dataList).then(json => {
+<<<<<<< HEAD
                         if(json.state == 200) {
                             this.$set(this.print, 'templateData', json.data)
                             //this.print.templateData = json.data;
@@ -326,6 +379,44 @@
                     let barcodeArr = canvas.components.filter(item => item.data.propertyCode == 'barcode2');
                     let dataList = {
                         productList:productList,
+=======
+						if(json.state == 200) {
+							this.$set(this.print, 'templateData', json.data)
+							//this.print.templateData = json.data;
+							this.print.isPreview = true;
+							this.printTemplate(canvas, json.data.productList);
+						}
+					})
+				}
+			},
+			previewTemplate(canvas, selectedProducts, isPrint) {
+
+				if(selectedProducts.length > 0) {
+					let productList = selectedProducts.map(selectedProduct => {
+						return {
+							productId: selectedProduct
+						}
+					});
+                    debugger
+					let barcodeArr = canvas.components.filter(item => item.data.propertyCode == 'barcode2');
+					let dataList = {
+                        productList:productList,
+
+                    }
+                    if (barcodeArr.length){
+                        dataList.url = barcodeArr[0].data.codeUrl;
+                    }
+
+					this.$store.dispatch('getPrintLabelData', dataList).then(json => {
+						if(json.state == 200) {
+							this.$set(this.print, 'templateData', json.data)
+							//this.print.templateData = json.data;
+							this.print.isPreview = true;
+							this.printTemplate(canvas, json.data.productList);
+						}
+					})
+				} else {
+>>>>>>> remotes/origin/dev-branch
 
                     }
                     if (barcodeArr.length){
