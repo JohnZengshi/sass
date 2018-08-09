@@ -12,8 +12,11 @@
               </div>
             </div>
 
-            <div class="tb-td" v-else-if="tab.childType == 'del'" :style="tableCell(tab.width)" :key="num">
-              <i @click.stop="delData(tb, index)" class="iconfont icon-shanchu1 del-icon"></i>
+            <div class="tb-td" v-else-if="tab.childType == 'compile'" :style="tableCell(tab.width)" :key="num">
+              <i v-if="tab.compile" @click.stop="compileData(tb, index)" class="iconfont icon-bianji del-icon"></i>
+
+              <i v-if="tab.del" @click.stop="delData(tb, index)" class="iconfont icon-shanchu1 del-icon"></i>
+
             </div>
   
             <div class="tb-td" v-else-if="tab.childType == 'createTime'" :style="tableCell(tab.width)" :key="num">
@@ -101,8 +104,16 @@ export default {
     _GetSF (parm) {
       return GetSF(parm)
     },
+    // 删除
     delData (parm, index) {
       this.$emit('delData', {
+        data: parm,
+        index: index
+      })
+    },
+    // 编辑
+    compileData (parm, index) {
+      this.$emit('compileData', {
         data: parm,
         index: index
       })

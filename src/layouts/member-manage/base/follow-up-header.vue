@@ -45,6 +45,12 @@
           @clearInfo="clearUser"
       ></DownMenu>
 
+      <div class="btn-box">
+        <ul class="xj-btn-list">
+          <li class="btn" syle="margin-right: 10px;">+跟进</li>
+          <li class="btn">+批量完成</li>
+        </ul>
+      </div>
 
     </div>
   </div>

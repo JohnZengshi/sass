@@ -87,18 +87,19 @@ export default {
     },
     // 批量修改
     dialogCallback(data) {
-        let options = {
-            templateId: this.templateInfoData.templateId,
-            dataList: data,
-        }
-        consumeTemplateUpdate(options).then(res => {
-            if(res.data.state === 200) {
-                this.getIntegralDetails()
-                this.$message({type:'success',message:'修改成功'})
-            } else {
-                this.$message({type:'error',message:res.data.msg})
-            }
-        })
+      debugger
+        // let options = {
+        //     templateId: this.templateInfoData.templateId,
+        //     dataList: data,
+        // }
+        // consumeTemplateUpdate(options).then(res => {
+        //     if(res.data.state === 200) {
+        //         this.getIntegralDetails()
+        //         this.$message({type:'success',message:'修改成功'})
+        //     } else {
+        //         this.$message({type:'error',message:res.data.msg})
+        //     }
+        // })
     },
     // 修改消费发放
     setConsumeTemplateUpdate(item){

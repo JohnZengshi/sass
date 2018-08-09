@@ -157,9 +157,9 @@ export default {
       for (let i in Object.assign(this.filterCondition)) {
         this.filterCondition[i] = ''
       }
-      this.$refs.memberRankBox.init()
-      this.$refs.memberClassBox.init()
-      this.$refs.userBox.init()
+      // this.$refs.memberRankBox.init()
+      // this.$refs.memberClassBox.init()
+      // this.$refs.userBox.init()
       this._seekMemberList()
       this._seekFindMemberGradeList()
     },

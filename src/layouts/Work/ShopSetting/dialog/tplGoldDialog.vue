@@ -90,7 +90,7 @@
             
             <!-- 会员的 -->
             <div class="input-number-pl" v-else-if="dialog.setjz == 'hy'">
-                <input class="yuan" v-model="yuan" type="text">
+                <input class="yuan" v-model="score" type="text">
 <!--                 <input class="score" v-model="score" type="text"> -->
                 <p style="color:#2993f8;font-size:12px;">{{dialog.amendN}}</p>
             </div>

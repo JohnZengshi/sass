@@ -9,6 +9,7 @@
         <i class="iconfont icon-baobiao1"></i>
         <router-link tag="span" to="/memberManage" class="path_crumbs">新增模板</router-link>
       </div>
+      <div class="xj-btn-defult fr" @click="goBack">返回上一级</div>
     </div>
 
     <div class="m-m-add-template-body xj-right-box xj-box-shadow">
@@ -23,6 +24,11 @@ import templateShop from './base/template-shop'
 export default {
   components: {
     templateShop
+  },
+  methods: {
+    goBack () {
+      this.$router.go(-1)
+    }
   }
 }
 </script>

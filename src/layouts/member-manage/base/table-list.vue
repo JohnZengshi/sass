@@ -5,7 +5,7 @@
       <div class="new-table-header-layout-main">
         
         <!-- 跟进图表 -->
-        <follow-up-echarts></follow-up-echarts>
+        <follow-up-echarts v-if="currentLocation == 'followUp'"></follow-up-echarts>
 
         <div class="rp_gridState">
           <p class="side-nav"><i class="iconfont icon-liebiao"></i>商品列表:<span style="color: #2993f8;">{{allData.totalNum}}</span></p>
@@ -99,7 +99,7 @@ export default {
       totalNum: '',
       memberId: '',
       shopName: '',
-      configData: configData,
+      configData: configData.detailConfing,
       addData: [], // 让后台过滤的数据源
       printNum: { // 打印行数
         allChecked: false, // 全部选中
@@ -294,6 +294,9 @@ export default {
     }
   },
   created() {
+    if (this.currentLocation == 'followUp') {
+      this.configData = configData.followUpConfing
+    }
     this._seekGetShopListByCo()
     this.getProductTypeList() //产品类别
     this.getGetUserList() //审核人
@@ -424,7 +427,7 @@ export default {
       // }, 0)
     },
     delData(parm) {
-      operateDeleteMemberId({memberId: parm.memberId})
+      operateDeleteMemberId({memberId: parm.data.memberId})
         .then(res => {
           if (res.data.state == 200) {
             this.dataGridStorage.splice(parm.index, 1)

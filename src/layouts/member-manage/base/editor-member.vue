@@ -62,6 +62,7 @@
                         <span class="item-label">会员等级</span>
                         <div class="right-wrap">
                           <newDownMenu
+                            ref="checkedGradeBox"
                             class="header-new-down-menu-box"
                             :titleInfo="dataInfo.grade[0] ? dataInfo.grade[0].gradeName : '选择会员等级'"
                             :showList="gradeList"
@@ -130,7 +131,7 @@
                   <div class="member-item">
                     <span class="item-label">行业</span>
                     <div class="right-wrap">
-                      <newDownMenu class="new-down-menu-box" :titleInfo="dataInfo.profession ? dataInfo.profession : '选择行业'" :showList="industryList" :noClear="true" :keep="true" @changeData="changeProfession"></newDownMenu>
+                      <newDownMenu ref="checkedProfessionBox" class="new-down-menu-box" :titleInfo="dataInfo.profession ? dataInfo.profession : '选择行业'" :showList="industryList" :noClear="true" :keep="true" @changeData="changeProfession"></newDownMenu>
                     </div>
                   </div>
                   <div class="member-item">
@@ -189,7 +190,7 @@
                         <i @click="delLabel(item, index)" class="iconfont icon-guanbi-copy"></i>
                       </li>
                       <!-- <li class="add-label">添加标签</li> -->
-                      <input maxlength="6" v-if="dataInfo.signList.length < 4" @blur="followCreateSign" class="add-label" type="text" placeholder="添加标签" v-model="signName">
+                      <input maxlength="6" v-if="dataInfo.signList.length < 10" @blur="followCreateSign" class="add-label" type="text" placeholder="添加标签" v-model="signName">
                     </ul>
                   </div>
                 </div>
@@ -205,7 +206,7 @@
   </div>
 </template>
 <script>
-import { operateFollowCreateSign, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention, operateMemberCreatee, operateUpdateMember } from 'Api/commonality/operate'
+import { operateFollowCreateSigns, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention, operateMemberCreatee, operateUpdateMember } from 'Api/commonality/operate'
 import { seekGetShopUserList,seekFindMemberGradeList, seekFindMemberDetails } from 'Api/commonality/seek'
 import aloneDropDownColums from 'base/menu/alone-drop-down-colums'
 import choseLeader from './chose-leader'
@@ -328,6 +329,9 @@ export default {
           this.dataInfo[i] = ''
         }
       }
+      this.PCAData = ''
+      this.$refs.checkedGradeBox.init()
+      this.$refs.checkedProfessionBox.init()
     },
     open() {
       this.isDialog = true
@@ -382,7 +386,7 @@ export default {
         shopId: this.shopId,
         signName: this.signName
       }
-      operateFollowCreateSign(options).then((res) => {
+      operateFollowCreateSigns(options).then((res) => {
         if (res.data.state == 200) {
           this.dataInfo.signList.push({
             signName: this.signName,
@@ -590,6 +594,14 @@ export default {
         return
       }
 
+      if (this.dataInfo.phone.length != 11) {
+        this.$message({
+          type: 'error',
+          message: '请输入正确的手机号码'
+        })
+        return
+      }
+
       if (!this.dataInfo.sex) {
         this.$message({
           type: 'error',
@@ -609,7 +621,6 @@ export default {
       //   })
       // }
 
-      debugger
       operateMemberCreatee(Object.assign({}, options, {shopId: this.shopId}))
         .then(res => {
           if (res.data.state == 200) {

@@ -202,7 +202,8 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'del', //单元格类型
+      childType: 'compile', //单元格类型
+      del: true,
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
@@ -210,7 +211,7 @@ module.exports = {
     }
   ],
   //推送列表
-  detailConfing: [
+  followUpConfing: [
     {
       id: '1', //id 
       text: '头像', //头部title文字
@@ -347,7 +348,7 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'sumPrice', //单元格类型
+      childType: 'createTime', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
@@ -363,7 +364,9 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'del', //单元格类型
+      childType: 'compile', //单元格类型
+      compile: true,
+      del: true,
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数

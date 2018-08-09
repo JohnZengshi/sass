@@ -63,10 +63,17 @@ export default {
   },
   methods: {
     open (parm) {
-      this.templateId = parm
       this.checkList = []
       this.checkTemplateList = []
       this.isDialog = true
+      if (parm) {
+        this.templateId = parm.groupId
+        for (let i of parm.groupShopList) {
+          this.checkList.push(i.shopId)
+        }
+
+        this.nextData = parm.groupShopList
+      }
 
       if (this.independent) { // 组合
         this._seekFindShopTemplateList()
@@ -176,7 +183,7 @@ export default {
       if (!this.templateId) {
         return
       }
-      operateUpdateShopGroupById(Object.assign(opations, {templateId: this.templateId}))
+      operateUpdateShopGroupById(Object.assign(opations, {templateId: this.templateId}, {type: '0'}))
         .then(res => {
           if (res.data.state == 200) {
             this.$message({message: '修改成功'})

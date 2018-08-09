@@ -13,7 +13,7 @@
                 <down-menu class="fr" :isSolid="true" :titleInfo="shopName ? shopName : '店铺名称'" :showList="shopList" :nameKey="'shopName'" @changeData="changeShop" @clearInfo="clearShop"></down-menu>
 
             </div>
-            <table-list ref="tableListBox" @changeMember="changeMember" :shopId="shopId" :currentLocation="'followUp'"></table-list>
+            <table-list ref="tableListBox" @changeMember="changeMember" @compileData="compileData" :shopId="shopId" :currentLocation="'followUp'"></table-list>
         </div>
     </transition>
 </template>
@@ -79,6 +79,13 @@ export default {
         },
         closeEditReturn() {
 
+        },
+        // 编辑数据
+        compileData (parm) {
+            this.memberId = parm.memberId
+            setTimeout(() => {
+                this.$refs.memberInfoBox.open()
+            }, 0)
         },
         changeMember(parm) {
             this.memberId = parm.memberId

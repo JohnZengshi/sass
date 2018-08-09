@@ -2,13 +2,13 @@
   <transition name="tp-ani">
     <div class="tab_detail_table">
       <!--表头 start-->
-      <data-grid-header ref="headerBox" :newList="newList" :tabSwitch="tabSwitch" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="detailDataGridColumn" @tabCell="tabCell"></data-grid-header>
+      <data-grid-header ref="headerBox" :newList="newList" :tabSwitch="tabSwitch" @sortList="sortList" :reportType="reportType" :detailDataGridColumn="configData" @tabCell="tabCell"></data-grid-header>
       <template>
         <!--表格内容区  -->
         <data-grid-body
           :printNum="printNum"
           :tabSwitch="tabSwitch"
-          :detailDataGridColumn="detailDataGridColumn"
+          :detailDataGridColumn="configData"
           :dataGridStorage="dataGridStorage"
           :reportType="reportType"
           :positionSwitch="positionSwitch"
@@ -20,7 +20,7 @@
         >
         </data-grid-body>
         <!--表尾  -->
-        <data-grid-footer v-if="isFooter" :tabSwitch="tabSwitch" :detailDataGridColumn="detailDataGridColumn" :dataGridStorage="allData" :reportType="reportType" :configData="configData" @tabCell="tabCell">
+        <data-grid-footer v-if="isFooter" :tabSwitch="tabSwitch" :detailDataGridColumn="configData" :dataGridStorage="allData" :reportType="reportType" :configData="configData" @tabCell="tabCell">
         </data-grid-footer>
       </template>
     </div>
@@ -38,7 +38,7 @@ export default {
   data() {
     return {
       tempDatagrid: [],
-      detailDataGridColumn: this.configData.detailConfing
+      // detailDataGridColumn: this.configData.detailConfing
       // configData: configData
     }
   },
@@ -55,6 +55,9 @@ export default {
   methods: {
     delData (parm) {
       this.$emit("delData", parm)
+    },
+    compileData (parm) {
+      this.$emit("compileData", parm)
     },
     change (parm) {
       this.$emit("change", parm)
@@ -74,9 +77,6 @@ export default {
         let w = 'width:' + result.width + 'px'
         result.res && result.res.call(this, w)
       }
-    },
-    configType() {
-      this.setColumn(this.configData.detailConfing)
     },
     scrollClass(type) {
       this.$emit('scrollClass', type)

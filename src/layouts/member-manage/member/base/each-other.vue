@@ -20,7 +20,7 @@
           <li>{{item.shopName}}</li>
           <li>{{item.groupName}}</li>
           <li>
-            <i @click="compile(item.groupId)" class="iconfont icon-bianji"></i>
+            <i @click="compile(item)" class="iconfont icon-bianji"></i>
             <i @click="del(item.groupId, index)" class="iconfont icon-lajitong"></i>
           </li>
         </ul>
@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <add-group ref="addGroupBox" @update="update" :independent="true" :titName="'新增店铺组合'"></add-group>
+    <add-group ref="addGroupBox" @update="update" :independent="true" :titName="titName"></add-group>
 
   </div>
 </template>
@@ -51,6 +51,7 @@
     },
     data () {
       return {
+        titName: '新增店铺组合',
         loading: true,
         combinationList: []
       }
@@ -80,9 +81,11 @@
           })
       },
       openAdd () {
+        this.titName = '新增店铺组合'
         this.$refs.addGroupBox.open()
       },
       compile (parm) {
+        this.titName = '店铺组合信息'
         this.$refs.addGroupBox.open(parm)
       },
       update () {

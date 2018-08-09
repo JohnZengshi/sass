@@ -6,7 +6,7 @@
       </div>
 
       <div class="input-push-wrap">
-        <h3>添加会员</h3>
+        <h3>添加跟进</h3>
         <div class="scroll-box">
           <div class="member-item">
             <span class="item-label">跟进名称</span>

@@ -662,3 +662,7 @@ export const operateLoginPermissions = function(parm) {
     let url = "/v1/auth/loginPermissions";
     return new Axios(url, parm).apiCall();
 }
+export const operateFollowCreateSigns = function(parm) {
+    let url = "/v1/groupTemplate/followCreateSign";
+    return new Axios(url, parm).apiCall();
+}

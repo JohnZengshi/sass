@@ -3,13 +3,14 @@
     <div>
         <!-- 批量修改 -->
         <memberDialog v-show="dialog.dialogVisible" :dialog="dialog" @closeDialog="closeDialog" @dialogType="dialogType" @dialogCallback="dialogCallback"></memberDialog>
+
         <el-dialog v-show="!dialog.dialogVisible" top="10%" :visible.sync="isDialog" class="new-popup-dialog">
-            <div class="m-m-add-group-main">
+            <div class="m-m-add-group-main" v-loading="loading">
                 <div class="p-close-icon" @click="isDialog = false">
                     <i class="el-dialog__close el-icon el-icon-close"></i>
                 </div>
                 <div class="add-group-body">
-                    <h3>新增会员等级</h3>
+                    <h3>{{gradeId ? '会员等级详情' : '新增会员等级'}}</h3>
                     <div class="input-wrap">
                         <span class="item-label"><i class="mandatory-icon">*</i>等级名称</span>
                         <input placeholder="请输入级别名称" @blur="_operateUpdateGrade({gradeName: showData.gradeName})" v-model="showData.gradeName">
@@ -58,6 +59,7 @@ export default {
     },
     data() {
         return {
+            loading: false,
             templateId: this.$route.query.templateId,
             gradeId: '', // 会员等级id
             showData: {
@@ -117,7 +119,8 @@ export default {
             this.$refs.sellDiscountBox.dialogType(parm)
         },
         dialogCallback(parm) {
-            this.$refs.sellDiscountBox.dialogCallback(parm)
+            this._operateUpdateGrade({poductList: parm})
+            // this.$refs.sellDiscountBox.dialogCallback(parm)
         },
         discountClose() {
             this.issellDiscountBox = false
@@ -130,7 +133,7 @@ export default {
             // this.$refs.sellDiscountBox.open()
         },
         updateDiscount(parm) {
-            this._operateUpdateGrade(parm)
+            this._operateUpdateGrade({poductList: [parm]})
         },
         change(parm) {
             debugger
@@ -184,6 +187,7 @@ export default {
             //   }
             //   opations.list.push(datas)
             // }
+            this.loading = true
             operateAddGrade(opations)
                 .then(res => {
                     if (res.data.state == 200) {
@@ -193,6 +197,7 @@ export default {
                     } else {
                         this.$message({type: 'error', message: res.data.msg})
                     }
+                    this.loading = false
                 })
         },
         _seekFindGradeList() {
@@ -221,7 +226,7 @@ export default {
                     if (res.data.state == 200) {
                         let datas = res.data.data
                         if (datas.grade[0]) {
-                            datas.nextGradeName = datas.grade[0].gradeName
+                            datas.nextGradeName = datas.grade[0].underLevelName
                         } else {
                             datas.nextGradeName = ''
                         }
@@ -269,6 +274,7 @@ export default {
                 return
             }
             let options = {
+                type: '0',
                 discount: this.checkDiscount[0] ? this.checkDiscount[0] : '0',
                 templateId: this.templateId,
                 gradeId: this.showData.gradeId,
@@ -277,6 +283,7 @@ export default {
                 .then(res => {
                     if (res.data.state == 200) {
                         this.$message({ type: 'error', message: '修改成功' })
+                        this.$emit('upload')
                     } else {
                         this.$message({ type: 'error', message: res.data.msg })
                     }

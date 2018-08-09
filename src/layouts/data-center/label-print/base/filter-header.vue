@@ -423,14 +423,12 @@ export default {
           type: 1 // 1.可查看 2.所属 3.全部
         }
 
-        if (this.computedManageRole || this.officeClerk) { // 管理员 // 职员
+        if (this.computedManageRole) { // 管理员 // 职员
           options.type = 3
-        } else if (this.shopManageRole) { // 店长
+        } else if (this.shopManageRole || this.officeClerk || this.isJrole) { // 店长 职员 监察员
           options.type = 2
         } else if (this.shopRole) { // 店员
           options.type = 1
-        } else if (this.isJrole) { // 监察员
-          options.type = 2
         }
 
         seekGetShopListByCo(options)

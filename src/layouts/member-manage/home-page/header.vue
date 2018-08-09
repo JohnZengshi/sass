@@ -38,11 +38,13 @@
   </div>
 </template>
 <script>
+  import {mapGetters} from 'vuex'
   import navSegmentation from 'base/cut/nav-segmentation'
   import downMenu from 'base/menu/new-down-menu'
   import xjTime from 'base/time/xj-time'
   import {seekGetShopListByCo} from 'Api/commonality/seek'
   import {getMonthStart} from 'assets/js/getTime'
+  import {filterShopRole} from 'assets/js/role'
   export default {
     components: {
       navSegmentation,
@@ -79,6 +81,11 @@
         shopList: [] 
       }
     },
+    computed: {
+      ...mapGetters([
+        "userPositionInfo" // 职位信息
+      ]),
+    },
     methods: {
       changeTime (parm) {
         Object.assign(this.filterData, parm)
@@ -103,11 +110,17 @@
         this.$emit("filterData", this.filterData)
       },
       _seekGetShopListByCo() { // 店铺列表
+        if (!this.userPositionInfo.roleList) {
+          setTimeout(() => {
+            this._seekGetShopListByCo()
+          }, 1000)
+          return
+        }
         let options = {
           page: 1,
           pageSize: 0,
-          type: 1,
-        };
+          type: filterShopRole(this.userPositionInfo.roleList)
+        }
         seekGetShopListByCo(options).then((res) => {
           if(res.data.state == 200) {
             this.shopList = res.data.data.shopList

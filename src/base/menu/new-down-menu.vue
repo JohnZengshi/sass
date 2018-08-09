@@ -29,15 +29,19 @@ export default {
     }
   },
   methods: {
+    init () {
+        this.actIndex = null
+        this.noChange = true
+    },
     clearTitleInfo () {
-      this.$emit("clearInfo")
-      this.actIndex = null
-      this.noChange = true
+        this.$emit("clearInfo")
+        this.actIndex = null
+        this.noChange = true
     },
     itemClick (item, index) {
-      this.noChange = false
-      this.actIndex = index,
-      this.$emit("changeData", item)
+        this.noChange = false
+        this.actIndex = index,
+        this.$emit("changeData", item)
     }
   }
 }
