@@ -253,6 +253,7 @@ export default {
     },
     data () {
         return {
+            page: '1',
             show: true,
             shopId: '', // 店铺id
             memberId: '',
@@ -369,12 +370,17 @@ export default {
 
     },
     mounted () {
+        let _self = this
         $(".main-content").mCustomScrollbar({
             theme: "minimal-dark",
-            axis: "y"
+            axis: "y",
+            callbacks:{
+               onTotalScroll: function(){
+                    _self.lazyloadSend()
+               }
+            }
         })
 
-        let _self = this
         eventBus.$on('oprationmemberAllList', (parm) => {
           //console.log(parm)
           _self.memberAllList()
@@ -602,8 +608,34 @@ export default {
                 console.log(res)
             })
         },
-        memberAllList () { // 会员列表
+        lazyloadSend () {
             let options = {
+                page: this.page,
+                pageSize: 30,
+                shopId: this.shopId,
+                keyWord: this.keyWord,
+                // startTime: this.adminStartTime,
+                // endTime: this.adminEndTime,
+                memberType: this.memberType,
+                memberGrade: this.memberGrade,
+                followStatus: this.followStatus,
+                buyTime: this.buyTime
+            }
+            seekMemberAllList(options).then((res) => {
+                if (res.data.state == 200) {
+                    this.page += 1
+                    this.dataList = res.data.data.dataList
+                    //this.reArr(this.dataList)
+                }
+            }, (res) => {
+                console.log(res)
+            })
+        },
+        memberAllList () { // 会员列表
+            this.page = 1
+            let options = {
+                page: this.page,
+                pageSize: 30,
                 shopId: this.shopId,
                 keyWord: this.keyWord,
                 // startTime: this.adminStartTime,
@@ -616,6 +648,7 @@ export default {
             seekMemberAllList(options).then((res) => {
                 console.log('会员跟进状态跟踪:',res)
                 if (res.data.state == 200) {
+                    this.page += 1
                     this.dataList = res.data.data.dataList
                     //this.reArr(this.dataList)
                 }
