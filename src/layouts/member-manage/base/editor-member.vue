@@ -355,7 +355,11 @@ export default {
       this.dataInfo.typeName = parm.name
     },
     confirm() {
-      this._operateMemberCreatee()
+      if (this.memberId) {
+        this.close()
+      } else {
+        this._operateMemberCreatee()  
+      }
     },
     cancel() {
 

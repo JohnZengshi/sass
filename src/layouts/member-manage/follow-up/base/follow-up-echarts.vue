@@ -10,22 +10,22 @@
 
       <ul class="center-num-list">
         <li>
-          <p><span>{{memberList.memberCount}}<i>点击查看</i></span></p>
+          <p><span>{{memberList.memberCount}}<i @click="cutData('5')">点击查看</i></span></p>
           <p>未完成跟进</p>
         </li>
         <li>
-          <p><span>{{memberList.newMember}}<i>点击查看</i></span></p>
+          <p><span>{{memberList.newMember}}<i @click="cutData('6')">点击查看</i></span></p>
           <p>本周跟进</p>
         </li>
         <li>
-          <p><span>{{memberList.conversion}}<i>点击查看</i></span></p>
+          <p><span>{{memberList.conversion}}<i @click="cutData('3')">点击查看</i></span></p>
           <p>已完成跟进</p>
         </li>
 
       </ul>
     </div>
 
-    <cut-bg class="cut-btn" :showList="cutList" :current="'1'" @pitchOn="pitchOn"></cut-bg>
+    <cut-bg class="cut-btn" :showList="cutList" :current="filterData.type" @pitchOn="pitchOn"></cut-bg>
 
 
   </div>
@@ -45,15 +45,15 @@ export default {
       grid: [{ top: 60, left: 50, right: 30, bottom: 50 }], // 图形的间距
       filterData: {
         followStatus: '',
-        followPurpose: '',
-        followType: '',
-        type: '',
-        chargeId: '',
+        type: '2',
+        // followPurpose: '',
+        // followType: '',
+        // chargeId: '',
       },
       cutList: [
         {
           name: '我的跟进',
-          id: '0'
+          id: '2'
         },
         {
           name: '全部跟进',
@@ -77,6 +77,7 @@ export default {
   },
   methods: {
     _seekStockTrend () {
+      this.echartloading = true;
       let options = {
         "startTime": "20180801000000",
         "endTime": "20180808182923",
@@ -93,16 +94,27 @@ export default {
           } else {
             this.$message({type: error, message: res.data.msg})
           }
+          this.echartloading = false;
         })
     },
     cutExhart (parm) {
       setTimeout(() => {
         this.option = exhartFilter.memberAxis(this.echartActions, this.stockTrend, '会员', this.grid)
-        this.echartloading = false;
       }, 600)
     },
-    pitchOn () {
-
+    cutData (parm) {
+      this.filterData.followStatus = parm
+      this.update()
+    },
+    update () {
+      setTimeout(() => {
+        this.$emit('update', this.filterData)
+        this._seekStockTrend()
+      }, 0)
+    },
+    pitchOn (parm) {
+      this.filterData.type = parm.id
+      this.update()
     }
   }
 }
@@ -167,26 +179,15 @@ export default {
               cursor: pointer;
               text-decoration: underline;
               font-style: normal;
+              &:hover{
+                color: #4DB3FF;
+              }
             }
           }
-          // span{
-          //   &:after{
-          //     position: absolute;
-          //     left: 0;
-          //     content: "点击查看";
-          //     foont-size: 12px;
-          //     display: inline-block;
-          //   }
-          // }
         }
         p:nth-child(2){
           color: #666;
           font-size: 14px;
-        }
-      }
-      li:nth-child(1){
-        p:nth-child(1){
-          color: #2993f8;
         }
       }
     }

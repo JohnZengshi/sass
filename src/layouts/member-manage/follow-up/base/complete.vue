@@ -1,35 +1,43 @@
+<!-- 会员编辑模板 -->
 <template>
-  <el-dialog top="7%" :visible.sync="isDialog" class="xj-input-dialog-bg">
-    <editorMember ref="editorMemberBox" @close="close" :shopId="shopId"></editorMember>
-  </el-dialog>
+  <div class="m-m-add-member-main n-p-scroll-box">
+    <div class="p-close-icon" @click="close">
+      <i class="el-dialog__close el-icon el-icon-close"></i>
+    </div>
+    <div class="add-member-body">
+      <h3>完成跟进</h3>
+      <div class="scroll-box">
+        <div>
+          
+        </div>
+      </div>
+    </div>
+    <div class="xj-btn-list">
+      <div v-if="false" class="btn cnacel-btn" @click="close">取消</div>
+      <div class="btn" @click="confirm">确定</div>
+    </div>
+  </div>
 </template>
 <script>
-import editorMember from './editor-member'
 export default {
-  components: {
-    editorMember
-  },
-  props: ['shopId'],
-  data() {
-    return {
-      isDialog: false
+  methods: {
+    close () {
+      this.$emit('close')
+    },
+    confirm () {
+      this.$emit('confirm')
     }
   },
-  methods: {
-    open() {
-      this.isDialog = true
-      this.$nextTick(() => {
-        if (this.$refs.editorMemberBox) {
-          this.$refs.editorMemberBox.open()
-        }
+  mounted() {
+    this.$nextTick(() => {
+      $(".scroll-box").mCustomScrollbar({
+        theme: "minimal-dark",
+        scrollInertia: 100, //滚动条移动速度，数值越大滚动越慢
       })
-    },
-    close () {
-      this.isDialog = false
-    },
-    goBack() {
-
-    },
+      if (this.memberId) {
+        this._seekFindMemberDetails()
+      }
+    })
   }
 }
 

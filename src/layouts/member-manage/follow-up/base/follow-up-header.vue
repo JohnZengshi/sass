@@ -48,11 +48,15 @@
       <div class="btn-box">
         <ul class="xj-btn-list">
           <li class="btn" syle="margin-right: 10px;">+跟进</li>
-          <li class="btn">+批量完成</li>
+          <li class="btn" @click="batchComplete">+批量完成</li>
         </ul>
       </div>
 
     </div>
+
+    <!-- 完成跟进 -->
+    <cut-popup ref="cutPopupBox"></cut-popup>
+
   </div>
 </template>
 <script>
@@ -66,6 +70,7 @@ import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DropDownMenu from '@/components/template/DropDownMenu'
 import combinationDropDownColums from 'base/menu/combination-drop-down-colums'
 import cutBg from "base/cut/cut-bg";
+import cutPopup from "./cut-popup";
 export default {
   components: {
     dropDownColums,
@@ -73,7 +78,8 @@ export default {
     DownMenu,
     aloneDropDownColums,
     combinationDropDownColums,
-    cutBg
+    cutBg,
+    cutPopup
   },
   props: ['shopId'],
   data () {
@@ -159,6 +165,10 @@ export default {
     }
   },
   methods: {
+    batchComplete () {
+      this.$refs.cutPopupBox.open({index: 'chooseUser'})
+    },
+    // 旧
     initData () {
       for (let i in Object.assign(this.filterCondition)) {
         this.filterCondition[i] = ''
@@ -286,19 +296,6 @@ export default {
           }
         })
     },
-    // initShowCounterList (parm) {
-    //   let options = {
-    //     shopId: parm
-    //   }
-    //   showCounterList(options)
-    //     .then(res => {
-    //       let datas = []
-    //       for (let i of res.data.data.counterList) {
-    //         datas.push(j.counterId)
-    //       }
-    //       this.$refs.shopWrap.initData(datas)
-    //     })
-    // },
     changeStateData () {
 
     },
@@ -343,4 +340,4 @@ export default {
   }
 }
 </script>
-<style lang="scss" src="./header.scss"></style>
+<style lang="scss" src="./../../base/header.scss"></style>

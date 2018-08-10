@@ -70,12 +70,7 @@ export default {
     $(".xj-report-table-container-img").mCustomScrollbar({
       theme: "minimal-dark",
       axis: 'y',
-      mouseWheel: {
-        scrollAmount: 200,
-        preventDefault: false,
-        normalizeDelta: true,
-        scrollInertia: 50
-      },
+      scrollInertia: 100,
       callbacks: {
         onTotalScroll: function() {
           _this.$emit('lazyloadSend')
