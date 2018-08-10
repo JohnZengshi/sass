@@ -17,16 +17,20 @@ function apiCall (parm, URL) {
         }
     }
     // 内网
-    // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8083/yunzhubao' : ''
+    let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8083/yunzhubao' : ''
     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.109:8080/yunzhubao' : ''
     // uat
     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.110:8099' : ''
     // 正式
     // let serverHost = process.env.NODE_ENV === 'development' ? 'https://www.yunzhubao.com' : ''
     // 本地
-    let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.106:8080/yunzhubao' : ''
+    // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.106:8080/yunzhubao' : ''
     let url = serverHost + URL
     return Vue.http.post(url, data).then(res => {
+        // 截获登录超时
+        if(res.data.state == 100 ){
+            Vue.prototype.loginPopup.show()
+        }
         return Promise.resolve(res)
     })
 
