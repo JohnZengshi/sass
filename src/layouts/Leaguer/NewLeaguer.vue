@@ -624,7 +624,7 @@ export default {
             seekMemberAllList(options).then((res) => {
                 if (res.data.state == 200) {
                     this.page += 1
-                    this.dataList = res.data.data.dataList
+                    this.dataList.push(...res.data.data.dataList)
                     //this.reArr(this.dataList)
                 }
             }, (res) => {
@@ -633,6 +633,7 @@ export default {
         },
         memberAllList () { // 会员列表
             this.page = 1
+            this.dataList = []
             let options = {
                 page: this.page,
                 pageSize: 30,

@@ -198,9 +198,11 @@
           }
           this.$emit('updataLoader', false)
         }).catch((res) => {
+          console.log('看报什么错', res)
           this.$message({
             type: 'error',
-            message: 'seekNewGoodsInfoList：data is null'
+            message: '服务器繁忙，请稍后再试'
+            // message: 'seekNewGoodsInfoList：data is null'
           })
         })
       },
