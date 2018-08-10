@@ -179,6 +179,16 @@ export const operateUpdateSell = function (parm) {
     let url = "/v1/auth/updateSell"
     return new Axios(url, parm).apiCall();
 }
+// 6.90解除关联
+export const operateRelieveRefConvert = function (parm) {
+    let url = "/v1/auth/relieveRefConvert";
+    return new Axios(url, parm).apiCall();
+}
+// 6.88 新建关联换货
+export const operateSellRefConvert = function (parm) {
+    let url = "/v1/auth/sellRefConvert"
+    return new Axios(url, parm).apiCall();
+}
 // 5.31单据操作-增加/删除商品-通过商品条码号
 export const operateProductList = function (parm) {
     let url = "/v1/order/productList";
@@ -422,7 +432,7 @@ export const operateShopBuyPay = function (parm) { // 购买店铺支付
 }
 //12.28 报表首页-进库
 export const seekReportsHomeJK = function (parm) {
-  let option = Object.assign({ 
+  let option = Object.assign({
   	type: '1'
   }, parm)
   let url = "/v1/reports/getWebHomeJK";
@@ -431,7 +441,7 @@ export const seekReportsHomeJK = function (parm) {
 
 //12.29 报表首页-销售
 export const seekReportsHomeXS = function (parm) {
-  let option = Object.assign({ 
+  let option = Object.assign({
   	type: '1'
   }, parm)
   let url = "/v1/reports/getWebHomeXS";

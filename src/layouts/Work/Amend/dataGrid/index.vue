@@ -1,18 +1,18 @@
 <template>
 <div class="dg-container">
-    
+
     <!--表头-->
-   <dgridhead 
-       @updetaFixedSize="updetaFixedSize" 
+   <dgridhead
+       @updetaFixedSize="updetaFixedSize"
        @updateTabChangeData="updateSmallData">
    </dgridhead>
-   
-   <div class="datagrid-container" 
+
+   <div class="datagrid-container"
      :class="{[!browserType ? 'animat-scroll-firefox' : 'animat-scroll']:slipPointer}"
      ref="datagrid"
      @scroll="watchScroll($event)"
      :style="'padding-left:'+ fixedFullSize +'px'">
-       
+
       <!--左边固定表格区-->
       <dgridBody
           :seekBarcode="seekBarcode"
@@ -21,7 +21,7 @@
           :synopsiData="synopsiData"
           ref="dgridfixed"
           :orderNum="orderData.orderNum"
-          :smallDataList="smallDataList" 
+          :smallDataList="smallDataList"
           :selectContainer="selectContainer"
           @updataApi="updataApi"
           @updataData="updataData"
@@ -34,17 +34,17 @@
       </dgridBody>
 
       <!-- 加载更多未读数据 -->
-      <ReadMoreData 
-      :allData="synopsiData" 
-      :dgDataList="dgDataList" 
-      ref="ReadMoreDataDmo" 
+      <ReadMoreData
+      :allData="synopsiData"
+      :dgDataList="dgDataList"
+      ref="ReadMoreDataDmo"
       @readMoreData="readMoreData"
       ></ReadMoreData>
    </div>
-   
+
    <!--表尾-->
-   <dgridfooter 
-       :smallDataList="smallDataList" 
+   <dgridfooter
+       :smallDataList="smallDataList"
        ref="footer"
        :footerData="footerData"
        @setSynopsiData = "updataSynopsiData"
@@ -54,7 +54,7 @@
       <!--打印模块-->
       <div style="display: none;">
         <detail-template title="修改" ref="detailTemplate" :sellList="sellList" :headerData="orderData"></detail-template>
-      </div> 
+      </div>
 </div>
 </template>
 
@@ -87,10 +87,10 @@ export default{
         old: {}
       },
       configData : configData,
-      
+
       // 左边表格固定区域默认宽度
       fixedFullSize : 290,
-      
+
       activeSelectOnIndex : -1,
       // 当前鼠标滑过的列
       activeClassIndex: -1,
@@ -121,21 +121,21 @@ export default{
     datagridSelectData: function(){
       //console.log(this.datagridSelectData)
     },
-    
+
     // 新增商品
     'goodsAdd.type' : function(){
       //console.log('watch:', this.goodsAdd.type)
       if (this.goodsAdd.type) this.addGoods()
     }
   },
-  
+
   created () {
     // 简单检测浏览器 表格底部高度填充，主要对firefox进行操作
     this.$store.dispatch('checkBrowser',(type)=>{
       this.browserType = type
     })
   },
-  
+
   methods: {
     tabPrint(){
       this.$refs.detailTemplate.print();
@@ -185,12 +185,12 @@ export default{
         console.log(res)
       })
     },
-    
+
     // 更新表格固定区域宽度 需要根据配置文件动态去计算
     updetaFixedSize (size){
-      this.fixedFullSize = size 
+      this.fixedFullSize = size
     },
-    
+
     updataData(datalist){
       this.$emit('updataData',{
         key : 'dgDataList',
@@ -205,19 +205,19 @@ export default{
     updateActiveIndex (index) {
       this.activeClassIndex = index
     },
-    
+
     // 更新单据简介数据
     updataSynopsiData (data){
       this.synopsiData = data
       this.$emit('setSynopsiData', data)
     },
-    
+
     // 当前选中的表格
     updateActiveSelectOn (parm) {
       this.$emit('updataCopyOrderObject', parm.item )
       this.activeSelectOnIndex = parm.index
     },
-    
+
     // select下拉配置项
     updataSelectContainer (data){
       if (data) {
@@ -244,8 +244,8 @@ export default{
             message :res.data.msg
           })
         }
-        
-        
+
+
         /* 这里主要是处理复制过程中发生编辑操作，一旦编辑成功导致复制前的数据跟编辑后的数据不能同步更新
          * 所以这里需要进行重新拷贝
          */
@@ -258,24 +258,24 @@ export default{
         this.fetchGoodList()
       })
     },
-    
+
     // 新增商品
     addGoods () {
       let tpArray = []
       let newgoodsObj = Object.assign({old:{}},{
-       now : fetch.addOrderDefaultJSON 
+       now : fetch.addOrderDefaultJSON
       })
       // 把新增的商品放在数组的最前面
       tpArray.push(newgoodsObj, ...this.dgDataList)
       this.dgDataList = tpArray
-      
+
     },
-    
+
     // 中间件 更新API接口方法
     updataApi () {
       this.$emit('updataApi')
     },
-    
+
     // 中间件 添加商品
     updataAdd (type) {
       this.$emit('updataAdd', type)
@@ -300,14 +300,14 @@ export default{
           this.fetchGoodList();
         },
   },
-  
+
   mounted(){
     this.$nextTick(() => {
       this.fetchGoodList()
-      
+
       // 监听滚动条跟鼠标滚轮 对页面进行上滑、下滑操作
       let datagrid = this.datagridScroll = new datagridScroll(this.$refs.datagrid)
-      
+
       datagrid.scroll = (evt, num, wheel) => {
         // 状态栏显示 页面进行下滑
         if (num < 10 && wheel == 1) {
@@ -340,12 +340,12 @@ export default{
   &.animat-scroll{
     height: 600px;
   }
-  
+
   &.animat-scroll-firefox{
     height: 550px;
   }
-  
-  
+
+
 }
 
 
@@ -390,7 +390,7 @@ export default{
       color: #2993f8;
       border-left-color:#2993f8;
     }
-    
+
     >.child-item{
       position: absolute;
       right: -140px;
@@ -400,7 +400,7 @@ export default{
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
       background-color: #fff;
       border-radius: 0 4px 4px 4px;
-      
+
       overflow: hidden;
       max-height: 250px;
       overflow: hidden;
@@ -422,7 +422,7 @@ export default{
           border-left-color:#2993f8;
         }
       }
-      
+
     }
   }
   &.overflow{
@@ -470,7 +470,7 @@ export default{
       background-color: #f4f9ff;
     }
   }
-  &:hover{    
+  &:hover{
     border:1px solid #2993f8;
     background-color: #f4f9ff;
     &:after, >.el-icon-circle-close{
@@ -510,7 +510,7 @@ export default{
       color:#2993f8 ;
     }
   }
-  
+
   &.isicon{
     &:after{
       opacity: 0;

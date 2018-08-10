@@ -456,6 +456,31 @@ export default {
                 // ******************************* 备注 *********************************************
                 else if (i == 'remark') {
                     this.dataModel.remarkData.dataList.push({itemName: '备注信息', itemVal: data[i]})
+                }else if (i == "backup1") {
+                    this.dataModel.remarkData.dataList.push({
+                        itemName: "备用一",
+                        itemVal: data[i]
+                    });
+                }else if (i == "backup2") {
+                    this.dataModel.remarkData.dataList.push({
+                        itemName: "备用二",
+                        itemVal: data[i]
+                    });
+                }else if (i == "backup3") {
+                    this.dataModel.remarkData.dataList.push({
+                        itemName: "备用三",
+                        itemVal: data[i]
+                    });
+                }else if (i == "backup4") {
+                    this.dataModel.remarkData.dataList.push({
+                        itemName: "备用四",
+                        itemVal: data[i]
+                    });
+                }else if (i == "backup5") {
+                    this.dataModel.remarkData.dataList.push({
+                        itemName: "备用五",
+                        itemVal: data[i]
+                    });
                 }
             }
             this.dataSortGroup()
