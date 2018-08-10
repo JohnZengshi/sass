@@ -92,41 +92,45 @@
                     <input v-model="keyWord" @keyup.enter="memberAllList" type="text" placeholder="输入会员名/手机号/编号...">
                 </div>
             </div>
-            <div class="main-content">
+            <div class="main-content" v-loading="loading">
                 <div>
-                    <div @click="openEdit(item)" :key="index" class="main-item" v-for="(item, index) in dataList" v-if="item.operateType != 2">
-                        <div class="item-left">
-                            <div class="logo">
-                                <!-- <img :src="item.logo"> -->
-                                <FormatImg :logo="item.logo" class="img" :userName="item.memberName" :size="60"></FormatImg>
-                                <span :class="{color1: item.grade == 1, color2: item.grade == 2, color3: item.grade == 3}">{{item.grade == 1 ? '普通' : item.grade == 2 ? '中级' : '重要'}}</span>
-                            </div>
-                            <div class="name">
-                                {{reArr(item)}}
-                                <span v-if="item.principalList>=3">等<em>{{item.principalList.length}}</em>人</span>
-                            </div>
-                        </div>
-                        <div class="item-right">
-                            <div class="name">
-                                {{item.memberName}}
-                            </div>
-                            <div class="info">
-                                <div class="phone"><img src="./../../../static/img/member/new/phone.png">{{item.phone}}</div>
-                                <div class="date">{{item.memberNO}}</div>
-                            </div>
-                            <div class="btn">
-                                <div class="wrap">
-                                    <div @click.stop="openFollow(item)" class="follow-btn">
-                                        跟进记录 <i>{{item.followNum}}</i><span></span>
-                                    </div>
-                                    <div @click.stop="openBuy(item)" class="buy-btn">
-                                        购买记录 <span><i>{{item.buyNum}}</i></span>
-                                    </div>
+                    <div style="overflow: hidden;">
+                        <div @click="openEdit(item)" :key="index" class="main-item" v-for="(item, index) in dataList" v-if="item.operateType != 2">
+                            <div class="item-left">
+                                <div class="logo">
+                                    <!-- <img :src="item.logo"> -->
+                                    <FormatImg :logo="item.logo" class="img" :userName="item.memberName" :size="60"></FormatImg>
+                                    <span :class="{color1: item.grade == 1, color2: item.grade == 2, color3: item.grade == 3}">{{item.grade == 1 ? '普通' : item.grade == 2 ? '中级' : '重要'}}</span>
                                 </div>
-
+                                <div class="name">
+                                    {{reArr(item)}}
+                                    <span v-if="item.principalList>=3">等<em>{{item.principalList.length}}</em>人</span>
+                                </div>
                             </div>
-                        </div>
+                            <div class="item-right">
+                                <div class="name">
+                                    {{item.memberName}}
+                                </div>
+                                <div class="info">
+                                    <div class="phone"><img src="./../../../static/img/member/new/phone.png">{{item.phone}}</div>
+                                    <div class="date">{{item.memberNO}}</div>
+                                </div>
+                                <div class="btn">
+                                    <div class="wrap">
+                                        <div @click.stop="openFollow(item)" class="follow-btn">
+                                            跟进记录 <i>{{item.followNum}}</i><span></span>
+                                        </div>
+                                        <div @click.stop="openBuy(item)" class="buy-btn">
+                                            购买记录 <span><i>{{item.buyNum}}</i></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>  
                     </div>
+                    <!-- 加载更多未读数据 -->
+                    <loadingMore ref="loadingMoreBox"></loadingMore>
                 </div>
 
             </div>
@@ -234,6 +238,8 @@ import FormatImg from 'components/template/DefaultHeadFormat.vue'
 import ClientDetail from './ClientTemplate/ClientDetail.vue'
 // 会员信息
 import memberInfo from  './components/memberInfo'
+import loadingMore from  'base/loading/loadingMore'
+
 
 // 获取会员信息
 import { getMemberInfoById } from '../../Api/member'
@@ -249,10 +255,13 @@ export default {
         ChoseLeader,
         FormatImg,
         ClientDetail,
-        memberInfo
+        memberInfo,
+        loadingMore
     },
     data () {
         return {
+            loading: false,
+            page: '1',
             show: true,
             shopId: '', // 店铺id
             memberId: '',
@@ -369,12 +378,22 @@ export default {
 
     },
     mounted () {
+        let _self = this
         $(".main-content").mCustomScrollbar({
             theme: "minimal-dark",
-            axis: "y"
+            axis: "y",
+             mouseWheel: {
+              scrollAmount: 500,
+              preventDefault: false,
+              normalizeDelta: false
+            },
+            callbacks:{
+               onTotalScroll: function(){
+                    _self.lazyloadSend()
+               }
+            }
         })
 
-        let _self = this
         eventBus.$on('oprationmemberAllList', (parm) => {
           //console.log(parm)
           _self.memberAllList()
@@ -602,8 +621,44 @@ export default {
                 console.log(res)
             })
         },
-        memberAllList () { // 会员列表
+        lazyloadSend () {
+            this.$refs.loadingMoreBox.openLoading()
             let options = {
+                page: this.page,
+                pageSize: 30,
+                shopId: this.shopId,
+                keyWord: this.keyWord,
+                // startTime: this.adminStartTime,
+                // endTime: this.adminEndTime,
+                memberType: this.memberType,
+                memberGrade: this.memberGrade,
+                followStatus: this.followStatus,
+                buyTime: this.buyTime
+            }
+            seekMemberAllList(options).then((res) => {
+                if (res.data.state == 200) {
+                    this.page += 1
+                    this.dataList.push(...res.data.data.dataList)
+                    this.$refs.loadingMoreBox.endLoading()
+                    // 完成加载
+                    if (!res.data.data.dataList.length) {
+                        this.$refs.loadingMoreBox.complete()
+                    }
+                    //this.reArr(this.dataList)
+                }
+                this.loading = false
+            }, (res) => {
+                console.log(res)
+            })
+        },
+        memberAllList () { // 会员列表
+            this.loading = true
+            this.$refs.loadingMoreBox.init()
+            this.page = 1
+            this.dataList = []
+            let options = {
+                page: this.page,
+                pageSize: 30,
                 shopId: this.shopId,
                 keyWord: this.keyWord,
                 // startTime: this.adminStartTime,
@@ -616,9 +671,11 @@ export default {
             seekMemberAllList(options).then((res) => {
                 console.log('会员跟进状态跟踪:',res)
                 if (res.data.state == 200) {
+                    this.page += 1
                     this.dataList = res.data.data.dataList
                     //this.reArr(this.dataList)
                 }
+                this.loading = false
             }, (res) => {
                 console.log(res)
             })
@@ -858,8 +915,12 @@ export default {
             }
         }
         .main-content {
+            position: relative;
             padding: 0 20px;
             height: 660px;
+            >.loading-box{
+                min-height: 600px;
+            }
             //overflow-y: auto;
             .main-item {
                 width: 370px;

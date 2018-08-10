@@ -23,7 +23,8 @@ export default {
         'isClear',
         'isDPCodeDelete',
         'isKWCodeDelete',
-        'prohibitDdropDown' // 禁止下拉
+        'prohibitDdropDown', // 禁止下拉
+        'noChecked'
     ],
     watch:{
        'isDPCodeDelete':function(){
@@ -40,6 +41,9 @@ export default {
        },
        'propList':function(){
            let propListLength = this.propList.length;
+           if (this.noChecked) {
+                return
+           }
            if(propListLength == 1){
                this.itemClick(this.propList[0],0)
             //自动选中了

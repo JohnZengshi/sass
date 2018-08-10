@@ -365,7 +365,7 @@ export default {
     };
   },
   watch: {
-    "changeRepository.repositoryId" (val) {
+    'changeRepository.repositoryId' (val) {
       this.dataGridOptions.storageId = val;
       if (this.changeRepository.repositoryId) {
         this.dataGridOptions.storageId = val;
@@ -394,10 +394,12 @@ export default {
       this.dataGridOptions.page = 1;
       this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
       if (this.changeCounter.counterId) {
+        debugger
         this.send();
       }
     },
     "searchDate" (val) {
+      debugger
       this.dataGridOptions.searchDate = val;
       this.dataGridOptions.page = 1;
       this.dataGridOptions.pageSize = this.$refs['LoaderNum'].pageSize;
@@ -484,6 +486,7 @@ export default {
       if (parm.noRefresh) {
         return
       }
+      debugger
       this.send()
     },
     //成本控制
@@ -526,6 +529,7 @@ export default {
       } else {
         this.dataGridOptions.sortFlag = "";
       }
+      debugger
       this.send()
     },
     choseMenu(type) {
@@ -553,6 +557,7 @@ export default {
     sortListAct(val) {
       // 列表排序
       this.dataGridOptions.sortList = val;
+      debugger
       this.send();
       this.sortList = [];
       val.forEach((item, index) => {
@@ -741,6 +746,7 @@ export default {
         this.dataGridOptions.type == 4;
         this.setReportType(4);
       } else {
+        debugger
         this.send();
       }
       this.customDialog = false;
@@ -783,6 +789,7 @@ export default {
       this.dataGridOptions.productClass = val;
       //this.dataGridOptions.productClass = this.dataGridOptions.productClass == 1 ? 2 : 1
       this.loading = true;
+      debugger
       this.send();
     },
     //收货店铺
@@ -871,6 +878,7 @@ export default {
         default:
           break;
       }
+      debugger
       this.send()
     },
     //产品类别
@@ -890,7 +898,7 @@ export default {
           value: this.propOptons.productTypeId
         });
       }
-
+      debugger
       this.send();
     },
     tabs(index, type, evt) {
@@ -1118,6 +1126,9 @@ export default {
     },
     // 懒加载
     sendlayLoad() {
+      if (this.dataGridOptions.type != 1) {
+        return
+      }
       this.loading = true;
       return (async () => {
           //初始化数据

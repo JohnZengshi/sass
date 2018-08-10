@@ -14,6 +14,7 @@
             <DropDownMenu
               titleName="库位"
               dataType="库位"
+              :noChecked="true"
               :propList="repositoryList"
               :isKWCodeDelete="kwcodedelete"
               @dropReturn="dropReturn"
@@ -27,6 +28,7 @@
             <DropDownMenu
               titleName="店铺"
               dataType="店铺"
+              :noChecked="true"
               :isDPCodeDelete="dpcodedelete"
               :propList="shopList"
               @dropReturn="dropReturn"
@@ -42,6 +44,7 @@
               v-if="!takeUserDisabled"
               titleName="柜组"
               dataType="柜组"
+              :noChecked="true"
               :propList="counterList"
               @dropReturn="dropReturn"
               @clearInfo="clearInfo"
@@ -238,6 +241,7 @@
         this._statisticalIndex();
       },
       dropReturn (val) {
+        debugger
         if (val.type == "柜组") {
           this.changeCounter.counterId = val.item.operateId
           this.changeCounter.counterName = val.item.operateName

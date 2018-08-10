@@ -1078,40 +1078,41 @@
 
 			// 
 			fetchData(fetch, config) {
-				if(config.localStorage && localStorage[config.localStorage]) {
+				// if(config.localStorage && localStorage[config.localStorage]) {
 
-					let tempData = JSON.parse(decodeURIComponent(localStorage[config.localStorage])).filter(f => f.classesName == config.classesName)
-					this.$set(this.datagridSelectData, config.resData, tempData[0].childrenList ? tempData[0].childrenList : tempData[0].typeList)
-				} else if(typeof fetch === 'function') {
+				// 	let tempData = JSON.parse(decodeURIComponent(localStorage[config.localStorage])).filter(f => f.classesName == config.classesName)
+				// 	this.$set(this.datagridSelectData, config.resData, tempData[0].childrenList ? tempData[0].childrenList : tempData[0].typeList)
+				// } else if(typeof fetch === 'function') {
+					if(typeof fetch === 'function'){
+						fetch(config, (res) => {
 
-					fetch(config, (res) => {
+							// 回调方法
+							let resArray = res
+							let rpData = []
 
-						// 回调方法
-						let resArray = res
-						let rpData = []
-
-						if(resArray.length > 0) {
-							//拿到childrenList列表里面的数据
-							if(config.isResolveChildren) {
-								resArray.filter(f => f.childrenList ? rpData.push(...f.childrenList && f.childrenList.filter(j => j)) : '')
-							}
-
-							// 根据对应的字段名进行存储
-							if(rpData.length > 0) {
-								this.$set(this.datagridSelectData, config.resData, rpData)
-							} else {
-								if (config.option.type && config.option.type == 4) {
-									let tempData = resArray.filter(f => f.classesName == config.classesName)
-									this.$set(this.datagridSelectData, config.resData, tempData[0].childrenList ? tempData[0].childrenList : tempData[0].typeList)
-								} else {
-									this.$set(this.datagridSelectData, config.resData, resArray)
+							if(resArray.length > 0) {
+								//拿到childrenList列表里面的数据
+								if(config.isResolveChildren) {
+									resArray.filter(f => f.childrenList ? rpData.push(...f.childrenList && f.childrenList.filter(j => j)) : '')
 								}
-								
-							}
-						}
 
-					})
-				}
+								// 根据对应的字段名进行存储
+								// if(rpData.length > 0) {
+								// 	this.$set(this.datagridSelectData, config.resData, rpData)
+								// } else {
+									if (config.option.type && config.option.type == 4) {
+										let tempData = resArray.filter(f => f.classesName == config.classesName)
+										this.$set(this.datagridSelectData, config.resData, tempData[0].childrenList ? tempData[0].childrenList : tempData[0].typeList)
+									} else {
+										this.$set(this.datagridSelectData, config.resData, resArray)
+									}
+									
+								// }
+							}
+
+						})	
+					}
+				// }
 			},
 
 			//下拉选择 点击事件
