@@ -38,7 +38,7 @@ export default {
         },
         watch: {
             canvas() {
-                
+
                 this.components = JSON.parse(JSON.stringify(this.canvas)).components.filter(component => !component.data.itemListId)
             }
         },
@@ -136,6 +136,8 @@ export default {
             }
         },
         mounted() {
+            console.log(this)
+            debugger
             window.addEventListener('resize', this.setWindowSize)
             //console.log(111111111,this.templateData)
         },

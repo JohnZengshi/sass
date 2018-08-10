@@ -72,7 +72,7 @@ export default {
                 left: 0,
                 top: 0,
                 number: 1,
-                salesId: '1' //销售类型，默认全部
+                salesId: '0' //销售类型，默认全部
             }
         }
     },

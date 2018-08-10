@@ -13,10 +13,10 @@
         @updateActiveIndex="updateActiveIndex" @updateActiveSelectOn="updateActiveSelectOn" @deleteRefresh="deleteRefresh">
       </dgridBody>
       <!-- 加载更多未读数据 -->
-      <ReadMoreData 
-      :allData="allSynopsiData" 
-      :dgDataList="dgDataList" 
-      ref="ReadMoreDataDmo" 
+      <ReadMoreData
+      :allData="allSynopsiData"
+      :dgDataList="dgDataList"
+      ref="ReadMoreDataDmo"
       @readMoreData="readMoreData"
       ></ReadMoreData>
     </div>
@@ -255,7 +255,7 @@
               if (this.activeSelectOnIndex >= 0 && this.dgDataList.length >= this.activeSelectOnIndex) {
                 this.$emit('updataCopyOrderObject', this.dgDataList[this.activeSelectOnIndex])
               }
-              // 选中证书名的时候要执行刷新商品列表 
+              // 选中证书名的时候要执行刷新商品列表
               if (Object.keys(data).includes('certifiName')) {
                 this.refresh();
               }

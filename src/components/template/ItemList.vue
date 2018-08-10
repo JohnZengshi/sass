@@ -3,7 +3,20 @@
     <div class="resize"></div>
 </div>
 <div class="item-list-component" v-else>
-    <component v-for="child in items" :is="child.type" :showEmpty="showEmpty" :isPreview="true" :parent="null" class="component" :data="child.data" :templateData="templateData" @changeComponentData="changeComponentData(child, $event)" :changeComponentData="changeComponentData"></component>
+    <component v-for="child in items"
+        :is="child.type"
+        :showEmpty="showEmpty"
+        :isPreview="true"
+        :parent="null"
+        class="component"
+        :item="data"
+        :data="child.data"
+        :productList="productList"
+        :templateData="templateData"
+        @changeComponentData="changeComponentData(child, $event)"
+        :changeComponentData="changeComponentData">
+
+    </component>
  <!-- 需求改变，暂时屏蔽 -->
 <!--     <div class="page" v-show="sumPage" :style="pageStyle">{{ page }}-{{ sumPage }}页</div> -->
 </div>
@@ -31,7 +44,8 @@ export default {
     },
     data() {
         return {
-            children: []
+            children: [],
+            productList: []
         }
     },
     computed: {
@@ -80,6 +94,8 @@ export default {
             if (+this.data.salesId){
                 productList = this.judgeProductList(productList);
             }
+            this.productList = productList;
+            console.log(productList)
             number = Math.min(number, productList.length)
             if (number) {
                 //数据之间的间距
@@ -113,6 +129,7 @@ export default {
                     this.children.push(childClone)
                 })
             }
+            debugger
             return this.children
         },
     },
@@ -124,7 +141,7 @@ export default {
                     if (obj.key == 'sellType' && obj.value == '销售' && this.data.salesId == '1') {
                         list.push(item);
                     }
-                    if (obj.key == 'sellType' && obj.value == '退换' && this.data.salesId == '2') {
+                    if (obj.key == 'sellType' && obj.value != '销售' && this.data.salesId == '2') {
                         list.push(item);
                     }
                 }

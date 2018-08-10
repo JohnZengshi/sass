@@ -117,7 +117,7 @@
                                         <li><a :href="downUrl">下载模板</a></li>
                                         <li v-if="delectOptionRole && nowStatus != 6" @click="addSingleAll" v-loading.fullscreen.lock="popup.fullscreenLoading" element-loading-text="拼命进行中...">保存</li>
                                         <!--<li @click="closeStorage">关闭</li>-->
-                                    </ul>  
+                                    </ul>
                                 </div>
                                 <div class="add-btn" v-if="delectOptionRole && nowStatus != 6" @click="appendRow">添加商品</div>
                             </div>
@@ -136,7 +136,7 @@
                                         <th>首饰类别</th>
                                     </tr>
                             </table>
-                            <table class="left-table" cellpadding="0" cellspacing="0" style=" background:#fff;" ref="left_table_main">    
+                            <table class="left-table" cellpadding="0" cellspacing="0" style=" background:#fff;" ref="left_table_main">
                                 <tr v-for="(item, index) in tableRowData" ref="left_table_line"  @click="selectTable(index)" :class="{active:tableIndex == index}">
                                     <td style="width: 45px;">
                                         <span v-if="isSelDelect">{{index + 1}}</span>
@@ -147,7 +147,7 @@
                                     </td>
                                     <td style="width: 67px; max-width: 90px;">
                                         <input v-if="tableIndex == index && isOperate == false" type="text" v-model="item.barcode" @keyup.enter="queryBarCode(item.barcode, 1, index)">
-                                        <span v-else>{{item.barcode}}</span> 
+                                        <span v-else>{{item.barcode}}</span>
                                     </td>
                                     <td style="width: 90px;">
                                         <span v-if="isOperate || tableIndex != index">{{item.metalColor}}</span>
@@ -541,7 +541,7 @@
                                             <input v-else v-model="newRowData.mainPrice" @keyup="operateData(index, 'main', 5)" @blur="inputAmandData(item, index, 'main')">
                                         </td>
                                         <!--                         副石                       -->
-                                        <!--<td> 
+                                        <!--<td>
                                             <span v-if="tableIndex != index">{{item.deputyName}}</span>
                                             <input maxlength='12' v-else v-model="newRowData.deputyName" @keyup="operateData(index, 'deputy', 1)" @blur="inputAmandData(item, index, 'deputy')">
                                         </td>-->
@@ -768,7 +768,7 @@
                                                 </div>
                                             </li>
                                             <li v-if="tableMainFlag.mainStonFlag">
-                                                
+
                                             </li>
                                             <li v-if="tableMainFlag.mainStonFlag"></li>
                                             <li v-if="tableMainFlag.mainStonFlag"></li>
@@ -798,7 +798,7 @@
                                             <!-- 销售工费 -->
                                             <li></li>
                                             <li v-if="tableMainFlag.workFlag"></li>
-                                            <li v-if="tableMainFlag.workFlag">  
+                                            <li v-if="tableMainFlag.workFlag">
                                             </li>
                                             <li v-if="tableMainFlag.workFlag"></li>
                                             <li v-if="tableMainFlag.workFlag">
@@ -822,12 +822,12 @@
                                                 </div>
                                             </li>
                                             <li v-if="tableMainFlag.partsFlag"></li>
-                                            <li v-if="tableMainFlag.partsFlag"></li>   
-                                            <!-- 其他费用名 -->                                                                                                                                       
+                                            <li v-if="tableMainFlag.partsFlag"></li>
+                                            <!-- 其他费用名 -->
                                             <li></li>
                                             <li v-if="tableMainFlag.otherFlag"></li>
                                             <li>
-                                                
+
                                             </li>
                                             <li v-if="tableMainFlag.priceFlag">
                                                 <div class="total-item">
@@ -841,7 +841,7 @@
                                                     <span v-html="receiptsIntroList.totalPrice ==null || receiptsIntroList.totalPrice == 0 ? '<em style=\'color:#333\'>-</em>' : receiptsIntroList.totalPrice"></span>
                                                     <span>总售价</span>
                                                 </div>
-                                            </li>                              
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -858,7 +858,7 @@
                         </div>
                         <div v-else>
                                 <!-- ****************************************************************** -->
-<div class="btn" 
+<div class="btn"
  v-if="receiptsIntroList.checkType != '1' && nowStatus != 6  && nowStatus == 3 && companyPosition || receiptsIntroList.checkType != '1' && nowStatus == 2 && isMakeMan == true" @click="operateSubmit(1)">撤回审核</div>
                             <!-- ****************************************************************** -->
                             <div class="btn" v-if="receiptsIntroList.checkType == '2' && isCheckOrderMan == 'Y' && nowStatus != 6" @click="operateSubmit(2)">通过审核</div>
@@ -868,7 +868,7 @@
                             <div class="btn" @click="tabPrin()">打印单据</div>
                             <div class="btn" @click="printLabel">打印标签</div>
                         </div>
-                        
+
                     </div>
                     <i class="el-icon-delete2" @click="delOrder" v-if="isRole == 'Y'"></i>
                 </div>
@@ -913,7 +913,7 @@
                     :isPopup="popup1.batchAddReceiptsPopup"
                     :supplierListData="supplierListData1"
                     v-on:addReceiptsState="delectReceiptsState"
-                >    
+                >
                 </BatchAddReceipts> -->
                 <!-- 批量修改 -->
                 <div class="amend-popup-wrap" v-if="popup.amendings">
@@ -1017,10 +1017,10 @@
         </div>
         <!--打印模块-->
         <div ref="tablePrint" v-if="isPrint==1" >
-            <table-print 
+            <table-print
                 :tabSwitch = "tabSwitch"
                 :reportType="getReportType()"
-                :printSelectDate = "printSelectDate" 
+                :printSelectDate = "printSelectDate"
                 :dataGridStorage="dataGridStorage">
             </table-print>
         </div>
@@ -1432,7 +1432,7 @@ export default {
         //         for (let j = this.tableRowData.length - 1; j > this.tableInitRowData.length - 1; j--) {
         //             this.newAddtableData.push(this.tableRowData[j])
         //         }
-        //     } 
+        //     }
         // },
         'deleteList': function (val) {
             //console.log(val)
@@ -1480,7 +1480,7 @@ export default {
             }
             let flag = self.tableMainFlag
             if (self.$refs.row4_main) {
-                
+
                 if (flag.baseFlag == true || flag.weightFlag == true || flag.pageFlag == true || flag.mainStonFlag == true || flag.otherStonFlag == true || flag.workFlag == true || flag.partsFlag == true || flag.otherFlag == true || flag.priceFlag == true) {
                     // this.$refs.row4_main.style.width = "1500px"
                     //console.log(document.body.offsetWidth)
@@ -1491,7 +1491,7 @@ export default {
                 }
                 self.$refs.total_table.style.width = self.$refs.row4_main.offsetWidth + 'px'
             }
-            
+
         }
         window.addEventListener('keydown', this.keydownHandler)
         this.$refs.right_scroll_wrap.style.width = this.$refs.row4_main.offsetWidth - 450 + 'px'
@@ -1529,7 +1529,7 @@ export default {
                     self.$refs.right_tittle.style.width = self.$refs.row4_main.offsetWidth - 450 + 'px'
                     self.$refs.table_tlttle.style.width = self.$refs.row4_main.offsetWidth + 'px'
                     self.$refs.total_table.style.width = self.$refs.row4_main.offsetWidth + 'px'
-                    
+
                     // console.log(111)
                     self.$refs.total_table.style.left = self.$refs.body_box.getBoundingClientRect().left + 'px'
                     if (self.$refs.right_table_wrap.offsetHeight > 450) {
@@ -1616,17 +1616,17 @@ export default {
                                 self.$message({
                                     type: 'info',
                                     message: '已取消操作'
-                                });  
+                                });
                             });
                         }
-                        
+
                     }
                 },
                 onScroll: function(){
                     self.$refs.total_table.style.opacity = '1'
                 }
             }
-            
+
         });
         // $(".right-table-wrap").mCustomScrollbar({
         //     theme: "minimal-dark",
@@ -1693,7 +1693,7 @@ export default {
         },
         batchDeletion (type) { // 批量删除
             if (type == 1) {
-                
+
                 if (this.deleteList1.length == 0) {
                     this.isSelDelect = true
 
@@ -1729,16 +1729,16 @@ export default {
                         this.$message({
                             type: 'info',
                             message: '已取消删除'
-                        });          
+                        });
                     });
-                    
+
                 }
-                
+
             } else if (type == 2) {
                 this.isSelDelect = true
                 this.deleteList = []
                 this.deleteList1 = []
-            } 
+            }
         },
         // appendBatchRow () { // 批量新增
         //     this.popup1.batchAddReceiptsPopup = !this.popup1.batchAddReceiptsPopup;
@@ -1776,11 +1776,11 @@ export default {
         getReportType(){
         	return this.propOptons.reportType
         },
-         //打印表格 
+         //打印表格
         tabPrin () {
         	//console.log(111111)
         	//console.log(this.dataGridStorage)
-        	if( this.dataGridStorage.productTypeList && this.dataGridStorage.productTypeList.length ==0 || 
+        	if( this.dataGridStorage.productTypeList && this.dataGridStorage.productTypeList.length ==0 ||
         	    this.dataGridStorage.printDetailList && this.dataGridStorage.printDetailList.length ==0 ){
         		this.$message({
         			type:'error',
@@ -1790,19 +1790,19 @@ export default {
         	}
         	this.isPrint = 1;
         	let print = null;
-        	
+
         	this.appPrint = document.getElementById('appPrint')
-        	
+
         	if( this.IntervalOut ) clearInterval( this.IntervalOut )
         	document.getElementById('app').style.display = 'none';
-        	
+
         	setTimeout(()=>{
         		this.appPrint.innerHTML = this.$refs.tablePrint.innerHTML
         	},1000)
         	setTimeout(()=>{
-        		print = document.execCommand('print');	
+        		print = document.execCommand('print');
         	},1500)
-        	
+
         	this.IntervalOut = setInterval(()=>{
         		if( print ){
         			document.getElementById('app').style.display = 'block';
@@ -1820,7 +1820,7 @@ export default {
 	        		}
 	        	}
         	},10)
-        	
+
         },
         queryBarCode (barcode, operate, index) { // 通过条码号搜索数据
             //console.log(barcode)
@@ -1893,19 +1893,19 @@ export default {
                             this.$message({
                                 type: 'info',
                                 message: '删除失败'
-                            }); 
+                            });
                         })
                     }).catch(() => {
                         this.$message({
                             type: 'info',
                             message: '已取消删除'
-                        });          
+                        });
                     });
                 }).catch(() => {
                     this.$message({
                         type: 'info',
                         message: '已取消操作'
-                    });  
+                    });
                 });
             } else {
                 this.$confirm('此操作将在本单据中删除该商品, 是否继续?', '提示', {
@@ -1941,17 +1941,17 @@ export default {
                         this.$message({
                             type: 'info',
                             message: '删除失败'
-                        }); 
+                        });
                     })
                 }).catch(() => {
                     this.$message({
                         type: 'info',
                         message: '已取消删除'
-                    });          
+                    });
                 });
             }
-            
-            
+
+
         },
         switchAct (val) {
             if (val == true) {
@@ -2040,7 +2040,7 @@ export default {
                         "mainPrice": item.mainPrice
                     }
                     for (let i in obj) {
-                        
+
                         if (obj[i] == '' || obj[i] == null) {
                             delete obj[i]
                         }
@@ -2406,7 +2406,7 @@ export default {
             // for (let i in this.tableMainFlag) {
             //     console.log(this.tableMainFlag[i])
             //     if (this.tableMainFlag[i] == true) {
-            //         
+            //
             //         console.log("true了，还不动么")
             //     } else {
             //         this.$refs.row4_main.style.width = "1250px"
@@ -2441,10 +2441,10 @@ export default {
                     this.$message({
                         type: 'info',
                         message: '已取消删除'
-                    });          
+                    });
                 });
             }
-            
+
         },
         // 关闭单据备注弹窗
         closeMask (type) {
@@ -2534,7 +2534,7 @@ export default {
                     this.$message({
                         type: 'info',
                         message: '已取消操作'
-                    });          
+                    });
                 });
             } else if (type == 2) { // 通过审核
                 this.auditText = "通过说明"
@@ -2569,7 +2569,7 @@ export default {
                                 message: res.data.msg,
                                 type: 'warning'
                             });
-                        } 
+                        }
                     }, (res) => {
                         console.log(res)
                     })
@@ -2577,9 +2577,9 @@ export default {
                     this.$message({
                         type: 'info',
                         message: '已取消操作'
-                    });          
+                    });
                 });
-            } 
+            }
         },
         askSubmit (type) {
             let options = {
@@ -2807,7 +2807,7 @@ export default {
                     } else if (res.data.data.dataList[i].status == this.stepInfo.step4.stepStatus) {
                         this.stepInfo.step4.stepFlag = true
                         this.stepInfo.step4.stepMessage = res.data.data.dataList[i]
-                    }  
+                    }
                 }
                 this.nowStatus = res.data.data.nowStatus
                 if (this.nowStatus == '2' || this.nowStatus == '3' || this.nowStatus == '6') {
@@ -3277,7 +3277,7 @@ export default {
                     for (let i = 0; i < response.data.data.list.length; i++) {
                         pullDowndata.push(response.data.data.list[i])
                     }
-                    
+
                     switch (requestNumber) {
                         case 1: // 金含量
                             _self.configPullDownData.partGold = pullDowndata;
@@ -3494,7 +3494,7 @@ export default {
                 this.$store.dispatch('workPopupError', '请选择要复制的数据')
                 return;
             }
-            
+
             for (let i = 0; i < this.popup.copyNumber; i++) {
                 let copyRows = JSON.parse(JSON.stringify(this.selectData1))
                 copyRows.barcode = ''
@@ -3627,7 +3627,7 @@ export default {
                 for (let j = this.tableRowData.length - 1; j > this.tableInitRowData.length - 1; j--) {
                     this.newAddtableData.push(this.tableRowData[j])
                 }
-            } 
+            }
             if (this.newAddtableData.length > 0) {
                 this.brandNewAdd()
                 //console.log(232323)
@@ -3684,7 +3684,7 @@ export default {
                     this.getNewGoodsInfoList('1', this.pageSize);
                     this.getNewGoodsInfoList1('1', this.pageSize);
                     this.reportsPrintRK()
-                    
+
                     this.$message({
                         message: '保存成功',
                         type: 'success'
