@@ -1097,9 +1097,9 @@
 								}
 
 								// 根据对应的字段名进行存储
-								if(rpData.length > 0) {
-									this.$set(this.datagridSelectData, config.resData, rpData)
-								} else {
+								// if(rpData.length > 0) {
+								// 	this.$set(this.datagridSelectData, config.resData, rpData)
+								// } else {
 									if (config.option.type && config.option.type == 4) {
 										let tempData = resArray.filter(f => f.classesName == config.classesName)
 										this.$set(this.datagridSelectData, config.resData, tempData[0].childrenList ? tempData[0].childrenList : tempData[0].typeList)
@@ -1107,7 +1107,7 @@
 										this.$set(this.datagridSelectData, config.resData, resArray)
 									}
 									
-								}
+								// }
 							}
 
 						})	
