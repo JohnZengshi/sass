@@ -23,7 +23,7 @@ import DownMenu from 'base/menu/DownMenu'
 import filterHeader from './../base/filter-header'
 import memberInfo from '@/layouts/Leaguer/components/memberInfo'
 import downMenu from 'base/menu/new-down-menu'
-import tableList from './../base/table-list'
+import tableList from './base/table-list'
 // import btnHeader from './base/btn-header'
 import { productTpyeState, newProductDetailStatus } from 'Api/commonality/status'
 

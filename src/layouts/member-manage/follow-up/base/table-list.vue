@@ -58,7 +58,7 @@
 import Vue from 'vue'
 import { mapGetters, mapState } from 'vuex'
 import find from 'lodash/find'
-let configData = require('./../config/config')
+let configData = require('./../../config/config.js')
 import {
   seekRepositoryList,
   seekGetDepUserList,
@@ -75,10 +75,9 @@ import * as jurisdictions from 'Api/commonality/jurisdiction'
 import DownMenu from 'base/menu/DownMenu'
 import ReportDetail from 'base/newDataGrid/reportDetailTab'
 import DropDownMenu from '@/components/template/DropDownMenu'
-import filterHeader from './../base/filter-header'
-import followUpHeader from './../base/follow-up-header'
+import followUpHeader from './../../base/follow-up-header.vue'
 import downMenu from 'base/menu/new-down-menu'
-import followUpEcharts from './follow-up-echarts'
+import followUpEcharts from './../../base/follow-up-echarts.vue'
 // import btnHeader from './base/btn-header'
 import { productTpyeState, newProductDetailStatus } from 'Api/commonality/status'
 
@@ -88,7 +87,6 @@ export default {
     ReportDetail,
     DropDownMenu,
     DownMenu,
-    filterHeader,
     downMenu,
     followUpHeader,
     followUpEcharts
@@ -96,6 +94,15 @@ export default {
   },
   data() {
     return {
+      // 跟进
+      followUpFilterData: {
+        followStatus: '',
+        followPurpose: '',
+        followType: '',
+        type: '',
+        chargeId: '',
+      },
+      // 会员
       totalNum: '',
       memberId: '',
       shopName: '',
@@ -709,6 +716,10 @@ export default {
       return this.dataGridOptions.type
     },
 
+    // 跟进列表
+    followUpFilterData () {
+
+    },
 
     //懒加载
     lazyloadSend() {

@@ -1,6 +1,6 @@
 <template>
   <div class="follow-up-echarts-main">
-  
+
     <div class="body-left">
       <p>本月跟进趋势</p>
       <EchartTemplate :option="option" :echartloading="echartloading" class="charts-main-wrap"></EchartTemplate>
@@ -43,6 +43,13 @@ export default {
   data () {
     return {
       grid: [{ top: 60, left: 50, right: 30, bottom: 50 }], // 图形的间距
+      filterData: {
+        followStatus: '',
+        followPurpose: '',
+        followType: '',
+        type: '',
+        chargeId: '',
+      },
       cutList: [
         {
           name: '我的跟进',
