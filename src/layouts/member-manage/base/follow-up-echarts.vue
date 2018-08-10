@@ -1,9 +1,11 @@
 <template>
   <div class="follow-up-echarts-main">
+  
     <div class="body-left">
       <p>本月跟进趋势</p>
       <EchartTemplate :option="option" :echartloading="echartloading" class="charts-main-wrap"></EchartTemplate>
     </div>
+
     <div class="body-right">
 
       <ul class="center-num-list">
