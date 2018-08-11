@@ -12,6 +12,8 @@
           :dataGridStorage="dataGridStorage"
           :reportType="reportType"
           :positionSwitch="positionSwitch"
+          :className="className"
+          @checkedAll="checkedAll"
           @scrollClass="scrollClass"
           @lazyloadSend="lazyloadSend"
           @tabCell="tabCell"
@@ -34,7 +36,8 @@ import DataGridFooter from './dataGridFooter'
 import DataEditFooter from './editFooter'
 // let configData = require('./config/dataGridConfig')
 export default {
-  props: ['dataGridStorage', 'reportType', 'tabSwitch', 'isOld', 'positionSwitch', 'newList', 'type', 'printNum', 'allData', 'configData', 'isFooter'],
+  props: ['dataGridStorage', 'reportType', 'tabSwitch', 'isOld', 'positionSwitch', 'newList', 'type', 'printNum', 'allData', 'configData', 'isFooter', 'className'],
+  // className -> 外壳样式名
   data() {
     return {
       tempDatagrid: [],
@@ -53,6 +56,10 @@ export default {
     this.setColumn()
   },
   methods: {
+    // 选择的数据集合
+    checkedAll (parm) {
+      this.$emit('checkedAll', parm)
+    },
     delData (parm) {
       this.$emit("delData", parm)
     },

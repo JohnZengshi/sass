@@ -4,7 +4,7 @@
           <i class="el-dialog__close el-icon el-icon-close"></i>
         </div>
 
-        <div class="add-member-body">
+        <div class="scroll-body">
           <h3>会员信息</h3>
           <div class="scroll-box">
             <div class="memberinfo-top">

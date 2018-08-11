@@ -45,7 +45,7 @@
           @clearInfo="clearUser"
       ></DownMenu>
 
-      <div class="btn-box">
+      <div class="btn-box" v-if="headline == '我的跟进'">
         <ul class="xj-btn-list">
           <li class="btn" syle="margin-right: 10px;">+跟进</li>
           <li class="btn" @click="batchComplete">+批量完成</li>
@@ -81,7 +81,7 @@ export default {
     cutBg,
     cutPopup
   },
-  props: ['shopId'],
+  props: ['shopId', 'headline'],
   data () {
     return {
       isSenior: false,

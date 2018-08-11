@@ -1,36 +1,50 @@
 <template>
   <!--表格内容区-->
-  <div class="xj-report-table-container-img default-line" ref="tableContainer">
-    <div>
-      <template v-for="(tb, index) in dataGridStorage">
-        <div @click.stop="change(tb)" class="tb-tr" :key="index" :class="{'print-on': filterChange(index)}">
-          <template v-for="(tab,num) in detailDataGridColumn">
-            
-            <div class="tb-td pd-10" v-if="tab.childType == 'avatarUrl'" :style="tableCell(tab.width)" :key="num">
-              <div class="head-portrait-wrap">
-                <img class="head-portrait" :src="tb.avatarUrl" alt="">
+  <div class="default-line" :class="currentClass" ref="tableContainer">
+    <div class="new-e-checkbox-square">
+      <el-checkbox-group v-model="allChecked" @change="checkedAll">
+        <template v-for="(tb, index) in dataGridStorage">
+          <div @click.stop="change(tb)" class="tb-tr" :key="index" :class="{'print-on': filterChange(index)}">
+            <template v-for="(tab,num) in detailDataGridColumn">
+              
+              <div class="tb-td pd-10" v-if="tab.childType == 'avatarUrl'" :style="tableCell(tab.width)" :key="num">
+                <!-- 小图 -->
+                <div v-if="tab.smallImg" class="head-portrait-small-wrap">
+                  <img class="head-portrait" :src="tb.avatarUrl" alt="">
+                </div>
+                <!-- 普通图片 -->
+                <div v-else class="head-portrait-wrap">
+                  <img class="head-portrait" :src="tb.avatarUrl" alt="">
+                </div>
               </div>
-            </div>
 
-            <div class="tb-td" v-else-if="tab.childType == 'compile'" :style="tableCell(tab.width)" :key="num">
-              <i v-if="tab.compile" @click.stop="compileData(tb, index)" class="iconfont icon-bianji del-icon"></i>
+              <div class="tb-td" v-else-if="tab.childType == 'compile'" :style="tableCell(tab.width)" :key="num">
+                <i v-if="tab.compile" @click.stop="compileData(tb, index)" class="iconfont icon-bianji del-icon"></i>
 
-              <i v-if="tab.del" @click.stop="delData(tb, index)" class="iconfont icon-shanchu1 del-icon"></i>
+                <i v-if="tab.del" @click.stop="delData(tb, index)" class="iconfont icon-shanchu1 del-icon"></i>
+                
+                <!-- 多选 -->
+                <el-checkbox v-if="tab.checked" :label="tb[tab.checkedId]" style="font-size: 14px;">{{tb[tab.childType]}}</el-checkbox>
 
-            </div>
-  
-            <div class="tb-td" v-else-if="tab.childType == 'createTime'" :style="tableCell(tab.width)" :key="num">
-              <div class="time-wrap">
-                <p>{{_GetNYR(tb.createTime)}}</p>
-                <p>{{_GetSF(tb.createTime)}}</p>
               </div>
-            </div>
+    
+              <div class="tb-td" v-else-if="tab.childType == 'createTime'" :style="tableCell(tab.width)" :key="num">
+              
+                <div v-if="tab.line">
+                  {{_GetNYR(tb.createTime)}} {{_GetSF(tb.createTime)}}
+                </div>
+                <div v-else class="time-wrap">
+                  <p>{{_GetNYR(tb.createTime)}}</p>
+                  <p>{{_GetSF(tb.createTime)}}</p>
+                </div>
+              </div>
 
-            <div v-else class="tb-td" :style="tableCell(tab.width)" :key="num" v-text="tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"></div>
+              <div v-else class="tb-td" :style="tableCell(tab.width)" :key="num" v-text="tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"></div>
 
-          </template>
-        </div>
-      </template>
+            </template>
+          </div>
+        </template>
+      </el-checkbox-group>
       <div v-if="isDate" class="no-data"></div>
     </div>
   </div>
@@ -40,12 +54,13 @@ import {GetNYR, GetSF} from 'assets/js/getTime'
 export default {
   data() {
     return {
+      allChecked: [],
       isDate: false,
       tempArray: [],
       heightArr: [],
     }
   },
-  props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch', 'printNum'],
+  props: ['detailDataGridColumn', 'dataGridStorage', 'tabCell', 'reportType', 'positionSwitch', 'printNum', 'className'],
 
   watch: {
     'dataGridStorage': function() {
@@ -55,8 +70,21 @@ export default {
       // this.tabCellHeight()
     }
   },
+
+  computed: {
+    currentClass () {
+      if (this.className) {
+        return {
+          [this.className]: true
+        }
+      }
+      return {
+        'xj-report-table-container-img': true
+      }
+    }
+  },
+
   mounted() {
-    let _this = this
     this.$nextTick(() => {
 
       if (this.dataGridStorage.length) {
@@ -64,35 +92,41 @@ export default {
         this.cheackData()
         this.storageFormatDate()
       }
-      _this.$emit('lazyloadSend')
+      this.$emit('lazyloadSend')
+      this.initScorll()
     })
 
-    $(".xj-report-table-container-img").mCustomScrollbar({
-      theme: "minimal-dark",
-      axis: 'y',
-      scrollInertia: 100,
-      callbacks: {
-        onTotalScroll: function() {
-          _this.$emit('lazyloadSend')
-          $('.loadControl').css({
-            opacity: 1
-          })
-        },
-        onUpdate() {
-          $('.loadControl').css({
-            opacity: 0
-          })
-        },
-        whileScrolling() {
-          $('.loadControl').css({
-            opacity: 0
-          })
-        }
-      }
-    });
     // this.tabCellHeight()
   },
   methods: {
+    initScorll () {
+      $(".default-line").mCustomScrollbar({
+        theme: "minimal-dark",
+        axis: 'y',
+        scrollInertia: 100,
+        callbacks: {
+          onTotalScroll: function() {
+            _this.$emit('lazyloadSend')
+            $('.loadControl').css({
+              opacity: 1
+            })
+          },
+          onUpdate() {
+            $('.loadControl').css({
+              opacity: 0
+            })
+          },
+          whileScrolling() {
+            $('.loadControl').css({
+              opacity: 0
+            })
+          }
+        }
+      })
+    },
+    checkedAll () {
+      this.$emit('checkedAll', this.allChecked)
+    },
     _GetNYR (parm) {
       return GetNYR(parm)
     },

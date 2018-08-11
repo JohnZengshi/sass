@@ -104,6 +104,7 @@
         }
     }
 }
+
 // 表格里的多选
 .el-checkbox-group{
     .el-checkbox{
@@ -139,3 +140,19 @@
         background-color: $oa;
         border-color: $oa;
     }
+
+// 新四方形输入框
+.new-e-checkbox-square{
+  .el-checkbox{
+    height: 40px!important;
+    line-height: 40px!important;
+  }
+  .el-checkbox-group .el-checkbox__inner{
+    border-radius: 5px!important;
+  }
+  .el-checkbox-group {
+    .el-checkbox__label{
+        font-size: 14px!important;
+    }
+  }
+}

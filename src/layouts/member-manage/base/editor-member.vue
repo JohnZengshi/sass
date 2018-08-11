@@ -15,7 +15,7 @@
         <div class="p-close-icon" @click="close">
           <i class="el-dialog__close el-icon el-icon-close"></i>
         </div>
-        <div class="add-member-body">
+        <div class="scroll-body">
           <h3>添加会员</h3>
           <div class="scroll-box">
             <div>
@@ -712,21 +712,21 @@ export default {
   .mandatory-icon {
     color: red;
   }
-  .add-member-body {
-    height: 660px;
-    >h3 {
-      line-height: 1;
-      font-size: 16px;
-      font-weight: 700;
-      margin-bottom: 20px;
-      color: #333;
-    }
-    .scroll-box {
-      height: 610px;
-      width: 100%;
-      white-space: nowrap;
-    }
-  }
+  // .scroll-body {
+  //   height: 660px;
+  //   >h3 {
+  //     line-height: 1;
+  //     font-size: 16px;
+  //     font-weight: 700;
+  //     margin-bottom: 20px;
+  //     color: #333;
+  //   }
+  //   .scroll-box {
+  //     height: 610px;
+  //     width: 100%;
+  //     white-space: nowrap;
+  //   }
+  // }
   // .p-close-icon {
   //   position: absolute;
   //   right: 10px;

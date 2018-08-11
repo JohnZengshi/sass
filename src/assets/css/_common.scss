@@ -296,6 +296,7 @@
 .xj-btn-list {
     display:flex;
     justify-content: center;
+    // 普通按钮
     .btn {
         width: 90px;
         height: 28px;
@@ -305,7 +306,7 @@
         background: #2993f8;
         color: #fff;
         text-align: center;
-        margin-right: 16px;
+        margin-right: 10px;
         cursor: pointer;
         transition: all .3s;
         &:hover {
@@ -323,6 +324,50 @@
             color: #2993f8;
         }
     }
+    .cnacel-btn-c{
+        border: 1px solid #d6d6d6;
+        background: #fff;
+        color: #2993f8;
+        transition: all .3s;
+        &:hover {
+            border: 1px solid #2993f8;
+            background: #fff;
+            color: #2993f8;
+        }
+    }
+    // 带背景色变动按钮
+    .btn-bg {
+        width: 90px;
+        height: 28px;
+        line-height: 29px;
+        font-size: 14px;
+        border-radius: 4px;
+        background: #F1F2F3;
+        color: #666;
+        text-align: center;
+        margin-right: 10px;
+        cursor: pointer;
+        transition: all .3s;
+        &:hover {
+            color: #fff;
+            background: #2993f8;
+        }
+    }
+    .actions-bg{
+      color: #fff;
+      background: #2993f8;
+    }
+    .cnacel-btn-bg{
+        border: 1px solid #d6d6d6;
+        background: #fff;
+        background: #2993f8;
+        color: #FFF;
+        transition: all .3s;
+        &:hover {
+            background: #4db3ff;
+        }
+    }
+
     li:last-child{
       margin-right: 0;
     }
@@ -424,8 +469,11 @@ input[type="number"]{
   border-radius: 5px;
   padding: 20px 30px;
   position: relative;
-  .add-member-body {
-    height: 660px;
+  display: flex;
+  flex-direction: column;
+  .scroll-body {
+    flex: 1;
+    // height: 660px;
     >h3 {
       line-height: 1;
       font-size: 16px;

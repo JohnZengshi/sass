@@ -5,13 +5,13 @@
       <div class="new-table-header-layout-main">
         
         <!-- 跟进图表 -->
-        <follow-up-echarts ref="followUpEchartsBox" v-if="currentLocation == 'followUp'" @update="filterData"></follow-up-echarts>
+        <follow-up-echarts v-if="headline == '我的跟进'" ref="followUpEchartsBox" @update="filterData"></follow-up-echarts>
 
         <div class="rp_gridState">
           <p class="side-nav"><i class="iconfont icon-liebiao"></i>商品列表:<span style="color: #2993f8;">{{totalNum}}</span></p>
-          <sort-table :sortList="sortList" @cancelSort="cancelSort"></sort-table>
+          <sort-table v-if="headline == '我的跟进'" :sortList="sortList" @cancelSort="cancelSort"></sort-table>
           <!-- 跟进 -->
-          <follow-up-header v-if="currentLocation == 'followUp'" :shopId="shopId" @update="filterData"></follow-up-header>
+          <follow-up-header v-if="currentLocation == 'followUp'" :headline="headline" :shopId="shopId" @update="filterData"></follow-up-header>
 
         </div>
       </div>
@@ -25,6 +25,7 @@
           ref="reportDetailWrap"
           :dataGridStorage="dataGridStorage"
           :configData="configData"
+          :className="headline == '我的跟进' ? '' : 'xj-report-table-container-img-small'"
           @lazyloadSend="lazyloadSend"
           @sortListAct="sortListAct"
           @delData="delData"
@@ -49,7 +50,7 @@ import followUpEcharts from './follow-up-echarts'
 import {combination} from 'assets/js/combination'
 
 export default {
-  props: ['shopId', 'currentLocation'],
+  props: ['shopId', 'currentLocation', 'headline'],
   components: {
     ReportDetail,
     followUpHeader,
@@ -83,6 +84,11 @@ export default {
       "userPositionInfo", // 职位信息
     ])
   },
+  created () {
+    if (this.headline == '跟进管理') {
+      this.configData = configData.followUpManageConfig
+    }
+  },
   methods: {
     // 选择摸个会员
     changeMember (parm) {
@@ -114,7 +120,9 @@ export default {
         this.paging.page = 1
         this.filterCondition = Object.assign({}, this.filterCondition, parm)
         // 重绘图表
-        this.$refs.followUpEchartsBox._seekStockTrend()
+        if (this.$refs.followUpEchartsBox) {
+          this.$refs.followUpEchartsBox._seekStockTrend()
+        }
       } else {
         if (this.paging.page > 1 && this.dataGridStorage.length == this.totalNum) {
           return

@@ -27,7 +27,7 @@
         </ul>
         <ul class="top-btn xj-btn-list">
             <li class="btn" @click="openAdd">+跟进</li>
-            <router-link tag="li" :to="{path: '/memberManage/memberList', query: {shopId: filterOption.shopId}}" class="btn">跟进管理</router-link>
+            <router-link tag="li" :to="{path: '/membermanage/followUpManage', query: {shopId: filterOption.shopId}}" class="btn">跟进管理</router-link>
             <router-link tag="li" class="btn" :to="{path: '/memberManage/compileTemplate', query: {shopId: filterOption.shopId}}">待完成</router-link>
         </ul>
         <add-follow-up ref="addFollowUpBox" :shopId="filterOption.shopId"></add-follow-up>

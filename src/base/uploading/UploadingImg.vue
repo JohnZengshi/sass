@@ -54,8 +54,7 @@ export default {
         }
       }
       var errorCallBack = function (result) {
-        console.log('errorCallBack')
-        console.log(result)
+        console.log('errorCallBack', result)
       }
       var progressCallBack = function (curr, sha1) {
         // var sha1CheckProgress = ((sha1 * 100).toFixed(2) || 100) + '%'
@@ -79,6 +78,8 @@ export default {
   .wx-uploading-img{
     position: absolute;
     top: 0;
+    left: 0;
+    right: 0;
     bottom: 0;
     display: inline-block;
     width: 100%;

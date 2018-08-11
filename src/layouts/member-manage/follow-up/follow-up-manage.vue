@@ -1,6 +1,6 @@
-<!-- 我的跟进 -->
+<!-- 跟进管理 -->
 <template>
-    <list-box :headline="'我的跟进'"></list-box>
+    <list-box :headline="'跟进管理'"></list-box>
 </template>
 <script>
 import listBox from './base/list-box'
