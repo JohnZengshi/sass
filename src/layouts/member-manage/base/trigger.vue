@@ -40,10 +40,6 @@
                   :keep="true"
                   @changeData="changeWeek"
                 ></newDownMenu>
-    <!--             <div class="all-time">
-                  <el-date-picker format="dd日" class="yearTimeBoxT" popper-class="yearTimeBox" @change="setCompleteTime" v-model="addData.completeTime" type="date" placeholder="选择日期时间">
-                  </el-date-picker>
-                </div> -->
 
             </div>
             <div class="trigger-box-item">
@@ -205,11 +201,6 @@ export default {
         }
     }
 }
-.year-time-box{
-  .el-picker-panel__icon-btn{
-    display: none;
-  }
-}
 
 </style>
 <style lang="scss">
@@ -222,8 +213,5 @@ export default {
       display: none;
     }
   }
-}
-.year-time-box{
-  border: 5px solid red;
 }
 </style>
