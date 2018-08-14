@@ -1,25 +1,28 @@
-<!-- 会员小方块 -->
+<!-- 积分小方块 -->
 <template>
   <div class="m-m-home-page-member-main">
 
     <div class="decoration">
-      推送
+      积分
     </div>
 
     <ul class="center-num-list">
       <li>
         <p>{{memberList.memberCount}}</p>
-        <p>会员总数</p>
+        <p>积分总数</p>
       </li>
       <li>
-        <p>{{memberList.newMember}}</p>
-        <p>今日新增</p>
+        <p>{{memberList.newNum}}</p>
+        <p>今日消耗</p>
       </li>
       <li>
         <p>{{memberList.conversion}}</p>
-        <p>今日转换</p>
+        <p>今日发放</p>
       </li>
-      
+      <li>
+        <p>{{memberList.conversion}}</p>
+        <p>即将清零</p>
+      </li>
     </ul>
 
   </div>

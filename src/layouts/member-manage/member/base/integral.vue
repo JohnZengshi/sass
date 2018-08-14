@@ -109,7 +109,7 @@
         operateDeleteMemberTemplaet(options)
           .then(res => {
             if (res.data.state == 200) {
-              this.$message({type: 'error',message: '删除成功'})
+              this.$message({type: 'success',message: '删除成功'})
               this._seekFindTemplateAll()
             } else {
               this.$message({type: 'error',message: res.data.msg})

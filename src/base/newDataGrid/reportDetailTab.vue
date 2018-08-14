@@ -13,6 +13,7 @@
           :reportType="reportType"
           :positionSwitch="positionSwitch"
           :className="className"
+          @compileData="compileData"
           @checkedAll="checkedAll"
           @scrollClass="scrollClass"
           @lazyloadSend="lazyloadSend"

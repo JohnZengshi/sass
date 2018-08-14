@@ -3,7 +3,7 @@
   <div class="m-m-home-page-member-main">
 
     <div class="decoration">
-      积分
+      会员
     </div>
 
     <ul class="center-num-list">
@@ -16,7 +16,7 @@
         <p>会员总数</p>
       </li>
       <li>
-        <p>{{memberList.newMember}}</p>
+        <p>{{memberList.newNum}}</p>
         <p>今日新增</p>
       </li>
       <li>
@@ -47,7 +47,7 @@
       <router-link tag="li" class="btn" :to="{path: '/memberManage/compileTemplate', query: {shopId: filterOption.shopId}}">会员设置</router-link>
     </ul>
 
-    <add-member ref="addMemberBox" :shopId="filterOption.shopId"></add-member>
+    <add-member ref="addMemberBox" @update="update" :shopId="filterOption.shopId"></add-member>
   </div>
 </template>
 <script>
@@ -99,6 +99,10 @@
     methods: {
       openAdd () {
         this.$refs.addMemberBox.open()
+      },
+      update () {
+        debugger
+        this.$emit('update')
       }
     }
   }

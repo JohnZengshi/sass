@@ -1,6 +1,6 @@
 <template>
-  <div class="down-menu-main">
-    <span class="title-name" :class="titleInfo ? '' : 'select'" :style="specialStyle">
+  <div class="down-menu-main" :class="{'down-menu-hover-class': !disabled}">
+    <span class="title-name" :style="specialStyle">
       {{titleInfo}}<i v-show="!isSolid" class="iconfont icon-arrow-down drop-triangle" v-if="keep ? true : noChange"></i><i v-show="isSolid" class="iconfont icon-xiala drop-triangle"></i><i class="el-icon-circle-close" title="清除" @click="clearTitleInfo"
       v-if="!noChange && !noClear"></i>
     </span>
@@ -11,21 +11,11 @@
 </template>
 <script>
 export default {
-  props: ['titleInfo', 'showList', 'isSolid', 'specialStyle', 'noClear', 'nameKey', 'keep'], // isSolid->实心 nameKey->取值的key  keep -> 一直保持着右边的小图标
+  props: ['titleInfo', 'showList', 'isSolid', 'specialStyle', 'noClear', 'nameKey', 'keep', 'disabled'], // isSolid->实心 nameKey->取值的key  keep -> 一直保持着右边的小图标
   data () {
     return {
       actIndex: null,
       noChange: true // 选中标记
-      // showList: [
-      //   {
-      //     name: 123,
-      //     id: 789
-      //   },
-      //   {
-      //     name: 6666,
-      //     id: 7889
-      //   }
-      // ]
     }
   },
   methods: {
@@ -65,53 +55,24 @@ export default {
         transition: all .3s;
         margin-left: -3px;
     }
-    &:hover{
-        // background:#e0ecf7;
-        color:#3195f5;
-        >ul{
-            opacity: 1;
-            visibility: visible;
-            top:30px;
-        }
-        &:after{
-            top: 18px;
-            border-bottom-color: #fff;
-        }
-        >.title-name .drop-triangle {
-            transform: rotate(180deg);
-            //color:#2993f8;
-        }
-        >.title-name {
-            color:#3195f5;
-            border: 1px solid #3195f5;
-        }
-        .title-name .el-icon-circle-close {
-            color:#2993f8;
-        }
-    }
     .title-name {
         border: 1px solid #d6d6d6;
         border-radius: 3px;
         width: 100%;
-        overflow-x: hidden; 
+        padding-right: 5px;
         text-overflow: ellipsis;
         white-space: nowrap;
-        background-color: #fff;
-        &.select{
-            //color: #333;
-        }
+        background-color: #F1F2F3;
         color:#666;
         text-align: center;
         display: block;
         height: 28px;
-        // font-weight: bold;
         font-size: 14px;
         line-height: 28px;
         .drop-triangle {
             font-size:12px;
             display: inline-block;
             float: right;
-            //transform: scale(120%, 120%) !important;
             transition: all .3s;
             transform-origin: center center;
         }
@@ -123,9 +84,6 @@ export default {
             color:#ccc;
             cursor: pointer;
         }
-        // .el-icon-circle-close:hover {
-        //     color:#2993f8;
-        // }
     }
     .drop-list {
         overflow: hidden;
@@ -152,7 +110,6 @@ export default {
             color: #333;
             white-space: nowrap;
             box-sizing: border-box;
-            // padding-left: 10px;
             border-bottom: 1px solid #f1f2f3;
             border-left: 4px solid transparent;
             cursor: pointer;
@@ -175,6 +132,34 @@ export default {
         li.active:before {
             display: none;
         }
+    }
+}
+// 默认有
+.down-menu-hover-class{
+    &:hover{
+        color:#3195f5;
+        >ul{
+            opacity: 1;
+            visibility: visible;
+            top:30px;
+        }
+        &:after{
+            top: 18px;
+            border-bottom-color: #fff;
+        }
+        >.title-name .drop-triangle {
+            transform: rotate(180deg);
+        }
+        >.title-name {
+            color:#3195f5;
+            border: 1px solid #3195f5;
+        }
+        .title-name .el-icon-circle-close {
+            color:#2993f8;
+        }
+    }
+    .title-name{
+        background-color: #fff;
     }
 }
 </style>

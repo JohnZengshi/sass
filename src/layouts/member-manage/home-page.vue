@@ -4,7 +4,7 @@
     <header-nav @filterData="filterData"></header-nav>
     <div class="body-scorll-wrap">
       <!-- 会员 -->
-      <member :filterOption="filterOption" :memberList="memberList"></member>
+      <member :filterOption="filterOption" @update="_seekMemberHomeById" :memberList="memberList"></member>
       <!-- 积分 -->
       <interflow :filterOption="filterOption" :memberList="memberList"></interflow>
       <!-- 跟进 -->
@@ -43,49 +43,11 @@
         this._seekMemberHomeById()
       },
       _seekMemberHomeById () {
-        let datas = {
-          memberCount: '10000',
-          newMember: '5000',
-          conversion: '50%',
-          gradeList: [
-            {
-              countGrade: '200',
-              gradeName: '金卡'
-            },
-            {
-              countGrade: '200',
-              gradeName: '银卡'
-            },
-            {
-              countGrade: '200',
-              gradeName: '普卡'
-            },
-            {
-              countGrade: '200',
-              gradeName: '女神卡'
-            },
-            {
-              countGrade: '200',
-              gradeName: '金卡'
-            },
-            {
-              countGrade: '200',
-              gradeName: '银卡'
-            },
-            {
-              countGrade: '200',
-              gradeName: '普卡'
-            },
-            {
-              countGrade: '200',
-              gradeName: '女神卡'
-            }
-          ]
-        }
-        this.memberList = datas
         seekMemberHomeById(this.filterOption)
           .then(res => {
-
+            if (res.data.state == 200) {
+              this.memberList = res.data.data
+            }
           })
       }
     }

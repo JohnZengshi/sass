@@ -131,21 +131,6 @@ module.exports = {
       editOldType : 'afPrice'
     },
     {
-      id: '10', //id 
-      text: '客单价', //头部title文字
-      width: '120', //单元格宽
-      type: 'totalCost', //合计类型值
-      unit: '', //头部单位补充文字
-      footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
-      totalName: '', //底部合计 提示文字
-      childType: 'guestPrice', //单元格类型
-      totalType: '', //小计
-      toFixed: false, //是否进行小数点精确截取
-      countCut: 0, //小数点截取位数
-      sort: '',
-      editOldType : 'afCost'
-    },
-    {
       id: '12', //id 
       text: '消费总额', //头部title文字
       width: '120', //单元格宽
@@ -210,10 +195,24 @@ module.exports = {
       editOldType : ''
     }
   ],
-  //推送列表
+  //跟进列表
   followUpConfing: [
     {
       id: '1', //id 
+      text: '序号', //头部title文字
+      width: '100', //单元格宽
+      type: 'totalNum', //合计类型值
+      unit: '', //头部单位补充文字
+      footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
+      totalName: '', //底部合计 提示文字
+      childType: '', //单元格类型
+      totalType: '', //小计
+      toFixed: false, //是否进行小数点精确截取
+      countCut: 0, //小数点截取位数
+      editOldType : ''
+    },
+    {
+      id: '222', //id 
       text: '头像', //头部title文字
       width: '150', //单元格宽
       type: '', //合计类型值
@@ -221,6 +220,7 @@ module.exports = {
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
       childType: 'avatarUrl', //单元格类型
+      smallImg: true, // 小图
       totalType: 'totalNum', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
@@ -342,7 +342,7 @@ module.exports = {
     {
       id: '12', //id 
       text: '跟进时间', //头部title文字
-      width: '120', //单元格宽
+      width: '150', //单元格宽
       type: '', //合计类型值
       type1: '', //合计类型值
       unit: '', //头部单位补充文字
@@ -350,6 +350,7 @@ module.exports = {
       totalName: '', //底部合计 提示文字
       childType: 'createTime', //单元格类型
       totalType: '', //小计
+      line: true, // 单行显示
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
@@ -377,6 +378,20 @@ module.exports = {
   chooseUserConfig: [
     {
       id: '1', //id 
+      text: '序号', //头部title文字
+      width: '100', //单元格宽
+      type: 'totalNum', //合计类型值
+      unit: '', //头部单位补充文字
+      footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
+      totalName: '', //底部合计 提示文字
+      childType: '', //单元格类型
+      totalType: '', //小计
+      toFixed: false, //是否进行小数点精确截取
+      countCut: 0, //小数点截取位数
+      editOldType : ''
+    },
+    {
+      id: '222', //id 
       text: '头像', //头部title文字
       width: '100', //单元格宽
       type: '', //合计类型值
@@ -541,6 +556,20 @@ module.exports = {
   // 跟进管理
   followUpManageConfig: [
     {
+      id: '1', //id 
+      text: '序号', //头部title文字
+      width: '100', //单元格宽
+      type: 'totalNum', //合计类型值
+      unit: '', //头部单位补充文字
+      footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
+      totalName: '', //底部合计 提示文字
+      childType: '', //单元格类型
+      totalType: '', //小计
+      toFixed: false, //是否进行小数点精确截取
+      countCut: 0, //小数点截取位数
+      editOldType : ''
+    },
+    {
       id: '2', //id 
       text: '跟进目的', //头部title文字
       width: '210', //单元格宽
@@ -578,6 +607,20 @@ module.exports = {
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
       childType: 'createName', //单元格类型
+      totalType: '', //小计
+      toFixed: false, //是否进行小数点精确截取
+      countCut: 0, //小数点截取位数
+      editOldType : 'afWeight'
+    },
+    {
+      id: '8', //id 
+      text: '负责人', //头部title文字
+      width: '210', //单元格宽
+      type: 'name', //合计类型值
+      unit: '', //头部单位补充文字
+      footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
+      totalName: '', //底部合计 提示文字
+      childType: 'principalName', //单元格类型
       totalType: '', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数

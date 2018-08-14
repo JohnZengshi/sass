@@ -96,7 +96,7 @@
         operateUpdateShopGroupById({templateId: item, type: '1'})
           .then(res => {
             if (res.data.state == 200) {
-              this.$message({message: '删除'})
+              this.$message({type: 'success', message: '删除成功'})
               this.combinationList.splice(index, 1)
               this.update()
             } else {

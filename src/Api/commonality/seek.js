@@ -903,7 +903,7 @@ export const seekFindTemplateAll = function (parm) {
   let URL = "/v1/groupTemplate/findTemplateAll";
   return apiCall(parm, URL);
 }
-//会员模板管理
+//会员主页
 export const seekMemberHomeById = function (parm) {
   let URL = "/v1/groupTemplate/memberHomeById";
   return apiCall(parm, URL);
@@ -962,5 +962,9 @@ export const seekGetSettingLabel = function (parm) { //13.5标签设置获取接
 }
 export const seekGetLabelResultList = function (parm) { //13.7标签获取结果页数据接口
     let URL = "/v1/print/getLabelResultList";
+    return apiCall(parm, URL);
+}
+export const seekFollowAdministration = function (parm) { // 跟进管理
+    let URL = "/v1/member/followAdministration";
     return apiCall(parm, URL);
 }

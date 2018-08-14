@@ -30,6 +30,8 @@
             <router-link tag="li" :to="{path: '/membermanage/followUpManage', query: {shopId: filterOption.shopId}}" class="btn">跟进管理</router-link>
             <router-link tag="li" class="btn" :to="{path: '/memberManage/compileTemplate', query: {shopId: filterOption.shopId}}">待完成</router-link>
         </ul>
+        
+        <!-- 新增跟进 -->
         <add-follow-up ref="addFollowUpBox" :shopId="filterOption.shopId"></add-follow-up>
     </div>
 </template>

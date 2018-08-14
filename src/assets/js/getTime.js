@@ -211,3 +211,23 @@ export const formattingEndTime = function(parm) { // 当日结束时间
   }
   return `${N}${Y}${R}235959`
 }
+// 装换20180814000000格式为new date时间
+export const restoreTime = function(parm) {
+  if (parm) {
+    // let year = parm.substring(0, 4)
+    // let month = parm.substring(5, 7)
+    // let data = parm.substring(8, 10)
+    // let today = new Date()
+    // today.setFullYear(year)
+    // today.setMonth(month)
+    // today.setDate(data)
+
+    var year = parm.substring(0, 4)
+    var month = parm.substring(4, 6)
+    var data = parm.substring(6, 8)
+    var d = new Date()
+    d.setFullYear(year,Number(month) -1,data)
+    return d
+  }
+  return ''
+}

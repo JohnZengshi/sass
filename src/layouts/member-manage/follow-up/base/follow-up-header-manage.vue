@@ -1,4 +1,4 @@
-<!-- 我的跟进 -->
+<!-- 跟进管理 -->
 <template>
   <div class="m-m-filter-header-main">
     <div class="operate-bar-bottom">
@@ -14,21 +14,11 @@
       </div>
 
       <DownMenu
-          class="w-110 ml-10"
-          ref="memberRankBox"
-          :isSolid="true"
-          :titleInfo="filterCondition.gradeName ? filterCondition.gradeName : '跟进状态'"
-          :showList="gradeList"
-          :nameKey="'gradeName'"
-          @changeData="changeMemberRank"
-          @clearInfo="clearMemberRank"
-      ></DownMenu>
-
-      <DownMenu
+          v-if="false"
           class="w-110 ml-10"
           ref="memberClassBox"
           :isSolid="true"
-          :titleInfo="filterCondition.typeName ? filterCondition.typeName : '跟进目的'"
+          :titleInfo="filterCondition.typeName ? filterCondition.typeName : '跟进状态'"
           :showList="memberClassList"
           :nameKey="'name'"
           @changeData="changeMemberClass"
@@ -39,11 +29,23 @@
           class="w-110 ml-10"
           ref="userBox"
           :isSolid="true"
-          :titleInfo="filterCondition.username ? filterCondition.username : '跟进类型'"
+          :titleInfo="filterCondition.userName ? filterCondition.userName : '跟进人'"
           :showList="userList"
           :nameKey="'username'"
           @changeData="changeUser"
           @clearInfo="clearUser"
+      ></DownMenu>
+
+
+      <DownMenu
+          class="w-110 ml-10"
+          ref="memberRankBox"
+          :isSolid="true"
+          :titleInfo="filterCondition.followStatusName ? filterCondition.followStatusName : '跟进目的'"
+          :showList="visitAimList"
+          :nameKey="'name'"
+          @changeData="changeMemberRank"
+          @clearInfo="clearMemberRank"
       ></DownMenu>
 
       <div class="btn-box" v-if="headline == '我的跟进'">
@@ -72,6 +74,7 @@ import DropDownMenu from '@/components/template/DropDownMenu'
 import combinationDropDownColums from 'base/menu/combination-drop-down-colums'
 import cutBg from "base/cut/cut-bg";
 import cutPopup from "./cut-popup";
+let dataSource = require('./data.js')
 export default {
   components: {
     dropDownColums,
@@ -87,6 +90,7 @@ export default {
     return {
       isSenior: false,
       gradeList: [],
+      visitAimList: dataSource.visitAimList,
       memberClassList: [
         {
           name: '共有',
@@ -111,11 +115,11 @@ export default {
         name: '',
         shopId: '',
         grade: '',
-        gradeName: '',
+        followStatusName: '',
         type: '',
         typeName: '',
         userId: '',
-        username: '',
+        userName: '',
         // sortList: []
       },
       littleBatch: false,
@@ -128,41 +132,6 @@ export default {
   watch: {
     'shopId' () {
       this.initData()
-    }
-  },
-  computed: {
-    ...mapGetters([
-      "userPositionInfo" // 职位信息
-    ]),
-    shopRole: function() { // 店员
-      if (this.userPositionInfo.roleList) {
-        return jurisdictions.jurisdictionShopRole(this.userPositionInfo.roleList);
-      }
-    },
-    computedRole: function() { // 公司
-      if (this.userPositionInfo.roleList) {
-        return jurisdictions.jurisdictionComputedRole(this.userPositionInfo.roleList)
-      }
-    },
-    computedManageRole: function() { // 公司
-      if (this.userPositionInfo.roleList) {
-        return jurisdictions.jurisdictionComputedManageRole(this.userPositionInfo.roleList)
-      }
-    },
-    officeClerk() { // 职员
-      if (this.userPositionInfo.roleList) {
-        return jurisdictions.jurisdictionOfficeClerk(this.userPositionInfo.roleList)
-      }
-    },
-    shopManageRole() { // 店长
-      if (this.userPositionInfo.roleList) {
-        return jurisdictions.jurisdictionShopManageRole(this.userPositionInfo.roleList)
-      }
-    },
-    isJrole: function() { // 判断是不是监察员
-      if (this.userPositionInfo.roleList) {
-        return jurisdictions.jurisdictionJCY(this.userPositionInfo.roleList);
-      }
     }
   },
   methods: {
@@ -184,16 +153,15 @@ export default {
         this.$refs.userBox.init()
       }
       this._seekMemberList()
-      this._seekFindMemberGradeList()
     },
     changeMemberRank (parm) {
-      this.filterCondition.gradeName = parm.gradeName
-      this.filterCondition.grade = parm.gradeId
+      this.filterCondition.followStatusName = parm.name
+      this.filterCondition.followStatus = parm.id
       this.$emit('update', this.filterCondition)
     },
     clearMemberRank () {
-      this.filterCondition.gradeName = ''
-      this.filterCondition.grade = ''
+      this.filterCondition.followStatusName = ''
+      this.filterCondition.followStatus = ''
       this.$emit('update', this.filterCondition)
     },
     changeMemberClass (parm) {
@@ -207,6 +175,7 @@ export default {
       this.$emit('update', this.filterCondition)
     },
     changeUser (parm) {
+      debugger
       this.filterCondition.userId = parm.userId
       this.filterCondition.userName = parm.username
       this.$emit('update', this.filterCondition)
@@ -320,23 +289,6 @@ export default {
     dataBackProductTypeId (parm) { // 产品类别过滤
       this.filterCondition.productStatus = parm.bigList
       this.$emit('update', this.filterCondition)
-    },
-    // 会员等级列表
-    _seekFindMemberGradeList () {
-      let options = {
-        shopId: this.shopId
-      }
-      seekFindMemberGradeList(options)
-        .then(res => {
-          if (res.data.state == 200) {
-            this.gradeList = res.data.data
-          } else {
-            this.$message({
-              type: 'error',
-              message: res.data.msg
-            })
-          }
-        })
     },
   }
 }

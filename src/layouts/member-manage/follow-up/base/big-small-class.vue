@@ -1,5 +1,5 @@
 <template>
-  <small-popup ref="smallPopupBox" :headTit="'选择产品类别'" :dialogClass="'new-small-popup-dialog'">
+  <small-popup ref="smallPopupBox" @close="close" :headTit="'新建跟进'" :dialogClass="'new-small-popup-dialog'">
     <div class="big-small-class">
 
       <div class="list-wrap">
@@ -16,7 +16,7 @@
 
       <div class="footer">
         <div class="footer-right">
-          <span v-if="checkData.smallClass.id" @click.stop="confirm">下一步</span>
+          <span v-if="checkData.smallClass.id && checkData.bigClass.id" @click.stop="confirm">下一步</span>
         </div>
       </div>
 
@@ -25,45 +25,31 @@
 </template>
 <script>
 import smallPopup from 'base/popup/small-popup'
+let dataSource = require('./data.js')
 export default {
   components: {
     smallPopup
   },
   data () {
     return {
-      isShowDio: true,
       checkData: {
-        bigClass: {
-        },
-        smallClass: {
-
-        },
+        bigClass: {},
+        smallClass: {}
       },
-      leftDatas: [
-        {
-          name: '即时跟进',
-          id: '001'
-        },
-        {
-          name: '触发跟进',
-          id: '002'
-        }
-      ],
-      rightDatas: [
-        {
-          name: '生日跟进',
-          id: '221'
-        },
-        {
-          name: '售后跟进',
-          id: '222'
-        }
-      ]
+      leftDatas: dataSource.followTypeList,
+      rightDatas: dataSource.visitAimList
     }
   },
   methods: {
     open () {
       this.$refs.smallPopupBox.open()
+    },
+    close () {
+      this.checkData = {
+        bigClass: {},
+        smallClass: {}
+      }
+      this.$emit('close')
     },
     checkSmall(item) {
       this.checkData.smallClass = item

@@ -488,3 +488,17 @@ input[type="number"]{
     }
   }
 }
+.xj-input{
+  height: 36px;
+  background-color: transparent;
+  font-size: 14px;
+  padding-left: 10px;
+  border-radius: 3px;
+  border: 1px solid #dedede;
+  &:active,
+  &:hover,
+  &:focus {
+    border: 1px solid #2993f8;
+    background-color: #f4f9ff;
+  }
+}

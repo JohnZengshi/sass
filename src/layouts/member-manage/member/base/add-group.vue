@@ -93,7 +93,11 @@ export default {
       this.isDialog = false
     },
     confirm () {
-      if (this.independent) { // 新增
+      if (this.templateId) {
+        this.close()
+        return
+      }
+      if (this.independent) { // 新增组合
         this._operateAddShopGroup()
       } else {
         this.close()
@@ -170,7 +174,7 @@ export default {
       operateAddShopGroup(opations)
         .then(res => {
           if (res.data.state == 200) {
-            this.$message({message: '新建成功'})
+            this.$message({type: 'success', message: '新建成功'})
             this.close()
             this.$emit('update')
           } else {

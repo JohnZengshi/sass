@@ -10,7 +10,7 @@ const routes = [
   },
   {
     path: "followUpManage",
-    name: "我的推送",
+    name: "跟进管理",
     component: followUpManage
   },
   

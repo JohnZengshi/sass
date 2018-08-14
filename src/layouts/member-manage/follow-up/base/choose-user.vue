@@ -111,8 +111,12 @@ export default {
       this.$emit('close')
     },
     confirm () {
-      console.log('选中的数据', this.checkedList)
-      this.$emit('confirm')
+      // console.log('选中的数据', this.checkedList)
+      if (!this.checkedList.length) {
+        this.$message({message: '请选择跟进',type: 'warning'})
+        return
+      }
+      this.$emit('confirm', this.checkedList)
     },
     lazyloadSend () {
 

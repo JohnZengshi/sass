@@ -4,10 +4,13 @@
         <div class="RP_report_wrapper ui-page-max-width report_table_fixed dc-label-print-main">
         
             <!-- 会员信息 -->
-            <memberInfo ref="memberInfoBox" @closeReturn="closeEditReturn" :shopId="shopId" :memberId="memberId"></memberInfo>
+<!--             <memberInfo ref="memberInfoBox" @closeReturn="closeEditReturn" :shopId="shopId" :memberId="memberId"></memberInfo> -->
 
             <!-- 完成跟进和批量完成的切换 -->
-            <cut-popup ref="cutPopupBox"></cut-popup>
+            <cut-popup v-if="headline == '我的跟进'" ref="cutPopupBox"></cut-popup>
+            
+            <!-- 编辑跟进 -->
+            <add-follow-up v-if="headline == '跟进管理'" ref="addFollowUpBox" :shopId="shopId"></add-follow-up>
 
             <div class="Rp_title_container">
                 <!--面包屑-->
@@ -30,6 +33,7 @@ import memberInfo from '@/layouts/Leaguer/components/memberInfo'
 import downMenu from 'base/menu/new-down-menu'
 import tableList from './table-list'
 import cutPopup from './cut-popup'
+import addFollowUp from './../add-follow-up'
 // import btnHeader from './base/btn-header'
 import { productTpyeState, newProductDetailStatus } from 'Api/commonality/status'
 
@@ -40,7 +44,8 @@ export default {
         memberInfo,
         downMenu,
         tableList,
-        cutPopup
+        cutPopup,
+        addFollowUp
         // btnHeader
     },
     data() {
@@ -89,19 +94,24 @@ export default {
         },
         // 编辑数据
         compileData (parm) {
-            this.memberId = parm.memberId
+            debugger
+            this.memberId = parm.data.memberId
             setTimeout(() => {
-                this.$refs.memberInfoBox.open()
+                if (this.$refs.addFollowUpBox) {
+                    this.$refs.addFollowUpBox.open({'followId': 'parm.data.followId'})   
+                }
             }, 0)
+            // setTimeout(() => {
+            //     this.$refs.memberInfoBox.open()
+            // }, 0)
         },
         changeMember(parm) {
-            debugger
-            this.memberId = parm.memberId
+            this.memberId = parm.data.memberId
             setTimeout(() => {
                 // 会员信息
-                if (this.$refs.memberInfoBox) {
-                    this.$refs.memberInfoBox.open()
-                }
+                // if (this.$refs.memberInfoBox) {
+                //     this.$refs.memberInfoBox.open()
+                // }
                 // 我的跟进，编辑状态
                 if (this.$refs.cutPopupBox) {
                     this.$refs.cutPopupBox.open({index: 'chooseUser', 'followId': parm.followId})  

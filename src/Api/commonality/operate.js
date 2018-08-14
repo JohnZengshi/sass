@@ -666,3 +666,8 @@ export const operateFollowCreateSigns = function(parm) {
     let url = "/v1/groupTemplate/followCreateSign";
     return new Axios(url, parm).apiCall();
 }
+// 创建跟进
+export const operateFollowCreateByNew = function(parm) {
+    let url = "/v1/member/followCreateByNew";
+    return new Axios(url, parm).apiCall();
+}

@@ -50,6 +50,67 @@ export const getDynamicsOrderType = function (type) {
     case '10':
       return '修改'
   }
+  return ''
+}
+// 时间类型
+export const getTimeType = function (type) {
+    switch (type) {
+    case '1':
+      return '年'
+    case '2':
+      return '月'
+    case '3':
+      return '周'
+  }
+  return ''
+}
+// 时间类型
+export const getTriggerRule = function (type) {
+  switch (type) {
+    case '1':
+      return '销售成功'
+    case '2':
+      return '退货成功'
+    case '3':
+      return '换货成功'
+    case '4':
+      return '生日'
+    case '5':
+      return '结婚纪念日'
+    case '6':
+      return '圣诞节'
+    case '7':
+      return '元旦'
+  }
+  return ''
+}
+export const getTriggerTime = function (type) {
+  switch (type) {
+    case '1':
+      return '前'
+    case '2':
+      return '后'
+  }
+  return ''
+}
+export const getWeekTime = function (type) {
+  switch (type) {
+    case '1':
+      return '周一'
+    case '2':
+      return '周二'
+    case '3':
+      return '周三'
+    case '4':
+      return '周四'
+    case '5':
+      return '周五'
+    case '6':
+      return '周六'
+    case '7':
+      return '周日'
+  }
+  return ''
 }
 // 001 创建单据
 // 002 修改单据

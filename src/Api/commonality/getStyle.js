@@ -6,6 +6,5 @@ export const styleWR = function (parm, rN) { // 提取居左和宽度
     if (parm.right) {
       datas.right = rN ? rN : '20px'
     }
-    console.log('----------------=============', datas)
     return datas
 }

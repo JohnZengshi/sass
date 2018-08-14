@@ -3,9 +3,9 @@
         <div class="title">选择负责人</div>
         <div class="menu-list">
             <div class="search">
-                <input @keyup.enter="getShopUserList()" v-model="userPhone" type="text" placeholder="请输入负责人名/手机号">
+                <input @keyup.enter="getShopUserList" v-model="userPhone" type="text" placeholder="请输入负责人名/手机号">
                 <div class="search-btn">
-                    <i @click="getShopUserList()" class="iconfont icon-sousuo"></i>
+                    <i @click="getShopUserList" class="iconfont icon-sousuo"></i>
                 </div>
             </div>
         </div>
@@ -45,7 +45,6 @@ export default {
         'dataInfo',
         'shopId',
         'isChoseLeader',
-        'followData',
         'addModel',
         "isFollowPage",
         'isFollowClear'
@@ -53,25 +52,10 @@ export default {
     watch: {
         'isChoseLeader': function () {
             this.getShopUserList()
-            if (this.dataInfo) {
-                // console.log(this.dataInfo)
-                this.checkList = []
-                this.dataInfo.principalList.forEach((item, index) => {
-                    this.checkList.push(item.userId)
-                })
-                // console.log(this.checkList)
-            } else {
-                // console.log(444)
+            if (this.userIdList) {
+                this.checkList = this.userIdList
             }
-        },
-        'followData': function (val) {
-            if (val) {
-                //console.log("糟糕啦")
-                val.principalList.forEach((item, index) => {
-                    this.checkList.push(val.principalList[index].principalId)
-                })
-            }
-        },
+        }
     },
     data () {
         return {
@@ -85,13 +69,9 @@ export default {
         }
     },
     created () {
-        // console.log(111)
         this.getShopUserList()
-        if (this.dataInfo) {
-            this.checkList = []
-            this.dataInfo.principalList.forEach((item, index) => {
-                this.checkList.push(item.userId)
-            })
+        if (this.userIdList) {
+            this.checkList = this.userIdList
         }
     },
     mounted () {
@@ -102,7 +82,6 @@ export default {
     },
     methods: {
         closeAim (val) {
-            console.log(val)
             this.isVisitAim = false
             this.$emit("closeChoMember", {list: this.checkList, followAim: val})
         },
@@ -159,7 +138,6 @@ export default {
                 options.phone=this.userPhone;
             }
             seekGetShopUserList(options).then((res) => {
-                console.log('查看返回结果:',res)
                 if (res.data.state == 200) {
                     this.dataList = res.data.data.shopUserList
                     if (this.followData) {

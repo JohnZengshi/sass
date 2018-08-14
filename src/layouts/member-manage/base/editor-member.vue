@@ -1,6 +1,6 @@
 <!-- 会员编辑模板 -->
 <template>
-  <div>
+  <div style="height: 100%;">
       <el-dialog :modal="false" :visible.sync="isChoseLeader" top="0%" customClass="choseLeaderDig" :close-on-click-modal="false">
           <chose-leader
               :dataInfo="dataInfo"
@@ -16,7 +16,7 @@
           <i class="el-dialog__close el-icon el-icon-close"></i>
         </div>
         <div class="scroll-body">
-          <h3>添加会员</h3>
+          <h3>{{memberId ? '会员信息' : '添加会员'}}</h3>
           <div class="scroll-box">
             <div>
               
@@ -111,10 +111,9 @@
                   </div>
 
                   <div class="member-item">
-                    <span class="item-label">省市区</span>
+                    <span class="item-label">行业</span>
                     <div class="right-wrap">
-                      <input v-model="PCAData" @click.stop="isShowPCA = !isShowPCA" class="inp" type="text" placeholder="选择省市区">
-                      <AddressSelect style="left: 0;" v-if="isShowPCA" @addressReturn="selectArea"></AddressSelect>
+                      <newDownMenu ref="checkedProfessionBox" class="new-down-menu-box" :titleInfo="dataInfo.profession ? dataInfo.profession : '选择行业'" :showList="industryList" :noClear="true" :keep="true" @changeData="changeProfession"></newDownMenu>
                     </div>
                   </div>
 
@@ -126,14 +125,14 @@
                   </div>
 
 
-
-
                   <div class="member-item">
-                    <span class="item-label">行业</span>
+                    <span class="item-label">省市区</span>
                     <div class="right-wrap">
-                      <newDownMenu ref="checkedProfessionBox" class="new-down-menu-box" :titleInfo="dataInfo.profession ? dataInfo.profession : '选择行业'" :showList="industryList" :noClear="true" :keep="true" @changeData="changeProfession"></newDownMenu>
+                      <input v-model="PCAData" @click.stop="isShowPCA = !isShowPCA" class="inp" type="text" placeholder="选择省市区">
+                      <AddressSelect style="left: 0;" v-if="isShowPCA" @addressReturn="selectArea"></AddressSelect>
                     </div>
                   </div>
+
                   <div class="member-item">
                     <span class="item-label">微信号</span>
                     <input placeholder="请输入" :disabled="!isShopMan" v-model="dataInfo.weixin" @blur="_operateUpdateMember({weixin: dataInfo.weixin})">
@@ -198,9 +197,12 @@
             </div>
           </div>
         </div>
-        <div class="xj-btn-list">
-          <div class="btn cnacel-btn" @click="close">取消</div>
-          <div class="btn" v-if="isShopMan" @click="confirm">确定</div>
+
+        <div style="height: 30px;">
+          <ul class="xj-btn-list">
+            <li class="btn cnacel-btn" @click="close">取消</li>
+            <li class="btn" v-if="isShopMan" @click="confirm">确定</li>
+          </ul>
         </div>
       </div>
   </div>
@@ -228,7 +230,7 @@ export default {
     return {
       isChoseLeader: false,
       isShowMore: false,
-      industryList: industryList, // 行业数据
+      industryList: dataSource.industryList, // 行业数据
       PCAData: '', // 省市区数据
       isShowPCA: false,
       dataInfo: {
@@ -618,12 +620,6 @@ export default {
       options.memorial = formattingTime(options.memorial)
       options.birthday = formattingTime(options.birthday)
       options.maleBirthday = formattingTime(options.maleBirthday)
-      // let userList = []
-      // for (let i of options.principalList) {
-      //   userList.push({
-      //     userId: 
-      //   })
-      // }
 
       operateMemberCreatee(Object.assign({}, options, {shopId: this.shopId}))
         .then(res => {
@@ -632,7 +628,7 @@ export default {
               type: 'success',
               message: '新建成功'
             })
-            this.$emit('close')
+            this.$emit('update')
           } else {
             this.$message({
               type: 'error',
@@ -684,7 +680,6 @@ export default {
       seekFindMemberDetails(options)
         .then(res => {
           if (res.data.state == 200) {
-            debugger
             let datas = res.data.data
             datas.memorial = GetNYR(datas.memorial)
             datas.birthday = GetNYR(datas.birthday)
@@ -693,7 +688,6 @@ export default {
             for (let i of datas.principalList) {
               datas.principalName += datas.principalName ? `,${i.nickname}` : i.nickname
             }
-            debugger
             this.dataInfo = datas
           } else {
             this.$message({type: 'error',message: res.data.msg})

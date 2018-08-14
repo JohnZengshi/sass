@@ -39,7 +39,7 @@
                 </div>
               </div>
 
-              <div v-else class="tb-td" :style="tableCell(tab.width)" :key="num" v-text="tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"></div>
+              <div v-else :title="tb[tab.childType]" class="tb-td" :style="tableCell(tab.width)" :key="num" v-text="tab.childType == ''? (index+1)  : tab.toFixed ? toFixed(tb[tab.childType],tab.countCut) : tb[tab.childType]"></div>
 
             </template>
           </div>

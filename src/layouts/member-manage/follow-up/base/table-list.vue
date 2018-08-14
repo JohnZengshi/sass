@@ -10,8 +10,22 @@
         <div class="rp_gridState">
           <p class="side-nav"><i class="iconfont icon-liebiao"></i>商品列表:<span style="color: #2993f8;">{{totalNum}}</span></p>
           <sort-table v-if="headline == '我的跟进'" :sortList="sortList" @cancelSort="cancelSort"></sort-table>
-          <!-- 跟进 -->
-          <follow-up-header v-if="currentLocation == 'followUp'" :headline="headline" :shopId="shopId" @update="filterData"></follow-up-header>
+
+          <!-- 我的跟进 -->
+          <follow-up-header
+            v-if="headline == '我的跟进'"
+            :headline="headline"
+            :shopId="shopId"
+            @update="filterData"
+          ></follow-up-header>
+
+          <!-- 跟进管理 -->
+          <follow-up-header-manage
+            v-if="headline == '跟进管理'"
+            :headline="headline"
+            :shopId="shopId"
+            @update="filterData"
+          ></follow-up-header-manage>
 
         </div>
       </div>
@@ -25,10 +39,11 @@
           ref="reportDetailWrap"
           :dataGridStorage="dataGridStorage"
           :configData="configData"
-          :className="headline == '我的跟进' ? '' : 'xj-report-table-container-img-small'"
+          :className="'xj-report-table-container-img-small'"
           @lazyloadSend="lazyloadSend"
           @sortListAct="sortListAct"
           @delData="delData"
+          @compileData="compileData"
           @change="changeMember"
         >
         </report-detail>
@@ -46,6 +61,7 @@ import {operateDeleteMemberId} from 'Api/commonality/operate'
 import sortTable from 'base/sort/sort-table'
 import ReportDetail from 'base/newDataGrid/reportDetailTab'
 import followUpHeader from './follow-up-header'
+import followUpHeaderManage from './follow-up-header-manage'
 import followUpEcharts from './follow-up-echarts'
 import {combination} from 'assets/js/combination'
 
@@ -54,6 +70,7 @@ export default {
   components: {
     ReportDetail,
     followUpHeader,
+    followUpHeaderManage,
     followUpEcharts,
     sortTable
   },
@@ -94,9 +111,6 @@ export default {
     changeMember (parm) {
       this.memberId = parm.memberId
       this.$emit('changeMember', parm)
-      // setTimeout(() => {
-      //   this.$refs.memberInfoBox.open()
-      // }, 0)
     },
 
     delData(parm) {
@@ -130,13 +144,21 @@ export default {
       }
 
       this.loading = true
+      // if (this.headline == '我的跟进') {
+      //   this._seekFindMemberList()
+      // } else if (this.headline == '跟进管理') {
+      //   this._seekFollowAdministration()
+      // }
+      this._seekFindMemberList()
+    },
+    // 我的跟进
+    _seekFindMemberList () {
       seekFindMemberList(Object.assign({}, this.filterCondition, combination.sort(this.sortList), this.paging, {shopId: this.shopId}))
         .then(res => {
           if (res.data.state == 200) {
             this.paging.page += 1
             this.totalNum = res.data.data.totalNum
             this.dataGridStorage.push(...res.data.data.dataList)
-            this.loading = false
           } else {
             this.$message({
               type: 'error',
@@ -144,6 +166,13 @@ export default {
             })
           }
           this.loading = false
+        })
+    },
+    // 跟进管理
+    _seekFollowAdministration(){
+      seekFollowAdministration(Object.assign({}, this.filterCondition, this.paging, {shopId: this.shopId}))
+        .then(res => {
+
         })
     },
 
@@ -170,7 +199,10 @@ export default {
       this.paging.page = 1
       this.filterData()
     },
-
+    // 编辑
+    compileData (parm) {
+      this.$emit('compileData', parm)
+    },
     //懒加载
     lazyloadSend() {
       if (this.dataGridStorage.length) {

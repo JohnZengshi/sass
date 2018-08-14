@@ -47,7 +47,7 @@ export default {
     props: [
         'propsList',
         'titleData',
-        'allName'
+        'allName',
     ],
     computed: {
         filterState () {
@@ -56,10 +56,15 @@ export default {
             }
         }
     },
+    // watch: {
+    //     'initCheckList' () { // 初始化赋值选中数据
+    //         this.checkedCities = _.cloneDeep(this.initCheckList)
+    //     }
+    // },
     methods: {
         initData (parm) { // 初始化数据
             if (parm) {
-                this.checkedCities = parm
+                this.checkedCities = _.cloneDeep(parm)
                 if (parm.length) {
                     this.isChecked = true
                 }       
@@ -100,19 +105,28 @@ export default {
             this.operateId = item.id
         },
         complate () {
-            this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll})
+            this.returnData()
             if (this.checkedCities.length || this.smallIdList.length) {
                 this.isChecked = true
             } else {
                 this.isChecked = false
             }
         },
+        returnData () {
+            let itemList = []
+            for (let i of this.propsList) {
+                if (this.checkedCities.includes(i.id)) {
+                    itemList.push(i)
+                }
+            }
+            this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll, itemList: itemList})
+        },
         reset (parm) {
             this.checkedCities = []
             this.allChecked = []
             this.isChecked = false
             if (parm == 'Y') {
-                this.$emit('dataBack', {bigList: this.checkedCities, samllList: this.smallIdList, isAll: this.isAll})
+                this.returnData()
             }
         }
     }
@@ -153,6 +167,10 @@ export default {
         line-height: 27px;
         cursor: pointer;
         color: #666;
+        padding-right: 10px;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
         i {
             position: absolute;
             right: 0;
