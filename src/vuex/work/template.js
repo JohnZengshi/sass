@@ -73,6 +73,7 @@ const actions = {
     }, type) {
         return printAPI.getPrintShopData(type).then(json => {
             if (json.state !== 200) {
+                debugger
                 commit(types.RECEIVE_ERROR, json)
             } else {
                 commit(types.RECEIVE_SHOP_LIST, json.data.shopList)

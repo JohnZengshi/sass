@@ -295,17 +295,14 @@
                 }
                 this.opSettingLabel(data);
                 if (this.dataList.vid) {
-                    let companyId = sessionStorage.getItem('companyId');
                     let list = this.laberList.filter(item => this.dataList.vid == item.id);
-                    this.url = `http://label.yunzhubao.com/#/${list[0].url}?templateId=${id}&companyId=${companyId}`;
+                    this.url = `http://label.yunzhubao.com/#/${list[0].url}?templateId=${id}`;
                 }
             },
             selectChangeUrl(id) {
                 if (this.dataList.vid) {
-                    let companyId = sessionStorage.getItem('companyId');
                     let list = this.laberList.filter(item => id == item.id);
-
-                    this.url = `http://label.yunzhubao.com/#/${list[0].url}?templateId=${this.dataList.id}&companyId=${companyId}`;
+                    this.url = `http://label.yunzhubao.com/#/${list[0].url}?templateId=${this.dataList.id}`;
                     this.dataList.vid = list[0].id;
                     this.opSettingLabel();
                 }
