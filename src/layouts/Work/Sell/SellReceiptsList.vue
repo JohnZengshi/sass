@@ -100,7 +100,9 @@
                         <span>销售</span> <span>{{receiptsIntroList.saleNum || 0}}<i>件,</i></span> <span>{{(Number(receiptsIntroList.saleWeight) || 0).toFixed(3)}}<i>g,</i></span> <span>{{(Number(receiptsIntroList.salePrice) || 0).toFixed(2)}}<i>元</i></span>
                     </li>
                     <li v-if="receiptsIntroList.exchangeNum != ''">
-                        <span>退换</span> <span>{{receiptsIntroList.exchangeNum || 0}}<i>件,</i></span> <span>{{(Number(receiptsIntroList.exchangeWeight) || 0).toFixed(3)}}<i>g,</i></span> <span>{{(Number(receiptsIntroList.exchangePrice) || 0).toFixed(2)}}<i>元</i></span>
+                        <span>退换</span> <span>{{receiptsIntroList.exchangeNum || 0}}<i>件,</i></span>
+                        <span>{{(Number(receiptsIntroList.exchangeWeight) || 0).toFixed(3)}}<i>g,</i></span>
+                        <span>{{(Number(receiptsIntroList.exchangePrice) || 0).toFixed(2)}}<i>元</i></span>
                     </li>
                     <li v-if="receiptsIntroList.recycleNum != ''">
                         <span>回收</span> <span>{{receiptsIntroList.recycleNum || 0}}<i>件,</i></span> <span>{{(Number(receiptsIntroList.recycleWeight) || 0).toFixed(3)}}<i>g,</i></span> <span>{{(Number(receiptsIntroList.recyclePrice) || 0).toFixed(2)}}<i>元</i></span>
@@ -208,7 +210,7 @@
                 </div>
                 <div class="row4-main-wrap" v-else>
 
-                    <sell-detail-list :memberDataInfo="memberDataInfo" :item="item" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :shopRole="shopRole" :goodType="1" :relationList="goodsTypeList.relationList" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" v-for="(item, index) in goodsTypeList.saleList" :key="index" :entry="entry" :isCanDelCurrentInvoices="isCanDelCurrentInvoices">
+                    <sell-detail-list :memberDataInfo="memberDataInfo" :item="item" @messageBack="messageBack" @setBounding="setBounding" @remarkOut="remarkOut" :shopRole="shopRole" :goodType="1" :relationList="goodsTypeList.relationList" :mantissa="receiptsIntroList.mantissa" :orderNum="$route.query.orderNumber" :orderManId="receiptsIntroList.makeOrderManId" :status="receiptsIntroList.cashStatus" v-for="(item, index) in goodsTypeList.saleList" :key="index" :isCanDelCurrentInvoices="isCanDelCurrentInvoices">
 
                     </sell-detail-list>
 
@@ -363,7 +365,7 @@
                 <h3>选择产品类别</h3>
             </div>
             <div class="list-wrap">
-                <ul class="left-list">
+                <ul class="left-list" id="productType">
                     <li :class="{active: entry.tep1List.productStep == index + 1}" v-for="(item, index) in entry.tep1List.prodictName" :key="index" @click="selBigClass(item)"><span class="active-block"></span>{{item}}</li>
                 </ul>
                 <ul class="right-list">
@@ -1038,6 +1040,8 @@ export default {
         eventBus.$on('editJewelryName', data => {
             this.dataList = data;
             this.selectAttr(2);
+            //修改产品类别不能选择计件类
+            // this.entry.tep1List.prodictName.splice(1,1);
             this.isShowDio = true;
         })
         console.log('权限', this.shopManageRole)
@@ -1304,6 +1308,7 @@ export default {
             // this.isShowBox = newVal
             this.isShowWay = newVal
             if (newVal == false) {
+                // this.entry.tep1List.prodictName = ['计重类','计件类'];
                 this.tep = 1
                 this.isShowWay = true
                 this.isShowBox1 = true
@@ -2136,7 +2141,7 @@ export default {
                 ]
             }
             operateUpdateGoods(data).then(res => {
-                if (res.data.state == 200){
+                if (res.data.state == 200) {
                     this.tep = 1;
                     this.isAllow = true;
                     this.isShowDio = false;
@@ -2310,11 +2315,10 @@ export default {
             setTimeout(() => {
                 this.appPrint.innerHTML = this.$refs.windowPrintView.innerHTML
             }, 1000)
-            //return
+
             setTimeout(() => {
                 print = document.execCommand('print');
             }, 1500)
-
             this.IntervalOut = setInterval(() => {
                 if (print) {
                     document.getElementById('app').style.display = 'block';
@@ -2493,13 +2497,13 @@ export default {
                 this.tep = 1
                 this.isAllow = true
                 this.isShowDio = false
-                this.send();
-                this.sellData()
+                this.messageBack();
+                // this.sellData()
             }, (res) => {
                 this.$store.dispatch('workPopupError', res.data.msg)
                 this.isShowDio = false
-                this.send();
-                this.sellData()
+                this.messageBack();
+                // this.sellData()
             })
         },
         sellcollectMoney() {
@@ -2956,7 +2960,7 @@ export default {
                     item.totalGoldWeight = 0;
                     item.totalPrice = 0;
                     for (let sale of item.relationList) {
-                        let list = this.getSaleList(sale.sellProductId, item.productId, index);
+                        let list = this.getSaleList(sale.sellProductId, index, item);
                         index++;
                         if (list) {
                             isRelation = true;
@@ -2977,15 +2981,18 @@ export default {
             this.goodsTypeList.saleList.push(...this.saleList, ...saleList);
             console.log(this.goodsTypeList);
         },
-        getSaleList(id, recycleProductId, index) {
+        getSaleList(id, index, item) {
             if (!id) {
                 return null;
             }
             for (let i = 0, len = this.saleList.length; i < len; i++) {
                 if (this.saleList[i].productId == id) {
+                    let price = this.saleList[i].price;
                     let list = this.saleList.splice(i, 1)[0];
                     list.index = index;
-                    list.recycleProductId = recycleProductId;
+                    list.recycleList = item;
+                    list.recycleProductId = item.productId;
+                    list.oldPrice = price;
                     return list;
                 }
             }

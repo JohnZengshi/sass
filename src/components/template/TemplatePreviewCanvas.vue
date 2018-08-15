@@ -136,10 +136,7 @@ export default {
             }
         },
         mounted() {
-            console.log(this)
-            debugger
             window.addEventListener('resize', this.setWindowSize)
-            //console.log(111111111,this.templateData)
         },
         destroyed() {
             window.removeEventListener('resize', this.setWindowSize)

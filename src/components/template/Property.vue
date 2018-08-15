@@ -131,7 +131,6 @@ export default {
 
                 let code = this.data.propertyCode
                 let backuProductList = null
-                console.log(this.item,this.productList)
 
                 let product = this.templateData.productList[this.data.productIndex || (this.page - 1) || 0];
                 if (this.item && this.item.salesId) {
@@ -142,7 +141,6 @@ export default {
 //                  backuProductList = this.templateData.backuProductList[this.data.productIndex || (this.page - 1) || 0]
 //              }
                 let value = null
-
                 if(this.isPreview){
 //                  if (backuProductList) {
 //                     let mapcode = find(backuProductList.codeList, {

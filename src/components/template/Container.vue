@@ -1,6 +1,6 @@
 <template>
 <div class="container-component" :style="componentStyle" :class="{borderRender: data.border}">
-    <component v-for="component in data.children" :showEmpty="showEmpty" :is="component.type" :isPreview="isPreview" :parent="data" class="component" :class="{active: component.active}" :data="component.data" :templateData="templateData" :page="page" @changeComponentData="changeComponentData(component, $event)" :changeComponentData="changeComponentData">
+    <component v-for="component in data.children" :showEmpty="showEmpty" :is="component.type" :item="item" :productList="productList" :isPreview="isPreview" :parent="data" class="component" :class="{active: component.active}" :data="component.data" :templateData="templateData" :page="page" @changeComponentData="changeComponentData(component, $event)" :changeComponentData="changeComponentData">
     </component>
 </div>
 </template>
@@ -17,7 +17,7 @@ import {
 } from '../../utils/print'
 
 export default {
-    props: ['isPreview', 'data', 'templateData', 'page', 'changeComponentData', 'showEmpty'],
+    props: ['isPreview', 'data', 'templateData', 'page', 'changeComponentData', 'showEmpty','item','productList'],
     computed: {
         // 渲染容器的样式，根据子组件的边界来确定容器的位置和大小，不一致则调整过来
         componentStyle() {

@@ -7,7 +7,7 @@
 
             <div class="jewelryName-warp">
                 <div class="jewelryName" :title="item.jewelryName">{{item.jewelryName}}</div>
-                <span v-if="(status != 1 && goodType != '1') || item.isRelation == 'Y'" @click="editJewelryName"></span>
+                <span v-if="isEdit" @click="editJewelryName"></span>
             </div>
 
             <div class="tag">
@@ -34,8 +34,8 @@
                     <div class="laber">备注：</div>
                     <div class="textarea">
                         <span v-if="!textarea" @click="textareaInput">
-                            {{remark || "暂无"}}
-                        </span> <textarea v-else rows="3" @blur="textareaBlur" v-model="remark"></textarea>
+                            {{remarks || "暂无"}}
+                        </span> <textarea v-else rows="3" ref="textarea" @blur="textareaBlur" v-model="remarks"></textarea>
                     </div>
                 </el-popover>
                 <el-popover ref="related" placement="right-start" width="266" v-model="relatedShow" trigger="click">
@@ -54,12 +54,12 @@
                 <el-button v-popover:remark class="sell-botton remark"></el-button>
                 <el-button v-if="status != 1" @click="delGoods" class="sell-botton delete" title="删除"></el-button>
                 <el-button @click="returnGoods" class="sell-botton exchange" v-if="status != 1 && goodType == '1' && item.isRelation != 'Y'" title="换货"></el-button>
-                <template v-if="status != 1 && goodType == '1' && item.calcMethod == '1' && !item.recycleProductId && item.isRelation != 'Y'">
+                <template v-if="status != 1 && goodType == '1' && item.productType == '1' && !item.recycleProductId && item.isRelation != 'Y'">
                     <el-button v-if="relationList.length" @click="showPopover" v-popover:related class="sell-botton related-exchange related"></el-button>
                     <el-button v-else class="sell-botton related-exchange" @click="relatedExchange" title="创建补金重换货"></el-button>
                 </template>
 
-                <el-button @click="relieveRefConvert" class="sell-botton cancel-related" v-if="status != 1 && goodType == '1' && item.recycleProductId" title="取消补金重换货"></el-button>
+                <el-button @click="relieveRefConvert(0)" class="sell-botton cancel-related" v-if="status != 1 && goodType == '1' && item.recycleProductId" title="取消补金重换货"></el-button>
             </div>
         </div>
         <div class="detail-data" v-if="item.isRelation != 'Y'">
@@ -173,7 +173,7 @@
                     <input v-else type="text" v-model="item.paymentPrice" @keyup="computeFun(item, '手工费')" @keyup.enter="sendData(item, '手工费', item.calcMethod)" @blur="sendData(item, '手工费', item.calcMethod)">
                 </div> <!--  :placeholder="unit2(item.paymentPrice)" -->
                 <i>{{item.calcMethod == 1 ? '元/g' : '元'}}</i> <span v-if="item.productType != 2 && item.productType != 3" class="switch1" :class="{active: goodType == 1 && item.productType == 1}" @click="switchMethods(13)">
-                    <img :src="item.calcMethod == 1 ? './../../../../../static/img/switch-zhong.png' : './../../../../../static/img/switch-jian.png'">
+                    <img :src="item.calcMethod == 1 ? '/static/img/switch-zhong.png' : '/static/img/switch-jian.png'">
                 </span>
             </div>
 
@@ -217,18 +217,13 @@
         </div>
 
         <div id="relation-list" class="detail-data" v-else>
-            <div class="barcode">
-				<span>条码号
-					<i></i>
-				</span>
-                <div>{{item.barcode}}</div>
-            </div>
             <div class="weight">
 				<span>金重
 					<i></i>
 				</span>
                 <div>
-                    <input type="text" v-model="item.goldWeight" @input="relationCalculation('goldWeight')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
+                    <span v-if="status == 1">{{item.goldWeight}}</span>
+                    <input v-else type="text" v-model="item.goldWeight" @input="relationCalculation('goldWeight')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
                 </div>
                 <i>g</i>
             </div>
@@ -246,7 +241,8 @@
 					<i></i>
 				</span>
                 <div>
-                    <input type="text" v-model="item.repairGoldPrice" @input="relationCalculation('repairGoldPrice')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
+                    <span v-if="status == 1">{{item.repairGoldPrice}}</span>
+                    <input v-else type="text" v-model="item.repairGoldPrice" @input="relationCalculation('repairGoldPrice')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
                 </div>
                 <i>元/g</i>
             </div>
@@ -255,7 +251,9 @@
 					<i></i>
 				</span>
                 <div>
-                    <input type="text" v-model="item.repairGoldPriceE" @input="relationCalculation('repairGoldPriceE')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
+                    <span v-if="status == 1">{{item.repairGoldPriceE}}</span>
+
+                    <input v-else type="text" v-model="item.repairGoldPriceE" @input="relationCalculation('repairGoldPriceE')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
                 </div>
                 <i>元</i>
             </div>
@@ -264,7 +262,8 @@
 					<i></i>
 				</span>
                 <div>
-                    <input type="text" v-model="item.paymentPrice" @input="relationCalculation('paymentPrice')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
+                    <span v-if="status == 1">{{item.paymentPrice}}</span>
+                    <input v-else type="text" v-model="item.paymentPrice" @input="relationCalculation('paymentPrice')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
                 </div>
                 <i>元/g</i> <span class="switch1" style="right: 17px;" @click="relationMethods">
                     <img :src="item.calcMethod == 1 ? '/static/img/switch-zhong.png' : '/static/img/switch-jian.png'">
@@ -275,7 +274,9 @@
 					<i></i>
 				</span>
                 <div>
-                    <input type="text" v-model="item.repairFee" @input="relationCalculation('repairFee')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
+                    <span v-if="status == 1">{{item.repairFee}}</span>
+
+                    <input v-else type="text" v-model="item.repairFee" @input="relationCalculation('repairFee')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
                 </div>
                 <i>元</i>
             </div>
@@ -284,7 +285,9 @@
 					<i></i>
 				</span>
                 <div>
-                    <input type="text" v-model="item.differencePrice" @input="relationCalculation('differencePrice')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
+                    <span v-if="status == 1">{{item.differencePrice}}</span>
+
+                    <input v-else type="text" v-model="item.differencePrice" @input="relationCalculation('differencePrice')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
                 </div>
                 <i>元</i>
             </div>
@@ -293,7 +296,9 @@
 					<i></i>
 				</span>
                 <div>
-                    <input type="text" v-model="item.differencePriceE" @input="relationCalculation('differencePriceE')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
+                    <span v-if="status == 1">{{item.differencePriceE}}</span>
+
+                    <input v-else type="text" v-model="item.differencePriceE" @input="relationCalculation('differencePriceE')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
                 </div>
                 <i>元</i>
             </div>
@@ -302,61 +307,23 @@
 					<i></i>
 				</span>
                 <div>
-                    <input type="text" v-model="item.price" @input="relationCalculation('price')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
+                    <span v-if="status == 1">{{item.exchangePrice}}</span>
+
+                    <input v-else type="text" v-model="item.exchangePrice" @input="relationCalculation('exchangePrice')" @blur="sendExchangeData" @keyup.enter="sendExchangeData">
                 </div>
                 <i>元</i>
             </div>
-            <div class="">
+            <div class="" style="margin-bottom:0;">
 				<span>旧料价
 					<i></i>
 				</span>
                 <div>
-                    {{item.repairOldPrice}}
+                    <span v-if="item.repairOldPrice > 0">- {{item.repairOldPrice}}</span>
+                    <span v-else>{{Math.abs(item.repairOldPrice)}}</span>
                 </div>
                 <i>元</i>
             </div>
         </div>
-        <el-dialog :visible.sync="isShowDio" custom-class="dialogDom" element-loading-text="拼命加载中">
-            <!--  产品类别  -->
-            <div class="block-class block-1" v-if="step == 1">
-                <div class="dia-title">
-                    <img src="/static/img/piliang.png">
-                    <h3>选择产品类别</h3>
-                </div>
-                <div class="list-wrap">
-                    <ul class="left-list">
-                        <li :class="{active: entry.tep1List.productStep == index + 1}" v-for="(obj, index) in entry.tep1List.prodictName" :key="index" @click="selBigClass(obj)"><span class="active-block"></span>{{obj}}</li>
-                    </ul>
-                    <ul class="right-list">
-                        <li :class="{active: entry.tep1List.rightClassId == obj.classesName}" v-for="(obj, index) in entry.tep1List.rightClassList" :key="index " @click="selBigClassId(obj.classesName, 1)">{{obj.classesName}}</li>
-                    </ul>
-                </div>
-                <div class="footer">
-                    <el-button type="primary" style="margin-right:-57px;" @click="saveData">确定</el-button>
-                    <div class="footer-right">
-                        <span @click.stop="goNext">下一步</span>
-                    </div>
-                </div>
-            </div>
-            <!--  成色大类 -->
-            <div class="block-class block-2" v-if="step == 2">
-                <div class="dia-title">
-                    <img src="/static/img/piliang.png">
-                    <h3>选择成色名称</h3>
-                </div>
-                <div class="list-wrap">
-                    <ul class="left-list">
-                        <li :class="{active: entry.tep2List.leftClassId == obj.classesId}" v-for="(obj, index) in entry.tep2List.classesList" :key="index" @click="selProductClass(obj)"><span class="active-block"></span>{{obj.classesName}}</li>
-                    </ul>
-                    <ul class="right-list">
-                        <li :class="{active: entry.tep2List.rightClassId == obj.classesName}" v-for="(obj, index) in entry.tep2List.rightClassList" :key="index" @click="selBigClassId(obj.classesName, 2)">{{obj.classesName}}</li>
-                    </ul>
-                </div>
-                <div class="footer">
-                    <el-button type="primary" @click="saveData">确定</el-button>
-                </div>
-            </div>
-        </el-dialog>
 
     </div>
 </template>
@@ -365,6 +332,7 @@ import {seekSellReceiptsIntro, seekReceiptStatusList, seekGetShopUserList, seekG
 import {operateUpdateSell, operateProductList, operateSellRefConvert, operateAddBackBuyProductToOrder, operateRelieveRefConvert} from './../../../../Api/commonality/operate'
 import {seekAddProductToOrder} from './../../../../Api/commonality/seek'
 import {SalePriceCalculatoin} from "@/tools/sale-price-calculation"
+import find from 'lodash/find'
 
 export default {
     props: [
@@ -376,8 +344,7 @@ export default {
         "shopRole",
         'mantissa', // 1.四舍五入 2.抹掉小数 3.不处理
         'memberDataInfo',
-        'relationList',
-        'entry'
+        'relationList'
     ],
     data() {
         return {
@@ -390,10 +357,9 @@ export default {
             multipleIdentities: '',
             discontGoldWeight: 0,
             rePrice: '',
-            isShowDio: false,
             step: 1,
             textarea: false,
-            remark: '',
+            remarks: '',
             relatedShow: false //关联换货弹窗显示
         }
     },
@@ -406,34 +372,38 @@ export default {
         }
         this.companyPosition = sessionStorage.getItem('companyPosition')
         this.multipleIdentities = sessionStorage.getItem('multipleIdentities')
-        //this.addProductToOrder();
         this.discontGoldWeight = ((Number(this.item.abrasion) / 100) * Number(this.item.goldWeight)).toFixed(3)
         this.mantissaProcessing(this.discontGoldWeight)
     },
     mounted() {
-        this.remark = this.item.remark;
+        this.remarks = this.item.remarks;
         this.reLoadPrice();
     },
     watch: {
         item: function () {
             this.discontGoldWeight = ((Number(this.item.abrasion) / 100) * Number(this.item.goldWeight)).toFixed(3)
-        },
-        'item.totalPrice': function () {
-            this.item.repairOldPrice = this.mantissaProcessing(this.item.totalPrice - this.item.price);
         }
     },
     computed: {
-
-        showPopover(){
-            console.log('showPopover')
-            this.relatedShow = true;
+        //是否能更改产品类型
+        isEdit(){
+            if (this.status == 1) {
+                return false;
+            }
+            if (this.goodType == '1' && this.item.isRelation != 'Y') {
+                return false;
+            }
+            if (this.goodType == '2' && this.item.productClass == '1') {
+                return false;
+            }
+            return true;
         },
         isPrepareDocument() { // 制单人
             return this.orderManId == sessionStorage.getItem('id')
         },
         isRelation() {
             let related = false;
-            if (this.item.isRelation == 'Y' || this.item.index){
+            if (this.item.isRelation == 'Y' || this.item.index) {
                 related = true;
             }
             return {
@@ -442,101 +412,36 @@ export default {
         },
     },
     methods: {
+        showPopover() {
+            this.relatedShow = true;
+        },
         textareaInput() {
+            if (this.status == '1'){
+                return ;
+            }
             this.textarea = true;
+            this.$nextTick(() => {
+                this.$refs.textarea.focus();
+            })
         },
         textareaBlur() {
+            if (this.remarks != this.item.remarks) {
+                this.modifyList = [];
+                this.modifyList.push({
+                    modifyType: '18',
+                    dataType: '1',
+                    objectData: this.remarks
+                })
+                this.updateSell();
+            }
             this.textarea = false;
         },
-        selBigClass(item) {
-            if (item == '计重类') {
-                this.entry.tep1List.productStep = '1'
-                this.preType = 1
-            } else if (item == '计件类') {
-                this.entry.tep1List.productStep = '2'
-                this.preType = 2
-            } else if (item == '饰品类') {
-                this.entry.tep1List.productStep = '3'
-                this.preType = 3
-            }
-            this.isLoading = true
-            this.productTypeList()
-        },
-        selBigClassId(id) { // 1 产品类别  2 成色大类
-            if (this.step == 1) {
-                this.entry.tep1List.rightClassId = id
-            } else {
-                this.entry.tep2List.rightClassId = id
-            }
-        },
-        productClassList() { // 成色大类
-            let options = {
-                type: '1'
-            }
-            seekProductClassList(options).then((res) => {
-                if (res.data.state == 200) {
-                    this.entry.tep2List.classesList = res.data.data.list
-                    this.entry.tep2List.leftClassId = res.data.data.list[0].classesId
-                    this.entry.tep2List.rightClassList = res.data.data.list[0].childrenList
-                } else {
-                    this.$message({
-                        message: res.data.msg,
-                        type: 'warning'
-                    })
-                }
-
-            }, (res) => {
-            })
-        },
-        productTypeList() { // 产品大类
-            getProductTypeList({
-                type: 1
-            }).then((res) => {
-                if (res.data.state == 200) {
-                    this.isLoading = false
-                    this.entry.tep1List.productList = res.data.data.list
-                    for (let i = 0; i < res.data.data.list.length; i++) {
-                        if (res.data.data.list[i].classesType == this.entry.tep1List.productStep) {
-                            this.entry.tep1List.rightClassList = res.data.data.list[i].typeList
-                        }
-                    }
-                }
-            }, (res) => {
-            })
-        },
-        goNext() {
-            this.step = 2;
-        },
         editJewelryName() {
-            // this.step = 1;
-            // this.entry.tep1List.rightClassId = this.item.productName;
-            // this.entry.tep2List.rightClassId = '';
-            // this.isShowDio = true;
-            eventBus.$emit('editJewelryName',this.item);
-        },
-        saveData() {
-            let data = {
-                confirmType: '1',
-                orderNum: this.orderNum,
-                alterList: [{
-                    productId: this.item.productId
-                }]
-            }
-            if (this.entry.tep1List.rightClassId) {
-                data.alterList[0].productTypeName = this.entry.tep1List.rightClassId;
-            }
-            if (this.entry.tep2List.rightClassId) {
-                data.alterList[0].metalColor = this.entry.tep2List.rightClassId;
-            }
-            console.log(data)
-            this.isShowDio = false;
-        },
-        selProductClass(item) {
-            this.entry.tep2List.leftClassId = item.classesId
-            this.entry.tep2List.rightClassList = item.childrenList
+            eventBus.$emit('editJewelryName', this.item);
         },
         //解除关联
-        relieveRefConvert() {
+        relieveRefConvert(type = 0) {
+            //type 0-解除关联， 1：删除单据的时候先要解除关联
             let productIdList = [];
             let recycleProductId = this.item.recycleProductId;
             if (this.item.isRelation == 'Y') {
@@ -556,11 +461,83 @@ export default {
                 productIdList: productIdList,
                 recycleProductId: recycleProductId
             }
-            operateRelieveRefConvert(data).then(res => {
-                if (res.data.state == 200) {
-                    eventBus.$emit('update-data-sell-List');
+            return operateRelieveRefConvert(data).then(res => {
+                //type != 0 删除的时候调用解除，不需要其他操作
+                if (res.data.state == 200 && type == 0) {
+                    //删除商品解除关联
+                    if (this.item.isRelation == 'Y' || (this.item.relationList && this.item.relationList.length == 1)) {
+                        // eventBus.$emit('update-data-sell-List');
+                        this.$emit('messageBack', '成功')
+                    } else if (this.item.recycleProductId) {
+                        let item = this.getExchangeById(this.item.recycleProductId);
+                        if (item.relationList.length > 1){
+                            this.updataExchange();
+                        }else{
+                            this.$emit('messageBack', '成功')
+                        }
+                    }
                 }
             })
+        },
+        getExchangeById(id) {
+            for (let item of this.relationList) {
+                if (item.productId == id) {
+                    return item;
+                }
+            }
+        },
+        //更新关联换货 补金重和旧料价
+        updataExchange(id) {
+            //id添加关联商品id，有id为新增，无为取消关联
+            let barcode = '';
+            let [repairGoldweight,repairGoldPriceE,differencePriceE,exchangePrice,repairOldPrice] = [0,0,0,0,0];
+            debugger
+            if (id) {
+                let item = this.getExchangeById(id);
+                repairGoldweight = +item.repairGoldweight + +this.item.goldWeight; //补金重
+                repairGoldPriceE = this.mantissaProcessing(item.repairGoldPrice * repairGoldweight); //补价金额
+                differencePriceE = this.mantissaProcessing(item.differencePrice * repairGoldweight); //补差价额
+                exchangePrice = this.mantissaProcessing(repairGoldPriceE + differencePriceE + +item.repairFee);
+                repairOldPrice = this.mantissaProcessing(+item.totalPrice + +this.item.price - exchangePrice);
+                barcode = item.barcode;
+
+            } else {
+                let item = this.item.recycleList;
+                repairGoldweight = item.repairGoldweight - this.item.goldWeight; //补金重
+                repairGoldPriceE = this.mantissaProcessing(item.repairGoldPrice * repairGoldweight); //补价金额
+                differencePriceE = this.mantissaProcessing(item.differencePrice * repairGoldweight); //补差价额
+                exchangePrice = this.mantissaProcessing(repairGoldPriceE + differencePriceE + +item.repairFee);
+                repairOldPrice = this.mantissaProcessing(+item.totalPrice - this.item.price - exchangePrice);
+                barcode = item.barcode;
+            }
+            this.modifyList.push(
+                {
+                    modifyType: '21',
+                    dataType: '1',
+                    objectData: repairGoldweight
+                },
+                {
+                    modifyType: '20', //补价金额
+                    dataType: '1',
+                    objectData: repairGoldPriceE
+                },
+                {
+                    modifyType: '24',
+                    dataType: '1',
+                    objectData: differencePriceE
+                },
+                {
+                    modifyType: '25',
+                    dataType: '1',
+                    objectData: repairOldPrice || 0
+                },
+                {
+                    modifyType: '10',
+                    dataType: '1',
+                    objectData: exchangePrice || 0
+                }
+            )
+            this.updateSell(barcode);
         },
         clearNoNum(name) {
             let item = this.item;
@@ -572,19 +549,19 @@ export default {
             item[name] = item[name].replace(/[^\d.-]/g, '');    //清除'数字'和'.','-'以外的字符
             item[name] = item[name].replace(/\.{2,}/g, '.');    //只保留第一个. 清除多余的
             item[name] = item[name].replace('.', '$#$').replace(/\./g, '').replace('$#$', '.');
-            item[name] = item[name].replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');   //只能输入两个小数
+            // item[name] = item[name].replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');   //只能输入两个小数
             if (item[name].indexOf('.') < 0 && item[name] != '') {  //以上已经过滤，此处控制的是如果没有小数点，首位不能为类似于 01、02的金额
                 if (item[name].substr(0, 1) == '0' && item[name].length == 2) {
                     item[name] = item[name].substr(1, item[name].length);
                 }
             }
-            if (item[name].at(0) == '-'){
+            if (item[name].at(0) == '-') {
                 if (item[name].at(1) == '.') {
                     item[name] = item[name].replace(/\./g, '');
                 }
                 item[name] = item[name].replace(/\-/g, '');
                 item[name] = '-' + item[name];
-            }else{
+            } else {
                 item[name] = item[name].replace(/\-/g, '');
             }
 
@@ -592,7 +569,6 @@ export default {
         relationCalculation(name) {
             // this.clearNoNum(name)
             let item = this.item;
-            let n = 2;
             this.clearNoNum(name);
             //goldWeight           金重
             //repairGoldweight     补金重
@@ -602,9 +578,9 @@ export default {
             //repairFee            补工费额
             //differencePrice      补差价
             //differencePriceE     补差价额
-            //price    换货价
+            //exchangePrice        换货价
             //repairOldPrice       旧料价
-            //totalPrice                销售实售总价
+            //totalPrice           销售实售总价
             //totalGoldWeight      销售总金重
             switch (name) {
                 case 'goldWeight': //金重
@@ -618,12 +594,12 @@ export default {
                      换货价=补金价额+补工费额+补差价额；
                      旧料价=实售价-换货价
                      */
-                    item.repairGoldweight = this.mantissaProcessing(item.totalGoldWeight - item.goldWeight);
+                    item.repairGoldweight = (item.totalGoldWeight - item.goldWeight).toFixed(3) || 0;
                     item.repairGoldPriceE = this.mantissaProcessing(item.repairGoldPrice * item.repairGoldweight);
                     item.repairFee = this.mantissaProcessing(item.paymentPrice * item.goldWeight);
                     item.differencePriceE = this.mantissaProcessing(item.differencePrice * item.repairGoldweight);
-                    item.price = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.price);
+                    item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
+                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
                     //补金重
                     break;
                 case 'repairGoldPrice': //补金价
@@ -635,8 +611,8 @@ export default {
                      旧料价=实售价-换货价
                      */
                     item.repairGoldPriceE = this.mantissaProcessing(item.repairGoldPrice * item.repairGoldweight);
-                    item.price = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.price);
+                    item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
+                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
                     break;
                 case 'repairGoldPriceE': //补金价额
                     /**
@@ -648,8 +624,8 @@ export default {
                      * @type {number}
                      */
                     item.repairGoldPrice = this.mantissaProcessing(item.repairGoldPriceE / item.repairGoldweight);
-                    item.price = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.price);
+                    item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
+                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
                     break;
                 case 'paymentPrice': //补工费
                     /**
@@ -661,10 +637,10 @@ export default {
                     if (item.calcMethod == '1') {
                         item.repairFee = this.mantissaProcessing(item.paymentPrice * item.goldWeight);
                     } else {
-                        item.repairFee = item.paymentPrice;
+                        item.repairFee = this.mantissaProcessing(item.paymentPrice);
                     }
-                    item.price = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.price);
+                    item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
+                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
                     break;
                 case 'repairFee': //补工费额
                     /**
@@ -675,10 +651,10 @@ export default {
                     if (item.calcMethod == '1') {
                         item.paymentPrice = this.mantissaProcessing(item.repairFee / item.goldWeight);
                     } else {
-                        item.paymentPrice = item.repairFee;
+                        item.paymentPrice = this.mantissaProcessing(item.repairFee);
                     }
-                    item.price = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.price);
+                    item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
+                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
                     break
                 case 'differencePrice': //补差价
                     /**
@@ -688,8 +664,8 @@ export default {
                      * @type {number}
                      */
                     item.differencePriceE = this.mantissaProcessing(item.differencePrice * item.repairGoldweight);
-                    item.price = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.price);
+                    item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
+                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
                     break;
                 case 'differencePriceE': //补差价额
                     /**
@@ -699,10 +675,10 @@ export default {
                      * @type {number}
                      */
                     item.differencePrice = this.mantissaProcessing(item.differencePriceE / item.repairGoldweight);
-                    item.price = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.price);
+                    item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
+                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
                     break;
-                case 'price': //换货价 data
+                case 'exchangePrice': //换货价 data
                     /**
                      * 补金价=（换货价-补差价额-补工费额）/补金重
                      补金价额=补金价*补金重
@@ -711,7 +687,7 @@ export default {
                      */
                     item.repairGoldPrice = this.mantissaProcessing((item.price - item.differencePriceE - item.repairFee) / item.repairGoldweight);
                     item.repairGoldPriceE = this.mantissaProcessing(item.repairGoldPrice * item.repairGoldweight);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.price);
+                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
                     break;
             }
         },
@@ -758,8 +734,12 @@ export default {
             }).then(() => {
                 if (this.item.isRelation == 'Y') {
                     this.relieveRefConvert();
+                }else if (this.item.recycleProductId){
+                    this.relieveRefConvert(1);
+                    this.productList();
+                }else{
+                    this.productList();
                 }
-                this.productList()
             }).catch(() => {
 
             });
@@ -780,6 +760,31 @@ export default {
                         type: 'success',
                         message: '删除成功!'
                     });
+                    if (this.item.recycleProductId) {
+                        if (this.getExchangeById(this.item.recycleProductId).relationList.length > 1){
+                            let options = {
+                                orderNum: this.orderNum,
+                                barcode: this.item.recycleList.barcode,
+                                modifyList: [
+                                    {
+                                        modifyType: '21',
+                                        dataType: '1',
+                                        objectData: this.item.recycleList.repairGoldweight - this.item.goldWeight
+                                    },
+                                    {
+                                        modifyType: '25',
+                                        dataType: '1',
+                                        objectData: this.mantissaProcessing(this.item.recycleList.repairOldPrice - this.item.price)
+                                    }
+                                ]
+                            }
+                            operateUpdateSell(options).then((json) => {
+                                this.modifyList = []
+                            })
+                        }
+
+                    }
+
                     this.$emit('messageBack', '成功')
                 } else {
                     this.$message({
@@ -794,7 +799,8 @@ export default {
                 });
             })
         },
-        sendExchangeData(){
+
+        sendExchangeData() {
             let item = this.item;
 
             /**
@@ -809,7 +815,7 @@ export default {
              //repairFee            补工费额
              //differencePrice      补差价
              //differencePriceE     补差价额
-             //price    换货价
+             //exchangePrice    换货价
              //repairOldPrice       旧料价
              //totalPrice                销售实售总价
              //totalGoldWeight      销售总金重
@@ -819,7 +825,7 @@ export default {
                 {
                     modifyType: '12',
                     dataType: '1',
-                    objectData: this.mantissaProcessing(item.goldWeight) || 0
+                    objectData: item.goldWeight || 0
                 },
                 {
                     modifyType: '13',
@@ -829,7 +835,7 @@ export default {
                 {
                     modifyType: '21',
                     dataType: '1',
-                    objectData: this.mantissaProcessing(item.repairGoldweight) || 0
+                    objectData: item.repairGoldweight || 0
                 },
                 {
                     modifyType: '19',
@@ -869,7 +875,7 @@ export default {
                 {
                     modifyType: '10',
                     dataType: '1',
-                    objectData: this.mantissaProcessing(item.price) || 0
+                    objectData: this.mantissaProcessing(item.exchangePrice) || 0
                 },
             );
             this.updateSell();
@@ -1148,17 +1154,18 @@ export default {
                 colorId: this.item.colorId,
                 jewelId: this.item.gemId,
                 JewelryId: this.item.jewelryId,
-                productProperty: '1',
+                productProperty: '2',
             }
             operateAddBackBuyProductToOrder(dataList).then(res => {
                 if (res.data.state == 200) {
-                    eventBus.$emit('update-data-sell-List');
+                    // eventBus.$emit('update-data-sell-List');
+                    this.$emit('messageBack', '成功')
                 }
 
             })
 
         },
-        //无关联换货
+        //新建关联换货
         relatedExchange() {
             let dataList = {
                 orderNum: this.orderNum,
@@ -1167,28 +1174,51 @@ export default {
                 colorId: this.item.colorId,
                 jewelId: this.item.gemId,
                 JewelryId: this.item.jewelryId,
-                productProperty: '1',
+                productProperty: '2',
             }
+            let barcode = '';
             operateAddBackBuyProductToOrder(dataList).then(res => {
 
                 if (res.data.state == 200) {
-                    let options = {
+                    this.relatedShow = false;
+                    barcode = res.data.data.barcode;
+                    let data = {
                         orderNum: this.orderNum,
-                        barcode: res.data.data.barcode,
-                        modifyList: [{
-                            modifyType: '19',
-                            dataType: '1',
-                            objectData: this.item.saleGoldPrice || 0
-                        }]
+                        sellProductId: this.item.productId,
+                        recycleProductId: res.data.data.productId,
+                        type: 1
                     }
-                    operateUpdateSell(options).then((json) => {
-                        this.modifyList = []
-                        if (json.data.state == 200) {
-                            this.sellRefConvert(res.data.data.productId);
-                        }
-                    })
+                    return operateSellRefConvert(data);
                 }
 
+            }).then(() => {
+                let options = {
+                    orderNum: this.orderNum,
+                    barcode: barcode,
+                    modifyList: [
+                        {
+                            modifyType: '19',
+                            dataType: '1',
+                            objectData: this.mantissaProcessing(this.item.saleGoldPrice) || 0
+                        },
+                        {
+                            modifyType: '21',
+                            dataType: '1',
+                            objectData: this.item.goldWeight || 0
+                        },
+                        {
+                            modifyType: '25',
+                            dataType: '1',
+                            objectData: this.mantissaProcessing(this.item.price) || 0
+                        }
+                    ]
+                }
+                operateUpdateSell(options).then((_json) => {
+                    if (_json.data.state == 200) {
+                        this.$emit('messageBack', '成功')
+                        // eventBus.$emit('update-data-sell-List');
+                    }
+                })
             })
 
         },
@@ -1201,24 +1231,40 @@ export default {
                 recycleProductId: id,
                 type: type
             }
-            operateSellRefConvert(data).then(res => {
+            return operateSellRefConvert(data).then(res => {
                 if (res.data.state == 200) {
                     this.relatedShow = false;
-                    eventBus.$emit('update-data-sell-List');
+                    if (type == 1) {
+                        this.$emit('messageBack', '成功')
+
+                        // eventBus.$emit('update-data-sell-List');
+                    } else if (type == 2) {
+                        this.updataExchange(id); //新增关联
+                    }
                 }
             })
         },
-        updateSell(type, dataType, value) { // type = 操作类型 dataType = 数据类型 value = 值
+        updateSell(barcode = this.item.barcode) { // type = 操作类型 dataType = 数据类型 value = 值
             let options = {
                 orderNum: this.orderNum,
-                barcode: this.item.barcode,
+                barcode: barcode,
                 modifyList: this.modifyList
             }
-            console.log('查看请求折扣参数:', options);
             operateUpdateSell(options).then((res) => {
-                this.modifyList = []
-                console.log('', res);
+                this.modifyList = [];
                 if (res.data.state == 200) {
+                    let _item = null;
+                    for (let obj of options.modifyList) {
+                        if (obj.modifyType == '04'){
+                            _item = obj.objectData;
+                            break;
+                        }
+                    }
+                    if (this.item.recycleProductId && _item){
+                        this.updateRecycleSell();
+                        return;
+                    }
+
                     this.$message({
                         message: '修改成功',
                         type: 'success'
@@ -1239,7 +1285,31 @@ export default {
                 });
             })
         },
-        relationMethods(){
+        updateRecycleSell(){
+            let price = this.mantissaProcessing(this.item.recycleList.repairOldPrice - this.item.oldPrice + +this.item.price);
+            let options = {
+                orderNum: this.orderNum,
+                barcode: this.item.recycleList.barcode,
+                modifyList: [{
+                    dataType: '1',
+                    modifyType: '25',
+                    objectData: price
+                }]
+            }
+            operateUpdateSell(options).then((res) => {
+                if (res.data.state == 200) {
+                    this.$message({
+                        message: '修改成功',
+                        type: 'success'
+                    });
+                    this.$emit('messageBack', '成功')
+                }
+            })
+        },
+        relationMethods() {
+            if (this.status == '1'){
+                return ;
+            }
             this.modifyList = [];
             this.item.calcMethod = this.item.calcMethod == '1' ? '2' : '1';
 
@@ -1276,7 +1346,7 @@ export default {
                     {
                         modifyType: '10',
                         dataType: '2',
-                        objectData: this.item.price || 0
+                        objectData: this.mantissaProcessing(this.item.price) || 0
                     }
                 )
                 this.updateSell()
@@ -1322,8 +1392,8 @@ export default {
 </script>
 <style lang="scss" scoped>
     .related-active{
-        margin-left: -20px;
-        border-left: 1px dashed #ddd;
+        margin-left:-20px;
+        border-left:1px dashed #ddd;
     }
     .el-popover{
         .laber{
@@ -1346,6 +1416,9 @@ export default {
             span{
                 display:inline-block;
                 width:100%;
+                line-height:25px;
+                font-size:13px;
+                margin-left:5px;
                 min-height:20px;
             }
         }
@@ -1599,7 +1672,10 @@ export default {
             height:395px;
             margin-left:-18px;
             overflow:scroll;
-            padding:0 0 18px 18px;
+            padding:0 0 10px 18px;
+            & > div{
+                margin-bottom:8px;
+            }
         }
     }
 </style>
