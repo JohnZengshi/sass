@@ -19,9 +19,17 @@
                 </el-form-item>
                 <el-form-item label="数据条数">
                     <div class="number">
-                        <i class="icon minus-icon" title="减少" @click="minusNumberHandler"></i><input type="text" class="number-input" v-model="data.number" @input="numberInputHandler" /><i class="icon plus-icon" title="增加" @click="plusNumberHandler"></i>    
+                        <i class="icon minus-icon" title="减少" @click="minusNumberHandler"></i><input type="text" class="number-input" v-model="data.number" @input="numberInputHandler" /><i class="icon plus-icon" title="增加" @click="plusNumberHandler"></i>
                     </div>
                 </el-form-item>
+                <el-select v-model="data.salesId" placeholder="请选择">
+                    <el-option
+                        v-for="item in salesType"
+                        :key="item.id"
+                        :label="item.label"
+                        :value="item.id">
+                    </el-option>
+                </el-select>
             </el-form>
         </div>
     </div>
@@ -43,13 +51,28 @@ export default {
     },
     data() {
         return {
+            salesType: [
+                {
+                    id: '0',
+                    label: '全部'
+                },
+                {
+                    id: '1',
+                    label: '销售'
+                },
+                {
+                    id: '2',
+                    label: '回购'
+                }
+            ],
             ready: false,
             data: {
                 width: 0,
                 height: 0,
                 left: 0,
                 top: 0,
-                number: 1
+                number: 1,
+                salesId: '0' //销售类型，默认全部
             }
         }
     },
@@ -57,6 +80,7 @@ export default {
         data: {
             handler(data) {
                 if (this.ready) {
+                    debugger
                     this.$emit('changeComponentSetting', data)
                 }
             },

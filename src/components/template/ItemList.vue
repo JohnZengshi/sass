@@ -3,7 +3,20 @@
     <div class="resize"></div>
 </div>
 <div class="item-list-component" v-else>
-    <component v-for="child in items" :is="child.type" :showEmpty="showEmpty" :isPreview="true" :parent="null" class="component" :data="child.data" :templateData="templateData" @changeComponentData="changeComponentData(child, $event)" :changeComponentData="changeComponentData"></component>
+    <component v-for="child in items"
+        :is="child.type"
+        :showEmpty="showEmpty"
+        :isPreview="true"
+        :parent="null"
+        class="component"
+        :item="data"
+        :data="child.data"
+        :productList="productList"
+        :templateData="templateData"
+        @changeComponentData="changeComponentData(child, $event)"
+        :changeComponentData="changeComponentData">
+
+    </component>
  <!-- 需求改变，暂时屏蔽 -->
 <!--     <div class="page" v-show="sumPage" :style="pageStyle">{{ page }}-{{ sumPage }}页</div> -->
 </div>
@@ -31,12 +44,13 @@ export default {
     },
     data() {
         return {
-            children: []
+            children: [],
+            productList: []
         }
     },
     computed: {
         componentStyle() {
-        	
+
             let top = this.parent ? this.data.top - this.parent.top : this.data.top
             let left = this.parent ? this.data.left - this.parent.left : this.data.left
             return {
@@ -50,7 +64,7 @@ export default {
             }
         },
         pageStyle() {
-        	
+
             let top = this.parent ? this.data.top - this.parent.top : this.data.top
             let left = this.parent ? this.data.left - this.parent.left : this.data.left
             return {
@@ -67,7 +81,6 @@ export default {
             return Math.ceil(sumNumber / number)
         },
         items() {
-        	
             //如果预览时，渲染商品列表，返回属性列表
             this.children = []
             let t = this.data.top
@@ -77,13 +90,20 @@ export default {
             //分页商品列表
             let productList = this.templateData.productList.slice((this.page - 1) * number, this.page * number)
             //渲染的行数
+            debugger
+            if (+this.data.salesId){
+                productList = this.judgeProductList(productList);
+            }
+            this.productList = productList;
+            console.log(productList)
             number = Math.min(number, productList.length)
             if (number) {
                 //数据之间的间距
                 let gap = h / (number + 1)
-               
+
                     //每条数据克隆每个属性，定位属性的位置，传递productIndex来定位属性所属的product
                 productList.forEach((item, i) => {
+
                     let items = JSON.parse(JSON.stringify(this.data.children))
                     items.forEach(child => {
                         child.data.productIndex = (this.page - 1) * this.data.number + i
@@ -109,10 +129,26 @@ export default {
                     this.children.push(childClone)
                 })
             }
-            
+            debugger
             return this.children
-        }
+        },
     },
+    methods:{
+        judgeProductList(productList){
+            let list = [];
+            for (let item of productList){
+                for (let obj of item.codeList) {
+                    if (obj.key == 'sellType' && obj.value == '销售' && this.data.salesId == '1') {
+                        list.push(item);
+                    }
+                    if (obj.key == 'sellType' && obj.value != '销售' && this.data.salesId == '2') {
+                        list.push(item);
+                    }
+                }
+            }
+            return list;
+        }
+    }
 }
 </script>
 

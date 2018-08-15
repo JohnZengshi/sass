@@ -37,7 +37,7 @@ export default {
                 isNull: false
             }
         },
-        props: ['isPreview', 'parent', 'data', 'page', 'templateData', 'showEmpty'],
+        props: ['isPreview','item', 'parent', 'data', 'page', 'templateData', 'showEmpty','productList'],
         computed: {
             ...mapState({
                 mapTemplate: state => state.template.detail
@@ -131,8 +131,12 @@ export default {
 
                 let code = this.data.propertyCode
                 let backuProductList = null
+                console.log(this.item,this.productList)
 
-                let product = this.templateData.productList[this.data.productIndex || (this.page - 1) || 0]
+                let product = this.templateData.productList[this.data.productIndex || (this.page - 1) || 0];
+                if (this.item && this.item.salesId) {
+                    product = this.productList[this.data.productIndex || (this.page - 1) || 0];
+                }
 //              if(!product){
 //                  //回购
 //                  backuProductList = this.templateData.backuProductList[this.data.productIndex || (this.page - 1) || 0]
@@ -175,7 +179,6 @@ export default {
                             value = mapcode.value
                             // this.isNull = mapcode.isNull != 0
                             if (value != this.data.sample) {
-                                debugger
                                 this.$emit('changeComponentData', {
                                     data: {
                                         sample: value
@@ -346,7 +349,6 @@ export default {
                     if (w != this.data.width || h != this.data.height || l != this.data.left) {
                         // console.log(this.$el, this.data.propertyCode, this.value, this.data.width, this.data.height, this.data.left, w, h, l)
                         if (!(isNaN(w) || isNaN(h) || isNaN(l))) {
-                            debugger
                             this.$emit('changeComponentData', {
                                 data: {
                                     width: w,
