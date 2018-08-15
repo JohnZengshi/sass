@@ -386,7 +386,7 @@ export default {
                     if (this.data.propertyCode == 'unitPrice') {
                         debugger
                     }
-                    if (this.data.propertyCode == 'discountPrice' && value == "100") {
+                    if (this.data.propertyCode == 'discountPrice' && value == "100" && !this.data.isNullPrint) {
                         return false
                     } else if (this.data.isNullPrint) {
                         return true
