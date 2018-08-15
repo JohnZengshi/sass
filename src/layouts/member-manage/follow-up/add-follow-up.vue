@@ -1,14 +1,16 @@
 <template>
-  <div>
+
+<el-dialog top="10%" :visible.sync="isDialog" :class="currentStyle">
     <!-- 第一步 -->
     <big-small-class
       ref="bigSmallClassBox"
+      v-show="currentLocation == 'bigSmallClass'"
       :checkData="checkData"
       @confirm="confirm"
       @cancel="cancel"
       @close="classClose"
     ></big-small-class>
-    
+
     <!-- 第二步 -->
     <inputPush
       ref="inputPushBox"
@@ -18,23 +20,26 @@
       :userNameList="userNameList"
       :checkData="checkData"
       :shopUserList="shopUserList"
+      v-show="currentLocation == 'inputPush'"
       @selectUser="selectUser"
       @initLeaderData="initLeaderData"
       @close="close"
     ></inputPush>
 
     <!-- 选择人员 -->
-    <el-dialog :modal="false" :visible.sync="isChoseLeader" top="15%" customClass="choseLeaderDig" :close-on-click-modal="false">
+<!--     <el-dialog :modal="false" :visible.sync="isChoseLeader" top="15%" customClass="choseLeaderDig" :close-on-click-modal="false"> -->
       <chose-leader
+        v-if="currentLocation == 'choseLeader'"
+        :headerTit="'选择会员'"
         :userIdList="userIdList"
         :shopId="shopId"
         :addModel="1"
-        :isChoseLeader="isChoseLeader"
+        @close="toInputPush"
         @closeChoMember="closeChoLeader"
       ></chose-leader>
-    </el-dialog>
+<!--     </el-dialog> -->
 
-  </div>
+</el-dialog>
 </template>
 <script>
 import bigSmallClass from './base/big-small-class'
@@ -52,8 +57,9 @@ export default {
   props: ['shopId'],
   data () {
     return {
+      isDialog: true,
+      currentLocation: 'bigSmallClass',
       followId: '', // 跟进id
-      isChoseLeader: false,
       checkData: {
         bigClass: {},
         smallClass: {},
@@ -61,6 +67,20 @@ export default {
       shopUserList: [], // 店铺用户列表
       userIdList: [], // 选中的用户Id
       userNameList: '' // 用户名
+    }
+  },
+  computed: {
+    currentStyle () {
+      switch (this.currentLocation) {
+        case 'bigSmallClass':
+          return {
+            'new-small-popup-dialog': true
+          }
+        default:
+          return {
+            'xj-input-dialog-bg': true
+          }
+      }
     }
   },
   methods: {
@@ -73,28 +93,34 @@ export default {
       this.shopUserList = []
       this.userIdList = []
       this.userNameList = ''
+      this.isDialog = false
     },
     open (parm) {
+      this.isDialog = true
       if (parm) { // 编辑
         this.followId = parm.followId
         setTimeout(() => {
-          this.$refs.inputPushBox.open()
+          // 请求数据
+          this.$refs.inputPushBox._seekFindMemberList()
         }, 0)
       } else { // 新建
-        this.$refs.bigSmallClassBox.open() 
+        this.currentLocation = 'bigSmallClass'
       }
       this._seekGetShopUserList()
     },
     close () {
-      this.$refs.bigSmallClassBox.close()
+      if (this.followId) {
+        this.isDialog = false
+      } else {
+        this.currentLocation = 'bigSmallClass'
+      }
     },
     confirm (parm) {
-      this.$refs.inputPushBox.open()
+      this.currentLocation = 'inputPush'
       this.checkData = parm
     },
     selectUser () {
-      this.isChoseLeader = true
-      // this.$refs.choseLeaderBox.open()
+      this.currentLocation = 'choseLeader'
     },
     cancel () {
 
@@ -102,6 +128,9 @@ export default {
     initLeaderData (parm) {
       this.userIdList = extractIdList(parm, 'memberId')
       this.userNameList = groupName(parm, 'memberName')
+    },
+    toInputPush () {
+      this.currentLocation = 'inputPush'
     },
     // 选择负责人
     closeChoLeader (parm) {
@@ -111,7 +140,7 @@ export default {
       }
       this.userIdList = parm.list
       this.userNameList = userName
-      this.isChoseLeader = false
+      this.currentLocation = 'inputPush'
     },
     // 店铺人员列表
     _seekGetShopUserList () {

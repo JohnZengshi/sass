@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :visible.sync="isShowDio" :modal="false" :close-on-click-modal="false" class="xj-input-dialog-bg">
-    <div v-loading="loading" element-loading-text="拼命加载中..." class="n-p-scroll-box n-p-scroll-box">
+<!--   <el-dialog :visible.sync="isShowDio" :modal="false" :close-on-click-modal="false" class="xj-input-dialog-bg"> -->
+    <div v-loading="loading" element-loading-text="拼命加载中..." class="n-p-scroll-box">
       <div class="p-close-icon" @click="close">
         <i class="el-dialog__close el-icon el-icon-close"></i>
       </div>
@@ -70,12 +70,12 @@
       </div>
 
       <div class="xj-btn-list">
-        <div class="btn cnacel-btn" @click="close">返回上一级</div>
+        <div v-if="!followId" class="btn cnacel-btn" @click="close">返回上一级</div>
         <div class="btn" @click="confirm">确定</div>
       </div>
     </div>
 
-  </el-dialog>
+<!--   </el-dialog> -->
 </template>
 <script>
 import aloneDropDownColums from 'base/menu/alone-drop-down-colums'
@@ -96,7 +96,7 @@ export default {
   data () {
     return {
       loading: false,
-      isShowDio: false,
+      oldData: {}, // 初始值
       addData: {
         followType: '', // 触发类型
         followName: '',
@@ -116,20 +116,19 @@ export default {
     updateTrigger (parm) {
       Object.assign(this.addData, parm)
     },
-    open () {
-      this.isShowDio = true
-      if (this.followId) {
-        this._seekFindMemberList()
-      }
-    },
+    // open () {
+    //   if (this.followId) {
+    //     this._seekFindMemberList()
+    //   }
+    // },
     close () {
-      this.isShowDio = false
-      // this.$emit('close')
+      this.$emit('close')
     },
     selectUser () {
       this.$emit('selectUser')
     },
     confirm () {
+
       if (!this.addData.followName) {
         this.$message({type: 'warning',message: '请输入跟进名称'})
         return
@@ -164,6 +163,15 @@ export default {
         }
 
       }
+
+      if (!this.followId) {
+        this._operateFollowCreateByNew()
+      } else {
+        this._operateFollowUpdateByNew()
+      }
+    },
+    // 新建
+    _operateFollowCreateByNew () {
       let options = {
         shopId: this.shopId,
         followName: this.addData.followName,
@@ -187,8 +195,39 @@ export default {
               }  
             })
 
+          } else {
+            this.$message({type: 'error', message: res.data.msg})
           }
         })
+    },
+    // 修改
+    _operateFollowUpdateByNew () {
+      let options = {
+        followId: this.followId,
+        shopId: this.shopId,
+        // followName: this.addData.followName,
+        // principalList: groupIdList(this.principalList, 'principalId'), // 公共负责人
+        // allPrincipalList: groupIdList(this.allPrincipalList, 'principalId'), // 所有负责人
+        // completeTime: formattingTime(this.addData.completeTime), // 完成时间
+        // followType: this.checkData.bigClass.id, // 跟进类型
+        // triggerRule: this.checkData.smallClass.id, // 触发事件
+        // dataList: groupIdList(this.userIdList, 'memberId') // 会员
+      }
+      // 修改的数据
+      let amendData = {}
+      operateFollowCreateByNew(options)
+        .then(res => {
+          if (res.data.state == 200) {
+            this.$message({type: 'success', message: '修改成功'})
+            this.close()
+          } else {
+            this.$message({type: 'error', message: res.data.msg})
+          }
+        })
+    },
+    // 提取修改的值
+    filterAmendData () {
+
     },
     setCompleteTime () {
 
@@ -242,10 +281,11 @@ export default {
         triggerRule: '1',
         triggerTime: '1',
       }
-      datas.triggerTimeTypeName = getTimeType(datas.triggerTimeType)
+      this.oldData = _.cloneDeep(datas)
       datas.followTime = restoreTime(datas.followTime)
-      datas.triggerRuleName = getTriggerRule(datas.triggerRule)
       this.addData = datas
+      console.log('oldData')
+      console.log('oldData', this.oldData)
       this.$emit('initLeaderData', datas.dataList)
       // this.userIdList = extractIdList(datas.dataList, 'memberId')
       this.principalList = extractIdList(datas.principalList, 'principalId') // 公共负责人

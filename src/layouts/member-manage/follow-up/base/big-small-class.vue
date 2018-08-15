@@ -1,6 +1,8 @@
 <template>
-  <small-popup ref="smallPopupBox" @close="close" :headTit="'新建跟进'" :dialogClass="'new-small-popup-dialog'">
+<!--   <small-popup ref="smallPopupBox" @close="close" :headTit="'新建跟进'" :dialogClass="'new-small-popup-dialog'"> -->
     <div class="big-small-class">
+
+      <p-header @close="close" :headTit="'新建跟进'"></p-header>
 
       <div class="list-wrap">
 
@@ -21,14 +23,14 @@
       </div>
 
     </div>  
-  </small-popup>
+<!--   </small-popup> -->
 </template>
 <script>
-import smallPopup from 'base/popup/small-popup'
+import pHeader from 'base/header/p-header'
 let dataSource = require('./data.js')
 export default {
   components: {
-    smallPopup
+    pHeader
   },
   data () {
     return {

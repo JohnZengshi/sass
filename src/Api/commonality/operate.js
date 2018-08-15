@@ -671,3 +671,8 @@ export const operateFollowCreateByNew = function(parm) {
     let url = "/v1/member/followCreateByNew";
     return new Axios(url, parm).apiCall();
 }
+// 修改跟进
+export const operateFollowUpdateByNew = function(parm) {
+    let url = "/v1/member/followUpdateByNew";
+    return new Axios(url, parm).apiCall();
+}

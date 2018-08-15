@@ -1,6 +1,9 @@
 <template>
     <div class="chose-wrap">
-        <div class="title">选择负责人</div>
+        <div class="p-close-icon" @click="close">
+            <i class="el-dialog__close el-icon el-icon-close"></i>
+        </div>
+        <div class="title">{{headerTit}}</div>
         <div class="menu-list">
             <div class="search">
                 <input @keyup.enter="getShopUserList" v-model="userPhone" type="text" placeholder="请输入负责人名/手机号">
@@ -42,12 +45,14 @@ export default {
     //     VisitAim
     // },
     props: [
+        'headerTit',
         'dataInfo',
         'shopId',
         'isChoseLeader',
         'addModel',
         "isFollowPage",
-        'isFollowClear'
+        'isFollowClear',
+        'userIdList'
     ],
     watch: {
         'isChoseLeader': function () {
@@ -81,6 +86,9 @@ export default {
         });
     },
     methods: {
+        close () {
+            this.$emit('close')
+        },
         closeAim (val) {
             this.isVisitAim = false
             this.$emit("closeChoMember", {list: this.checkList, followAim: val})
@@ -146,16 +154,10 @@ export default {
                         })
                     }
                 } else {
-                    this.$message({
-                        type: 'warning',
-                        message: res.data.msg
-                    })
+                    this.$message({type: 'success',message: res.data.msg})
                 }
             }, (res) => {
-                this.$message({
-                    type: 'warning',
-                    message: res.data.msg
-                })
+                this.$message({type: 'success',message: res.data.msg})
             })
         }
     }
