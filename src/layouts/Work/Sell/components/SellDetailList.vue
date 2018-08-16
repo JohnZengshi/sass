@@ -1192,24 +1192,36 @@ export default {
                 }
 
             }).then(() => {
+
+                let repairGoldPriceE = this.mantissaProcessing(this.item.saleGoldPrice * this.item.goldWeight);
                 let options = {
                     orderNum: this.orderNum,
                     barcode: barcode,
                     modifyList: [
                         {
-                            modifyType: '19',
+                            modifyType: '19', //补金价
                             dataType: '1',
-                            objectData: this.mantissaProcessing(this.item.saleGoldPrice) || 0
+                            objectData: this.mantissaProcessing(this.item.saleGoldPrice)
                         },
                         {
-                            modifyType: '21',
+                            modifyType: '20', //补价金额
+                            dataType: '1',
+                            objectData: repairGoldPriceE
+                        },
+                        {
+                            modifyType: '21',   //补金重
                             dataType: '1',
                             objectData: this.item.goldWeight || 0
                         },
                         {
-                            modifyType: '25',
+                            modifyType: '25', //旧料价
                             dataType: '1',
-                            objectData: this.mantissaProcessing(this.item.price) || 0
+                            objectData: this.mantissaProcessing(this.item.price - repairGoldPriceE)
+                        },
+                        {
+                            modifyType: '10', //换货价
+                            dataType: '1',
+                            objectData: repairGoldPriceE
                         }
                     ]
                 }
