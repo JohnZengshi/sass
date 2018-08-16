@@ -2315,7 +2315,6 @@ export default {
             setTimeout(() => {
                 this.appPrint.innerHTML = this.$refs.windowPrintView.innerHTML
             }, 1000)
-
             setTimeout(() => {
                 print = document.execCommand('print');
             }, 1500)
