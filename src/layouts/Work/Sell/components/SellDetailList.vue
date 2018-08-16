@@ -490,14 +490,14 @@ export default {
         updataExchange(id) {
             //id添加关联商品id，有id为新增，无为取消关联
             let barcode = '';
-            let [repairGoldweight,repairGoldPriceE,differencePriceE,exchangePrice,repairOldPrice] = [0,0,0,0,0];
+            let [repairGoldweight,repairGoldPriceE,exchangePrice,repairOldPrice] = [0,0,0,0];
             debugger
             if (id) {
                 let item = this.getExchangeById(id);
                 repairGoldweight = +item.repairGoldweight + +this.item.goldWeight; //补金重
                 repairGoldPriceE = this.mantissaProcessing(item.repairGoldPrice * repairGoldweight); //补价金额
-                differencePriceE = this.mantissaProcessing(item.differencePrice * repairGoldweight); //补差价额
-                exchangePrice = this.mantissaProcessing(repairGoldPriceE + differencePriceE + +item.repairFee);
+                // differencePriceE = this.mantissaProcessing(item.differencePrice * repairGoldweight); //补差价额
+                exchangePrice = this.mantissaProcessing(repairGoldPriceE + item.differencePriceE + +item.repairFee);
                 repairOldPrice = this.mantissaProcessing(+item.totalPrice + +this.item.price - exchangePrice);
                 barcode = item.barcode;
 
@@ -505,8 +505,8 @@ export default {
                 let item = this.item.recycleList;
                 repairGoldweight = item.repairGoldweight - this.item.goldWeight; //补金重
                 repairGoldPriceE = this.mantissaProcessing(item.repairGoldPrice * repairGoldweight); //补价金额
-                differencePriceE = this.mantissaProcessing(item.differencePrice * repairGoldweight); //补差价额
-                exchangePrice = this.mantissaProcessing(repairGoldPriceE + differencePriceE + +item.repairFee);
+                // differencePriceE = this.mantissaProcessing(item.differencePrice * repairGoldweight); //补差价额
+                exchangePrice = this.mantissaProcessing(repairGoldPriceE + item.differencePriceE + +item.repairFee);
                 repairOldPrice = this.mantissaProcessing(+item.totalPrice - this.item.price - exchangePrice);
                 barcode = item.barcode;
             }
@@ -521,11 +521,11 @@ export default {
                     dataType: '1',
                     objectData: repairGoldPriceE
                 },
-                {
-                    modifyType: '24',
-                    dataType: '1',
-                    objectData: differencePriceE
-                },
+                // {
+                //     modifyType: '24',
+                //     dataType: '1',
+                //     objectData: differencePriceE
+                // },
                 {
                     modifyType: '25',
                     dataType: '1',
@@ -597,7 +597,7 @@ export default {
                     item.repairGoldweight = (item.totalGoldWeight - item.goldWeight).toFixed(3) || 0;
                     item.repairGoldPriceE = this.mantissaProcessing(item.repairGoldPrice * item.repairGoldweight);
                     item.repairFee = this.mantissaProcessing(item.paymentPrice * item.goldWeight);
-                    item.differencePriceE = this.mantissaProcessing(item.differencePrice * item.repairGoldweight);
+                    item.differencePriceE = this.mantissaProcessing(item.differencePrice * item.goldWeight);
                     item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
                     item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
                     //补金重
@@ -663,7 +663,7 @@ export default {
                      旧料价=实售价-换货价
                      * @type {number}
                      */
-                    item.differencePriceE = this.mantissaProcessing(item.differencePrice * item.repairGoldweight);
+                    item.differencePriceE = this.mantissaProcessing(item.differencePrice * item.goldWeight);
                     item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
                     item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
                     break;
@@ -674,7 +674,7 @@ export default {
                      旧料价=实售价-换货价
                      * @type {number}
                      */
-                    item.differencePrice = this.mantissaProcessing(item.differencePriceE / item.repairGoldweight);
+                    item.differencePrice = this.mantissaProcessing(item.differencePriceE / item.goldWeight);
                     item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
                     item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
                     break;

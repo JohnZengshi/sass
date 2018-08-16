@@ -111,7 +111,10 @@
                         })
                         for (let child of items) {
                             child.data.productIndex = (this.page - 1) * this.data.number + i;
-                            let itemTop = t + (i + 1) * gap - 0.5 * child.data.height;
+                            // let itemTop = t + (i + 1) * gap - 0.5 * child.data.height;
+                            debugger
+
+                            let itemTop = (t + (i + 1) * gap - gap).toFixed(1);
                             if (maxTop > itemTop) {
                                 itemTop = maxTop + gap;
                             }
@@ -134,6 +137,7 @@
                                     }
                                 }
                             } else {
+                                debugger
                                 //console.log(child.data.top , child.data.height)
                                 child.data.top = t + i * child.data.height;
                                 if (child.data.top > maxTop) {
@@ -151,7 +155,6 @@
                         this.children.push(childClone)
                     })
                 }
-                debugger
                 return this.children
             },
         },
