@@ -22,6 +22,7 @@
           ref="reportDetailWrap"
           :dataGridStorage="dataGridStorage"
           :configData="configData"
+          :className="'xj-report-table-container-img-small'"
           @lazyloadSend="lazyloadSend"
           @sortListAct="sortListAct"
           @delData="delData"

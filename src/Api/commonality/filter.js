@@ -33,3 +33,51 @@ export const extractIdList = function (item, smallkey = 'id') {
     }
     return idList
 }
+// 提取第一个数组和第二个数据的差值  
+export const differenceData = function (oneList, twoList, keyName, addType, delType, operationKey = 'type') {
+    let difference = {
+        one: [], // 数组二没有的值
+        two: [] // 数组一没有的值
+    }
+    for (let i of oneList) {
+        if (!twoList.includes(i)) {
+            if (keyName) {
+
+                if (delType) {
+                    difference.one.push({
+                        [keyName]: i,
+                        [operationKey]: delType
+                    })
+                } else {
+                    difference.one.push({
+                        [keyName]: i
+                    })
+                }
+               
+            } else {
+                difference.one.push(i)
+            }
+        }
+    }
+    for (let i of twoList) {
+        if (!oneList.includes(i)) {
+            if (keyName) {
+
+                if (addType) {
+                    difference.one.push({
+                        [keyName]: i,
+                        [operationKey]: addType
+                    })  
+                } else {
+                    difference.one.push({
+                        [keyName]: i
+                    })   
+                }
+                
+            } else {
+                difference.two.push(i)
+            } 
+        }
+    }
+    return difference
+}

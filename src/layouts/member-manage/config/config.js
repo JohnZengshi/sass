@@ -25,6 +25,7 @@ module.exports = {
       totalName: '', //底部合计 提示文字
       childType: 'avatarUrl', //单元格类型
       totalType: 'totalNum', //小计
+      smallImg: true, // 小图
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       editOldType : ''
@@ -165,7 +166,7 @@ module.exports = {
     {
       id: '11', //id 
       text: '注册时间', //头部title文字
-      width: '120', //单元格宽
+      width: '150', //单元格宽
       type: '', //合计类型值
       type1: '', //合计类型值
       unit: '', //头部单位补充文字
@@ -173,6 +174,7 @@ module.exports = {
       totalName: '', //底部合计 提示文字
       childType: 'createTime', //单元格类型
       totalType: '', //小计
+      line: true, // 单行显示
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数
       sort: '',
@@ -235,7 +237,7 @@ module.exports = {
       unit: '', //头部单位补充文字
       footerUnit: '', //底部单位补充文字 可以为元、万或件等等 抽象单位
       totalName: '', //底部合计 提示文字
-      childType: 'nickname', //单元格类型
+      childType: 'userName', //单元格类型
       totalType: 'totalNum', //小计
       toFixed: false, //是否进行小数点精确截取
       countCut: 0, //小数点截取位数

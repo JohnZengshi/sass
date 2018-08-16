@@ -26,18 +26,15 @@
       @close="close"
     ></inputPush>
 
-    <!-- 选择人员 -->
-<!--     <el-dialog :modal="false" :visible.sync="isChoseLeader" top="15%" customClass="choseLeaderDig" :close-on-click-modal="false"> -->
-      <chose-leader
-        v-if="currentLocation == 'choseLeader'"
-        :headerTit="'选择会员'"
-        :userIdList="userIdList"
-        :shopId="shopId"
-        :addModel="1"
-        @close="toInputPush"
-        @closeChoMember="closeChoLeader"
-      ></chose-leader>
-<!--     </el-dialog> -->
+    <chose-leader
+      v-if="currentLocation == 'choseLeader'"
+      :headerTit="'选择会员'"
+      :userIdList="userIdList"
+      :shopId="shopId"
+      :addModel="1"
+      @close="toInputPush"
+      @closeChoMember="closeChoLeader"
+    ></chose-leader>
 
 </el-dialog>
 </template>
@@ -57,7 +54,7 @@ export default {
   props: ['shopId'],
   data () {
     return {
-      isDialog: true,
+      isDialog: false,
       currentLocation: 'bigSmallClass',
       followId: '', // 跟进id
       checkData: {
@@ -83,6 +80,13 @@ export default {
       }
     }
   },
+  watch: {
+    isDialog () {
+      if (!this.isDialog) {
+        this.$emit('close')
+      }
+    }
+  },
   methods: {
     // 关闭，还原数据
     classClose () {
@@ -99,6 +103,7 @@ export default {
       this.isDialog = true
       if (parm) { // 编辑
         this.followId = parm.followId
+        this.currentLocation = 'inputPush'
         setTimeout(() => {
           // 请求数据
           this.$refs.inputPushBox._seekFindMemberList()

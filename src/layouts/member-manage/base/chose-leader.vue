@@ -1,5 +1,5 @@
 <template>
-    <div class="chose-wrap">
+    <div class="n-p-scroll-box">
         <div class="p-close-icon" @click="close">
             <i class="el-dialog__close el-icon el-icon-close"></i>
         </div>
@@ -12,38 +12,49 @@
                 </div>
             </div>
         </div>
-        <div class="member-list">
-            <ul>
-                <li v-for="(item, index) in dataList" :key="index">
-                    <img :src="item.logo">
-                    <div class="name">{{item.userName}}</div>
-                    <div class="phone">
-                        <img src="~static/img/member/new/phone.png" />
-                        {{item.phoneNo}}
-                    </div>
-                    <div class="check">
-                        <el-checkbox-group v-model="checkList" @change="checkChange">
-                            <el-checkbox :label="item.userId"></el-checkbox>
-                        </el-checkbox-group>
-                    </div>
-
+        <!-- 高级搜索 -->
+        <advanced-search v-if="false"></advanced-search>
+        <div class="member-list new-e-checkbox-square">
+            <ul class="member-header">
+                <li>头像</li>
+                <li>姓名</li>
+                <li>手机号</li>
+                <li>
+                    <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                 </li>
             </ul>
+            <el-checkbox-group v-model="checkList"  @change="handleCheckedCitiesChange">
+                <ul class="member-body" v-for="(item, index) in dataList">
+                    <li>
+                        <img :src="item.logo">
+                    </li>
+                    <li>
+                        {{item.userName}}
+                    </li>
+                    <li>
+                        <i class="iconfont icon-genjin"></i> {{item.phoneNo}}
+                    </li>
+                    <li>
+                        <el-checkbox :label="item.userId"></el-checkbox>
+                    </li>
+                </ul>
+            </el-checkbox-group>
         </div>
-        <div class="btn-wrap" v-if="isFollowPage">
-            <div class="click-btn" @click="closeDia">确定</div>
+        <p class="all-num-tit">筛选跟进会员：<span>{{total}}</span>位</p>
+        <div class="xj-btn-list">
+            <div v-if="!followId" class="btn cnacel-btn" @click="close">返回上一级</div>
+            <div class="btn" @click="confirm">确定</div>
         </div>
-        <div v-else class="chose-btn" @click="closeDia">确定</div>
     </div>
 </template>
-
 <script>
-import {seekGetShopUserList} from 'Api/commonality/seek'
-// import VisitAim from './visitAim'
+import { seekGetShopUserList } from 'Api/commonality/seek'
+import advancedSearch from './advanced-search'
+
 export default {
-    // components: {
-    //     VisitAim
-    // },
+    components: {
+        advancedSearch
+    },
     props: [
         'headerTit',
         'dataInfo',
@@ -52,51 +63,64 @@ export default {
         'addModel',
         "isFollowPage",
         'isFollowClear',
-        'userIdList'
+        'userIdList',
+        'followId'
     ],
     watch: {
-        'isChoseLeader': function () {
+        'isChoseLeader': function() {
             this.getShopUserList()
             if (this.userIdList) {
                 this.checkList = this.userIdList
             }
         }
     },
-    data () {
+    data() {
         return {
-            userPhone:'',
+            isIndeterminate: false,
+            checkAll: false,
+            userPhone: '',
             dataList: [],
             checkList: [],
             nameList: [],
             pageSize: 99,
             page: 1,
-            isVisitAim: false
+            isVisitAim: false,
+            total: ''
         }
     },
-    created () {
+    created() {
         this.getShopUserList()
         if (this.userIdList) {
             this.checkList = this.userIdList
         }
     },
-    mounted () {
+    mounted() {
         $(".member-list").mCustomScrollbar({
             theme: "minimal-dark",
             axis: "y"
         });
     },
     methods: {
-        close () {
+        handleCheckAllChange(val) {
+            this.checkList = val ? cityOptions : [];
+            this.isIndeterminate = false;
+        },
+        handleCheckedCitiesChange(value) {
+            let checkedCount = value.length;
+            this.checkAll = checkedCount === this.dataList.length;
+            this.isIndeterminate = checkedCount > 0 && checkedCount < this.dataList.length;
+        },
+        close() {
             this.$emit('close')
         },
-        closeAim (val) {
+        closeAim(val) {
             this.isVisitAim = false
-            this.$emit("closeChoMember", {list: this.checkList, followAim: val})
+            this.$emit("closeChoMember", { list: this.checkList, followAim: val })
         },
-        returnBack () {
+        returnBack() {
             this.$emit("returnBack")
         },
-        closeDia () { // 关闭弹窗
+        confirm() { // 关闭弹窗
             this.nameList = []
             if (this.addModel) {
                 this.dataList.forEach((item, index) => {
@@ -104,16 +128,16 @@ export default {
                         this.nameList.push(item.userName)
                     }
                 })
-                this.$emit("closeChoMember", {list: this.checkList, nameList: this.nameList})
+                this.$emit("closeChoMember", { list: this.checkList, nameList: this.nameList })
             } else if (this.isFollowPage) {
                 this.isVisitAim = true
             } else {
-                this.$emit("closeChoMember", {list: this.checkList})
+                this.$emit("closeChoMember", { list: this.checkList })
             }
 
 
         },
-        getLevel (level) {
+        getLevel(level) {
             switch (level) {
                 case '1':
                     return "普通"
@@ -123,7 +147,7 @@ export default {
                     return "重要"
             }
         },
-        getType (type) {
+        getType(type) {
             switch (type) {
                 case 1:
                     return '私有'
@@ -133,61 +157,63 @@ export default {
                     return '公共'
             }
         },
-        checkChange (val) { // 多选选中的改变
+        checkChange(val) { // 多选选中的改变
             console.log(val)
         },
-        getShopUserList () {
+        getShopUserList() {
             let options = {
                 page: this.page,
                 pageSize: this.pageSize,
                 shopId: this.shopId
             }
-            if(this.userPhone != "" && this.userPhone != null){
-                options.phone=this.userPhone;
+            if (this.userPhone != "" && this.userPhone != null) {
+                options.phone = this.userPhone;
             }
             seekGetShopUserList(options).then((res) => {
                 if (res.data.state == 200) {
                     this.dataList = res.data.data.shopUserList
+                    this.total = res.data.data.total
                     if (this.followData) {
                         this.followData.principalList.forEach((item, index) => {
                             this.checkList.push(this.followData.principalList[index].principalId)
                         })
                     }
                 } else {
-                    this.$message({type: 'success',message: res.data.msg})
+                    this.$message({ type: 'success', message: res.data.msg })
                 }
             }, (res) => {
-                this.$message({type: 'success',message: res.data.msg})
+                this.$message({ type: 'success', message: res.data.msg })
             })
         }
     }
 }
-</script>
 
+</script>
 <style lang="scss">
-.choseLeaderDig {
-    width: 700px;
-    height: 730px;
-    background:#fff;
-    border-radius: 10px;
-    .el-dialog__header {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 38px;
-        padding-top: 20px !important;
-        padding-right: 20px !important;
-    }
-    .el-dialog__body {
-        padding: 0 28px;
-    }
-}
-.chose-wrap {
+// .choseLeaderDig {
+//     width: 700px;
+//     height: 730px;
+//     background: #fff;
+//     border-radius: 10px;
+//     .el-dialog__header {
+//         position: absolute;
+//         top: 0;
+//         left: 0;
+//         width: 100%;
+//         height: 38px;
+//         padding-top: 20px !important;
+//         padding-right: 20px !important;
+//     }
+//     .el-dialog__body {
+//         padding: 0 28px;
+//     }
+// }
+
+.n-p-scroll-box {
     .title {
         padding-top: 20px;
         font-size: 14px;
-        color:#333;
+        color: #333;
         font-weight: bold;
         margin-bottom: 30px;
     }
@@ -219,7 +245,7 @@ export default {
                 text-align: center;
                 cursor: pointer;
                 i {
-                    color:#fff;
+                    color: #fff;
                     line-height: 28px;
                 }
             }
@@ -227,120 +253,75 @@ export default {
     }
     .member-list {
         height: 500px;
-        margin-bottom: 60px;
-        ul {
-            height: 100%;
+        .member-header {
+            height: 40px;
+            background-color: #f5f5f5;
+            overflow: hidden;
+            display: -ms-flexbox;
+            display: flex;
+            border-bottom: 2px solid #e7e7e7;
             li {
-                height: 50px;
-                line-height: 50px;
+                display: inline-block;
+                line-height: 40px;
+                text-align: center;
+                color: #686868;
+                font-size: 12px;
+                float: left;
+                font-weight: bold;
+                transition: all .3s;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        }
+        .member-body {
+            height: 100%;
+            &:nth-child(2n) {
+                background-color: #FBFBFB;
+            }
+            &:hover {
+                background-color: #FFFBF3;
+            }
+            li {
+                height: 40px;
+                line-height: 40px;
                 img {
-                    width: 34px;
-                    height: 34px;
-                    float: left;
-                    margin-top: 8px;
-                    margin-left: 20px;
-                    margin-right: 20px;
+                    width: 30px;
+                    height: 30px;
+                    margin-top: 5px;
                     border-radius: 50%;
                 }
-                .name {
-                    float: left;
-                    width: 100px;
-                    margin-right: 20px;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    display: inline-block;
-                    // width: 423px;
-                    // line-height: 50px;
-                    vertical-align: middle;
-                }
-                .label {
-                    float: left;
-                    width: 85px;
-                    padding-top: 17px;
-                    &>span {
-                        width: 34px;
-                        height: 16px;
-                        border-radius: 4px;
-                        float: left;
-                        font-size: 12px;
-                        text-align: center;
-                        line-height: 16px;
-                        color:#fff;
-                    }
-                    .type {
-                        margin-right: 15px;
-                    }
-                    .typeColor1 { background:#0078f2;}
-                    .typeColor2 { background:#009dff;}
-                    .typeColor3 { background:#96d7ff;}
-                    .lvColor1 {background:#ffc62e;}
-                    .lvColor2 {background:#ffa200;}
-                    .lvColor3 {background:#f27200;}
-                }
-                .phone {
-                    float: left;
-                    img {
-                        width: 14px;
-                        height: 14px;
-                        margin-top: 18px;
-                        margin-right: 7px;
-                        border-radius: 0;
-                    }
-                }
-                .check {
-                    float: right;
-                    margin-right: 20px;
-                    .el-checkbox-group {
-                        .el-checkbox {
-
-                            .el-checkbox__input {
-                                .el-checkbox__inner {
-                                    border-radius: 4px;
-                                }
-                            }
-                        }
-                    }
+                i {
+                    color: #2993f8;
                 }
             }
-            &>li:nth-child(even) {
-                background:#f4f4f4;
+        }
+        ul {
+            display: flex;
+            li {
+                text-align: center;
+            }
+            li:nth-child(1) {
+                width: 100px;
+            }
+            li:nth-child(2) {
+                width: 100px;
+            }
+            li:nth-child(3) {
+                flex: 1;
+            }
+            li:nth-child(4) {
+                width: 100px;
             }
         }
     }
-    .chose-btn {
-        width: 90px;
-        height: 28px;
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: bold;
-        text-align: center;
-        line-height: 28px;
-        background:#2993f8;
-        color:#fff;
-        margin: 0 auto;
-        cursor: pointer;
-    }
-    .btn-wrap {
-        width: 260px;
-        margin: 0 auto;
-        .click-btn {
-            float: left;
-            width: 90px;
-            height: 28px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            text-align: center;
-            line-height: 28px;
-            background:#2993f8;
-            color:#fff;
-           
-            cursor: pointer;
-        }
-        .click-btn:nth-child(1) {
-            margin-right: 80px;
+    .all-num-tit{
+        text-align: right;
+        font-size: 14px;
+        margin: 10px 0;
+        span{
+            color: #2993f8;
         }
     }
 }
+
 </style>

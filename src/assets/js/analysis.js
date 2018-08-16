@@ -64,7 +64,6 @@ export const getTimeType = function (type) {
   }
   return ''
 }
-// 时间类型
 export const getTriggerRule = function (type) {
   switch (type) {
     case '1':
@@ -109,6 +108,45 @@ export const getWeekTime = function (type) {
       return '周六'
     case '7':
       return '周日'
+  }
+  return ''
+}
+// 跟进类型
+export const getFollowType = function (type) {
+  switch (type) {
+    case '1':
+      return '即时跟进'
+    case '2':
+      return '触发跟进'
+  }
+  return ''
+}
+// 跟进状态
+export const getFollowUpStatus = function (type) {
+  switch (type) {
+    case '1':
+      return '进行中'
+    case '2':
+      return '已超时'
+    case '3':
+      return '已完成'
+    case '4':
+      return '待跟进'
+  }
+  return ''
+}
+export const getVisitAimList = function (type) {
+  switch (type) {
+    case '1':
+      return '生日跟进'
+    case '2':
+      return '售后跟进'
+    case '3':
+      return '日常跟进'
+    case '4':
+      return '纪念日跟进'
+    case '5':
+      return '其他跟进'
   }
   return ''
 }

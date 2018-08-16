@@ -4,7 +4,7 @@
     <!-- 选择用户 -->
     <choose-user :isDialog="isDialog" v-show="currentLocation == 'chooseUser'" @confirm="cutBox" @close="close"></choose-user>
     <!-- 完成 -->
-    <complete :isDialog="isDialog" v-show="currentLocation == 'complete'" :followList="checkedList" @close="close"></complete>
+    <complete :isDialog="isDialog" :userData="userData" v-show="currentLocation == 'complete'" :followList="checkedList" @close="close"></complete>
   </el-dialog>
 </template>
 <script>
@@ -20,7 +20,8 @@ export default {
     return {
       checkedList: [],
       currentLocation: 'chooseUser',
-      isDialog: false
+      isDialog: false,
+      userData: {}, // 用户数据
     }
   },
   computed: {
@@ -41,6 +42,9 @@ export default {
     open(parm) {
       this.currentLocation = parm.index
       this.isDialog = true
+      if (parm.item) {
+        this.userData = parm.item
+      }
       // this.$nextTick(() => {
       //   if (this.$refs.editorMemberBox) {
       //     this.$refs.editorMemberBox.open()

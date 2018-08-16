@@ -204,18 +204,14 @@ export default {
     _operateFollowUpdateByNew () {
       let options = {
         followId: this.followId,
-        shopId: this.shopId,
-        // followName: this.addData.followName,
-        // principalList: groupIdList(this.principalList, 'principalId'), // 公共负责人
-        // allPrincipalList: groupIdList(this.allPrincipalList, 'principalId'), // 所有负责人
-        // completeTime: formattingTime(this.addData.completeTime), // 完成时间
-        // followType: this.checkData.bigClass.id, // 跟进类型
-        // triggerRule: this.checkData.smallClass.id, // 触发事件
-        // dataList: groupIdList(this.userIdList, 'memberId') // 会员
+        shopId: this.shopId
       }
       // 修改的数据
-      let amendData = {}
-      operateFollowCreateByNew(options)
+      let amendData = this.filterAmendData()
+      if (!Object.keys(amendData).length) {
+        this.close()
+      }
+      operateFollowCreateByNew(Object.assign({}, options, amendData))
         .then(res => {
           if (res.data.state == 200) {
             this.$message({type: 'success', message: '修改成功'})
@@ -227,7 +223,86 @@ export default {
     },
     // 提取修改的值
     filterAmendData () {
+      let amendData = {}
+      /* 判断跟进名 */
+      if (this.oldData.followName != this.addData.followName) {
+        amendData.followName = this.addData.followName
+      }
 
+      /* 公共跟进人 */
+      let amendPrincipalList = differenceData(extractIdList(this.oldData.principalList), this.principalList)
+      if (amendPrincipalList.one.length || amendPrincipalList.two.length) {
+        amendData.principalList = groupIdList(this.principalList, 'principalId')
+      }
+
+      /* 所有跟进人 */
+      let amendAllPrincipalList = differenceData(extractIdList(this.oldData.allPrincipalList), this.allPrincipalList)
+      if (amendAllPrincipalList.one.length || amendAllPrincipalList.two.length) {
+        amendData.allPrincipalList = groupIdList(this.principalList, 'principalId')
+      }
+
+      /* 会员 */
+      let amendDataList = differenceData(extractIdList(this.oldData.dataList), this.userIdList)
+      if (amendDataList.one.length || amendDataList.two.length) {
+        amendData.dataList = groupIdList(this.userIdList, 'memberId')
+      }
+
+      // 跟进类型
+      if (this.addData.followType == 2) {
+        /* 触发条件 */
+        if (this.addData.eventType != this.oldData.eventType) { // 有改动
+
+          amendData.eventType = this.addData.eventType
+
+          if (this.addData.eventType == 1) { // 时间
+            // 时间触发类型
+            amendData.triggerTimeType = this.addData.triggerTimeType
+            // 年月日类型的时间
+            amendData.completeTime = this.addData.completeTime
+          } else if (this.addData.eventType == 2) { // 事件
+            // 触发事件
+            amendData.triggerRule = this.addData.triggerTimeType
+            // 触发事件时间
+            amendData.triggerTime = this.addData.triggerTime
+            // 触发事件天数
+            amendData.startingDay = this.addData.startingDay
+          }
+        } else { // 无改动
+            // 时间触发类型
+            if (this.addData.eventType == 1) { // 时间
+              let one = this.oldData.triggerTimeType != this.addData.triggerTimeType
+              let two = this.oldData.completeTime != this.addData.completeTime
+              if (one || two) {
+                  amendData.eventType = this.addData.eventType
+                  // 时间触发类型
+                  amendData.triggerTimeType = this.addData.triggerTimeType
+                  // 年月日类型的时间
+                  amendData.completeTime = this.addData.completeTime
+              }
+            } else if (this.addData.eventType == 2) { // 事件
+              let one = this.oldData.triggerRule != this.addData.triggerRule
+              let two = this.oldData.triggerTime != this.addData.triggerTime
+              let three = this.oldData.startingDay != this.addData.startingDay
+              if (one || two || three) {
+                amendData.eventType = this.addData.eventType
+                // 触发事件
+                amendData.triggerRule = this.addData.triggerTimeType
+                // 触发事件时间
+                amendData.triggerTime = this.addData.triggerTime
+                // 触发事件天数
+                amendData.startingDay = this.addData.startingDay
+              }
+            }
+
+            if (this.oldData.triggerTimeType != this.addData.triggerTimeType) {
+
+            }
+            amendData.triggerTimeType = this.addData.triggerTimeType
+            // 年月日类型的时间
+            amendData.completeTime = this.addData.completeTime
+        }
+      }
+      return amendData
     },
     setCompleteTime () {
 

@@ -122,7 +122,8 @@ module.exports = {
         },
     ],
     // 触发时间
-    triggerTime: [{
+    triggerTime: [
+        {
             id: '1',
             name: '前'
         },
@@ -146,6 +147,7 @@ module.exports = {
             name: "周"
         }
     ],
+    // 周数据源
     weekList: [
         {
             name: '周一',
@@ -175,5 +177,126 @@ module.exports = {
             name: '周日',
             id: '7'
         }
-    ]
+    ],
+    // 跟进搜索前置条件
+    advancedSearchPreposition: [
+        {
+            name: '完成方式',
+            id: '1'
+        },
+        {
+            name: '跟进时间',
+            id: '2'
+        },
+        {
+            name: '完成时间',
+            id: '3'
+        },
+        {
+            name: '查询时间',
+            id: '4'
+        },
+        {
+            name: '会员等级',
+            id: '5'
+        },
+        {
+            name: '会员类型',
+            id: '6'
+        },
+        {
+            name: '跟进人',
+            id: '7'
+        },
+        {
+            name: '跟进目的',
+            id: '8'
+        },
+        {
+            name: '跟进类型',
+            id: '9'
+        },
+        {
+            name: '跟进状态',
+            id: '10'
+        }
+    ],
+    // 高级搜索包含数据
+    advancedSearchInclude: [
+        {
+            name: '包含',
+            id: '1'
+        },
+        {
+            name: '不包含',
+            id: '2'
+        },
+        {
+            name: '等于',
+            id: '3'
+        },
+        {
+            name: '小于',
+            id: '4'
+        },
+        {
+            name: '大于',
+            id: '5'
+        },
+        {
+            name: '介于',
+            id: '6'
+        }
+    ],
+    // 会员高级搜索的前置条件
+    memberAdvancedSearchPreposition: [
+        {
+            name: '会员消费时间',
+            id: '1'
+        },
+        {
+            name: '会员剩余积分',
+            id: '2'
+        },
+        {
+            name: '会员消耗积分',
+            id: '3'
+        },
+        {
+            name: '会员累计消费额',
+            id: '4'
+        },
+        {
+            name: '会员单次消费额',
+            id: '5'
+        },
+        {
+            name: '会员注册时间',
+            id: '6'
+        },
+        {
+            name: '会员消费次数',
+            id: '7'
+        },
+        {
+            name: '消费计重类-计重类产品类别数据',
+            id: '8'
+        },
+                {
+            name: '消费计件类-计件类产品类别数据',
+            id: '9'
+        },
+        {
+            name: '会员负责人',
+            id: '10'
+        },
+        {
+            name: '会员类型',
+            id: '11'
+        },
+        {
+            name: '会员级别',
+            id: '12'
+        }
+    ],
 }

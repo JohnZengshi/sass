@@ -94,11 +94,14 @@ export default {
         },
         // 编辑数据
         compileData (parm) {
-            debugger
             this.memberId = parm.data.memberId
             setTimeout(() => {
                 if (this.$refs.addFollowUpBox) {
                     this.$refs.addFollowUpBox.open({'followId': 'parm.data.followId'})   
+                }
+                // 完成跟进
+                if (this.$refs.cutPopupBox) {
+                    this.$refs.cutPopupBox.open({index: 'complete', followId: 'parm.data.followId', item:parm.data })   
                 }
             }, 0)
             // setTimeout(() => {

@@ -2,7 +2,7 @@
 <template>
   <div class="m-m-each-other-main">
     <div class="header">
-      <p class="side-nav"><i class="iconfont icon-liebiao"></i>会员互通</p>
+      <p class="side-nav"><i class="iconfont icon-liebiao"></i>互通店铺</p>
       <div class="xj-btn-defult right-btn" @click="openAdd">
         +店铺组合
       </div>
@@ -15,24 +15,27 @@
         <li>操作</li>
       </ul>
       <div class="scroll-wrap">
-        <ul v-for="(item, index) in combinationList">
-          <li>{{item.groupName}}</li>
-          <li>{{item.shopName}}</li>
-          <li>{{item.groupName}}</li>
-          <li>
-            <i @click="compile(item)" class="iconfont icon-bianji"></i>
-            <i @click="del(item.groupId, index)" class="iconfont icon-lajitong"></i>
-          </li>
-        </ul>
-
-        <template v-if="combinationList.length < 4">
-          <ul v-for="(item, index) in (4 - combinationList.length)">
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
+        <div>
+          <ul v-for="(item, index) in combinationList">
+            <li>{{item.groupName}}</li>
+            <li>{{item.shopName}}</li>
+            <li>{{item.groupName}}</li>
+            <li>
+              <i @click="compile(item)" class="iconfont icon-bianji"></i>
+              <i @click="del(item.groupId, index)" class="iconfont icon-lajitong"></i>
+            </li>
           </ul>
-        </template>
+
+          <template v-if="combinationList.length < 4">
+            <ul v-for="(item, index) in (4 - combinationList.length)">
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+          </template>
+          
+        </div>
 
       </div>
     </div>
@@ -59,7 +62,19 @@
     created () {
       this._seekFindTemplateGroupAll()
     },
+    mounted() {
+        this.$nextTick(() => {
+          this.initScroll()
+        })
+    },
     methods: {
+      // 初始化滚动
+      initScroll () {
+        $(".scroll-wrap").mCustomScrollbar({
+            theme: "minimal-dark",
+            scrollInertia: 100, //滚动条移动速度，数值越大滚动越慢
+        })
+      },
       _seekFindTemplateGroupAll () {
         this.loading = true
         seekFindTemplateGroupAll()
@@ -74,6 +89,7 @@
                 i.shopName = shopName
               }
               this.combinationList = datas
+              this.initScroll()
             } else {
               this.$message({type: 'error',message: res.data.msg})
             }
@@ -143,13 +159,12 @@
     border-radius: 5px;
     .scroll-wrap{
       height: 200px;
-      overflow-y: scroll;
-      >ul{
-        border-bottom: 1px solid #f0f2f5;
-      }
-      >ul:nth-child(2n){
-        background-color: #fbfbfb;
-      }
+        ul{
+          border-bottom: 1px solid #f0f2f5;
+        }
+        ul:nth-child(2n){
+          background-color: #fbfbfb;
+        }
     }
     ul{
       font-size: 0;

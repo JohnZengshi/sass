@@ -49,13 +49,13 @@
                       </div>
 
                       <div class="member-item">
-                        <span class="item-label"><i class="mandatory-icon">*</i>姓名</span>
-                        <input placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.userName" @blur="_operateUpdateMember({userName: dataInfo.userName})">
+                        <span class="item-label">昵称</span>
+                        <input placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.name" @blur="_operateUpdateMember({name: dataInfo.name})">
                       </div>
 
                       <div class="member-item">
-                        <span class="item-label">备注名</span>
-                        <input maxlength="6" placeholder="仅内部人员可查看" :disabled="!isShopMan" v-model="dataInfo.name" @blur="_operateUpdateMember({userName: dataInfo.name})">
+                        <span class="item-label"><i class="mandatory-icon">*</i>姓名</span>
+                        <input maxlength="6" placeholder="仅内部人员可查看" :disabled="!isShopMan" v-model="dataInfo.userName" @blur="_operateUpdateMember({userName: dataInfo.userName})">
                       </div>
 
                       <div class="member-item">
@@ -216,7 +216,7 @@ import newDownMenu from 'base/menu/new-down-menu'
 import AddressSelect from 'src/components/template/AddressSelect'
 import UploadingImg from 'base/uploading/UploadingImg'
 import { formattingTime, GetNYR } from 'assets/js/getTime'
-const industryList = require('./data.js')
+const dataSource = require('./data.js')
 export default {
   components: {
     aloneDropDownColums,
@@ -783,7 +783,7 @@ export default {
             width: 182px;
             .title-name{
               text-align: left;
-              text-indent: 10px;
+              padding-left: 10px;
             }
           }
           .card-img {
@@ -1127,7 +1127,7 @@ export default {
               width: 120px;
               .title-name{
                 text-align: left;
-                text-indent: 10px;
+                padding-left: 10px;
                 background-color: transparent;
               }
             }

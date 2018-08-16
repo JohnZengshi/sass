@@ -63,24 +63,28 @@ export default {
   },
   methods: {
     open (parm) {
+      debugger
       this.checkList = []
       this.checkTemplateList = []
       this.isDialog = true
-      if (parm) {
-        this.templateId = parm.groupId
-        for (let i of parm.groupShopList) {
-          this.checkList.push(i.shopId)
-        }
-
-        this.nextData = parm.groupShopList
-      }
 
       if (this.independent) { // 组合
+        if (parm) {
+          this.templateId = parm.groupId
+          for (let i of parm.groupShopList) {
+            this.checkList.push(i.shopId)
+          }
+
+          this.nextData = parm.groupShopList
+        }
         this._seekFindShopTemplateList()
         if (this.templateId) {
           this._seekFindShopGroupDetails()
         }
       } else { // 独立
+        if (parm) {
+          this.templateId = parm.shopId
+        }
         this._seekFindTemplateShopAll()
         if (this.templateId) {
           this._seekFindShopTemplateDetails()

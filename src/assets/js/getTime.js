@@ -16,9 +16,9 @@ export const GetDateYR = function(AddDayCount) { // 获取某天的时间值
   return `${m}-${d}`;
 }
 
-export const stringTime = function(AddDayCount) {
+export const stringTime = function(AddDayCount) { // 获取AddDayCount天后的日期
   var today = new Date();
-  today.setDate(today.getDate() + AddDayCount); // 获取AddDayCount天后的日期
+  today.setDate(today.getDate() + AddDayCount);
   var N = today.getFullYear();
   var Y = today.getMonth() + 1; //获取当前月份的日期
   var R = today.getDate();
@@ -214,14 +214,6 @@ export const formattingEndTime = function(parm) { // 当日结束时间
 // 装换20180814000000格式为new date时间
 export const restoreTime = function(parm) {
   if (parm) {
-    // let year = parm.substring(0, 4)
-    // let month = parm.substring(5, 7)
-    // let data = parm.substring(8, 10)
-    // let today = new Date()
-    // today.setFullYear(year)
-    // today.setMonth(month)
-    // today.setDate(data)
-
     var year = parm.substring(0, 4)
     var month = parm.substring(4, 6)
     var data = parm.substring(6, 8)

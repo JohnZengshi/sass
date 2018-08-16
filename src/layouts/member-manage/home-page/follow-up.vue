@@ -28,11 +28,11 @@
         <ul class="top-btn xj-btn-list">
             <li class="btn" @click="openAdd">+跟进</li>
             <router-link tag="li" :to="{path: '/membermanage/followUpManage', query: {shopId: filterOption.shopId}}" class="btn">跟进管理</router-link>
-            <router-link tag="li" class="btn" :to="{path: '/memberManage/compileTemplate', query: {shopId: filterOption.shopId}}">待完成</router-link>
+            <router-link tag="li" class="btn" :to="{path: '/membermanage/followUpList', query: {shopId: filterOption.shopId}}">待完成</router-link>
         </ul>
         
         <!-- 新增跟进 -->
-        <add-follow-up ref="addFollowUpBox" :shopId="filterOption.shopId"></add-follow-up>
+        <add-follow-up ref="addFollowUpBox" v-if="isAddFollowUp" @close="isAddFollowUp = false" :shopId="filterOption.shopId"></add-follow-up>
     </div>
 </template>
 <script>
@@ -47,6 +47,7 @@ export default {
     props: ['filterOption', 'memberList'],
     data() {
         return {
+            isAddFollowUp: false,
             centerBtnList: [{
                     name: '会员总数',
                     value: '1000',
@@ -67,7 +68,10 @@ export default {
     },
     methods: {
         openAdd() {
-            this.$refs.addFollowUpBox.open()
+                    this.isAddFollowUp = true
+        setTimeout(() => {
+          this.$refs.addFollowUpBox.open()
+        }, 0)
         }
     }
 }

@@ -34,7 +34,7 @@
                         <span class="item-label">设置最低折扣</span>
                         <!--       <input type="Number" placeholder="请输入" v-model="name" @click="openSellDiscount"> -->
                     </div>
-                    <sell-discount :isDialog="isDialog" :showData="showData" ref="sellDiscountBox" @setClass="setClass" @close="discountClose" @confirm="discountConfirm" @update="updateDiscount"></sell-discount>
+                    <sell-discount :isDialog="isDialog" :checkDiscount="checkDiscount" :showData="showData" ref="sellDiscountBox" @setClass="setClass" @close="discountClose" @confirm="discountConfirm" @update="updateDiscount"></sell-discount>
                 </div>
                 <div class="xj-btn-list">
                     <div class="btn cnacel-btn" @click="close">取消</div>
@@ -51,7 +51,7 @@ import downMenu from 'base/menu/new-down-menu'
 import sellDiscount from './sell-discount'
 import memberDialog from '@/layouts/Work/ShopSetting/dialog/tplGoldDialog'
 export default {
-    props: ['checkDiscount'],
+    props: ['checkDiscount', 'pieceCheckDiscount'],
     components: {
         downMenu,
         sellDiscount,

@@ -70,9 +70,10 @@ export default {
         font-size: 14px;
         line-height: 28px;
         .drop-triangle {
+            position: absolute;
+            right: 10px;
             font-size:12px;
             display: inline-block;
-            float: right;
             transition: all .3s;
             transform-origin: center center;
         }
