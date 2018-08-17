@@ -4,43 +4,81 @@
             <i class="el-dialog__close el-icon el-icon-close"></i>
         </div>
         <div class="title">{{headerTit}}</div>
-        <div class="menu-list">
-            <div class="search">
-                <input @keyup.enter="getShopUserList" v-model="userPhone" type="text" placeholder="请输入负责人名/手机号">
-                <div class="search-btn">
-                    <i @click="getShopUserList" class="iconfont icon-sousuo"></i>
+        <div class="c-l-scroll-body">
+            <div class="menu-list-wrap">
+                <div class="search">
+                    <input @keyup.enter="_seekFollowSearchByNew" v-model="userPhone" type="text" placeholder="请输入负责人名/手机号">
+                    <div class="search-btn">
+                        <i @click="_seekFollowSearchByNew" class="iconfont icon-sousuo"></i>
+                    </div>
+                </div>
+                <div class="menu-list-right">
+
+                    <new-down-menu
+                        class="w-110"
+                        ref="memberRankBox"
+                        :isSolid="true"
+                        :titleInfo="filterCondition.memberGradeName ? filterCondition.memberGradeName : '会员级别'"
+                        :showList="memberGradeList"
+                        @changeData="changeMemberGrade"
+                        @clearInfo="clearMemberGrade"
+                    ></new-down-menu>
+
+                    <new-down-menu class="w-110 ml-10" ref="memberClassBox" :isSolid="true" :titleInfo="_getMemberType(filterCondition.memberTypr) || '会员类型'" :showList="memberTypeList" @changeData="changeVisitAimList" @clearInfo="clearVisitAimList"></new-down-menu>
+
+                  <new-down-menu
+                      class="w-110 ml-10"
+                      ref="userBox"
+                      :isSolid="true"
+                      :titleInfo="filterCondition.principalName ? filterCondition.principalName : '跟进人'"
+                      :showList="userList"
+                      :nameKey="'name'"
+                      @changeData="changeUser"
+                      @clearInfo="clearUser"
+                  ></new-down-menu>
+
                 </div>
             </div>
-        </div>
-        <!-- 高级搜索 -->
-        <advanced-search v-if="false"></advanced-search>
-        <div class="member-list new-e-checkbox-square">
-            <ul class="member-header">
-                <li>头像</li>
-                <li>姓名</li>
-                <li>手机号</li>
-                <li>
-                    <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                </li>
-            </ul>
-            <el-checkbox-group v-model="checkList"  @change="handleCheckedCitiesChange">
-                <ul class="member-body" v-for="(item, index) in dataList">
+            <div class="btn-list-box">
+                <cut-bg class="cut-btn-style" @pitchOn="pitchOn" :showList="queryTypeList" :current="filterCondition.queryType"></cut-bg>
+                <div class="xj-btn-defult" @click="isAdvanced = !isAdvanced">{{isAdvanced ? '取消高级搜索' : '高级搜索'}}</div>
+                <ul class="xj-btn-list" v-if="isAdvanced">
+                    <li class="btn" @click="_seekFollowSearchByNew">搜索</li>
+                    <li class="btn" @click="reset">重置</li>
+                </ul>
+            </div>
+            
+            <!-- 高级搜索 -->
+            <advanced-search ref="advancedSearchBox" v-show="isAdvanced" :userList="userList" :memberGradeList="memberGradeList"></advanced-search>
+
+            <div class="member-list new-e-checkbox-square">
+                <ul class="member-header">
+                    <li>头像</li>
+                    <li>姓名</li>
+                    <li>手机号</li>
                     <li>
-                        <img :src="item.logo">
-                    </li>
-                    <li>
-                        {{item.userName}}
-                    </li>
-                    <li>
-                        <i class="iconfont icon-genjin"></i> {{item.phoneNo}}
-                    </li>
-                    <li>
-                        <el-checkbox :label="item.userId"></el-checkbox>
+                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                     </li>
                 </ul>
-            </el-checkbox-group>
+                <el-checkbox-group v-model="checkList" @change="handleCheckedCitiesChange">
+                    <ul class="member-body" v-for="(item, index) in dataList">
+                        <li>
+                            <img :src="item.logo">
+                        </li>
+                        <li>
+                            {{item.userName}}
+                        </li>
+                        <li>
+                            <i class="iconfont icon-genjin"></i> {{item.phoneNo}}
+                        </li>
+                        <li>
+                            <el-checkbox :label="item.userId"></el-checkbox>
+                        </li>
+                    </ul>
+                </el-checkbox-group>
+            </div> 
         </div>
-        <p class="all-num-tit">筛选跟进会员：<span>{{total}}</span>位</p>
+        <p class="all-num-tit">筛选跟进会员：<span>{{totalNum}}</span>位</p>
         <div class="xj-btn-list">
             <div v-if="!followId" class="btn cnacel-btn" @click="close">返回上一级</div>
             <div class="btn" @click="confirm">确定</div>
@@ -48,12 +86,17 @@
     </div>
 </template>
 <script>
-import { seekGetShopUserList } from 'Api/commonality/seek'
+import { seekFollowSearchByNew, seekMemberList, seekFindMemberGradeList } from 'Api/commonality/seek'
 import advancedSearch from './advanced-search'
-
+import cutBg from 'base/cut/cut-bg'
+import newDownMenu from 'base/menu/new-down-menu'
+import {getMemberType} from 'assets/js/analysis'
+const dataSource = require('./data.js')
 export default {
     components: {
-        advancedSearch
+        advancedSearch,
+        newDownMenu,
+        cutBg
     },
     props: [
         'headerTit',
@@ -68,7 +111,7 @@ export default {
     ],
     watch: {
         'isChoseLeader': function() {
-            this.getShopUserList()
+            this._seekFollowSearchByNew()
             if (this.userIdList) {
                 this.checkList = this.userIdList
             }
@@ -76,6 +119,17 @@ export default {
     },
     data() {
         return {
+            advanced: [], // 高级搜索数据
+            isAdvanced: false, // 是否开始高级搜索
+            filterCondition: {
+                keyWord: '',
+                memberGrade: '',
+                memberGradeName: '',
+                memberTypr: '',
+                principalId: '',
+                principalName: '',
+                queryType: '1',
+            },
             isIndeterminate: false,
             checkAll: false,
             userPhone: '',
@@ -85,29 +139,89 @@ export default {
             pageSize: 99,
             page: 1,
             isVisitAim: false,
-            total: ''
+            totalNum: '',
+            memberTypeList: dataSource.memberTypeList,
+            queryTypeList: dataSource.queryTypeList,
+            userList: [],
+            memberGradeList: [],
+            paging: {
+                page: 1,
+                pageSize: '30'
+            }
         }
     },
     created() {
-        this.getShopUserList()
+        this._seekFollowSearchByNew()
+        this._seekMemberList()
+        this._seekFindMemberGradeList()
         if (this.userIdList) {
             this.checkList = this.userIdList
         }
     },
     mounted() {
+        let _self = this
         $(".member-list").mCustomScrollbar({
             theme: "minimal-dark",
-            axis: "y"
+            axis: "y",
+            callbacks: {
+                onTotalScroll: function() {
+                    _self._seekFollowSearchByNew('Y')
+                }
+            }
         });
     },
     methods: {
+        pitchOn(parm) {
+            this.filterCondition.queryType = parm.id
+        },
+        _getMemberType (parm) {
+            return getMemberType(parm)
+        },
+        _seekMemberList () {
+            let options = {
+              type: '2',
+              shopId: this.shopId,
+            }
+            seekMemberList(options)
+              .then(res => {
+                if (res.data.state == 200) {
+                    let datas = res.data.data.dataList
+                    for (let i of datas) {
+                        i.name = i.username
+                        i.id = i.userId
+                    }
+                    this.userList = datas
+                } else {
+                    this.$message({ type: 'success', message: res.data.msg })
+                }
+              })
+        },
+        _seekFindMemberGradeList () {
+            seekFindMemberGradeList({shopId: this.shopId})
+                .then(res => {
+                    if (res.data.state == 200) {
+                        let datas = res.data.data
+                        for (let i of datas) {
+                            i.name = i.gradeName
+                            i.id = i.gradeId
+                        }        
+                      this.memberGradeList = datas
+                    } else {
+                        this.$message({ type: 'success', message: res.data.msg })
+                    }
+                })
+        },
         handleCheckAllChange(val) {
-            this.checkList = val ? cityOptions : [];
+            let cityOptions = []
+            for (let i of this.dataList) {
+                cityOptions.push(i.userId)
+            }
+            this.checkList = val.target.checked ? cityOptions : [];
             this.isIndeterminate = false;
         },
         handleCheckedCitiesChange(value) {
             let checkedCount = value.length;
-            this.checkAll = checkedCount === this.dataList.length;
+            this.checkAll = checkedCount == this.dataList.length;
             this.isIndeterminate = checkedCount > 0 && checkedCount < this.dataList.length;
         },
         close() {
@@ -160,65 +274,85 @@ export default {
         checkChange(val) { // 多选选中的改变
             console.log(val)
         },
-        getShopUserList() {
-            let options = {
-                page: this.page,
-                pageSize: this.pageSize,
-                shopId: this.shopId
-            }
-            if (this.userPhone != "" && this.userPhone != null) {
-                options.phone = this.userPhone;
-            }
-            seekGetShopUserList(options).then((res) => {
-                if (res.data.state == 200) {
-                    this.dataList = res.data.data.shopUserList
-                    this.total = res.data.data.total
-                    if (this.followData) {
-                        this.followData.principalList.forEach((item, index) => {
-                            this.checkList.push(this.followData.principalList[index].principalId)
-                        })
-                    }
-                } else {
-                    this.$message({ type: 'success', message: res.data.msg })
+        _seekFollowSearchByNew(parm) {
+            
+            if (parm == 'Y') { // 如果是分页
+                if (this.paging.page > 1 && this.dataList.length == this.totalNum) {
+                  return
                 }
-            }, (res) => {
-                this.$message({ type: 'success', message: res.data.msg })
-            })
+            } else { // 否者更换条件或第一次请求
+                this.dataList = []
+                this.paging.page = 1
+            }
+
+            this.loading = true
+            seekFollowSearchByNew(Object.assign({}, this.filterCondition, this.paging, {shopId: this.shopId}))
+                .then(res => {
+                  if (res.data.state == 200) {
+                    this.paging.page += 1
+                    this.totalNum = res.data.data.totalNum
+                    this.dataList.push(...res.data.data.memberList)
+                  } else {
+                    this.$message({type: 'error',message: res.data.msg})
+                  }
+                  this.loading = false
+                })
+        },
+        changeMemberGrade(parm) {
+            this.filterCondition.memberGrade = parm.id
+            this.filterCondition.memberGradeName = parm.name
+            this.$emit('update', this.filterCondition)
+        },
+        clearMemberGrade() {
+            this.filterCondition.memberGrade = ''
+            this.filterCondition.memberGradeName = ''
+            this.$emit('update', this.filterCondition)
+        },
+        changeVisitAimList(parm) {
+            this.filterCondition.memberTypr = parm.id
+            this.$emit('update', this.filterCondition)
+        },
+        clearVisitAimList() {
+            this.filterCondition.memberTypr = ''
+            this.$emit('update', this.filterCondition)
+        },
+        changeUser (parm) {
+          this.filterCondition.principalId = parm.userId
+          this.filterCondition.principalName = parm.name
+          this.$emit('update', this.filterCondition)
+        },
+        clearUser () {
+          this.filterCondition.principalId = ''
+          this.filterCondition.principalName = ''
+          this.$emit('update', this.filterCondition)
+        },
+        update (parm) {
+            this.advanced = parm.datas
+        },
+        // 重置高级搜索
+        reset () {
+            this.$refs.advancedSearchBox.reset()
         }
     }
 }
 
 </script>
 <style lang="scss">
-// .choseLeaderDig {
-//     width: 700px;
-//     height: 730px;
-//     background: #fff;
-//     border-radius: 10px;
-//     .el-dialog__header {
-//         position: absolute;
-//         top: 0;
-//         left: 0;
-//         width: 100%;
-//         height: 38px;
-//         padding-top: 20px !important;
-//         padding-right: 20px !important;
-//     }
-//     .el-dialog__body {
-//         padding: 0 28px;
-//     }
-// }
-
 .n-p-scroll-box {
+    .c-l-scroll-body{
+        padding-top: 5px;
+        height: 564px;
+        overflow-y: scroll;
+    }
     .title {
         padding-top: 20px;
         font-size: 14px;
         color: #333;
         font-weight: bold;
-        margin-bottom: 30px;
+        margin-bottom: 15px;
     }
-    .menu-list {
-        margin-bottom: 24px;
+    .menu-list-wrap {
+        margin-bottom: 20px;
         height: 28px;
         .search {
             width: 190px;
@@ -250,9 +384,26 @@ export default {
                 }
             }
         }
+        .menu-list-right{
+            height: 30px;
+            float: left;
+        }
+    }
+    .btn-list-box{
+        margin-bottom: 15px;
+        .cut-btn-style{
+            vertical-align: top;
+            margin-right: 20px;
+            li{
+                width: 80px;
+            }
+        }
+        >.xj-btn-list{
+            float: right;
+        }
     }
     .member-list {
-        height: 500px;
+        height: 465px;
         .member-header {
             height: 40px;
             background-color: #f5f5f5;
@@ -314,11 +465,11 @@ export default {
             }
         }
     }
-    .all-num-tit{
+    .all-num-tit {
         text-align: right;
         font-size: 14px;
         margin: 10px 0;
-        span{
+        span {
             color: #2993f8;
         }
     }

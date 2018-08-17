@@ -144,12 +144,12 @@ export default {
       }
 
       this.loading = true
-      // if (this.headline == '我的跟进') {
-      //   this._seekFindMemberList()
-      // } else if (this.headline == '跟进管理') {
-      //   this._seekFollowAdministration()
-      // }
-      this._seekFindMemberList()
+      if (this.headline == '我的跟进') {
+        this._seekFindMemberList()
+      } else if (this.headline == '跟进管理') {
+        this._seekFollowAdministration()
+      }
+      // this._seekFindMemberList()
     },
     // 我的跟进
     _seekFindMemberList () {

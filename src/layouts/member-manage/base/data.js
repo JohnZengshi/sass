@@ -224,28 +224,39 @@ module.exports = {
     // 高级搜索包含数据
     advancedSearchInclude: [
         {
-            name: '包含',
+            name: '等于',
             id: '1'
         },
         {
-            name: '不包含',
+            name: '不等于',
             id: '2'
         },
         {
-            name: '等于',
+            name: '大于',
             id: '3'
         },
         {
-            name: '小于',
+            name: '大于等于',
             id: '4'
         },
         {
-            name: '大于',
+            name: '小于',
             id: '5'
         },
         {
-            name: '介于',
+            name: '小于等于',
             id: '6'
+        }
+    ],
+    // 高级搜索尾部连接
+    connectList: [
+        {
+            name: '并且',
+            id: '1'
+        },
+        {
+            name: '或者',
+            id: '2'
         }
     ],
     // 会员高级搜索的前置条件
@@ -299,4 +310,29 @@ module.exports = {
             id: '12'
         }
     ],
+    // 会员类型
+    memberTypeList: [
+        {
+            name: '共有',
+            id: '1'
+        },
+        {
+            name: '私有',
+            id: '2'
+        },
+        {
+            name: '公共',
+            id: '3'
+        }
+    ],
+    queryTypeList: [
+        {
+            name: '按人',
+            id: '1'
+        },
+        {
+            name: '按条件',
+            id: '2'
+        }
+    ]
 }

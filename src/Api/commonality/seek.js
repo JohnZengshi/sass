@@ -968,3 +968,7 @@ export const seekFollowAdministration = function (parm) { // 跟进管理
     let URL = "/v1/member/followAdministration";
     return apiCall(parm, URL);
 }
+export const seekFollowSearchByNew = function (parm) { // 跟进管理
+    let URL = "/v1/member/followSearchByNew";
+    return apiCall(parm, URL);
+}

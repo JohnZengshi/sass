@@ -175,7 +175,6 @@ export default {
       this.$emit('update', this.filterCondition)
     },
     changeUser (parm) {
-      debugger
       this.filterCondition.userId = parm.userId
       this.filterCondition.userName = parm.username
       this.$emit('update', this.filterCondition)

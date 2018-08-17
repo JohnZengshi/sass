@@ -11,7 +11,7 @@
 </template>
 <script>
 export default {
-  props: ['titleInfo', 'showList', 'isSolid', 'specialStyle', 'noClear', 'nameKey', 'keep', 'disabled'], // isSolid->实心 nameKey->取值的key  keep -> 一直保持着右边的小图标
+  props: ['titleInfo', 'showList', 'isSolid', 'specialStyle', 'noClear', 'nameKey', 'keep', 'disabled', 'index'], // isSolid->实心 nameKey->取值的key  keep -> 一直保持着右边的小图标  noClear--> 为真，不需要删除
   data () {
     return {
       actIndex: null,
@@ -24,13 +24,14 @@ export default {
         this.noChange = true
     },
     clearTitleInfo () {
-        this.$emit("clearInfo")
+        this.$emit("clearInfo", this.index)
         this.actIndex = null
         this.noChange = true
     },
     itemClick (item, index) {
         this.noChange = false
         this.actIndex = index,
+        item.index = this.index
         this.$emit("changeData", item)
     }
   }
@@ -59,7 +60,8 @@ export default {
         border: 1px solid #d6d6d6;
         border-radius: 3px;
         width: 100%;
-        padding-right: 5px;
+        padding-right: 10px;
+        overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         background-color: #F1F2F3;
@@ -71,7 +73,7 @@ export default {
         line-height: 28px;
         .drop-triangle {
             position: absolute;
-            right: 10px;
+            right: 5px;
             font-size:12px;
             display: inline-block;
             transition: all .3s;

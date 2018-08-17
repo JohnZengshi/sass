@@ -7,27 +7,27 @@
         <div class="m-m-shop-list" v-loading="loading">
             <div class="each-table" :class="{'ml-40': index == 1}" v-for="(items, index) in combinationList">
                 <div>
-                  <ul class="header-tit">
-                      <li>店铺名称</li>
-                      <li>积分模板</li>
-                      <li>操作</li>
-                  </ul>
-                  <div class="scroll-wrap">
-                      <ul v-for="item in items">
-                          <li>{{item.shopName}}</li>
-                          <li>{{item.templateName}}</li>
-                          <li>
-                              <i @click="compile(item)" class="iconfont icon-bianji"></i>
-                          </li>
-                      </ul>
-                      <template v-if="items.length < 4">
-                          <ul class="no-ul" v-for="(item, index) in (4 - items.length)">
-                              <li></li>
-                              <li></li>
-                              <li></li>
-                          </ul>
-                      </template>
-                  </div>
+                    <ul class="header-tit">
+                        <li>店铺名称</li>
+                        <li>积分模板</li>
+                        <li>操作</li>
+                    </ul>
+                    <div class="scroll-wrap">
+                        <ul v-for="item in items">
+                            <li>{{item.shopName}}</li>
+                            <li>{{item.templateName}}</li>
+                            <li>
+                                <i @click="compile(item)" class="iconfont icon-bianji"></i>
+                            </li>
+                        </ul>
+                        <template v-if="items.length < 4">
+                            <ul class="no-ul" v-for="(item, index) in (4 - items.length)">
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                            </ul>
+                        </template>
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,13 +53,13 @@ export default {
     },
     methods: {
         // 初始化滚动
-        initScroll () {
-          this.$nextTick(() => {
-            $(".scroll-wrap").mCustomScrollbar({
-                theme: "minimal-dark",
-                scrollInertia: 100, //滚动条移动速度，数值越大滚动越慢
+        initScroll() {
+            this.$nextTick(() => {
+                $(".scroll-wrap").mCustomScrollbar({
+                    theme: "minimal-dark",
+                    scrollInertia: 100, //滚动条移动速度，数值越大滚动越慢
+                })
             })
-          })
         },
         _seekFindTemplateShopAll() {
             this.loading = true
