@@ -206,3 +206,9 @@ export const findSmsTemoplateLog = function(data){
     let URL = "/v1/groupTemplate/findSmsTemoplateLog";
     return apiCall(data, URL);
 }
+
+// 2.负责人列表
+export const findMemberPrincipalList = function(data){
+    let URL = "/v1/groupTemplate/findMemberPrincipalList";
+    return apiCall(data, URL);
+}
