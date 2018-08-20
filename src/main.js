@@ -6,12 +6,19 @@ import App from './App'
 import router from './router'
 import store from './vuex'
 import axios from 'axios'
+import AsyncComputed from 'vue-async-computed' //可异步操作计算属性
+import  VueQuillEditor from 'vue-quill-editor' //富文本编辑器
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 // 自定义指令
 import directives from './base/mineDirective/elm'
 Vue.use(elementUI)
 Vue.use(resource)
 Vue.use(store)
 Vue.use(directives)
+Vue.use(AsyncComputed)
+Vue.use(VueQuillEditor);
 // Vue.use(axios)
 /* eslint-disable no-new */
 let vue = new Vue({
