@@ -86,3 +86,123 @@ export const memberBuyIntegral = function(data) {
     let URL = "/v1/member/memberBuyIntegral"
     return apiCall(data, URL)
 }
+// 1.推送模板管理=========================================
+// 1.5模板类型列表
+export const findSmsTemplateTypeList = function(data){
+    let URL = "/v1/groupTemplate/findSmsTemplateTypeList"
+    return apiCall(data, URL)
+    
+}
+// 1.6插入字段列表
+export const findFieldList = function (data) {
+    let URL = "/v1/groupTemplate/findFieldList"
+    // console.log(data)
+    return apiCall(data, URL)
+}
+// 1.7添加模板
+export const addTemplate = function (data){
+    let URL = "/v1/groupTemplate/addTemplate"
+    return apiCall(data, URL)
+
+}
+
+// 1.8模板列表
+export const findTemplate = function (data) {
+    let URL = "/v1/groupTemplate/findTemplate"
+    return apiCall(data, URL)
+}
+
+// 1.9模板管理列表
+export const findTemplateList = function (data){
+    let URL = "/v1/groupTemplate/findTemplateList"
+    return apiCall(data, URL)
+}
+// 删除模板
+export const deleteSmsTemplate = function(data){
+    let URL = "/v1/groupTemplate/deleteSmsTemplate"
+    return apiCall(data, URL);
+}
+
+// 模板详情
+export const findTemplateDetails = function(data){
+    let URL = "/v1/groupTemplate/findTemplateDetails"
+    return apiCall(data, URL);
+}
+// 1.10修改管理模板
+export const updateSmsTemplate = function(data){
+    let URL = "/v1/groupTemplate/updateSmsTemplate"
+    return apiCall(data, URL);
+}
+
+// 2 标签管理========================================
+// 2.1添加短信签名
+export const addSmsSign = function(data){
+    let URL = "/v1/groupTemplate/addSmsSign"
+    return apiCall(data, URL)
+}
+// 2.2短信签名列表
+export const findSmsSignList = function(data){
+    let URL = "/v1/groupTemplate/findSmsSignList"
+    return apiCall(data, URL)
+}
+
+// 2.3编辑或删除签名
+export const updateSmsSign = function(data){
+    let URL = "/v1/groupTemplate/updateSmsSign"
+    return apiCall(data, URL)
+}
+
+// 3短信管理===============================
+
+// 3.1 	发送人列表
+export const findSmsMemberList = function(data){
+    let URL = "/v1/groupTemplate/findSmsMemberList"
+    return apiCall(data, URL)
+}
+// 3.2 触发事件列表
+export const findSmsTriggerList = function(data){
+    let URL = "/v1/groupTemplate/findSmsTriggerList"
+    return apiCall(data, URL)
+}
+
+// 添加发送短信
+export const addSms = function(data){
+    let URL = "/v1/groupTemplate/addSms"
+    return apiCall(data, URL)
+}
+
+// 3.4 触发周期列表
+export const findSmsTriggerCycleList = function(data){
+    let URL = "/v1/groupTemplate/findSmsTriggerCycleList"
+    return apiCall(data, URL)
+}
+
+// 3.5 即时短信模板列表
+export const findSmsTemoplateList = function(data){
+    let URL = "/v1/groupTemplate/findSmsTemoplateList";
+    return apiCall(data, URL)
+}
+
+// 3.6 触发发送列表
+export const findSmsTriggerLists = function(data){
+    let URL = "/v1/groupTemplate/findSmsTriggerLists";
+    return apiCall(data, URL)
+}
+
+// 3.10短信日志
+export const findSmsTemoplateLogList = function(data){
+    let URL = "/v1/groupTemplate/findSmsTemoplateLogList";
+    return apiCall(data, URL)
+}
+
+// 修改短信状态
+export const updateTemplateStatus = function(data){
+    let URL = "/v1/groupTemplate/updateTemplateStatus";
+    return apiCall(data, URL);
+}
+
+// 3.11单条短信日志
+export const findSmsTemoplateLog = function(data){
+    let URL = "/v1/groupTemplate/findSmsTemoplateLog";
+    return apiCall(data, URL);
+}
