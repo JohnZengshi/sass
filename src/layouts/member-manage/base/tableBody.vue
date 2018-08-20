@@ -8,7 +8,8 @@
         border 
         :stripe="true" 
         @selection-change="handleSelectionChange"
-        @row-click="rowClick">
+        @row-click="rowClick"
+        v-loadmore="scorllToBottom">
         <!-- 开启排序 -->
         <el-table-column label="排序" v-if="isSort" type="index" width="68"></el-table-column>
         <!-- 其他数据 -->
@@ -109,6 +110,11 @@
             rowClick(row, event, column){
                 if(!this.isRowClick) return;
                 this.$emit("rowClick",row)
+            },
+            // 监听表格滚动到底部
+            scorllToBottom(){
+                // console.log("滚动到底了")
+                this.$emit("scorllToBottom")
             }
         },
         filters: {
