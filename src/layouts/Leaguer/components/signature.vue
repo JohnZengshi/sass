@@ -265,7 +265,7 @@ export default {
  
 </style>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .signature-bar {
   width: 700px;
   height: 730px;
