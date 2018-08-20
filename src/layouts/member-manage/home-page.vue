@@ -28,7 +28,8 @@
       member,
       followUp,
       interflow,
-      push
+      push,
+      interflow
     },
     data () {
       return {
