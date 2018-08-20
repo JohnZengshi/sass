@@ -1,11 +1,11 @@
 <!-- 短信日志弹窗 -->
 <template>
-    <div class="noteLogBox">
+    <div class="noteLogBox" v-loading="getSmsTemoplateLogIng">
         <img class="close-icon" src="../../../../../assets/img/close-preview.png" @click.stop="handleclose" />
         <span class="noteName">十一店庆</span>
         <div class="sendContent flex flex-r flex-pack-justify">
             <span>发送内容</span>
-            <span>尊敬的{1用户名字}客户，今天是您的生日，{2店铺简称}衷心祝愿您生日快乐。今日到店消费有生日优惠，部分商品五折起，愿最美丽的首饰给你带来好心情。店铺地址：{3店铺地址}，联系电话{4店铺联系方式}.</span>
+            <span v-if="SmsTemoplateLog">{{SmsTemoplateLog.content}}</span>
         </div>
         <div class="sendPreson clearfix">
             <span>发送人</span>
@@ -26,8 +26,9 @@
             </div>
             <div class="sendPresonList">
                 <TableBody 
+                    v-if="SmsTemoplateLog"
                     :headerData="headerData" 
-                    :tableData="SmsTemoplateLog" 
+                    :tableData="SmsTemoplateLog.dataList" 
                     :showHeader="true" 
                     :isSort="false" 
                     :operationConfig="operationConfig"
@@ -53,7 +54,8 @@ import {noteLogListHeader} from "../../../config/config.js"
                 operationConfig: { //操作配置
                     operation: false,
                 },
-                upData:false //是否刷新数据
+                upData:false, //是否刷新数据
+                getSmsTemoplateLogIng:false //正在获取数据
             }
         },
         components:{
@@ -64,12 +66,28 @@ import {noteLogListHeader} from "../../../config/config.js"
             SmsTemoplateLog:{
                 get(){
                     if (this.upData) {
-                        (async () => {
+                        return (async () => {
                             this.upData = false;
+                            this.getSmsTemoplateLogIng = true
                             let {templateId,beginTime,endTime} = this.requestData;
                             let res = await findSmsTemoplateLog({templateId,beginTime,endTime});
-                            console.log(res)
+                            if(res.body.msg == "OK"){
+                                this.getSmsTemoplateLogIng = false;
+                                return res.body.data;
+                            }
+                            else{
+                                this.$message({
+                                    type: 'warning',
+                                    message: res.body.msg,
+                                    onClose:()=>{
+                                        this.getSmsTemoplateLogIng = false;
+                                    }
+                                });
+                            }
                         })()
+                    }
+                    else{
+                        return null
                     }
                 }
             },

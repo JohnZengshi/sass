@@ -763,9 +763,9 @@ module.exports = {
             tableValue: "countSize",
             isActive:true,
             activeRules: (val) => {
-                if (val.indexOf("+")) {
+                if (val && val.indexOf("+")) {
                     return true
-                } else if (val.indexOf("-")) {
+                } else if (val && val.indexOf("-")) {
                     return false
                 }
             },

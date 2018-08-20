@@ -16,7 +16,7 @@
                 </div>
                 <div>
                     <el-select class="select-w88-h26 select-white select-b1 select-f12-b" filterable clearable v-model="requestData.userId" placeholder="创建人" @change="changeSelectValue">
-                        <el-option v-for="(item,index) in options03" :key="index" :label="item.label" :value="item.value">
+                        <el-option v-for="(item,index) in MemberPrincipalList" :key="index" :label="item.nickName" :value="item.ptincipalId">
                         </el-option>
                     </el-select>
                 </div>
@@ -44,6 +44,7 @@
                 @operationBack="operationBack"
                 @clickTd="noteClick"
                 @rowClick="rowClick"
+                @scorllToBottom="loadMoreOrder"
                 styleClass="el_table_noteManage"></TableBody>
         </div>
         <Dialog
@@ -66,7 +67,8 @@
         updateTemplateStatus, //修改短信状态
         deleteSmsTemplate,  //删除短信与模板
         findSmsTemoplateLog, //单条短信日志
-        findSmsTemplateTypeList //模板类型
+        findSmsTemplateTypeList, //模板类型
+        findMemberPrincipalList //负责人
     } from "Api/member";
     import Tab from "../components/tab.vue";
     import TableBody from "../../base/tableBody.vue";
@@ -98,13 +100,7 @@
                     value: '2',
                     label: '禁用'
                 }],
-                options03: [{
-                    value: '选项1',
-                    label: '黄金糕'
-                }, {
-                    value: '选项2',
-                    label: '双皮奶'
-                }],
+                noteList:[],
                 noteManageHeader: [],//表格头部
                 tabTitle:"即时短信",
                 isSort:true,//是否开启排序
@@ -122,7 +118,7 @@
                     status: "", //模板状态 1：启用 2：禁用
                     shopId: this.$route.query.shopId,
                     page: "1",
-                    pageSize: "100",
+                    pageSize: "15",
                     beginTime: "",
                     endTime: "",
                     templateId:"", //短信id
@@ -140,13 +136,13 @@
             xjTime,//时间选择器
         },
         asyncComputed:{
-            noteList:{ //数据列表（统一字段）
+            requestList:{ //请求回来的数据列表（统一字段）
                 get(){
-                    if(this.tabTitle == "即时短信"){
+                    if (this.tabTitle == "即时短信") {
                         return this.SmsTemoplateList;
-                    }else if(this.tabTitle == "触发短信"){
+                    } else if (this.tabTitle == "触发短信") {
                         return this.SmsTriggerLists;
-                    }else if(this.tabTitle == "短信日志"){
+                    } else if (this.tabTitle == "短信日志") {
                         return this.SmsTemoplateLog;
                     }
                 }
@@ -290,7 +286,7 @@
                         });
                         console.log(res)
                         if(res.body.msg == "OK"){
-                            return res.body.data
+                            return res.body.data;
                         }else{
                             
                         }
@@ -299,6 +295,17 @@
                 default(){
                     return false
                 }
+            },
+            MemberPrincipalList:{ //负责人列表
+                get(){
+                    return (async()=>{
+                        let {shopId} = this.requestData;
+                        let res = await findMemberPrincipalList({shopId});
+                        if(res.body.msg == "OK"){
+                            return res.body.data;
+                        }
+                    })()
+                },
             },
             headerData:{ //表格头部数据
                 get(){
@@ -345,6 +352,14 @@
                 }
             }
         },
+        watch:{
+            "requestList"(val){
+                if(val && val.length != 0){
+                    this.noteList = this.noteList.concat(val)
+                    console.log(this.noteList)
+                }
+            }
+        },
         methods: {
             // 切换头部tab
             switchTab(item) {
@@ -361,6 +376,8 @@
                     this.isSort = false;
                     this.isRowClick = false;
                 }
+                this.noteList = [];
+                this.requestData.page = "1"
                 this.tabTitle = item.tabName;
                 this.upData = true;
             },
@@ -531,6 +548,17 @@
                         return false
                     }
                 })()
+            },
+            // 下拉加载更多
+            loadMoreOrder(){
+                console.log("加载更多数据")
+                if(!this.getListsIng){
+                    let page = (this.requestData.page - 0);
+                    page+=1;
+                    this.requestData.page = page+""
+                    console.log("页数:"+ page)
+                    this.upData = true;
+                }
             }
         },
         created() {
