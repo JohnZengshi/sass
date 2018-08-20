@@ -53,7 +53,7 @@
                 <span style="display:none">{{tableData}}</span> <!-- 要加这个才会更新视图 -->
                 <!-- icon类型 -->
                 <template v-if="operationConfig.type == 'icon'">
-                    <i class="iconfont" @click="operationBack(i,scope)" :class="[i]" v-for="i in scope.row[operationConfig.tableValue]"></i>                    
+                    <i class="iconfont" @click.stop="operationBack(i,scope)" :class="[i]" v-for="i in scope.row[operationConfig.tableValue]"></i>                    
                 </template>
                 <!-- 单选模式 -->
                 <template v-else-if="operationConfig.type == 'radio'">
@@ -61,8 +61,8 @@
                 </template>
                 <!-- 按钮 + icon类型 -->
                 <template scope="scope" v-else-if="operationConfig.type == 'btnAndIcon'" v-for="item in scope.row[operationConfig.tableValue]">
-                    <el-button v-if="item.type == 'btn'" :class="item.btnStyle" @click="item.btnEvent && operationBack(item,scope)">{{item.btnName}}</el-button>
-                    <i v-if="item.type == 'icon'" class="iconfont" @click="operationBack(item,scope)" :class="[item.iconName]"></i>
+                    <el-button v-if="item.type == 'btn'" :class="item.btnStyle" @click.stop="item.btnEvent && operationBack(item,scope)">{{item.btnName}}</el-button>
+                    <i v-if="item.type == 'icon'" class="iconfont" @click.stop="operationBack(item,scope)" :class="[item.iconName]"></i>
                 </template>
             </template>
         </el-table-column>
@@ -140,6 +140,9 @@
     }
     .text{
         margin-left: 10px;
+    }
+    .operation{
+        z-index: 9999;
     }
 </style>
 
