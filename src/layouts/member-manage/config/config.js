@@ -1,3 +1,4 @@
+import {GetNYR,GetSF} from "assets/js/getTime";
 module.exports = {
   //明细表配置
   detailConfing: [
@@ -210,175 +211,287 @@ module.exports = {
     }
   ],
   // 短信管理->即时短信->表格头部,表格内容字段配置
-  noteManageHeader01: [
-      {
+  noteManageHeader01: [{
           id: "1",
           text: "模板类型",
-          tableValue:"moduleType"
+          tableValue: "templateTypeName"
       },
       {
           id: "2",
           text: "短信名称",
-          tableValue:"noteName",
-          isClick:true, //可点击
+          tableValue: "templateName",
+          isClick: true, //可点击
       },
       {
           id: "3",
           text: "创建人",
-          tableValue:"createdPreson"
+          tableValue: "nickname"
       },
       {
+          id: "4",
+          text: "发送条数",
+          tableValue: "countSize"
+      },
+      {
+          id: "7",
+          text: "发送人数",
+          tableValue: "countPhone"
+      },
+      //   {
+      //       id: "5",
+      //       text: "今日发送",
+      //       tableValue: "todaySend"
+      //   },
+      {
           id: "5",
-          text: "今日发送",
-          tableValue:"todaySend"
+          text: "发送时间",
+          tableValue: "createTime",
+          isChangeVal: true, //需要装换值
+          changeValRules: (val) => {
+            //   console.log(val)
+            return `${GetNYR(val)}${" "}${GetSF(val)}`;
+          },
       },
       {
           id: "6",
           text: "累计发送",
-          tableValue:"totalSend"
+          tableValue: "count"
       },
 
   ],
   // 短信管理->触发短信->表格头部,表格内容字段配置
-  noteManageHeader02: [
-      {
-          id: "1",
-          text: "短信名称",
-          tableValue:"noteName",
-          isClick:true, //可点击
-      },
-      {
-          id: "2",
-          text: "创建人",
-          tableValue:"createdPreson"
-      },
-      {
-          id: "3",
-          text: "模板状态",
-          tableValue:"moduleState",
-          isActive: true, //有活动状态
-          isChangeVal:true, //需要装换值
-          ChangeVal:[{    //需要装换的值
-            "moduleState":true,
-            text:"开启"
-          },{
-            "moduleState":false,
-            text:"禁用"  
-          }]
-      },
-      {
-          id: "4",
-          text: "今日发送",
-          tableValue:"todaySend"
-      },
-      {
-          id: "5",
-          text: "累计发送",
-          tableValue:"totalSend"
-      },
-    //   {
-    //       id: "6",
-    //       text: "操作",
-    //       operation:true,
-    //       operationList:["icon-qidong","icon-bianji","icon-lajitong"]
-    //   },
+    noteManageHeader02: [{
+            id: "1",
+            text: "类型名称",
+            tableValue: "templateTypeName",
+            isClick: true, //可点击
+        }, {
+            id: "1",
+            text: "短信名称",
+            tableValue: "templateName",
+            isClick: true, //可点击
+        },
+        {
+            id: "2",
+            text: "创建人",
+            tableValue: "nickname"
+        },
+        {
+            id: "3",
+            text: "短信状态",
+            tableValue: "status",
+            isActive: true, //有活动状态
+            activeRules: (val) => {
+                if(val == "禁用"){
+                    return true
+                }else{
+                    return false
+                }
+            },
+            // isChangeVal: true, //需要装换值
+            // changeValRules: (val) => {
+            //     if (val) {
+            //         return "开启"
+            //     } else {
+            //         return "禁用"
+            //     }
+            // },
+        },
+        {
+            id: "4",
+            text: "今日发送",
+            tableValue: "countSize"
+        },
+        {
+            id: "5",
+            text: "累计发送",
+            tableValue: "count"
+        },
+        //   {
+        //       id: "6",
+        //       text: "操作",
+        //       operation:true,
+        //       operationList:["icon-qidong","icon-bianji","icon-lajitong"]
+        //   },
 
-  ],
-  // 短信管理->短信日志->表格头部,表格内容字段配置
-  noteManageHeader03: [{
-          id: "1",
-          text: "模板类型",
-          tableValue:"moduleType",
-          width:92
-      },
-      {
-          id: "2",
-          text: "短信名称",
-          tableValue:"noteName",
-          width:96
-      },
-      {
-          id: "3",
-          text: "短信内容",
-          tableValue:"noteContent",
-          width:482
-      },
-      {
-          id: "4",
-          text: "用户姓名",
-          tableValue:"userName",
-          width:96
-      },
-      {
-          id: "5",
+    ],
+// 短信管理->短信日志->表格头部,表格内容字段配置
+      noteManageHeader03: [{
+              id: "1",
+              text: "模板类型",
+              tableValue: "templateTypeName",
+              width: 136
+          },
+          {
+              id: "2",
+              text: "短信名称",
+              tableValue: "templateName",
+              width: 102 
+          },
+          {
+              id: "3",
+              text: "短信内容",
+              tableValue: "content",
+              width: 480
+          },
+        //   {
+        //       id: "4",
+        //       text: "用户姓名",
+        //       tableValue: "userName",
+        //       width: 96
+        //   },
+          {
+            id:"5",
+            text:"发送条数",
+            tableValue: "countSize",
+            isActive:true,
+            activeRules: (val) => {
+                if (val.indexOf("+")) {
+                    return true
+                } else if (val.indexOf("-")) {
+                    return false
+                }
+            },
+            width:133
+          },
+        //   {
+        //       id: "5",
+        //       text: "用户手机",
+        //       tableValue: "userPhone",
+        //       width: 106
+        //   },
+          {
+              id: "6",
+              text: "短信剩余",
+              tableValue: "remainingSize",
+              width: 133
+          },
+          {
+              id: "7",
+              text: "发送状态",
+              tableValue: "status",
+              isActive: true, //有活动状态
+              activeRules: (val) => {
+                  return !val
+              },
+              isChangeVal: true, //需要装换值
+              changeValRules: (val) => {
+                  if (val) {
+                      return "发送成功"
+                  } else {
+                      return "发送失败"
+                  }
+              },
+              width: 121
+
+          },
+          {
+              id: "8",
+              text: "发送时间",
+              tableValue: "createTime",
+              width: 143,
+              isChangeVal: true, //需要装换值
+              changeValRules: (val) => {
+                //   console.log(val)
+                  return `${GetNYR(val)}${" "}${GetSF(val)}`;
+              },
+          }
+
+      ],
+      //   短信日志
+      noteLogListHeader: [{
+          text: "用户名",
+          tableValue: "userName",
+      }
+      , {
           text: "用户手机",
-          tableValue:"userPhone",
-          width:106
-      },
-      {
-          id: "6",
-          text: "短信剩余",
-          tableValue:"noteSurplus",
-          width:94
-      },
-      {
-          id: "7",
-          text: "发送状态",
-          active:true,
-          tableValue:"sendState",
-          isActive: true, //有活动状态
-          isChangeVal:true, //需要装换值
-          ChangeVal:[{    //需要装换的值
-            "sendState":true,
-            text:"发送成功"
-          },{
-            "sendState":false,
-            text:"发送失败"  
-          }],
-          width:108
-          
-      },
-      {
-          id: "8",
+          tableValue: "userPhone",
+      }
+      , {
           text: "发送时间",
-          tableValue:"sendTime",
-          width:106
-      }
-
-  ],
-  // 短信管理->新增短信->隐藏字段,表格内容字段配置
-  memberListHeader: [{
-          text: "姓名",
-          tableValue: "name",
-          pic: true,//开启头像
-          picValue:"img" //头像字段
-      },
-      {
-          text: "电话",
-          tableValue: "phone"
-      }
-  ],
-  noteLogListHeader:[{
-      text:"用户名",
-      tableValue:"userName",
-  },{
-      text:"用户手机",
-      tableValue:"userPhone",
-  },{
-      text:"发送时间",
-      tableValue:"sendTime",
-  }, {
-      text: "发送状态",
-      tableValue: "sendState",
-      isActive: true,
-      isChangeVal: true, //需要装换值
-      ChangeVal: [{ //需要装换的值
-          "sendState": true,
-          text: "发送成功"
+          tableValue: "sendTime",
       }, {
-          "sendState": false,
-          text: "发送失败"
+          text: "发送状态",
+          tableValue: "sendState",
+          isActive: true,
+          activeRules: (val) => {
+              return !val
+          },
+          isChangeVal: true, //需要装换值
+          changeValRules: (val) => {
+              if (val) {
+                  return "发送成功"
+              } else {
+                  return "发送失败"
+              }
+          },
+      }],
+      //   模板列表插入模板
+      moduleLsitHeader: [{
+          text: "模板名称",
+          tableValue: "templateName",
+          width: 100,
+      }, {
+          text: "模板内容",
+          tableValue: "content",
+          width: 449,
+      }],
+      //   短信管理->新增短信->发送人列表
+      sendPresonListHeader: [{
+          text: "头像",
+          tableValue: "headPortrait",
+          pic: true,
+          width: 98,
+      }, {
+          text: "姓名",
+          tableValue: "memberName",
+          width: 79,
+      }, {
+          text: "手机号",
+          tableValue: "phone",
+          picAndText: true,
+          picValue: "phoneImg"
+      }],
+      // 模板管理->列表
+      moduleListHeader:[{
+          text:"模板类型",
+          tableValue:"templateTypeName",
+          width:192,
+      },{
+          text:"模板名称",
+          tableValue:"templateName",
+          width:94,
+      },{
+          text:"模板内容",
+          tableValue:"content",
+          width:579
+      },{
+          text:"创建人",
+          tableValue:"nickname",
+          width:90
+      },{
+          text:"创建时间",
+          tableValue:"createTime",
+          width:180,
+          isChangeVal: true, //需要装换值
+          changeValRules: (val) => {
+              console.log(val)
+            return `${GetNYR(val)}${" "}${GetSF(val)}`;
+          },
+      }],
+      // 管理签名
+      signatureListHeader: [{
+          text: "签名内容",
+          tableValue: "signName"
+      }, {
+          text: "创建人",
+          tableValue: "userName"
+      }, {
+          text: "创建时间",
+          tableValue: "createTime",
+          isChangeVal: true, //需要装换值
+          changeValRules: (val) => {
+            return `${GetNYR(val)}${" "}${GetSF(val)}`;
+          },
       }]
-  }]
-
 }
