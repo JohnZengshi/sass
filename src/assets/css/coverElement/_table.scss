@@ -91,4 +91,28 @@
             height: 395px;
         }
     }
+    // 插入模板表格样式
+    &.el_table_moduleList {
+        .el-table__body-wrapper{
+            height: 500px;
+        }
+    }
+    // 发送人列表样式
+    &.el_table_sendPresonList{
+        .el-table__body-wrapper{
+            height: 453px;
+        }
+    }
+    // 模板管理类表样式
+    &.el_table_moduleManage{
+        .el-table__body-wrapper{
+            height: 677px;
+        }
+    }
+    // 管理签名列表样式
+    &.el_table_signatureList{
+        .el-table__body-wrapper{
+            height: 533px;
+        }
+    }
 }

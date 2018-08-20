@@ -65,3 +65,102 @@
 .btn-w90-h30{
      @include btn($width:30px, $height:90px);
 }
+
+.el-button{
+    // 宽高
+    &.btn-w80-h28{
+        padding: 0;
+        text-align: center;
+        line-height: 28px;
+        width: 80px;
+        height: 28px;
+    }
+    &.btn-w90-h28{
+        padding: 0;
+        text-align: center;
+        line-height: 28px;
+        width: 90px;
+        height: 28px;
+    }
+    &.btn-w120-h28{
+        padding: 0;
+        text-align: center;
+        line-height: 28px;
+        width: 120px;
+        height: 28px;
+    }
+    &.btn-w88-h26{
+        padding: 0;
+        text-align: center;
+        line-height: 26px;
+        width: 88px;
+        height: 26px;
+    }
+    &.btn-w50-h20{
+        padding: 0;
+        text-align: center;
+        line-height: 20px;
+        width: 50px;
+        height: 20px;
+    }
+    &.btn-w56-h18{
+        padding: 0;
+        text-align: center;
+        line-height: 18px;
+        width: 56px;
+        height: 18px;
+    }
+    &.btn-w150-h28{
+        padding: 0;
+        text-align: center;
+        line-height: 28px;
+        width: 150px;
+        height: 28px;
+    }
+    // 按钮字体
+    &.btn-f12{
+        font-size: 12px;
+    }
+    // 按钮字体颜色
+    &.btn-color01{
+        color: #2993f8;
+    }
+    &.btn-color02{
+        color: #fff
+    }
+    &.btn-color03{
+        color: #2993f8
+    }
+    
+    // 按钮背景颜色
+    &.btn-backColor01{
+        background-color: #2993f8
+    }
+    &.btn-backColor03{
+        background-color: #E9F4FE;
+    }
+    &.btn-backColor04{
+        background-color: transparent;
+    }
+    // 按钮边框
+    &.btn-noBorder{
+        border: none;
+        &.hover{
+            &:hover{
+                border: 1px #2993f8 solid;
+            }
+        }
+    }
+    &.btn-b1-c01{
+        border: 1px #2993f8 solid;
+    }
+}
+
+.el-radio-button{
+    &.btn-w60-h28{
+        >span{
+            width: 60px;
+            height: 28px;
+        }
+    }
+}

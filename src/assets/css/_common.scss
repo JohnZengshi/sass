@@ -241,6 +241,20 @@
   flex: 1;
 }
 
+.flex-2 {
+  -webkit-box-flex: 2;
+  -webkit-flex: 2;
+  -ms-flex: 2;
+  flex: 2;
+}
+
+.flex-3{
+  -webkit-box-flex: 33%;
+  -webkit-flex: 33%;
+  -ms-flex: 33%;
+  flex: 33%;
+}
+
 .flex-align-center {
   -webkit-box-align: center;
   -webkit-align-items: center;
@@ -253,6 +267,13 @@
   -webkit-justify-content: center;
   -ms-flex-pack: center;
   justify-content: center;
+}
+
+.flex-pack-end{
+  -webkit-box-pack: flex-end;
+  -webkit-justify-content: flex-end;
+  -ms-flex-pack: flex-end;
+  justify-content: flex-end;
 }
 
 .flex-pack-justify {
@@ -404,8 +425,38 @@ input[type="number"]{
     }
     .el-date-editor{ width: 100%;}
 }
+// margin-left
 .ml-10{
   margin-left: 10px;
+}
+// margin-right
+.mr-10{
+  margin-right: 10px;
+}
+.mr-11{
+  margin-right: 11px;
+}
+.mr-13{
+  margin-right: 13px;
+}
+.mr-15{
+  margin-right: 15px;
+}
+.mr-16{
+  margin-right: 16px;
+}
+.mr-17{
+  margin-right: 17px;
+}
+// margin-top
+.mt-11{
+  margin-top: 11px;
+}
+.mt-30{
+  margin-top: 30px;
+}
+.mt-33{
+  margin-top: 33px;
 }
 // 弹窗关闭按钮
 .p-close-icon {
