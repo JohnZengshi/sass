@@ -1,7 +1,7 @@
 <template>
     <div class="m-m-home-page-push-main">
         <div class="decoration">
-            推送{{xxx}}
+            推送
         </div>
         <ul class="center-num-list">
             <li>
@@ -19,7 +19,7 @@
         </ul>
 
         <ul class="detailsCard flex flex-r flex-pack-justify">
-            <li class="item flex flex-v" v-for="item in cardData">
+            <li class="item flex flex-v" v-for="item in cardData" @click="gotoModuleDetail">
                 <div>{{item.cardTitle}}</div>
                 <div>
                     <span>未完成推送</span>
@@ -37,23 +37,41 @@
         </ul>
         
         <ul class="top-btn xj-btn-list">
-            <div class="btn">+推送</div>
-            <div class="btn">管理签名</div>
-            <div class="btn">管理模板</div>
-            <router-link :to="{path:'push/noteManage',query:{title:'短信管理'}}" class="btn" append>短信管理</router-link>
-            <div class="btn">我的推送</div>
-            <div class="btn">充值</div>
+            <router-link :to="{path:'push/createNote',query: {title: '新增短信',shopId:filterOption.shopId}}" class="btn" append>+推送</router-link>
+            <div class="btn" @click="signatureManageClick">管理签名</div>
+            <router-link :to="{path:'push/moduleManage',query:{title:'管理模板',shopId:filterOption.shopId}}" class="btn" append>管理模板</router-link>
+            <router-link :to="{path:'push/noteManage',query:{title:'短信管理',shopId:filterOption.shopId}}" class="btn" append>短信管理</router-link>
+            <router-link :to="{path:'push/noteManage',query:{title:'短信管理',shopId:filterOption.shopId}}" class="btn" append>我的推送</router-link>
+            <div class="btn" @click="openRecharge">充值</div>
         </ul>
+        <!-- 弹窗 -->
+        <Dialog
+            :dialogType="dialog.dialogType"
+			:isShowDialog="dialog.isShowDialog"
+            :modal="dialog.modal"
+            :filterOption = filterOption
+			@cancel="cancel"
+            @confirm="confirm">
+		</Dialog>
     </div>
 </template>
 <script>
+    import Dialog from "../base/dialog.vue";
+    import signatureManage from "../push/components/dialogType/signatureManage.vue";
+    import recharge from "../../../layouts/Leaguer/components/recharge.vue"
     export default {
         data() {
             return {
                 cardData: [],
-                xxx: "123"
+                dialog:{
+                    isShowDialog:false,
+                    dialogType:"",
+                    modal:true
+                }
+                
             }
         },
+        props:["filterOption"],
         created(){
             this.cardData = [{
                     cardTitle:"系统通知",
@@ -81,6 +99,36 @@
                     finished:165,
                     percent:"50%"
                 }]
+        },
+        components:{
+            Dialog,
+            signatureManage,//管理签名弹窗
+            recharge, //充值弹窗
+        },
+        methods:{
+            // 打开管理签名弹窗
+            signatureManageClick(){
+                this.dialog.dialogType = 'signatureManage'
+                this.dialog.isShowDialog = true;
+            },
+            //充值按钮
+            openRecharge(){
+                this.dialog.dialogType = 'recharge'
+                this.dialog.isShowDialog = true;
+            },
+            // 弹窗确定按钮
+            confirm(val){
+                this.dialog.isShowDialog = false
+            },
+            // 弹窗关闭取消按钮
+            cancel(val){
+                this.dialog.isShowDialog = false
+            },
+            // 点击卡片查看模板详情
+            gotoModuleDetail(){
+                this.dialog.isShowDialog = true;
+            }
+            
         }
     }
 
@@ -150,6 +198,10 @@
                 border-radius: 9px;
                 border: 1px #D6D6D6 solid;
                 padding: 18px 20px;
+                cursor: pointer;
+                &:hover{
+                    border: 1px #2993f8 solid;
+                }
                 >div{
                     &:first-of-type{
                         font-size: 15px;
