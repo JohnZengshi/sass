@@ -32,8 +32,9 @@ export default {
         font-weight: bold;
         padding: 7px 8px;
         cursor: pointer;
+        text-align: center;
         transition: all .3s;
-        color: #666;
+        color: #2993f8;
         &:hover, &.actions{
             color: #fff;
             background-color: #2993f8;

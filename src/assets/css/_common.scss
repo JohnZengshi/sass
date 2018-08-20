@@ -315,8 +315,9 @@
 }
 // 所有的按钮样式
 .xj-btn-list {
-    display:flex;
+    display: flex;
     justify-content: center;
+    // 普通按钮
     .btn {
         width: 90px;
         height: 28px;
@@ -326,7 +327,7 @@
         background: #2993f8;
         color: #fff;
         text-align: center;
-        margin-right: 16px;
+        margin-right: 10px;
         cursor: pointer;
         transition: all .3s;
         &:hover {
@@ -344,6 +345,50 @@
             color: #2993f8;
         }
     }
+    .cnacel-btn-c{
+        border: 1px solid #d6d6d6;
+        background: #fff;
+        color: #2993f8;
+        transition: all .3s;
+        &:hover {
+            border: 1px solid #2993f8;
+            background: #fff;
+            color: #2993f8;
+        }
+    }
+    // 带背景色变动按钮
+    .btn-bg {
+        width: 90px;
+        height: 28px;
+        line-height: 29px;
+        font-size: 14px;
+        border-radius: 4px;
+        background: #F1F2F3;
+        color: #666;
+        text-align: center;
+        margin-right: 10px;
+        cursor: pointer;
+        transition: all .3s;
+        &:hover {
+            color: #fff;
+            background: #2993f8;
+        }
+    }
+    .actions-bg{
+      color: #fff;
+      background: #2993f8;
+    }
+    .cnacel-btn-bg{
+        border: 1px solid #d6d6d6;
+        background: #fff;
+        background: #2993f8;
+        color: #FFF;
+        transition: all .3s;
+        &:hover {
+            background: #4db3ff;
+        }
+    }
+
     li:last-child{
       margin-right: 0;
     }
@@ -370,9 +415,6 @@ input[type="number"]{
 
 /* 日期控件 */
 .xj-time-box{
-    &.xj_time{
-      margin-left: 0;
-    }
     display: inline-block;
     width: 168px;
     border:1px solid #d6d6d6;
@@ -478,8 +520,11 @@ input[type="number"]{
   border-radius: 5px;
   padding: 20px 30px;
   position: relative;
-  .add-member-body {
-    height: 660px;
+  display: flex;
+  flex-direction: column;
+  .scroll-body {
+    flex: 1;
+    // height: 660px;
     >h3 {
       line-height: 1;
       font-size: 16px;
@@ -492,5 +537,19 @@ input[type="number"]{
       width: 100%;
       white-space: nowrap;
     }
+  }
+}
+.xj-input{
+  height: 36px;
+  background-color: transparent;
+  font-size: 14px;
+  padding-left: 10px;
+  border-radius: 3px;
+  border: 1px solid #dedede;
+  &:active,
+  &:hover,
+  &:focus {
+    border: 1px solid #2993f8;
+    background-color: #f4f9ff;
   }
 }

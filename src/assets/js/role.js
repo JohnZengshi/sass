@@ -1,3 +1,4 @@
+import * as jurisdictions from 'Api/commonality/jurisdiction'
 export const getRole = function (types, datas) {
   if (datas) {
     for (let i of datas) {
@@ -7,6 +8,31 @@ export const getRole = function (types, datas) {
     }   
   }
   return false
+}
+export const filterShopRole = function (roleList) { // 获取店铺的权限
+
+    // 店员
+    let shopRole = jurisdictions.jurisdictionShopRole(roleList)
+
+    // 管理员公司
+    let computedManageRole = jurisdictions.jurisdictionComputedManageRole(roleList)
+
+    // 职员
+    let officeClerk = jurisdictions.jurisdictionOfficeClerk(roleList)
+
+    // 店长
+    let shopManageRole = jurisdictions.jurisdictionShopManageRole(roleList)
+
+    // 判断是不是监察员
+    let isJrole = jurisdictions.jurisdictionJCY(roleList)
+
+    if (computedManageRole) { // 管理员
+      return 3
+    } else if (shopManageRole || officeClerk || isJrole) { // 店长 职员 监察员
+      return 2
+    } else if (shopRole) { // 店员
+      return 1
+    }
 }
 // export const getDeleteRole = function (A, B, isComputed) { // 操作者，被操作者， 是否是公司人员 
 //   if ()

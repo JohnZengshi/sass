@@ -1,55 +1,223 @@
-export const getDynamicsType = function (type) {
-  switch (type) {
-    case '001':
-      return '新建了'
-    case '002':
-      return '修改了'
-    case '003':
-      return '审核通过了'
-    case '005':
-      return '删除了'
-    case '004':
-      return '审批不通过'
-    case '011':
-      return '收银了'
-    case '102':
-      return '用户权限'
-    case '201':
-      return '购买了'
-    case '007':
-      return '删除'
-    case '901':
-      return '登录系统'
-    case '902':
-      return '退出系统'
-    case '903':
-      return '备份数据'
-    case '904':
-      return '恢复数据'
-  }
-  return false
+export const getDynamicsType = function(type) {
+    switch (type) {
+        case '001':
+            return '新建了'
+        case '002':
+            return '修改了'
+        case '003':
+            return '审核通过了'
+        case '005':
+            return '删除了'
+        case '004':
+            return '审批不通过'
+        case '011':
+            return '收银了'
+        case '102':
+            return '用户权限'
+        case '201':
+            return '购买了'
+        case '007':
+            return '删除'
+        case '901':
+            return '登录系统'
+        case '902':
+            return '退出系统'
+        case '903':
+            return '备份数据'
+        case '904':
+            return '恢复数据'
+    }
+    return false
 }
-export const getDynamicsOrderType = function (type) {
-  switch (type) {
-    case '01':
-      return '入库'
-    case '02':
-      return '退库'
-    case '03':
-      return '发货'
-    case '04':
-      return '退货'
-    case '05':
-      return '销售'
-    case '06':
-      return '调柜'
-    case '07':
-      return '调库'
-    // case '08':
-    //   return '修改'
-    case '10':
-      return '修改'
-  }
+export const getDynamicsOrderType = function(type) {
+    switch (type) {
+        case '01':
+            return '入库'
+        case '02':
+            return '退库'
+        case '03':
+            return '发货'
+        case '04':
+            return '退货'
+        case '05':
+            return '销售'
+        case '06':
+            return '调柜'
+        case '07':
+            return '调库'
+            // case '08':
+            //   return '修改'
+        case '10':
+            return '修改'
+    }
+    return ''
+}
+// 时间类型
+export const getTimeType = function(type) {
+    switch (type) {
+        case '1':
+            return '年'
+        case '2':
+            return '月'
+        case '3':
+            return '周'
+    }
+    return ''
+}
+export const getTriggerRule = function(type) {
+    switch (type) {
+        case '1':
+            return '销售成功'
+        case '2':
+            return '退货成功'
+        case '3':
+            return '换货成功'
+        case '4':
+            return '生日'
+        case '5':
+            return '结婚纪念日'
+        case '6':
+            return '圣诞节'
+        case '7':
+            return '元旦'
+    }
+    return ''
+}
+export const getTriggerTime = function(type) {
+    switch (type) {
+        case '1':
+            return '前'
+        case '2':
+            return '后'
+    }
+    return ''
+}
+export const getWeekTime = function(type) {
+    switch (type) {
+        case '1':
+            return '周一'
+        case '2':
+            return '周二'
+        case '3':
+            return '周三'
+        case '4':
+            return '周四'
+        case '5':
+            return '周五'
+        case '6':
+            return '周六'
+        case '7':
+            return '周日'
+    }
+    return ''
+}
+// 跟进类型
+export const getFollowType = function(type) {
+    switch (type) {
+        case '1':
+            return '即时跟进'
+        case '2':
+            return '触发跟进'
+    }
+    return ''
+}
+// 跟进状态
+export const getFollowUpStatus = function(type) {
+    switch (type) {
+        case '1':
+            return '进行中'
+        case '2':
+            return '已超时'
+        case '3':
+            return '已完成'
+        case '4':
+            return '待跟进'
+    }
+    return ''
+}
+export const getVisitAimList = function(type) {
+    switch (type) {
+        case '1':
+            return '生日跟进'
+        case '2':
+            return '售后跟进'
+        case '3':
+            return '日常跟进'
+        case '4':
+            return '纪念日跟进'
+        case '5':
+            return '其他跟进'
+    }
+    return ''
+}
+export const getMemberType = function(type) {
+    switch (type) {
+        case '1':
+            return '共有'
+        case '2':
+            return '私有'
+        case '3':
+            return '公共'
+    }
+    return ''
+}
+//高级搜索连接
+export const getConnect = function(type) {
+    switch (type) {
+        case '1':
+            return '并且'
+        case '2':
+            return '或者'
+    }
+    return ''
+}
+// 会员高级搜素的前置条件
+export const getMemberAdvancedSearchPreposition = function(type) {
+    switch (type) {
+        case '1':
+            return '会员消费时间'
+        case '2':
+            return '会员剩余积分'
+        case '3':
+            return '会员消耗积分'
+        case '4':
+            return '会员累计消费额'
+        case '5':
+            return '会员单次消费额'
+        case '6':
+            return '会员注册时间'
+        case '7':
+            return '会员消费次数'
+        case '8':
+            return '消费计重类-计重类产品类别数据'
+        case '9':
+            return '消费计件类-计件类产品类别数据'
+        case '10':
+            return '会员负责人'
+        case '11':
+            return '会员类型'
+        case '12':
+            return '会员级别'
+    }
+    return ''
+}
+// 会员高级搜索包含数据
+export const getAdvancedSearchInclude = function(type) {
+    switch (type) {
+        case '1':
+            return '等于'
+        case '2':
+            return '不等于'
+        case '3':
+            return '大于'
+        case '4':
+            return '大于等于'
+        case '5':
+            return '小于'
+        case '6':
+            return '小于等于'
+    }
+    return ''
 }
 // 001 创建单据
 // 002 修改单据

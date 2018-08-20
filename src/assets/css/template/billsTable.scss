@@ -78,10 +78,24 @@ $report-p-r: 20px;
                 color: #2993f8;
             }
         }
+        // 中等大小图片
         >.head-portrait-wrap{
             width: 60px;
-            height: 100%;
+            height: 60px;
             margin: 10px auto;
+            border-radius: 5px;
+            overflow: hidden;
+            >.head-portrait{
+                width: 100%;
+                border-radius: 5px;
+            }
+        }
+        // 小图
+        >.head-portrait-small-wrap{
+            width: 35px;
+            height: 35px;
+            margin: 7px auto;
+            border-radius: 5px;
             overflow: hidden;
             >.head-portrait{
                 width: 100%;
@@ -536,7 +550,7 @@ $report-p-r: 20px;
 }
 // 表格头部的布局
 .new-table-header-layout-main{
-    border-radius: 4px;
+    border-radius: 4px 4px 0 0;
     border: 1px solid #dedede;
     // box-shadow:0px 0 15px #ddd;
     position: relative;
@@ -898,6 +912,9 @@ $report-p-r: 20px;
 }
 .xj-report-table-container-img{
     @include xj-report-table-box($allH: 595px, $trH: 80px);
+}
+.xj-report-table-container-img-small{
+    @include xj-report-table-box($allH: 595px, $trH: 50px);
 }
 // 小计
 .subtotal-main{

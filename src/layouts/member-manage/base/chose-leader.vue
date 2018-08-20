@@ -1,115 +1,240 @@
 <template>
-    <div class="chose-wrap">
-        <div class="title">选择负责人</div>
-        <div class="menu-list">
-            <div class="search">
-                <input @keyup.enter="getShopUserList()" v-model="userPhone" type="text" placeholder="请输入负责人名/手机号">
-                <div class="search-btn">
-                    <i @click="getShopUserList()" class="iconfont icon-sousuo"></i>
+    <div class="n-p-scroll-box">
+        <div class="p-close-icon" @click="close">
+            <i class="el-dialog__close el-icon el-icon-close"></i>
+        </div>
+        <div class="title">{{headerTit}}</div>
+        <div class="c-l-scroll-body">
+            <div class="menu-list-wrap">
+                <div class="search">
+                    <input @keyup.enter="_seekFollowSearchByNew" v-model="userPhone" type="text" placeholder="请输入负责人名/手机号">
+                    <div class="search-btn">
+                        <i @click="_seekFollowSearchByNew" class="iconfont icon-sousuo"></i>
+                    </div>
+                </div>
+                <div class="menu-list-right">
+
+                    <new-down-menu
+                        class="w-110"
+                        ref="memberRankBox"
+                        :isSolid="true"
+                        :titleInfo="filterCondition.memberGradeName ? filterCondition.memberGradeName : '会员级别'"
+                        :showList="memberGradeList"
+                        @changeData="changeMemberGrade"
+                        @clearInfo="clearMemberGrade"
+                    ></new-down-menu>
+
+                    <new-down-menu class="w-110 ml-10" ref="memberClassBox" :isSolid="true" :titleInfo="_getMemberType(filterCondition.memberTypr) || '会员类型'" :showList="memberTypeList" @changeData="changeVisitAimList" @clearInfo="clearVisitAimList"></new-down-menu>
+
+                  <new-down-menu
+                      class="w-110 ml-10"
+                      ref="userBox"
+                      :isSolid="true"
+                      :titleInfo="filterCondition.principalName ? filterCondition.principalName : '跟进人'"
+                      :showList="userList"
+                      :nameKey="'name'"
+                      @changeData="changeUser"
+                      @clearInfo="clearUser"
+                  ></new-down-menu>
+
                 </div>
             </div>
-        </div>
-        <div class="member-list">
-            <ul>
-                <li v-for="(item, index) in dataList" :key="index">
-                    <img :src="item.logo">
-                    <div class="name">{{item.userName}}</div>
-                    <div class="phone">
-                        <img src="~static/img/member/new/phone.png" />
-                        {{item.phoneNo}}
-                    </div>
-                    <div class="check">
-                        <el-checkbox-group v-model="checkList" @change="checkChange">
-                            <el-checkbox :label="item.userId"></el-checkbox>
-                        </el-checkbox-group>
-                    </div>
+            <div class="btn-list-box">
+                <cut-bg class="cut-btn-style" @pitchOn="pitchOn" :showList="queryTypeList" :current="filterCondition.queryType"></cut-bg>
+                <div class="xj-btn-defult" @click="isAdvanced = !isAdvanced">{{isAdvanced ? '取消高级搜索' : '高级搜索'}}</div>
+                <ul class="xj-btn-list" v-if="isAdvanced">
+                    <li class="btn" @click="_seekFollowSearchByNew">搜索</li>
+                    <li class="btn" @click="reset">重置</li>
+                </ul>
+            </div>
+            
+            <!-- 高级搜索 -->
+            <advanced-search ref="advancedSearchBox" v-show="isAdvanced" :userList="userList" :memberGradeList="memberGradeList"></advanced-search>
 
-                </li>
-            </ul>
+            <div class="member-list new-e-checkbox-square">
+                <ul class="member-header">
+                    <li>头像</li>
+                    <li>姓名</li>
+                    <li>手机号</li>
+                    <li>
+                        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                    </li>
+                </ul>
+                <el-checkbox-group v-model="checkList" @change="handleCheckedCitiesChange">
+                    <ul class="member-body" v-for="(item, index) in dataList">
+                        <li>
+                            <img :src="item.logo">
+                        </li>
+                        <li>
+                            {{item.userName}}
+                        </li>
+                        <li>
+                            <i class="iconfont icon-genjin"></i> {{item.phoneNo}}
+                        </li>
+                        <li>
+                            <el-checkbox :label="item.userId"></el-checkbox>
+                        </li>
+                    </ul>
+                </el-checkbox-group>
+            </div> 
         </div>
-        <div class="btn-wrap" v-if="isFollowPage">
-            <div class="click-btn" @click="closeDia">确定</div>
+        <p class="all-num-tit">筛选跟进会员：<span>{{totalNum}}</span>位</p>
+        <div class="xj-btn-list">
+            <div v-if="!followId" class="btn cnacel-btn" @click="close">返回上一级</div>
+            <div class="btn" @click="confirm">确定</div>
         </div>
-        <div v-else class="chose-btn" @click="closeDia">确定</div>
     </div>
 </template>
-
 <script>
-import {seekGetShopUserList} from 'Api/commonality/seek'
-// import VisitAim from './visitAim'
+import { seekFollowSearchByNew, seekMemberList, seekFindMemberGradeList } from 'Api/commonality/seek'
+import advancedSearch from './advanced-search'
+import cutBg from 'base/cut/cut-bg'
+import newDownMenu from 'base/menu/new-down-menu'
+import {getMemberType} from 'assets/js/analysis'
+const dataSource = require('./data.js')
 export default {
-    // components: {
-    //     VisitAim
-    // },
+    components: {
+        advancedSearch,
+        newDownMenu,
+        cutBg
+    },
     props: [
+        'headerTit',
         'dataInfo',
         'shopId',
         'isChoseLeader',
-        'followData',
         'addModel',
         "isFollowPage",
-        'isFollowClear'
+        'isFollowClear',
+        'userIdList',
+        'followId'
     ],
     watch: {
-        'isChoseLeader': function () {
-            this.getShopUserList()
-            if (this.dataInfo) {
-                // console.log(this.dataInfo)
-                this.checkList = []
-                this.dataInfo.principalList.forEach((item, index) => {
-                    this.checkList.push(item.userId)
-                })
-                // console.log(this.checkList)
-            } else {
-                // console.log(444)
+        'isChoseLeader': function() {
+            this._seekFollowSearchByNew()
+            if (this.userIdList) {
+                this.checkList = this.userIdList
             }
-        },
-        'followData': function (val) {
-            if (val) {
-                //console.log("糟糕啦")
-                val.principalList.forEach((item, index) => {
-                    this.checkList.push(val.principalList[index].principalId)
-                })
-            }
-        },
+        }
     },
-    data () {
+    data() {
         return {
-            userPhone:'',
+            advanced: [], // 高级搜索数据
+            isAdvanced: false, // 是否开始高级搜索
+            filterCondition: {
+                keyWord: '',
+                memberGrade: '',
+                memberGradeName: '',
+                memberTypr: '',
+                principalId: '',
+                principalName: '',
+                queryType: '1',
+            },
+            isIndeterminate: false,
+            checkAll: false,
+            userPhone: '',
             dataList: [],
             checkList: [],
             nameList: [],
             pageSize: 99,
             page: 1,
-            isVisitAim: false
+            isVisitAim: false,
+            totalNum: '',
+            memberTypeList: dataSource.memberTypeList,
+            queryTypeList: dataSource.queryTypeList,
+            userList: [],
+            memberGradeList: [],
+            paging: {
+                page: 1,
+                pageSize: '30'
+            }
         }
     },
-    created () {
-        // console.log(111)
-        this.getShopUserList()
-        if (this.dataInfo) {
-            this.checkList = []
-            this.dataInfo.principalList.forEach((item, index) => {
-                this.checkList.push(item.userId)
-            })
+    created() {
+        this._seekFollowSearchByNew()
+        this._seekMemberList()
+        this._seekFindMemberGradeList()
+        if (this.userIdList) {
+            this.checkList = this.userIdList
         }
     },
-    mounted () {
+    mounted() {
+        let _self = this
         $(".member-list").mCustomScrollbar({
             theme: "minimal-dark",
-            axis: "y"
+            axis: "y",
+            callbacks: {
+                onTotalScroll: function() {
+                    _self._seekFollowSearchByNew('Y')
+                }
+            }
         });
     },
     methods: {
-        closeAim (val) {
-            console.log(val)
-            this.isVisitAim = false
-            this.$emit("closeChoMember", {list: this.checkList, followAim: val})
+        pitchOn(parm) {
+            this.filterCondition.queryType = parm.id
         },
-        returnBack () {
+        _getMemberType (parm) {
+            return getMemberType(parm)
+        },
+        _seekMemberList () {
+            let options = {
+              type: '2',
+              shopId: this.shopId,
+            }
+            seekMemberList(options)
+              .then(res => {
+                if (res.data.state == 200) {
+                    let datas = res.data.data.dataList
+                    for (let i of datas) {
+                        i.name = i.username
+                        i.id = i.userId
+                    }
+                    this.userList = datas
+                } else {
+                    this.$message({ type: 'success', message: res.data.msg })
+                }
+              })
+        },
+        _seekFindMemberGradeList () {
+            seekFindMemberGradeList({shopId: this.shopId})
+                .then(res => {
+                    if (res.data.state == 200) {
+                        let datas = res.data.data
+                        for (let i of datas) {
+                            i.name = i.gradeName
+                            i.id = i.gradeId
+                        }        
+                      this.memberGradeList = datas
+                    } else {
+                        this.$message({ type: 'success', message: res.data.msg })
+                    }
+                })
+        },
+        handleCheckAllChange(val) {
+            let cityOptions = []
+            for (let i of this.dataList) {
+                cityOptions.push(i.userId)
+            }
+            this.checkList = val.target.checked ? cityOptions : [];
+            this.isIndeterminate = false;
+        },
+        handleCheckedCitiesChange(value) {
+            let checkedCount = value.length;
+            this.checkAll = checkedCount == this.dataList.length;
+            this.isIndeterminate = checkedCount > 0 && checkedCount < this.dataList.length;
+        },
+        close() {
+            this.$emit('close')
+        },
+        closeAim(val) {
+            this.isVisitAim = false
+            this.$emit("closeChoMember", { list: this.checkList, followAim: val })
+        },
+        returnBack() {
             this.$emit("returnBack")
         },
-        closeDia () { // 关闭弹窗
+        confirm() { // 关闭弹窗
             this.nameList = []
             if (this.addModel) {
                 this.dataList.forEach((item, index) => {
@@ -117,16 +242,16 @@ export default {
                         this.nameList.push(item.userName)
                     }
                 })
-                this.$emit("closeChoMember", {list: this.checkList, nameList: this.nameList})
+                this.$emit("closeChoMember", { list: this.checkList, nameList: this.nameList })
             } else if (this.isFollowPage) {
                 this.isVisitAim = true
             } else {
-                this.$emit("closeChoMember", {list: this.checkList})
+                this.$emit("closeChoMember", { list: this.checkList })
             }
 
 
         },
-        getLevel (level) {
+        getLevel(level) {
             switch (level) {
                 case '1':
                     return "普通"
@@ -136,7 +261,7 @@ export default {
                     return "重要"
             }
         },
-        getType (type) {
+        getType(type) {
             switch (type) {
                 case 1:
                     return '私有'
@@ -146,73 +271,88 @@ export default {
                     return '公共'
             }
         },
-        checkChange (val) { // 多选选中的改变
+        checkChange(val) { // 多选选中的改变
             console.log(val)
         },
-        getShopUserList () {
-            let options = {
-                page: this.page,
-                pageSize: this.pageSize,
-                shopId: this.shopId
-            }
-            if(this.userPhone != "" && this.userPhone != null){
-                options.phone=this.userPhone;
-            }
-            seekGetShopUserList(options).then((res) => {
-                console.log('查看返回结果:',res)
-                if (res.data.state == 200) {
-                    this.dataList = res.data.data.shopUserList
-                    if (this.followData) {
-                        this.followData.principalList.forEach((item, index) => {
-                            this.checkList.push(this.followData.principalList[index].principalId)
-                        })
-                    }
-                } else {
-                    this.$message({
-                        type: 'warning',
-                        message: res.data.msg
-                    })
+        _seekFollowSearchByNew(parm) {
+            
+            if (parm == 'Y') { // 如果是分页
+                if (this.paging.page > 1 && this.dataList.length == this.totalNum) {
+                  return
                 }
-            }, (res) => {
-                this.$message({
-                    type: 'warning',
-                    message: res.data.msg
+            } else { // 否者更换条件或第一次请求
+                this.dataList = []
+                this.paging.page = 1
+            }
+
+            this.loading = true
+            seekFollowSearchByNew(Object.assign({}, this.filterCondition, this.paging, {shopId: this.shopId}))
+                .then(res => {
+                  if (res.data.state == 200) {
+                    this.paging.page += 1
+                    this.totalNum = res.data.data.totalNum
+                    this.dataList.push(...res.data.data.memberList)
+                  } else {
+                    this.$message({type: 'error',message: res.data.msg})
+                  }
+                  this.loading = false
                 })
-            })
+        },
+        changeMemberGrade(parm) {
+            this.filterCondition.memberGrade = parm.id
+            this.filterCondition.memberGradeName = parm.name
+            this.$emit('update', this.filterCondition)
+        },
+        clearMemberGrade() {
+            this.filterCondition.memberGrade = ''
+            this.filterCondition.memberGradeName = ''
+            this.$emit('update', this.filterCondition)
+        },
+        changeVisitAimList(parm) {
+            this.filterCondition.memberTypr = parm.id
+            this.$emit('update', this.filterCondition)
+        },
+        clearVisitAimList() {
+            this.filterCondition.memberTypr = ''
+            this.$emit('update', this.filterCondition)
+        },
+        changeUser (parm) {
+          this.filterCondition.principalId = parm.userId
+          this.filterCondition.principalName = parm.name
+          this.$emit('update', this.filterCondition)
+        },
+        clearUser () {
+          this.filterCondition.principalId = ''
+          this.filterCondition.principalName = ''
+          this.$emit('update', this.filterCondition)
+        },
+        update (parm) {
+            this.advanced = parm.datas
+        },
+        // 重置高级搜索
+        reset () {
+            this.$refs.advancedSearchBox.reset()
         }
     }
 }
-</script>
 
+</script>
 <style lang="scss">
-.choseLeaderDig {
-    width: 700px;
-    height: 730px;
-    background:#fff;
-    border-radius: 10px;
-    .el-dialog__header {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 38px;
-        padding-top: 20px !important;
-        padding-right: 20px !important;
+.n-p-scroll-box {
+    .c-l-scroll-body{
+        padding-top: 5px;
+        height: 564px;
+        overflow-y: scroll;
     }
-    .el-dialog__body {
-        padding: 0 28px;
-    }
-}
-.chose-wrap {
     .title {
         padding-top: 20px;
         font-size: 14px;
-        color:#333;
+        color: #333;
         font-weight: bold;
-        margin-bottom: 30px;
+        margin-bottom: 15px;
     }
-    .menu-list {
-        margin-bottom: 24px;
+    .menu-list-wrap {
+        margin-bottom: 20px;
         height: 28px;
         .search {
             width: 190px;
@@ -239,128 +379,100 @@ export default {
                 text-align: center;
                 cursor: pointer;
                 i {
-                    color:#fff;
+                    color: #fff;
                     line-height: 28px;
                 }
             }
         }
+        .menu-list-right{
+            height: 30px;
+            float: left;
+        }
+    }
+    .btn-list-box{
+        margin-bottom: 15px;
+        .cut-btn-style{
+            vertical-align: top;
+            margin-right: 20px;
+            li{
+                width: 80px;
+            }
+        }
+        >.xj-btn-list{
+            float: right;
+        }
     }
     .member-list {
-        height: 500px;
-        margin-bottom: 60px;
-        ul {
-            height: 100%;
+        height: 465px;
+        .member-header {
+            height: 40px;
+            background-color: #f5f5f5;
+            overflow: hidden;
+            display: -ms-flexbox;
+            display: flex;
+            border-bottom: 2px solid #e7e7e7;
             li {
-                height: 50px;
-                line-height: 50px;
+                display: inline-block;
+                line-height: 40px;
+                text-align: center;
+                color: #686868;
+                font-size: 12px;
+                float: left;
+                font-weight: bold;
+                transition: all .3s;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        }
+        .member-body {
+            height: 100%;
+            &:nth-child(2n) {
+                background-color: #FBFBFB;
+            }
+            &:hover {
+                background-color: #FFFBF3;
+            }
+            li {
+                height: 40px;
+                line-height: 40px;
                 img {
-                    width: 34px;
-                    height: 34px;
-                    float: left;
-                    margin-top: 8px;
-                    margin-left: 20px;
-                    margin-right: 20px;
+                    width: 30px;
+                    height: 30px;
+                    margin-top: 5px;
                     border-radius: 50%;
                 }
-                .name {
-                    float: left;
-                    width: 100px;
-                    margin-right: 20px;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    white-space: nowrap;
-                    display: inline-block;
-                    // width: 423px;
-                    // line-height: 50px;
-                    vertical-align: middle;
-                }
-                .label {
-                    float: left;
-                    width: 85px;
-                    padding-top: 17px;
-                    &>span {
-                        width: 34px;
-                        height: 16px;
-                        border-radius: 4px;
-                        float: left;
-                        font-size: 12px;
-                        text-align: center;
-                        line-height: 16px;
-                        color:#fff;
-                    }
-                    .type {
-                        margin-right: 15px;
-                    }
-                    .typeColor1 { background:#0078f2;}
-                    .typeColor2 { background:#009dff;}
-                    .typeColor3 { background:#96d7ff;}
-                    .lvColor1 {background:#ffc62e;}
-                    .lvColor2 {background:#ffa200;}
-                    .lvColor3 {background:#f27200;}
-                }
-                .phone {
-                    float: left;
-                    img {
-                        width: 14px;
-                        height: 14px;
-                        margin-top: 18px;
-                        margin-right: 7px;
-                        border-radius: 0;
-                    }
-                }
-                .check {
-                    float: right;
-                    margin-right: 20px;
-                    .el-checkbox-group {
-                        .el-checkbox {
-
-                            .el-checkbox__input {
-                                .el-checkbox__inner {
-                                    border-radius: 4px;
-                                }
-                            }
-                        }
-                    }
+                i {
+                    color: #2993f8;
                 }
             }
-            &>li:nth-child(even) {
-                background:#f4f4f4;
+        }
+        ul {
+            display: flex;
+            li {
+                text-align: center;
+            }
+            li:nth-child(1) {
+                width: 100px;
+            }
+            li:nth-child(2) {
+                width: 100px;
+            }
+            li:nth-child(3) {
+                flex: 1;
+            }
+            li:nth-child(4) {
+                width: 100px;
             }
         }
     }
-    .chose-btn {
-        width: 90px;
-        height: 28px;
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: bold;
-        text-align: center;
-        line-height: 28px;
-        background:#2993f8;
-        color:#fff;
-        margin: 0 auto;
-        cursor: pointer;
-    }
-    .btn-wrap {
-        width: 260px;
-        margin: 0 auto;
-        .click-btn {
-            float: left;
-            width: 90px;
-            height: 28px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-            text-align: center;
-            line-height: 28px;
-            background:#2993f8;
-            color:#fff;
-           
-            cursor: pointer;
-        }
-        .click-btn:nth-child(1) {
-            margin-right: 80px;
+    .all-num-tit {
+        text-align: right;
+        font-size: 14px;
+        margin: 10px 0;
+        span {
+            color: #2993f8;
         }
     }
 }
+
 </style>

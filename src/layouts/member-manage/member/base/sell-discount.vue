@@ -17,7 +17,8 @@
                       <p class="item-title">{{ item.classesName }}</p>
                       <p class="item-input">
                           <input type="Number" @blur="setConsumeTemplateUpdate(item)" v-model="item.score" :disabled="isDisabled">
-                          <span>%</span>
+                          <span v-if="checkDiscount[0] == 3 && allItme.classesName == '计重'">元/克</span>
+                          <span v-else>%</span>
                       </p>
                   </div>
               </div>
@@ -32,7 +33,7 @@ import memberDialog from '@/layouts/Work/ShopSetting/dialog/tplGoldDialog'
 // 获取模板内容
 import { templateIntegralDetails,consumeTemplateUpdate } from 'Api/member'
 export default {
-  props: ['isDialog', 'showData'],
+  props: ['isDialog', 'showData', 'checkDiscount'],
   components: {
     memberDialog
   },
@@ -87,18 +88,19 @@ export default {
     },
     // 批量修改
     dialogCallback(data) {
-        let options = {
-            templateId: this.templateInfoData.templateId,
-            dataList: data,
-        }
-        consumeTemplateUpdate(options).then(res => {
-            if(res.data.state === 200) {
-                this.getIntegralDetails()
-                this.$message({type:'success',message:'修改成功'})
-            } else {
-                this.$message({type:'error',message:res.data.msg})
-            }
-        })
+      debugger
+        // let options = {
+        //     templateId: this.templateInfoData.templateId,
+        //     dataList: data,
+        // }
+        // consumeTemplateUpdate(options).then(res => {
+        //     if(res.data.state === 200) {
+        //         this.getIntegralDetails()
+        //         this.$message({type:'success',message:'修改成功'})
+        //     } else {
+        //         this.$message({type:'error',message:res.data.msg})
+        //     }
+        // })
     },
     // 修改消费发放
     setConsumeTemplateUpdate(item){

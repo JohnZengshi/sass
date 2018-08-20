@@ -1,6 +1,6 @@
 <template>
   <el-dialog top="7%" :visible.sync="isDialog" class="xj-input-dialog-bg">
-    <editorMember ref="editorMemberBox" @close="close" :shopId="shopId"></editorMember>
+    <editorMember ref="editorMemberBox" @close="close" @update="update" :shopId="shopId"></editorMember>
   </el-dialog>
 </template>
 <script>
@@ -20,13 +20,16 @@ export default {
       this.isDialog = true
       this.$nextTick(() => {
         if (this.$refs.editorMemberBox) {
-          debugger
           this.$refs.editorMemberBox.open()
         }
       })
     },
     close () {
       this.isDialog = false
+    },
+    update () {
+      this.isDialog = false
+      this.$emit('update')
     },
     goBack() {
 

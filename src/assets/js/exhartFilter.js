@@ -113,6 +113,20 @@ export default class exhartFilter {
     return datas
   }
 
+  static legendAxisName(name) {
+    let options = {
+      itemWidth: 10,
+      itemHeight: 14,
+      itemGap: 50,
+      borderRadius: "50%",
+      right: '398px',
+      top: '0',
+      itemGap: 15,
+      data: [name]
+    }
+    return options
+  }
+
   static legendAxis(isOld) {
     let options = {
       itemWidth: 10,
@@ -168,7 +182,8 @@ export default class exhartFilter {
     return seriesAxis
   }
 
-  static exhartStockAxis(seriesAxisKey, allDatas, isOld) { // 库存走势图
+  // 库存走势图
+  static exhartStockAxis(seriesAxisKey, allDatas, isOld) {
     let options = {
       backgroundColor: this.backgroundColorOne,
       color: this.colorOne,
@@ -183,6 +198,26 @@ export default class exhartFilter {
     if (isOld == 2) {
       options.color = ['#fe687b']
     }
+    sessionStorage.setItem('KKKKKKKKKKKKKK', JSON.stringify(options))
+    return options
+  }
+
+  // 会员统计图
+  static memberAxis(seriesAxisKey, allDatas, legendName, grid) {
+    let options = {
+      backgroundColor: this.backgroundColorOne,
+      color: ['#fc6f21'],
+      tooltip: this.tooltipAxis,
+      // legend: this.legendAxisName(),
+      grid: grid || this.gridAxis, // 网格间距
+      animation: true,
+      xAxis: this.xAxis(),
+      yAxis: this.yAxis(),
+      series: [this.filterReriesAxis(legendName, this.timeSort(allDatas.typeThree), seriesAxisKey)] // this.ApiTextData()
+    }
+    // if (isOld == 2) {
+    //   options.color = ['#fe687b']
+    // }
     sessionStorage.setItem('KKKKKKKKKKKKKK', JSON.stringify(options))
     return options
   }

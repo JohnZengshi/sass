@@ -219,28 +219,32 @@
                         </span>
                         <span>元</span>
                     </div>
-                    <!-- 计重上限 -->
-                    <div class="item">
-                        <div class="item-circle"></div>
-                        <span class="item-title">计重抵扣上限：</span>
-                        <span>最多可抵扣单价实售价</span>
-                        <span class="input-box">
-                            <!-- <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.weightConfig" @blur="consumeIntegralTemplate('6',templateInfoData.weightConfig)"></el-input> -->
-                            <input type="number" v-model="templateInfoData.weightConfig" @blur="consumeIntegralTemplate('6',templateInfoData.weightConfig)" :disabled="isDisabled">                            
-                        </span>
-                        <span>%</span>
+                    <div class="item-box">
+                        <!-- 计重上限 -->
+                        <div class="item">
+                            <div class="item-circle"></div>
+                            <span class="item-title">抵扣上限：</span>
+                            <span>计重最多可抵扣单价实售价</span>
+                            <span class="input-box">
+                                <!-- <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.weightConfig" @blur="consumeIntegralTemplate('6',templateInfoData.weightConfig)"></el-input> -->
+                                <input type="number" v-model="templateInfoData.weightConfig" @blur="consumeIntegralTemplate('6',templateInfoData.weightConfig)" :disabled="isDisabled">                            
+                            </span>
+                            <span>%</span>
+                        </div>
+                        <!-- 计件上限 -->
+                        <div class="item">
+                <!--             <div class="item-circle"></div> -->
+                      <!--       <span class="item-title">计件抵扣上限：</span> -->
+                            <span>计件最多可抵扣单价实售价</span>
+                            <span class="input-box">
+                                <!-- <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.pieceConfig" @blur="consumeIntegralTemplate('5',templateInfoData.pieceConfig)"></el-input> -->
+                                <input type="number" v-model="templateInfoData.pieceConfig" @blur="consumeIntegralTemplate('5',templateInfoData.pieceConfig)" :disabled="isDisabled"> 
+                            </span>
+                            <span>%</span>
+                        </div>
+                        
                     </div>
-                    <!-- 计件上限 -->
-                    <div class="item">
-                        <div class="item-circle"></div>
-                        <span class="item-title">计件抵扣上限：</span>
-                        <span>最多可抵扣单价实售价</span>
-                        <span class="input-box">
-                            <!-- <el-input :disabled="isDisabled" class="item-input" v-model="templateInfoData.pieceConfig" @blur="consumeIntegralTemplate('5',templateInfoData.pieceConfig)"></el-input> -->
-                            <input type="number" v-model="templateInfoData.pieceConfig" @blur="consumeIntegralTemplate('5',templateInfoData.pieceConfig)" :disabled="isDisabled"> 
-                        </span>
-                        <span>%</span>
-                    </div>
+
                     <!-- 计重计件相互抵扣 -->
                     <div class="item">
                         <div class="item-circle"></div>
@@ -1338,18 +1342,21 @@ $fontColor:#47a3fb;
                 margin-bottom: 30px;
                 p{
                     position: relative;
-                    padding-left: 10px;
-                    color: #666;
+                    font-size: 14px;
+                    line-height: 22px;
+                    color: #333;
                     font-weight: bold;
+                    padding-left: 8px;
                     &::before{
-                        content: '';
+                        content: "";
+                        display: inline-block;
+                        width: 3px;
+                        height: 16px;
+                        background: #2993f8;
                         position: absolute;
                         top: 3px;
+                        border-radius: 3px;
                         left: 0;
-                        display: inline-block;
-                        width: 2px;
-                        height: 17px;
-                        background: $fontColor;
                     }
                 }
             }
@@ -1613,6 +1620,14 @@ $fontColor:#47a3fb;
                 background: #f6f7f8;
                 border-radius: 10px;
                 position: relative;
+                .item-box {
+                    height: 38px;
+                    margin-bottom: 24px;
+                    >.item{
+                        display: inline-block;
+                        margin-right: 30px;
+                    }
+                }
                 .item {
                     height: 38px;
                     margin-bottom: 24px;
@@ -1688,18 +1703,21 @@ $fontColor:#47a3fb;
             margin-bottom: 30px;
                 p{
                     position: relative;
-                    padding-left: 10px;
-                    color: #666;
+                    font-size: 14px;
+                    line-height: 22px;
+                    color: #333;
                     font-weight: bold;
+                    padding-left: 8px;
                     &::before{
-                        content: '';
+                        content: "";
+                        display: inline-block;
+                        width: 3px;
+                        height: 16px;
+                        background: #2993f8;
                         position: absolute;
                         top: 3px;
+                        border-radius: 3px;
                         left: 0;
-                        display: inline-block;
-                        width: 2px;
-                        height: 17px;
-                        background: $fontColor;
                     }
                 }
         }

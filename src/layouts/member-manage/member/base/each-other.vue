@@ -2,7 +2,7 @@
 <template>
   <div class="m-m-each-other-main">
     <div class="header">
-      <p class="side-nav"><i class="iconfont icon-liebiao"></i>会员互通</p>
+      <p class="side-nav"><i class="iconfont icon-liebiao"></i>互通店铺</p>
       <div class="xj-btn-defult right-btn" @click="openAdd">
         +店铺组合
       </div>
@@ -15,27 +15,32 @@
         <li>操作</li>
       </ul>
       <div class="scroll-wrap">
-        <ul v-for="(item, index) in combinationList">
-          <li>{{item.name}}</li>
-          <li>{{item.shopName}}</li>
-          <li>{{item.groupName}}</li>
-          <li>
-            <i @click="compile(item.groupId)" class="iconfont icon-bianji"></i>
-            <i @click="del(item.groupId, index)" class="iconfont icon-lajitong"></i>
-          </li>
-        </ul>
+        <div>
+          <ul v-for="(item, index) in combinationList">
+            <li>{{item.groupName}}</li>
+            <li>{{item.shopName}}</li>
+            <li>{{item.groupName}}</li>
+            <li>
+              <i @click="compile(item)" class="iconfont icon-bianji"></i>
+              <i @click="del(item.groupId, index)" class="iconfont icon-lajitong"></i>
+            </li>
+          </ul>
 
-        <ul v-if="combinationList.length < 4" v-for="(item, index) in (4 - combinationList.length)">
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
+          <template v-if="combinationList.length < 4">
+            <ul v-for="(item, index) in (4 - combinationList.length)">
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+          </template>
+          
+        </div>
 
       </div>
     </div>
 
-    <add-group ref="addGroupBox" :independent="true" :titName="'新增店铺组合'"></add-group>
+    <add-group ref="addGroupBox" @update="update" :independent="true" :titName="titName"></add-group>
 
   </div>
 </template>
@@ -49,6 +54,7 @@
     },
     data () {
       return {
+        titName: '新增店铺组合',
         loading: true,
         combinationList: []
       }
@@ -56,13 +62,25 @@
     created () {
       this._seekFindTemplateGroupAll()
     },
+    mounted() {
+        this.$nextTick(() => {
+          this.initScroll()
+        })
+    },
     methods: {
+      // 初始化滚动
+      initScroll () {
+        $(".scroll-wrap").mCustomScrollbar({
+            theme: "minimal-dark",
+            scrollInertia: 100, //滚动条移动速度，数值越大滚动越慢
+        })
+      },
       _seekFindTemplateGroupAll () {
         this.loading = true
         seekFindTemplateGroupAll()
           .then(res => {
             if (res.data.state == 200) {
-              let datas = res.data.data.dataList
+              let datas = res.data.data
               for (let i of datas) {
                 let shopName = ''
                 for (let j of i.groupShopList) {
@@ -71,6 +89,7 @@
                 i.shopName = shopName
               }
               this.combinationList = datas
+              this.initScroll()
             } else {
               this.$message({type: 'error',message: res.data.msg})
             }
@@ -78,17 +97,24 @@
           })
       },
       openAdd () {
+        this.titName = '新增店铺组合'
         this.$refs.addGroupBox.open()
       },
       compile (parm) {
+        this.titName = '店铺组合信息'
         this.$refs.addGroupBox.open(parm)
       },
+      update () {
+        this.$emit('update')
+        this._seekFindTemplateGroupAll()
+      },
       del (item, index) {
-        operateUpdateShopGroupById({templateId: item})
+        operateUpdateShopGroupById({templateId: item, type: '1'})
           .then(res => {
             if (res.data.state == 200) {
-              this.$message({message: '删除'})
+              this.$message({type: 'success', message: '删除成功'})
               this.combinationList.splice(index, 1)
+              this.update()
             } else {
               this.$message({type: 'error',message: res.data.msg})
             }
@@ -133,13 +159,12 @@
     border-radius: 5px;
     .scroll-wrap{
       height: 200px;
-      overflow-y: scroll;
-      >ul{
-        border-bottom: 1px solid #f0f2f5;
-      }
-      >ul:nth-child(2n){
-        background-color: #fbfbfb;
-      }
+        ul{
+          border-bottom: 1px solid #f0f2f5;
+        }
+        ul:nth-child(2n){
+          background-color: #fbfbfb;
+        }
     }
     ul{
       font-size: 0;

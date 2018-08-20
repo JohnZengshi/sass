@@ -24,11 +24,26 @@
                     </li>
                 </el-checkbox-group>
             </ul>
-            <h5>设置折扣方式</h5>
-            <ul class="list-wrap">
+            <h5>设置优化折扣方式</h5>
+            <ul class="grade-list-wrap list-wrap">
                 <el-checkbox-group v-model="checkDiscount">
-                    <li v-for="(item, index) in discountList">
-                        <el-checkbox @change="amendDiscount" :label="item.id" style="font-size: 14px;">{{item.name}}</el-checkbox>
+                    <li>
+                        <span class="list-left-tit">
+                            计重折扣方式
+                        </span>
+                        <div class="checkbox-item-box" v-for="(item, index) in discountList">
+                            <el-checkbox @change="amendDiscount" :label="item.id" style="font-size: 14px;">{{item.name}}</el-checkbox> 
+                        </div>
+                    </li>
+                </el-checkbox-group>
+                <el-checkbox-group v-model="pieceCheckDiscount">
+                    <li>
+                        <span class="list-left-tit">
+                            计件折扣方式
+                        </span>
+                        <div class="checkbox-item-box" v-for="(item, index) in pieceDiscountList">
+                            <el-checkbox @change="amendPieceDiscount" :label="item.id" style="font-size: 14px;">{{item.name}}</el-checkbox> 
+                        </div>
                     </li>
                 </el-checkbox-group>
             </ul>
@@ -48,7 +63,7 @@
         </div>
         <!-- 会员积分配置 -->
         <memberSetting></memberSetting>
-        <add-grade ref="addGradeBox"></add-grade>
+        <add-grade ref="addGradeBox" :checkDiscount="checkDiscount" :pieceCheckDiscount="pieceCheckDiscount" @upload="_seekFindMemberTemplaetDetails"></add-grade>
     </div>
 </template>
 <script>
@@ -72,7 +87,8 @@ export default {
             checkShopList: [],
             checkShopGroupList: [],
             checkRule: [],
-            checkDiscount: [],
+            checkDiscount: [], // 计重折扣方式
+            pieceCheckDiscount: [], // 计件折扣方式
             ruleList: [{
                     name: '一年内无消费行为',
                     id: '1'
@@ -87,6 +103,19 @@ export default {
                 }
             ],
             discountList: [{
+                    name: '折上折',
+                    id: '1'
+                },
+                {
+                    name: '最低折扣',
+                    id: '2'
+                },
+                {
+                    name: '金价相减',
+                    id: '3'
+                }
+            ],
+            pieceDiscountList: [{
                     name: '折上折',
                     id: '1'
                 },
@@ -137,17 +166,17 @@ export default {
         // 修改店铺
         amendShop(val) {
             let opations = {
-                type: '',
                 shopList: [
                     {
+                        type: '',
                         shopId: val.target.value
                     }
                 ]
             }
             if (val.target.checked) { // 新增
-                opations.type = '0'
+                opations.shopList[0].type = '0'
             } else { // 删除
-                opations.type = '1'
+                opations.shopList[0].type = '1'
             }
             this.amendData(opations)
         },
@@ -176,6 +205,19 @@ export default {
                 opations.discount = val.target.value
             } else {
                 opations.discount = 0
+            }
+            this.amendData(opations)
+        },
+        amendPieceDiscount(val) {
+            let opations = {
+                pieceDiscount: ''
+            }
+            if (val.target.checked) { // 新增
+                this.pieceCheckDiscount = []
+                this.pieceCheckDiscount.push(val.target.value)
+                opations.pieceDiscount = val.target.value
+            } else {
+                opations.pieceDiscount = 0
             }
             this.amendData(opations)
         },
@@ -214,7 +256,7 @@ export default {
             this.checkShopList = []
             this.checkShopGroupList = []
             let options = {
-                templateId: this.templateId,
+                templateId: this.templateId
             }
             seekFindMemberTemplaetDetails(options)
                 .then(res => {
@@ -227,6 +269,7 @@ export default {
                             this.checkShopGroupList.push(i.groupId)
                         }
                         this.checkDiscount.push(datas.discount)
+                        this.pieceCheckDiscount.push(datas.pieceDiscount)
                         this.showList = datas
                     } else {
                         this.$message({
@@ -356,7 +399,17 @@ export default {
                 text-align: left;
                 font-size: 14px;
                 cursor: pointer;
-                margin-right: 20px; // &:hover {
+                margin-right: 20px;
+                .list-left-tit{
+                    margin-right: 30px;
+                }
+                .checkbox-item-box{
+                    display: inline-block;
+                    margin-right: 20px;
+                }
+
+
+                 // &:hover {
                 //   background: #f6f7f8;
                 //   color: #3195f5;
                 // }
@@ -375,7 +428,7 @@ export default {
                 font-size: 14px;
                 line-height: 14px;
                 margin-bottom: 20px;
-                padding-left: 12px;
+                padding-left: 22px;
                 &:before {
                     content: "";
                     display: inline-block;

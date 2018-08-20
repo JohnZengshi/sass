@@ -1,6 +1,7 @@
 import memberManage from './../../layouts/member-manage'
 import homePage from './../../layouts/member-manage/home-page'
 import member from './member.js'
+import followUp from './follow_up.js'
 import push from './push'
 const memberRouter = {
   path: '/memberManage',
@@ -13,6 +14,7 @@ const memberRouter = {
       name: "会员首页",
     },
     ...member,
+    ...followUp,
     ...push]
 }
 export default memberRouter

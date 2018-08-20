@@ -104,6 +104,7 @@
         }
     }
 }
+
 // 表格里的多选
 .el-checkbox-group{
     .el-checkbox{
@@ -198,4 +199,27 @@
     }
 
 .el-radio-group {
+// 新四方形输入框
+.new-e-checkbox-square{
+  .el-checkbox{
+    height: 40px!important;
+    line-height: 40px!important;
+  }
+  .el-checkbox-group .el-checkbox__inner{
+    border-radius: 5px!important;
+  }
+  // .el-checkbox-group {
+  //   .el-checkbox__label{
+  //       font-size: 14px!important;
+  //   }
+  // }
+  .el-checkbox__inner{
+    border-radius: 5px;
+  }
+    .el-checkbox__input.is-checked .el-checkbox__inner{
+        background-color: #2993f8;
+        border-color: #2993f8;
+        border-radius: 5px;
+    }
+}
 }

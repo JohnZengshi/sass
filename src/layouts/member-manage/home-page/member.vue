@@ -16,7 +16,7 @@
         <p>会员总数</p>
       </li>
       <li>
-        <p>{{memberList.newMember}}</p>
+        <p>{{memberList.newNum}}</p>
         <p>今日新增</p>
       </li>
       <li>
@@ -47,7 +47,7 @@
       <router-link tag="li" class="btn" :to="{path: '/memberManage/compileTemplate', query: {shopId: filterOption.shopId}}">会员设置</router-link>
     </ul>
 
-    <add-member ref="addMemberBox" :shopId="filterOption.shopId"></add-member>
+    <add-member ref="addMemberBox" @update="update" :shopId="filterOption.shopId"></add-member>
   </div>
 </template>
 <script>
@@ -99,6 +99,10 @@
     methods: {
       openAdd () {
         this.$refs.addMemberBox.open()
+      },
+      update () {
+        debugger
+        this.$emit('update')
       }
     }
   }
@@ -109,10 +113,12 @@
   background-color: #fff;
   font-size: 0;
   overflow: hidden;
+  margin: 0 30px;
+  border-bottom: 1px solid #d6d6d6;
   .decoration{
     position: absolute;
     top: 30px;
-    left: 48px;
+    left: 0;
     font-size: 12px;
     line-height: 25px;
     color: #333;
@@ -150,6 +156,7 @@
     // height: 200px;
     margin: 90px 0 0 110px;
     vertical-align: top;
+    margin-bottom: 30px;
     // text-align: center;
     li{
       vertical-align: center;
@@ -180,7 +187,6 @@
   }
   .center-btn-list{
     font-size: 0;
-    margin: 30px 0 0 58px;
     vertical-align: top;
     li{
       display: inline-block;
@@ -212,37 +218,7 @@
         color: #999;
       }
     }
-    // li:nth-child(1){
-    //   background: url('~assets/img/member/member-box-one.png') no-repeat;
-    //   background-size: 213px 86px;
-    // }
-    // li:nth-child(2){
-    //   background: url('~assets/img/member/member-box-two.png') no-repeat;
-    //   background-size: 213px 86px;
-    // }
-    // li:nth-child(3){
-    //   background: url('~assets/img/member/member-box-three.png') no-repeat;
-    //   background-size: 213px 86px;
-    // }
   }
-  // .center-btn-list{
-  //   display: inline-block;
-  //   font-size: 0;
-  //   width: 900px;
-  //   height: 200px;
-  //   padding-top: 80px;
-  //   vertical-align: top;
-  //   text-align: center;
-  //   border: 1px solid red;
-  //   li{
-  //     vertical-align: center;
-  //     display: inline-block;
-  //     border: 1px solid red;
-  //     padding: 15px;
-  //     font-size: 22px;
-  //     margin: 0 20px;
-  //   }
-  // }
   .grade-list{
     display: inline-block;
     font-size: 0;
