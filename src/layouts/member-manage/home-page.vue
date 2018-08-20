@@ -4,7 +4,7 @@
     <header-nav @filterData="filterData"></header-nav>
     <div class="body-scorll-wrap">
       <member :filterOption="filterOption" :memberList="memberList"></member>
-      <push></push>
+      <push :filterOption="filterOption"></push>
     </div>
   </div>
 </template>
