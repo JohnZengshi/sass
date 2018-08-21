@@ -6,26 +6,20 @@
         <div class="filter flex flex-r flex-align-center">
             <div class="flex flex-r">
                 <div class="screach flex flex-r flex-align-center">
-                    <input v-model="sendPresonFilter.inputVal" type="text" placeholder="请输入模板名称">
+                    <input v-model="sendPresonFilter.inputVal" type="text" placeholder="请输入会员名/手机号/编号">
                     <i @click="search" class="iconfont icon-sousuo"></i>
                 </div>
-                <el-select class="select-w132-h26 select-white select-b1 mr-17" filterable clearable v-model="sendPresonFilter.memberRank" placeholder="会员级别">
-                    <el-option label="普通" value="shanghai"></el-option>
-                    <el-option label="中级" value="beijing"></el-option>
-                    <el-option label="高级" value="beijing"></el-option>
+                <el-select :disabled="MemberGradeList && MemberGradeList.length == 0" class="select-w132-h26 select-white select-b1 mr-17" filterable clearable v-model="sendPresonFilter.memberRank" placeholder="会员级别">
+                    <el-option v-for="item in MemberGradeList" label="普通" value="shanghai"></el-option>
                 </el-select>
                 <el-select class="select-w132-h26 select-white select-b1 mr-17" filterable clearable v-model="sendPresonFilter.memberType" placeholder="会员类型">
-                    <el-option label="共有" value="shanghai"></el-option>
-                    <el-option label="私有" value="beijing"></el-option>
-                    <el-option label="公共" value="beijing"></el-option>
+                    <el-option v-for="item in memberTypeList" :label="item.label" :value="item.value"></el-option>
                 </el-select>
-                <el-select class="select-w132-h26 select-white select-b1 mr-17" filterable clearable v-model="sendPresonFilter.memberPrincipal" placeholder="会员负责人">
-                    <el-option label="1" value="shanghai"></el-option>
-                    <el-option label="2" value="beijing"></el-option>
-                    <el-option label="3" value="beijing"></el-option>
+                <el-select :disabled="MemberPrincipalList && MemberPrincipalList.length == 0" class="select-w132-h26 select-white select-b1 mr-17" filterable clearable v-model="sendPresonFilter.memberPrincipal" placeholder="会员负责人">
+                    <el-option v-for="item in MemberPrincipalList" :label="item.nickName" :value="item.ptincipalId"></el-option>
                 </el-select>
             </div>
-            <el-button class="btn-w80-h28 btn-f12 mt-11 mr-16" type="primary" @click="advancedScreach">高级搜索</el-button>
+            <!-- <el-button class="btn-w80-h28 btn-f12 mt-11 mr-16" type="primary" @click="advancedScreach">高级搜索</el-button> -->
             <el-radio-group class="mt-11" v-model="sendPresonFilter.searchCriteria" size="small">
                 <el-radio-button class="btn-w60-h28" label="condition">按条件</el-radio-button>
                 <el-radio-button class="btn-w60-h28" label="preson">按人</el-radio-button>
@@ -33,6 +27,7 @@
         </div>
         <div class="sendPresonList">
             <TableBody 
+                v-show="sendPresonFilter.searchCriteria == 'preson'"
                 v-loading="findSmsMemberListIng"
                 :headerData="headerData" 
                 :tableData="sendPresonList" 
@@ -44,7 +39,7 @@
                 styleClass="el_table_sendPresonList"></TableBody>
         </div>
         <div class="bottom flex flex-v">
-            <span class="count">
+            <span class="count" v-show="sendPresonFilter.searchCriteria == 'preson'">
                 选择发送会员：
                 <span v-show="!isOpenOptional"><span style="color:#3195F5">{{sendPresonList.length}}</span>位</span>
                 <span v-show="isOpenOptional"><span style="color:#3195F5">{{choosePresonList.length}}</span>位</span>
@@ -57,7 +52,8 @@
     </div>
 </template>
 <script>
-    import {findSmsMemberList} from "Api/member";
+    import {seekFindMemberGradeList} from "Api/commonality/seek";
+    import {findSmsMemberList,findMemberPrincipalList} from "Api/member";
     import TableBody from "../../../base/tableBody";
     import {sendPresonListHeader} from "../../../config/config.js";
     export default {
@@ -76,6 +72,16 @@
                 operationConfig: {
                     operation: false,
                 },
+                memberTypeList:[{ //会员类型列表
+                    label:"共有",
+                    value:"2"
+                },{
+                    label:"私有",
+                    value:"3"
+                },{
+                    label:"公有",
+                    value:"1"
+                }],
                 choosePresonList:[],// 按人条件下选择的人
                 requestData:{ //接口请求的参数
                     shopId:this.$route.query.shopId,
@@ -118,6 +124,41 @@
                 default () {
                     return []
                 }
+            },
+            MemberGradeList:{ //会员级别列表
+                get(){
+                    return (async()=>{
+                        let {shopId} = this.requestData;
+                        let res = await seekFindMemberGradeList({shopId});
+                        console.log(res);
+                        if(res.body.msg == "OK"){
+                            return res.body.data.userList;
+                        }else{
+                            this.$message({
+                                type: 'warning',
+                                message: res.body.msg
+                            });
+                            return [];
+                        }
+                    })()
+                }
+            },
+            MemberPrincipalList:{ //会员负责人列表
+                 get(){
+                    return (async()=>{
+                        let {shopId} = this.requestData;
+                        let res = await findMemberPrincipalList({shopId});
+                        if(res.body.msg == "OK"){
+                            return res.body.data;
+                        }else{
+                            this.$message({
+                                type: 'warning',
+                                message: res.body.msg
+                            });
+                            return [];
+                        }
+                    })()
+                },
             }
         },
         watch: {
@@ -140,18 +181,19 @@
             },
             // 确定
             handleconfirm() {
-                let chooseList = [];
+                let chooseList;
                 if(this.sendPresonFilter.searchCriteria == 'condition'){ //按条件
-                    chooseList = this.sendPresonList;
+                    chooseList = this.sendPresonFilter;
                 }else if(this.sendPresonFilter.searchCriteria == 'preson'){ //按人
                     chooseList = this.choosePresonList;
                 }
-                //确认
+                 //确认
                 this.$emit('confirm', false , chooseList);
                 this.$message({
                     type: 'info',
                     message: '确定'
                 });
+                
             },
             // 多选模式下触发
             selectChange(val){
