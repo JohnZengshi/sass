@@ -163,6 +163,7 @@
         methods:{
             // 选项选中时触发
             changeSelectValue(){
+                this.moduleList = [];
                 this.upData = true
             },
             // 操作按钮
