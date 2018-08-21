@@ -86,7 +86,7 @@
 <script>
 import aloneDropDownColums from 'base/menu/alone-drop-down-colums'
 import {groupName, groupIdList, extractIdList, differenceData} from 'Api/commonality/filter'
-import {operateFollowCreateByNew} from 'Api/commonality/operate'
+import {operateFollowCreateByNew, operateFollowUpdateByNew} from 'Api/commonality/operate'
 import trigger from './../../base/trigger'
 import newDownMenu from 'base/menu/new-down-menu'
 import { formattingTime, GetNYR, restoreTime, xjEndTime } from 'assets/js/getTime'
@@ -133,6 +133,14 @@ export default {
     },
     selectUser () {
       this.$emit('selectUser')
+    },
+    // 高级搜索-过滤显示当前的类型-时间
+    currentTime (parm) {
+      let datas = ['1', '6']
+      if (datas.includes(parm)) {
+        return true
+      }
+      return false
     },
     confirm () {
 
@@ -215,7 +223,15 @@ export default {
       if (this.filterCondition.queryType == 1) { // 按人
         options.memberList = groupIdList(this.userIdList, 'memberId') // 会员
       } else if (this.filterCondition.queryType == 2) { // 按条件
-        options.dataList = this.advanced // 高级搜索数据
+        let datas = _.cloneDeep(this.advanced)
+        // 格式化日期
+        for (let i of datas) {
+          if (this.currentTime(i.frontCondition)) {
+            debugger
+            i.afterCondition = formattingTime(i.afterCondition)
+          }
+        }
+        options.dataList = datas // 高级搜索数据
       }
 
       let timeTypeData = this.addData
@@ -239,6 +255,7 @@ export default {
         options.triggerTime = timeTypeData.triggerTime
         options.startingDay = timeTypeData.startingDay
       }
+
 
       operateFollowCreateByNew(Object.assign({}, this.filterCondition,  options))
         .then(res => {
@@ -269,7 +286,7 @@ export default {
       if (!Object.keys(amendData).length) {
         this.close()
       }
-      operateFollowCreateByNew(Object.assign({}, options, amendData))
+      operateFollowUpdateByNew(Object.assign({}, options, amendData))
         .then(res => {
           if (res.data.state == 200) {
             this.$message({type: 'success', message: '修改成功'})
@@ -303,6 +320,21 @@ export default {
       let amendDataList = differenceData(extractIdList(this.oldData.dataList), this.userIdList)
       if (amendDataList.one.length || amendDataList.two.length) {
         amendData.memberList = groupIdList(this.userIdList, 'memberId')
+      }
+
+      if (this.filterCondition.queryType == 1) { // 按人
+        amendData.memberList = groupIdList(this.userIdList, 'memberId') // 会员
+      } else if (this.filterCondition.queryType == 2) { // 按条件
+        let datas = _.cloneDeep(this.advanced)
+        // 格式化日期
+        for (let i of datas) {
+          if (this.currentTime(i.frontCondition)) {
+            if (!i.afterCondition.length) {
+              i.afterCondition = formattingTime(i.afterCondition)
+            }
+          }
+        }
+        amendData.dataList = datas // 高级搜索数据
       }
 
       // 跟进类型
@@ -404,13 +436,24 @@ export default {
             }
             this.addData = datas
             this.$emit('initLeaderData', datas.memberList) // 会员
-            this.$emit('initAdvanced', datas.dataList) // 高级搜索
             // this.userIdList = extractIdList(datas.dataList, 'memberId')
             this.principalList = extractIdList(datas.principalList, 'principalId') // 公共负责人
             this.allPrincipalList = extractIdList(datas.allPrincipalList, 'principalId') // 所有负责人
             this.principalName = groupName(datas.principalList, 'principalName') // 显示
             this.allPrincipalName = groupName(datas.allPrincipalList, 'principalName') // 显示
             this.initSelect()
+
+            // 高级搜索
+            let advancedDatas = _.cloneDeep(datas.dataList)
+            // 格式化日期
+            for (let i of advancedDatas) {
+              if (this.currentTime(i.frontCondition)) {
+                if (!i.afterCondition.length) {
+                  i.afterCondition = restoreTime(i.afterCondition)
+                }
+              }
+            }
+            this.$emit('initAdvanced', advancedDatas) // 高级搜索
           } else {
             this.$message({type: 'error',message: res.data.msg})
           }

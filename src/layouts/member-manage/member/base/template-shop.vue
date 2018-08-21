@@ -9,7 +9,7 @@
             <input @blur="amendData({templateName: showList.templateName})" placeholder="请输入组合名称" v-model="showList.templateName">
         </div>
         <div class="shop-list">
-            <h5>选择店铺</h5>
+            <h5>会员模板应用店铺</h5>
             <ul class="list-wrap">
                 <!-- 单店铺 -->
                 <el-checkbox-group style="display: inline-block" v-model="checkShopList">
@@ -48,7 +48,7 @@
                 </el-checkbox-group>
             </ul>
             <h5>
-                会员等级默认模板
+                会员等级
                 <div class="xj-btn-defult right-btn" @click="openGrade">
                 +级别
                 </div>
