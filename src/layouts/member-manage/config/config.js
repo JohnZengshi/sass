@@ -892,7 +892,7 @@ module.exports = {
           width:180,
           isChangeVal: true, //需要装换值
           changeValRules: (val) => {
-              console.log(val)
+              // console.log(val)
             return `${GetNYR(val)}${" "}${GetSF(val)}`;
           },
       }],

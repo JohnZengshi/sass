@@ -118,7 +118,7 @@
                     status: "", //模板状态 1：启用 2：禁用
                     shopId: this.$route.query.shopId,
                     page: "1",
-                    pageSize: "15",
+                    pageSize: "100",
                     beginTime: "",
                     endTime: "",
                     templateId:"", //短信id
@@ -353,10 +353,9 @@
             }
         },
         watch:{
-            "requestList"(val){
+            "requestList"(val){ //请求回来的数据
                 if(val && val.length != 0){
-                    this.noteList = this.noteList.concat(val)
-                    console.log(this.noteList)
+                    this.noteList = this.noteList.concat(val) //加载更多数据
                 }
             }
         },
@@ -551,13 +550,21 @@
             },
             // 下拉加载更多
             loadMoreOrder(){
-                console.log("加载更多数据")
-                if(!this.getListsIng){
-                    let page = (this.requestData.page - 0);
-                    page+=1;
-                    this.requestData.page = page+""
-                    console.log("页数:"+ page)
-                    this.upData = true;
+                if(!this.getListsIng){ //正在获取数据，不要操作
+                    console.log(this.requestList);
+                    if(this.requestList.length != 0){ //请求回来有数据
+                        let page = (this.requestData.page - 0);
+                        page+=1;
+                        this.requestData.page = page+""
+                        console.log("页数:"+ page)
+                        this.upData = true;
+                    }
+                    else{ //请求回来没有数据
+                        this.$message({
+                            type: 'warning',
+                            message: "没有更多数据了",
+                        });
+                    }
                 }
             }
         },

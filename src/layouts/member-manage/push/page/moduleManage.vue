@@ -24,6 +24,7 @@
                 :showHeader="true"
                 :operationConfig="operationConfig"
                 @operationBack="operationBack"
+                @scorllToBottom="loadMoreOrder"
                 styleClass="el_table_moduleManage"></TableBody>
         </div>
         <Dialog
@@ -48,6 +49,7 @@
     export default {
         data(){
             return{
+                moduleList:[], //模板列表
                 operationConfig:{
                     operation:true,
                     tableValue:'operationList', //每条数据对应的操作icon字段
@@ -63,8 +65,8 @@
                 requestData:{
                     shopId: this.$route.query.shopId,
                     templateTypeId:"",  //模板类型
-                    page:1, //页
-                    pageSize:100, //条数
+                    page:"1", //页
+                    pageSize:"100", //条数
                     templateId:"" //单条模板id
                 },
                 findTemplateIng:false, //正在获取模板列表
@@ -85,7 +87,7 @@
                     return [];
                 }
             },
-            moduleList:{ //模板列表
+            TemplateList:{ //请求模板列表
                 get(){
                     if (this.upData) {
                         let {
@@ -149,6 +151,13 @@
                 }
             },
         },
+        watch:{
+            "TemplateList"(val){
+                if(val && val.length !=0){
+                    this.moduleList = this.moduleList.concat(val);
+                }
+            }
+        },
         created(){
         },
         methods:{
@@ -204,26 +213,50 @@
                 let {way,index,templateId} = this.currentOperationNote;
                 if(way == 'lajitong'){
                     this.requestData.templateId = templateId;
-                    // this.moduleList.splice(index,1);
-                    this.deleteSmsTemplate();
+                    (async()=>{
+                       let res =await this.deleteSmsTemplate();
+                        if(res){
+                            this.moduleList.splice(index,1);
+                        }
+                    })()
                 }
             },
             // 删除模板
             deleteSmsTemplate(){
-                (async()=>{
+                return (async()=>{
                     let {templateId} = this.requestData;
                     let res = await deleteSmsTemplate({templateId});
                     console.log(res)
                     if(res.body.msg == 'OK'){
-                        this.upData = true;
+                        return true;
+                        // this.upData = true;
                     }else{
                         this.$message({
                             type: 'warning',
                             message: res.body.msg
                         });
-                        return;
+                        return false;
                     }
                 })()
+            },
+            // 下拉加载更多数据
+            loadMoreOrder(){
+                if(!this.findTemplateIng){
+                    console.log(this.TemplateList);
+                    if(this.TemplateList.length != 0){ //请求回来有数据
+                        let page = (this.requestData.page - 0);
+                        page+=1;
+                        this.requestData.page = page+""
+                        console.log("页数:"+ page)
+                        this.upData = true;
+                    }
+                    else{ //请求回来没有数据
+                        this.$message({
+                            type: 'warning',
+                            message: "没有更多数据了",
+                        });
+                    }
+                }
             }
         }
     }
