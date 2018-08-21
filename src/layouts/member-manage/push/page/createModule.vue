@@ -291,7 +291,7 @@
                     return null
                 }
             },
-            createdOrUpdata:{
+            createdOrUpdata:{ //编辑模式或新增模式
                 get(){
                     if(this.$route.query.templateId){
                         return "UPDATA"
