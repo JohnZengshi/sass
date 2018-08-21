@@ -318,8 +318,7 @@
 					<i></i>
 				</span>
                 <div>
-                    <span v-if="item.repairOldPrice > 0">- {{item.repairOldPrice}}</span>
-                    <span v-else>{{Math.abs(item.repairOldPrice)}}</span>
+                    <span v-if="item.repairOldPrice > 0">- {{item.repairOldPrice}}</span> <span v-else>{{Math.abs(item.repairOldPrice)}}</span>
                 </div>
                 <i>元</i>
             </div>
@@ -386,7 +385,7 @@ export default {
     },
     computed: {
         //是否能更改产品类型
-        isEdit(){
+        isEdit() {
             if (this.status == 1) {
                 return false;
             }
@@ -416,8 +415,8 @@ export default {
             this.relatedShow = true;
         },
         textareaInput() {
-            if (this.status == '1'){
-                return ;
+            if (this.status == '1') {
+                return;
             }
             this.textarea = true;
             this.$nextTick(() => {
@@ -470,9 +469,9 @@ export default {
                         this.$emit('messageBack', '成功')
                     } else if (this.item.recycleProductId) {
                         let item = this.getExchangeById(this.item.recycleProductId);
-                        if (item.relationList.length > 1){
+                        if (item.relationList.length > 1) {
                             this.updataExchange();
-                        }else{
+                        } else {
                             this.$emit('messageBack', '成功')
                         }
                     }
@@ -490,24 +489,21 @@ export default {
         updataExchange(id) {
             //id添加关联商品id，有id为新增，无为取消关联
             let barcode = '';
-            let [repairGoldweight,repairGoldPriceE,exchangePrice,repairOldPrice] = [0,0,0,0];
-            debugger
+            let [repairGoldweight, repairGoldPriceE, exchangePrice, repairOldPrice] = [0, 0, 0, 0];
             if (id) {
                 let item = this.getExchangeById(id);
                 repairGoldweight = +item.repairGoldweight + +this.item.goldWeight; //补金重
-                repairGoldPriceE = this.mantissaProcessing(item.repairGoldPrice * repairGoldweight); //补价金额
-                // differencePriceE = this.mantissaProcessing(item.differencePrice * repairGoldweight); //补差价额
-                exchangePrice = this.mantissaProcessing(repairGoldPriceE + item.differencePriceE + +item.repairFee);
-                repairOldPrice = this.mantissaProcessing(+item.totalPrice + +this.item.price - exchangePrice);
+                repairGoldPriceE = this.dataProcessing(item.repairGoldPrice * repairGoldweight); //补价金额
+                exchangePrice = this.mantissaProcessing(+repairGoldPriceE + +item.differencePriceE + +item.repairFee);
+                repairOldPrice = this.dataProcessing(+item.totalPrice + +this.item.price - exchangePrice);
                 barcode = item.barcode;
 
             } else {
                 let item = this.item.recycleList;
                 repairGoldweight = item.repairGoldweight - this.item.goldWeight; //补金重
-                repairGoldPriceE = this.mantissaProcessing(item.repairGoldPrice * repairGoldweight); //补价金额
-                // differencePriceE = this.mantissaProcessing(item.differencePrice * repairGoldweight); //补差价额
-                exchangePrice = this.mantissaProcessing(repairGoldPriceE + item.differencePriceE + +item.repairFee);
-                repairOldPrice = this.mantissaProcessing(+item.totalPrice - this.item.price - exchangePrice);
+                repairGoldPriceE = this.dataProcessing(item.repairGoldPrice * repairGoldweight); //补价金额
+                exchangePrice = this.mantissaProcessing(+repairGoldPriceE + +item.differencePriceE + +item.repairFee);
+                repairOldPrice = this.dataProcessing(+item.totalPrice - this.item.price - exchangePrice);
                 barcode = item.barcode;
             }
             this.modifyList.push(
@@ -566,6 +562,14 @@ export default {
             }
 
         },
+        dataProcessing(num, n = 100) {
+            num = parseFloat(num);
+            if (isNaN(num)) {
+                return;
+            }
+            num = Math.round(num * n) / n;
+            return num;
+        },
         relationCalculation(name) {
             // this.clearNoNum(name)
             let item = this.item;
@@ -595,11 +599,11 @@ export default {
                      旧料价=实售价-换货价
                      */
                     item.repairGoldweight = (item.totalGoldWeight - item.goldWeight).toFixed(3) || 0;
-                    item.repairGoldPriceE = this.mantissaProcessing(item.repairGoldPrice * item.repairGoldweight);
-                    item.repairFee = this.mantissaProcessing(item.paymentPrice * item.goldWeight);
-                    item.differencePriceE = this.mantissaProcessing(item.differencePrice * item.goldWeight);
+                    item.repairGoldPriceE = this.dataProcessing(item.repairGoldPrice * item.repairGoldweight);
+                    item.repairFee = this.dataProcessing(item.paymentPrice * item.goldWeight);
+                    item.differencePriceE = this.dataProcessing(item.differencePrice * item.goldWeight);
                     item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
+                    item.repairOldPrice = this.dataProcessing(item.totalPrice - item.exchangePrice);
                     //补金重
                     break;
                 case 'repairGoldPrice': //补金价
@@ -610,9 +614,9 @@ export default {
                      换货价=补金价额+补工费额+补差价额
                      旧料价=实售价-换货价
                      */
-                    item.repairGoldPriceE = this.mantissaProcessing(item.repairGoldPrice * item.repairGoldweight);
+                    item.repairGoldPriceE = this.dataProcessing(item.repairGoldPrice * item.repairGoldweight);
                     item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
+                    item.repairOldPrice = this.dataProcessing(item.totalPrice - item.exchangePrice);
                     break;
                 case 'repairGoldPriceE': //补金价额
                     /**
@@ -623,9 +627,9 @@ export default {
                      旧料价=实售价-换货价
                      * @type {number}
                      */
-                    item.repairGoldPrice = this.mantissaProcessing(item.repairGoldPriceE / item.repairGoldweight);
+                    item.repairGoldPrice = this.dataProcessing(item.repairGoldPriceE / item.repairGoldweight);
                     item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
+                    item.repairOldPrice = this.dataProcessing(item.totalPrice - item.exchangePrice);
                     break;
                 case 'paymentPrice': //补工费
                     /**
@@ -635,12 +639,12 @@ export default {
                      旧料价=实售价-换货价
                      */
                     if (item.calcMethod == '1') {
-                        item.repairFee = this.mantissaProcessing(item.paymentPrice * item.goldWeight);
+                        item.repairFee = this.dataProcessing(item.paymentPrice * item.goldWeight);
                     } else {
-                        item.repairFee = this.mantissaProcessing(item.paymentPrice);
+                        item.repairFee = this.dataProcessing(item.paymentPrice);
                     }
                     item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
+                    item.repairOldPrice = this.dataProcessing(item.totalPrice - item.exchangePrice);
                     break;
                 case 'repairFee': //补工费额
                     /**
@@ -649,12 +653,12 @@ export default {
                      旧料价=实售价-换货价
                      */
                     if (item.calcMethod == '1') {
-                        item.paymentPrice = this.mantissaProcessing(item.repairFee / item.goldWeight);
+                        item.paymentPrice = this.dataProcessing(item.repairFee / item.goldWeight);
                     } else {
-                        item.paymentPrice = this.mantissaProcessing(item.repairFee);
+                        item.paymentPrice = this.dataProcessing(item.repairFee);
                     }
                     item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
+                    item.repairOldPrice = this.dataProcessing(item.totalPrice - item.exchangePrice);
                     break
                 case 'differencePrice': //补差价
                     /**
@@ -663,9 +667,9 @@ export default {
                      旧料价=实售价-换货价
                      * @type {number}
                      */
-                    item.differencePriceE = this.mantissaProcessing(item.differencePrice * item.goldWeight);
+                    item.differencePriceE = this.dataProcessing(item.differencePrice * item.goldWeight);
                     item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
+                    item.repairOldPrice = this.dataProcessing(item.totalPrice - item.exchangePrice);
                     break;
                 case 'differencePriceE': //补差价额
                     /**
@@ -674,9 +678,9 @@ export default {
                      旧料价=实售价-换货价
                      * @type {number}
                      */
-                    item.differencePrice = this.mantissaProcessing(item.differencePriceE / item.goldWeight);
+                    item.differencePrice = this.dataProcessing(item.differencePriceE / item.goldWeight);
                     item.exchangePrice = this.mantissaProcessing(+item.repairGoldPriceE + +item.differencePriceE + +item.repairFee);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
+                    item.repairOldPrice = this.dataProcessing(item.totalPrice - item.exchangePrice);
                     break;
                 case 'exchangePrice': //换货价 data
                     /**
@@ -685,9 +689,9 @@ export default {
                      旧料价=实售价-换货价
                      * @type {number}
                      */
-                    item.repairGoldPrice = this.mantissaProcessing((item.price - item.differencePriceE - item.repairFee) / item.repairGoldweight);
-                    item.repairGoldPriceE = this.mantissaProcessing(item.repairGoldPrice * item.repairGoldweight);
-                    item.repairOldPrice = this.mantissaProcessing(item.totalPrice - item.exchangePrice);
+                    item.repairGoldPrice = this.dataProcessing((item.exchangePrice - item.differencePriceE - item.repairFee) / item.repairGoldweight);
+                    item.repairGoldPriceE = this.dataProcessing(item.repairGoldPrice * item.repairGoldweight);
+                    item.repairOldPrice = this.dataProcessing(item.totalPrice - item.exchangePrice);
                     break;
             }
         },
@@ -734,10 +738,10 @@ export default {
             }).then(() => {
                 if (this.item.isRelation == 'Y') {
                     this.relieveRefConvert();
-                }else if (this.item.recycleProductId){
+                } else if (this.item.recycleProductId) {
                     this.relieveRefConvert(1);
                     this.productList();
-                }else{
+                } else {
                     this.productList();
                 }
             }).catch(() => {
@@ -761,7 +765,7 @@ export default {
                         message: '删除成功!'
                     });
                     if (this.item.recycleProductId) {
-                        if (this.getExchangeById(this.item.recycleProductId).relationList.length > 1){
+                        if (this.getExchangeById(this.item.recycleProductId).relationList.length > 1) {
                             let options = {
                                 orderNum: this.orderNum,
                                 barcode: this.item.recycleList.barcode,
@@ -774,7 +778,7 @@ export default {
                                     {
                                         modifyType: '25',
                                         dataType: '1',
-                                        objectData: this.mantissaProcessing(this.item.recycleList.repairOldPrice - this.item.price)
+                                        objectData: this.dataProcessing(this.item.recycleList.repairOldPrice - this.item.price)
                                     }
                                 ]
                             }
@@ -840,37 +844,37 @@ export default {
                 {
                     modifyType: '19',
                     dataType: '1',
-                    objectData: this.mantissaProcessing(item.repairGoldPrice) || 0
+                    objectData: this.dataProcessing(item.repairGoldPrice) || 0
                 },
                 {
                     modifyType: '20',
                     dataType: '1',
-                    objectData: this.mantissaProcessing(item.repairGoldPriceE) || 0
+                    objectData: this.dataProcessing(item.repairGoldPriceE) || 0
                 },
                 {
                     modifyType: '02',
                     dataType: '1',
-                    objectData: this.mantissaProcessing(item.paymentPrice) || 0
+                    objectData: this.dataProcessing(item.paymentPrice) || 0
                 },
                 {
                     modifyType: '22',
                     dataType: '1',
-                    objectData: this.mantissaProcessing(item.repairFee) || 0
+                    objectData: this.dataProcessing(item.repairFee) || 0
                 },
                 {
                     modifyType: '23',
                     dataType: '1',
-                    objectData: this.mantissaProcessing(item.differencePrice) || 0
+                    objectData: this.dataProcessing(item.differencePrice) || 0
                 },
                 {
                     modifyType: '24',
                     dataType: '1',
-                    objectData: this.mantissaProcessing(item.differencePriceE) || 0
+                    objectData: this.dataProcessing(item.differencePriceE) || 0
                 },
                 {
                     modifyType: '25',
                     dataType: '1',
-                    objectData: this.mantissaProcessing(item.repairOldPrice) || 0
+                    objectData: this.dataProcessing(item.repairOldPrice) || 0
                 },
                 {
                     modifyType: '10',
@@ -1193,7 +1197,7 @@ export default {
 
             }).then(() => {
 
-                let repairGoldPriceE = this.mantissaProcessing(this.item.saleGoldPrice * this.item.goldWeight);
+                let repairGoldPriceE = this.dataProcessing(this.item.saleGoldPrice * this.item.goldWeight);
                 let options = {
                     orderNum: this.orderNum,
                     barcode: barcode,
@@ -1201,7 +1205,7 @@ export default {
                         {
                             modifyType: '19', //补金价
                             dataType: '1',
-                            objectData: this.mantissaProcessing(this.item.saleGoldPrice)
+                            objectData: this.dataProcessing(this.item.saleGoldPrice)
                         },
                         {
                             modifyType: '20', //补价金额
@@ -1216,7 +1220,7 @@ export default {
                         {
                             modifyType: '25', //旧料价
                             dataType: '1',
-                            objectData: this.mantissaProcessing(this.item.price - repairGoldPriceE)
+                            objectData: this.dataProcessing(this.item.price - repairGoldPriceE)
                         },
                         {
                             modifyType: '10', //换货价
@@ -1267,12 +1271,12 @@ export default {
                 if (res.data.state == 200) {
                     let _item = null;
                     for (let obj of options.modifyList) {
-                        if (obj.modifyType == '04'){
+                        if (obj.modifyType == '04') {
                             _item = obj.objectData;
                             break;
                         }
                     }
-                    if (this.item.recycleProductId && _item){
+                    if (this.item.recycleProductId && _item) {
                         this.updateRecycleSell();
                         return;
                     }
@@ -1297,8 +1301,8 @@ export default {
                 });
             })
         },
-        updateRecycleSell(){
-            let price = this.mantissaProcessing(this.item.recycleList.repairOldPrice - this.item.oldPrice + +this.item.price);
+        updateRecycleSell() {
+            let price = this.dataProcessing(this.item.recycleList.repairOldPrice - this.item.oldPrice + +this.item.price);
             let options = {
                 orderNum: this.orderNum,
                 barcode: this.item.recycleList.barcode,
@@ -1319,8 +1323,8 @@ export default {
             })
         },
         relationMethods() {
-            if (this.status == '1'){
-                return ;
+            if (this.status == '1') {
+                return;
             }
             this.modifyList = [];
             this.item.calcMethod = this.item.calcMethod == '1' ? '2' : '1';
@@ -1335,8 +1339,6 @@ export default {
             if (this.mantissa == 1) {
                 this.item.price = Math.round(this.item.price)
             }
-            console.log(this.mantissa)
-            console.log(this.item.price)
             if (this.item.productType == 1) {
                 if (this.item.calcMethod == 1) { // 计重
                     this.item.calcMethod = 2;
