@@ -23,29 +23,46 @@
                         <div class="timeTouchOff flex flex-r">
                             <el-radio class="square el-radio-f14-b flex flex-r flex-align-center" label="时间触发">时间触发：</el-radio>
                             <el-form class="flex flex-r" ref="timeTouchOffFrom" :model="timeTouchOffFrom" :rules="timeTouchOffRules">
-                                <!-- 选择日期时间 -->
-                                <el-form-item prop="dataAndTime">
+                                <el-form-item prop="eventName">
+                                    <el-select
+                                        filterable
+                                        clearable 
+                                        class="select-w118-h38 select-white select-b1 mr-11"
+                                        :disabled="mainForm.touchOff != '时间触发'" 
+                                        v-model="timeTouchOffFrom.eventName"
+                                        @change="timeTouchOffFrom.eventCycle = ''"
+                                        title="选择年月日">
+                                        <el-option label="年" value="年"></el-option>
+                                        <el-option label="月" value="月"></el-option>
+                                        <el-option label="周" value="周"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item prop="eventCycle" v-if="timeTouchOffFrom.eventName != '周'">
                                     <el-date-picker 
                                         class="input-w248-h38 input-white input-b1 mr-11" 
-                                        :disabled="mainForm.touchOff != '时间触发'" 
-                                        v-model="timeTouchOffFrom.dataAndTime"
-                                        type="datetime" 
+                                        v-model="timeTouchOffFrom.eventCycle"
+                                        :format="timeTouchOffFrom.eventName == '年'?'MM月dd日':'dd日'"
+                                        :disabled="mainForm.touchOff != '时间触发'"
                                         placeholder="选择日期时间"
+                                        type="date"
                                         title="选择日期时间">
                                     </el-date-picker>
                                 </el-form-item>
-                                <!-- 选择触发周期 -->
-                                <el-form-item prop="touchOffPeriod" >
+                                <el-form-item prop="timeTouchWeek" v-if="timeTouchOffFrom.eventName == '周'">
                                     <el-select
                                         filterable
-                                        clearable
-                                        v-loading="touchOffPeriodList.length !=0?false:true"
+                                        clearable 
+                                        class="select-w248-h38 select-white select-b1 mr-11"
                                         :disabled="mainForm.touchOff != '时间触发'" 
-                                        class="select-w118-h38 select-white select-b1" 
-                                        v-model="timeTouchOffFrom.touchOffPeriod"
-                                        placeholder="请选择触发周期"
-                                        title="请选择触发周期">
-                                        <el-option v-for="item in touchOffPeriodList" :label="item.templateName" :value="item.templateId"></el-option>
+                                        v-model="timeTouchOffFrom.timeTouchWeek"
+                                        title="选择星期">
+                                        <el-option label="周一" value="周一"></el-option>
+                                        <el-option label="周二" value="周二"></el-option>
+                                        <el-option label="周三" value="周三"></el-option>
+                                        <el-option label="周四" value="周四"></el-option>
+                                        <el-option label="周五" value="周五"></el-option>
+                                        <el-option label="周六" value="周六"></el-option>
+                                        <el-option label="周日" value="周日"></el-option>
                                     </el-select>
                                 </el-form-item>
                             </el-form>
@@ -65,7 +82,7 @@
                                         v-model="eventTouchOffFrom.touchOffCondition"
                                         placeholder="触发条件"
                                         title="触发条件">
-                                        <el-option v-for="item in touchOffConditionList" :label="item.signName" :value="item.signName"></el-option>
+                                        <el-option v-for="item in touchOffConditionList" :label="item.signName" :value="item.signId"></el-option>
                                     </el-select>
                                 </el-form-item>
                                 <!-- 触发时间 -->
@@ -107,13 +124,6 @@
                         @switchTab="switchTab"
                         @clickChildrenItem="clickChildrenItem"
                         ></filterBox>
-                    <Dialog 
-                        :dialogType="dialog.dialogType" 
-                        :isShowDialog="dialog.isShowDialog" 
-                        :modal="dialog.modal" 
-                        @cancel="cancel" 
-                        @confirm="confirm">
-                    </Dialog>
                 </el-form-item>
                 <el-form-item label="发送人" prop="sendPreson">
                     <div class="sendPreson">
@@ -123,6 +133,13 @@
                             <i class="iconfont icon-lianxiren"></i>
                         </div>
                     </div>
+                    <Dialog 
+                        :dialogType="dialog.dialogType" 
+                        :isShowDialog="dialog.isShowDialog" 
+                        :modal="dialog.modal" 
+                        @cancel="cancel" 
+                        @confirm="confirm">
+                    </Dialog>
                 </el-form-item>
             </el-form>
             <iphone class="iphonePic" :content="mainForm.sendContent"></iphone>
@@ -138,6 +155,7 @@
         addSms,//添加短信发送
         findSmsTriggerList, //触发事件列表
         findSmsTriggerCycleList, //触发周期列表
+        findSmsTemoplateDetails, //短信详情
     } from "Api/member";
     import filterBox from "../components/filterBox.vue";
     import mineTextarea from "../components/mineTextarea.vue";
@@ -163,22 +181,33 @@
                 // 时间触发表单
                 timeTouchOffFrom: {
                     //时间触发
-                    dataAndTime:'',//时间触发条件(选择日期和时间)
-                    touchOffPeriod: '', //触发周期
+                    // dataAndTime:'',//时间触发条件(选择日期和时间)
+                    // touchOffPeriod: '', //触发周期
+                    eventName:"", //时间触发左边，
+                    eventCycle:"", //时间触发右边（年、月）
+                    timeTouchWeek:""  //时间触发右边 （周）
                 },
                 // 时间触发表单验证规则
                 timeTouchOffRules:{
                     // 选择日期时间
-                    dataAndTime: [{
-                        type: 'date',
+                    eventCycle: [{
+                        type:"date",
                         required: true,
                         message: '请选择日期时间',
                         trigger: 'blur'
                     }],
                     // 选择触发周期
-                    touchOffPeriod: [{
+                    eventName: [{
+                        type: 'string',
                         required: true,
-                        message: '请选择触发周期',
+                        message: '请选择年月日',
+                        trigger: 'blur'
+                    }],
+                    //时间触发右边 （周）
+                    timeTouchWeek: [{
+                        type:"string",
+                        required: true,
+                        message: '请选择星期',
                         trigger: 'blur'
                     }],
                 },
@@ -267,14 +296,20 @@
                         name: this.mainForm.noteName, //短信名称
                         type: this.mainForm.sendWay=="即时发送"?0:1, //发送方式 0：即使发送 1：事件触发
                         content: this.mainForm.sendContent, //短信内容
-                        triggerTiem: this.timeTouchOffFrom.dataAndTime?(moment(this.timeTouchOffFrom.dataAndTime).format("YYYY-MM-DD HH:mm:ss")):"", //触发时间
-                        triggerCycleName: this.timeTouchOffFrom.touchOffPeriod, //触发周期
-                        triggerTypeName: this.eventTouchOffFrom.touchOffCondition, //触发类型
-                        triggerStatus: this.eventTouchOffFrom.touchOffTime, //触发状态
-                        triggerDay: this.eventTouchOffFrom.days, //天数
+                        eventName:this.timeTouchOffFrom.eventName, //时间触发左边，
+                        eventCycle:this.timeTouchOffFrom.eventName == '年'?moment(this.timeTouchOffFrom.eventCycle).format("MM月DD日"):this.timeTouchOffFrom.eventName == '月'?moment(this.timeTouchOffFrom.eventCycle).format("DD日"):this.timeTouchOffFrom.timeTouchWeek, //时间触发右边
+                        eventId:this.eventTouchOffFrom.touchOffCondition, //触发条件ID
+                        befoerAfrerType:this.eventTouchOffFrom.touchOffTime, //触发时间 0：前；1：后
+                        befoerAfrerDay:this.eventTouchOffFrom.days, //天数
                         templateId: this.templateId, //插入的模板类型Id
                         userList: this.mainForm.presonList, //发送人列表
-                        signId:this.signId //插入的签名
+                        signId:this.signId, //插入的签名
+                        //====== 发送人列表=========//
+                        userType:"", //类型 1 按人；2 按条件  memberId:"", //用户Id //     memberName:"", //用户名称//     phone:"",  //手机号码
+                        gradeId:"", //会员级别
+                        memberType:"", //会员类型
+                        principalId:"", //会员负责人
+                        keyWord:"",//发送人搜索框   
                     }
                 },
                 default(){
@@ -358,6 +393,27 @@
                     return [];
                 }
             },
+            SmsTemoplateDetails:{ //短信详情
+                get(){
+                    (async()=>{
+                        let templateId = this.$route.query.templateId
+                        let res = await findSmsTemoplateDetails({templateId});
+                        console.log(res)
+                    })()
+                },
+                default(){
+                    return null
+                }
+            },
+            createdOrUpdata:{ //编辑模式或新增模式
+                get(){
+                    if(this.$route.query.templateId){
+                        return "UPDATA"
+                    }else{
+                        return "CREATED"
+                    }
+                }
+            }
         },
         components: {
             filterBox,
@@ -382,6 +438,9 @@
                 }else if(val == '事件触发'){
                     this.formReset('timeTouchOffFrom')
                 }
+            },
+            'SmsTemoplateDetails'(val){ //短信详情
+                console.log(val);
             }
         },
         methods: {
@@ -409,13 +468,26 @@
                     this.templateId = data.templateId;
                 }
                 else if(type == "selectSendPreson"){ //选择发送人
-                    this.mainForm.presonList = data;
-                    let sendPresonArr = this.mainForm.presonList.map((val)=>{
-                        return val.memberName;
-                    })
-                    let sendPresonStr = sendPresonArr.join("；");
-                    this.mainForm.sendPresonCount = sendPresonArr.length;
-                    this.mainForm.sendPreson = sendPresonStr;
+                    if(Array.isArray(data)){ //按人
+                        this.mainForm.presonList = data;
+                        let sendPresonArr = this.mainForm.presonList.map((val)=>{
+                            return val.memberName;
+                        })
+                        let sendPresonStr = sendPresonArr.join("；");
+                        this.mainForm.sendPresonCount = sendPresonArr.length;
+                        this.mainForm.sendPreson = sendPresonStr;
+                    }else{
+                        // console.log(Object.values(data))
+                        // console.log(Object.keys(data))
+                        // let str = "会员名/手机号/编号:"+ data.inputVal +";会员级别:" + data.memberRank + ";会员类型:" + data.memberType + ";会员负责人:" + data.memberPrincipal
+                        let str = "按条件";
+                        this.mainForm.sendPreson = str;
+                        this.requestData.keyWord = data.inputVal;
+                        this.requestData.gradeId = data.memberRank;
+                        this.requestData.memberType = data.memberType;
+                        this.requestData.principalId = data.memberPrincipal;
+                    }
+                    
                 } 
                 else if(type == "selectSignature"){ //选择签名
                     this.signId = data.signId;
@@ -436,6 +508,7 @@
                     touchOffVer = this.formVerify('eventTouchOffFrom');
                 }
                 let mainVer = this.formVerify('mainForm');
+                console.log(touchOffVer);
                 console.log(mainVer)
                 if(touchOffVer && mainVer){
                     this.addSmsIng = true;
@@ -444,14 +517,18 @@
                         name,
                         type,
                         content,
-                        triggerTiem,
-                        triggerCycleName,
-                        triggerTypeName,
-                        triggerStatus,
-                        triggerDay,
+                        eventName,
+                        eventCycle,
+                        eventId,
+                        befoerAfrerType,
+                        befoerAfrerDay,
                         templateId,
                         userList,
-                        signId
+                        signId,
+                        gradeId,
+                        memberType,
+                        principalId,
+                        keyWord,
                     } = this.requestData;
                     (async () => {
                         let res = await addSms({
@@ -459,14 +536,18 @@
                             name,
                             type,
                             content,
-                            triggerTiem,
-                            triggerCycleName,
-                            triggerTypeName,
-                            triggerStatus,
-                            triggerDay,
+                            eventName,
+                            eventCycle,
+                            eventId,
+                            befoerAfrerType,
+                            befoerAfrerDay,
                             templateId,
                             userList,
-                            signId
+                            signId,
+                            gradeId, //会员级别
+                            memberType, //会员类型
+                            principalId, //会员负责人
+                            keyWord,//发送人搜索框
                         });
                         console.log(res)
                         if (res.body.msg == "OK") {
