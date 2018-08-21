@@ -42,7 +42,6 @@
                 :operationConfig="operationConfig"
                 :isRowClick="isRowClick"
                 @operationBack="operationBack"
-                @clickTd="noteClick"
                 @rowClick="rowClick"
                 @scorllToBottom="loadMoreOrder"
                 styleClass="el_table_noteManage"></TableBody>
@@ -411,9 +410,11 @@
                     this.dialog.tipMsg = "是否删除该模板？"
                 }else if(way == 'bianji'){
                     this.$router.push({
-                        path:"/memberManage/push/createModule",
+                        path:"/memberManage/push/createNote",
                         query:{
-                            title:'编辑短信模板'
+                            title:'编辑短信模板',
+                            shopId:this.requestData.shopId,
+                            templateId:templateId,
                         }
                     })
                     return
@@ -428,20 +429,13 @@
                 };
                 
             },
-            // 点击短信名称
-            noteClick(val){
-                this.dialog.dialogType = "Notelog"
-                this.dialog.isShowDialog = true;
-                this.dialog.modal = true;
-                console.log(val.id);
-            },
             rowClick(val){
                 this.dialog.dialogType = "Notelog"
                 this.dialog.isShowDialog = true;
                 this.dialog.modal = true;
                 console.log(val)
-                let templateId = val.templateId;
-                this.currentOperationNote = {templateId}
+                // let templateId = val.templateId;
+                this.currentOperationNote = val
             },
             // 弹窗确定按钮
             confirm(val){
@@ -495,10 +489,12 @@
             // 选项选中时触发
             changeSelectValue(val){
                 console.log(val);
+                this.noteList = [];
                 this.upData = true;
             },
             // 时间选项选中时触发
             changeTime(val){
+                this.noteList = [];
                 this.requestData.beginTime = `${GetNYR(val.beginTime)}${" "}${GetSF(val.beginTime)}`;
                 this.requestData.endTime = `${GetNYR(val.endTime)}${" "}${GetSF(val.endTime)}`;
                 this.upData = true;
