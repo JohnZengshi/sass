@@ -2,7 +2,7 @@
 <template>
     <div class="noteLogBox" v-loading="getSmsTemoplateLogIng">
         <img class="close-icon" src="../../../../../assets/img/close-preview.png" @click.stop="handleclose" />
-        <span class="noteName">十一店庆</span>
+        <span class="noteName">{{data.templateName}}</span>
         <div class="sendContent flex flex-r flex-pack-justify">
             <span>发送内容</span>
             <span v-if="SmsTemoplateLog">{{SmsTemoplateLog.content}}</span>
@@ -16,11 +16,11 @@
                 <div class="sendWord flex flex-v">
                     <div>
                         <span>发送成功</span>
-                        <span class="sendSuccess">85</span>
+                        <span class="sendSuccess">0</span>
                     </div>
                     <div>
                         <span>发送失败</span>
-                        <span class="sendFail">12</span>
+                        <span class="sendFail">0</span>
                     </div>
                 </div>
             </div>
