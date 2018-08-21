@@ -1198,6 +1198,7 @@ export default {
             }).then(() => {
 
                 let repairGoldPriceE = this.dataProcessing(this.item.saleGoldPrice * this.item.goldWeight);
+                let exchangePrice = this.mantissaProcessing(this.item.saleGoldPrice * this.item.goldWeight);
                 let options = {
                     orderNum: this.orderNum,
                     barcode: barcode,
@@ -1220,12 +1221,12 @@ export default {
                         {
                             modifyType: '25', //旧料价
                             dataType: '1',
-                            objectData: this.dataProcessing(this.item.price - repairGoldPriceE)
+                            objectData: this.dataProcessing(this.item.price - exchangePrice)
                         },
                         {
                             modifyType: '10', //换货价
                             dataType: '1',
-                            objectData: repairGoldPriceE
+                            objectData: exchangePrice
                         }
                     ]
                 }
