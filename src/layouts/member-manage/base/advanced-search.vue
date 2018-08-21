@@ -9,6 +9,8 @@
       <new-down-menu
           class="w-110 ml-10"
           ref="memberRankBox"
+          :currentId="item.frontCondition"
+          :idKey="'id'"
           :isSolid="true"
           :noClear="true"
           :titleInfo="_getMemberAdvancedSearchPreposition(item.frontCondition)"
@@ -22,6 +24,8 @@
           ref="memberRankBox"
           :isSolid="true"
           :noClear="true"
+          :currentId="item.choiceCondition"
+          :idKey="'id'"
           :titleInfo="_getAdvancedSearchInclude(item.choiceCondition)"
           :showList="advancedSearchInclude"
           :index="index"
@@ -40,6 +44,8 @@
           v-show="currentSelect(item.frontCondition)"
           class="w-130 ml-10"
           ref="memberRankBox"
+          :currentId="item.afterCondition"
+          :idKey="'id'"
           :isSolid="true"
           :titleInfo="_getMemberType(item.afterCondition)"
           :showList="filterSelect(item.frontCondition)"
@@ -53,6 +59,8 @@
           v-if="item.connect"
           class="w-70 ml-10"
           ref="memberRankBox"
+          :currentId="item.connect"
+          :idKey="'id'"
           :isSolid="true"
           :noClear="true"
           :titleInfo="_getConnect(item.connect)"
@@ -61,9 +69,11 @@
           @changeData="changeConnect"
       ></new-down-menu>
 
+      <i v-if="(index + 1)%2 != 0" class="iconfont icon-wuuiconsuoxiao del-right" @click="delData(index)"></i>
+
     </div>
     <i class="iconfont icon-jia add-right" @click="addData"></i>
-    <i class="iconfont icon-shanchu del-right" @click="delData"></i>
+<!--     <i class="iconfont icon-wuuiconsuoxiao del-right" @click="delData"></i> -->
   </div>
 </template>
 <script>
@@ -75,7 +85,7 @@ export default {
   components: {
     newDownMenu
   },
-  props: ['userList'],
+  props: ['userList', 'initAdvanced'],
   data () {
     return {
       filterCondition: {
@@ -98,6 +108,16 @@ export default {
           afterCondition: '', // 后置条件
         }
       ]
+    }
+  },
+  created () {
+    if (this.initAdvanced.length) {
+      this.showList = this.initAdvanced
+    }
+  },
+  watch: {
+    initAdvanced () {
+      this.showList = this.initAdvanced
     }
   },
   methods: {
@@ -133,8 +153,8 @@ export default {
       this.showList.push(...datas)
     },
     // 删除数据
-    delData () {
-      this.showList.splice(this.showList.length - 2, 2)
+    delData (index) {
+      this.showList.splice(index, 2)
       if (this.showList.length) {
         delete this.showList[this.showList.length -1 ].connect
       }
@@ -214,7 +234,7 @@ export default {
 
     },
     update (parm) {
-      // 数据源，是否二次操作
+      // 数据源，operation --> 是否二次操作
       this.$emit('update', {datas: this.showList, operation: parm})
     }
   }
@@ -223,12 +243,28 @@ export default {
 <style lang="scss">
 .m-m-advanced-search{
   position: relative;
+  min-height: 30px;
   .item-box{
+    position: relative;
     margin-bottom: 15px;
     height: 30px;
     font-size: 0;
+    >i{
+      font-size: 28px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      color: #2993f8;
+      cursor: pointer;
+    }
+    .del-right{
+      top: 0;
+      right: 40px;
+      color: red;
+    }
     .h-tit{
       font-size: 14px;
+      margin-right: 30px;
     }
     .small-input{
       width: 130px;

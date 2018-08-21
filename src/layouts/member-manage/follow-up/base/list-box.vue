@@ -16,10 +16,11 @@
                 <!--面包屑-->
                 <div class="Rp_crumbs">
                     <i class="iconfont icon-lianxiren"></i>
-                    <router-link tag="span" to="/work/report/" class="path_crumbs">会员主页</router-link> > <span class="txt">{{headline}}</span>
+                    <router-link tag="span" to="/membermanage" class="path_crumbs">会员主页</router-link> > <span class="txt">{{headline}}</span>
                 </div>
+                <router-link tag="div" class="xj-btn-defult fr" to="/membermanage">返回上一页</router-link>
 
-                <down-menu class="fr" :isSolid="true" :titleInfo="shopName ? shopName : '店铺名称'" :showList="shopList" :nameKey="'shopName'" @changeData="changeShop" @clearInfo="clearShop"></down-menu>
+                <down-menu class="fr mr-10" :isSolid="true" :titleInfo="shopName ? shopName : '店铺名称'" :showList="shopList" :nameKey="'shopName'" @changeData="changeShop" @clearInfo="clearShop"></down-menu>
 
             </div>
             <table-list ref="tableListBox" @changeMember="changeMember" @compileData="compileData" :shopId="shopId" :currentLocation="'followUp'" :headline="headline"></table-list>
@@ -51,6 +52,7 @@ export default {
     data() {
         return {
             shopId: this.$route.query.shopId,
+            followPurpose: this.$route.query.followPurpose,
             shopName: '',
             memberId: '',
             shopList: []
@@ -73,7 +75,6 @@ export default {
                         if (i.shopId == this.shopId) {
                             this.shopId = i.shopId
                             this.shopName = i.shopName
-                            // this.changeShop(i)
                             return
                         }
                     }
@@ -97,11 +98,11 @@ export default {
             this.memberId = parm.data.memberId
             setTimeout(() => {
                 if (this.$refs.addFollowUpBox) {
-                    this.$refs.addFollowUpBox.open({'followId': 'parm.data.followId'})   
+                    this.$refs.addFollowUpBox.open({'followId': parm.data.followId})   
                 }
                 // 完成跟进
                 if (this.$refs.cutPopupBox) {
-                    this.$refs.cutPopupBox.open({index: 'complete', followId: 'parm.data.followId', item:parm.data })   
+                    this.$refs.cutPopupBox.open({index: 'complete', followId: parm.data.followId, item:parm.data })   
                 }
             }, 0)
             // setTimeout(() => {
@@ -109,17 +110,17 @@ export default {
             // }, 0)
         },
         changeMember(parm) {
-            this.memberId = parm.data.memberId
-            setTimeout(() => {
-                // 会员信息
-                // if (this.$refs.memberInfoBox) {
-                //     this.$refs.memberInfoBox.open()
-                // }
-                // 我的跟进，编辑状态
-                if (this.$refs.cutPopupBox) {
-                    this.$refs.cutPopupBox.open({index: 'chooseUser', 'followId': parm.followId})  
-                }
-            }, 0)
+            // this.memberId = parm.memberId
+            // setTimeout(() => {
+            //     // 会员信息
+            //     // if (this.$refs.memberInfoBox) {
+            //     //     this.$refs.memberInfoBox.open()
+            //     // }
+            //     // 我的跟进，编辑状态
+            //     // if (this.$refs.cutPopupBox) {
+            //     //     this.$refs.cutPopupBox.open({index: 'chooseUser', 'followId': parm.followId})  
+            //     // }
+            // }, 0)
         },
         clearShop() {
             this.shopName = ''

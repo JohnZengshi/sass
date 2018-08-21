@@ -5,7 +5,7 @@
       <div class="new-table-header-layout-main">
 
         <div class="rp_gridState">
-          <p class="side-nav"><i class="iconfont icon-liebiao"></i>商品列表:<span style="color: #2993f8;">{{totalNum}}</span></p>
+          <p class="side-nav"><i class="iconfont icon-liebiao"></i>{{tableTit ? tableTit : '商品列表'}}:<span style="color: #2993f8;">{{totalNum}}</span></p>
           <sort-table :sortList="sortList" @cancelSort="cancelSort"></sort-table>
           <!-- 跟进 -->
           <filter-header v-if="currentLocation == 'followUp'" :shopId="shopId" @filterData="filterData"></filter-header>
@@ -46,7 +46,7 @@ import filterHeader from './filter-header'
 import {combination} from 'assets/js/combination'
 
 export default {
-  props: ['shopId', 'currentLocation'],
+  props: ['shopId', 'currentLocation', 'tableTit'],
   components: {
     ReportDetail,
     filterHeader,
@@ -79,6 +79,9 @@ export default {
       "userPositionInfo", // 职位信息
     ])
   },
+  created () {
+    this.filterData({shopId: this.$route.query.shopId})
+  },
   methods: {
     // 选择摸个会员
     changeMember (parm) {
@@ -90,7 +93,7 @@ export default {
     },
 
     delData(parm) {
-      operateDeleteMemberId({memberId: parm.data.memberId})
+      operateDeleteMemberId({memberId: parm.data.memberId, shopId: this.shopId})
         .then(res => {
           if (res.data.state == 200) {
             this.dataGridStorage.splice(parm.index, 1)
@@ -103,9 +106,6 @@ export default {
 
     filterData(parm) {
       if (parm) {
-        if (parm.init) {
-          this.filterCondition = {}
-        }
         this.dataGridStorage = []
         this.paging.page = 1
         this.filterCondition = Object.assign({}, this.filterCondition, parm)

@@ -19,12 +19,12 @@
                 ></newDownMenu>
 
                 <div class="all-time" v-if="addData.triggerTimeType == 1">
-                  <el-date-picker :disabled="addData.eventType != 1" format="MM月dd日" class="yearTimeBoxT" popper-class="yearTimeBox" @change="setCompleteTime" v-model="addData.completeTime" type="date" placeholder="选择日期时间">
+                  <el-date-picker :disabled="addData.eventType != 1" format="MM月dd日" class="yearTimeBoxT" popper-class="yearTimeBox" @change="setstartingDate" v-model="addData.startingDate" type="date" placeholder="选择日期时间">
                   </el-date-picker>
                 </div>
                 
                 <div class="all-time" v-if="addData.triggerTimeType == 2">
-                  <el-date-picker :disabled="addData.eventType != 1" format="dd日" class="yearTimeBoxT" popper-class="yearTimeBox" @change="setCompleteTime" v-model="addData.completeTime" type="date" placeholder="选择日期时间">
+                  <el-date-picker :disabled="addData.eventType != 1" format="dd日" class="yearTimeBoxT" popper-class="yearTimeBox" @change="setstartingDate" v-model="addData.startingDate" type="date" placeholder="选择日期时间">
                   </el-date-picker>
                 </div>
 
@@ -34,7 +34,7 @@
                   ref="checkedProfessionBox"
                   class="new-down-menu-box trigger-item all-time"
                   :disabled="addData.eventType != 1"
-                  :titleInfo="_getWeekTime(addData.completeTime) || '请选择星期'"
+                  :titleInfo="_getWeekTime(addData.startingDate) || '请选择星期'"
                   :showList="weekList"
                   :noClear="true"
                   :keep="true"
@@ -98,7 +98,7 @@ export default {
                 startingDay: '',
                 triggerTimeTypeName: '',
                 triggerTimeType: '',
-                completeTime: '',
+                startingDate: '',
                 triggerRule: '',
                 triggerRuleName: '',
                 triggerTime: '',
@@ -128,7 +128,7 @@ export default {
           // Object.assing(this.addData, parm)
         },
         changetriggerTimeType (parm) {
-          this.addData.completeTime = ''
+          this.addData.startingDate = ''
           this.addData.triggerTimeType = parm.id
           this.addData.triggerTimeTypeName = parm.name
           this.$emit('update', this.addData)
@@ -143,11 +143,11 @@ export default {
           this.addData.triggerTimeName = parm.name
           this.$emit('update', this.addData)
         },
-        setCompleteTime () {
+        setstartingDate () {
           this.$emit('update', this.addData)
         },
         changeWeek (parm) {
-          this.addData.completeTime = parm.id
+          this.addData.startingDate = parm.id
         },
         amendStartingDay () {
           this.$emit('update', this.addData)

@@ -11,15 +11,38 @@
             <div v-if="false" class="xj-btn-defult ml-10" @click="isSenior = !isSenior">
                 {{isSenior ? '取消高级搜索' : '高级搜索'}}
             </div>
-            <DownMenu class="w-110 ml-10" ref="memberRankBox" :isSolid="true" :titleInfo="_getFollowUpStatus(filterCondition.followStatus) || '跟进状态'" :showList="followUpStatusList" @changeData="changeFollowUpStatus" @clearInfo="clearFollowUpStatus"></DownMenu>
-            <DownMenu class="w-110 ml-10" ref="memberClassBox" :isSolid="true" :titleInfo="_getVisitAimList(filterCondition.followPurpose) || '跟进目的'" :showList="visitAimList" @changeData="changeVisitAimList" @clearInfo="clearVisitAimList"></DownMenu>
+
+            <DownMenu
+                class="w-110 ml-10"
+                ref="memberRankBox"
+                :isSolid="true"
+                :titleInfo="_getFollowUpStatus(filterCondition.followStatus) || '跟进状态'"
+                :showList="followUpStatusList"
+                @changeData="changeFollowUpStatus"
+                @clearInfo="clearFollowUpStatus"
+            ></DownMenu>
+
+            <DownMenu
+                class="w-110 ml-10"
+                ref="memberClassBox"
+                :idKey="'id'"
+                :currentId="filterCondition.followPurpose"
+                :isSolid="true"
+                :titleInfo="_getVisitAimList(filterCondition.followPurpose) || '跟进目的'"
+                :showList="visitAimList"
+                @changeData="changeVisitAimList"
+                @clearInfo="clearVisitAimList"
+            ></DownMenu>
+
             <DownMenu class="w-110 ml-10" ref="userBox" :isSolid="true" :titleInfo="_getFollowType(filterCondition.followType) || '跟进类型'" :showList="followTypeList" @changeData="changeFollowType" @clearInfo="clearFollowType"></DownMenu>
+
             <div class="btn-box" v-if="headline == '我的跟进'">
                 <ul class="xj-btn-list">
                     <li class="btn" @click="openAdd">+跟进</li>
                     <li class="btn" @click="batchComplete">+批量完成</li>
                 </ul>
             </div>
+
         </div>
         <!-- 完成跟进 -->
         <cut-popup ref="cutPopupBox"></cut-popup>

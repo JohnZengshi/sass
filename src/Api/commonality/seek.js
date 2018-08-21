@@ -968,7 +968,27 @@ export const seekFollowAdministration = function (parm) { // 跟进管理
     let URL = "/v1/member/followAdministration";
     return apiCall(parm, URL);
 }
-export const seekFollowSearchByNew = function (parm) { // 跟进管理
+export const seekFollowSearchByNew = function (parm) { // 新会员查询
     let URL = "/v1/member/followSearchByNew";
     return apiCall(parm, URL);
+}
+// 组合详情
+export const seekInterflowCollect = function (parm) {
+  let URL = "/v1/groupTemplate/interflowCollect";
+  return apiCall(parm, URL);
+}
+// 跟进列表
+export const seekMemberFollowList = function (parm) {
+  let URL = "/v1/member/memberFollowList";
+  return apiCall(parm, URL);
+}
+// 会员跟进数量
+export const seekMemberFollowNum = function (parm) {
+  let URL = "/v1/member/memberFollowNum";
+  return apiCall(parm, URL);
+}
+// 跟进详情
+export const seekTriggerFollowDetails = function (parm) {
+  let URL = "/v1/member/triggerFollowDetails";
+  return apiCall(parm, URL);
 }

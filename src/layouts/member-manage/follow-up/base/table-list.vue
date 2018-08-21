@@ -5,10 +5,10 @@
       <div class="new-table-header-layout-main">
         
         <!-- 跟进图表 -->
-        <follow-up-echarts v-if="headline == '我的跟进'" ref="followUpEchartsBox" @update="filterData"></follow-up-echarts>
+        <follow-up-echarts v-if="headline == '我的跟进'" :shopId="shopId" :filterCondition="filterCondition" ref="followUpEchartsBox" @update="filterData"></follow-up-echarts>
 
         <div class="rp_gridState">
-          <p class="side-nav"><i class="iconfont icon-liebiao"></i>商品列表:<span style="color: #2993f8;">{{totalNum}}</span></p>
+          <p class="side-nav"><i class="iconfont icon-liebiao"></i>{{headline}}:<span style="color: #2993f8;">{{totalNum}}</span></p>
           <sort-table v-if="headline == '我的跟进'" :sortList="sortList" @cancelSort="cancelSort"></sort-table>
 
           <!-- 我的跟进 -->
@@ -56,14 +56,18 @@
 import { mapGetters } from 'vuex'
 import find from 'lodash/find'
 let configData = require('./../../config/config.js')
-import {seekFindMemberList} from 'Api/commonality/seek.js'
-import {operateDeleteMemberId} from 'Api/commonality/operate'
+import {seekMemberFollowList, seekFollowAdministration} from 'Api/commonality/seek.js'
+import {groupName} from 'Api/commonality/filter'
+
+import {getFollowUpStatus, getFollowType, getMemberTypeList, getVisitAimList} from 'assets/js/analysis'
+import {operateDeleteMemberId, operateDeleteFollowByNew} from 'Api/commonality/operate'
 import sortTable from 'base/sort/sort-table'
 import ReportDetail from 'base/newDataGrid/reportDetailTab'
 import followUpHeader from './follow-up-header'
 import followUpHeaderManage from './follow-up-header-manage'
 import followUpEcharts from './follow-up-echarts'
 import {combination} from 'assets/js/combination'
+import {GetNYR} from 'assets/js/getTime'
 
 export default {
   props: ['shopId', 'currentLocation', 'headline'],
@@ -81,6 +85,7 @@ export default {
       memberId: '',
       configData: configData.followUpConfing,
       filterCondition: {
+          type: '2' // 我的跟进，默认是我的跟进
         // shopName: '',
         // shopId: '',
       },       
@@ -105,6 +110,7 @@ export default {
     if (this.headline == '跟进管理') {
       this.configData = configData.followUpManageConfig
     }
+    this.filterData({shopId: this.$route.query.shopId, followPurpose: this.$route.query.followPurpose, init: true})
   },
   methods: {
     // 选择摸个会员
@@ -114,7 +120,39 @@ export default {
     },
 
     delData(parm) {
+      let opations = {
+        followId: parm.data.followId,
+        type: ''
+      }
+      if (this.headline == '我的跟进') {
+        opations.type = 1
+      } else if (this.headline == '跟进管理') {
+        opations.type = 2
+      }
+      operateDeleteFollowByNew(opations)
+        .then(res => {
+          if (res.data.state == 200) {
+            this.dataGridStorage.splice(parm.index, 1)
+            this.totalNum -= 1  
+          } else {
+            this.$message({type: 'error',message: res.data.msg})
+          }
+        })
+    },
+    _operateDeleteMemberId () {
       operateDeleteMemberId({memberId: parm.data.memberId})
+      .then(res => {
+        if (res.data.state == 200) {
+          this.dataGridStorage.splice(parm.index, 1)
+          this.totalNum -= 1  
+        } else {
+          this.$message({type: 'error',message: res.data.msg})
+        }
+      })
+    },
+    // 删除跟进管理
+    _operateDeleteFollowByNew (parm) {
+      operateDeleteFollowByNew({memberId: parm.data.memberId})
         .then(res => {
           if (res.data.state == 200) {
             this.dataGridStorage.splice(parm.index, 1)
@@ -127,15 +165,12 @@ export default {
 
     filterData(parm) {
       if (parm) {
-        if (parm.init) {
-          this.filterCondition = {}
-        }
         this.dataGridStorage = []
         this.paging.page = 1
         this.filterCondition = Object.assign({}, this.filterCondition, parm)
         // 重绘图表
         if (this.$refs.followUpEchartsBox) {
-          this.$refs.followUpEchartsBox._seekStockTrend()
+          this.$refs.followUpEchartsBox._seekMemberFollowNum()
         }
       } else {
         if (this.paging.page > 1 && this.dataGridStorage.length == this.totalNum) {
@@ -145,25 +180,35 @@ export default {
 
       this.loading = true
       if (this.headline == '我的跟进') {
-        this._seekFindMemberList()
+        this._seekMemberFollowList()
       } else if (this.headline == '跟进管理') {
         this._seekFollowAdministration()
       }
-      // this._seekFindMemberList()
+      // this._seekMemberFollowList()
     },
     // 我的跟进
-    _seekFindMemberList () {
-      seekFindMemberList(Object.assign({}, this.filterCondition, combination.sort(this.sortList), this.paging, {shopId: this.shopId}))
+    _seekMemberFollowList () {
+      seekMemberFollowList(Object.assign({}, this.filterCondition, combination.sort(this.sortList), this.paging, {shopId: this.shopId}))
         .then(res => {
           if (res.data.state == 200) {
             this.paging.page += 1
             this.totalNum = res.data.data.totalNum
-            this.dataGridStorage.push(...res.data.data.dataList)
+            let datas = res.data.data.dataList
+
+            for (let i of datas) {
+              i.followTime = GetNYR(i.followTime)
+              // 负责人
+              i.principalName = groupName(i.principalList, 'principalName')
+              // 跟进状态
+              i.followStatus = getFollowUpStatus(i.followStatus)
+              // 跟进类型
+              i.followType = getFollowType(i.followType)
+              // 会员类型
+              i.memberType = getMemberTypeList(i.memberType)
+            }
+            this.dataGridStorage.push(...datas)
           } else {
-            this.$message({
-              type: 'error',
-              message: res.data.msg
-            })
+            this.$message({type: 'error',message: res.data.msg})
           }
           this.loading = false
         })
@@ -172,7 +217,19 @@ export default {
     _seekFollowAdministration(){
       seekFollowAdministration(Object.assign({}, this.filterCondition, this.paging, {shopId: this.shopId}))
         .then(res => {
-
+          this.loading = false
+          if (res.data.state == 200) {
+            let datas = res.data.data.dataList
+            for (let i of datas) {
+              // 跟进目的
+              i.followStatus = getVisitAimList(i.followStatus)
+              // 跟进状态
+              i.followStatus = getFollowUpStatus(i.followStatus)
+            }
+            this.dataGridStorage.push(...datas)
+          } else {
+            this.$message({type: 'error',message: res.data.msg})
+          }
         })
     },
 

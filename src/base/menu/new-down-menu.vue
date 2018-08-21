@@ -5,13 +5,20 @@
       v-if="!noChange && !noClear"></i>
     </span>
     <ul class="drop-list">
-      <li :class="{active: actIndex == index}" v-for="(item, index) in showList" @click="itemClick(item, index)">{{nameKey ? item[nameKey] : item.name || item.shopName || item.userName}}</li>
+        <li :class="{active: currentId ? item[idKey] == currentId : actIndex == index}" v-for="(item, index) in showList" @click="itemClick(item, index)">{{nameKey ? item[nameKey] : item.name || item.shopName || item.userName}}</li>
+      <!-- <li :class="{active: actIndex == index || item[idKey] == currentId}" v-for="(item, index) in showList" @click="itemClick(item, index)">{{nameKey ? item[nameKey] : item.name || item.shopName || item.userName}}</li> -->
     </ul>
   </div>
 </template>
 <script>
 export default {
-  props: ['titleInfo', 'showList', 'isSolid', 'specialStyle', 'noClear', 'nameKey', 'keep', 'disabled', 'index'], // isSolid->实心 nameKey->取值的key  keep -> 一直保持着右边的小图标  noClear--> 为真，不需要删除
+  props: ['titleInfo', 'showList', 'isSolid', 'specialStyle', 'noClear', 'nameKey', 'idKey', 'keep', 'disabled', 'index', 'currentId'],
+  // isSolid->实心 
+  // nameKey->取值的key
+  // keep -> 一直保持着右边的小图标 
+  // noClear --> 为真，不需要删除
+  // idKey --> 当前id的key值
+  // currentId --> 当前选中的id
   data () {
     return {
       actIndex: null,
@@ -19,15 +26,18 @@ export default {
     }
   },
   methods: {
+    // 还原
     init () {
         this.actIndex = null
         this.noChange = true
     },
+    // 清楚
     clearTitleInfo () {
         this.$emit("clearInfo", this.index)
         this.actIndex = null
         this.noChange = true
     },
+    // 选中
     itemClick (item, index) {
         this.noChange = false
         this.actIndex = index,

@@ -6,8 +6,10 @@
       <!--面包屑-->
       <div class="Rp_crumbs">
         <i class="iconfont icon-baobiao1"></i>
-        <router-link tag="span" to="/memberManage" class="path_crumbs">会员设置</router-link>
+        <router-link tag="span" to="/membermanage" class="path_crumbs">会员主页</router-link> > <span class="txt">会员设置</span>
       </div>
+      
+      <router-link tag="div" class="xj-btn-defult fr" to="/membermanage">返回上一页</router-link>
     </div>
 
     <div class="m-m-compile-template-body xj-right-box xj-box-shadow">

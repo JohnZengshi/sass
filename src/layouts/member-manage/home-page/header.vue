@@ -102,6 +102,7 @@
       },
       changeShop (parm) {
         Object.assign(this.filterData, parm)
+        sessionStorage.memberShop = JSON.stringify(parm)
         this.$emit("filterData", this.filterData)
       },
       clearShop (parm) {
@@ -124,7 +125,12 @@
         seekGetShopListByCo(options).then((res) => {
           if(res.data.state == 200) {
             this.shopList = res.data.data.shopList
-            this.changeShop(this.shopList[0])
+            let memberShop = sessionStorage.memberShop
+            if (memberShop) {
+              this.changeShop(JSON.parse(memberShop))
+            } else {
+              this.changeShop(this.shopList[0])
+            }
           } else {
             this.$message({
               type: 'error',

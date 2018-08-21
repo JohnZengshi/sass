@@ -131,7 +131,7 @@ export const getFollowUpStatus = function(type) {
         case '3':
             return '已完成'
         case '4':
-            return '待跟进'
+            return '待完成'
     }
     return ''
 }
@@ -216,6 +216,18 @@ export const getAdvancedSearchInclude = function(type) {
             return '小于'
         case '6':
             return '小于等于'
+    }
+    return ''
+}
+// 会员类型
+export const getMemberTypeList = function(type) {
+    switch (type) {
+        case '1':
+            return '共有'
+        case '2':
+            return '私有'
+        case '3':
+            return '公共'
     }
     return ''
 }

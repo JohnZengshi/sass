@@ -40,6 +40,7 @@ export default {
   },
   methods: {
     open(parm) {
+      debugger
       this.currentLocation = parm.index
       this.isDialog = true
       if (parm.item) {

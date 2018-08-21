@@ -676,3 +676,8 @@ export const operateFollowUpdateByNew = function(parm) {
     let url = "/v1/member/followUpdateByNew";
     return new Axios(url, parm).apiCall();
 }
+// 删除跟进
+export const operateDeleteFollowByNew = function(parm) {
+    let url = "/v1/member/deleteFollowByNew";
+    return new Axios(url, parm).apiCall();
+}

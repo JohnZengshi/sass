@@ -87,6 +87,12 @@ html,body{
 .ml10{
     margin-left: 10px;
 }
+.mr-10{
+    margin-right: 10px;
+}
+.ml-10{
+    margin-left: 10px;
+}
 .mt10{
     margin-top: 10px;
 }
@@ -143,3 +149,45 @@ html,body{
 }
 
 
+#body {
+    transition: background .3s ease;
+}
+
+.body-shield .skin-shield {
+    background: transparent !important;
+}
+
+.body-shield .skin-shield:before {
+    background: transparent !important;
+}
+
+.lodopContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: #fff1ea;
+    height: 65px;
+    line-height: 65px;
+    width: 100%;
+    z-index: 999999;
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+}
+
+
+.lodopContainer a {
+color: #2993f8;
+}
+input::-webkit-input-placeholder{
+color:#757575!important;
+}
+input::-moz-placeholder{
+color:#757575!important;
+}
+input:-moz-placeholder{
+color:#757575!important;
+}
+input:-ms-input-placeholder{
+color:#757575!important;
+}
