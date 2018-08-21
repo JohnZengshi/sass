@@ -163,7 +163,7 @@
                 if(item.type == "btn"){
                     let index = scope.$index; //第几行
                     this.requestData.signId = scope.row.signId;
-                    this.requestData.defualtFlag = scope.row.flag == "设为默认"?"N":"Y";
+                    this.requestData.defualtFlag = scope.row.flag == "设为默认"?"Y":"N";
                     this.requestData.type = 0;
                     this.updateSmsSignIng = true;
                     (async () => {
