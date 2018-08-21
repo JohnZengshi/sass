@@ -195,6 +195,12 @@ export const findSmsTemoplateLogList = function(data){
     return apiCall(data, URL)
 }
 
+// 3.9 短信详情
+export const findSmsTemoplateDetails = function(data){
+    let URL = "/v1/groupTemplate/findSmsTemoplateDetails";
+    return apiCall(data, URL);
+}
+
 // 修改短信状态
 export const updateTemplateStatus = function(data){
     let URL = "/v1/groupTemplate/updateTemplateStatus";
