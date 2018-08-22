@@ -19,13 +19,14 @@
                     <el-option v-for="item in MemberPrincipalList" :label="item.nickName" :value="item.ptincipalId"></el-option>
                 </el-select>
             </div>
-            <!-- <el-button class="btn-w80-h28 btn-f12 mt-11 mr-16" type="primary" @click="advancedScreach">高级搜索</el-button> -->
             <el-radio-group class="mt-11" v-model="sendPresonFilter.searchCriteria" size="small">
                 <el-radio-button class="btn-w60-h28" label="condition">按条件</el-radio-button>
                 <el-radio-button class="btn-w60-h28" label="preson">按人</el-radio-button>
             </el-radio-group>
+            <!-- <el-button class="btn-w80-h28 btn-f12 mt-11 mr-16" type="primary" @click="isAdvanced = !isAdvanced">{{isAdvanced ? '取消高级搜索' : '高级搜索'}}</el-button> -->
         </div>
         <div class="sendPresonList">
+            <!-- <advancedSearch ref="advancedSearchBox" v-show="isAdvanced"></advancedSearch> -->
             <TableBody 
                 v-show="sendPresonFilter.searchCriteria == 'preson'"
                 v-loading="findSmsMemberListIng"
@@ -55,6 +56,7 @@
     import {seekFindMemberGradeList} from "Api/commonality/seek";
     import {findSmsMemberList,findMemberPrincipalList} from "Api/member";
     import TableBody from "../../../base/tableBody";
+    import advancedSearch from "../../../base/advanced-search.vue";
     import {sendPresonListHeader} from "../../../config/config.js";
     export default {
         data(){
@@ -92,10 +94,12 @@
                 },
                 headerData:sendPresonListHeader, //表头数据
                 findSmsMemberListIng:false, //正在加载数据
+                isAdvanced: false, // 是否开始高级搜索
             }
         },
         components:{
-            TableBody
+            TableBody,
+            advancedSearch
         },
         asyncComputed:{
             sendPresonList: { //发送人列表
@@ -206,10 +210,10 @@
             },
             // 高级搜索
             advancedScreach(){
-                let {memberRank,memberType,memberPrincipal} = this.sendPresonFilter;
-                this.requestData.gradeId = memberRank;
-                this.requestData.type = memberType;
-                this.requestData.principalId = memberPrincipal;
+                // let {memberRank,memberType,memberPrincipal} = this.sendPresonFilter;
+                // this.requestData.gradeId = memberRank;
+                // this.requestData.type = memberType;
+                // this.requestData.principalId = memberPrincipal;
             }
         }
     }
@@ -265,6 +269,8 @@
             }
         }
         .sendPresonList {
+            // height: 497px;
+            // overflow-y: scroll;
             margin-top: 24px;
         }
         .bottom {
