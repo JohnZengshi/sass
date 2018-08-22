@@ -195,9 +195,14 @@ export const findSmsTemoplateLogList = function(data){
     return apiCall(data, URL)
 }
 
-// 3.9 短信详情
+// 3.11即使短信详情
 export const findSmsTemoplateDetails = function(data){
     let URL = "/v1/groupTemplate/findSmsTemoplateDetails";
+    return apiCall(data, URL);
+}
+// 3.9 触发短信详情
+export const findSmsTirggerDetails = function(data){
+    let URL = "/v1/groupTemplate/findSmsTirggerDetails";
     return apiCall(data, URL);
 }
 
