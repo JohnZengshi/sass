@@ -81,3 +81,14 @@ export const differenceData = function (oneList, twoList, keyName, addType, delT
     }
     return difference
 }
+
+//深克隆对象数组
+export const copyArr = function (arr) {
+    return arr.map((e) => {
+        if (typeof e === 'object') {
+            return Object.assign({}, e)
+        } else {
+            return e
+        }
+    })
+}
