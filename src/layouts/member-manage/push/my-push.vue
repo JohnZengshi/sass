@@ -7,7 +7,7 @@
                 <!--面包屑-->
                 <div class="Rp_crumbs">
                     <i class="iconfont icon-lianxiren"></i>
-                    <router-link tag="span" to="/work/report/" class="path_crumbs">会员主页</router-link> > <span class="txt">我的跟进</span>
+                    <router-link tag="span" to="/membermanage" class="path_crumbs">会员主页</router-link> > <span class="txt">我的跟进</span>
                 </div>
 
                 <down-menu class="fr" :isSolid="true" :titleInfo="shopName ? shopName : '店铺名称'" :showList="shopList" :nameKey="'shopName'" @changeData="changeShop" @clearInfo="clearShop"></down-menu>

@@ -10,15 +10,15 @@
 
       <ul class="center-num-list">
         <li>
-          <p><span>{{memberList.memberCount}}<i @click="cutData('5')">点击查看</i></span></p>
+          <p><span>{{memberList.unfinished}}<i @click="cutData('5')">点击查看</i></span></p>
           <p>未完成跟进</p>
         </li>
         <li>
-          <p><span>{{memberList.newMember}}<i @click="cutData('6')">点击查看</i></span></p>
-          <p>本周跟进</p>
+          <p><span>{{memberList.soonExpire}}<i @click="cutData('6')">点击查看</i></span></p>
+          <p>即将到期</p>
         </li>
         <li>
-          <p><span>{{memberList.conversion}}<i @click="cutData('3')">点击查看</i></span></p>
+          <p><span>{{memberList.completed}}<i @click="cutData('3')">点击查看</i></span></p>
           <p>已完成跟进</p>
         </li>
 
@@ -34,12 +34,13 @@
 import EchartTemplate from 'base/echart/EchartTemplate'
 import cutBg from 'base/cut/cut-bg'
 import exhartFilter from 'assets/js/exhartFilter'
-import {seekStockTrend} from 'Api/commonality/seek'
+import {seekMemberFollowNum} from 'Api/commonality/seek'
 export default {
   components: {
     EchartTemplate,
     cutBg
   },
+  props: ['filterCondition', 'shopId'],
   data () {
     return {
       grid: [{ top: 60, left: 50, right: 30, bottom: 50 }], // 图形的间距
@@ -64,7 +65,7 @@ export default {
       stockTrend: {},
       echartloading: true,
       isOld: 2,
-      echartActions: 'num',
+      echartActions: 'followNum',
       memberList: {
         memberCount: '178',
         newMember: '60',
@@ -73,34 +74,30 @@ export default {
     }
   },
   created () {
-    this._seekStockTrend()
+    this._seekMemberFollowNum()
   },
   methods: {
-    _seekStockTrend () {
+    _seekMemberFollowNum () {
       this.echartloading = true;
-      let options = {
-        "startTime": "20180801000000",
-        "endTime": "20180808182923",
-        "storageId": "",
-        "productType": 2,
-        "type": 3,
-        "shopId": ""
-      }
-      seekStockTrend(options)
+      seekMemberFollowNum({type: this.filterCondition.type, shopId: this.shopId})
         .then(res => {
           if (res.data.state == 200) {
-            this.stockTrend.typeThree = res.data.data.dataList
-            this.cutExhart(this.stockTrend)
+            this.memberList = res.data.data
+            let echartList = res.data.data.dataList
+            for (let i of echartList) {
+              i.date = i.followTime
+            }
+            this.cutExhart(echartList)
           } else {
-            this.$message({type: error, message: res.data.msg})
+            this.$message({type: 'error', message: res.data.msg})
           }
           this.echartloading = false;
         })
     },
     cutExhart (parm) {
       setTimeout(() => {
-        this.option = exhartFilter.memberAxis(this.echartActions, this.stockTrend, '会员', this.grid)
-      }, 600)
+        this.option = exhartFilter.memberAxis(this.echartActions, parm, '会员', this.grid)
+      }, 500)
     },
     cutData (parm) {
       this.filterData.followStatus = parm
@@ -109,7 +106,7 @@ export default {
     update () {
       setTimeout(() => {
         this.$emit('update', this.filterData)
-        this._seekStockTrend()
+        // this._seekMemberFollowNum()
       }, 0)
     },
     pitchOn (parm) {

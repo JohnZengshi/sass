@@ -10,7 +10,7 @@
         <div class="scroll-box">
           <div class="member-item">
             <span class="item-label"><i class="mandatory-icon">*</i>跟进名称</span>
-            <input placeholder="请输入" maxlength="6" v-model="addData.followName">
+            <input class="flex-1" placeholder="请输入" maxlength="6" v-model="addData.followName">
           </div>
 
           <div class="member-item">
@@ -44,23 +44,29 @@
             </div>
           </div>
 
-          <div class="member-item" v-if="checkData.bigClass.id == 2 || addData.followType == 2">
+          <div class="member-item" v-if="checkData.bigClass.id == 2 || addData.followType == 2 || followId">
             <span class="item-label"><i class="mandatory-icon">*</i>触发条件</span>
             <trigger ref="triggerBox" @update="updateTrigger"></trigger>
           </div>
 
           <div class="member-item">
             <span class="item-label"><i class="mandatory-icon">*</i>计划完成时间</span>
-            <el-date-picker v-model="addData.followTime" type="date" placeholder="选择日期" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" @change="setCompleteTime">
+            <template v-if="checkData.bigClass.id == 2 || addData.followType == 2 || followId">
+              <input class="time-input" placeholder="请输入天数" maxlength="6" v-model="addData.planDay">
+              <span class="time-hit">提示：设置为创建会员跟进N天内完成</span>
+            </template>
+            <el-date-picker v-else v-model="addData.followTime" type="date" placeholder="选择日期" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" @change="setstartingDate">
             </el-date-picker>
           </div>
 
           <div class="member-item">
             <span class="item-label"><i class="mandatory-icon">*</i>选择会员</span>
             <div class="right-wrap select-user-box" @click="selectUser">
-              <p>{{userNameList}}</p>
+              <!-- 按条件 -->
+              <p v-if="filterCondition.queryType == 2">按条件</p>
+              <!-- 按人 -->
+              <p v-else>{{userNameList}}</p>
               <div class="right-tit">
-          <!--       <span>共100人</span> -->
                 <i class="iconfont icon-lianxiren"></i>
               </div>
             </div>
@@ -79,15 +85,15 @@
 </template>
 <script>
 import aloneDropDownColums from 'base/menu/alone-drop-down-colums'
-import {groupName, groupIdList, extractIdList} from 'Api/commonality/filter'
+import {groupName, groupIdList, extractIdList, differenceData} from 'Api/commonality/filter'
 import {operateFollowCreateByNew} from 'Api/commonality/operate'
 import trigger from './../../base/trigger'
 import newDownMenu from 'base/menu/new-down-menu'
-import { formattingTime, GetNYR, restoreTime } from 'assets/js/getTime'
+import { formattingTime, GetNYR, restoreTime, xjEndTime } from 'assets/js/getTime'
 import { getTimeType, getTriggerRule } from 'assets/js/analysis'
-import {seekFindMemberList} from 'Api/commonality/seek'
+import {seekTriggerFollowDetails} from 'Api/commonality/seek'
 export default {
-  props: ['shopId', 'userIdList', 'userNameList', 'checkData', 'shopUserList', 'followId'], // checkData --> 第一步选择的数据
+  props: ['shopId', 'userIdList', 'userNameList', 'checkData', 'shopUserList', 'followId', 'filterCondition', 'advanced'], // checkData --> 第一步选择的数据
   components: {
     aloneDropDownColums,
     newDownMenu,
@@ -102,8 +108,9 @@ export default {
         followName: '',
         triggerCycleName: '',
         triggerCycle: '',
-        completeTime: '',
+        startingDate: '',
         followTime: '', // 完成时间
+        planDay: '',
       },
       stateList: [],
       principalName: '', // 公共负责人名字
@@ -118,7 +125,7 @@ export default {
     },
     // open () {
     //   if (this.followId) {
-    //     this._seekFindMemberList()
+    //     this._seekTriggerFollowUpDetails()
     //   }
     // },
     close () {
@@ -141,27 +148,48 @@ export default {
         this.$message({type: 'warning',message: '请选择所有负责人'})
         return
       }
-      if (!this.userIdList.length) {
-        this.$message({type: 'warning',message: '请选择会员'})
-        return
+      // if (!this.userIdList.length) {
+      //   this.$message({type: 'warning',message: '请选择会员'})
+      //   return
+      // }
+      debugger
+      if (this.filterCondition.queryType == 1) { // 按人
+        if (!this.userIdList.length) {
+          this.$message({type: 'warning',message: '请选择会员'})
+          return
+        }
+      } else if (this.filterCondition.queryType == 2) { // 按条件
+        if (!this.advanced.length) {
+          this.$message({type: 'warning',message: '请选择条件'})
+          return
+        }
       }
+
       // 触发跟进
-      if (this.checkData.bigClass.id == 2) {
+      if (this.checkData.bigClass.id == 2 || this.followId) {
         if (!this.addData.eventType) {
           this.$message({type: 'warning',message: '请选择触发条件'})
           return
         } else if (!this.addData.eventType == 1) { // 时间触发
-          if (!this.addData.triggerCycle) {
+          if (!this.addData.triggerTimeType) {
             this.$message({type: 'warning',message: '请选择触发周期'})
             return
-          } else if (!this.addData.completeTime){
+          } else if (!this.addData.startingDate){
               this.$message({type: 'warning',message: '请选择触发时间'})
               return
           }
         } else if (!this.addData.eventType == 2) { // 触发事件
 
         }
-
+        if (!this.addData.planDay) {
+          this.$message({type: 'warning',message: '请选择计划完成时间'})
+          return
+        }
+      } else {
+        if (!this.addData.followTime) {
+          this.$message({type: 'warning',message: '请选择计划完成时间'})
+          return
+        }
       }
 
       if (!this.followId) {
@@ -177,12 +205,42 @@ export default {
         followName: this.addData.followName,
         principalList: groupIdList(this.principalList, 'principalId'), // 公共负责人
         allPrincipalList: groupIdList(this.allPrincipalList, 'principalId'), // 所有负责人
-        completeTime: formattingTime(this.addData.completeTime), // 完成时间
+        // startingDate: formattingTime(this.addData.startingDate),
+        followTime: formattingTime(this.addData.followTime), // 完成时间
         followType: this.checkData.bigClass.id, // 跟进类型
         triggerRule: this.checkData.smallClass.id, // 触发事件
-        dataList: groupIdList(this.userIdList, 'memberId') // 会员
+        eventType: this.addData.eventType
       }
-      operateFollowCreateByNew(options)
+
+      if (this.filterCondition.queryType == 1) { // 按人
+        options.memberList = groupIdList(this.userIdList, 'memberId') // 会员
+      } else if (this.filterCondition.queryType == 2) { // 按条件
+        options.dataList = this.advanced // 高级搜索数据
+      }
+
+      let timeTypeData = this.addData
+      // 时间触发
+      if (timeTypeData.eventType == 1) {
+        options.triggerTimeType = timeTypeData.triggerTimeType
+        // 年
+        if (timeTypeData.triggerTimeType == 1) {
+          options.startingDate = xjEndTime(timeTypeData.startingDate).slice(4, 8)
+        }
+        // 月
+        if (timeTypeData.triggerTimeType == 2) {
+          options.startingDate = xjEndTime(timeTypeData.startingDate).slice(6, 8)
+        }
+        // 周
+        if (timeTypeData.triggerTimeType == 3) {
+          options.startingDate = timeTypeData.startingDate
+        }
+      } else if (timeTypeData.eventType == 2) {
+        options.triggerRule = timeTypeData.triggerRule
+        options.triggerTime = timeTypeData.triggerTime
+        options.startingDay = timeTypeData.startingDay
+      }
+
+      operateFollowCreateByNew(Object.assign({}, this.filterCondition,  options))
         .then(res => {
           if (res.data.state == 200) {
 
@@ -244,11 +302,11 @@ export default {
       /* 会员 */
       let amendDataList = differenceData(extractIdList(this.oldData.dataList), this.userIdList)
       if (amendDataList.one.length || amendDataList.two.length) {
-        amendData.dataList = groupIdList(this.userIdList, 'memberId')
+        amendData.memberList = groupIdList(this.userIdList, 'memberId')
       }
 
       // 跟进类型
-      if (this.addData.followType == 2) {
+      if (this.followId) {
         /* 触发条件 */
         if (this.addData.eventType != this.oldData.eventType) { // 有改动
 
@@ -258,7 +316,7 @@ export default {
             // 时间触发类型
             amendData.triggerTimeType = this.addData.triggerTimeType
             // 年月日类型的时间
-            amendData.completeTime = this.addData.completeTime
+            amendData.startingDate = this.addData.startingDate
           } else if (this.addData.eventType == 2) { // 事件
             // 触发事件
             amendData.triggerRule = this.addData.triggerTimeType
@@ -271,13 +329,13 @@ export default {
             // 时间触发类型
             if (this.addData.eventType == 1) { // 时间
               let one = this.oldData.triggerTimeType != this.addData.triggerTimeType
-              let two = this.oldData.completeTime != this.addData.completeTime
+              let two = this.oldData.startingDate != this.addData.startingDate
               if (one || two) {
                   amendData.eventType = this.addData.eventType
                   // 时间触发类型
                   amendData.triggerTimeType = this.addData.triggerTimeType
                   // 年月日类型的时间
-                  amendData.completeTime = this.addData.completeTime
+                  amendData.startingDate = this.addData.startingDate
               }
             } else if (this.addData.eventType == 2) { // 事件
               let one = this.oldData.triggerRule != this.addData.triggerRule
@@ -299,12 +357,12 @@ export default {
             }
             amendData.triggerTimeType = this.addData.triggerTimeType
             // 年月日类型的时间
-            amendData.completeTime = this.addData.completeTime
+            amendData.startingDate = this.addData.startingDate
         }
       }
       return amendData
     },
-    setCompleteTime () {
+    setstartingDate () {
 
     },
     // 公共负责人
@@ -317,86 +375,42 @@ export default {
       this.allPrincipalName = groupName(parm.itemList)
       this.allPrincipalList = parm.bigList
     },
-    // 产品类别过滤
-    dataBackProductTypeId (parm) {
-      this.filterCondition.productStatus = parm.bigList
-      this.$emit('filterData', this.filterCondition)
-    },
     setFollowType () {
 
     },
     filterIdList () {
 
     },
-    _seekFindMemberList () {
-      let datas = {
-        followName: 'followName',
-        followType: '2',
-        eventType: '1',
-        dataList: [
-          {
-            memberId: '20ddd8ccb61346cea4ffffd105d3863c',
-            memberName: '10000',
-          }
-        ],
-        allPrincipalList: [
-          {
-            principalId: '20ddd8ccb61346cea4ffffd105d3863c',
-            principalName: 'sad',
-          }
-        ],
-        principalList: [
-          {
-            principalId: '20ddd8ccb61346cea4ffffd105d3863c',
-            principalName: 'sad',
-          }
-        ],
-        followTime: '20180814000000',
-        triggerTimeType: '1',
-        triggerRule: '1',
-        triggerTime: '1',
-      }
-      this.oldData = _.cloneDeep(datas)
-      datas.followTime = restoreTime(datas.followTime)
-      this.addData = datas
-      console.log('oldData')
-      console.log('oldData', this.oldData)
-      this.$emit('initLeaderData', datas.dataList)
-      // this.userIdList = extractIdList(datas.dataList, 'memberId')
-      this.principalList = extractIdList(datas.principalList, 'principalId') // 公共负责人
-      this.allPrincipalList = extractIdList(datas.allPrincipalList, 'principalId') // 所有负责人
-      this.principalName = groupName(datas.principalList, 'principalName') // 显示
-      this.allPrincipalName = groupName(datas.allPrincipalList, 'principalName') // 显示
-      this.initSelect()
-      // this.loading = true
-      seekFindMemberList({followId: this.followId})
+    _seekTriggerFollowDetails () {
+      this.loading = true
+      seekTriggerFollowDetails({followId: this.followId, shopId: this.shopId, type: '1'})
         .then(res => {
           if (res.data.state == 200) {
-            // let datas = {
-            //   dataList: [
-            //     {
-            //       memberId: '10000',
-            //       memberName: '10000',
-            //     }
-            //   ],
-            //   allPrincipalList: [
-            //     {
-            //       principalId: '12',
-            //       principalName: '12',
-            //     }
-            //   ],
-            //   principalList: [
-            //     {
-            //       principalId: '123',
-            //       principalName: '123',
-            //     }
-            //   ],
-            //   followTime: '20180814000000'
-            // }
-            // this.addData.followTime = GetNYR(datas.maleBirthday)
+            debugger
+            let datas = res.data.data
+            this.oldData = _.cloneDeep(datas)
+            // 时间触发的---时间类型日期
+            if (datas.startingDate) {
+              let currentTiem = xjEndTime(new Date())
+              // 年
+              if (datas.triggerTimeType == 1) {
+                datas.startingDate = restoreTime(currentTiem.slice(0, 4) + datas.startingDate + currentTiem.slice(8, 14))
+              }
+              // 月
+              if (datas.triggerTimeType == 2) {
+                datas.startingDate = restoreTime(currentTiem.slice(0, 6) + datas.startingDate + currentTiem.slice(8, 14))
+              }
+              // 周
+            }
+            this.addData = datas
+            this.$emit('initLeaderData', datas.memberList) // 会员
+            this.$emit('initAdvanced', datas.dataList) // 高级搜索
             // this.userIdList = extractIdList(datas.dataList, 'memberId')
-            // this.principalList = extractIdList(datas.dataList, 'principalId') // 公共负责人
-            // this.allPrincipalList = extractIdList(datas.dataList, 'principalId') // 所有负责人
+            this.principalList = extractIdList(datas.principalList, 'principalId') // 公共负责人
+            this.allPrincipalList = extractIdList(datas.allPrincipalList, 'principalId') // 所有负责人
+            this.principalName = groupName(datas.principalList, 'principalName') // 显示
+            this.allPrincipalName = groupName(datas.allPrincipalList, 'principalName') // 显示
+            this.initSelect()
           } else {
             this.$message({type: 'error',message: res.data.msg})
           }
@@ -408,7 +422,15 @@ export default {
       setTimeout(() => {
         this.$refs.principalNameBox.initData(this.principalList)
         this.$refs.allPrincipalNameBox.initData(this.allPrincipalList)
-        this.$refs.triggerBox.initData(this.addData)
+        let datas = {
+          eventType: this.addData.eventType,
+          triggerTimeType: this.addData.triggerTimeType,
+          startingDate: this.addData.startingDate,
+          triggerRule: this.addData.triggerRule,
+          triggerTime: this.addData.triggerTime,
+          startingDay: this.addData.startingDay,
+        }
+        this.$refs.triggerBox.initData(datas)
       }, 0)
     }
   }
@@ -636,7 +658,18 @@ export default {
       }
 
     }
-    >input{
+    .time-input{
+      width: 100px;
+      margin-right:  10px;
+    }
+    .time-hit{
+      vertical-align: bottom;
+      font-size: 12px;
+      height: 36px;
+      line-height: 50px;
+      color: #999;
+    }
+    .flex-1{
       flex: 1;
     }
     input {

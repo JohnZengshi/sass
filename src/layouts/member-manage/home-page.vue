@@ -6,11 +6,11 @@
       <!-- 会员 -->
       <member :filterOption="filterOption" @update="_seekMemberHomeById" :memberList="memberList"></member>
       <!-- 积分 -->
-      <interflow :filterOption="filterOption" :memberList="memberList"></interflow>
-      <!-- 跟进 -->
-      <follow-up :filterOption="filterOption" :memberList="memberList"></follow-up>
+      <interflow :filterOption="filterOption" :interflowData="interflowData"></interflow>
       <!-- 推送 -->
       <push :filterOption="filterOption"></push>
+      <!-- 跟进 -->
+      <follow-up :filterOption="filterOption" :followUpData="followUpData"></follow-up>
     </div>
   </div>
 </template>
@@ -20,7 +20,7 @@
   import interflow from './home-page/interflow'
   import followUp from './home-page/follow-up'
   import push from './home-page/push.vue'
-  import {seekMemberHomeById} from 'Api/commonality/seek'
+  import {seekMemberHomeById, seekInterflowCollect} from 'Api/commonality/seek'
   import {formattingTime, xjEndTime} from 'assets/js/getTime'
   export default {
     components: {
@@ -33,8 +33,24 @@
     },
     data () {
       return {
-        memberList: {
+        memberList: { // 会员数据
           gradeList: []
+        },
+        interflowData: { // 积分数据
+          allNumber: '',
+          consume: '',
+          issue: '',
+          delNum: '',
+        },
+        followUpData: { // 会员数据
+          num: '1000',
+          dataList: [
+            {
+              followPurpose: '1',
+              name: '生日跟进',
+              num: 1000
+            }
+          ]
         },
         filterOption: {
           shopId: '',
@@ -46,12 +62,21 @@
       filterData (parm) {
         Object.assign(this.filterOption, parm)
         this._seekMemberHomeById()
+        this._seekInterflowCollect()
       },
       _seekMemberHomeById () {
         seekMemberHomeById(this.filterOption)
           .then(res => {
             if (res.data.state == 200) {
               this.memberList = res.data.data
+            }
+          })
+      },
+      _seekInterflowCollect () {
+        seekInterflowCollect(this.filterOption)
+          .then(res => {
+            if (res.data.state == 200) {
+              this.interflowData = res.data.data
             }
           })
       }

@@ -20,9 +20,9 @@ export default class exhartFilter {
   }
 
   static getTimedays(parm) { // 获取日期
-    var today = new Date();
-    today.setDate(today.getDate() + 0); // 获取AddDayCount天后的日期
-    var D = today.getDate();
+    var today = new Date()
+    today.setDate(today.getDate() + 0) // 获取AddDayCount天后的日期
+    var D = today.getDate()
     let options = []
     for (var i = D; i > 0; i--) {
       if (i == 1) {
@@ -49,7 +49,7 @@ export default class exhartFilter {
     }
   }
 
-  static xAxis() {
+  static xAxis(interval = 1) {
     let datas = {
       type: 'category',
       boundaryGap: false,
@@ -58,8 +58,9 @@ export default class exhartFilter {
         fontSize: 11
       },
 
+      // 显示间隔
       axisLabel: {
-        interval: 1
+        interval: interval
       },
 
       axisLine: {
@@ -211,9 +212,9 @@ export default class exhartFilter {
       // legend: this.legendAxisName(),
       grid: grid || this.gridAxis, // 网格间距
       animation: true,
-      xAxis: this.xAxis(),
+      xAxis: this.xAxis(5),
       yAxis: this.yAxis(),
-      series: [this.filterReriesAxis(legendName, this.timeSort(allDatas.typeThree), seriesAxisKey)] // this.ApiTextData()
+      series: [this.filterReriesAxis(legendName, this.timeSort(allDatas), seriesAxisKey)] // this.ApiTextData()
     }
     // if (isOld == 2) {
     //   options.color = ['#fe687b']

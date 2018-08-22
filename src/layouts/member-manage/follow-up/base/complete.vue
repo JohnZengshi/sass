@@ -7,7 +7,7 @@
         <div class="scroll-body">
             <h3>完成跟进</h3>
             <div class="scroll-box">
-              <ul class="user-data" v-if="userData.phone">
+              <ul class="user-data" v-if="userData.followId">
                 <li>
                   <span class="tit-left">手机号</span>
                   <span>{{userData.phone}}</span>
@@ -32,7 +32,7 @@
               <div class="item-box">
                   <span class="item-label"><i class="mandatory-icon">*</i>完成方式</span>
                   <ul class="right-wrap xj-btn-list">
-                      <li @click="chooseVisitType(item.type)" class="btn-bg" :class="{'actions-bg': item.type == optionsData.visitType}" v-for="item in visitTypeList">{{item.name}}</li>
+                      <li @click="chooseVisitType(item.id)" class="btn-bg" :class="{'actions-bg': item.id == optionsData.visitType}" v-for="item in visitTypeList">{{item.name}}</li>
                   </ul>     
               </div>
 
@@ -85,7 +85,7 @@ export default {
               followList: [],
               logoList: [],
               visitType: '',
-              visitResult: 'optionsData'
+              visitResult: ''
             },
             visitTypeList: dataSource.visitTypeList
         }
@@ -127,7 +127,15 @@ export default {
           if (!this.optionsData.visitType) {
             this.$message({message: '请选择完成方式', type: 'error'})
           }
-          operateFollowComplete(Object.assing({}, this.optionsData, {followList: this.followList}))
+          let followList = this.followList
+          if (this.userData.followId ) {
+            followList = [
+              {
+                followId: this.userData.followId
+              }
+            ]
+          }
+          operateFollowComplete(Object.assign({}, this.optionsData, {followList: followList}))
             .then(res => {
               if (res.data.state == 200) {
                 this.$emit('close')

@@ -65,7 +65,7 @@ module.exports = {
             id: '3'
         },
         {
-            name: '待跟进',
+            name: '待完成',
             id: '4'
         }
     ]

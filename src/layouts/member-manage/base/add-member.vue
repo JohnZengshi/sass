@@ -1,6 +1,6 @@
 <template>
   <el-dialog top="7%" :visible.sync="isDialog" class="xj-input-dialog-bg">
-    <editorMember ref="editorMemberBox" @close="close" @update="update" :shopId="shopId"></editorMember>
+    <editorMember v-if="isDialog" ref="editorMemberBox" @close="close" @update="update" :shopId="shopId"></editorMember>
   </el-dialog>
 </template>
 <script>

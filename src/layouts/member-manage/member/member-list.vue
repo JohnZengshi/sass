@@ -7,13 +7,14 @@
                 <!--面包屑-->
                 <div class="Rp_crumbs">
                     <i class="iconfont icon-lianxiren"></i>
-                    <router-link tag="span" to="/work/report/" class="path_crumbs">会员主页</router-link> > <span class="txt">会员列表</span>
+                    <router-link tag="span" to="/membermanage" class="path_crumbs">会员主页</router-link> > <span class="txt">会员列表</span>
                 </div>
+                
+                <router-link tag="div" class="xj-btn-defult fr" to="/membermanage">返回上一页</router-link>
 
-                <down-menu class="fr" :isSolid="true" :titleInfo="shopName ? shopName : '店铺名称'" :showList="shopList" :nameKey="'shopName'" @changeData="changeShop" @clearInfo="clearShop"></down-menu>
-
+                <down-menu class="fr mr-10" :isSolid="true" :titleInfo="shopName ? shopName : '店铺名称'" :showList="shopList" :nameKey="'shopName'" @changeData="changeShop" @clearInfo="clearShop"></down-menu>
             </div>
-            <table-list ref="tableListBox" @changeMember="changeMember" :shopId="shopId" :currentLocation="'member'"></table-list>
+            <table-list ref="tableListBox" @changeMember="changeMember" :tableTit="'会员列表'" :shopId="shopId" :currentLocation="'member'"></table-list>
         </div>
     </transition>
 </template>

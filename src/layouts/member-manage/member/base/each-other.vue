@@ -11,7 +11,7 @@
       <ul class="header-tit">
         <li>组合名称</li>
         <li>店铺名称</li>
-        <li>应用模板</li>
+        <li>会员模板</li>
         <li>操作</li>
       </ul>
       <div class="scroll-wrap">
@@ -19,7 +19,7 @@
           <ul v-for="(item, index) in combinationList">
             <li>{{item.groupName}}</li>
             <li>{{item.shopName}}</li>
-            <li>{{item.groupName}}</li>
+            <li>{{item.name}}</li>
             <li>
               <i @click="compile(item)" class="iconfont icon-bianji"></i>
               <i @click="del(item.groupId, index)" class="iconfont icon-lajitong"></i>

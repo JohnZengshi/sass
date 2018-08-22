@@ -17,19 +17,24 @@
       :followId="followId"
       :shopId="shopId"
       :userIdList="userIdList"
+      :filterCondition="filterCondition"
       :userNameList="userNameList"
       :checkData="checkData"
+      :advanced="advanced"
       :shopUserList="shopUserList"
       v-show="currentLocation == 'inputPush'"
       @selectUser="selectUser"
+      @initAdvanced="initAdvanced"
       @initLeaderData="initLeaderData"
       @close="close"
     ></inputPush>
 
     <chose-leader
-      v-if="currentLocation == 'choseLeader'"
+      v-if="isDialog"
+      v-show="currentLocation == 'choseLeader'"
       :headerTit="'选择会员'"
       :userIdList="userIdList"
+      :initAdvanced="advanced"
       :shopId="shopId"
       :addModel="1"
       @close="toInputPush"
@@ -61,8 +66,10 @@ export default {
         bigClass: {},
         smallClass: {},
       },
+      advanced: [], // 高级搜索数据
       shopUserList: [], // 店铺用户列表
       userIdList: [], // 选中的用户Id
+      filterCondition: {}, // 选中的用户过滤条件 --> 普通条件
       userNameList: '' // 用户名
     }
   },
@@ -106,7 +113,7 @@ export default {
         this.currentLocation = 'inputPush'
         setTimeout(() => {
           // 请求数据
-          this.$refs.inputPushBox._seekFindMemberList()
+          this.$refs.inputPushBox._seekTriggerFollowDetails()
         }, 0)
       } else { // 新建
         this.currentLocation = 'bigSmallClass'
@@ -130,6 +137,12 @@ export default {
     cancel () {
 
     },
+    initAdvanced (parm) {
+      if (parm.length) {
+        this.advanced = parm
+      }
+    },
+    // 初始化会员数据
     initLeaderData (parm) {
       this.userIdList = extractIdList(parm, 'memberId')
       this.userNameList = groupName(parm, 'memberName')
@@ -143,8 +156,11 @@ export default {
       for (let i of parm.nameList) {
         userName += userName ? `;${i}` : i
       }
+      this.filterCondition = parm.filterCondition
       this.userIdList = parm.list
       this.userNameList = userName
+      // 高级搜索筛选
+      this.advanced = parm.advanced
       this.currentLocation = 'inputPush'
     },
     // 店铺人员列表

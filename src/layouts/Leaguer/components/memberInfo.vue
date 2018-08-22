@@ -38,9 +38,8 @@
 
 <script>
 
-import { getMemberInfoById, getFollowRecord, memberIntegralLog } from 'Api/member'
-import {seekFollowSignList, seekUserInfo, seekGetMemberInfo, seekGoodsSellOrder, seekLatelyBuyRecord, seekGetMemberFollowList } from 'Api/commonality/seek'
-import {seekListVisitor} from 'Api/commonality/seek'
+import { getFollowRecord, memberIntegralLog } from 'Api/member'
+import {seekFollowSignList, seekUserInfo, seekGetMemberInfo, seekGoodsSellOrder, seekLatelyBuyRecord, seekGetMemberFollowList, seekListVisitor, seekFindMemberDetails } from 'Api/commonality/seek'
 
 var moment = require('moment');
 
@@ -101,10 +100,8 @@ export default {
                 shopId: this.shopId,
                 memberId: this.memberId
             }
-            getMemberInfoById(options).then(res => {
-                console.log('会员信息',res.data.data)
-                let datas = res.data.data
-                this.memberInfo = datas
+            seekFindMemberDetails(options).then(res => {
+                this.memberInfo = res.data.data
             })
         },
         // 获取老接口的会员信息

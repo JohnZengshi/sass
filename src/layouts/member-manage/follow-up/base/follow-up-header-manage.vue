@@ -118,7 +118,7 @@ export default {
         followStatusName: '',
         type: '',
         typeName: '',
-        userId: '',
+        principalId: '',
         userName: '',
         // sortList: []
       },
@@ -175,12 +175,12 @@ export default {
       this.$emit('update', this.filterCondition)
     },
     changeUser (parm) {
-      this.filterCondition.userId = parm.userId
+      this.filterCondition.principalId = parm.userId
       this.filterCondition.userName = parm.username
       this.$emit('update', this.filterCondition)
     },
     clearUser () {
-      this.filterCondition.userId = ''
+      this.filterCondition.principalId = ''
       this.filterCondition.userName = ''
       this.$emit('update', this.filterCondition)
     },

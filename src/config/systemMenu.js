@@ -235,22 +235,22 @@ const systemMenu = [
         children: [
             {
                 text: '会员',
-                path: '/leaguer/newLeaguer',
+                path: '/membermanage',
                 icon: 'huiyuan1',
                 children: []
             },
-            {
-                text: '跟进',
-                path: '/leaguer/followUp',
-                icon: 'genjin',
-                children: []
-            },
-            {
-                text: '短信',
-                path: '/leaguer/shortMessage',
-                icon: 'duanxin',
-                children: []
-            },
+            // {
+            //     text: '跟进',
+            //     path: '/leaguer/followUp',
+            //     icon: 'genjin',
+            //     children: []
+            // },
+            // {
+            //     text: '短信',
+            //     path: '/leaguer/shortMessage',
+            //     icon: 'duanxin',
+            //     children: []
+            // },
             {
                 text: '意向顾客',
                 path: '/leaguer/intentionClient',

@@ -27,10 +27,15 @@
                 <el-checkbox v-if="tab.checked" :label="tb[tab.checkedId]" style="font-size: 14px;">{{tb[tab.childType]}}</el-checkbox>
 
               </div>
-    
+
               <div class="tb-td" v-else-if="tab.childType == 'createTime'" :style="tableCell(tab.width)" :key="num">
-              
-                <div v-if="tab.line">
+                
+                <!-- 只显示年月日 -->
+                <div v-if="tab.nyr">
+                  {{_GetNYR(tb.createTime)}}
+                </div>
+
+                <div v-else-if="tab.line">
                   {{_GetNYR(tb.createTime)}} {{_GetSF(tb.createTime)}}
                 </div>
                 <div v-else class="time-wrap">

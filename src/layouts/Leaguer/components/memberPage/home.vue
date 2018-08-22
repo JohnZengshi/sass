@@ -29,9 +29,10 @@
                     </div>
                     <div class="item">
                         <span class="item-label">会员等级</span>
-                        <span class="item-level" v-if="memberInfo.grade ==  1">普通</span>
+                        <span v-if="memberInfo.grade">{{ memberInfo.grade[0] ? memberInfo.grade[0].gradeName+'分' : '-'}}</span>
+                        <!-- <span class="item-level" v-if="memberInfo.grade ==  1">普通</span>
                         <span id="color-zj" class="item-level" v-if="memberInfo.grade == 2">中级</span>
-                        <span id="color-zy" class="item-level" v-if="memberInfo.grade == 3">重要</span>
+                        <span id="color-zy" class="item-level" v-if="memberInfo.grade == 3">重要</span> -->
                     </div>
 
                     <div class="item">
@@ -699,6 +700,16 @@ export default {
             display: flex;
             justify-content: center;
         }
+    }
+}
+.item-card-info{
+    span:last-child{
+        display: inline-block;
+        width: 96px;
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+        vertical-align: top;
     }
 }
 </style>

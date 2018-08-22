@@ -17,7 +17,7 @@
                     </div>
                     <div class="input-wrap">
                         <span class="item-label"><i class="mandatory-icon">*</i>起始积分</span>
-                        <input type="Number" @blur="_operateUpdateGrade({startScore: showData.startScore})" placeholder="升级到当先级别需要积分" v-model="showData.startScore">
+                        <input type="Number" @blur="amendStartScore({startScore: showData.startScore})" placeholder="升级到当先级别需要积分" v-model="showData.startScore">
                     </div>
                     <div class="input-wrap">
                         <span class="item-label"><i class="mandatory-icon">*</i>下一级别</span>
@@ -101,12 +101,13 @@ export default {
             this.initData()
             this.gradeId = parm
             this.checkList = []
+            this.gradeList = []
             if (parm) { // 查询
-                this._seekFindGradeDetails(parm)
+                this._seekFindGradeDetails(parm, this._seekFindGradeList)
             } else { // 新建
                 this._seekFindPoductList()
+                // this._seekFindGradeList()
             }
-            this._seekFindGradeList()
             this.isDialog = true
         },
         setClass(parm) {
@@ -136,7 +137,6 @@ export default {
             this._operateUpdateGrade({poductList: [parm]})
         },
         change(parm) {
-            debugger
             this.showData.underLevelId = parm.gradeId
             this.showData.nextGradeName = parm.gradeName
             this._operateUpdateGrade({ underGradeId: parm.gradeId })
@@ -200,8 +200,9 @@ export default {
                     this.loading = false
                 })
         },
-        _seekFindGradeList() {
+        _seekFindGradeList(startScore) {
             let opations = {
+                startScore: startScore,
                 templateId: this.templateId,
             }
             seekFindGradeList(opations)
@@ -216,7 +217,7 @@ export default {
                     }
                 })
         },
-        _seekFindGradeDetails(parm) {
+        _seekFindGradeDetails(parm, cb) {
             let opations = {
                 gradeId: parm ? parm : this.gradeId
             }
@@ -231,6 +232,10 @@ export default {
                             datas.nextGradeName = ''
                         }
                         this.showData = datas
+                        // 通过起始积分去初始化下一级别列表
+                        if (cb) {
+                            cb(datas.startScore)
+                        }
                     } else {
                         this.$message({
                             type: 'error',
@@ -268,11 +273,15 @@ export default {
                     }
                 })
         },
-        // 修改
-        _operateUpdateGrade(parm) {
-            if (!this.showData.gradeId) {
+        amendStartScore (parm) {
+            if (!this.showData.gradeId && parm) {
+                this._seekFindGradeList()
                 return
             }
+            this._operateUpdateGrade(parm)
+        },
+        // 修改
+        _operateUpdateGrade(parm) {
             let options = {
                 type: '0',
                 discount: this.checkDiscount[0] ? this.checkDiscount[0] : '0',
@@ -282,7 +291,7 @@ export default {
             operateUpdateGrade(Object.assign({}, options, parm))
                 .then(res => {
                     if (res.data.state == 200) {
-                        this.$message({ type: 'error', message: '修改成功' })
+                        this.$message({ type: 'success', message: '修改成功' })
                         this.$emit('upload')
                     } else {
                         this.$message({ type: 'error', message: res.data.msg })

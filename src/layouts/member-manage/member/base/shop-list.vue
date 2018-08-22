@@ -9,13 +9,13 @@
                 <div>
                     <ul class="header-tit">
                         <li>店铺名称</li>
-                        <li>积分模板</li>
+                        <li>会员模板</li>
                         <li>操作</li>
                     </ul>
                     <div class="scroll-wrap">
                         <ul v-for="item in items">
                             <li>{{item.shopName}}</li>
-                            <li>{{item.templateName}}</li>
+                            <li>{{item.templateList[0] ? item.templateList[0].templateName : ''}}</li>
                             <li>
                                 <i @click="compile(item)" class="iconfont icon-bianji"></i>
                             </li>
@@ -31,7 +31,7 @@
                 </div>
             </div>
         </div>
-        <add-group ref="addGroupBox"></add-group>
+        <add-group ref="addGroupBox" @update="_seekFindTemplateShopAll"></add-group>
     </div>
 </template>
 <script>
@@ -65,6 +65,7 @@ export default {
             this.loading = true
             seekFindTemplateShopAll()
                 .then(res => {
+                    this.loading = false
                     if (res.data.state == 200) {
                         let datas = res.data.data.dataList
                         this.combinationList = [datas.slice(0, parseInt(datas.length / 2)), datas.slice(parseInt(datas.length / 2), datas.length)]
@@ -72,7 +73,6 @@ export default {
                     } else {
                         this.$message({ type: 'error', message: res.data.msg })
                     }
-                    this.loading = false
                 })
         },
         compile(parm) {

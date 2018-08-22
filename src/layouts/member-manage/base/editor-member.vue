@@ -1,17 +1,20 @@
 <!-- 会员编辑模板 -->
 <template>
   <div style="height: 100%;">
+
+      <!-- 选择负责人 -->
       <el-dialog :modal="false" :visible.sync="isChoseLeader" top="0%" customClass="choseLeaderDig" :close-on-click-modal="false">
-          <chose-leader
+          <choose-principal
               :dataInfo="dataInfo"
               :shopId="shopId"
               :addModel="1"
               :isChoseLeader="isChoseLeader"
+              @close="isChoseLeader = false"
               @closeChoMember="closeChoLeader"
-          ></chose-leader>
+          ></choose-principal>
       </el-dialog>
 
-      <div class="m-m-add-member-main n-p-scroll-box" :class="{'m-m-add-member-isShowMore-box': isShowMore}">
+      <div v-loading="loading" class="m-m-add-member-main n-p-scroll-box" :class="{'m-m-add-member-isShowMore-box': isShowMore}">
         <div class="p-close-icon" @click="close">
           <i class="el-dialog__close el-icon el-icon-close"></i>
         </div>
@@ -50,12 +53,12 @@
 
                       <div class="member-item">
                         <span class="item-label">昵称</span>
-                        <input placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.name" @blur="_operateUpdateMember({name: dataInfo.name})">
+                        <input placeholder="仅内部人员可查看" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.name" @blur="_operateUpdateMember({name: dataInfo.name})">
                       </div>
 
                       <div class="member-item">
                         <span class="item-label"><i class="mandatory-icon">*</i>姓名</span>
-                        <input maxlength="6" placeholder="仅内部人员可查看" :disabled="!isShopMan" v-model="dataInfo.userName" @blur="_operateUpdateMember({userName: dataInfo.userName})">
+                        <input maxlength="6" placeholder="请输入" :disabled="!isShopMan" v-model="dataInfo.userName" @blur="_operateUpdateMember({userName: dataInfo.userName})">
                       </div>
 
                       <div class="member-item">
@@ -76,7 +79,10 @@
 
                       <div class="member-item">
                         <span class="item-label">积分</span>
-                        <input placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.score" @blur="_operateUpdateMember({userName: dataInfo.score})">
+                        <div class="right-wrap" v-if="memberId">
+                          <span class="tit-name">{{dataInfo.score}}</span>
+                        </div>
+                        <input v-else placeholder="请输入" :disabled="!isShopMan" maxlength="6" v-model="dataInfo.score" @blur="_operateUpdateMember({userName: dataInfo.score})">
                       </div>
 
                       <div class="member-item">
@@ -211,7 +217,7 @@
 import { operateFollowCreateSigns, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention, operateMemberCreatee, operateUpdateMember } from 'Api/commonality/operate'
 import { seekGetShopUserList,seekFindMemberGradeList, seekFindMemberDetails } from 'Api/commonality/seek'
 import aloneDropDownColums from 'base/menu/alone-drop-down-colums'
-import choseLeader from './chose-leader'
+import choosePrincipal from './choose-principal'
 import newDownMenu from 'base/menu/new-down-menu'
 import AddressSelect from 'src/components/template/AddressSelect'
 import UploadingImg from 'base/uploading/UploadingImg'
@@ -223,11 +229,12 @@ export default {
     newDownMenu,
     UploadingImg,
     AddressSelect,
-    choseLeader
+    choosePrincipal
   },
   props: ['shopId', 'memberId'],
   data() {
     return {
+      loading: false,
       isChoseLeader: false,
       isShowMore: false,
       industryList: dataSource.industryList, // 行业数据
@@ -620,9 +627,10 @@ export default {
       options.memorial = formattingTime(options.memorial)
       options.birthday = formattingTime(options.birthday)
       options.maleBirthday = formattingTime(options.maleBirthday)
-
+      this.loading = true
       operateMemberCreatee(Object.assign({}, options, {shopId: this.shopId}))
         .then(res => {
+          this.loading = false
           if (res.data.state == 200) {
             this.$message({
               type: 'success',
