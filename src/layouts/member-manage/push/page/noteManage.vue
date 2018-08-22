@@ -78,6 +78,7 @@
         noteManageHeader02,
         noteManageHeader03
     } from "../../config/config.js";
+    import {copyArr} from "Api/commonality/filter"
     import {GetNYR,GetSF} from "assets/js/getTime.js";
     export default {
         data() {
@@ -354,7 +355,12 @@
         watch:{
             "requestList"(val){ //请求回来的数据
                 if(val && val.length != 0){
-                    this.noteList = this.noteList.concat(val) //加载更多数据
+                    console.log(val)
+                    let arr = val.slice(0);
+                    this.noteList = this.noteList.concat(arr); //加载更多数据
+                    // console.log(this.noteList)
+                }else{
+                    // this.noteList
                 }
             }
         },
@@ -415,6 +421,7 @@
                             title:'编辑短信模板',
                             shopId:this.requestData.shopId,
                             templateId:templateId,
+                            type:this.tabTitle,
                         }
                     })
                     return
@@ -441,6 +448,7 @@
             confirm(val){
                 let {way,index,templateId} = this.currentOperationNote;
                 if(way == 'jinzhi'){
+                    // this.noteList = [];
                     this.$set(this.noteList[index],'isDisable',false)
                     this.$set(this.noteList[index],'operationList',["icon-qidong","icon-bianji","icon-lajitong"])
                     this.$set(this.noteList[index],'status',"禁用")
@@ -453,8 +461,10 @@
                     if(res){
                         this.dialog.dialogType = ""
                         this.dialog.isShowDialog = val
+                        
                     }
                 }else if(way == 'qidong'){
+                    // this.noteList = [];
                     this.$set(this.noteList[index],'isDisable',true)
                     this.$set(this.noteList[index],'operationList',["icon-jinzhi","icon-bianji","icon-lajitong"])
                     this.$set(this.noteList[index],'status',"启用")
@@ -477,9 +487,11 @@
                     if (res) {
                         this.dialog.dialogType = ""
                         this.dialog.isShowDialog = val
-                        this.noteList.splice(index,1)
+                        // this.noteList.splice(index,1)
                     }
                 }
+                // this.noteList = [];
+                // this.upData = true;
             },
             // 弹窗关闭取消按钮
             cancel(val){

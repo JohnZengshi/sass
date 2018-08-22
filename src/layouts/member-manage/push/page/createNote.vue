@@ -1,5 +1,5 @@
 <template>
-    <div class="createMain" v-loading="addSmsIng">
+    <div class="createMain" v-loading="addSmsIng || findDetailsIng">
         <div class="title">
             <i class="iconfont icon-liebiao"></i>
             <span>编辑短信发送</span>
@@ -155,7 +155,8 @@
         addSms,//添加短信发送
         findSmsTriggerList, //触发事件列表
         findSmsTriggerCycleList, //触发周期列表
-        findSmsTemoplateDetails, //短信详情
+        findSmsTirggerDetails, //触发短信详情
+        findSmsTemoplateDetails, //即时短信详情
     } from "Api/member";
     import filterBox from "../components/filterBox.vue";
     import mineTextarea from "../components/mineTextarea.vue";
@@ -283,6 +284,7 @@
                 },
                 filterTab:['插入字段','|','插入模板','|','选择签名'],
                 addSmsIng:false, //正在新建短信发送
+                findDetailsIng:false, //正在获取短信详情
                 insetWord:"", //插入模板的内容
                 templateId:"",//插入模板的id
                 signId:"",//插入的签名ID
@@ -393,16 +395,36 @@
                     return [];
                 }
             },
-            SmsTemoplateDetails:{ //短信详情
+            SmsTirggerDetails:{ //触发短信详情
                 get(){
-                    (async()=>{
-                        let templateId = this.$route.query.templateId
-                        let res = await findSmsTemoplateDetails({templateId});
-                        console.log(res)
-                    })()
-                },
-                default(){
-                    return null
+                    if (this.$route.query.templateId) {
+                        (async () => {
+                            this.findDetailsIng = true;
+                            let templateId = this.$route.query.templateId
+                            let res = await findSmsTirggerDetails({
+                                templateId
+                            });
+                            if(res.body.msg == "OK"){
+                                console.log(res)
+                            }else{
+                                this.$message({
+                                    type: 'warning',
+                                    message: res.body.msg,
+                                    onClose:()=>{
+                                        this.findDetailsIng = false;
+                                        this.$router.go(-1);
+                                    }
+                                });
+                            }
+                        })()
+                    }
+                }
+            },
+            SmsTemoplateDetails:{ //即时短信详情
+                get(){
+                    if(this.$route.query.templateId) {
+                        
+                    }
                 }
             },
             createdOrUpdata:{ //编辑模式或新增模式
@@ -413,7 +435,8 @@
                         return "CREATED"
                     }
                 }
-            }
+            },
+            
         },
         components: {
             filterBox,
@@ -439,8 +462,8 @@
                     this.formReset('timeTouchOffFrom')
                 }
             },
-            'SmsTemoplateDetails'(val){ //短信详情
-                console.log(val);
+            'SmsTirggerDetails'(val){ //触发短信详情
+                // console.log(val);
             }
         },
         methods: {
@@ -510,28 +533,10 @@
                 let mainVer = this.formVerify('mainForm');
                 console.log(touchOffVer);
                 console.log(mainVer)
-                if(touchOffVer && mainVer){
-                    this.addSmsIng = true;
-                    let {
-                        shopId,
-                        name,
-                        type,
-                        content,
-                        eventName,
-                        eventCycle,
-                        eventId,
-                        befoerAfrerType,
-                        befoerAfrerDay,
-                        templateId,
-                        userList,
-                        signId,
-                        gradeId,
-                        memberType,
-                        principalId,
-                        keyWord,
-                    } = this.requestData;
-                    (async () => {
-                        let res = await addSms({
+                if (touchOffVer && mainVer) {
+                    if (this.createdOrUpdata == "CREATED") { //新建短信发送
+                        this.addSmsIng = true;
+                        let {
                             shopId,
                             name,
                             type,
@@ -544,31 +549,53 @@
                             templateId,
                             userList,
                             signId,
-                            gradeId, //会员级别
-                            memberType, //会员类型
-                            principalId, //会员负责人
-                            keyWord,//发送人搜索框
-                        });
-                        console.log(res)
-                        if (res.body.msg == "OK") {
-                            this.$message({
-                                message: '新建成功',
-                                type: 'success',
-                                onClose:()=>{
-                                    this.addSmsIng = false;
-                                    this.$router.back(-1);
-                                }
+                            gradeId,
+                            memberType,
+                            principalId,
+                            keyWord,
+                        } = this.requestData;
+                        (async () => {
+                            let res = await addSms({
+                                shopId,
+                                name,
+                                type,
+                                content,
+                                eventName,
+                                eventCycle,
+                                eventId,
+                                befoerAfrerType,
+                                befoerAfrerDay,
+                                templateId,
+                                userList,
+                                signId,
+                                gradeId, //会员级别
+                                memberType, //会员类型
+                                principalId, //会员负责人
+                                keyWord, //发送人搜索框
                             });
-                        } else {
-                            this.$message({
-                                message: res.body.msg,
-                                type: 'warning',
-                                onClose:()=>{
-                                    this.addSmsIng = false;
-                                }
-                            });
-                        }
-                    })()
+                            console.log(res)
+                            if (res.body.msg == "OK") {
+                                this.$message({
+                                    message: '新建成功',
+                                    type: 'success',
+                                    onClose: () => {
+                                        this.addSmsIng = false;
+                                        this.$router.back(-1);
+                                    }
+                                });
+                            } else {
+                                this.$message({
+                                    message: res.body.msg,
+                                    type: 'warning',
+                                    onClose: () => {
+                                        this.addSmsIng = false;
+                                    }
+                                });
+                            }
+                        })()
+                    }else if(this.createdOrUpdata == "UPDATA"){  //编辑短信发送
+
+                    }
                 }
             },
             // 文本域输入内容
