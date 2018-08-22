@@ -7,10 +7,10 @@
       <member :filterOption="filterOption" @update="_seekMemberHomeById" :memberList="memberList"></member>
       <!-- 积分 -->
       <interflow :filterOption="filterOption" :interflowData="interflowData"></interflow>
-      <!-- 推送 -->
-      <push :filterOption="filterOption"></push>
       <!-- 跟进 -->
       <follow-up :filterOption="filterOption" :followUpData="followUpData"></follow-up>
+      <!-- 推送 -->
+      <push :filterOption="filterOption"></push>
     </div>
   </div>
 </template>
