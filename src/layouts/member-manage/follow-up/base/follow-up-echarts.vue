@@ -63,7 +63,7 @@ export default {
       ],
       option: {},
       stockTrend: {},
-      echartloading: true,
+      echartloading: false,
       isOld: 2,
       echartActions: 'followNum',
       memberList: {
@@ -91,12 +91,12 @@ export default {
           } else {
             this.$message({type: 'error', message: res.data.msg})
           }
-          this.echartloading = false;
         })
     },
     cutExhart (parm) {
       setTimeout(() => {
         this.option = exhartFilter.memberAxis(this.echartActions, parm, '会员', this.grid)
+        this.echartloading = false;
       }, 500)
     },
     cutData (parm) {

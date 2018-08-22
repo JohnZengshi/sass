@@ -74,7 +74,7 @@
                             <i class="iconfont icon-genjin"></i> {{item.phone}}
                         </li>
                         <li>
-                            <el-checkbox :label="item.userId"></el-checkbox>
+                            <el-checkbox :label="item.memberId"></el-checkbox>
                         </li>
                     </ul>
                 </el-checkbox-group>

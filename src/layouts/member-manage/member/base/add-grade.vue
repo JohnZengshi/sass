@@ -200,9 +200,9 @@ export default {
                     this.loading = false
                 })
         },
-        _seekFindGradeList(startScore) {
+        _seekFindGradeList(parm) {
             let opations = {
-                startScore: startScore,
+                startScore: parm.startScore,
                 templateId: this.templateId,
             }
             seekFindGradeList(opations)
@@ -274,14 +274,18 @@ export default {
                 })
         },
         amendStartScore (parm) {
+            debugger
             if (!this.showData.gradeId && parm) {
-                this._seekFindGradeList()
+                this._seekFindGradeList(parm)
                 return
             }
             this._operateUpdateGrade(parm)
         },
         // 修改
         _operateUpdateGrade(parm) {
+            if (!this.showData.gradeId) {
+                return
+            }
             let options = {
                 type: '0',
                 discount: this.checkDiscount[0] ? this.checkDiscount[0] : '0',
