@@ -27,6 +27,7 @@
       @initAdvanced="initAdvanced"
       @initLeaderData="initLeaderData"
       @close="close"
+      @successCall="successCall"
     ></inputPush>
 
     <chose-leader
@@ -95,6 +96,10 @@ export default {
     }
   },
   methods: {
+    successCall () {
+      this.isDialog = false
+      this.$emit('successCall')
+    },
     // 关闭，还原数据
     classClose () {
       this.checkData = {

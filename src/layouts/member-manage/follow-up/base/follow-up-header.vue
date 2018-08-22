@@ -3,7 +3,7 @@
     <div class="m-m-filter-header-main">
         <div class="operate-bar-bottom">
             <div class="search">
-                <input type="text" v-model="filterCondition.name" placeholder="手机号/姓名" @keyup.enter="batchAddByOrderNum">
+                <input type="text" v-model="filterCondition.keyWork" placeholder="手机号/姓名" @keyup.enter="batchAddByOrderNum">
                 <div class="search-btn" @click="batchAddByOrderNum">
                     <i class="iconfont icon-sousuo"></i>
                 </div>
@@ -45,9 +45,9 @@
 
         </div>
         <!-- 完成跟进 -->
-        <cut-popup ref="cutPopupBox"></cut-popup>
+        <cut-popup ref="cutPopupBox" :filterCondition="filterDatas" :shopId="shopId"></cut-popup>
         <!-- 新增跟进 -->
-        <add-follow-up v-if="isAddFollowUp" ref="addFollowUpBox" :shopId="shopId" @close="isAddFollowUp = false"></add-follow-up>
+        <add-follow-up v-if="isAddFollowUp" ref="addFollowUpBox" @successCall="successCall" :shopId="shopId" @close="isAddFollowUp = false"></add-follow-up>
     </div>
 </template>
 <script>
@@ -75,7 +75,7 @@ export default {
         cutPopup,
         addFollowUp
     },
-    props: ['shopId', 'headline'],
+    props: ['shopId', 'headline', 'filterDatas'],
     data() {
         return {
             isSenior: false,
@@ -90,10 +90,11 @@ export default {
             repositoryList: [], // 仓库列表
             shopDataList: [],
             filterCondition: {
+                keyWork: '',
                 followStatus: '',
                 followPurpose: '',
                 followType: '',
-                type: '',
+                // type: '2',
                 chargeId: ''
             },
             littleBatch: false,
@@ -160,6 +161,7 @@ export default {
             }, 0)
         },
         batchComplete() {
+            console.log(this.filterData)
             this.$refs.cutPopupBox.open({ index: 'chooseUser' })
         },
         // 旧
@@ -180,27 +182,32 @@ export default {
         },
         changeFollowUpStatus(parm) {
             this.filterCondition.followStatus = parm.id
-            this.$emit('update', this.filterCondition)
+            this.update()
         },
         clearFollowUpStatus() {
             this.filterCondition.followStatus = ''
-            this.$emit('update', this.filterCondition)
+            this.update()
         },
         changeVisitAimList(parm) {
             this.filterCondition.followPurpose = parm.id
-            this.$emit('update', this.filterCondition)
+            this.update()
         },
         clearVisitAimList() {
             this.filterCondition.followPurpose = ''
-            this.$emit('update', this.filterCondition)
+            this.update()
         },
         changeFollowType(parm) {
             this.filterCondition.followType = parm.id
-            this.$emit('update', this.filterCondition)
+            this.update()
         },
         clearFollowType() {
             this.filterCondition.followType = ''
-            this.$emit('update', this.filterCondition)
+            this.update()
+        },
+        update () {
+            setTimeout(() => {
+                this.$emit('update', this.filterCondition)
+            }, 0)
         },
         _seekMemberList() {
             let options = {
@@ -216,7 +223,7 @@ export default {
         },
         combinationHeaderComplate(parm) {
             this.filterCondition = Object.assign(this.filterCondition, parm)
-            this.$emit('update', this.filterCondition)
+            this.update()
         },
         choseMenu() {
             this.tabSwitch = !this.tabSwitch
@@ -233,11 +240,11 @@ export default {
             })
         },
         batchAddByOrderNum() {
-            this.$emit('update', this.filterCondition)
+            this.update()
         },
         storageLocation(parm) {
             this.filterCondition.storageId = parm.bigList
-            this.$emit('update', this.filterCondition)
+            this.update()
         },
         filterData(parm) {
             this.$emit('update', Object.assign(this.filterCondition, parm))
@@ -291,7 +298,7 @@ export default {
         },
         changeOrderId(parm) {
             this.filterCondition.newOrderId = parm
-            this.$emit('update', this.filterCondition)
+            this.update()
         },
         openLittleBatch() {
             this.$refs.littleBatchWrap.open()
@@ -301,11 +308,15 @@ export default {
         },
         dataBack(parm) {
             this.filterCondition[parm.keyName] = parm.samllList
-            this.$emit('update', this.filterCondition)
+            this.update()
         },
         dataBackProductTypeId(parm) { // 产品类别过滤
             this.filterCondition.productStatus = parm.bigList
-            this.$emit('update', this.filterCondition)
+            this.update()
+        },
+        successCall () {
+            this.isAddFollowUp = false
+            this.update()
         }
     }
 }

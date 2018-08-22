@@ -992,3 +992,8 @@ export const seekTriggerFollowDetails = function (parm) {
   let URL = "/v1/member/triggerFollowDetails";
   return apiCall(parm, URL);
 }
+// 跟进总数
+export const seekFollowUpNum = function (parm) {
+  let URL = "/v1/member/followUpNum";
+  return apiCall(parm, URL);
+}

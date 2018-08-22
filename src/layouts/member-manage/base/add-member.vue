@@ -1,6 +1,6 @@
 <template>
   <el-dialog top="7%" :visible.sync="isDialog" class="xj-input-dialog-bg">
-    <editorMember v-if="isDialog" ref="editorMemberBox" @close="close" @update="update" :shopId="shopId"></editorMember>
+    <editorMember v-if="isDialog" ref="editorMemberBox" :memberId="currentMemberId" @close="close" @update="update" :shopId="shopId"></editorMember>
   </el-dialog>
 </template>
 <script>
@@ -9,14 +9,16 @@ export default {
   components: {
     editorMember
   },
-  props: ['shopId'],
+  props: ['shopId', 'orderNum', 'memberId'],
   data() {
     return {
+      currentMemberId: '',
       isDialog: false
     }
   },
   methods: {
     open() {
+      this.currentMemberId = this.memberId
       this.isDialog = true
       this.$nextTick(() => {
         if (this.$refs.editorMemberBox) {

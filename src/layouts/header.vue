@@ -1173,6 +1173,8 @@ export default {
       } else if (command == "e") {
         operateLogout().then(res => {
           if (res.data.state == 200) {
+            sessionStorage.clear()
+            localStorage.clear()
             this.$router.push({ path: "/member/login" });
             let body = document.getElementById("body");
             body.style.background = "#f5f8f7";

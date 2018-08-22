@@ -2,9 +2,9 @@
 <template>
   <el-dialog top="7%" :visible.sync="isDialog" :class="currentStyle">
     <!-- 选择用户 -->
-    <choose-user :isDialog="isDialog" v-show="currentLocation == 'chooseUser'" @confirm="cutBox" @close="close"></choose-user>
+    <choose-user v-if="isDialog" :isDialog="isDialog" :shopId="shopId" :filterCondition="filterCondition" v-show="currentLocation == 'chooseUser'" @confirm="cutBox" @close="close"></choose-user>
     <!-- 完成 -->
-    <complete :isDialog="isDialog" :userData="userData" v-show="currentLocation == 'complete'" :followList="checkedList" @close="close"></complete>
+    <complete v-if="isDialog" :isDialog="isDialog" :userData="userData" v-show="currentLocation == 'complete'" :followList="checkedList" @close="close"></complete>
   </el-dialog>
 </template>
 <script>
@@ -15,13 +15,20 @@ export default {
     chooseUser,
     complete
   },
-  props: ['shopId'],
+  props: ['shopId', 'filterCondition'],
   data() {
     return {
       checkedList: [],
       currentLocation: 'chooseUser',
       isDialog: false,
       userData: {}, // 用户数据
+    }
+  },
+  watch: {
+    isDialog () {
+      if (!this.isDialog) {
+          this.checkedList = []
+      }
     }
   },
   computed: {
@@ -52,9 +59,12 @@ export default {
       //   }
       // })
     },
-    close () {
+    close (parm) {
       this.checkedList = []
       this.isDialog = false
+      if (parm) {
+        this.$emit('update')
+      }
     },
     cutBox (parm) {
       this.currentLocation = 'complete'

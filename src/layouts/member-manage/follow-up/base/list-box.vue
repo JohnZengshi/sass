@@ -7,7 +7,11 @@
 <!--             <memberInfo ref="memberInfoBox" @closeReturn="closeEditReturn" :shopId="shopId" :memberId="memberId"></memberInfo> -->
 
             <!-- 完成跟进和批量完成的切换 -->
-            <cut-popup v-if="headline == '我的跟进'" ref="cutPopupBox"></cut-popup>
+            <cut-popup v-if="headline == '我的跟进'"
+            :filterCondition="filterCondition"
+            :shopId="shopId"
+            @update="update"
+            ref="cutPopupBox"></cut-popup>
             
             <!-- 编辑跟进 -->
             <add-follow-up v-if="headline == '跟进管理'" ref="addFollowUpBox" :shopId="shopId"></add-follow-up>
@@ -23,7 +27,7 @@
                 <down-menu class="fr mr-10" :isSolid="true" :titleInfo="shopName ? shopName : '店铺名称'" :showList="shopList" :nameKey="'shopName'" @changeData="changeShop" @clearInfo="clearShop"></down-menu>
 
             </div>
-            <table-list ref="tableListBox" @changeMember="changeMember" @compileData="compileData" :shopId="shopId" :currentLocation="'followUp'" :headline="headline"></table-list>
+            <table-list ref="tableListBox" @updateFilter="updateFilter" @changeMember="changeMember" @compileData="compileData" :shopId="shopId" :currentLocation="'followUp'" :headline="headline"></table-list>
         </div>
     </transition>
 </template>
@@ -51,6 +55,7 @@ export default {
     },
     data() {
         return {
+            filterCondition: {},
             shopId: this.$route.query.shopId,
             followPurpose: this.$route.query.followPurpose,
             shopName: '',
@@ -62,6 +67,12 @@ export default {
         this._seekGetShopListByCo()
     },
     methods: {
+        update () {
+            this.$refs.tableListBox.filterData({})
+        },
+        updateFilter (parm) {
+            this.filterCondition = parm
+        },
         _seekGetShopListByCo() { // 店铺列表
             let options = {
                 page: 1,
@@ -95,6 +106,7 @@ export default {
         },
         // 编辑数据
         compileData (parm) {
+            debugger
             this.memberId = parm.data.memberId
             setTimeout(() => {
                 if (this.$refs.addFollowUpBox) {

@@ -214,7 +214,7 @@
   </div>
 </template>
 <script>
-import { operateFollowCreateSigns, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention, operateMemberCreatee, operateUpdateMember } from 'Api/commonality/operate'
+import { operateFollowCreateSigns, operateMemberCreate, operateMemberUpdateBy, operateMemberOperation, operateOpIntention, operateMemberCreatee, operateUpdateMember, operateMemberSalesList } from 'Api/commonality/operate'
 import { seekGetShopUserList,seekFindMemberGradeList, seekFindMemberDetails } from 'Api/commonality/seek'
 import aloneDropDownColums from 'base/menu/alone-drop-down-colums'
 import choosePrincipal from './choose-principal'
@@ -231,7 +231,7 @@ export default {
     AddressSelect,
     choosePrincipal
   },
-  props: ['shopId', 'memberId'],
+  props: ['shopId', 'memberId', 'orderNum'],
   data() {
     return {
       loading: false,
@@ -489,46 +489,6 @@ export default {
         return
       }
       this._operateUpdateMember({signList: this.dataInfo.signList}, '删除成功')
-      // operateUpdateMember(Object.assign({}, item, {memberId: this.memberId}, {shopId: this.shopId}))
-      //   .then(res => {
-      //     if (res.data.state === 200) {
-      //       this.$message({type: 'success',message: '删除'})
-      //       this.dataInfo.signList.splice(index, 1)
-      //     } else {
-      //       this.$message({type: 'error',message: res.data.msg})
-      //     } 
-      //   })
-      
-      // let orderList = []
-      // if (this.dataInfo.orderList.length != 0) {
-      //   this.dataInfo.orderList.forEach((item, index) => {
-      //     orderList[index] = { orderNo: item.orderNum }
-      //   })
-      // }
-
-      // 生日的时间格式
-
-      // let optionsdata = Object.assign({}, this.dataInfo, {
-      //   memberId: this.memberId,
-      //   shopId: this.shopId,
-      //   orderList,
-      //   birthday: this.birthday
-
-      // })
-
-      // operateMemberUpdateBy(optionsdata).then(res => {
-      //   if (res.data.state === 200) {
-      //     this.$message({
-      //       type: 'success',
-      //       message: '删除标签成功'
-      //     })
-      //   } else {
-      //     this.$message({
-      //       type: 'error',
-      //       message: '删除标签失败'
-      //     })
-      //   }
-      // })
     },
     // 修改生日
     setBirthday() {
@@ -627,16 +587,22 @@ export default {
       options.memorial = formattingTime(options.memorial)
       options.birthday = formattingTime(options.birthday)
       options.maleBirthday = formattingTime(options.maleBirthday)
+      if (options.grade.length) {
+        options.gradeId = options.grade[0].gradeId
+      }
+      options.maleBirthday = formattingTime(options.maleBirthday)
       this.loading = true
       operateMemberCreatee(Object.assign({}, options, {shopId: this.shopId}))
         .then(res => {
           this.loading = false
           if (res.data.state == 200) {
-            this.$message({
-              type: 'success',
-              message: '新建成功'
-            })
-            this.$emit('update')
+            this.$message({type: 'success',message: '添加会员成功'})
+            if (this.orderNum) {
+                this._operateMemberSalesList(res.data.data.memberNumber)
+            } else {
+              this.$emit('update')
+            }
+            
           } else {
             this.$message({
               type: 'error',
@@ -693,6 +659,9 @@ export default {
             datas.birthday = GetNYR(datas.birthday)
             datas.maleBirthday = GetNYR(datas.maleBirthday)
             datas.principalName = ''
+            if (datas.province) {
+              this.PCAData = datas.province + ' / ' + datas.city + ' / ' + datas.area
+            }
             for (let i of datas.principalList) {
               datas.principalName += datas.principalName ? `,${i.nickname}` : i.nickname
             }
@@ -701,7 +670,27 @@ export default {
             this.$message({type: 'error',message: res.data.msg})
           }
         })
-    }
+    },
+    _operateMemberSalesList (memberNumber) { // 会员关联销售单
+        let options = {
+            shopId: this.shopId,
+            memberOrPhone: memberNumber,
+            sellOrderId: this.orderNum
+        }
+        operateMemberSalesList(options).then((res) => {
+            if (res.data.state == 200) {
+                this.$emit('update')
+                // this.$emit("closeReturn", {status: false})
+            } else {
+                this.$message({message: res.data.msg,type: 'warning'})
+            }
+        }, (res) => {
+            this.$message({
+                message: res.data.msg,
+                type: 'warning'
+            })
+        })
+    },
   }
 }
 

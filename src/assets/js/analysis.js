@@ -231,6 +231,18 @@ export const getMemberTypeList = function(type) {
     }
     return ''
 }
+// 会员类型
+export const getSex = function(type) {
+    switch (type) {
+        case '1':
+            return '男'
+        case '2':
+            return '女'
+        case '3':
+            return '未设置'
+    }
+    return ''
+}
 // 001 创建单据
 // 002 修改单据
 // 003 审批单据-通过

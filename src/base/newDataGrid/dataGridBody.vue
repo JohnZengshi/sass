@@ -105,26 +105,14 @@ export default {
   },
   methods: {
     initScorll () {
+      let _seft = this
       $(".default-line").mCustomScrollbar({
         theme: "minimal-dark",
         axis: 'y',
         scrollInertia: 100,
         callbacks: {
           onTotalScroll: function() {
-            _this.$emit('lazyloadSend')
-            $('.loadControl').css({
-              opacity: 1
-            })
-          },
-          onUpdate() {
-            $('.loadControl').css({
-              opacity: 0
-            })
-          },
-          whileScrolling() {
-            $('.loadControl').css({
-              opacity: 0
-            })
+            _seft.$emit('lazyloadSend')
           }
         }
       })

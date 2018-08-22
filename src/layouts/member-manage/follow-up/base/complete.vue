@@ -37,7 +37,7 @@
               </div>
 
               <div class="item-box">
-                  <span class="item-label">跟进记录</span>
+                  <span class="item-label"><i class="mandatory-icon">*</i>跟进记录</span>
                   <div class="record-tit">
                     <textarea placeholder="请输入跟进内容..." maxlength="200" v-model="optionsData.visitResult"></textarea>
                     <span>{{optionsData.visitResult.length}}/200</span>
@@ -126,19 +126,30 @@ export default {
         _operateFollowComplete () {
           if (!this.optionsData.visitType) {
             this.$message({message: '请选择完成方式', type: 'error'})
+            return
           }
-          let followList = this.followList
+          if (!this.optionsData.visitResult) {
+            this.$message({message: '请填写跟进内容', type: 'error'})
+            return
+          }
+          let followList = []
           if (this.userData.followId ) {
             followList = [
               {
                 followId: this.userData.followId
               }
             ]
+          } else {
+            for (let i of this.followList) {
+              followList.push({
+                followId: i
+              })
+            }
           }
           operateFollowComplete(Object.assign({}, this.optionsData, {followList: followList}))
             .then(res => {
               if (res.data.state == 200) {
-                this.$emit('close')
+                this.$emit('close', true)
                 this.$message({message: '跟进完成', type: 'success'})
               } else {
                 this.$message({message: res.data.msg,type: 'error'})
@@ -238,6 +249,8 @@ export default {
           font-size: 0;
           margin-top: 20px;
           width: 500px;
+          display: flex;
+          flex-wrap: wrap;
           li{
             position: relative;
             display: inline-block;

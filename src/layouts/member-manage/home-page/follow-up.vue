@@ -6,41 +6,41 @@
         </div>
         <ul class="center-num-list">
             <li>
-                <p>{{followUpData.memberCount}}</p>
+                <p>{{followUpData.followUpNum}}</p>
                 <p>跟进总数</p>
             </li>
             <li>
-                <p>{{followUpData.newMember}}</p>
+                <p>{{followUpData.toDayNum}}</p>
                 <p>今日新增</p>
             </li>
             <li>
-                <p>{{followUpData.conversion}}</p>
+                <p>{{followUpData.toDayComplete}}</p>
                 <p>今日完成</p>
             </li>
             <li>
-                <p>{{followUpData.conversion}}</p>
+                <p>{{followUpData.efficiency}}</p>
                 <p>跟进率</p>
             </li>
                         <li>
-                <p>{{followUpData.conversion}}</p>
+                <p>{{followUpData.timeout}}</p>
                 <p>超时</p>
             </li>
         </ul>
         <ul class="center-message-list">
-            <router-link tag="li" v-for="item in followUpData.dataList"  :to="{path: '/membermanage/followUpList', query: {shopId: filterOption.shopId, followPurpose: item.followPurpose}}">
+            <router-link tag="li" v-for="item in followUpData.dataList"  :to="{path: '/membermanage/followUpList', query: {shopId: filterOption.shopId, followPurpose: item.type}}">
 
-                <p>{{item.name}}</p>
+                <p>{{_getVisitAimList(item.type)}}</p>
 
                 <div class="center-btn-item">
-                    <span>未完成跟进</span><span>158</span>
+                    <span>未完成跟进</span><span>{{item.undone}}</span>
                 </div>
 
                 <div class="center-btn-item">
-                    <span>已完成跟进</span><span>158</span>
+                    <span>已完成跟进</span><span>{{item.toDayComplete}}</span>
                 </div>
 
                 <div class="center-btn-item">
-                    <span>跟进率</span><span>158</span>
+                    <span>跟进率</span><span>{{item.efficiency}}</span>
                 </div>
 
             </router-link>
@@ -58,6 +58,7 @@
 <script>
 import bigSmallClass from 'base/popup/big-small-class.vue'
 import addFollowUp from './../follow-up/add-follow-up'
+import {getVisitAimList} from 'assets/js/analysis'
 
 export default {
     components: {
@@ -87,6 +88,9 @@ export default {
         }
     },
     methods: {
+        _getVisitAimList (parm) {
+            return getVisitAimList(parm)
+        },
         openAdd() {
                     this.isAddFollowUp = true
         setTimeout(() => {

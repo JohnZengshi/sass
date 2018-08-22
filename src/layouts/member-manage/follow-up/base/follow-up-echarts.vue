@@ -10,11 +10,11 @@
 
       <ul class="center-num-list">
         <li>
-          <p><span>{{memberList.unfinished}}<i @click="cutData('5')">点击查看</i></span></p>
+          <p><span>{{memberList.unfinished}}<i @click="cutData('1')">点击查看</i></span></p>
           <p>未完成跟进</p>
         </li>
         <li>
-          <p><span>{{memberList.soonExpire}}<i @click="cutData('6')">点击查看</i></span></p>
+          <p><span>{{memberList.soonExpire}}<i @click="cutData('4')">点击查看</i></span></p>
           <p>即将到期</p>
         </li>
         <li>
@@ -67,9 +67,9 @@ export default {
       isOld: 2,
       echartActions: 'followNum',
       memberList: {
-        memberCount: '178',
-        newMember: '60',
-        conversion: '308',
+        memberCount: '',
+        newMember: '',
+        conversion: '',
       }
     }
   },
@@ -79,7 +79,7 @@ export default {
   methods: {
     _seekMemberFollowNum () {
       this.echartloading = true;
-      seekMemberFollowNum({type: this.filterCondition.type, shopId: this.shopId})
+      seekMemberFollowNum(Object.assign({}, this.filterCondition, {shopId: this.shopId}))
         .then(res => {
           if (res.data.state == 200) {
             this.memberList = res.data.data
