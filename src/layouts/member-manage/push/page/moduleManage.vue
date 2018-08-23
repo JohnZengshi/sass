@@ -7,7 +7,14 @@
                 <span v-if="moduleList" class="count">{{moduleList.length}}</span>
             </div>
             <div class="option">
-                <el-select class="select-w90-h28 select-white select-b1 select-f12-b mr-10" filterable clearable v-model="requestData.templateTypeId" placeholder="选择类型" @change="changeSelectValue">
+                <el-select 
+                    class="select-w90-h28 select-white select-b1 select-f12-b mr-10" 
+                    filterable 
+                    clearable 
+                    :disabled="TemplateTypeList.length == 0"
+                    v-model="requestData.templateTypeId" 
+                    placeholder="选择类型" 
+                    @change="changeSelectValue">
                     <el-option v-for="(item,index) in TemplateTypeList" :key="index" :label="item.templateTypeName" :value="item.templateTypeId">
                     </el-option>
                 </el-select>
@@ -44,6 +51,7 @@
         findSmsTemplateTypeList, //模板类型列表
     } from "Api/member";
     import {moduleListHeader} from "../../config/config.js";
+    import {copyArr} from "Api/commonality/filter";
     import TableBody from '../../base/tableBody';
     import Dialog from '../../base/dialog.vue';
     export default {
@@ -142,19 +150,20 @@
                                 type: 'warning',
                                 message: res.body.msg
                             });
-                            return;
+                            return [];
                         }
                     })()
                 },
                 default(){
-                    return false
+                    return []
                 }
             },
         },
         watch:{
             "TemplateList"(val){
                 if(val && val.length !=0){
-                    this.moduleList = this.moduleList.concat(val);
+                    let arr  = copyArr(val)
+                    this.moduleList = this.moduleList.concat(arr);
                 }
             }
         },

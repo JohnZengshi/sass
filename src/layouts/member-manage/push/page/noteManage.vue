@@ -9,19 +9,39 @@
             </div>
             <div class="select flex flex-r">
                 <div>
-                    <el-select class="select-w88-h26 select-white select-b1 select-f12-b" filterable clearable v-model="requestData.templateTypeId" placeholder="短信类型" @change="changeSelectValue">
+                    <el-select 
+                        class="select-w88-h26 select-white select-b1 select-f12-b" 
+                        filterable 
+                        clearable 
+                        v-model="requestData.templateTypeId" 
+                        placeholder="短信类型" 
+                        :disabled="TemplateTypeList.length == 0"
+                        @change="changeSelectValue">
                         <el-option v-for="(item,index) in TemplateTypeList" :key="index" :label="item.templateTypeName" :value="item.templateTypeId">
                         </el-option>
                     </el-select>
                 </div>
                 <div>
-                    <el-select class="select-w88-h26 select-white select-b1 select-f12-b" filterable clearable v-model="requestData.userId" placeholder="创建人" @change="changeSelectValue">
+                    <el-select 
+                        class="select-w88-h26 select-white select-b1 select-f12-b" 
+                        filterable 
+                        clearable 
+                        v-model="requestData.userId" 
+                        placeholder="创建人" 
+                        :disabled="MemberPrincipalList.length == 0"
+                        @change="changeSelectValue">
                         <el-option v-for="(item,index) in MemberPrincipalList" :key="index" :label="item.nickName" :value="item.ptincipalId">
                         </el-option>
                     </el-select>
                 </div>
                 <div>
-                    <el-select class="select-w88-h26 select-white select-b1 select-f12-b" filterable clearable v-model="requestData.status" placeholder="模板状态" @change="changeSelectValue">
+                    <el-select 
+                        class="select-w88-h26 select-white select-b1 select-f12-b" 
+                        filterable 
+                        clearable 
+                        v-model="requestData.status" 
+                        placeholder="模板状态" 
+                        @change="changeSelectValue">
                         <el-option v-for="(item,index) in moduleStatus" :key="index" :label="item.label" :value="item.value">
                         </el-option>
                     </el-select>
@@ -78,7 +98,7 @@
         noteManageHeader02,
         noteManageHeader03
     } from "../../config/config.js";
-    import {copyArr} from "Api/commonality/filter"
+    import {copyArr} from "Api/commonality/filter";
     import {GetNYR,GetSF} from "assets/js/getTime.js";
     export default {
         data() {
@@ -101,7 +121,6 @@
                     label: '禁用'
                 }],
                 noteList:[],
-                noteManageHeader: [],//表格头部
                 tabTitle:"即时短信",
                 isSort:true,//是否开启排序
                 isRowClick:true,//开启点击单行触发回调
@@ -144,7 +163,12 @@
                         return this.SmsTriggerLists;
                     } else if (this.tabTitle == "短信日志") {
                         return this.SmsTemoplateLog;
+                    }else{
+                        return []
                     }
+                },
+                default(){
+                    return []
                 }
             },
             SmsTemoplateList:{ //即时短信
@@ -243,7 +267,7 @@
                     }
                 },
                 default(){
-
+                    return [];
                 }
             },
             SmsTemoplateLog:{ //短信日志
@@ -288,12 +312,12 @@
                         if(res.body.msg == "OK"){
                             return res.body.data;
                         }else{
-                            
+                            return []
                         }
                     })()
                 },
                 default(){
-                    return false
+                    return []
                 }
             },
             MemberPrincipalList:{ //负责人列表
@@ -303,9 +327,14 @@
                         let res = await findMemberPrincipalList({shopId});
                         if(res.body.msg == "OK"){
                             return res.body.data;
+                        }else{
+                            return [];
                         }
                     })()
                 },
+                default(){
+                    return [];
+                }
             },
             headerData:{ //表格头部数据
                 get(){
@@ -355,12 +384,8 @@
         watch:{
             "requestList"(val){ //请求回来的数据
                 if(val && val.length != 0){
-                    console.log(val)
-                    let arr = val.slice(0);
+                    let arr = copyArr(val);
                     this.noteList = this.noteList.concat(arr); //加载更多数据
-                    // console.log(this.noteList)
-                }else{
-                    // this.noteList
                 }
             }
         },
@@ -436,6 +461,7 @@
                 };
                 
             },
+            // 点击单条短信
             rowClick(val){
                 this.dialog.dialogType = "Notelog"
                 this.dialog.isShowDialog = true;
@@ -480,15 +506,14 @@
                     }
                 }else if(way == 'lajitong'){
                     this.requestData.templateId = templateId;
-                    let res = (async () => {
+                    (async () => {
                         let res = await this.deleteSmsTemplate();
-                        return res
+                        if (res) {
+                            this.dialog.dialogType = ""
+                            this.dialog.isShowDialog = val
+                            this.noteList.splice(index, 1)
+                        }
                     })();
-                    if (res) {
-                        this.dialog.dialogType = ""
-                        this.dialog.isShowDialog = val
-                        // this.noteList.splice(index,1)
-                    }
                 }
                 // this.noteList = [];
                 // this.upData = true;
@@ -509,6 +534,7 @@
                 this.noteList = [];
                 this.requestData.beginTime = `${GetNYR(val.beginTime)}${" "}${GetSF(val.beginTime)}`;
                 this.requestData.endTime = `${GetNYR(val.endTime)}${" "}${GetSF(val.endTime)}`;
+                this.requestData.page = "1";
                 this.upData = true;
             },
             // 修改短信状态
@@ -576,9 +602,7 @@
                 }
             }
         },
-        created() {
-            this.noteManageHeader = noteManageHeader01;
-        }
+        created() {}
     }
 
 </script>
