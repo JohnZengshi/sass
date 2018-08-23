@@ -27,6 +27,10 @@ function apiCall (parm, URL) {
     // let serverHost = process.env.NODE_ENV === 'development' ? 'http://192.168.100.106:8080/yunzhubao' : ''
     let url = serverHost + URL
     return Vue.http.post(url, data).then(res => {
+        // 截获登录超时
+        if(res.data.state == 100 ){
+            Vue.prototype.loginPopup.show()
+        }
         return Promise.resolve(res)
     })
 

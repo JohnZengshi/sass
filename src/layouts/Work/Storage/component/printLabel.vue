@@ -1,14 +1,14 @@
 <template>
     <div class="receipts" v-loading="loading">
-		<span data-text="导出表格" @click="exportTab()">
-			<i class="iconfont icon-daochu"></i>
-		</span>
+    <span data-text="导出表格" @click="exportTab()">
+      <i class="iconfont icon-daochu"></i>
+    </span>
         <span data-text="打印标签" @click="printLabel">
-    		<i class="iconfont icon-shouyindadan"></i>
-		</span>
+        <i class="iconfont icon-shouyindadan"></i>
+    </span>
         <span data-text="打印单据" @click="reportsPrintRK">
-  			<i class="iconfont icon-dayin"></i>
-		</span>
+        <i class="iconfont icon-dayin"></i>
+    </span>
         <!--打印标签-->
         <PrintLabelByOrderDialog ref="printLabelByOrderDialog" :orderNum="orderNum" :labelTemplateList="templateList" :productList="print.productList" :totalNum="print.totalNum" @requestProductList="requestProductList" @printTemplate="printTemplate" @getPrintLabelData="getPrintLabelData">
         </PrintLabelByOrderDialog>
@@ -17,12 +17,12 @@
         </lodop>
 
         <!--<TemplatePreviewDialog
-  ref="templatePreviewDialog"
-  @print="printTemplate"
-  :canvas="print.canvas"
-  :templateData="print.templateData"
-  :pageNumber="print.templateData.productList.length">
-</TemplatePreviewDialog>-->
+      ref="templatePreviewDialog"
+      @print="printTemplate"
+      :canvas="print.canvas"
+      :templateData="print.templateData"
+      :pageNumber="print.templateData.productList.length">
+    </TemplatePreviewDialog>-->
 
         <!--打印模块 这个模块加载的是表格中间的数据-->
         <div ref="tablePrint" v-if="isPrint">
@@ -40,7 +40,7 @@
                 ref="detailTemplate"
                 :sellList="dataGridStorage"
                 :headerData="orderData"></detail-template>
-            <!-- 				<detail-template v-if="this.tabClassActive.index==0" title="入库" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detail-template> -->
+            <!--        <detail-template v-if="this.tabClassActive.index==0" title="入库" ref="detailTemplate" :sellList="dataGridStorage" :headerData="printSelectDate"></detail-template> -->
 
             <intelligence-type-template
                 v-if="dataGridOptions.type==2"
@@ -281,17 +281,13 @@
                 })
             },
             getPrintLabelData(type, orderId, beginNum, endNum, canvas, selectedProducts, isPrint){
-                let barcodeArr = canvas.components.filter(item => item.data.propertyCode == 'barcode2');
-                let dataList = {};
-                if (barcodeArr.length){
-                    dataList.url = barcodeArr[0].data.codeUrl;
-                }
+                let datas = this.filterBarcode2(canvas)
                 this.print.canvas = canvas
                 if(type==0){//勾选
                     this.previewTemplate(canvas, selectedProducts, isPrint);
                 }else if(type==1){//全部
-                    dataList.orderId = orderId
-                    this.$store.dispatch('getPrintLabelData', dataList).then(json => {
+
+                    this.$store.dispatch('getPrintLabelData', Object.assign({orderId:orderId}, datas)).then(json => {
                         if(json.state == 200) {
                             this.$set(this.print, 'templateData', json.data)
                             //this.print.templateData = json.data;
@@ -300,11 +296,8 @@
                         }
                     })
                 }else if(type==2){//分页
-                    dataList.orderId = orderId;
-                    dataList.beginNum = beginNum;
-                    dataList.endNum = endNum;
 
-                    this.$store.dispatch('getPrintLabelData', dataList).then(json => {
+                    this.$store.dispatch('getPrintLabelData',  Object.assign({orderId:orderId,beginNum:beginNum, endNum:endNum}, datas)).then(json => {
                         if(json.state == 200) {
                             this.$set(this.print, 'templateData', json.data)
                             //this.print.templateData = json.data;
@@ -314,6 +307,18 @@
                     })
                 }
             },
+            filterBarcode2 (canvas) {
+                let dataList = {}
+                let barcodeArr = canvas.components.filter(item => item.data.propertyCode == 'barcode2');
+                if (barcodeArr.length){
+                    for (let i of barcodeArr) {
+                        if (i.data.codeUrl) {
+                            dataList.url = i.data.codeUrl
+                        }
+                    }
+                }
+                return dataList
+            },
             previewTemplate(canvas, selectedProducts, isPrint) {
 
                 if(selectedProducts.length > 0) {
@@ -322,16 +327,10 @@
                             productId: selectedProduct
                         }
                     });
-                    debugger
-                    let barcodeArr = canvas.components.filter(item => item.data.propertyCode == 'barcode2');
                     let dataList = {
-                        productList:productList,
-
+                        productList:productList
                     }
-                    if (barcodeArr.length){
-                        dataList.url = barcodeArr[0].data.codeUrl;
-                    }
-
+                    Object.assign(dataList, this.filterBarcode2(canvas))
                     this.$store.dispatch('getPrintLabelData', dataList).then(json => {
                         if(json.state == 200) {
                             this.$set(this.print, 'templateData', json.data)

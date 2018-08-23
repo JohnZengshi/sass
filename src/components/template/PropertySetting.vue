@@ -323,7 +323,7 @@
             },
             selectChange(id){
                 this.data.sample = id;
-                this.data.codeUrl = 'http://label.yunzhubao.com/#/laberIndex?templateId=' + id + '&companyId=' + this.unit.companyId;
+                this.data.codeUrl = 'http://label.yunzhubao.com/#/l?t=' + id;
             },
 
             fontFamily(k){

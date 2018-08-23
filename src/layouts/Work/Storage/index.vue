@@ -37,7 +37,7 @@
               :type="dataGridOptions.type"
               :customList="customList"
             ></filter-header>
-            
+
             <!-- 只有明细才显示 -->
 						<template v-if="dataGridOptions.type == 1">
               <span v-if="isShow && curStatus.nowStatus == 1" class="add" @click="add" ref="ref_addGoods">添加商品</span>
@@ -61,22 +61,22 @@
 				<!--表格-->
 				<datagrid
           v-show="dataGridOptions.type == 1"
-  				:dgDataList="dgDataList" 
-  				:isShow="isShow" 
-  				:curStatus="curStatus" 
-  				:orderNum="orderData.orderNum" 
-  				:slipPointer="curStatus.slipPointer" 
-  				:goodsAdd="goodsAdd" ref="datagrid" 
-  				:copyDataList="copyOrderArray" 
-  				:isRefreshFooter="isRefreshFooter" 
-  				@add="add" 
+  				:dgDataList="dgDataList"
+  				:isShow="isShow"
+  				:curStatus="curStatus"
+  				:orderNum="orderData.orderNum"
+  				:slipPointer="curStatus.slipPointer"
+  				:goodsAdd="goodsAdd" ref="datagrid"
+  				:copyDataList="copyOrderArray"
+  				:isRefreshFooter="isRefreshFooter"
+  				@add="add"
   				@updataApi="updataApi"
-  				@updataData="updataData" 
-  				@updataAdd="updataAdd" 
-  				@updataCopyOrderObject="updataCopyOrderObject" 
-  				@updataLoader="updataLoader" 
-  				@updataAddDataList="updataAddDataList" 
-  				@updataSlipPointer="updataSlipPointer" 
+  				@updataData="updataData"
+  				@updataAdd="updataAdd"
+  				@updataCopyOrderObject="updataCopyOrderObject"
+  				@updataLoader="updataLoader"
+  				@updataAddDataList="updataAddDataList"
+  				@updataSlipPointer="updataSlipPointer"
   				@setSynopsiData="updataSynopsiData"
 				>
 				</datagrid>
@@ -107,10 +107,10 @@
 			</div>
 
 			<!--步骤条-->
-			<steps-path 
-			:orderNum="orderData.orderNum" 
-			:ifImport="orderData.ifImport" 
-			ref="stepsPath" 
+			<steps-path
+			:orderNum="orderData.orderNum"
+			:ifImport="orderData.ifImport"
+			ref="stepsPath"
 			@setStatus="getStatus"
 			>
 			</steps-path>
@@ -119,20 +119,20 @@
 			<utilsdatagrid
 			ref="utilsdatagrid"
       :dataGridOptions="dataGridOptions"
-			:curStatus="curStatus" 
-			@updataApi="updataApi" 
-			:orderData="orderData" 
-			:dataList="dgDataList" 
-			@goPage="goPage" 
+			:curStatus="curStatus"
+			@updataApi="updataApi"
+			:orderData="orderData"
+			:dataList="dgDataList"
+			@goPage="goPage"
 			>
 			</utilsdatagrid>
 
 			<!-- 弹出框 -->
-			<copyPopup 
-			@submit="submitCopy" 
-			:isCopy="isShowPopup" 
-			@popupShow="copyPopupShow" 
-			title="请输入你要复制的行数" 
+			<copyPopup
+			@submit="submitCopy"
+			:isCopy="isShowPopup"
+			@popupShow="copyPopupShow"
+			title="请输入你要复制的行数"
 			:isShowPopup="isShowPopup"
 			>
 			</copyPopup>
@@ -193,7 +193,7 @@ import batchamend from 'components/work/batchamend'
 import filterHeader from '@/layouts/Work/Report/ReportData/base/filter-header'
 import combinationDropDownColums from 'base/menu/combination-drop-down-colums'
 import ReportDetail from "@/layouts/Work/Report/ReportData/newDataGrid/reportDetailTab";
-//规则配置相关组件 
+//规则配置相关组件
 import NewPopup from "./../../jinbaifu/NewPopup"
 import BasePage from "./../../jinbaifu/components/base"
 import Certificate from "./../../jinbaifu/components/certificate"
@@ -252,10 +252,10 @@ export default {
         slipPointer: false ,
         nowStatus : '-1'
       },
-      
+
       // loading开关
       loadCommodity: true,
-      
+
       // 订单数据
       orderData : Object.assign({},{
         orderNum : this.$route.query.orderNumber,
@@ -263,28 +263,28 @@ export default {
         // 单据的状态
         checkType:""
       }),
-      
+
       // 新增商品
       rowDataList : [],
-      
+
       // 新增商品开关
       goodsAdd: {
         type : false,
         index : -1
       },
-      
+
       // 入库下载模板url
       storageDownloadUrl : '',
-      
+
       dgDataList : [],
-      
+
       isShowPopup : false,
       //功能操作区 权限
       isShow: true,
       // 复制选中的数据
       copyOrderObject: {},
       copyOrderArray: [],
-      
+
       // 规则配置
       ruleOptionDia : false,
       actIndex: 0,
@@ -301,7 +301,7 @@ export default {
         {text :'其他费用', panel: Other },
         {text :'标价', panel: Price }
       ],
-       
+
       // 批量修改
 			isbatchamendShow: false, //显示弹框
     }
@@ -318,14 +318,14 @@ export default {
     combinationDropDownColums
 	},
 	watch: {
-    
+
     dgDataList: function(){
     },
     orderData: function(){
       this.isShow = this.delectOptionRole()
     },
 		// $route(to, from) {
-		// 		debugger  
+		// 		debugger
 		// 	 this.receiptRKSynopsis()
     // }
   },
@@ -414,31 +414,31 @@ export default {
     },
     //规则配置
     tabAction (panel,index) {
-      this.actIndex = index 
+      this.actIndex = index
       this.panel = panel
     },
-    
+
     updataData (parm) {
       this.$set(this, parm.key, parm.data)
     },
-    
+
     //获取当前状态值
     getStatus (status){
       if (status){
        for(let k in status) Object.assign(this.curStatus, {[k]: status[k]})
       }
     },
-    
+
     // 更新单据简介数据
     updataSynopsiData (data){
       this.orderData = Object.assign({}, this.orderData, data)
     },
-    
+
     // 滚动条滑动 两种状态  上滑 下滑
     updataSlipPointer (type){
       this.$set(this.curStatus, 'slipPointer', type)
     },
-    
+
     // 更新新增的商品数据
     updataAddDataList(data) {
       if(data){
@@ -455,12 +455,12 @@ export default {
     updataLoader (type) {
       this.loadCommodity = !!type
     },
-    
+
     // 是否开启新增商品功能
     updataAdd(type) {
       this.goodsAdd = Object.assign({}, this.goodsAdd, type);
     },
-    
+
     // 导入表格
     uploadingOne (e){
       this.updataLoader(true)
@@ -500,7 +500,7 @@ export default {
                 index: -1
               })
               this.rowDataList = []
-              
+
               // 初始化 复制数据
               this.emptyCopy()
             } else if (res.data.data.flag == 1) {
@@ -512,7 +512,7 @@ export default {
                 type: 'error'
               })
             }
-             
+
           } else {
             this.$message({
               message: '导入失败',
@@ -523,13 +523,13 @@ export default {
         this.$store.dispatch('workPopupError', res.data.msg)
       })
     },
-    
+
     // 操作功能区权限
     delectOptionRole () {
       // return this.orderData.isRole === 'Y' && this.orderData.checkType === '1'
       return this.orderData.makeOrderMan
     },
-    
+
     // 复制操作成功之后 初始化复制相关属性
     emptyCopy(){
       this.updataApi()
@@ -537,7 +537,7 @@ export default {
       this.copyOrderArray = []
       this.copyOrderObject = {}
     },
-    
+
     // 复制
     submitCopy(num){
       if (!/^(\d)*$/.test(num)) {
@@ -561,7 +561,7 @@ export default {
 	            let copyObj = Object.assign({}, this.copyOrderObject, { barcode:''})
 	            this.copyOrderArray.push(copyObj)
 	          }
-	          
+
 	          operateAddProductToRKOrder({
 	            orderNum: this.orderData.orderNum,
 	            rowDataList: this.copyOrderArray
@@ -580,7 +580,7 @@ export default {
         }
       }
     },
-    
+
     copyPopupShow (type) {
       if(this.copyOrderObject.barcode == undefined) {
         this.isShowPopup = false
@@ -598,23 +598,23 @@ export default {
       this.isRefreshFooter = !this.isRefreshFooter
       // 商品列表
       this.$refs.datagrid.refresh()
-      
+
       // 页脚 商品简介数据 及订单状态数据
       this.$refs.datagrid.$refs.footer.fetchFootData()
-      
+
       //头部状态栏
       this.$refs.actionsStatus.fetchData()
-      
+
       //步骤条
       this.$refs.stepsPath.fetchPathData()
-      
+
       //备注
       this.$refs.actionsStatus.$refs.remark.fetchRemark()
-      
+
       this.rowDataList = []
       this.updataAdd({ type:false, index:-1})
     },
-    
+
     // 新增商品
     add(type) {
       this.updataAdd({
@@ -622,7 +622,7 @@ export default {
         index: this.goodsAdd.index + 1
       })
     },
-    
+
     // 保存新增商品
     seve(){
       // 保存之前需要对必填项进行提示
@@ -654,17 +654,17 @@ export default {
               })
             }
           }
-          
+
           if (item['productClasses'] == ''){
             this.$message({
               type:'warning',
               message :'产品类别未填，不可保存'
             })
           }
-          
+
         })
       }
-      
+
       // 校验完成后，把数据post到后台
       if(this.rowDataList.length > 0 && !this.checkDatalist()){
           operateAddProductToRKOrder({
@@ -685,7 +685,7 @@ export default {
               })
               this.rowDataList = []
               if(this.$refs.datagrid){
-                // 清空子组件里面新增的商品列表 
+                // 清空子组件里面新增的商品列表
                 this.$refs.datagrid.addDatalist = []
                 this.updataApi()
               }
@@ -693,7 +693,7 @@ export default {
           })
       }
     },
-    
+
     // 检测新增商品 必填属性是否填写完整
     checkDatalist (){
       if (this.rowDataList.length > 0 ) {
@@ -706,7 +706,7 @@ export default {
       }
       return true
     },
-    
+
     updataBatchamend (type){
       this.isbatchamendShow = type
     },
@@ -719,7 +719,7 @@ export default {
 	  	this.$router.push({path: url});
 		},
   },
-  
+
   mounted(){
     this.$nextTick(() => {
       // 获取入库下载模板URL链接
@@ -729,11 +729,11 @@ export default {
       }).then((res) => {
         this.storageDownloadUrl = res.data.data.url
       })
-         
+
     })
   },
   beforeRouteLeave(to, from, next) {
-      
+
     if(this.rowDataList.length > 0){
       this.$confirm('你有 '+ this.rowDataList.length +' 条商品的数据暂未保存，是否离开？', '提示', {
         confirmButtonText: '离开',
@@ -751,12 +751,12 @@ export default {
 
 <style lang="scss" scoped>
 	/* 公用宽度 */
-	
+
 	.app-wd {
 		width: 1250px;
 		margin: 0 auto;
 	}
-	
+
 	.affirm-delect-main1 {
 		width: 100%;
 		height: 100%;
@@ -783,7 +783,7 @@ export default {
 		}
 	}
 	/*  */
-	
+
 	.container {
 		position: relative;
 		/* 头部 */
@@ -830,7 +830,7 @@ export default {
 			}
 		}
 	}
-	
+
 	.commodity-container {
 		margin-top: 30px;
 		border-radius: 10px;
@@ -994,7 +994,7 @@ export default {
 			}
 		}
 	}
-	
+
 	.actions-status {
 		transition: all .5s cubic-bezier(0.51, -0.04, 0.4, 0.4);
 		opacity: 1;

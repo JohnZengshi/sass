@@ -14,6 +14,7 @@
             <DropDownMenu
               titleName="库位"
               dataType="库位"
+              :noChecked="true"
               :propList="repositoryList"
               :isKWCodeDelete="kwcodedelete"
               @dropReturn="dropReturn"
@@ -27,6 +28,7 @@
             <DropDownMenu
               titleName="店铺"
               dataType="店铺"
+              :noChecked="true"
               :isDPCodeDelete="dpcodedelete"
               :propList="shopList"
               @dropReturn="dropReturn"
@@ -38,9 +40,11 @@
           </li>
           <li>
             <DropDownMenu
+              ref="counterBox"
               v-if="!takeUserDisabled"
               titleName="柜组"
               dataType="柜组"
+              :noChecked="true"
               :propList="counterList"
               @dropReturn="dropReturn"
               @clearInfo="clearInfo"
@@ -74,7 +78,7 @@
 <!--       <StatisticsNumber :statisticalIndexData="statisticalIndexData"></StatisticsNumber> -->
 <!--       </div> -->
     </div>
-    <div class="footer-wrap" v-show="false">
+    <div class="footer-wrap" v-if="false">
       <!-- 成品 -->
       <FinishedProduct
         class="finished-product-wrap"
@@ -91,7 +95,8 @@
       ></OldProduct> 
     </div>
     
-    <StockTable 
+    <StockTable
+      ref="stockTableBox"
       class="stock-table-wrap"
       :beginTime="beginTime"
       :searchDate="_formattingTime(beginTime)"
@@ -226,6 +231,7 @@
           this.changeCounter.counterId = ''
           this.changeCounter.counterName = ''
           this.takeUserDisabled = true;
+          this.$refs.stockTableBox.amendShop()
           
         } else if (val.type == "库位") {
           this.changeRepository.repositoryId = ''
@@ -235,6 +241,7 @@
         this._statisticalIndex();
       },
       dropReturn (val) {
+        debugger
         if (val.type == "柜组") {
           this.changeCounter.counterId = val.item.operateId
           this.changeCounter.counterName = val.item.operateName
@@ -252,14 +259,23 @@
           }else{
               this.changeShop.shopId = val.item.operateId;
               this.changeShop.shopName = val.item.operateName;
+              this.changeCounter.counterId = ''
+              this.changeCounter.counterName = ''
               this.takeUserDisabled = false;
-              this._seekShowCounterList(val.item.operateId);
+              if (val.item.operateId == '0') {
+                setTimeout(() => {
+                    this.$refs.stockTableBox.amendShop()
+                }, 0)
+              } else {
+                this._seekShowCounterList(this.changeShop.shopId);
+              }
+              
           }
          
           //this._statisticalIndex();
           
         } else if (val.type == "库位") {
-          if(this.changeShop.shopId != null && this.changeShop.shopId != ''){
+          if(this.changeShop.shopId){
              this.$store.dispatch('workPopupError', '库位不可与店铺同选');
               //  this.dpcodedelete = true;// 选库位的时候，店铺不为空，则清除库位请求
               //  this.changeShop.shopId = '';
@@ -337,12 +353,7 @@
         seekRepositoryList()
           .then(res => {
             if (res.data.state === 200) {
-              this.repositoryList = [...res.data.data.repositoryList, {
-                isDefault: "Y",
-                repositoryId: "0",
-                // repositoryId: "",
-                repositoryName: "全部仓库"
-              }]
+              this.repositoryList = res.data.data.repositoryList
             }
           })
       },
@@ -356,11 +367,7 @@
             if (res.data.state === 200) {
               let shopListLength = res.data.data.shopList.length;
               if (shopListLength > 1) {
-                this.shopList = [...res.data.data.shopList, {
-                  shopId: '0',
-                  // shopId: '',
-                  shopName: '全部店铺'
-                }]
+                this.shopList = res.data.data.shopList
               }else{
                 this.shopList = res.data.data.shopList;
               }
@@ -375,6 +382,10 @@
         seekShowCounterList(options)
           .then(res => {
             this.counterList = res.data.data.counterList
+            // if (res.data.data.counterList.length > 1) {
+            this.$refs.counterBox.clearTitleInfo()
+            this.$refs.stockTableBox.amendShop()
+            // }
           })
       },
       clearRepository () {

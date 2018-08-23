@@ -108,6 +108,7 @@ export const JaTools = {
             }
             if (data.propertyCode == "barcode2") {//二维码
                 let width = data.width * 3.78;
+                data.sample = data.sample.replace(/&/g,'%26');
                 console.log('qrcode:' + data.sample);
                 box = $("<img class='jatools-coder' src='http://127.0.0.1:31227/api?type=coder&code=" + data.sample + "&style=type:qr;&width=" + width + "&height=" + width + "'>");
             }

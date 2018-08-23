@@ -37,7 +37,7 @@ export default {
                 isNull: false
             }
         },
-        props: ['isPreview', 'parent', 'data', 'page', 'templateData', 'showEmpty'],
+        props: ['isPreview','item', 'parent', 'data', 'page', 'templateData', 'showEmpty','productList'],
         computed: {
             ...mapState({
                 mapTemplate: state => state.template.detail
@@ -132,13 +132,15 @@ export default {
                 let code = this.data.propertyCode
                 let backuProductList = null
 
-                let product = this.templateData.productList[this.data.productIndex || (this.page - 1) || 0]
+                let product = this.templateData.productList[this.data.productIndex || (this.page - 1) || 0];
+                if (this.item && this.item.salesId) {
+                    product = this.productList[this.data.productIndex || (this.page - 1) || 0];
+                }
 //              if(!product){
 //                  //回购
 //                  backuProductList = this.templateData.backuProductList[this.data.productIndex || (this.page - 1) || 0]
 //              }
                 let value = null
-
                 if(this.isPreview){
 //                  if (backuProductList) {
 //                     let mapcode = find(backuProductList.codeList, {
@@ -175,7 +177,6 @@ export default {
                             value = mapcode.value
                             // this.isNull = mapcode.isNull != 0
                             if (value != this.data.sample) {
-                                debugger
                                 this.$emit('changeComponentData', {
                                     data: {
                                         sample: value
@@ -346,7 +347,6 @@ export default {
                     if (w != this.data.width || h != this.data.height || l != this.data.left) {
                         // console.log(this.$el, this.data.propertyCode, this.value, this.data.width, this.data.height, this.data.left, w, h, l)
                         if (!(isNaN(w) || isNaN(h) || isNaN(l))) {
-                            debugger
                             this.$emit('changeComponentData', {
                                 data: {
                                     width: w,
@@ -386,7 +386,7 @@ export default {
                     if (this.data.propertyCode == 'unitPrice') {
                         debugger
                     }
-                    if (this.data.propertyCode == 'discountPrice' && value == "100") {
+                    if (this.data.propertyCode == 'discountPrice' && value == "100" && !this.data.isNullPrint) {
                         return false
                     } else if (this.data.isNullPrint) {
                         return true

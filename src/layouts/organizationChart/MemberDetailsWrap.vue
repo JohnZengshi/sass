@@ -36,7 +36,7 @@
           <li style="margin-bottom: 25px">
             <span>限制登录</span>
 
-            <template v-if="editOrAddRole && operateNum == 5 || Doubleid3">
+            <template v-if="deleteRole && operateNum == 5">
               <div class="xj-radio-wrap" @click.stop="setPermissions('1')">
                 <div class="xj-radio-inner"><i :class="{'actions-radius': permissions == '1'}"></i></div><span>正常</span>
               </div>
