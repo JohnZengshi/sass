@@ -12,7 +12,7 @@
                 <el-select :disabled="MemberGradeList && MemberGradeList.length == 0" class="select-w132-h26 select-white select-b1 mr-17" filterable clearable v-model="sendPresonFilter.memberRank" placeholder="会员级别">
                     <el-option v-for="item in MemberGradeList" label="普通" value="shanghai"></el-option>
                 </el-select>
-                <el-select class="select-w132-h26 select-white select-b1 mr-17" filterable clearable v-model="sendPresonFilter.memberType" placeholder="会员类型">
+                <el-select :disabled="memberTypeList && memberTypeList.length == 0" class="select-w132-h26 select-white select-b1 mr-17" filterable clearable v-model="sendPresonFilter.memberType" placeholder="会员类型">
                     <el-option v-for="item in memberTypeList" :label="item.label" :value="item.value"></el-option>
                 </el-select>
                 <el-select :disabled="MemberPrincipalList && MemberPrincipalList.length == 0" class="select-w132-h26 select-white select-b1 mr-17" filterable clearable v-model="sendPresonFilter.memberPrincipal" placeholder="会员负责人">
@@ -59,6 +59,7 @@
     import advancedSearch from "../../../base/advanced-search.vue";
     import {sendPresonListHeader} from "../../../config/config.js";
     export default {
+        props:['data'],
         data(){
             return {
                 // 选择发送人筛选条件
@@ -69,7 +70,7 @@
                     memberPrincipal:"", //会员负责人
                     searchCriteria:"condition" //按人或按条件
                 },
-                 // 切换按人按条件表格切换多选模式
+                // 切换按人按条件表格切换多选模式
                 isOpenOptional:false, //是否开启多选模式
                 operationConfig: {
                     operation: false,
@@ -136,7 +137,7 @@
                         let res = await seekFindMemberGradeList({shopId});
                         console.log(res);
                         if(res.body.msg == "OK"){
-                            return res.body.data.userList;
+                            return res.body.data;
                         }else{
                             this.$message({
                                 type: 'warning',
@@ -172,7 +173,7 @@
                 }else if(val == "preson"){ //按人
                     this.isOpenOptional = true;
                 }
-            }
+            },
         },
         methods:{
             // 取消
@@ -214,7 +215,18 @@
                 // this.requestData.gradeId = memberRank;
                 // this.requestData.type = memberType;
                 // this.requestData.principalId = memberPrincipal;
+            },
+            // 初始化条件
+            reset(){
+                let {conditionsType,keyWord,memberType,principalId} = this.data;
+                this.$set(this.sendPresonFilter,"inputVal",keyWord);
+                this.$set(this.sendPresonFilter,"memberType",memberType);
+                this.$set(this.sendPresonFilter,"memberPrincipal",principalId);
+                this.$set(this.sendPresonFilter,"searchCriteria",conditionsType==1?'preson':'condition');
             }
+        },
+        mounted(){
+            this.reset();
         }
     }
 
