@@ -58,7 +58,7 @@
                     <li>头像</li>
                     <li>姓名</li>
                     <li>手机号</li>
-                    <li>
+                    <li class="new-e-checkbox-square">
                         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
                     </li>
                 </ul>
@@ -73,7 +73,7 @@
                         <li>
                             <i class="iconfont icon-genjin"></i> {{item.phone}}
                         </li>
-                        <li>
+                        <li class="new-e-checkbox-square">
                             <el-checkbox :label="item.memberId"></el-checkbox>
                         </li>
                     </ul>
@@ -241,7 +241,7 @@ export default {
         handleCheckAllChange(val) {
             let cityOptions = []
             for (let i of this.dataList) {
-                cityOptions.push(i.userId)
+                cityOptions.push(i.memberId)
             }
             this.checkList = val.target.checked ? cityOptions : [];
             this.isIndeterminate = false;
@@ -265,7 +265,7 @@ export default {
             this.nameList = []
             if (this.addModel) {
                 this.dataList.forEach((item, index) => {
-                    if (this.checkList.includes(item.userId)) {
+                    if (this.checkList.includes(item.memberId)) {
                         this.nameList.push(item.userName)
                     }
                 })

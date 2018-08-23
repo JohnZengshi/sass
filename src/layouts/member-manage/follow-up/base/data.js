@@ -52,8 +52,12 @@ module.exports = {
     ],
     // 跟进状态
     followUpStatusList: [
+        // {
+        //     name: '进行中',
+        //     id: '1'
+        // },
         {
-            name: '进行中',
+            name: '待完成',
             id: '1'
         },
         {
@@ -64,9 +68,6 @@ module.exports = {
             name: '已完成',
             id: '3'
         },
-        {
-            name: '待完成',
-            id: '4'
-        }
+
     ]
 }

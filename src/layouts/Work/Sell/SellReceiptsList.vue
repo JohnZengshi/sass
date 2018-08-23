@@ -505,11 +505,15 @@
             <el-dialog :visible.sync="isChoseMember" customClass="choseMemberDig">
               <SellChoseMember :sellChoseMemberId="memberDataInfo.phone" :shopId="receiptsIntroList.shopId" :isChoseMember="isChoseMember" @closeChoMember="closeChoMember"></SellChoseMember>
             </el-dialog>
+            
+            <!-- 新增和编辑回填 editLeaguer 编辑 -->
+            <add-member ref="addMemberBox" @update="closeReturn" :memberId="editLeaguer ? receiptsIntroList.memberId : ''" :shopId="receiptsIntroList.shopId" :orderNum="receiptsIntroList.id"></add-member>
+
             <!-- 新增会员 -->
             <addLeaguerDia v-if="addLeaguer" :addLeaguer="addLeaguer" :shopId="receiptsIntroList.shopId" :shopManageRole="shopManageRole" :shopManRole="shopManRole" :orderNum="receiptsIntroList.id" :memberId="receiptsIntroList.memberId" @closeReturn="closeReturn">
             </addLeaguerDia>
               <!-- 信息编辑页面 -->
-               <el-dialog
+<!--                <el-dialog
                   :visible.sync="editLeaguer"
                   :modal="true"
                   top="10%"
@@ -519,7 +523,7 @@
                   >
                     <information-edit v-if="editLeaguer" :oldMemberInfo="oldMemberInfo" :shopId="receiptsIntroList.shopId" :memberInfo="memberInfo" :memberId="receiptsIntroList.memberId"></information-edit>
 
-                </el-dialog>
+                </el-dialog> -->
 <!--             <editLeaguerDia v-if="editLeaguer" :editLeaguer="editLeaguer" :shopId="receiptsIntroList.shopId" :shopManageRole="shopManageRole" :memberId="receiptsIntroList.memberId" :orderNum="receiptsIntroList.id" @closeReturn="closeEditReturn"></editLeaguerDia> -->
             <el-dialog v-if="isSeekMember" :visible.sync="isSeekMember" customClass="SeekMember">
               <div class="wrap">
@@ -610,6 +614,8 @@
   import selectDrop from './components/dropDownMenu'
 
   import addLeaguerDia from './../../Leaguer/components/addLeaguerDig'
+  import addMember from '@/layouts/member-manage/base/add-member.vue'
+  
   import editLeaguerDia from './../../Leaguer/components/editLeaguerDig'
   import informationEdit from './../../Leaguer/components/memberPage/information'
   import SellChoseMember from './../../Leaguer/components/sellChoseMember'
@@ -660,7 +666,8 @@
       remarkTit,
       sellTemplate,
       warrantyTemplate,
-      informationEdit
+      informationEdit,
+      addMember
     },
     directives: {
       focus: {
@@ -1469,14 +1476,16 @@
       },
       // 获取老接口的会员信息
       getOldMemberInfoP() {
-          let options = {
-              shopId: this.receiptsIntroList.shopId,
-              memberId: this.receiptsIntroList.memberId
-          }
-          seekGetMemberInfo(options).then(res => {
-              this.oldMemberInfo = res.data.data
-              this.editLeaguer = true
-          })
+        this.editLeaguer = true
+        this.$refs.addMemberBox.open()
+        // let options = {
+        //     shopId: this.receiptsIntroList.shopId,
+        //     memberId: this.receiptsIntroList.memberId
+        // }
+        // seekGetMemberInfo(options).then(res => {
+        //     this.oldMemberInfo = res.data.data
+        //     this.editLeaguer = true
+        // })
       },
       settingUserRole () { // 用户查看成本权限
         let options = {
@@ -1650,8 +1659,9 @@
         this.getSeekSellReceiptsIntro()
       },
       createMember() {
-        this.isSeekMember = false
-        this.addLeaguer = true
+        this.$refs.addMemberBox.open()
+        // this.isSeekMember = false
+        // this.addLeaguer = true
       },
       // 切换店铺
       dropReturn(data) {

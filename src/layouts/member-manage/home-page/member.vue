@@ -35,7 +35,7 @@
 
       <router-link tag="li" :to="{path: '/memberManage/memberList', query: {shopId: filterOption.shopId}}" class="btn">会员列表</router-link>
 
-      <router-link tag="li" class="btn" :to="{path: '/memberManage/compileTemplate', query: {shopId: filterOption.shopId}}">会员设置</router-link>
+<!--       <router-link tag="li" class="btn" :to="{path: '/memberManage/compileTemplate', query: {shopId: filterOption.shopId}}">会员设置</router-link> -->
     </ul>
 
     <add-member ref="addMemberBox" @update="update" :shopId="filterOption.shopId"></add-member>

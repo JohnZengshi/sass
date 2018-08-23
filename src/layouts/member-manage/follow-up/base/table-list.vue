@@ -16,6 +16,7 @@
             v-if="headline == '我的跟进'"
             :headline="headline"
             :shopId="shopId"
+            :filterDatas="filterCondition"
             @update="filterData"
           ></follow-up-header>
 
@@ -59,7 +60,7 @@ let configData = require('./../../config/config.js')
 import {seekMemberFollowList, seekFollowAdministration} from 'Api/commonality/seek.js'
 import {groupName} from 'Api/commonality/filter'
 
-import {getFollowUpStatus, getFollowType, getMemberTypeList, getVisitAimList} from 'assets/js/analysis'
+import {getFollowUpStatus, getFollowType, getMemberTypeList, getVisitAimList, getSex} from 'assets/js/analysis'
 import {operateDeleteMemberId, operateDeleteFollowByNew} from 'Api/commonality/operate'
 import sortTable from 'base/sort/sort-table'
 import ReportDetail from 'base/newDataGrid/reportDetailTab'
@@ -120,6 +121,15 @@ export default {
     },
 
     delData(parm) {
+      this.$confirm('此操作将永久删除该模板, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+      }).then(() => {
+          this._operateDeleteFollowByNew(parm)
+      })
+
+    },
+    _operateDeleteFollowByNew (parm) {
       let opations = {
         followId: parm.data.followId,
         type: ''
@@ -133,7 +143,8 @@ export default {
         .then(res => {
           if (res.data.state == 200) {
             this.dataGridStorage.splice(parm.index, 1)
-            this.totalNum -= 1  
+            this.totalNum -= 1
+            this.$message({type: 'success',message: '删除成功'})
           } else {
             this.$message({type: 'error',message: res.data.msg})
           }
@@ -151,17 +162,17 @@ export default {
       })
     },
     // 删除跟进管理
-    _operateDeleteFollowByNew (parm) {
-      operateDeleteFollowByNew({memberId: parm.data.memberId})
-        .then(res => {
-          if (res.data.state == 200) {
-            this.dataGridStorage.splice(parm.index, 1)
-            this.totalNum -= 1  
-          } else {
-            this.$message({type: 'error',message: res.data.msg})
-          }
-        })
-    },
+    // _operateDeleteFollowByNew (parm) {
+    //   operateDeleteFollowByNew({memberId: parm.data.memberId})
+    //     .then(res => {
+    //       if (res.data.state == 200) {
+    //         this.dataGridStorage.splice(parm.index, 1)
+    //         this.totalNum -= 1  
+    //       } else {
+    //         this.$message({type: 'error',message: res.data.msg})
+    //       }
+    //     })
+    // },
 
     filterData(parm) {
       if (parm) {
@@ -170,7 +181,9 @@ export default {
         this.filterCondition = Object.assign({}, this.filterCondition, parm)
         // 重绘图表
         if (this.$refs.followUpEchartsBox) {
-          this.$refs.followUpEchartsBox._seekMemberFollowNum()
+          setTimeout(() => {
+            this.$refs.followUpEchartsBox._seekMemberFollowNum()
+          }, 0)
         }
       } else {
         if (this.paging.page > 1 && this.dataGridStorage.length == this.totalNum) {
@@ -188,6 +201,11 @@ export default {
     },
     // 我的跟进
     _seekMemberFollowList () {
+      if (!this.filterCondition.type) {
+        this.filterCondition.type = '2'
+      }
+      debugger
+      this.$emit('updateFilter', this.filterCondition)
       seekMemberFollowList(Object.assign({}, this.filterCondition, combination.sort(this.sortList), this.paging, {shopId: this.shopId}))
         .then(res => {
           if (res.data.state == 200) {
@@ -205,6 +223,10 @@ export default {
               i.followType = getFollowType(i.followType)
               // 会员类型
               i.memberType = getMemberTypeList(i.memberType)
+              // 跟进目的
+              i.followPurpose = getVisitAimList(i.followPurpose)
+              // 性别
+              i.sex = getSex(i.sex)
             }
             this.dataGridStorage.push(...datas)
           } else {
@@ -225,6 +247,8 @@ export default {
               i.followStatus = getVisitAimList(i.followStatus)
               // 跟进状态
               i.followStatus = getFollowUpStatus(i.followStatus)
+              // 性别
+              i.sex = getSex(i.sex)
             }
             this.dataGridStorage.push(...datas)
           } else {
@@ -262,6 +286,7 @@ export default {
     },
     //懒加载
     lazyloadSend() {
+      debugger
       if (this.dataGridStorage.length) {
         if (this.dataGridStorage.length != this.totalNum) {
           this.filterData()

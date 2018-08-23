@@ -1,7 +1,7 @@
 <!-- 首页 -->
 <template>
   <div class="m-m-home-page-main xj-right-box xj-box-shadow">
-    <header-nav @filterData="filterData"></header-nav>
+    <header-nav :filterOption="filterOption" @filterData="filterData"></header-nav>
     <div class="body-scorll-wrap">
       <!-- 会员 -->
       <member :filterOption="filterOption" @update="_seekMemberHomeById" :memberList="memberList"></member>
@@ -20,7 +20,7 @@
   import interflow from './home-page/interflow'
   import followUp from './home-page/follow-up'
   import push from './home-page/push.vue'
-  import {seekMemberHomeById, seekInterflowCollect} from 'Api/commonality/seek'
+  import {seekMemberHomeById, seekInterflowCollect, seekFollowUpNum} from 'Api/commonality/seek'
   import {formattingTime, xjEndTime} from 'assets/js/getTime'
   export default {
     components: {
@@ -43,14 +43,19 @@
           delNum: '',
         },
         followUpData: { // 会员数据
-          num: '1000',
-          dataList: [
-            {
-              followPurpose: '1',
-              name: '生日跟进',
-              num: 1000
-            }
-          ]
+          // followUpNum: '100',
+          // toDayNum: '100',
+          // toDayComplete: '100',
+          // efficiency: '100',
+          // timeout: '100',
+          // dataList: [
+          //   {
+          //     undone: 1000,
+          //     toDayComplete: 1000,
+          //     efficiency: 1000,
+          //     type: '1',
+          //   }
+          // ]
         },
         filterOption: {
           shopId: '',
@@ -63,12 +68,21 @@
         Object.assign(this.filterOption, parm)
         this._seekMemberHomeById()
         this._seekInterflowCollect()
+        this._seekFollowUpNum()
       },
       _seekMemberHomeById () {
         seekMemberHomeById(this.filterOption)
           .then(res => {
             if (res.data.state == 200) {
               this.memberList = res.data.data
+            }
+          })
+      },
+      _seekFollowUpNum () {
+        seekFollowUpNum(this.filterOption)
+          .then(res => {
+            if (res.data.state == 200) {
+              this.followUpData = res.data.data
             }
           })
       },
@@ -87,6 +101,7 @@
 .m-m-home-page-main{
   margin-top: 40px;
   background-color: #fff;
+  overflow: hidden;
   padding-bottom: 15px;
   border-radius: 10px;
   >.body-scorll-wrap{

@@ -19,8 +19,8 @@
     <input-popup ref="inputPopupBox" :headTit="'请输入模板名称'" @confirm="confirmAdd"></input-popup>
 
     <!-- 确认弹窗 -->
-    <confirm-popup ref="confirmPopupBox" :hint="`确认删除${currentData.templateName}？`" @comfirm="_operateDeleteMemberTemplaet"></confirm-popup>
-
+   <!--  <confirm-popup ref="confirmPopupBox" :hint="`确认删除${currentData.templateName}？`" @comfirm="_operateDeleteMemberTemplaet"></confirm-popup>
+ -->
   </div>
 </template>
 <script>
@@ -98,13 +98,18 @@
         })
       },
       del (item) {
-        this.currentData = item
-        this.$refs.confirmPopupBox.open()
+        // this.$refs.confirmPopupBox.open()
+          this.$confirm('此操作将永久删除该模板, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+          }).then(() => {
+            this._operateDeleteMemberTemplaet(item)
+          });
       },
-      _operateDeleteMemberTemplaet () {
+      _operateDeleteMemberTemplaet (item) {
         this.loading = true
         let options = {
-          templateId: this.currentData.templateId
+          templateId: item.templateId
         }
         operateDeleteMemberTemplaet(options)
           .then(res => {

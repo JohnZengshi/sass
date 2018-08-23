@@ -1,78 +1,80 @@
 <!-- 高级搜索 -->
 <template>
   <div class="m-m-advanced-search">
-    <div class="item-box" v-for="(item, index) in showList">
+<!--     <div class="item-wrap" v-for="(allItem, index) in showList"> -->
+        <div class="item-box" v-for="(item, index) in showList">
+          <span class="h-tit">条件{{_toChinesNum(index + 1)}}</span>
+          
+          <!-- 前置 -->
+          <new-down-menu
+              class="w-110 ml-10"
+              ref="memberRankBox"
+              :currentId="item.frontCondition"
+              :idKey="'id'"
+              :isSolid="true"
+              :noClear="true"
+              :titleInfo="_getMemberAdvancedSearchPreposition(item.frontCondition)"
+              :showList="advancedSearchPreposition"
+              :index="index"
+              @changeData="changeFrontCondition"
+          ></new-down-menu>
 
-      <span class="h-tit">条件{{_toChinesNum(index + 1)}}</span>
-      
-      <!-- 前置 -->
-      <new-down-menu
-          class="w-110 ml-10"
-          ref="memberRankBox"
-          :currentId="item.frontCondition"
-          :idKey="'id'"
-          :isSolid="true"
-          :noClear="true"
-          :titleInfo="_getMemberAdvancedSearchPreposition(item.frontCondition)"
-          :showList="advancedSearchPreposition"
-          :index="index"
-          @changeData="changeFrontCondition"
-      ></new-down-menu>
+          <new-down-menu
+              class="w-70 ml-10"
+              ref="memberRankBox"
+              :isSolid="true"
+              :noClear="true"
+              :currentId="item.choiceCondition"
+              :idKey="'id'"
+              :titleInfo="_getAdvancedSearchInclude(item.choiceCondition)"
+              :showList="advancedSearchInclude"
+              :index="index"
+              @changeData="changeChoiceCondition"
+          ></new-down-menu>
 
-      <new-down-menu
-          class="w-70 ml-10"
-          ref="memberRankBox"
-          :isSolid="true"
-          :noClear="true"
-          :currentId="item.choiceCondition"
-          :idKey="'id'"
-          :titleInfo="_getAdvancedSearchInclude(item.choiceCondition)"
-          :showList="advancedSearchInclude"
-          :index="index"
-          @changeData="changeChoiceCondition"
-      ></new-down-menu>
+          <!-- 输入框 -->
+          <input @blur="update" v-show="currentInput(item.frontCondition)" v-model="item.afterCondition" class="xj-input small-input" type="text">
 
-      <!-- 输入框 -->
-      <input @blur="update" v-show="currentInput(item.frontCondition)" v-model="item.afterCondition" class="xj-input small-input" type="text">
+          <!-- 日期 -->
+          <el-date-picker v-show="currentTime(item.frontCondition)" class="ml-10" v-model="item.afterCondition" type="date" placeholder="选择日期" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" @change="setCompleteTime">
+          </el-date-picker>
+          
+          <!-- 下拉选择 -->
+          <new-down-menu
+              v-show="currentSelect(item.frontCondition)"
+              class="w-130 ml-10"
+              ref="memberRankBox"
+              :currentId="item.afterCondition"
+              :idKey="'id'"
+              :isSolid="true"
+              :titleInfo="_getMemberType(item.afterCondition)"
+              :showList="filterSelect(item.frontCondition)"
+              :index="index"
+              @changeData="changeAfterCondition"
+              @clearInfo="clearAfterCondition"
+          ></new-down-menu>
 
-      <!-- 日期 -->
-      <el-date-picker v-show="currentTime(item.frontCondition)" class="ml-10" v-model="item.afterCondition" type="date" placeholder="选择日期" format="yyyy年MM月dd日" value-format="yyyy-MM-dd" @change="setCompleteTime">
-      </el-date-picker>
-      
-      <!-- 下拉选择 -->
-      <new-down-menu
-          v-show="currentSelect(item.frontCondition)"
-          class="w-130 ml-10"
-          ref="memberRankBox"
-          :currentId="item.afterCondition"
-          :idKey="'id'"
-          :isSolid="true"
-          :titleInfo="_getMemberType(item.afterCondition)"
-          :showList="filterSelect(item.frontCondition)"
-          :index="index"
-          @changeData="changeAfterCondition"
-          @clearInfo="clearAfterCondition"
-      ></new-down-menu>
+          <!-- 连接 -->
+          <new-down-menu
+              v-show="showList.length - 1 != index" 
+              class="w-70 ml-10"
+              ref="memberRankBox"
+              :currentId="item.connect"
+              :idKey="'id'"
+              :isSolid="true"
+              :noClear="true"
+              :titleInfo="_getConnect(item.connect)"
+              :showList="connectList"
+              :index="index"
+              @changeData="changeConnect"
+          ></new-down-menu>
 
-      <!-- 连接 -->
-      <new-down-menu
-          v-if="item.connect"
-          class="w-70 ml-10"
-          ref="memberRankBox"
-          :currentId="item.connect"
-          :idKey="'id'"
-          :isSolid="true"
-          :noClear="true"
-          :titleInfo="_getConnect(item.connect)"
-          :showList="connectList"
-          :index="index"
-          @changeData="changeConnect"
-      ></new-down-menu>
+          <i v-if="index != 0 && (index + 1)%2 != 0" class="iconfont icon-wuuiconsuoxiao del-right" @click="delData(index)"></i>
 
-      <i v-if="(index + 1)%2 != 0" class="iconfont icon-wuuiconsuoxiao del-right" @click="delData(index)"></i>
+        </div>
 
-    </div>
-    <i class="iconfont icon-jia add-right" @click="addData"></i>
+<!--     </div> -->
+        <i v-if="showList.length < 8" class="iconfont icon-jia add-right" @click="addData"></i>
 <!--     <i class="iconfont icon-wuuiconsuoxiao del-right" @click="delData"></i> -->
   </div>
 </template>
@@ -105,6 +107,7 @@ export default {
         {
           choiceCondition: '1',
           frontCondition: '1',
+          connect: '1',
           afterCondition: '', // 后置条件
         }
       ]
@@ -126,9 +129,7 @@ export default {
         i.choiceCondition = '1'
         i.frontCondition = '1'
         i.afterCondition = ''
-        if (i.connect) {
-          i.connect = '1'
-        }
+        i.connect = '1'
       }
       this.update()
     },
@@ -136,28 +137,25 @@ export default {
     addData () {
       let datas = [
         {
-          choiceCondition: '1',
-          frontCondition: '1',
-          connect: '1',
-          afterCondition: '', // 后置条件
-        },
-        {
-          choiceCondition: '1',
-          frontCondition: '1',
-          afterCondition: '', // 后置条件
-        }
-      ]
-      if (this.showList.length) {
-        this.showList[this.showList.length - 1].connect = '1'
-      }
+              choiceCondition: '1',
+              frontCondition: '1',
+              connect: '1',
+              afterCondition: '', // 后置条件
+            },
+            {
+              choiceCondition: '1',
+              frontCondition: '1',
+              connect: '1',
+              afterCondition: '', // 后置条件
+            }]
       this.showList.push(...datas)
     },
     // 删除数据
     delData (index) {
       this.showList.splice(index, 2)
-      if (this.showList.length) {
-        delete this.showList[this.showList.length -1 ].connect
-      }
+      // if (this.showList.length) {
+      //   delete this.showList[this.showList.length -1 ].connect
+      // }
     },
     _toChinesNum (parm) {
       return toChinesNum(parm)
@@ -216,7 +214,10 @@ export default {
       this.update()
     },
     changeConnect (parm) {
+      debugger
       this.$set(this.showList[parm.index], 'connect', parm.id)
+      debugger
+      console.log(this.showList[parm.index])
     },
     changeAfterCondition (parm) {
       this.showList[parm.index].afterCondition = parm.id
@@ -244,11 +245,27 @@ export default {
 .m-m-advanced-search{
   position: relative;
   min-height: 30px;
+  .item-wrap{
+    position: relative;
+    // display: inline-block;
+    // vertical-align: top;
+    // width: 587px;
+  }
   .item-box{
     position: relative;
     margin-bottom: 15px;
     height: 30px;
+    
     font-size: 0;
+    .h-tit{
+      font-size: 14px;
+      margin-right: 30px;
+    }
+    .small-input{
+      width: 130px;
+      height: 28px;
+      margin-left: 10px;
+    }
     >i{
       font-size: 28px;
       position: absolute;
@@ -259,17 +276,8 @@ export default {
     }
     .del-right{
       top: 0;
-      right: 40px;
+      right: 0;
       color: red;
-    }
-    .h-tit{
-      font-size: 14px;
-      margin-right: 30px;
-    }
-    .small-input{
-      width: 130px;
-      height: 28px;
-      margin-left: 10px;
     }
   }
   .w-70{

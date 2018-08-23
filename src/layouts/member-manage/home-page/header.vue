@@ -31,7 +31,8 @@
           @changeData="changeShop"
           @clearInfo="clearShop"
         ></down-menu>
-        
+
+        <router-link tag="div" class="xj-btn-defult" :to="{path: '/memberManage/compileTemplate', query: {shopId: filterOption.shopId}}">会员设置</router-link>
       </div>
       
     </div>
@@ -51,6 +52,7 @@
       downMenu,
       xjTime
     },
+    props: ['filterOption'],
     data () {
       return {
         filterData: {
@@ -125,9 +127,14 @@
         seekGetShopListByCo(options).then((res) => {
           if(res.data.state == 200) {
             this.shopList = res.data.data.shopList
-            let memberShop = sessionStorage.memberShop
-            if (memberShop) {
-              this.changeShop(JSON.parse(memberShop))
+            if (sessionStorage.memberShop) {
+              for (let i of res.data.data.shopList) {
+                if (i.shopId == JSON.parse(sessionStorage.memberShop).shopId) {
+                  this.changeShop(i)
+                  return
+                }
+              }
+              this.changeShop(this.shopList[0])
             } else {
               this.changeShop(this.shopList[0])
             }
@@ -170,6 +177,10 @@
     }
     .right-box{
       font-size: 0;
+      >.xj-btn-defult{
+        vertical-align: top;
+        margin-left: 10px;
+      }
     }
     .down-menu-box{
       display: inline-block;
