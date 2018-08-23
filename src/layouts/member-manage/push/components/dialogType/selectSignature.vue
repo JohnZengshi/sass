@@ -25,6 +25,7 @@
 <script>
     import {findSmsSignList} from "Api/member";
     export default {
+        props:['data'],
         data() {
             return {
                 // 单选框的值
@@ -67,6 +68,16 @@
                 },
                 default(){
                     return []
+                }
+            }
+        },
+        watch:{
+            signatureList(val){
+                if(val && val.length != 0 && this.data.signId){
+                    let item = val.find((v)=>{
+                        return v.signId == this.data.signId
+                    })
+                    this.radio = item; 
                 }
             }
         },
