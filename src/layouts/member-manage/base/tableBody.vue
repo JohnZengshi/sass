@@ -58,7 +58,7 @@
                 </template>
                 <!-- 单选模式 -->
                 <template v-else-if="operationConfig.type == 'radio'">
-                    <el-radio class="square el-radio-nofont" v-model="radio" :label="scope.row"></el-radio>
+                    <el-radio class="square el-radio-nofont" v-model="radio" :label="scope.row" :value="scope.row"></el-radio>
                 </template>
                 <!-- 按钮 + icon类型 -->
                 <template scope="scope" v-else-if="operationConfig.type == 'btnAndIcon'" v-for="item in scope.row[operationConfig.tableValue]">
@@ -88,6 +88,7 @@
             // "operationList", //操作的列表
             "operationConfig", //操作配置
             "isRowClick", //是否可以点击单行触发
+            "defaultChoose", //单选模式下默认选择的值
         ], 
         methods: {
             // 点击操作按钮
@@ -128,6 +129,9 @@
             // 单选响应
             "radio"(val){
                 this.$emit("chooseChange",val)
+            },
+            "defaultChoose"(val){
+                this.radio = val;
             }
         },
         created(){}

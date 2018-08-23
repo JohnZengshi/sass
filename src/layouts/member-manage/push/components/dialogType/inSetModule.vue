@@ -8,10 +8,16 @@
                 <input type="text" placeholder="请输入模板名称">
                 <i class="iconfont icon-sousuo"></i>
             </div>
-            <div class="filterSelect">
-                <el-select class="select-w90-h28 select-white select-b1 select-f12-b" filterable clearable v-model="moduleType" placeholder="创建人"
+            <div class="filterSelect flex flex-r">
+                <el-select 
+                    class="select-w90-h28 select-white select-b1 select-f12-b" 
+                    filterable 
+                    clearable 
+                    v-model="moduleType" 
+                    placeholder="创建人"
+                    :disabled="MemberPrincipalList.length == 0"
                     @change="changeSelectValue">
-                    <el-option v-for="(item,index) in options02" :key="index" :label="item.label" :value="item.value">
+                    <el-option v-for="(item,index) in MemberPrincipalList" :key="index" :label="item.nickName" :value="item.ptincipalId">
                     </el-option>
                 </el-select>
             </div>
@@ -25,6 +31,7 @@
                 :isSort="true" 
                 :optional="false" 
                 :operationConfig="operationConfig"
+                :defaultChoose="selectModule"
                 styleClass="el_table_moduleList"
                 @chooseChange="moduleSelectChange"></TableBody>
         </div>
@@ -34,15 +41,18 @@
     </div>
 </template>
 <script>
-    import {findTemplate} from "Api/member.js"
+    import {
+        findTemplate, //模板列表
+        findMemberPrincipalList, //负责人列表
+    } from "Api/member.js"
     import TableBody from "../../../base/tableBody.vue"
     import {moduleLsitHeader} from "../../../config/config.js"
     export default {
+        props:['data'],
         data(){
             return {
                 // 模板类型
                 moduleType:"",
-                options02:[],
                 operationConfig: {
                     operation: true,
                     type: "radio",
@@ -50,6 +60,9 @@
                 },
                 findTemplateIng:false, //正在查找模板
                 selectModule:null, //选择的模板
+                requestData:{
+                    shopId:this.$route.query.shopId
+                }
             }
         },
         components:{
@@ -61,7 +74,7 @@
             },
             templateList:{ //1.8模板列表
                 get(){
-                    let shopId = this.$route.query.shopId
+                    let {shopId} = this.requestData
                     this.findTemplateIng = true;
                     let res = (async()=>{
                         let res = await findTemplate({shopId})
@@ -80,6 +93,32 @@
                 },
                 default(){
                     return []
+                }
+            },
+            MemberPrincipalList:{ //负责人列表
+                get(){
+                    return (async()=>{
+                        let {shopId} = this.requestData;
+                        let res = await findMemberPrincipalList({shopId});
+                        if(res.body.msg == "OK"){
+                            return res.body.data;
+                        }else{
+                            return [];
+                        }
+                    })()
+                },
+                default(){
+                    return []
+                }
+            },
+        },
+        watch:{
+            templateList(val){
+                if(val && val.length !=0 && this.data.templateId){
+                    let item = val.find((v)=>{
+                        return v.templateId == this.data.templateId
+                    })
+                    this.selectModule = item;
                 }
             }
         },

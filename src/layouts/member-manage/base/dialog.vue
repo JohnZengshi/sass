@@ -23,15 +23,15 @@
         </template>
         <!-- 插入模板弹窗 -->
         <template v-else-if="dialogType == 'inSetModule'">
-            <inSetModule @cancel="handleclose" @confirm="confirmrequest"></inSetModule>
+            <inSetModule :data="data" @cancel="handleclose" @confirm="confirmrequest"></inSetModule>
         </template>
         <!-- 选择签名弹窗 -->
         <template v-else-if="dialogType == 'selectSignature'">
-            <selectSignature @cancel="handleclose" @confirm="confirmrequest"></selectSignature>
+            <selectSignature :data="data" @cancel="handleclose" @confirm="confirmrequest"></selectSignature>
         </template>
         <!-- 选择发送人弹窗 -->
         <template v-else-if="dialogType == 'selectSendPreson'">
-            <selectSendPreson @cancel="handleclose" @confirm="confirmrequest"></selectSendPreson>
+            <selectSendPreson :data="data" @cancel="handleclose" @confirm="confirmrequest"></selectSendPreson>
         </template>
         <!-- 管理签名 -->
         <template v-else-if="dialogType == 'signatureManage'">
