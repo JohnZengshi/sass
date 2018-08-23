@@ -1,37 +1,37 @@
 <template>
-    <div class="m-m-home-page-push-main">
+    <div class="m-m-home-page-push-main" v-loading="findSmsHomeIng">
         <div class="decoration">
             推送
         </div>
-        <ul class="center-num-list">
+        <ul class="center-num-list" v-if="SmsHome">
             <li>
-                <p>2879</p>
+                <p>{{SmsHome.countSize}}</p>
                 <p>推送总数</p>
             </li>
             <li>
-                <p>178</p>
+                <p>{{SmsHome.daySize}}</p>
                 <p>今日推送</p>
             </li>
             <li>
-                <p>1200</p>
+                <p>{{SmsHome.remainingSize}}</p>
                 <p>剩余推送数量</p>
             </li>
         </ul>
 
-        <ul class="detailsCard flex flex-r flex-pack-justify">
-            <li class="item flex flex-v" v-for="item in cardData" @click="gotoModuleDetail">
-                <div>{{item.cardTitle}}</div>
+        <ul class="detailsCard flex flex-r" v-if="SmsHome">
+            <li class="item flex flex-v" v-for="item in SmsHome.dataList" @click="gotoModuleDetail">
+                <div>{{item.teplateName}}</div>
                 <div>
                     <span>未完成推送</span>
-                    <span>{{item.unfinished}}</span>
+                    <span>{{item.unfinishedSize}}</span>
                 </div>
                 <div>
                     <span>已完成推送</span>
-                    <span>{{item.finished}}</span>
+                    <span>{{item.completeSzie}}</span>
                 </div>
                 <div>
                     <span>完成度</span>
-                    <span>{{item.percent}}</span>
+                    <span>{{item.bilv}}</span>
                 </div>
             </li>
         </ul>
@@ -56,10 +56,12 @@
     </div>
 </template>
 <script>
+    import {findSmsHome} from "Api/member";
     import Dialog from "../base/dialog.vue";
     import signatureManage from "../push/components/dialogType/signatureManage.vue";
     import recharge from "../../../layouts/Leaguer/components/recharge.vue"
     export default {
+        props:["filterOption"],
         data() {
             return {
                 cardData: [],
@@ -67,38 +69,54 @@
                     isShowDialog:false,
                     dialogType:"",
                     modal:true
-                }
+                },
+                requestData: {
+                    shopId: this.filterOption.shopId,
+                    page:"1",
+                    pageSize:"100",
+                    beginTime:"",
+                    endTime:"",
+                },
+                findSmsHomeIng:false 
                 
             }
         },
-        props:["filterOption"],
+        asyncComputed: {
+            SmsHome: {
+                get() {
+                    if (this.filterOption.shopId) {
+                        this.findSmsHomeIng = true;
+                        return (async () => {
+                            let shopId = this.filterOption.shopId;
+                            let res = await findSmsHome({
+                                shopId
+                            });
+                            if (res.body.msg == "OK") {
+                                this.findSmsHomeIng = false;
+                                return res.body.data;
+                            } else {
+                                this.$message({
+                                    type: 'warning',
+                                    // message: res.body.msg,
+                                    message: "获取到不推送信息",
+                                    onClose: () => {
+                                        this.findSmsHomeIng = false;
+                                    }
+                                });
+                                return {}
+                            }
+                        })()
+                    }
+                },
+                default () {
+                    return null
+                }
+            }
+        },
+        watch:{
+
+        },
         created(){
-            this.cardData = [{
-                    cardTitle:"系统通知",
-                    unfinished:198,
-                    finished:165,
-                    percent:"50%"
-                },{
-                    cardTitle:"系统通知",
-                    unfinished:198,
-                    finished:165,
-                    percent:"50%"
-                },{
-                    cardTitle:"系统通知",
-                    unfinished:198,
-                    finished:165,
-                    percent:"50%"
-                },{
-                    cardTitle:"系统通知",
-                    unfinished:198,
-                    finished:165,
-                    percent:"50%"
-                },{
-                    cardTitle:"系统通知",
-                    unfinished:198,
-                    finished:165,
-                    percent:"50%"
-                }]
         },
         components:{
             Dialog,
@@ -198,6 +216,7 @@
                 border-radius: 9px;
                 border: 1px #D6D6D6 solid;
                 padding: 18px 20px;
+                margin-right: 20px;
                 cursor: pointer;
                 &:hover{
                     border: 1px #2993f8 solid;

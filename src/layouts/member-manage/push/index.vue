@@ -14,7 +14,9 @@
         </header>
         <div class="mainTable">
             <transition name="fade">
-                <router-view></router-view>
+                <!-- <keep-alive> -->
+                    <router-view></router-view>
+                <!-- </keep-alive> -->
             </transition>
         </div>
     </div>
