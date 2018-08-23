@@ -87,6 +87,11 @@ export const memberBuyIntegral = function(data) {
     return apiCall(data, URL)
 }
 // 1.推送模板管理=========================================
+// 3.17推送主页
+export const findSmsHome = function(data){
+    let URL = "/v1/groupTemplate/findSmsHome";
+    return apiCall(data, URL);
+}
 // 1.5模板类型列表
 export const findSmsTemplateTypeList = function(data){
     let URL = "/v1/groupTemplate/findSmsTemplateTypeList"
@@ -169,6 +174,12 @@ export const findSmsTriggerList = function(data){
 export const addSms = function(data){
     let URL = "/v1/groupTemplate/addSms"
     return apiCall(data, URL)
+}
+
+// 3.10修改短信
+export const updateSms = function(data){
+    let URL = "/v1/groupTemplate/updateSms";
+    return apiCall(data, URL);
 }
 
 // 3.4 触发周期列表
